@@ -9,6 +9,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class MyInvestmentsService {
+  getpensionplanRemarkList(transactionID: any, psId: any) {
+    throw new Error('Method not implemented.');
+  }
 public apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
@@ -314,6 +317,13 @@ public apiUrl = environment.baseUrl8085;
 
   getAllPreviousEmployer() {
     return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getLicRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/GetRemark/' + psId + '/' + policyNo)
     .pipe(map((res: any) => {
       return res;
     }));

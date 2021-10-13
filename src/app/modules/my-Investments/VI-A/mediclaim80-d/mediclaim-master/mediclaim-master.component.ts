@@ -533,7 +533,7 @@ export class MediclaimMasterComponent implements OnInit {
               .toString()
               .replace(/,/g, ''),
             annualAmount: this.masterForm.annualAmount.value,
-            ecs: this.masterForm.ecs.value,
+            isECS: this.masterForm.ecs.value,
             fromDate: this.masterForm.fromDate.value,
             toDate: this.masterForm.toDate.value,
           },

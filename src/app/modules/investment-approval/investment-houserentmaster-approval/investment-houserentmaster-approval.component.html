@@ -1,6 +1,5 @@
-<!-- <p>investment-physically-handicappedtransaction-approval works!</p> -->
-
-<!-- <p>investment-onetimetransaction-approval works!</p> -->
+<!-- <p>investment-houserentmaster-approval works!</p> -->
+<!-- <p>investment-housingloantransaction-approval works!</p> -->
 <app-leftmenu></app-leftmenu>
 <!-- Main body part -->
 <div class="page">
@@ -35,8 +34,8 @@
                           >Employee No. & Name</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.employeeCode }}-{{
-                            employeeInfo?.fullName
+                          {{ employeeInfo.employeeCode }}-{{
+                            employeeInfo.fullName
                           }}</label
                         >
                       </div>
@@ -45,13 +44,13 @@
                           >Employee Type</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.employeeType }}
+                          {{ employeeInfo.employeeType }}
                         </label>
                       </div>
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Grade</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.grade }}
+                          {{ employeeInfo.grade }}
                         </label>
                       </div>
                       <div class="col-md-2">
@@ -59,7 +58,7 @@
                           >Date of Joining</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.joiningDate | date: "dd-MMM-yyyy" }}
+                          {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
                         </label>
                       </div>
                       <div class="col-md-2">
@@ -67,20 +66,20 @@
                           >Date of Leaving</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.joiningDate | date: "dd-MMM-yyyy" }}
+                          {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
                         </label>
                       </div>
 
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Designation</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.designation }}
+                          {{ employeeInfo.designation }}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Emp. Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo?.establishment }}
+                          {{ employeeInfo.establishment }}
                         </label>
                       </div>
                     </div>
@@ -95,25 +94,25 @@
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Group</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo?.psidDetail?.groupName }}</label
+                          {{ transactionInfo.psidDetail.groupName }}</label
                         >
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Section</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo?.psidDetail?.section }}
+                          {{ transactionInfo.psidDetail.section }}
                         </label>
                       </div>
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Type</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo?.psidDetail?.type }}
+                          {{ transactionInfo.psidDetail.type }}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">PS ID</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo?.psidDetail?.psid }}
+                          {{ transactionInfo.psidDetail.psid }}
                         </label>
                       </div>
 
@@ -123,7 +122,7 @@
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{
-                            transactionInfo?.psidDetail?.dateOfSubmission
+                            transactionInfo.psidDetail.dateOfSubmission
                               | date: "dd-MMM-yyyy"
                           }}
                         </label>
@@ -131,7 +130,7 @@
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">PS ID Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo?.psidDetail?.proofSubmissionStatus }}
+                          {{ transactionInfo.psidDetail.proofSubmissionStatus }}
                         </label>
                       </div>
 
@@ -139,7 +138,7 @@
                         <label class="form-label mt-1 mb-0">Date & Time</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{
-                            transactionInfo?.psidDetail?.lastModifiedDateTime
+                            transactionInfo.psidDetail.lastModifiedDateTime
                               | date: "dd-MMM-yyyy HH:mm"
                           }}
                         </label>
@@ -188,12 +187,12 @@
                         <!-- Transaction Details For Loop Started -->
                         <div
                           *ngFor="
-                            let transactionDetail of transactionInfo.oneTimeTransactionDetailList;
+                            let transactionDetail of transactionInfo.transactionDetail;
                             let transactionDetailIndex = index
                           "
                         >
                           <!-- Master Popup Button -->
-                          <!-- <div class="row mt-10">
+                          <div class="row mt-10">
                             <div class="col-md-12">
                               <div class="float-right">
                                 <button
@@ -209,35 +208,35 @@
                                 </button>
                               </div>
                             </div>
-                          </div> -->
+                          </div>
                           <!-- Master Popup Button End-->
                           <!-- Master Details Line -->
-                          <!-- <div class="row">
+                          <div class="row">
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Institution </strong
-                                >{{ transactionDetail.institutionName }}
+                                <strong>House Name :</strong
+                                >{{ transactionDetail.houseName }}
                               </h6>
                             </div>
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Policy No.: </strong
-                                >{{ transactionDetail.policyNo }}
+                                <strong>House Address : </strong
+                                >{{ transactionDetail.houseAddress }}
                               </h6>
                             </div>
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Policy Holder Name : </strong
-                                >{{ transactionDetail.policyholdername }}
+                                <strong>Usage Type : </strong
+                                >{{ transactionDetail.usageType }}
                               </h6>
                             </div>
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Frequency: </strong
-                                >{{ transactionDetail.frequency }}
+                                <strong>Loan: </strong
+                                >{{ transactionDetail.loanTaken }}
                               </h6>
                             </div>
-                          </div> -->
+                          </div>
                           <!-- Master Details Line End -->
 
                           <!-- Transaction  Details Table -->
@@ -246,7 +245,7 @@
                               <div class="table-responsive">
                                 <p-table
                                   [value]="
-                                  this.transactionInfo.oneTimeTransactionDetailList
+                                    transactionDetail.transactionDetailList
                                   "
                                 >
 
@@ -259,14 +258,9 @@
                                       </th>
 
                                       <th class="wd-10">Previous Employer</th>
-                                      <!-- <th class="wd-10">Institution</th>
-                                      <th class="wd-10">Account No.</th> -->
-                                      <!-- <th class="wd-10">Policy Holder Name</th> -->
-                                      <!-- <th class="wd-10">Frequency</th> -->
-                                      <!-- <th class="wd-10">Due Date</th> -->
-                                      <!-- <th class="wd-10">Date of Payment</th> -->
-                                      <th class="wd-10">Disability</th>
-                                      <th class="wd-10">Severity</th>
+                                      <th class="wd-10">Particulars</th>
+                                      <!-- <th class="wd-10">Due Date</th>
+                                      <th class="wd-10">Date of Payment</th> -->
                                       <th class="wd-10">Actual</th>
                                       <th class="primeng-table-header-center wd-10">
                                         Rejected
@@ -307,31 +301,18 @@
                                         )
                                       "
                                       #e
-                                    
+                                      [class.disableCheckbox]="
+                                      transaction.transactionStatus ==
+                                      'Approved'"
                                         >
                                         </p-tableCheckbox>
                                       </td>
                                       <td aria-disabled="true" class="disabled">
-                                        {{ transaction?.previousEmployer }}
+                                        {{ transaction.previousEmployer }}
                                       </td>
                                       <td aria-disabled="true" class="disabled">
-                                        {{ transaction?.disability }}
+                                        {{ transaction.particulars }}
                                       </td>
-                                      <td aria-disabled="true" class="disabled">
-                                        {{ transaction?.severity }}
-                                      </td>
-                                      <!-- <td class="disabled align-center">
-                                        {{ transactionDetail?.instituition }}
-                                      </td>
-                                      <td class="disabled align-center">
-                                        {{ transaction?.accountNumber }}
-                                      </td> -->
-                                      <!-- <td class="disabled align-right">
-                                        {{ transactionDetail.policyholdername }}
-                                      </td> -->
-                                      <!-- <td class="disabled align-right">
-                                        {{ transactionDetail.frequency }}
-                                      </td> -->
                                       <!-- <td class="disabled">
                                         {{
                                           transaction.dueDate
@@ -340,12 +321,12 @@
                                       </td> -->
                                       <!-- <td class="disabled">
                                         {{
-                                          transaction?.dateOfPayment
+                                          transaction.dateOfPayment
                                             | date: "dd-MMM-yyyy"
                                         }}
                                       </td> -->
                                       <td class="disabled align-right">
-                                        {{ transaction?.actualAmount | number: "1.2-2"}}
+                                        {{ transaction.actualAmount | number: "1.2-2"}}
                                       </td>
 
                                       <td>
@@ -426,6 +407,7 @@
                                                   fa fa-commenting
                                                   text-dark-green
                                                   fa-2x
+                                                  cursor-pointer
                                                 "
                                               >
                                               </i
@@ -434,7 +416,7 @@
                                               _ngcontent-ykc-c443=""
                                               class="Label_badge "
                                               >{{
-                                                transaction?.remarkList.length
+                                                transaction.remarkList.length
                                               }}</span
                                             >
                                           </div>
@@ -443,12 +425,12 @@
                                       </td>
 
                                       <td class="disabled">
-                                        {{ transaction?.transactionStatus }}
+                                        {{ transaction.transactionStatus }}
                                       </td>
                                       <td>
                                         <i
                                         *ngIf="
-                                         transactionInfo.psidDetail.proofSubmissionStatus != 'Approved' &&
+
                                          transaction.transactionStatus == 'Approved' "
                                           class="
                                             fa fa-edit
@@ -540,7 +522,7 @@
                                         tooltip=""
                                       >
                                         {{
-                                          transactionInfo?.grandTotalActual
+                                          transactionInfo.grandTotalActual
                                             | number: "1.2-2"
                                         }}
                                       </span>
@@ -560,7 +542,7 @@
                                         tooltip=""
                                       >
                                         {{
-                                          transactionInfo?.grandTotalRejected
+                                          transactionInfo.grandTotalRejected
                                             | number: "1.2-2"
                                         }}
                                       </span>
@@ -579,7 +561,7 @@
                                         placement="left"
                                         tooltip=""
                                       >
-                                        {{  transactionInfo?.grantTotalApproved| number: "1.2-2" }}
+                                        {{  transactionInfo.grantTotalApproved| number: "1.2-2" }}
                                       </span>
                                     </td>
                                     <td
@@ -606,9 +588,9 @@
                      <div class="row mt-10 mb-15">
                       <div class="col-md-12">
                         <div class="float-right">
-                          <button
+                          <!-- <button
                             *ngIf="
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                               'Approved'
                             "
                             type="button"
@@ -622,7 +604,7 @@
                             (click)="changePSIDStatusOfTransaction('Re-Open')"
                           >
                             Edit Approval
-                          </button>
+                          </button> -->
                           <button
                             type="button"
                             tooltip="Send Back"
@@ -632,20 +614,20 @@
                               btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disableredbutton]=" transactionList?.length == 0 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                            [class.disableredbutton]=" transactionList.length == 0 ||
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'
                                 ||
-                                  transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                  transactionInfo.psidDetail.proofSubmissionStatus ==
                                     'SendBack'
                             "
-                            [disabled]=" transactionList?.length == 0 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                            [disabled]=" transactionList.length == 0 ||
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'
                                 ||
-                                  transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                  transactionInfo.psidDetail.proofSubmissionStatus ==
                                     'SendBack'
                             "
                             (click)="changePSIDStatusOfTransaction('SendBack')"
@@ -662,18 +644,18 @@
                               ripple
                               mr-2
                             "
-                            [disabled]="transactionList?.length == 0 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                            [disabled]="transactionList.length == 0 ||
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
-                            [class.disablegreenbutton]="transactionList?.length == 0 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                            [class.disablegreenbutton]="transactionList.length == 0 ||
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
                           >
@@ -694,7 +676,7 @@
                             (click)="changePSIDStatusOfTransaction('Approved')"
                             tooltip="Approve"
                           >
-                            <b> <i class="fa fa-floppy-o"></i></b> Approve
+                            <b> <i class="fa fa-floppy-o"></i></b> Approve 
                           </button>
 
                           <button
@@ -729,16 +711,16 @@
                             "
                             [class.disablegraybutton]="
                                proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == ''
+                              transactionInfo.psidDetail.proofSubmissionStatus == ''
                             "
                             [disabled]="
                                proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == ''
+                              transactionInfo.psidDetail.proofSubmissionStatus == ''
                             "
                             (click)="changePSID(globalPSID, 'Next')"
                           >
                             <b><i class="fa fa-angle-double-right"></i></b
-                            >Next {{ proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 }}
+                            >Next {{proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1}}
                           </button>
 
                           <button
@@ -750,20 +732,20 @@
                               btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disableredbutton]=" transactionList?.length == 0 ||
+                            [class.disableredbutton]=" transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             [disabled]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             (click)="changeStatusWithNextPrevious('SendBack',globalPSID, 'Next')"
@@ -781,20 +763,20 @@
                               btn-bg-green btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disablegreenbutton]="transactionList?.length == 0 ||
+                            [class.disablegreenbutton]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'  ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             [disabled]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'  ||
-                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                                transactionInfo.psidDetail.proofSubmissionStatus ==
                                   'SendBack'
                             "
                           >
@@ -810,16 +792,16 @@
                               ripple
                               mr-2
                             "
-                            [class.disablegreenbutton]="transactionList.length == 0 ||
+                            [class.disablegreenbutton]="transactionList.length == 0 || approvedDisabled ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'
                             "
-                            [disabled]="transactionList.length == 0 ||
+                            [disabled]="transactionList.length == 0 || approvedDisabled ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
-                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
+                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
+                              transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'
                             "
                             (click)="changeStatusWithNextPrevious('Approved',globalPSID, 'Next')"
@@ -856,7 +838,7 @@
                             <div class="table-responsive Custom_Table">
                               <p-table
                                 #dt2
-                                [value]="this.transactionInfo.documentList"
+                                [value]="transactionInfo.documentList"
                                 [selection]="documentList"
                                 [paginator]="true"
                                 [rows]="10"
@@ -1170,6 +1152,7 @@
                                         <input
                                           type="text"
                                           class="form-control"
+                          
                                           (change)="
                                             onChangeDocumentRemark(
                                               documentDetail,
@@ -1202,6 +1185,7 @@
                                                 fa fa-commenting
                                                 text-dark-green
                                                 fa-2x
+                                                cursor-pointer
                                               "
                                             >
                                             </i
@@ -1311,9 +1295,9 @@
               <!-- Document Information Table End -->
 
               <!-- Master Details Pop Up Started -->
-              <!-- <ng-template #masterDetailtemplate> -->
+              <ng-template #masterDetailtemplate>
                 <!-- Master Detail Header -->
-                <!-- <div class="modal-header">
+                <div class="modal-header">
                   <h5 class="modal-title" id="UploadModalLabel">
                     Master Details
                   </h5>
@@ -1326,95 +1310,388 @@
                   >
                     <span aria-hidden="true">×</span>
                   </button>
-                </div> -->
+                </div>
                 <!-- Master Detail Header End-->
 
                 <!-- Master Detail Body -->
-                <!-- <div class="modal-body">
+                <div class="modal-body">
                   <div class="card">
                     <div class="card-body">
                       <div class="row clearfix">
                         <div class="col-md-12">
-                          <div class="border-box">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <h6
-                                  _ngcontent-emo-c439=""
-                                  class="font-14 text-purple font-bold mb-3"
-                                >
-                                  Master Details
-                                </h6>
-                              </div>
-                            </div>
-                            <div class="row mt-10">
-                              <div class="col-md-3">
-                                <label class="form-label">Institution</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{
-                                    masterInfo.masterDetail.institutionName
-                                  }}"
-                                />
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label">Policy No.</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{ masterInfo.masterDetail.policyNo }}"
-                                />
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label">Policy Holder Name</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{
-                                    masterInfo.masterDetail.policyholdername
-                                  }}"
-                                />
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label">Relationship</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{ masterInfo.masterDetail.relationship }}"
-                                />
-                              </div>
-                            </div>
-                            <div class="row mt-15">
-                              <div class="col-md-3">
-                                <label class="form-label">Policy Start Date</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{
-                                    masterInfo.masterDetail.policyStartDate
-                                      | date: 'dd-MMM-yyyy'
-                                  }}"
-                                />
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-label"> Policy End Date</label>
-                                <input
-                                  class="form-control"
-                                  disabled
-                                  value="{{
-                                    masterInfo.masterDetail.policyEndDate
-                                      | date: 'dd-MMM-yyyy'
-                                  }}"
-                                />
-                              </div>
-                            </div>
-                          </div> -->
+                            <div class="border-box">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <h6
+                                      _ngcontent-emo-c439=""
+                                      class="font-14 text-purple font-bold mb-3"
+                                    >
+                                      Master Details
+                                    </h6>
+                                  </div>
+                                </div>
+                                <div class="row mt-10">
+                                  <div class="col-md-3">
+                                    <label class="form-label">House Name</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.propertyName
+                                      }}"
+                                    />
+                                  </div>
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-label">Possession Date</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.possessionDate
+                                          | date: 'dd-MMM-yyyy'
+                                      }}"
+                                    />
+                                  </div> -->
+                                  <div class="col-md-3">
+                                    <label class="form-label">Address (Copy From)</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{ masterInfo.masterDetail.addressType }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">Address 1</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.address1
+                                      }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">Address 2</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.address2
+                                      }}"
+                                    />
+                                  </div>
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-label">Relationship</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{ masterInfo.masterDetail.relationship }}"
+                                    />
+                                  </div> -->
+                                </div>
+                                <div class="row mt-15">
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-label">Policy Start Date</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.policyStartDate
+                                          | date: 'dd-MMM-yyyy'
+                                      }}"
+                                    />
+                                  </div> -->
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-label">Address 2</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.address2
+                                      }}"
+                                    />
+                                  </div> -->
+                                  <div class="col-md-3">
+                                    <label class="form-label">Address 3</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.address3
+                                      }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">Country</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.country
+                                      }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">PIN</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.pinCode
+                                      }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">State</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.state
+                                      }}"
+                                    />
+                                  </div>
+                                  <!-- <div class="col-md-3">
+                                    <label class="form-label"> Policy End Date</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.policyEndDate
+                                          | date: 'dd-MMM-yyyy'
+                                      }}"
+                                    />
+                                  </div> -->
+                                </div>
+                                <div class="row mt-15">
+                                    <!-- <div class="col-md-3">
+                                        <label class="form-label">State</label>
+                                        <input
+                                          class="form-control"
+                                          disabled
+                                          value="{{
+                                            masterInfo.masterDetail.state
+                                          }}"
+                                        />
+                                      </div> -->
+                                      <div class="col-md-3">
+                                        <label class="form-label">City</label>
+                                        <input
+                                          class="form-control"
+                                          disabled
+                                          value="{{
+                                            masterInfo.masterDetail.city
+                                          }}"
+                                        />
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="form-label">Town/Village</label>
+                                        <input
+                                          class="form-control"
+                                          disabled
+                                          value="{{
+                                            masterInfo.masterDetail.village
+                                          }}"
+                                        />
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="form-label">Metro City/Non-Metro City</label>
+                                        <input
+                                          class="form-control"
+                                          disabled
+                                          value="{{
+                                            masterInfo.masterDetail.metroCity
+                                          }}"
+                                        />
+                                      </div>
+                                       </div>
+        
+        
+                                       <!-- <div class="row mt-15">
+        
+                                        <div class="col-md-3">
+                                            <label class="form-label">Name of Owner</label>
+                                            <input
+                                              class="form-control"
+                                              disabled
+                                              value="{{
+                                                masterInfo.masterDetail.ownerName
+                                              }}"
+                                            />
+                                          </div>
+                                          <div class="col-md-3">
+                                            <label class="form-label">Relationship</label>
+                                            <input
+                                              class="form-control"
+                                              disabled
+                                              value="{{
+                                                masterInfo.masterDetail.relationship
+                                              }}"
+                                            />
+                                          </div>
+                                          <div class="col-md-3">
+                                            <label class="form-label">1st Time Home Buyer</label>
+                                            <input
+                                              class="form-control"
+                                              disabled
+                                              value="{{
+                                                masterInfo.masterDetail.firstTimeHomeBuyer
+                                              }}"
+                                            />
+                                          </div>
+                                          <div class="col-md-3">
+                                            <label class="form-label">Usage Type</label>
+                                            <input
+                                              class="form-control"
+                                              disabled
+                                              value="{{
+                                                masterInfo.masterDetail.usageType
+                                              }}"
+                                            />
+                                          </div>
+        
+                                       </div>
+         -->
+                                       <!-- <div class="row mt-15">
+        
+                                    <div class="col-md-3">
+                                    <label class="form-label">From Date</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.fromDate
+                                          | date: 'dd-MMM-yyyy'
+                                      }}"
+                                    />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label class="form-label">To Date</label>
+                                    <input
+                                      class="form-control"
+                                      disabled
+                                      value="{{
+                                        masterInfo.masterDetail.toDate
+                                          | date: 'dd-MMM-yyyy'
+                                      }}"
+                                    />
+                                  </div>
+        
+                                 </div> -->
+                                </div>
 
-                          <!-- <div class="row mt-25"> -->
+                                <div class="border-box">
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <h6
+                                        _ngcontent-emo-c439=""
+                                        class="font-14 text-purple font-bold mb-3"
+                                      >
+                                      Landlord Details
+                                      </h6>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="row mt-15">
+                                    <div class="col-md-3">
+                                      <label class="form-label">Landlord Name</label>
+                                      <input
+                                        class="form-control"
+                                        disabled
+                                        value="{{
+                                          masterInfo.masterDetail.name
+                                        }}"
+                                      />
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label class="form-label">Address</label>
+                                      <input
+                                        class="form-control"
+                                        disabled
+                                        value="{{
+                                          masterInfo.masterDetail.address
+                                        }}"
+                                      />
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label class="form-label">Landlord PAN</label>
+                                      <input
+                                        class="form-control"
+                                        disabled
+                                        value="{{
+                                          masterInfo.masterDetail.landLordPan
+                                        }}"
+                                      />
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label class="form-label">% Share Of Total Rent</label>
+                                      <input
+                                        class="form-control"
+                                        disabled
+                                        value="{{
+                                          masterInfo.masterDetail.percentageShareOfRent
+                                        }}"
+                                      />
+                                    </div>
+                                     
+                                         </div>
+                             </div>
+
+                             <div class="border-box">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <h6
+                                    _ngcontent-emo-c439=""
+                                    class="font-14 text-purple font-bold mb-3"
+                                  >
+                                  Agreement Details
+                                  </h6>
+                                </div>
+                              </div>
+                              
+                              <div class="row mt-15">
+                                <div class="col-md-3">
+                                  <label class="form-label">Start Date</label>
+                                  <input
+                                    class="form-control"
+                                    disabled
+                                    value="{{
+                                      masterInfo.masterDetail.fromDate
+                                        | date: 'dd-MMM-yyyy'
+                                    }}"
+                                  />
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label">End Date</label>
+                                  <input
+                                    class="form-control"
+                                    disabled
+                                    value="{{
+                                      masterInfo.masterDetail.toDate
+                                        | date: 'dd-MMM-yyyy'
+                                    }}"
+                                  />
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label">Remark</label>
+                                  <input
+                                    class="form-control"
+                                    disabled
+                                    value="{{
+                                      masterInfo.masterDetail.remark
+                                    }}"
+                                  />
+                                </div>
+                                 
+                                     </div>
+                         </div>
+        
+
+                          <div class="row mt-25">
                             <!-- <fieldset> -->
-                              <!-- <div class="col-12 col-md-12 col-sm-12">
-                              <legend>Payment Details</legend>
-                            </div> -->
+                              <div class="col-12 col-md-12 col-sm-12">
+                              <legend>Rent Details</legend>
+                            </div>
                               <!-- <div class="row mt-15">
                                 <div class="col-md-3">
                                   <label class="form-label"
@@ -1529,7 +1806,7 @@
                               </div> -->
 
                               <!-- Master Payment Details -->
-                              <!-- <div class="col-12 col-md-12 col-sm-12">
+                              <div class="col-12 col-md-12 col-sm-12">
                         <div class="row mt-15">
                           <div class="col-12 col-md-12 col-sm-12">
                             <div class="table-responsive Custom_Table">
@@ -1543,10 +1820,10 @@
                                     <th>Sr. No.</th>
                                     <th>From Date</th>
                                     <th>To Date</th>
-                                    <th>Frequency</th>
-                                    <th class="align-right">Premium Amount</th>
-                                    <th class="align-right">Annual Amount</th>
-                                    <th>ECS</th>
+                                    <!-- <th>Frequency</th> -->
+                                    <th class="align-right">Monthly Rent Amount</th>
+                                    <!-- <th class="align-right">Annual Amount</th> -->
+                                    <!-- <th>ECS</th> -->
                                   </tr>
                                 </ng-template>
                                 <ng-template
@@ -1570,22 +1847,22 @@
                                           | date: "dd-MMM-yyyy"
                                       }}
                                     </td>
-                                    <td class="disabled">
+                                    <!-- <td class="disabled">
                                       {{ paymentDetail.frequencyOfPayment }}
-                                    </td>
+                                    </td> -->
                                     <td class="disabled align-right">
                                       {{
-                                        paymentDetail.premiumAmount
+                                        paymentDetail.rentAmount
                                           | number: "1.2-2"
                                       }}
                                     </td>
-                                    <td class="disabled align-right">
+                                    <!-- <td class="disabled align-right">
                                       {{
                                         paymentDetail.annualAmount
                                           | number: "1.2-2"
                                       }}
-                                    </td>
-                                    <td class="disabled">
+                                    </td> -->
+                                    <!-- <td class="disabled">
                                       <span
                                         *ngIf="paymentDetail.ecs"
                                         tooltip="Yes"
@@ -1597,27 +1874,27 @@
                                         tooltip="No"
                                         >No</span
                                       >
-                                    </td>
+                                    </td> -->
                                   </tr>
                                 </ng-template>
                               </p-table>
                             </div>
                           </div>
                         </div>
-                      </div> -->
+                      </div>
                         <!-- Master Payment Details End -->
 
                             <!-- </fieldset> -->
-                          <!-- </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div> -->
+                </div>
                 <!-- Master Detail Body End -->
 
                 <!-- Master Detail Footer -->
-                <!-- <div class="modal-footer">
+                <div class="modal-footer">
                   <button
                     type="button"
                     class="btn btn-secondary"
@@ -1625,10 +1902,10 @@
                   >
                     Ok
                   </button>
-                </div> -->
+                </div>
                 <!-- Master Detail Footer -->
 
-              <!-- </ng-template> -->
+              </ng-template>
               <!-- Master Details Pop Up Ended -->
 
               <!-- Remark Modal started -->
@@ -1729,4 +2006,5 @@
     </div>
   </div>
 </div>
+
 

@@ -1562,11 +1562,11 @@ export class PpdeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
-    this.Service.getRemarkList(
-      policyNo,
+    this.PensionPlanService.getPensionPlanRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);
@@ -1580,6 +1580,8 @@ export class PpdeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+
+
   public uploadUpdateTransaction() {
 
     for (let i = 0; i <= this.editdocumentPassword.length; i++) {

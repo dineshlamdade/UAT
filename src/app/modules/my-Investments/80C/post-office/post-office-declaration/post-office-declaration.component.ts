@@ -1561,11 +1561,11 @@ export class PostOfficeDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
-    this.Service.getRemarkList(
-      policyNo,
+    this.postOfficeService.getPostOfficeTimeRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

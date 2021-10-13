@@ -1089,6 +1089,18 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
+  //  //----------- On change Transactional Line Item Remark --------------------------
+  //  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  //   console.log('event.target.value::', event.target.value);
+  //   debugger
+  //  console.log('this.transactionDetail', this.transactionDetail);
+  //   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  //   // console.log('index::', index);
+
+  //   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+   
+
+  // }
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
@@ -1097,7 +1109,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -1567,15 +1579,17 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
-    this.Service.getRemarkList(
-      policyNo,
+    this.Service.getLicRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      debugger
+    
+    this.documentRemarkList  = res.data.results[0];
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;

@@ -1541,11 +1541,11 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
-    this.Service.getRemarkList(
-      policyNo,
+    this.sukanyaSamriddhiService.getSukanyaSamriddhiSchemeRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

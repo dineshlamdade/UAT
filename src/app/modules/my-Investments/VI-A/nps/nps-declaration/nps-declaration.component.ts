@@ -1476,11 +1476,11 @@ export class NpsDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
-    this.Service.getRemarkList(
-      policyNo,
+    this.npsService.getnpsRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);
