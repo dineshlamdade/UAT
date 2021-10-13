@@ -1679,11 +1679,11 @@ console.log('this.transactionDetail', this.transactionDetail);
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     debugger
     this.Service.getRemarkList(
-      policyNo,
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

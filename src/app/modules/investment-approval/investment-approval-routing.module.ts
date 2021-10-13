@@ -21,6 +21,9 @@ import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtra
 import { InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent } from './investment-donations-for-ggatransaction-approval/investment-donations-for-scientific-research-ggatransaction-approval.component';
 import { InvestmentPhysicallyHandicappedtransactionApprovalComponent } from './investment-physically-handicappedtransaction-approval/investment-physically-handicappedtransaction-approval.component';
 import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housing-loan-master-approval/investment-housing-loan-master-approval.component';
+import { InvestmentHousingloantransactionApprovalComponent } from './investment-housingloantransaction-approval/investment-housingloantransaction-approval.component';
+import { InvestmentHouserentmasterApprovalComponent } from './investment-houserentmaster-approval/investment-houserentmaster-approval.component';
+import { InvestmentHouserenttransactionApprovalComponent } from './investment-houserenttransaction-approval/investment-houserenttransaction-approval.component';
 const routes: Routes = [
   {
     path: '',
@@ -105,6 +108,39 @@ const routes: Routes = [
     ],
   },
 
+  {
+    path: '',
+    children: [
+      {
+        path: 'housingloantransaction',
+        component: InvestmentHousingloantransactionApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-Housingloantransaction' },
+      },
+    ],
+  },
+
+
+  {
+    path: '',
+    children: [
+      {
+        path: 'houserentmaster',
+        component: InvestmentHouserentmasterApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-Houserentmaster' },
+      },
+    ],
+  },
+
+  {
+    path: '',
+    children: [
+      {
+        path: 'houserenttransaction',
+        component: InvestmentHouserenttransactionApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-Houserenttransaction' },
+      },
+    ],
+  },
   {
     path: '',
     children: [

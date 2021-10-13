@@ -70,6 +70,20 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     }));
   }
 
+  public getPensionPlanRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  // public getpensionplanRemarkList(psId: String, policyNo: String,): Observable<any> {
+  //   return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/GetRemark/' + psId + '/' + policyNo)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
   postPensionPlanTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'pensionPlan-transaction', data)
     .pipe(map((res: any) => {

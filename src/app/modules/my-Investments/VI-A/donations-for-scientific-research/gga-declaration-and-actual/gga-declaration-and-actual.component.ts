@@ -386,6 +386,20 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
+
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
     if (this.eightyGGAForm.invalid) {
       return;
     }
@@ -421,6 +435,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       receiptDate: null,
       receiptNumber: null,
+      remarkPasswordList: this.documentDataArray,
       donations80GGTransactionList: this.donations80GGTransactionListNewRow,
     };
     this.ggaService
@@ -967,6 +982,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   }
 
   upload() {
+    debugger
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
       if(this.documentPassword[i] != undefined){
@@ -1026,7 +1042,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
-
+debugger
     const data = {
       donations80GGTransactionList: this.transactionDetail,
       donations80GGTransactionIds: this.uploadGridData,

@@ -26,6 +26,9 @@ import { InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent
 import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalComponent } from './investment-donations-for-ggctransaction-approval/investment-donations-for-ggctransaction-approval.component';
 import { InvestmentPhysicallyHandicappedtransactionApprovalComponent } from './investment-physically-handicappedtransaction-approval/investment-physically-handicappedtransaction-approval.component';
 import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housing-loan-master-approval/investment-housing-loan-master-approval.component';
+import { InvestmentHousingloantransactionApprovalComponent } from './investment-housingloantransaction-approval/investment-housingloantransaction-approval.component';
+import { InvestmentHouserentmasterApprovalComponent } from './investment-houserentmaster-approval/investment-houserentmaster-approval.component';
+import { InvestmentHouserenttransactionApprovalComponent } from './investment-houserenttransaction-approval/investment-houserenttransaction-approval.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housi
     InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent,
     InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalComponent,
     InvestmentPhysicallyHandicappedtransactionApprovalComponent,
-    InvestmentHousingLoanMasterApprovalComponent
+    InvestmentHousingLoanMasterApprovalComponent,
+    InvestmentHousingloantransactionApprovalComponent,
+    InvestmentHouserentmasterApprovalComponent,
+    InvestmentHouserenttransactionApprovalComponent
   ],
   imports: [
     CommonModule,
