@@ -412,12 +412,16 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       });
 
     this.Index = -1;
-    formDirective.resetForm();
+    formDirective.resetForm();    
     this.physicallyHandicappedForm.reset();
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
     this.globalSelectedAmount = '0.00';
+    this.documentRemark = '';
+    this.masterfilesArray = [];
+    this.urlArray = [];
+ 
     //}
   }
 
