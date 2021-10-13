@@ -971,7 +971,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -982,7 +982,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   }
 
   upload() {
-    debugger
+    
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
       if(this.documentPassword[i] != undefined){
@@ -1042,7 +1042,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
-debugger
+
     const data = {
       donations80GGTransactionList: this.transactionDetail,
       donations80GGTransactionIds: this.uploadGridData,
@@ -1722,7 +1722,7 @@ this.documentArray = [];
         index: any,
         psId, policyNo
       ) {
-        debugger
+        
         this.Service.getRemarkList(
           policyNo,
           psId

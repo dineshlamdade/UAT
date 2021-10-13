@@ -1030,7 +1030,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     //----------- On change Transactional Line Item Remark --------------------------
     public onChangeDocumentRemark(transactionDetail, transIndex, event) {
       console.log('event.target.value::', event.target.value);
-      debugger
+      
      console.log('this.transactionDetail', this.transactionDetail);
       // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
       // console.log('index::', index);
@@ -1805,7 +1805,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
         index: any,
         psId, policyNo
       ) {
-        debugger
+        
         this.Service.getRemarkList(
           policyNo,
           psId

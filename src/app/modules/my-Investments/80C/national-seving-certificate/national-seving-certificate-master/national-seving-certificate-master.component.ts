@@ -316,8 +316,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     if (policyStart > policyEnd) {
       this.form.controls.policyEndDate.reset();
     }
+    
     this.form.patchValue({
-      fromDate: this.policyMinDate,
+      fromDate: policyStart,
     });
 
     this.setPaymentDetailToDate();
@@ -329,6 +330,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
     );
+    this.form.patchValue({
+      toDate: this.form.value.policyEndDate,
+    });
     const financialYearStartDate = this.datePipe.transform(
       this.financialYearStart,
       'yyyy-MM-dd'
@@ -421,6 +425,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    
     this.submitted = true;
 
     if (this.form.invalid) {

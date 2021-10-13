@@ -742,7 +742,7 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-   // debugger;
+   
    // this.isEdit = true;
     this.scrollToTop();
     this.npsService.getNpsMaster().subscribe((res) => {   
