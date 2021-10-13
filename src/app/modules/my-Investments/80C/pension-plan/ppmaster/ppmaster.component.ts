@@ -740,7 +740,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-    debugger
+    
     this.isEdit = true;
     this.scrollToTop();
     let ob = {};
@@ -748,7 +748,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-      debugger
+      
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);

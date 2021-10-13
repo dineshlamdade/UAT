@@ -906,7 +906,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
     //----------- On change Transactional Line Item Remark --------------------------
     public onChangeDocumentRemark(transactionDetail, transIndex, event) {
       console.log('event.target.value::', event.target.value);
-      debugger
+      
      console.log('this.transactionDetail', this.transactionDetail);
       // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
       // console.log('index::', index);
@@ -1563,7 +1563,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
     index: any,
     psId, transactionID
   ) {
-    debugger
+    
     this.postOfficeService.getPostOfficeTimeRemarkList(
       transactionID,
       psId

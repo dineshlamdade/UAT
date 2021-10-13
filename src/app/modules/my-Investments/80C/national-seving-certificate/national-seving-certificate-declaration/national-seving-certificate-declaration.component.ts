@@ -902,7 +902,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -1345,6 +1345,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
+
+// this.documentArray = [];
     this.nscService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
@@ -1352,7 +1354,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
-          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].lictransactionList[0].transactionStatus;
+          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
         this.grandDeclarationTotalEditModal =
@@ -1569,7 +1571,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     index: any,
     psId, policyNo
   ) {
-    debugger
+    
     this.Service.getRemarkList(
       policyNo,
       psId
