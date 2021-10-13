@@ -742,10 +742,14 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-    this.isEdit = true;
+   // debugger;
+   // this.isEdit = true;
     this.scrollToTop();
-    this.npsService.getNpsMaster().subscribe((res) => {
+    this.npsService.getNpsMaster().subscribe((res) => {   
+      this.isVisibleTable = true;
       console.log('masterGridData::', res);
+    
+      
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
@@ -760,6 +764,8 @@ export class NpsMasterComponent implements OnInit {
       console.log('Edit Master', obj);
       if (obj != 'undefined') {
         this.paymentDetailGridData = obj.paymentDetails;
+        
+        console.log('.....................::',res.paymentDetails);
         this.form.patchValue(obj);
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
@@ -812,6 +818,7 @@ export class NpsMasterComponent implements OnInit {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
+    //this.documentArray = [];
     this.urlArray = [];
     this.isCancel = false;
     this.form.get('accountHolderName').setValue('Aishwarya Malviya');
