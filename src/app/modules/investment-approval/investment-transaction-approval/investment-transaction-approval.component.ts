@@ -407,13 +407,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         }
       });
      }
-     if(this.documentRemarkValidation){
-      this.alertService.sweetalertWarning(
-        'Please give Remark for Send Back Document'
-      );
-      this.documentRemarkValidation = false;
-      return;
-    }
+    //  if(this.documentRemarkValidation){
+    //   this.alertService.sweetalertWarning(
+    //     'Please give Remark for Send Back Document'
+    //   );
+    //   this.documentRemarkValidation = false;
+    //   return;
+    // }
      if(status=='Approved'){
 
        this.transactionInfo.documentList.forEach((doc)=>

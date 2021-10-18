@@ -24,6 +24,9 @@ import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housi
 import { InvestmentHousingloantransactionApprovalComponent } from './investment-housingloantransaction-approval/investment-housingloantransaction-approval.component';
 import { InvestmentHouserentmasterApprovalComponent } from './investment-houserentmaster-approval/investment-houserentmaster-approval.component';
 import { InvestmentHouserenttransactionApprovalComponent } from './investment-houserenttransaction-approval/investment-houserenttransaction-approval.component';
+import { InvestmentChildEducationAllowanceMasterApprovalComponent } from './investment-child-education-allowance-master-approval/investment-child-education-allowance-master-approval.component';
+import { InvestmentChildHostelAllowanceMasterApprovalComponent } from './investment-child-hostel-allowance-master-approval/investment-child-hostel-allowance-master-approval.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -104,6 +107,26 @@ const routes: Routes = [
         path: 'housingloanmaster',
         component: InvestmentHousingLoanMasterApprovalComponent,
         data: { title: ':: Delizia-HR :: Investment-Approval-HousingLoanMaster' },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: 'childeducationallowancemaster',
+        component: InvestmentChildEducationAllowanceMasterApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-ChildEducationAllowanceMaster' },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: 'childhostelallowancemaster',
+        component: InvestmentChildHostelAllowanceMasterApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-ChildHostelAllowanceMaster' },
       },
     ],
   },

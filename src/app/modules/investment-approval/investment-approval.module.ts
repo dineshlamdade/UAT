@@ -29,6 +29,8 @@ import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housi
 import { InvestmentHousingloantransactionApprovalComponent } from './investment-housingloantransaction-approval/investment-housingloantransaction-approval.component';
 import { InvestmentHouserentmasterApprovalComponent } from './investment-houserentmaster-approval/investment-houserentmaster-approval.component';
 import { InvestmentHouserenttransactionApprovalComponent } from './investment-houserenttransaction-approval/investment-houserenttransaction-approval.component';
+import { InvestmentChildHostelAllowanceMasterApprovalComponent } from './investment-child-hostel-allowance-master-approval/investment-child-hostel-allowance-master-approval.component';
+import { InvestmentChildEducationAllowanceMasterApprovalComponent } from './investment-child-education-allowance-master-approval/investment-child-education-allowance-master-approval.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { InvestmentHouserenttransactionApprovalComponent } from './investment-ho
     InvestmentHousingLoanMasterApprovalComponent,
     InvestmentHousingloantransactionApprovalComponent,
     InvestmentHouserentmasterApprovalComponent,
-    InvestmentHouserenttransactionApprovalComponent
+    InvestmentHouserenttransactionApprovalComponent,
+    InvestmentChildHostelAllowanceMasterApprovalComponent,
+    InvestmentChildEducationAllowanceMasterApprovalComponent
   ],
   imports: [
     CommonModule,
