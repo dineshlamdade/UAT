@@ -603,7 +603,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
         this.proofSubmissionId = obj.proofSubmissionId;
         this.showdocument = false;
         this.documentArray = [];
-        debugger
+        
         
         obj.documentInformationList.forEach(element => {
           this.documentArray.push({

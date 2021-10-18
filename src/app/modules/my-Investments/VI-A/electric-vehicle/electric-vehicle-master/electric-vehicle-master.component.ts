@@ -573,7 +573,7 @@ console.log('this.isEdit', this.isEdit);
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
-      debugger
+      
       console.log(vehicleNumber)
       const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
 

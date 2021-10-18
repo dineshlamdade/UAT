@@ -1092,7 +1092,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   //  //----------- On change Transactional Line Item Remark --------------------------
   //  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
   //   console.log('event.target.value::', event.target.value);
-  //   debugger
+  
   //  console.log('this.transactionDetail', this.transactionDetail);
   //   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
   //   // console.log('index::', index);
@@ -1104,7 +1104,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -1581,13 +1581,13 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     index: any,
     psId, transactionID
   ) {
-    debugger
+    
     this.Service.getLicRemarkList(
       transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);
-      debugger
+      
     
     this.documentRemarkList  = res.data.results[0];
     });

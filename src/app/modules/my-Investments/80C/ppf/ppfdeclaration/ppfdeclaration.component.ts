@@ -1167,7 +1167,7 @@ export class PPFDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -1274,7 +1274,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
-debugger
+
 console.log('this.transactionDetail', this.transactionDetail);
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1681,7 +1681,7 @@ console.log('this.transactionDetail', this.transactionDetail);
     index: any,
     psId, transactionID
   ) {
-    debugger
+    
     this.Service.getRemarkList(
       transactionID,
       psId

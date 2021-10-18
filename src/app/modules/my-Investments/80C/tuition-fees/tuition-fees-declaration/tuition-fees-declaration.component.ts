@@ -23,6 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { debug } from 'node:console';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
@@ -1292,13 +1293,13 @@ declarationEditUpload(
   this.tuitionFeesService
     .getTransactionByProofSubmissionId(proofSubmissionId)
     .subscribe((res) => {
+      
       console.log('edit Data:: ', res);
        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
       this.urlArray =
         res.data.results[0].documentInformation[0].documentDetailList;
-        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
-      this.editTransactionUpload =
-        res.data.results[0].investmentGroupTransactionDetail;
+        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
+      this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
       this.grandDeclarationTotalEditModal =
         res.data.results[0].grandDeclarationTotal;
       this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;

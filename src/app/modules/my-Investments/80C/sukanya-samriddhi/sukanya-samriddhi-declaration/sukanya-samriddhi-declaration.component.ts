@@ -919,7 +919,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     //----------- On change Transactional Line Item Remark --------------------------
     public onChangeDocumentRemark(transactionDetail, transIndex, event) {
       console.log('event.target.value::', event.target.value);
-      debugger
+      
      console.log('this.transactionDetail', this.transactionDetail);
       // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
       // console.log('index::', index);
@@ -1329,6 +1329,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
+     this.documentArray = [];
     this.sukanyaSamriddhiService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
@@ -1349,6 +1350,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
           this.editReceiptAmount = res.data.results[0].receiptAmount;
           this.masterGridData = res.data.results;
+          
 
           this.masterGridData.forEach((element) => {
             // element.policyStartDate = new Date(element.policyStartDate);
@@ -1387,7 +1389,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
             // })
           });
         
-          this.documentArray = [];
+          // this.documentArray = [];
         //console.log('converted:: ', this.urlArray);
       });
   }
@@ -1543,7 +1545,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     index: any,
     psId, transactionID
   ) {
-    debugger
+    
     this.sukanyaSamriddhiService.getSukanyaSamriddhiSchemeRemarkList(
       transactionID,
       psId
