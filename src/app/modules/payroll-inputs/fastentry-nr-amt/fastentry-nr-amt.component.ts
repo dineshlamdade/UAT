@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
@@ -48,7 +49,7 @@ export class FastentryNRAmtComponent implements OnInit {
   employeeCode: any;
   tempTableData: any = [];
   selectedEmployeeData: any = [];
-  payrollEmployeeData: any;
+  payrollEmployeeData: any = [];
   selectedTransactionIndex: any;
   clawbackFrequency: any;
   clawbackperiod: number;
@@ -67,22 +68,35 @@ export class FastentryNRAmtComponent implements OnInit {
   repeatRemarkText: any;
   selectedDeviationdata: any;
   devationRemarkText: any;
+  deductionHeadList: any;
+  selectedPayrollAreaId: any;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
+    private garnishmentService: GarnishmentService,
     private toaster: ToastrService) {
-    this.headData = [
-      { displayName: 'Incentive', headMasterId: 27 },
-      { displayName: 'Performance_Incentive', headMasterId: 29 },
-    ]
+    // this.headData = [
+    //   { displayName: 'Incentive', headMasterId: 27 },
+    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
+    // ]
+
+    this.headData = []
+    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+      res.data.results.forEach(element => {
+        this.headData.push({
+          'headMasterId':element.headMasterId,
+          'displayName': element.displayName
+        })
+      });
+    })
 
     this.parollArea = [
-      { name: 'PA-Staff', code: 'RM' },
-      { name: 'PA-Worker', code: 'NY' },
-      { name: 'PA_Apprentic', code: 'LDN' },
-      { name: 'PA_Expat', code: 'IST' },
+      { name: 'PA-Staff', code: '1' },
+      { name: 'PA-Worker', code: '2' },
+      { name: 'PA_Apprentic', code: '3' },
+      { name: 'PA_Expat', code: '4' },
     ];
   }
 
@@ -106,7 +120,14 @@ export class FastentryNRAmtComponent implements OnInit {
     // event.name
     //this.selectedPayrollArea.push(event)
     this.selectedPayrollArea = event
-    this.PayrollAreaByPayrollAreaCode(event)
+    
+    this.parollArea.forEach(ele =>{
+      if(ele.name == event){
+        this.selectedPayrollAreaId = ele.code
+        this.PayrollAreaByPayrollAreaCode(event)
+      }
+    })
+    console.log("this.selectedPayrollAreaId: "+ this.selectedPayrollAreaId)
   }
 
   PayrollAreaByPayrollAreaCode(payrollArea) {
@@ -119,15 +140,15 @@ export class FastentryNRAmtComponent implements OnInit {
         this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
         this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
         //alert(this.effectiveFromDate)
-        this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
-          res => {
-            this.frequencyDataByPayroll = res.data.results
-          }
-        )
+        // this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
+        //   res => {
+        //     this.frequencyDataByPayroll = res.data.results
+        //   }
+        // )
       }
     )
-
-    this.payrollservice.getPayrollWiseEmployeeList(1).subscribe(
+    this.payrollEmployeeData = []
+    this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
       res => {
         this.payrollEmployeeData = res.data.results[0]
       }

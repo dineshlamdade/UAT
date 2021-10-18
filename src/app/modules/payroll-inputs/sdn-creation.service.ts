@@ -74,8 +74,8 @@ export class SdnCreationService {
   }
 
   // 3rd tab api (Derived) get values from table selection
-  derivedTablesFieldsValue(id):Observable<any>{
-    return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived/tables-fields/value/` + id);
+  derivedTablesFieldsValue(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/derived/tables-fields/value/` ,data);
   }
 
   // 3rd tab api (Derived)
@@ -110,13 +110,24 @@ export class SdnCreationService {
   
   
   // 4th tab api (Matrix) table
-  derivedFieldName(value):Observable<any>{
-    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/derivedObjectName/EmployeeJobMapping/derivedFieldName/`+value);
+  derivedFieldName(objectname,value):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/derivedObjectName/`+objectname+`/derivedFieldName/`+value);
   }  
 
   //4th tab api (Matrix) History
   getHistory(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/History`,data);  
   }
+
+
+  filter(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/Filter/`+sdmMasterId);
+  }
+
+
+  SDMCombinationwithDerivedId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/SDMCombinationwithDerivedId`,data);  
+  }
+
   
 }

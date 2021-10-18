@@ -161,7 +161,7 @@
                                                                                     name="example- radios"
                                                                                     value="option1" checked>
                                                                                 <div class="custom-control-label">
-                                                                                    Emp. List
+                                                                                    Employee List
                                                                                 </div>
                                                                             </label>
                                                                         </div>
@@ -201,7 +201,7 @@
                                                                             </div>
                                                                             <input data-provide="datepicker"
                                                                                 data-date-autoclose="true"
-                                                                                class="form-control" placeholder="Date"
+                                                                                class="form-control" placeholder="From Date"
                                                                                 [minDate]="effectiveFromDate"
                                                                                 [maxDate]="effectiveToDate"
                                                                                 [value]="selectedFromDate | date :'dd-MMM-yyyy'"
@@ -219,7 +219,7 @@
                                                                             <option value="">Select</option>
                                                                             <option value="NoOfTransaction"
                                                                                 title="No. of Transaction">
-                                                                                No. of Trans
+                                                                                No. of Transaction
                                                                             </option>
                                                                             <option value="Perpetual" title="Perpetual">
                                                                                 Perpetual
@@ -247,7 +247,7 @@
                                                                             <input data-provide="datepicker"
                                                                                 data-date-autoclose="true"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                                class="form-control" placeholder="Date"
+                                                                                class="form-control" placeholder="To Date"
                                                                                 [minDate]="setMinToDate"
                                                                                 [maxDate]="effectiveToDate"
                                                                                 [value]="selectedToDate | date:'dd-MMM-yyyy'"
@@ -904,7 +904,7 @@
                             </button>&nbsp;
                             <button type="submit"
                                 class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
-                                tooltip="Save" (click)="saveAndClearFastEntries()"
+                                tooltip="Save & Clear" (click)="saveAndClearFastEntries()"
                                 [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
                                 [disabled]="saveTransactionData.length == 0">
                                 <b><i class="fa fa-floppy-o"></i></b>Save & Clear

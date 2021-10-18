@@ -24,7 +24,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	NonRecurringTransactionData: any;
 	NonRecurringTransactionGroupUIData: any;
-	NonRecurringTransactionGroupAPIEmpwiseData: any;
+	NonRecurringTransactionGroupAPIEmpwiseData: any = [];
 	NonRecurringTransactionGroupAPIbyIdData: any;
 	NonRecurringTransactionScheduleEMPdData: any;
 	NonRecurringTransactionScheduleupdateByIdData: any;
@@ -121,8 +121,9 @@ export class NonRecurringQtyComponent implements OnInit {
 	nonSalaryTransactionScheduleId: any;
 	type: any;
 	selectedStandardName: any;
-	savenonSalaryDetailId: any;
+	savenonSalaryDetailId: any ='';
 	savetype: any;
+	svaeDisabledFlag: boolean = true;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private nonRecQtyService: NonRecurringQtyService,
@@ -703,11 +704,11 @@ export class NonRecurringQtyComponent implements OnInit {
 				this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
 				this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
 				//alert(this.effectiveFromDate)
-				this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
-					res => {
-						this.frequencyDataByPayroll = res.data.results
-					}
-				)
+				// this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
+				// 	res => {
+				// 		this.frequencyDataByPayroll = res.data.results
+				// 	}
+				// )
 			}
 		)
 	}
@@ -826,7 +827,8 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/** On change Once Every */
 	getOnceEveryChangeForSave(value, data) {
-		console.log("json: " + JSON.stringify(data))
+		// console.log("json: " + JSON.stringify(data))
+		this.svaeDisabledFlag = false
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -913,6 +915,26 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		console.log("onceEvery: " + JSON.stringify(this.saveTransactionData))
+
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	getDeviationPercentage(data) {
@@ -924,6 +946,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/** On change From Date */
 	getFromDateForSave(event, data, rowindex) {
+		this.svaeDisabledFlag = false
 		this.setMinToDate = event;
 		this.selectedFromDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
 		let todate = "";
@@ -1014,6 +1037,26 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		console.log("fromDate: " + JSON.stringify(this.saveTransactionData))
+
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/** Copy To From Date TO All */
@@ -1032,6 +1075,8 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
+		this.svaeDisabledFlag = false
+
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
 		if (this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date') {
@@ -1061,6 +1106,9 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.saveTransactionData.forEach((element, index) => {
 				if (element.nonSalaryDetailId == this.savenonSalaryDetailId) {
 					let ind = index;
+					if(this.selectedTransactionType != 'NoOfTransaction'){
+						element.numberOfTransactions = 0
+					}
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1132,10 +1180,30 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		console.log("transaction type: " + JSON.stringify(this.saveTransactionData))
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/** On change To Date */
 	getToDateForSave(event, data) {
+		this.svaeDisabledFlag = false
 		this.selectedToDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1226,10 +1294,31 @@ export class NonRecurringQtyComponent implements OnInit {
 
 
 		console.log("todate: " + JSON.stringify(this.saveTransactionData))
+
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/** On change Remark */
 	getRemarkChangeForSave(value, data) {
+		this.svaeDisabledFlag = false
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1316,7 +1405,25 @@ export class NonRecurringQtyComponent implements OnInit {
 			})
 		}
 		console.log("remark: " + JSON.stringify(this.saveTransactionData))
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
 
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/**on change opening quantity */
@@ -1445,6 +1552,25 @@ export class NonRecurringQtyComponent implements OnInit {
 
 		console.log("Quantity: " + JSON.stringify(this.saveTransactionData))
 
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/** On Change Head type  */
@@ -1456,6 +1582,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/** On change frequency */
 	getSelectedFrequency(value, data) {
+		this.svaeDisabledFlag = false
 		this.updatefrequency = value
 		//console.log(this.updatefrequency)
 		let todate = "";
@@ -1546,11 +1673,31 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		console.log("frequency: " + JSON.stringify(this.saveTransactionData))
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 
 	}
 
 	/**on change no of transaction */
 	saveNoOfTransaction(value, data) {
+		this.svaeDisabledFlag = false
 		this.savedNumberOfTransaction = value
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1639,6 +1786,26 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		console.log("No Of transaction: " + JSON.stringify(this.saveTransactionData))
+
+		this.saveTransactionData.forEach(element => {
+			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.nonSalaryDetailId == '' || this.savenonSalaryDetailId == ''){
+				this.svaeDisabledFlag = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.svaeDisabledFlag = true
+				}
+			}
+
+
+		});
 	}
 
 	/** Open referal popup */
@@ -1762,6 +1929,13 @@ export class NonRecurringQtyComponent implements OnInit {
 	}
 
 
+	/** Reset Function Transaction Form */
+	resetTransactionForm(){
+		this.NonRecurringTransactionGroupAPIEmpwiseData = null;
+		this.NonRecurringTransactionGroupAPIEmpwise()
+	}
+
+
 	/********************** Schedule Tab click - edit schedule ***********************/
 
 	/** Click on Edit Schedule Button */
@@ -1831,8 +2005,10 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.selectedHoldIndex = index;
 		if (event.checked) {
 			this.hold = 1
+			this.NonRecurringTransactionScheduleEMPdData[index].hold = true
 		} else {
 			this.hold = 0
+			this.NonRecurringTransactionScheduleEMPdData[index].hold = false
 			if (this.editScheduleFlag == false) {
 				this.AllNonRecurringTransactionScheduledData.forEach((element, index) => {
 					if (index == this.selectedHoldIndex) {
@@ -1892,8 +2068,12 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.selecteddiscardIndex = index;
 		if (event.checked) {
 			this.discard = 1
+			this.NonRecurringTransactionScheduleEMPdData[index].discard = true
+
 		} else {
 			this.discard = 0
+			this.NonRecurringTransactionScheduleEMPdData[index].discard = false
+
 			if (this.editScheduleFlag == false) {
 				this.AllNonRecurringTransactionScheduledData.forEach((element, index) => {
 					if (index == this.selecteddiscardIndex) {
