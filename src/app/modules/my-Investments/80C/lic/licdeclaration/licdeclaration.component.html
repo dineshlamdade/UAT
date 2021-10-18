@@ -213,7 +213,7 @@
                   <input type="text" id="declaredAmount{{ summary.licTransactionId }}"
                          onkeypress="return /[0-9 ]/i.test(event.key)" name="declaredAmount{{ summary.licTransactionId }}"
                          [(ngModel)]="summary.declaredAmount" class="form-control align-right"
-                         (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                         (change)="onDeclaredAmountChange(summary, i, j)" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                   <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                     (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                     class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -234,7 +234,9 @@
               <td>
                 <input type="text" id="actualAmount{{ summary.licTransactionId }}"
                        onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{ summary.licTransactionId }}"
-                       [disabled]="initialArrayIndex[j] > i" [(ngModel)]="summary.actualAmount"
+                       [disabled]="initialArrayIndex[j] > i" 
+                       [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
+                       [(ngModel)]="summary.actualAmount"
                        (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
               </td>
               <td>
@@ -257,6 +259,7 @@
                   style="width:100px;"
                     type="text"
                     class="form-control"
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     
                     (change)="
                     onChangeDocumentRemark(

@@ -41,7 +41,7 @@ export class TuitionFeesDeclarationComponent implements OnInit{
 @Input() public accountNumber: string;
 @Input() public data: any;
 
-
+documentRemarkList: any;
 public modalRef: BsModalRef;
 public submitted = false;
 public pdfSrc =
@@ -62,6 +62,9 @@ public transactionDetail: Array<any> = [];
 public documentDetailList: Array<any> = [];
 public uploadGridData: Array<any> = [];
 public transactionInstitutionNames: Array<any> = [];
+
+viewDocumentName: any;
+  viewDocumentType: any;
 
 public editTransactionUpload: Array<any> = [];
 documentDataArray = [];
@@ -179,6 +182,7 @@ documentArray: any[] =[];
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+  Remark: any;
 constructor(
   private formBuilder: FormBuilder,
   private Service: MyInvestmentsService,
@@ -887,6 +891,20 @@ removeSelectedULIPTransactionDocument(index: number) {
   console.log('this.filesArray.size::', this.filesArray.length);
 }
 
+
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].group2TransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
 upload() {
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
@@ -1356,6 +1374,25 @@ declarationEditUpload(
     this.documentArray = [];
 }
 
+public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
+  console.log('---in doc viewer--');
+  this.urlIndex = index;
+  // this.urlIndex = 0;
+  this.viewDocumentName = data.documentName;
+  this.viewDocumentType = data.documentType
+
+  console.log('urlIndex::' , this.urlIndex);
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI
+  );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
+}
+
 nextDocViewer() {
   this.urlIndex = this.urlIndex + 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -1368,6 +1405,23 @@ previousDocViewer() {
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
     this.urlArray[this.urlIndex].blobURI
   );
+}
+
+zoomin(){
+  var myImg = document.getElementById("map");
+  var currWidth = myImg.clientWidth;
+  if(currWidth == 2500) return false;
+   else{
+      myImg.style.width = (currWidth + 100) + "px";
+  } 
+}
+zoomout(){
+  var myImg = document.getElementById("map");
+  var currWidth = myImg.clientWidth;
+  if(currWidth == 100) return false;
+else{
+      myImg.style.width = (currWidth - 100) + "px";
+  }
 }
 
 docViewer(template3: TemplateRef<any>, documentDetailList: any) {
@@ -1447,6 +1501,28 @@ getTransactionFilterData(
         });
       });
     });
+}
+
+public docRemarkModal(
+  documentViewerTemplate: TemplateRef<any>,
+  index: any,
+  psId, transactionID
+) {
+  
+  this.tuitionFeesService.getTuitionFessRemarkList(
+    transactionID,
+    psId
+  ).subscribe((res) => {
+    console.log('docremark', res);
+  this.documentRemarkList  = res.data.results[0].remarkList
+  });
+  // console.log('documentDetail::', documentRemarkList);
+  // this.documentRemarkList = this.selectedRemarkList;
+  console.log('this.documentRemarkList', this.documentRemarkList);
+  this.modalRef = this.modalService.show(
+    documentViewerTemplate,
+    Object.assign({}, { class: 'gray modal-s' })
+  );
 }
 
 public uploadUpdateTransaction() {

@@ -533,6 +533,13 @@ public apiUrl = environment.baseUrl8085;
     ));
   }
 
+  public getElssRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   public getELSSDeclarationInstitutionListWithPolicyNo(): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'elss-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {

@@ -902,7 +902,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].group2TransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -1532,11 +1532,11 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     
-    this.Service.getRemarkList(
-      policyNo,
+    this.Service.getElssRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

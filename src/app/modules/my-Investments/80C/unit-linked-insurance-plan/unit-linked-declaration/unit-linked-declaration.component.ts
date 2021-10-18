@@ -898,11 +898,12 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
     
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].group2TransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -998,6 +999,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    
     const data = {
       investmentGroupTransactionDetail: this.transactionDetail,
       groupTransactionIDs: this.uploadGridData,
@@ -1522,11 +1524,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
     
-    this.Service.getRemarkList(
-      policyNo,
+    this.unitLinkedInsurancePlanService.getULIPRemarkList(
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

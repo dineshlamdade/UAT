@@ -202,7 +202,7 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
-                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -223,6 +223,8 @@
                   <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
+                    
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -245,6 +247,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(
@@ -268,7 +271,7 @@
                             docRemarkModal(
                               template8,
                               documentDetailIndex,
-                              summary?.proofSubmissionId, item?.policyNo
+                              summary?.proofSubmissionId, summary?.investmentGroup2TransactionId
                             )
                           "
                           class="
