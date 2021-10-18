@@ -91,12 +91,11 @@
 
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Premium Amount</label>
-              <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
+              <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()"  [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                              min="0"></p-inputNumber>
               <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
 
-
-              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-message">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
               </div>
             </div>

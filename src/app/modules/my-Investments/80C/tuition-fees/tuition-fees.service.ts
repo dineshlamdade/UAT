@@ -53,6 +53,13 @@ export class TuitionFeesService {
     }));
   }
 
+  public getTuitionFessRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   // getpreviousEmployeName() {
 
   //   return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
