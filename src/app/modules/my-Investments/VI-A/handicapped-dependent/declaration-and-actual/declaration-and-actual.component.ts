@@ -321,7 +321,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -350,7 +350,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -589,7 +589,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -617,7 +617,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -1467,7 +1467,7 @@ export class DeclarationAndActualComponent implements OnInit {
         // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.handicappedDependentDetailMaster.relationship;
-        // this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        // this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.currentEmployerHandicappedDependentList.push(this.declarationService);
@@ -1589,7 +1589,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         // this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
-        this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.previousEmployerHandicappedDependentList.push(this.declarationService);
@@ -2126,7 +2126,7 @@ export class DeclarationAndActualComponent implements OnInit {
 //   public familyMemberName: string;
 //   public previousEmployerId = 0;
 //   // public institution: 0;
-//   public claiming80U : 0;
+//   public isClaiming80U : 0;
 //   public declaredAmount: number;
 //   public actualAmount: number;
 //   public transactionStatus: string = 'Pending';
@@ -2159,7 +2159,7 @@ class DeclarationService {
     // limit: null,
     // documentRemark: null,
     documentInformationList: [],
-    claiming80U: true
+    isClaiming80U: true
   };
   constructor(obj?: any) {
     Object.assign(this, obj);
