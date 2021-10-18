@@ -154,6 +154,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       vehicleModel: new FormControl(null, Validators.required),
       vehicleNumber: new FormControl(null, Validators.required),
       lenderName: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       accountHolderName: new FormControl(null, Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanStartDate: new FormControl(null, Validators.required),
