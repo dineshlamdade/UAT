@@ -5668,7 +5668,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-column-filter-menu-button {
     width: 2rem;
-    /* height: 2rem; */
+   height: 2rem;
     color: #fff;
     border: 0 none;
     background: transparent;
@@ -5677,9 +5677,9 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-column-filter-menu-button:hover {
-    /* color: #495057;
+    color: #495057;
     border-color: transparent;
-    background: #e9ecef; */
+    background: #e9ecef;
 }
 
 .p-column-filter-menu-button.p-column-filter-menu-button-open,
@@ -5694,17 +5694,17 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     align-items: center;
 }
 
-.p-column-filter-menu-button.p-column-filter-menu-button-active,
+/* .p-column-filter-menu-button.p-column-filter-menu-button-active,
 .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
-    /* background: #E8F5E9; */
+    background: #E8F5E9;
     color: #fff;
 }
 
 .p-column-filter-menu-button:focus {
-    /* outline: 0 none;
+    outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #b7e0b8; */
-}
+    box-shadow: 0 0 0 0.2rem #b7e0b8;
+} */
 
 .p-column-filter-clear-button {
     width: 2rem;
@@ -5846,4 +5846,23 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-inputright .p-inputnumber-input {
     text-align: right!important;
+}
+
+
+.p-column-filter-menu-button.p-column-filter-menu-button-active,
+.p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
+    /* background: #E8F5E9; */
+    /* background: #4CAF50; */
+
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #a6d9a7
+    ;
+    color: #fff;
+}
+
+.p-column-filter-menu-button:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #b7e0b8;
 }

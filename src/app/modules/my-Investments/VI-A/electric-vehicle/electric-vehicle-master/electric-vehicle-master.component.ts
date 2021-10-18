@@ -560,6 +560,21 @@ console.log('this.isEdit', this.isEdit);
   }
 
 
+    // Deactivate the Remark
+    deactivateRemark() {
+      if (this.form.value.active === false) {
+        // this.form.get('remark').enable();
+        this.hideRemarkDiv = true;
+        this.form.get('remark').setValidators([Validators.required]);
+      } else {
+        this.form.get('remark').clearValidators();
+        this.hideRemarkDiv = false;
+        // this.form.get('remark').disable();
+        this.form.get('remark').reset();
+      }
+    }
+  
+
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
