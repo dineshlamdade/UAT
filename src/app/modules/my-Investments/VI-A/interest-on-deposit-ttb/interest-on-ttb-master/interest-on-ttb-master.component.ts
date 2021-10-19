@@ -198,6 +198,7 @@ public showdocument = true;
     this.form = this.formBuilder.group({
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       state:  new FormControl(null,Validators.required),
       bankName: new FormControl({value: null, disabled: true },Validators.required),
       branchName: new FormControl({value: null, disabled: true },Validators.required),

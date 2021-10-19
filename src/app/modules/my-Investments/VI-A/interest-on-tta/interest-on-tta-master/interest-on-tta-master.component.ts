@@ -187,6 +187,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
       state: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       bankName: new FormControl(
         { value: null, disabled: true },
         Validators.required
@@ -486,6 +487,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
                       'documentName': element.documentInformationList[0].fileName,
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
+                      'remark':element.documentInformationList[0].remark,                     
                       'status' : element.documentInformationList[0].status,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
@@ -502,6 +504,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
+                      'remark':element.documentInformationList[0].remark,   
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
