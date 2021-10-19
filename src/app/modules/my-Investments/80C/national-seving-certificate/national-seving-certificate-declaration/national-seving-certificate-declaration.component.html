@@ -192,7 +192,9 @@
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
                       [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
                         initialArrayIndex[j] > i || summary.isECS === 1
-                      " (ngModelChange)="
+                      " 
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
+                      (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
                       " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
@@ -204,7 +206,8 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
-                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                      (change)="onDeclaredAmountChange(summary, i, j)" 
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                   </div>
                 </td>
                 <td>
@@ -221,7 +224,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -244,6 +247,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(
@@ -426,12 +430,12 @@
       </div>
     </div>
   </div>
-  <div class="row mt-30">
+  <!-- <div class="row mt-30">
     <div class="col-12">
       <div class="card">
         <div class="mb-10 row">
           <div class="col-md-6">
-            <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+            <h3 class="font-14 text-purple font-bold">Upload Documents Test</h3>
           </div>
           <div class="col-md-6">
             <span class="font-bold text-link float-right"></span>
@@ -488,8 +492,8 @@
                               )
                             : UploadModal(template4)
                         "></i>&nbsp;&nbsp;
-                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
-                    </td>
+                       <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
+                    <!-- </td>
                   </tr>
                 </tbody>
               </table>
@@ -498,7 +502,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  -->
   <div class="row" *ngIf="isVisibleTable" >
     <div class="col-md-12">
       <div class="border-box">
@@ -847,7 +851,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
+  <!-- <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
         <button type="button" (click)="
@@ -861,7 +865,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- <div class="row mt-10">
    <div class="col-12">
       <p-messages [(value)]="msgs2" [enableService]="false" width=100></p-messages>
