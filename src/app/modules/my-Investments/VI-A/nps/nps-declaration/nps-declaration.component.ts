@@ -1385,6 +1385,23 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
 
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
 
 
   public docViewer1(template3: TemplateRef<any>, index: any) {
