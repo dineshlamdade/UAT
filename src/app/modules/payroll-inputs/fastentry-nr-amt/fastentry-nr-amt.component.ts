@@ -70,6 +70,7 @@ export class FastentryNRAmtComponent implements OnInit {
   devationRemarkText: any;
   deductionHeadList: any;
   selectedPayrollAreaId: any;
+  saveDisabledBtn: boolean = true;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
@@ -77,20 +78,20 @@ export class FastentryNRAmtComponent implements OnInit {
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
     private toaster: ToastrService) {
-    // this.headData = [
-    //   { displayName: 'Incentive', headMasterId: 27 },
-    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
-    // ]
+    this.headData = [
+      { displayName: 'Incentive', headMasterId: 27 },
+      { displayName: 'Performance_Incentive', headMasterId: 29 },
+    ]
 
-    this.headData = []
-    this.garnishmentService.payrollheadmaster().subscribe(res =>{
-      res.data.results.forEach(element => {
-        this.headData.push({
-          'headMasterId':element.headMasterId,
-          'displayName': element.displayName
-        })
-      });
-    })
+    // this.headData = []
+    // this.garnishmentService.payrollheadmaster().subscribe(res =>{
+    //   res.data.results.forEach(element => {
+    //     this.headData.push({
+    //       'headMasterId':element.headMasterId,
+    //       'displayName': element.displayName
+    //     })
+    //   });
+    // })
 
     this.parollArea = [
       { name: 'PA-Staff', code: '1' },
@@ -198,9 +199,18 @@ export class FastentryNRAmtComponent implements OnInit {
     this.saveToDate = this.datepipe.transform(new Date(todate), 'yyyy-MM-dd') + ' 00:00:00'
   }
 
-  getSelectedEmployee(empdata) {
+  getSelectedEmployee(empdata,event) {
     console.log("emp data: " + JSON.stringify(empdata))
-    this.selectedEmployeeData.push(empdata)
+    if(event.checked){
+      this.selectedEmployeeData.push(empdata)
+    }else{
+      this.selectedEmployeeData.forEach((element,index) => {
+        if(element.employeeMasterId == empdata.employeeMasterId){
+          let ind = index;
+          this.selectedEmployeeData.splice(ind,1)
+        }
+      });
+    }
   }
 
   /** Table data push */
@@ -209,6 +219,7 @@ export class FastentryNRAmtComponent implements OnInit {
     this.saveAmount = this.selectedAmount
     this.saveRemark = this.selectedRemark
     this.tableData = []
+    this.saveDisabledBtn = false
     this.selectedEmployeeData.forEach(element => {
       this.tableData.push({
         'employeeMasterId': element.employeeMasterId,
@@ -252,6 +263,27 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     })
+
+    this.tableData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' || element.employeeMasterId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
+
   }
 
 
@@ -262,6 +294,7 @@ export class FastentryNRAmtComponent implements OnInit {
   }
 
   saveAmounts(value, data) {
+    this.saveDisabledBtn = false
     this.saveAmount = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -280,7 +313,7 @@ export class FastentryNRAmtComponent implements OnInit {
 					"headMasterId": data.headId,
 					"payrollAreaId":"1",
 					"amount": value,
-					"fromDate": this.selectedFromDate
+					"fromDate": this.datepipe.transform(new Date(this.selectedFromDate), 'yyyy-mm-dd')
 				}
 					
 				this.deviationModeData = []
@@ -399,9 +432,30 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
   saveRemarks(value, data) {
+    this.saveDisabledBtn = false
     this.saveRemark = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -503,10 +557,30 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+      }
+    })
   }
 
   getSaveFromDate(value, data) {
+    this.saveDisabledBtn = false
     this.setMinToDate = value;
+    data.openingAmount = ''
     this.saveFromDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -610,9 +684,33 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+
+    console.log("element.fromDate: "+ JSON.stringify(this.saveTransactionData) )
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
   getSaveToDate(value, data) {
+    this.saveDisabledBtn = false
     this.saveToDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -716,9 +814,30 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
   getsaveNumberTransaction(value, data) {
+    this.saveDisabledBtn = false
     this.saveNumberTransaction = value;
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -822,9 +941,30 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
   getsaveTransactionType(value, rowindex, data) {
+    this.saveDisabledBtn = false
     //this.saveTransactionType = value
     this.selectedTransactionIndex = rowindex;
     this.selectedTransactionType = value
@@ -941,9 +1081,30 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
   getSelectedSavePayroll(value, data) {
+    this.saveDisabledBtn = false
     this.selectedPayrollArea = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1047,6 +1208,26 @@ export class FastentryNRAmtComponent implements OnInit {
         "nonRecurringTransactionGroupDeviationList":[]
       })
     }
+
+    this.saveTransactionData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' ){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
   }
 
    /** edit deviation popup */
@@ -1707,6 +1888,7 @@ export class FastentryNRAmtComponent implements OnInit {
 
   removeDataFromSave(index) {
     this.saveTransactionData.splice(index, 1)
+    this.tableData.splice(index,1)
     this.tempTableData.splice(index, 1)
   }
 
@@ -1803,6 +1985,7 @@ export class FastentryNRAmtComponent implements OnInit {
   resetTableData() {
     this.saveTransactionData = [];
     this.tempTableData = []
+    this.tableData = []
   }
 
 }

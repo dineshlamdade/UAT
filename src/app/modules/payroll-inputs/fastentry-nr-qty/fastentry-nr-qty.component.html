@@ -13,35 +13,40 @@
                                     <br>
 
                                     <div class="row mt-10">
-                                        <div class="col-sm-3">
+                                        <!-- <div class="col-sm-3">
                                             <label class="form-label"> E/D Head</label>
-                                            <select name="payrollarea" class="form-control input-icon" (change)="getEDHeader($event.target.value)">
-                                                <option value="null"> Select </option>
+                                            <select name="payrollarea" class="form-control input-icon" 
+                                            [(ngModel)]="headMasterId"
+                                            (change)="getEDHeader($event.target.value)">
+                                                <option value=""> Select </option>
                                                 <option *ngFor="let head of headData" value="{{head.headMasterId}}"
                                                     [selected]="headMasterId == head.headMasterId">
                                                     {{head.displayName}}
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <div class="col-sm-3">
                                             <label class="form-label"> NR Qty Head</label>
                                             <select name="payrollarea" class="form-control input-icon"
+                                            [(ngModel)]="nonSalaryDetailId"
                                                 (change)="getSelectedHead($event.target.value)">
-                                                <option value="null"> Select </option>
+                                                <option value=""> Select </option>
                                                 <option *ngFor="let data of summaryData" value="{{data.nonSalaryDetailId}}">{{data.code}}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label"> Type </label>
                                             <select name="payrollarea" class="form-control input-icon"
+                                               [(ngModel)]="type"
                                                 (change)="getSelectedHeadType($event.target.value)">
-                                                <option value="null"> Select </option>
+                                                <option value=""> Select </option>
                                                 <option *ngFor="let data of nonSalaryOptionList">{{data.name}}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
                                             <select name="payrollarea" class="form-control input-icon"
+                                            [(ngModel)]="selectedPayrollArea"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
                                                 <option *ngFor="let payroll of parollArea"
@@ -77,8 +82,8 @@
                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                 Employee Code
                                                                 <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="name"></p-sortIcon>
-                                                                    <p-columnFilter type="text" field="name"
+                                                                    <p-sortIcon field="employeeCode"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="employeeCode"
                                                                         display="menu" class="p-ml-auto">
                                                                     </p-columnFilter>
                                                                 </div>
@@ -88,8 +93,8 @@
                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                 Employee Name
                                                                 <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="date"></p-sortIcon>
-                                                                    <p-columnFilter type="date" field="date"
+                                                                    <p-sortIcon field="fullName"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="fullName"
                                                                         display="menu" class="p-ml-auto">
                                                                     </p-columnFilter>
                                                                 </div>
@@ -99,8 +104,8 @@
                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                 Payroll Area
                                                                 <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="date"></p-sortIcon>
-                                                                    <p-columnFilter type="date" field="date"
+                                                                    <p-sortIcon field="selectedPayrollArea"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="selectedPayrollArea"
                                                                         display="menu" class="p-ml-auto">
                                                                     </p-columnFilter>
                                                                 </div>
@@ -113,7 +118,7 @@
                                                     <tr class="p-selectable-row">
                                                         <td style="width: 3rem">
                                                             <input type="checkbox"
-                                                                (change)="getSelectedEmployee(user1)">
+                                                                (change)="getSelectedEmployee(user1,$event.target)">
                                                         </td>
                                                         <td class="bg-color-light_gray">
                                                             <label
@@ -163,7 +168,7 @@
                                                                                     name="example- radios"
                                                                                     value="option1" checked>
                                                                                 <div class="custom-control-label">
-                                                                                    Emp. List
+                                                                                    Employee List
                                                                                 </div>
                                                                             </label>
                                                                         </div>
@@ -171,6 +176,7 @@
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Once Every</label>
                                                                         <input type="text" class="form-control"
+                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                             [(ngModel)]="selectedOnceEvery">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -203,7 +209,7 @@
                                                                             </div>
                                                                             <input data-provide="datepicker"
                                                                                 data-date-autoclose="true"
-                                                                                class="form-control" placeholder="Date"
+                                                                                class="form-control" placeholder="From Date"
                                                                                 [minDate]="effectiveFromDate"
                                                                                 [maxDate]="effectiveToDate"
                                                                                 [value]="selectedFromDate | date :'dd-MMM-yyyy'"
@@ -236,6 +242,7 @@
                                                                         <label class="form-label">No. of Trans</label>
                                                                         <input type="text" class="form-control"
                                                                             [(ngModel)]="selectedNoOfTransaction"
+                                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                             [disabled]="selectedTransactionType != 'NoOfTransaction'">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -249,7 +256,7 @@
                                                                             <input data-provide="datepicker"
                                                                                 data-date-autoclose="true"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                                class="form-control" placeholder="Date"
+                                                                                class="form-control" placeholder="To Date"
                                                                                 [minDate]="setMinToDate"
                                                                                 [maxDate]="effectiveToDate"
                                                                                 [value]="selectedToDate | date:'dd-MMM-yyyy'"
@@ -263,6 +270,7 @@
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Quantity</label>
                                                                         <input type="text" class="form-control"
+                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                             [(ngModel)]="selectedAmount">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -276,6 +284,8 @@
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                             tooltip="Go" (click)="getAllSelectedData()"
+                                                                            [disabled]="selectedEmployeeData.length == 0"
+                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0}"
                                                                             >
                                                                             <!-- [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''}"
@@ -479,6 +489,7 @@
                                     </td>
                                     <td>
                                         <input class="form-control wd-100" value="{{data.numberOfTransactions}}"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                             (focusout)="getsaveNumberTransaction($event.target.value,data)"
                                             [disabled]="data.transactionsType != 'NoOfTransaction'">
                                     </td>
@@ -500,6 +511,7 @@
                                     </td>
                                     <td>
                                         <input type="text" class="form-control wd-100" value="{{data.quantity}}"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                             (focusout)="saveAmounts($event.target.value,data)">
                                     </td>
                                     <td>
@@ -730,7 +742,7 @@
                             </button>&nbsp;
                             <button type="submit"
                                 class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
-                                tooltip="Save" (click)="saveAndClearFastEntries()"
+                                tooltip="Save & Clear" (click)="saveAndClearFastEntries()"
                                 [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
                                 [disabled]="saveTransactionData.length == 0">
                                 <b><i class="fa fa-floppy-o"></i></b>Save & Clear

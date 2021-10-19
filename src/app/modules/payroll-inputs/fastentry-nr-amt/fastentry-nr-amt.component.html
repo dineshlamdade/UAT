@@ -34,10 +34,6 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <!-- <p-multiSelect [options]="parollArea" [(ngModel)]="selectedPayrollArea"
-                                            (onSelect)="onPayrollSelect($event)"
-                                                optionLabel="name" placeholder="Select All">
-                                            </p-multiSelect> -->
                                             <select name="payrollarea" class="form-control input-icon"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
@@ -111,7 +107,7 @@
                                                     <tr class="p-selectable-row">
                                                         <td style="width: 3rem">
                                                             <input type="checkbox"
-                                                                (change)="getSelectedEmployee(user1)">
+                                                                (change)="getSelectedEmployee(user1,$event.target)">
                                                         </td>
                                                         <td class="bg-color-light_gray">
                                                             <label
@@ -169,6 +165,7 @@
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Once Every</label>
                                                                         <input type="text" class="form-control"
+                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                             [(ngModel)]="selectedOnceEvery">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -234,6 +231,7 @@
                                                                         <label class="form-label">No. of Trans</label>
                                                                         <input type="text" class="form-control"
                                                                             [(ngModel)]="selectedNoOfTransaction"
+                                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                             [disabled]="selectedTransactionType != 'NoOfTransaction'">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -366,7 +364,7 @@
                                                                     </div>
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Amount</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="number" class="form-control"
                                                                             [(ngModel)]="selectedAmount">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -379,10 +377,11 @@
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
-                                                                            tooltip="Go" (click)="getAllSelectedData()" [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
-                                                                                                || selectedFrequency == ''}" [disabled]="(headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
-                                                                                                || selectedFrequency == ''
-                                                                                                ">
+                                                                            tooltip="Go" (click)="getAllSelectedData()" 
+                                                                            [ngClass]="{'disabled-btn-bg-green' : headMasterId == null || headMasterId == '' || selectedPayrollArea == '' 
+                                                                            || selectedOnceEvery == '' || selectedFrequency == '' || selectedEmployeeData.length == 0}" 
+                                                                            [disabled]="headMasterId == null || headMasterId == '' || selectedPayrollArea == '' || selectedOnceEvery == ''
+                                                                            || selectedFrequency == '' || selectedEmployeeData.length == 0 ">
                                                                             <b><i class="fa fa-arrow-right"></i></b> Go
                                                                         </button>&nbsp;
                                                                         <button type="button"
@@ -530,8 +529,8 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <th rowspan="2" class="wd-2 text-center"></th>
-                                    <th rowspan="2" class="wd-3 text-center"> Action </th>
+                                    <!-- <th rowspan="2" class="wd-2 text-center"></th> -->
+                                    <th rowspan="2" class="wd-2 text-center"> Action </th>
                                     <th rowspan="2" class="wd-2 text-center"></th>
                                 </tr>
 
@@ -556,15 +555,8 @@
                                     </td>
                                     <td>
                                         <div class="p-d-inline-flex">
-                                            <!-- <span (click)="copyDateFromTableRow()"><i
-                                                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span> -->
                                             <div class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                 <div class="input-group">
-                                                    <!-- <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div> -->
                                                     <input data-provide="datepicker"
                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                         data-date-autoclose="true" [minDate]="effectiveFromDate"
@@ -598,20 +590,14 @@
                                     <td>
                                         <input class="form-control wd-100" value="{{data.numberOfTransactions}}"
                                             (focusout)="getsaveNumberTransaction($event.target.value,data)"
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                             [disabled]="data.transactionsType != 'NoOfTransaction'">
                                     </td>
 
                                     <td>
                                         <div class="p-d-inline-flex">
-                                            <!-- <span (click)="copyDateFromTableRow()"><i
-                                                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span> -->
                                             <div class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                 <div class="input-group">
-                                                    <!-- <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div> -->
                                                     <input data-provide="datepicker" data-date-autoclose="true"
                                                         [minDate]="setMinToDate" [maxDate]="effectiveToDate"
                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
@@ -625,29 +611,25 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <!-- <input type="text" class="form-control wd-100" value="{{data.clawBack}}" (focusout)="saveClawBack($event.target.value)"> -->
-
                                         <i class="fa fa-history font-16 text-blue cursor-pointer" aria-hidden="true"
                                             (click)="ViewClawbackpopup(template4,data)"
                                             *ngIf="selectedApplicableAt != ''"></i>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control wd-100" value="{{data.amount}}"
+                                        <input type="number" class="form-control wd-100" value="{{data.amount}}"
                                             (focusout)="saveAmounts($event.target.value,data)">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control wd-100" value="{{data.remark}}"
                                             (focusout)="saveRemarks($event.target.value,data)">
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <i class="fa fa-deviantart text-blue font-18 cursor-pointer"
                                             aria-hidden="true"></i>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <i class="fa fa-times  font-18 text-red cursor-pointer" aria-hidden="true"
                                             (click)="removeDataFromSave(rowIndex)"></i>&nbsp;
-                                        <!-- <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
-                                                                aria-hidden="true" (click)="addDataToSave(data)"></i>&nbsp; -->
                                     </td>
                                     <td>
                                         <div class="col-md-2"
@@ -667,42 +649,6 @@
                                     </div>
                                     </td>
                                 </tr>
-
-                                <!-- <tr class="p-selectable-row"  *ngFor="let data of tempTableData; let index = index;">
-                                                        <td class="text-center">{{index+1}}</td>
-                                                        <td>{{data.employeeCode}}</td>
-                                                        <td>{{data.employeeName}}</td>
-                                                        <td>
-                                                            {{data.payrollAreaCode}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.fromDate}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.transactionsType}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.numberOfTransactions}}
-                                                        </td>
-
-                                                        <td>
-                                                            {{data.toDate}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.clawbackApplicableAt}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.amount}}
-                                                        </td>
-                                                        <td>
-                                                            {{data.remark}}
-                                                        </td>
-                                                        <td></td>
-                                                        <td>
-                                                            <i class="fa fa-times  font-18 text-red cursor-pointer"
-                                                                aria-hidden="true" (click)="removeTempDataFromSave(index)"></i>&nbsp;
-                                                        </td>
-                                                    </tr> -->
                             </ng-template>
 
                             <ng-template pTemplate="emptymessage">
@@ -715,7 +661,9 @@
                             </ng-template>
 
                         </p-table>
+
                         <br>
+
                         <p-table [value]="tempTableData" *ngIf="tempTableData.length > 0">
 
                             <ng-template pTemplate="header">
@@ -898,15 +846,15 @@
                             <button type="submit"
                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                 tooltip="Save" (click)="saveFastEntries()"
-                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
-                                [disabled]="saveTransactionData.length == 0">
-                                <b><i class="fa fa-floppy-o"></i></b> Save
+                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
+                                [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
+                                <b><i class="fa fa-floppy-o"></i></b> Save {{saveDisabledBtn}}
                             </button>&nbsp;
                             <button type="submit"
                                 class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
                                 tooltip="Save & Clear" (click)="saveAndClearFastEntries()"
-                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
-                                [disabled]="saveTransactionData.length == 0">
+                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
+                                [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
                                 <b><i class="fa fa-floppy-o"></i></b>Save & Clear
                             </button>&nbsp;
                             <button type="button"
