@@ -154,6 +154,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       vehicleModel: new FormControl(null, Validators.required),
       vehicleNumber: new FormControl(null, Validators.required),
       lenderName: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       accountHolderName: new FormControl(null, Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanStartDate: new FormControl(null, Validators.required),
@@ -559,6 +560,21 @@ console.log('this.isEdit', this.isEdit);
   }
 
 
+    // Deactivate the Remark
+    deactivateRemark() {
+      if (this.form.value.active === false) {
+        // this.form.get('remark').enable();
+        this.hideRemarkDiv = true;
+        this.form.get('remark').setValidators([Validators.required]);
+      } else {
+        this.form.get('remark').clearValidators();
+        this.hideRemarkDiv = false;
+        // this.form.get('remark').disable();
+        this.form.get('remark').reset();
+      }
+    }
+  
+
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
@@ -573,6 +589,7 @@ console.log('this.isEdit', this.isEdit);
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
+      
       console.log(vehicleNumber)
       const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
 

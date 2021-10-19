@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
@@ -71,23 +72,38 @@ export class FastentryNrQtyComponent implements OnInit {
   headerMasterId: any = null;
   nonSalaryOptionList: any;
   type: any;
+  selectedPayrollAreaId: any;
+  saveDisabledBtn: boolean = true;
+  headMasterId: any = '';
 
   constructor(private datepipe: DatePipe,
     private nonrecqtyservice: NonRecurringQtyService,
     private payrollservice: PayrollInputsService,
     private nonRecService:NonRecurringAmtService,
     private modalService: BsModalService,
+    private garnishmentService: GarnishmentService,
     private toaster: ToastrService) {
-    this.headData = [
-      { displayName: 'Incentive', headMasterId: 33 },
-      { displayName: 'Performance_Incentive', headMasterId: 49 },
-    ]
+    // this.headData = [
+    //   { displayName: 'Incentive', headMasterId: 33 },
+    //   { displayName: 'Performance_Incentive', headMasterId: 49 },
+    // ]
+
+    this.headData = []
+    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+      res.data.results.forEach(element => {
+        this.headData.push({
+          'headMasterId':element.headMasterId,
+          'displayName': element.displayName
+        })
+      });
+    })
+
 
     this.parollArea = [
-      { name: 'PA-Staff', code: 'RM' },
-      { name: 'PA-Worker', code: 'NY' },
-      { name: 'PA_Apprentic', code: 'LDN' },
-      { name: 'PA_Expat', code: 'IST' },
+      { name: 'PA-Staff', code: '1' },
+      { name: 'PA-Worker', code: '2' },
+      { name: 'PA_Apprentic', code: '3' },
+      { name: 'PA_Expat', code: '4' },
     ];
   }
 
@@ -118,7 +134,13 @@ export class FastentryNrQtyComponent implements OnInit {
     // event.name
     //this.selectedPayrollArea.push(event)
     this.selectedPayrollArea = event
-    this.PayrollAreaByPayrollAreaCode(event)
+  
+    this.parollArea.forEach(ele =>{
+      if(ele.name == event){
+        this.selectedPayrollAreaId = ele.code
+        this.PayrollAreaByPayrollAreaCode(event)
+      }
+    })
   }
 
   PayrollAreaByPayrollAreaCode(payrollArea) {
@@ -131,15 +153,16 @@ export class FastentryNrQtyComponent implements OnInit {
         this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
         this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
         //alert(this.effectiveFromDate)
-        this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
-          res => {
-            this.frequencyDataByPayroll = res.data.results
-          }
-        )
+        // this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
+        //   res => {
+        //     this.frequencyDataByPayroll = res.data.results
+        //   }
+        // )
       }
     )
 
-    this.payrollservice.getPayrollWiseEmployeeList(1).subscribe(
+    this.payrollEmployeeData = []
+    this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
       res => {
         this.payrollEmployeeData = res.data.results[0]
       }
@@ -203,9 +226,18 @@ export class FastentryNrQtyComponent implements OnInit {
     this.saveToDate = this.datepipe.transform(new Date(todate), 'yyyy-MM-dd') + ' 00:00:00'
   }
 
-  getSelectedEmployee(empdata) {
+  getSelectedEmployee(empdata,event) {
     console.log("emp data: " + JSON.stringify(empdata))
-    this.selectedEmployeeData.push(empdata)
+    if(event.checked){
+      this.selectedEmployeeData.push(empdata)
+    }else{
+      this.selectedEmployeeData.forEach((element,index) => {
+        if(element.employeeMasterId == empdata.employeeMasterId){
+          let ind = index;
+          this.selectedEmployeeData.splice(ind,1)
+        }
+      });
+    }
   }
 
   /** Table data push */
@@ -249,6 +281,26 @@ export class FastentryNrQtyComponent implements OnInit {
         "createdBy": "rahul",
         "nonsalaryTransactionGroupDeviationList": []
       })
+    })
+
+    this.tableData.forEach(element =>{
+      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.amount == '' || element.employeeMasterId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
     })
   }
 
@@ -1435,11 +1487,14 @@ export class FastentryNrQtyComponent implements OnInit {
   removeDataFromSave(index) {
     this.saveTransactionData.splice(index, 1)
     this.tempTableData.splice(index, 1)
+    this.tableData.splice(index,1)
   }
 
   removeTempDataFromSave(index) {
     this.saveTransactionData.splice(index, 1)
     this.tempTableData.splice(index, 1)
+    this.tableData.splice(index,1)
+
   }
 
   saveFastEntries() {
@@ -1489,6 +1544,7 @@ export class FastentryNrQtyComponent implements OnInit {
         this.employeeMasterId = ''
         this.employeeCode = ''
         this.selectedPayrollArea = ''
+        this.type = ''
       }
     )
   }
@@ -1525,11 +1581,16 @@ export class FastentryNrQtyComponent implements OnInit {
     this.employeeMasterId = ''
     this.employeeCode = ''
     this.selectedPayrollArea = ''
+    this.headMasterId = ''
+    this.nonSalaryDetailId = ''
+    this.type = ''
+    this.selectedPayrollArea = ''
   }
 
   resetTableData() {
     this.saveTransactionData = [];
     this.tempTableData = []
+    this.tableData = []
   }
 
 }
