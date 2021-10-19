@@ -205,7 +205,7 @@
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" 
                       (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -228,7 +228,7 @@
                   onkeypress="return /[0-9 ]/i.test(event.key)"
                   maxlength="22"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
-                    [disabled]="initialArrayIndex[j] > i"
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" 
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -252,6 +252,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(

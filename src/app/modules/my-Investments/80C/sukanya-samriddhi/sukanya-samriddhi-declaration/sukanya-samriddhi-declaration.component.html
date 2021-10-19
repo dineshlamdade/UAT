@@ -242,6 +242,7 @@
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
                        />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
@@ -266,6 +267,7 @@
                   onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
                     [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" 
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -289,6 +291,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(

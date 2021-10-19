@@ -104,7 +104,7 @@
                 [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
                 [minFractionDigits]="2" min="0"></p-inputNumber>
 
-              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-message">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
               </div>
             </div>
@@ -674,6 +674,7 @@
                     <th scope="col" class="wd-10">To Date</th>
                     <th scope="col" class="wd-10">Frequency</th>
                     <th scope="col" class="wd-10">Premium Amount</th>
+                    <th scope="col" class="wd-10">Remark</th>
                     <th scope="col" class="wd-10">Status</th>
                     <th scope="col" class="wd-5">Action</th>
                   </tr>
@@ -701,8 +702,9 @@
                         tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount
                         | number:'1.2-2'}}</span>
                     </td>
-                    <td class="wd-10"><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
+                    <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
                     </td>
+                    <td class="wd-10 text-light-green font700"><span tooltip="masterStatus">{{summary.masterStatus}}</span></td>
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.accountHolderName, summary.institution)" tooltip="Edit"></i> &nbsp;&nbsp;
