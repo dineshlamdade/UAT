@@ -54,6 +54,10 @@ export class PPFDeclarationComponent implements OnInit {
   public editReceiptAmount: string;
   selectedRemarkList: any;
 
+
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
   public familyMemberName: Array<any> = [];
@@ -1163,7 +1167,7 @@ export class PPFDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -1270,7 +1274,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
-debugger
+
 console.log('this.transactionDetail', this.transactionDetail);
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1530,10 +1534,12 @@ console.log('this.transactionDetail', this.transactionDetail);
     );
     this.documentArray = [];
   }
-  public docViewer1(template3: TemplateRef<any>, index: any) {
+  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
@@ -1561,6 +1567,23 @@ console.log('this.transactionDetail', this.transactionDetail);
     );
   }
 
+
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     console.log("documentDetailList::", documentDetailList)
     this.urlArray = documentDetailList;
@@ -1656,11 +1679,11 @@ console.log('this.transactionDetail', this.transactionDetail);
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    psId, transactionID
   ) {
-    debugger
+    
     this.Service.getRemarkList(
-      policyNo,
+      transactionID,
       psId
     ).subscribe((res) => {
       console.log('docremark', res);

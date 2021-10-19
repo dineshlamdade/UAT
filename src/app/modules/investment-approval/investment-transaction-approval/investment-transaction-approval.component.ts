@@ -118,6 +118,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
      }
    };
    public approvedDisabled: boolean = true;
+  testRemark: any;
 
   constructor(
     private modalService: BsModalService,
@@ -401,17 +402,18 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       {
         console.log("doc.documentStatus::",doc.documentStatus)
         if(doc.remark == '' || doc.remark == null){
+        
           this.documentRemarkValidation = true;
         }
       });
      }
-     if(this.documentRemarkValidation){
-      this.alertService.sweetalertWarning(
-        'Please give Remark for Send Back Document'
-      );
-      this.documentRemarkValidation = false;
-      return;
-    }
+    //  if(this.documentRemarkValidation){
+    //   this.alertService.sweetalertWarning(
+    //     'Please give Remark for Send Back Document'
+    //   );
+    //   this.documentRemarkValidation = false;
+    //   return;
+    // }
      if(status=='Approved'){
 
        this.transactionInfo.documentList.forEach((doc)=>
@@ -582,6 +584,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
    public onChangeTransactionalRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
     debugger
+    this.testRemark = event.target.value;
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
 

@@ -41,6 +41,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   @Input() policyNo: string;
   @Input() data: any;
 
+  documentRemarkList: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -66,6 +68,22 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   public transactionInstitutionNames: Array<any> = [];
 
   public physicallyHandicappedForm: FormGroup;
+
+  documentDataArray = [];
+  editdDocumentDataArray = [];
+
+  viewDocumentName: any;
+  viewDocumentType: any;
+
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
+  Remark: any;
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -173,6 +191,9 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   public severity : string;
   public limit : any;
   public proofSubmissionId : '';
+
+  EditDocumentRemark: any;
+  editDocumentRemark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -391,12 +412,16 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       });
 
     this.Index = -1;
-    formDirective.resetForm();
+    formDirective.resetForm();    
     this.physicallyHandicappedForm.reset();
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
     this.globalSelectedAmount = '0.00';
+    this.documentRemark = '';
+    this.masterfilesArray = [];
+    this.urlArray = [];
+ 
     //}
   }
 
@@ -471,12 +496,64 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
           element.blobURI = 'data:image/image;base64,' + element.blobURI;
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
         });
+        this.masterGridData.forEach((element) => {
+          element.documentInformation.forEach(element => {
+        element.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission': element.dateOfSubmission,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+          })
+          })
+    });
+  });
+}
+);
+this.documentArray = [];
         //console.log('converted:: ', this.urlArray);
-      });
+      // });
   }
 
+  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
   //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
@@ -503,6 +580,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      documentRemark:this.editDocumentRemark,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -511,6 +590,43 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
@@ -715,6 +831,19 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       // this.globalPolicy,
       // transactionStatus
     );
+  }
+
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // -------- ON select to check input boxex--------
@@ -1125,7 +1254,35 @@ unformatAmount(amount) {
 }
 
 
+//----------- On change Transactional Line Item Remark --------------------------
+public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
+
   upload() {
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Medical Certificate/Form 10-1A / Medical Certificate/Form 10-1A'
@@ -1211,6 +1368,7 @@ unformatAmount(amount) {
       limit: this.limit,
       // receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray,
     };
     console.log('data::', data);
 
@@ -1225,6 +1383,39 @@ unformatAmount(amount) {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.physicallyHandicappedDetail = res.data.results[0].physicallyHandicappedDetail;
           this.previousEmployerHandicappedDetailList = res.data.results[0].previousEmployerHandicappedDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
@@ -1255,6 +1446,8 @@ unformatAmount(amount) {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.documentRemark = '';
+  // }
   }
 
   changeReceiptAmountFormat() {
@@ -1501,6 +1694,21 @@ unformatAmount(amount) {
         this.limit = res.data.results[0].limit;
         this.severity = res.data.results[0].severity;
         this.proofSubmissionId = res.data.results[0].proofSubmissionId;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
         // this.documentDetailList = res.data.results[0].documentInformation;
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1530,6 +1738,29 @@ unformatAmount(amount) {
       }
     });
   }
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    psId, policyNo
+  ) {
+    
+    this.Service.getRemarkList(
+      policyNo,
+      psId
+    ).subscribe((res) => {
+      console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0].remarkList
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
@@ -1581,6 +1812,23 @@ unformatAmount(amount) {
       this.urlArray[this.urlIndex].blobURI,
     );
   }
+
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
 
   docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
     console.log("documentInformationResponseList::", documentInformationResponseList)

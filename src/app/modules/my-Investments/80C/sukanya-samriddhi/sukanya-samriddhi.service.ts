@@ -63,6 +63,13 @@ export class SukanyaSamriddhiService {
     }));
   }
 
+  public getSukanyaSamriddhiSchemeRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiScheme-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiScheme-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
