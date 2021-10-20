@@ -57,7 +57,8 @@ export class ServiceHoldService {
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
  
-  return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/release/' + cycleName)
+  //return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/release/' + cycleName)
+  return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/forrelease/' + cycleName)
   
       .pipe( map( ( res: any ) => {
         return res;
@@ -97,7 +98,8 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.get( environment.baseUrl8084 + 'groupCompany/')
+   return this._HTTP.get( environment.baseUrl8084 + 'groupCompany/')
+ // return this._HTTP.get( environment.baseUrl8084 + 'groupCompany/getBygroupCompanyId/' + areaName)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -115,11 +117,13 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.get( environment.baseUrl8084 + 'servicemaster/' + areaName)
+ // return this._HTTP.get( environment.baseUrl8084 + 'servicemaster/' + areaName)
+   return this._HTTP.get( environment.baseUrl8084 + 'groupCompany/getBygroupCompanyId/' + areaName)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
+  
   getCycleNameInEmp(cycleName) {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -145,7 +149,8 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.get( environment.baseUrl8084 + `HoldEmployee/employeeCodeForRelease/` + empCode)
+   // return this._HTTP.get( environment.baseUrl8084 + `HoldEmployee/employeeCodeForRelease/` + empCode)
+    return this._HTTP.get( environment.baseUrl8084 + `HoldEmployee/employeeCodeBypayrollAreaId/` + empCode)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
