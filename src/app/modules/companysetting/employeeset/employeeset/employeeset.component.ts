@@ -262,12 +262,12 @@ onSelectArea1(evt){
   
   deactivateRemark(event) {
     console.log( 'in deisActive remakr' );
-if(event.checked){
-  this.employeesetForm.controls['isActive' ].setValue(true)
-}
-else{
-  this.employeesetForm.controls['isActive' ].setValue(false)
-}
+    if(event.checked){
+        this.employeesetForm.controls['isActive' ].setValue(true)
+     }
+    else{
+        this.employeesetForm.controls['isActive' ].setValue(false)
+   }
     if ( this.employeesetForm.get( 'isActive' ).value === false ) {
      // this.employeesetForm.get('isActive').setValue(false)
       this.employeesetForm.get( 'remark' ).enable();
@@ -295,9 +295,8 @@ else{
     this.employeesetForm.patchValue(data);
     if(data.isActive == false){
       this.hideRemarkDiv2 = true;
-    }
+    } 
    
-    
     
     let d = []
     data.employeeSetMasterDetailsList.forEach(element => {
