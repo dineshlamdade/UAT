@@ -65,6 +65,15 @@ export class NpsService {
     }));
   }
 
+
+
+  public getnpsRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
    getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'nps-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {

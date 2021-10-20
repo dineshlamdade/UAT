@@ -9,6 +9,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class MyInvestmentsService {
+  getpensionplanRemarkList(transactionID: any, psId: any) {
+    throw new Error('Method not implemented.');
+  }
 public apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
@@ -319,6 +322,13 @@ public apiUrl = environment.baseUrl8085;
     }));
   }
 
+  public getLicRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   // -----------------PPF-API---------------------
   public getPPFMaster(): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'ppfmaster-detail')
@@ -521,6 +531,13 @@ public apiUrl = environment.baseUrl8085;
       return res;
     },
     ));
+  }
+
+  public getElssRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
   }
 
   public getELSSDeclarationInstitutionListWithPolicyNo(): Observable<any> {
