@@ -534,7 +534,7 @@
                     [showCurrentPageReport]="true"
                     (sortFunction)="customSort($event)"
                     [customSort]="true"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    currentPageReportTemplate="Showing {first+1} to {last+1} of {totalRecords+1} entries"
                     [rowsPerPageOptions]="[10, 25, 50]"
                     [globalFilterFields]="[
                       'empcode',
