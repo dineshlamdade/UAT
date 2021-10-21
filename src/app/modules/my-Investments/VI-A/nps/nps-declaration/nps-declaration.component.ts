@@ -1077,8 +1077,7 @@ export class NpsDeclarationComponent implements OnInit {
           //   });
           // });
 
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
+          this.alertService.sweetalertMasterSuccess('Transaction Saved Successfully.',
             ''
           );
         } else {
