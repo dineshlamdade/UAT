@@ -18,6 +18,8 @@ import { TemplateRef} from '@angular/core';
   styleUrls: ['./employeeset.component.scss']
 })
 export class EmployeesetComponent implements OnInit {
+  isHideEmpList : boolean;
+  isHideEmpListRadio : boolean;
   employeesetForm: FormGroup;
   serviceListData: Array<any> = [];
   empData: any;
@@ -45,6 +47,7 @@ export class EmployeesetComponent implements OnInit {
   employeedata: any[] = [];
   empdataSource: any;
   employeeMasterdata: any;
+  id: any;
 //  result: any;
 //  query: string;
  // FilteredApplicationNames: any;
@@ -55,25 +58,19 @@ export class EmployeesetComponent implements OnInit {
     private modalService: BsModalService) {
     this.employeesetForm = new FormGroup({
       employeeSetName : new FormControl('',[Validators.required,Validators.maxLength(25)]),
-      empList : new FormControl('',Validators.required),
-      remark : new FormControl(''),
-      isActive : new FormControl(1),
-      empListRadio : new FormControl(''),
+      empList : new FormControl({ value: "", disabled: false },Validators.required),
+      remark : new FormControl({ value: '', disabled: true },Validators.required),
+      isActive : new FormControl({ value: true, disabled: true }),
+      empListRadio : new FormControl({ value: "", disabled: false }),
       numberOfArea : new FormControl(''),
-      employeeSetMasterId : new FormControl('')
+      employeeSetMasterId : new FormControl(''),
+    
     })
   }
 
   ngOnInit(): void {
     this.getServiceList();
     this.getSummaryData();
-    //this.primengConfig.ripple = true;
-    // this.search = (text$: Observable<string>) => text$.pipe(
-    //   distinctUntilChanged(),
-    //    map(term => term.length < 2 ? []
-    //      : this.result.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    //  );
-
     
   }
 
@@ -98,29 +95,68 @@ export class EmployeesetComponent implements OnInit {
       this.radioStatus = true;
     }
  }
-  // checkEmpSet(event){
-  //   console.log('emplistradio',event);
-  //   this.employeesetForm.get('empListRadio').setValue(true)
-  // }
+
+ smallpopup4(deleteTemp: TemplateRef<any>,data) {
+  this.modalRef = this.modalService.show(deleteTemp,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
+   this.id = data.employeeSetMasterId;
+  console.log("this.summaryqueryGenerationEmpId",this.id);
+
+}
+
+
+onSelectArea(evt){
+  this.isHideEmpList = true;
+  this.isHideEmpListRadio = false;
+  console.log(evt);
+  if(evt.value.length >= 1){
+    this.employeesetForm.get('empListRadio').disable();
+  }
+  else {
+   this.employeesetForm.get('empListRadio').enable();
+  }
+ 
+}
+onSelectArea1(evt){
+  this.isHideEmpList = false;
+  this.isHideEmpListRadio = true;
+  console.log(evt);
+  if(evt.value.length >= 1){
+    this.employeesetForm.get('empList').disable();
+  }
+  else {
+   this.employeesetForm.get('empList').enable();
+  }
+ 
+}
 
   onSubmit() {
    //console.log(this.employeesetForm.value)
+   
    this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res)=>{
      console.log(res)
+    
    // this.toaster.success('','Employee set saved successfully');
    this.alertService.sweetalertMasterSuccess('Success','Employee Set Saved Successfully');
+   this.employeesetForm.controls['isActive'].setValue(true);
+   this.employeesetForm.get('isActive').disable()
    //this.employeeList = [];
    //this.serviceListData = [];
    this.getSummaryData();
+   this.employeesetForm.get('empList').enable()
+   this.employeesetForm.get('empListRadio').enable()
   //this.serviceListData = [];
   // this.employeeMaster = [];
    // this.employeesetForm.controls['empList'].setValue([]);
    
     //this.getServiceList();
     this.employeesetForm.reset();
+    this.employeesetForm.get('isActive').setValue(true);
     this.editFormFlag = false;
     this.viewFormFlag = false;
-     this.hideRemarkDiv2 = false;
+   //  this.hideRemarkDiv2 = false;
+     
    },error => {
     if(error.error.status.code == '400'){
       //this.toaster.error('', 'Duplicate Area Set Name' );
@@ -133,14 +169,24 @@ export class EmployeesetComponent implements OnInit {
   }
 
   onUpdate() {
+   // this.employeesetForm.controls['isActive'].setValue(true);
     this.empService.updateData(this.employeesetForm.value).subscribe((res=>{
+    //this.employeesetForm.get('isActive').setValue(true)
      // this.toaster.success('',"Employee set updated successfully");
      this.alertService.sweetalertMasterSuccess('Success','Employee Set Updated Successfully');
+    // this.employeesetForm.controls['isActive'].setValue(true);
+     this.hideRemarkDiv2 = false;
       this.getSummaryData();
-      //.employeeList = []
-      this.serviceListData = [];
+      this.employeesetForm.get('empList').enable()
+      this.employeesetForm.get('empListRadio').enable()
+      this.editFormFlag = false;
+      this.viewFormFlag = false;
       this.employeesetForm.reset();
-      this.hideRemarkDiv2 = false;
+      this.employeesetForm.controls['isActive'].setValue(true);
+      this.employeesetForm.get('isActive').disable()
+    //  this.employeesetForm.get('isActive').setValue(true);
+     //  this.employeesetForm.get('isActive').setValue(true);
+      //  this.employeesetForm.get('isActive').disable()
     }),
     error => {
       if(error.error.status.code == '400'){
@@ -156,8 +202,6 @@ export class EmployeesetComponent implements OnInit {
     this.selectedemployeeMasterId = e.itemValue;
     this.empService.getByEmlpoyeeId(this.selectedemployeeMasterId).subscribe((res)=>{
     this.serviceListData = res.data.results;
-
-    
     console.log(res);
     })
 
@@ -180,18 +224,7 @@ export class EmployeesetComponent implements OnInit {
     })
   }
 
-  // getByEmployeeId(employeeMasterId) {
-  //   this.empService.getByEmlpoyeeId(this.employeeMasterId).subscribe((res) => {
-  //     console.log(res);
-  //     this.empData = res.data.results;
-  //     console.log("empData",this.empData)
-
-  //     //   this.empData.push({
-  //     //     label: payrollAreaCode, 
-  //     //     value: payrollAreaId
-  //     // })
-  //   })
-  // }
+  
 
   getSummaryData(){
     this.empService.getSummaryData().subscribe((res)=>{
@@ -215,7 +248,6 @@ export class EmployeesetComponent implements OnInit {
   formReset() {
     
      this.employeesetForm.reset();
-
      this.serviceListData = [];
     // this.employeeList = []
      this.editFormFlag = false;
@@ -223,20 +255,54 @@ export class EmployeesetComponent implements OnInit {
      this.employeesetForm.enable(); 
      this.getServiceList();
      this.hideRemarkDiv2 = false;
-        
+     this.employeesetForm.get( 'remark' ).disable();
+     this.employeesetForm.controls['isActive'].setValue(true);
+     this.employeesetForm.get( 'isActive' ).disable();      
   }
+  
+  deactivateRemark(event) {
+    console.log( 'in deisActive remakr' );
+    if(event.checked){
+        this.employeesetForm.controls['isActive' ].setValue(true)
+     }
+    else{
+        this.employeesetForm.controls['isActive' ].setValue(false)
+   }
+    if ( this.employeesetForm.get( 'isActive' ).value === false ) {
+     // this.employeesetForm.get('isActive').setValue(false)
+      this.employeesetForm.get( 'remark' ).enable();
+      this.hideRemarkDiv2 = true;
+     this.employeesetForm.controls['remark'].setValidators( Validators.required );
+     this.employeesetForm.controls['remark'].updateValueAndValidity();
+    } else {
+      //this.employeesetForm.get('isActive').setValue(true)
+      this.hideRemarkDiv2 = false;
+     
+     this.employeesetForm.controls["remark"].clearValidators();
+     this.employeesetForm.controls["remark"].updateValueAndValidity();
+     
+    }
+  }
+ 
 
   editEmployeeSet(data){
+  
     this.editFormFlag =true;
     this.viewFormFlag = false;
+   // this.employeesetForm.get('isActive').enable()
+  
     this.employeesetForm.enable();
     this.employeesetForm.patchValue(data);
+    if(data.isActive == false){
+      this.hideRemarkDiv2 = true;
+    } 
+   
     
     let d = []
     data.employeeSetMasterDetailsList.forEach(element => {
        d.push({
         label : element.employeeMaster.employeeCode,
-          value : element.employeeMaster.employeeMasterId 
+        value : element.employeeMaster.employeeMasterId 
        })
     });
     this.employeesetForm.controls['empList'].setValue(d)
@@ -252,9 +318,13 @@ export class EmployeesetComponent implements OnInit {
   }
 
   viewEmployeeSet(data){
+    //this.employeesetForm.get('isActive').setValue(0)
+    this.hideRemarkDiv2 = false;
     this.editFormFlag =false;
     this.viewFormFlag = true;
     this.employeesetForm.disable();
+    
+    this.employeesetForm.get('empListRadio').disable();
     this.employeesetForm.patchValue(data);
     let d = []
     data.employeeSetMasterDetailsList.forEach(element => {
@@ -296,9 +366,10 @@ export class EmployeesetComponent implements OnInit {
   }
   
   
-  deleteData(id){
-    this.empService.deleteData(id).subscribe((res)=>{
-     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+  deleteData(data){
+    this.empService.deleteData(this.id).subscribe((res)=>{
+    this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+     //this.alertService.sweetalertMasterSuccess("Employee Set Deleted", '' );
     //this.getServiceList();
    this.ngOnInit()
    this.getSummaryData();
@@ -378,6 +449,8 @@ this.downloadExcel(this.excelData, this.header);
 }
     this.excelData1.push(obj)
  })
+
+ 
  
 
   
@@ -432,6 +505,8 @@ this.downloadExcel(this.excelData, this.header);
 // }
   
 Arealistpop(arealist: TemplateRef<any>) {
+  this.employeesetForm.get('empList').disable();
+ 
   this.modalRef = this.modalService.show(
     arealist,
     Object.assign({}, { class: 'gray modal-lg' })
@@ -488,7 +563,7 @@ emp.push(obj)
     this.empdataSource.forEach(emp => {
       let empcode = emp.employeeCode.split('\r')
       if(element.employeeCode+',' == empcode){
-        emp.employeeMasterId = element.employeeMasterId
+        emp.employeeSetMasterId = element.employeeSetMasterId
         emp.fullName = element.fullName 
       }
     });
