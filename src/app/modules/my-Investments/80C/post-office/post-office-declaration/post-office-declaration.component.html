@@ -203,7 +203,7 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -223,7 +223,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -246,6 +246,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(
@@ -1518,16 +1519,16 @@
               </label>
             </div>
           </div>
-          <!-- <div class="col-md-12 mt-6">
+          <div class="col-md-12 mt-6">
             <label class="form-label">Remark</label>
-          </div> -->
-          <!-- <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
             <textarea
               class="form-control"
               [(ngModel)]="documentRemark"
               rows="2"
             ></textarea>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

@@ -177,8 +177,9 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
-                        initialArrayIndex[j] > i || summary.isECS === 1
+                      [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
@@ -191,7 +192,7 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
-                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -211,7 +212,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -234,6 +235,7 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                       
                       (change)="
                       onChangeDocumentRemark(

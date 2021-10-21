@@ -7,6 +7,7 @@ export const environment = {
 
   baseUrl8083: 'https://dev.deliziahr.com:8083/hrms/v1/',
   baseUrl8084: 'https://dev.deliziahr.com:8084/hrms/v1/',
+ 
   baseUrl8085: 'https://dev.deliziahr.com:8085/hrms/v1/',
   baseUrl8086: 'https://dev.deliziahr.com:8086/hrms/v1/',
   baseUrl8087: 'https://dev.deliziahr.com:8087/hrms/v1/',

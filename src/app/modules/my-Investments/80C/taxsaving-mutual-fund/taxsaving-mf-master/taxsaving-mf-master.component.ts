@@ -109,6 +109,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  
 
   viewDocumentName: any;
   viewDocumentType: any;
@@ -200,6 +201,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
+      remark: new FormControl(null),
       // remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),

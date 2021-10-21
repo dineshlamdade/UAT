@@ -1467,12 +1467,15 @@ export class PpdeclarationComponent implements OnInit {
 }
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+ 
     console.log("documentDetailList::", documentDetailList)
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
