@@ -71,7 +71,7 @@ export class FastentryNrQtyComponent implements OnInit {
   summaryData: any;
   headerMasterId: any = null;
   nonSalaryOptionList: any;
-  type: any;
+  type: any = '';
   selectedPayrollAreaId: any;
   saveDisabledBtn: boolean = true;
   headMasterId: any = '';
@@ -359,7 +359,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
@@ -381,8 +381,10 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
-          else {
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+                else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
               "nonSalaryDetailId": data.nonSalaryDetailId,
@@ -437,10 +439,14 @@ export class FastentryNrQtyComponent implements OnInit {
       todate = this.saveToDate;
     }
 
+    console.log("valuess: "+ value)
+
+
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          console.log("value: "+ value)
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -462,8 +468,11 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
-          else {
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+                else {
+                  console.log("valu elsee: "+ value)
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
               "nonSalaryDetailId": data.nonSalaryDetailId,
@@ -487,6 +496,7 @@ export class FastentryNrQtyComponent implements OnInit {
         }
       });
     } else {
+      console.log("else value: "+ value)
       this.saveTransactionData.push({
         "employeeMasterId": data.employeeMasterId,
         "nonSalaryDetailId": data.nonSalaryDetailId,
@@ -507,6 +517,8 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    console.log("save data remark: "+ JSON.stringify(this.saveTransactionData))
   }
 
   getSaveFromDate(value, data) {
@@ -1016,7 +1028,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
@@ -1039,8 +1051,10 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
-          else {
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+                else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
               "nonSalaryDetailId": data.nonSalaryDetailId,
@@ -1106,7 +1120,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
@@ -1129,7 +1143,10 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+      
           else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
@@ -1205,7 +1222,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
@@ -1228,7 +1245,9 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
           else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
@@ -1291,7 +1310,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
@@ -1314,8 +1333,10 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
-          else {
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+                else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
               "nonSalaryDetailId": data.nonSalaryDetailId,
@@ -1378,7 +1399,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
-        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+        if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
@@ -1401,8 +1422,10 @@ export class FastentryNrQtyComponent implements OnInit {
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
-          else {
+          if (this.saveTransactionData[length].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 1].employeeMasterId == data.employeeMasterId) { return; }
+          if (this.saveTransactionData[length - 2].employeeMasterId == data.employeeMasterId) { return; }
+                else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
               "nonSalaryDetailId": data.nonSalaryDetailId,

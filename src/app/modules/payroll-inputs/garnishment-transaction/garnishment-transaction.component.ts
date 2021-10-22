@@ -324,7 +324,9 @@ export class GarnishmentTransactionComponent implements OnInit {
     
     console.log("save application : " + JSON.stringify(this.applicationForm.value))
 
-    this.garnishmentservice.saveApplication(this.applicationForm.value).subscribe(res => {
+    let data = [this.applicationForm.value]
+
+    this.garnishmentservice.saveApplication(data).subscribe(res => {
       this.alertService.success("Application data Saved successfully")
       this.editFlag = false;
       this.viewFlag = false;

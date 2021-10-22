@@ -30,7 +30,7 @@
                                             <select name="payrollarea" class="form-control input-icon"
                                             [(ngModel)]="nonSalaryDetailId"
                                                 (change)="getSelectedHead($event.target.value)">
-                                                <option value=""> Select </option>
+                                                <option value="null"> Select </option>
                                                 <option *ngFor="let data of summaryData" value="{{data.nonSalaryDetailId}}">{{data.code}}</option>
                                             </select>
                                         </div>
@@ -93,8 +93,8 @@
                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                 Employee Name
                                                                 <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="fullName"></p-sortIcon>
-                                                                    <p-columnFilter type="text" field="fullName"
+                                                                    <p-sortIcon field="employeeName"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="employeeName"
                                                                         display="menu" class="p-ml-auto">
                                                                     </p-columnFilter>
                                                                 </div>
@@ -441,11 +441,12 @@
                                     <td class="text-center">{{rowIndex+1}}</td>
                                     <td>
                                         <input type="text" class="form-control" [value]="data.employeeCode"
+                                        disabled
                                             (focusout)="getEmployeeName($event.target.value)">
                                     </td>
                                     <td>{{data.employeeName}}</td>
                                     <td>
-                                        <select name="payrollarea" class="form-control wd-100"
+                                        <select name="payrollarea" class="form-control wd-100" disabled
                                             (change)="getSelectedSavePayroll($event.target.value,data)">
                                             <option value=""> Select</option>
                                             <option *ngFor="let payroll of parollArea"
@@ -562,9 +563,9 @@
                                     <th rowspan="2" class="wd-4 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="PayrollArea" pSortableColumn="PayrollArea">
+                                                <p-sortIcon field="employeeCode" pSortableColumn="employeeCode">
                                                 </p-sortIcon>
-                                                <p-columnFilter type="text" field="name" display="menu"
+                                                <p-columnFilter type="text" field="employeeCode" display="menu"
                                                     class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
@@ -573,9 +574,9 @@
                                     <th rowspan="2" class="wd-4 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="Description" pSortableColumn="Description">
+                                                <p-sortIcon field="employeeName" pSortableColumn="employeeName">
                                                 </p-sortIcon>
-                                                <p-columnFilter type="text" field="Desc" display="menu"
+                                                <p-columnFilter type="text" field="employeeName" display="menu"
                                                     class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
@@ -585,9 +586,9 @@
                                         <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">
                                             Payroll Area
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="Type" pSortableColumn="Type">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
                                                 </p-sortIcon>
-                                                <p-columnFilter type="date" field="date" display="menu"
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
                                                     class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
@@ -597,8 +598,8 @@
                                         <div class="p-d-flex justify-content-center p-ai-center">
                                             From Date
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
-                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                <p-sortIcon field="fromDate" pSortableColumn="fromDate"></p-sortIcon>
+                                                <p-columnFilter typpe="date" field="fromDate" display="menu" class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
                                         </div>
@@ -606,9 +607,9 @@
                                     <th rowspan="2" class="wd-10 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:58px;">Type
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                <p-sortIcon field="transactionsType" pSortableColumn="transactionsType">
                                                 </p-sortIcon>
-                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                <p-columnFilter field="transactionsType" display="menu" class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
                                         </div>
@@ -617,9 +618,9 @@
                                         <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">No. of
                                             Trans.
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                <p-sortIcon field="numberOfTransactions" pSortableColumn="numberOfTransactions">
                                                 </p-sortIcon>
-                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                <p-columnFilter field="numberOfTransactions" display="menu" class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
                                         </div>
@@ -627,30 +628,24 @@
                                     <th rowspan="2" class="wd-8 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">To Date
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                <p-sortIcon field="toDate" pSortableColumn="toDate">
                                                 </p-sortIcon>
-                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                <p-columnFilter type="date" field="toDate" display="menu" class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
                                     <th rowspan="2" class="wd-6 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">Clawback
-                                            <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                                </p-sortIcon>
-                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                                </p-columnFilter>
-                                            </div>
                                         </div>
                                     </th>
                                     <th rowspan="2" class="wd-4 text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center"> Amount
 
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
+                                                <p-sortIcon field="amount" pSortableColumn="amount">
                                                 </p-sortIcon>
-                                                <p-columnFilter field="status" matchMode="equals" display="menu"
+                                                <p-columnFilter type="number" field="amount" matchMode="equals" display="menu"
                                                     class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>
@@ -660,9 +655,9 @@
                                         <div class="p-d-flex p-jc-between p-ai-center"> Remark
 
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
+                                                <p-sortIcon field="remark" pSortableColumn="remark">
                                                 </p-sortIcon>
-                                                <p-columnFilter field="status" matchMode="equals" display="menu"
+                                                <p-columnFilter type="text" field="remark" display="menu"
                                                     class="p-ml-auto">
                                                 </p-columnFilter>
                                             </div>

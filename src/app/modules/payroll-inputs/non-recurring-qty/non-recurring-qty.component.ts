@@ -1428,6 +1428,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/**on change opening quantity */
 	transactionOpeningAmount(value, data, rowindex) {
+		this.svaeDisabledFlag = false
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
