@@ -77,6 +77,9 @@ export class PpmasterComponent implements OnInit {
   public documentRemark: any;
   public isECS = true;
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -407,7 +410,9 @@ export class PpmasterComponent implements OnInit {
   }
  //-------------------- Policy End Date Validations with Policy Start Date ---------------
  setPolicyEndDate() {
+ 
   this.policyMinDate = this.form.value.policyStartDate;
+
   const policyStart = this.datePipe.transform(
     this.form.get('policyStartDate').value,
     'yyyy-MM-dd'
@@ -416,7 +421,7 @@ export class PpmasterComponent implements OnInit {
     this.form.get('policyEndDate').value,
     'yyyy-MM-dd'
   );
-  this.minFormDate = this.policyMinDate;
+  
   if (policyStart > policyEnd) {
     this.form.controls.policyEndDate.reset();
   }
@@ -425,6 +430,7 @@ export class PpmasterComponent implements OnInit {
   });
 
   this.setPaymentDetailToDate();
+  this.minFormDate = this.form.get('policyStartDate').value;
 }
 
 //------------------ Policy End Date Validations with Current Finanacial Year -------------------
@@ -737,7 +743,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-    debugger
+    
     this.isEdit = true;
     this.scrollToTop();
     let ob = {};
@@ -745,7 +751,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-      debugger
+      
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
@@ -758,6 +764,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
       if (obj != 'undefined') {
+       
         this.paymentDetailGridData = obj.paymentDetails;
         this.form.patchValue(obj);
         this.Index = obj.accountNumber;
@@ -880,9 +887,29 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     // );
   }
 
-  docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

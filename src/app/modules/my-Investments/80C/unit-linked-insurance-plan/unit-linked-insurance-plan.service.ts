@@ -70,6 +70,13 @@ export class UnitLinkedInsurancePlanService {
       }));
     }
 
+    public getULIPRemarkList(psId: String, policyNo: String,): Observable<any> {
+      return this._HTTP.get(this.apiUrl + 'ulip-transaction/GetRemark/' + psId + '/' + policyNo)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+
     getpreviousEmployeName() {
 
       return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')

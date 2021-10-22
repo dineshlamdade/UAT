@@ -9,6 +9,7 @@
                     <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
                 </div>
             </div>
+            
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Account No.</label>
                 <input type="text" formControlName="accountNumber" class="form-control" onkeypress="return /[0-9]/i.test(event.key)" placeholder="Enter Account No.." [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
@@ -142,7 +143,7 @@
             </div> -->
                         <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
-                            <div class="custom-controls-stacked ml-15 mt-10">
+                         <!--    <div class="custom-controls-stacked ml-15 mt-10">
                                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>
                   <span class="custom-control-label">Yes</span>
@@ -151,6 +152,16 @@
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=0>
                   <span class="custom-control-label">No</span>
                 </label>
+                            </div> -->
+                            <div class="custom-controls-stacked ml-15 mt-10">
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>
+                                <span class="custom-control-label">Yes </span>
+                              </label>
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=0>
+                                <span class="custom-control-label">No</span>
+                              </label>
                             </div>
                         </div>
                     </div>
@@ -230,19 +241,22 @@
                                             </td>
                                             <td class="wd-14 align-right">
                                                 <span tooltip=" {{summary.annualAmount | number:'1.2-2'}}">
-                          {{summary.annualAmount | number:'1.2-2'}}
-                        </span>
+                                                 {{summary.annualAmount | number:'1.2-2'}} </span>
                                             </td>
-                                            <td class="wd-10">
+                                         <!--    <td class="wd-10">
                                                 <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
-                          {{summary.ecs==1?'Yes':'No'}}
-                        </span>
-                                            </td>
+                                                {{summary.ecs==1?'Yes':'No'}}  </span>
+                                            </td> -->
+                                            <td class="wd-10">
+                                              <span tooltip="{{summary.isEcs==1?'Yes':'No'}}">
+                                            {{summary.isEcs==1?'Yes':'No'}}
+                                              </span>
+                                       </td>
                                         </tr>
                                         <tr *ngIf="!paymentDetailGridData?.length">
                                             <td colspan="7">
                                                 <span class="font-14 font500 align-center text-red">No
-                          Data Available</span>
+                                                    Data Available</span>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -109,6 +109,10 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  
+
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -197,6 +201,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
+      remark: new FormControl(null),
       // remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
@@ -863,9 +868,29 @@ export class TaxsavingMfMasterComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>,index:any, data: any) {
     console.log("---in doc viewer--");
     this.urlIndex = index;
+
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
 
     console.log('urlIndex::' , this.urlIndex);

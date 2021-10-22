@@ -29,7 +29,7 @@ interface users1 {
 })
 export class ReleaseNewComponent implements OnInit {
   public isHideEmpSet : boolean;
-  public isHideEmpCode : boolean;
+  public isHideEmpCode : boolean = true;
   public isHideEmpList : boolean;
   users1: users1[];
   public modalRef: BsModalRef;
@@ -84,6 +84,7 @@ export class ReleaseNewComponent implements OnInit {
   public payrollAreaCodes: Array<any> = [];
   public payrollAreaC : string;
   payCodeList: Array<any> = [];
+  isTrue : boolean;
 // public finalpendingLockList: Array<any> = [];
 
   constructor(private modalService: BsModalService,
@@ -99,7 +100,7 @@ export class ReleaseNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllCycleDefinationEmp();
-    this.getAllCompanyNameEmp();
+  this.getAllCompanyNameEmp();
     this.getAllServiceNameEmp();
   this.getSummaryData();
     this.pendingForLockAsWhen();
@@ -163,7 +164,7 @@ export class ReleaseNewComponent implements OnInit {
       toDate: new FormControl(''),
       companyName: new FormControl(''),
       release : new FormControl(''),
-      serviceName: new FormControl('', Validators.required),
+      serviceName: new FormControl(''),
       groupCompanyId: new FormControl(''),
       serviceMasterId: new FormControl(''),
      // employeeCode: new FormControl(''),
@@ -303,9 +304,9 @@ export class ReleaseNewComponent implements OnInit {
           (res) => {
             this.cycleNameList = res.data.results[0];
             console.log('cycleNameList', this.cycleNameList);
-            res.data.results[0].forEach((element) => {
+           this.cycleNameList.forEach((element) => {
               const obj = {
-                label: element.periodName,
+                label: element.cycle,
                 value: element.businessCycleDefinitionId,
               };
               this.periodNameList.push(obj);
@@ -323,7 +324,7 @@ export class ReleaseNewComponent implements OnInit {
     onSelectCycleName(evt: any) {
       if (evt != '') {
         this.cycleNameList.forEach((element) => {
-          if (element.periodName == evt) {
+          if (element.cycle == evt) {
             this.releaseForm.patchValue({
               fromDate: new Date(element.fromDate),
               toDate: new Date(element.toDate),
@@ -348,6 +349,7 @@ export class ReleaseNewComponent implements OnInit {
     }
     
     getAllCompanyNameEmp() {
+     
       this.holdService.getAllCompanysName().subscribe((res) => {
         this.companyNameListEmp = res.data.results;
         console.log('companyNameListEmp', this.companyNameListEmp);
@@ -360,6 +362,8 @@ export class ReleaseNewComponent implements OnInit {
         });
       });
     }
+    
+
 
     getAllServiceNameEmp() {
       this.holdService.getAllServicesName().subscribe((res) => {
@@ -376,20 +380,20 @@ export class ReleaseNewComponent implements OnInit {
     }
 
     onSelectServiceNameEmp(evt: any) {
-      if(evt == '1'){
+     // if(evt == '1'){
        if (evt == '') {
          this.ServiceAreaListEmp = [];
        } else {
          this.ServiceAreaListEmp = [];
          this.holdService.getAreawServicesName(evt).subscribe(
            (res) => {
-             this.areaSeriveListEmp = res.data.results[0];
+             this.areaSeriveListEmp = res.data.results;
              console.log('areaSeriveList', this.areaSeriveListEmp);
-             res.data.results[0].forEach((element) => {
+             res.data.results.forEach((element) => {
                const obj = {
     
                 label: element.payrollAreaCode,
-                value: element.payrollAreaId,
+                value: element.groupCompanyId,
     
                };
                this.ServiceAreaListEmp.push(obj);
@@ -402,37 +406,42 @@ export class ReleaseNewComponent implements OnInit {
            }
          );
        }
-      }else {
-       if (evt == '') {
-         this.ServiceAreaListEmp = [];
-       } else {
-         this.ServiceAreaListEmp = [];
-         this.holdService.getAreawServicesName(evt).subscribe(
-           (res) => {
-             this.areaSeriveList = res.data.results[0];
-             console.log('areaSeriveList', this.areaSeriveList);
-             res.data.results[0].forEach((element) => {
-               const obj = {
-                 //   label: element.areaMasterCode,
-                 //   value: element.payrollAreaId,
-                 label: element.payrollArea.payrollAreaCode,
-                 value: element.payrollArea.payrollAreaId,
-               };
-               this.ServiceAreaListEmp.push(obj);
-             });
-           },
-           (error: any) => {
-             this.alertService.sweetalertError(
-               error['error']['status']['message']
-             );
-           }
-         );
-       }
-     }
+      //}
+    //   else {
+    //    if (evt == '') {
+    //      this.ServiceAreaListEmp = [];
+    //    } else {
+    //      this.ServiceAreaListEmp = [];
+    //      this.holdService.getAreawServicesName(evt).subscribe(
+    //        (res) => {
+    //          this.areaSeriveList = res.data.results[0];
+    //          console.log('areaSeriveList', this.areaSeriveList);
+    //          res.data.results[0].forEach((element) => {
+    //            const obj = {
+    //              //   label: element.areaMasterCode,
+    //              //   value: element.payrollAreaId,
+    //              label: element.payrollArea.payrollAreaCode,
+    //              value: element.payrollArea.payrollAreaId,
+    //            };
+    //            this.ServiceAreaListEmp.push(obj);
+    //          });
+    //        },
+    //        (error: any) => {
+    //          this.alertService.sweetalertError(
+    //            error['error']['status']['message']
+    //          );
+    //        }
+    //      );
+    //    }
+    //  }
      }
 
 
      onSelectAreaInEmp(evt: any) {
+      this.employeeCodes = [];
+      this.releaseForm.controls['employeeCode'].reset();
+      this.releaseForm.controls['employeeSet'].reset();
+      this.releaseForm.controls['areaList'].reset();
       // this.empForm.patchValue({
       //   areaMasterCode: '',
       // });
@@ -444,7 +453,9 @@ export class ReleaseNewComponent implements OnInit {
         this.holdService.getEmpCodeForRelease(evt).subscribe((res) => {
             this.employeeCodeList = res.data.results[0];
             console.log('employeeCodeList', this.employeeCodeList);
+            
             res.data.results[0].forEach((element) => {
+             
               const obj = {
                   // label: element.payrollAreaCode,
                   // value: element.payrollAreaId,
@@ -452,6 +463,7 @@ export class ReleaseNewComponent implements OnInit {
                 code: element.employeeMasterId,
               };
               this.employeeCodes.push(obj);
+          
             });
           },
           (error: any) => {
@@ -461,16 +473,22 @@ export class ReleaseNewComponent implements OnInit {
           }
         );
       }
+      this.getEmpTableList = []
     }
 
     resetEmpForm(){
       this.releaseForm.reset();
+     // this.serviceNamesEmp = [];
+      this.ServiceAreaListEmp = [];
+      this.employeeCodes = [];
+      this.periodNameList = [];
       this.releaseForm.patchValue({
         companyName : '',
         serviceName : '',
         periodName : '',
         name : '',
         employeeCode : '',
+        areaMasterCode : ''
       })
       this.releaseForm.get('employeeCode').enable();
       this.releaseForm.get('employeeSet').enable();
@@ -528,6 +546,10 @@ export class ReleaseNewComponent implements OnInit {
            // this.alertService.sweetalertWarning('Please select Employee Code');
             return false;
           }
+          if(this.releaseForm.get('companyName').value <= 0){
+            this.alertService.sweetalertWarning('Please Select Company Name');
+            return false;
+          }
         
         
           const data = {
@@ -537,7 +559,7 @@ export class ReleaseNewComponent implements OnInit {
             release : this.releaseForm.get('release').value,
             // employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
-            serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
+           // serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
             employeeMasterIdList:  this.allAreaCodesEmp
         
@@ -585,7 +607,10 @@ export class ReleaseNewComponent implements OnInit {
            // this.alertService.sweetalertWarning('Please select Employee Code');
             return false;
           }
-        
+          if(this.releaseForm.get('companyName').value <= 0){
+            this.alertService.sweetalertWarning('Please Select Company Name');
+            return false;
+          }
         
           const data = {
             areaMasterId: this.getAreaMasterIDEmp(),
@@ -594,7 +619,7 @@ export class ReleaseNewComponent implements OnInit {
             release : this.releaseForm.get('release').value,
             //employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
-            serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
+           // serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
             employeeMasterSetlist:  this.allAreaCodesEmpSet
         
@@ -610,8 +635,8 @@ export class ReleaseNewComponent implements OnInit {
              // const result = res.data.results;
 
            //this.getEmpTableList = result.filter(ar => this.empSetList.find(rm => (rm.employeeCode === ar.employeeCode)))
-          let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaId==this.releaseForm.get('areaMasterCode').value)
-          this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaCode == paCode.payrollAreaCode)
+          // let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaId==this.releaseForm.get('areaMasterCode').value)
+          // this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaCode == paCode.payrollAreaCode)
               // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
               this.alertService.sweetalertMasterSuccess('Success','Release List Retrived Successfully');
              } else {
@@ -648,6 +673,10 @@ export class ReleaseNewComponent implements OnInit {
            // this.alertService.sweetalertWarning('Please select Employee Code');
             return false;
           }
+          if(this.releaseForm.get('companyName').value <= 0){
+            this.alertService.sweetalertWarning('Please Select Company Name');
+            return false;
+          }
         
         
           const data = {
@@ -657,9 +686,9 @@ export class ReleaseNewComponent implements OnInit {
             release : this.releaseForm.get('release').value,
             //employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
-            serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
+           // serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
-            employeeMasterSetlist:  this.allAreaCodesEmpSet
+            employeeMasterSetlist:  this.allAreaCodesEmpList
         
           };
         
@@ -667,13 +696,14 @@ export class ReleaseNewComponent implements OnInit {
           this.holdService.postReleaseEmpList(data).subscribe((res: any) => {
             if(res){
              if(res.data.results[0].length > 0) {
-              const result = res.data.results[0];
+              this.getEmpTableList = res.data.results;
+            // const result = res.data.results[0];
             //  console.log("getEmpTableList", this.getEmpTableList);
-              this.getEmpTableList = result.filter(ar => this.employeedata.find(rm => ((rm.employeeCode).trim() === ar.employeeCode) ))
-              let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaId==this.releaseForm.get('areaMasterCode').value)
-              this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaCode.toLowerCase()==paCode.payrollAreaCode.toLowerCase())
+               //this.getEmpTableList = result.filter(ar => this.employeedata.find(rm => ((rm.employeeCode).trim() === ar.employeeCode) ))
+             // let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaCode==this.releaseForm.get('areaMasterCode').value)
+             // this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaId==paCode.payrollAreaId)
              // this.getEmpTableList= this.getEmpTableList.find(x=x.)
-             console.log('result is',result);
+            // console.log('result is',result);
              console.log("getEmpTableList", this.getEmpTableList);
               // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
               this.alertService.sweetalertMasterSuccess('Success','Release List Retrived Successfully');
@@ -702,7 +732,7 @@ export class ReleaseNewComponent implements OnInit {
         
         getAreaMasterIDEmp() {
           if (this.areaSeriveListEmp.length > 0) {
-            return this.areaSeriveListEmp[0].areaMaster.areaMasterId;
+            return this.areaSeriveListEmp[0].areaMasterId;
           } else {
             return 0;
           }
@@ -738,7 +768,7 @@ export class ReleaseNewComponent implements OnInit {
         }
         getAreaCodesInEmp(payrollAreaCode: any) {
           const toSelect = this.areaSeriveListEmp.find(
-            (element) => element.payrollAreaId == payrollAreaCode
+            (element) => element.groupCompanyId == payrollAreaCode
           );
           return toSelect.payrollAreaCode;
           console.log('toSelect', toSelect);
@@ -923,11 +953,14 @@ const data =  {empList : this.checkedFinalLockListEmp,
 
 
   this.holdService.postLockCheckedEmp1(data).subscribe((res) =>{
+  
     if(res){
       if(res.data.results) {
+        
         //  this.getAreaTableSummaryList();
        // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
        this.alertService.sweetalertMasterSuccess('Success','Release List Added Successfully');
+      
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
       }
@@ -936,12 +969,12 @@ const data =  {empList : this.checkedFinalLockListEmp,
         'Something went wrong. Please try again.'
       );
     }
-   this.pendingForLockAsWhen();
-    this.pendingLockList = [];
+  //this.pendingForLockAsWhen();
+   this.pendingLockList = [];
     this.modalRef.hide();
-    this.getEmpTableList = [];
-    this.selectedUserEmp = [];
-    this.checkedSummaryListEmp = [];
+   // this.getEmpTableList = [];
+    //this.selectedUserEmp = [];
+    //this.checkedSummaryListEmp = [];
     this.selectedUserInLockEmp = [];
     // this.getAreaTableSummaryList();
     this.releaseForm.reset();
@@ -978,8 +1011,9 @@ exportExcelEmpLock(): void {
 }
 
 resetEmpLock(){
-  this.checkedSummaryListEmp = [];
+  //this.checkedSummaryListEmp = [];
   this.checkedFinalLockListEmp = [];
+  this.selectedUserInLockEmp = []
   this.modalRef.hide()
 
 }
@@ -1253,6 +1287,7 @@ pendingLockProceed(){
     if(res){
       if(res.data.results) {
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+      
         this.finalpendingLockList.forEach(element => {
           const index = this.pendingLockList.indexOf(
             (p) => (p.businessCycleId == element)
@@ -1260,9 +1295,11 @@ pendingLockProceed(){
           this.pendingLockList.splice(index, 1);
           // this.selectedUserPending.splice(index, 1);
         });
-
         this.finalpendingLockList = [];
         this.selectedUserPending = [];
+        // new
+        this.pendingForLockAsWhen()
+        
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
       }
@@ -1271,6 +1308,7 @@ pendingLockProceed(){
         'Something went wrong. Please try again.'
       );
     }
+  
     this.modalRef.hide();
     this.finalpendingLockList = [];
     this.selectedUserPending = [];
@@ -1299,7 +1337,11 @@ pendingLockProceed(){
 pendingForLockAsWhen() {
 
   this.holdService.pendingForLockArea().subscribe((res) => {
+    
+  
     this.pendingAreaList = res.data.results[0];
+    //new
+    this.pendingLockList = [];
     console.log('pendingAreaList',
     this.pendingAreaList);
     res.data.results[0].forEach((element) => {
@@ -1343,6 +1385,7 @@ pendingForLockAsWhen() {
 //   }
 // }
 
+
 //click on Check All In Pending for lock add and remove element from array
 allCheckUncheck(checkValue){
   if(checkValue){
@@ -1351,6 +1394,7 @@ allCheckUncheck(checkValue){
     this.finalpendingLockList.push(element.employeeMasterId);
   });
   }else {
+    
     this.pendingLockList.forEach((element) => {
     const index = this.finalpendingLockList.indexOf(
       (p) => (p.employeeMasterId == element.employeeMasterId));

@@ -182,11 +182,73 @@ export class InvestmentApprovalComponent implements OnInit {
     
 
     if (this.psidList[0].type == 'M') {
+      // this.router.navigate(['/investment-approval/master']);
+
+     if (this.psidList[0].itSection == '80TTA') 
+    {
+      this.router.navigate(['/investment-approval/intereston80ttattbmaster']);
+    }
+    else if (this.psidList[0].itSection == '80TTB') 
+    {
+      this.router.navigate(['/investment-approval/intereston80ttattbmaster']);
+    } 
+    else if (this.psidList[0].itSection == 'EDUCATIONALLOAN') 
+    {
+      this.router.navigate(['/investment-approval/interestoneducationalloanmaster']);
+    }
+    else if (this.psidList[0].itSection == 'SPECIFIEDDISEASE') 
+    {
+      this.router.navigate(['/investment-approval/treatmentofspecifieddiseasesmaster']);
+    }
+    else if (this.psidList[0].itSection == 'MEDICLAIM')
+    {
+      this.router.navigate(['/investment-approval/mediclaim80dmaster']);
+    }
+    else if (this.psidList[0].itSection == '80DD') 
+    {
+      this.router.navigate(['/investment-approval/handicappeddependentmaster']);
+    }
+    else {
       this.router.navigate(['/investment-approval/master']);
+    }
     } else if (this.psidList[0].type == 'T') {
       if(this.psidList[0].itSection == 'FDMORETHAN5YEARS' || this.psidList[0].itSection == 'NABARDBONDS' || this.psidList[0].itSection == 'SENIORCITIZENSAVINGSSCHEME' || this.psidList[0].itSection == 'POTIMEDEPOSITE') {
         this.router.navigate(['/investment-approval/onetimetransaction']);
-      } else {
+      }    else if (this.psidList[0].itSection == '80TTA') 
+      {
+        this.router.navigate(['/investment-approval/intereston80ttattbtransaction']);
+      }
+      else if (this.psidList[0].itSection == '80TTB') 
+      {
+        this.router.navigate(['/investment-approval/intereston80ttattbtransaction']);
+      
+    }
+    else if (this.psidList[0].itSection == 'EDUCATIONALLOAN') 
+    {
+      this.router.navigate(['/investment-approval/interestoneducationalloantransaction']);
+    }
+    else if (this.psidList[0].itSection == 'SPECIFIEDDISEASE')
+    {
+      this.router.navigate(['/investment-approval/treatmentofspecifieddiseasestransaction']);
+    }
+    else if (this.psidList[0].itSection == 'MEDICLAIM') 
+    {
+      this.router.navigate(['/investment-approval/mediclaim80dtransaction']);
+    }
+    else if (this.psidList[0].itSection == '80DD') 
+    {
+      this.router.navigate(['/investment-approval/handicappeddependenttransaction']);
+    }
+    else if (this.psidList[0].itSection == 'DONATIONS80GGA') 
+    {
+      this.router.navigate(['/investment-approval/donationsforscientificresearchggatransaction']);
+    }
+
+    else if (this.psidList[0].itSection == '80GGC') 
+    {
+      this.router.navigate(['/investment-approval/donationsforregisteredpoliticalpartyelectoraltrustsec80ggctransaction']);
+    }
+      else {
         this.router.navigate(['/investment-approval/transaction']);
       }
       
@@ -223,9 +285,12 @@ export class InvestmentApprovalComponent implements OnInit {
     {
       this.router.navigate(['/investment-approval/onetimetransaction']);
     }
-  }
+ 
+}
  
   // onetimetransaction
+  // intereston80ttattbmaster
+  // intereston80ttattbtransaction
 
   // ------------------ Export as Excel files ---------------------------
   exportApprovalSummaryAsExcel(): void {
