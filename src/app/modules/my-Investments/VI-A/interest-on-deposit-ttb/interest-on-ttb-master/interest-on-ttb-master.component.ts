@@ -473,6 +473,7 @@ public showdocument = true;
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
                       'status' : element.documentInformationList[0].status,
+                      'remark':element.documentInformationList[0].remark,  
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
