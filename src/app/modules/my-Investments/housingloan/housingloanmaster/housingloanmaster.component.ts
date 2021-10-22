@@ -40,7 +40,8 @@ import { truncateSync } from 'node:fs';
 })
 export class HousingloanmasterComponent implements OnInit {
   @Input() public housePropertyMasterIds: any;
-
+  documentPassword= [];
+  remarkList = [];
 
   public countriesList: Array<any> = [];
   public showOwner = false;
