@@ -1546,7 +1546,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
       } else {
         innerElement.actualAmount = 0.0;
       }
-      innerElement.declaredAmount = innerElement.declaredAmount;
+    if(innerElement.declaredAmount !== null){
+     innerElement.declaredAmount= innerElement.declaredAmount
+     .toString()
+     .replace(/,/g, '');
+    } 
       const dateOfPaymnet = this.datePipe.transform(
         innerElement.dateOfPayment,
         'yyyy-MM-dd'
