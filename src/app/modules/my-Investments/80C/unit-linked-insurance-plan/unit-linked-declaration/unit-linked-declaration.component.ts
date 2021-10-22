@@ -312,7 +312,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       value: 'All',
     };
 
-    this.transactionInstitutionNames.push(data);
+    // this.transactionInstitutionNames.push(data);
     this.transactionPolicyList.push(data);
     this.refreshTransactionStatustList();
 
