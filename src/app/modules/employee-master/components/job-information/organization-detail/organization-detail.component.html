@@ -34,7 +34,7 @@
             <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
                 disabled>
         </div>
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-3"  *ngIf="filteredPayrollAreaList?.length>1">
 
             <label class="form-label">Copy From </label>
             <select class="form-control" placeholder="Select" formControlName="copyFromControl"
@@ -47,14 +47,15 @@
         </div>
     </div>
     <br>
-
+    <hr class="line">
     <div class="row child row-cards">
 
         <div *ngIf="filteredBusinessAreaList?.length" class="col-sm-6 col-lg-3">
 
-            <fieldset >
-                <legend> {{businessAreaCode}}</legend>
-                <label class="form-label">Code</label>
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{businessAreaCode}}</legend>
+                <label class="form-label">Code  
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.businessAreaList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> </label>
                 <!-- <p-autoComplete [suggestions]="filteredBusinessAreaList" placeholder="Select"
                     (completeMethod)="SearchBusinessArea($event)" [dropdown]="true"
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="businessAreaCode"
@@ -66,7 +67,8 @@
                     </ng-template>
 
                 </p-autoComplete> -->
-                <select class="form-control custom-select" placeholder="Select"
+
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchBusinessArea(businessAreaCode)"
                     (change)="validateBusiDatesSave();businessAreaObject(businessAreaCode);"
                     formControlName="businessAreaMasterIdControl"
@@ -113,18 +115,21 @@
 
                     </div>
                 </div>
-                <!-- </div> -->
+               
             </fieldset>
         </div>
-    <!-- </div> -->
+  
 
 
 
 
     <div *ngIf="subAreaList?.length" class="col-sm-6 col-lg-3">
-        <fieldset >
-            <legend> {{subAreaCode}}</legend>
-            <label class="form-label">Code</label>
+
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{subAreaCode}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.subAreaList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
             
             <!-- <p-autoComplete [suggestions]="filteredSubAreaList" placeholder="Select"
                     (completeMethod)="SearchSubArea($event)" [dropdown]="true" formControlName="subAreaIdControl"
@@ -179,8 +184,12 @@
     </div>
 
     <div *ngIf="filteredStrategicBusinessAreaList?.length" class="col-sm-6 col-lg-3">
-        <div class="   card p-3 row-card-color">
-            <label class="form-label">{{strategicCode}}</label>
+        <fieldset class=" card p-3 row-card-color ">
+            <legend class="cardBox"> {{strategicCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.strategicBusinessAreaList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+      
             <!-- <p-autoComplete [suggestions]="filteredStrategicBusinessAreaList" placeholder="Select"
                     (completeMethod)="SearchStrategic($event)" [dropdown]="true"
                     formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode"
@@ -233,13 +242,15 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredDivisionList?.length" class="col-sm-6 col-lg-3">
         <fieldset class=" card p-3 row-card-color">
-            <legend> {{divisionCode}}</legend>
-            <label class="form-label">Code</label>
+            <legend class="cardBox"> {{divisionCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.divisionList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
        
             <!-- <p-autoComplete [suggestions]="filteredDivisionList" placeholder="Select"
                     (completeMethod)="SearchDivision($event)" [dropdown]="true"
@@ -294,8 +305,12 @@
     </div>
 
     <div *ngIf="profitCentreCode?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{profitCentreCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{profitCentreCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.profitCenterList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+       
             <!-- <p-autoComplete [suggestions]="filteredProfitCenterList" placeholder="Select"
                     (completeMethod)="SearchProfit($event)" [dropdown]="true"
                     formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode"
@@ -346,12 +361,17 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredEstablishmentList?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3 row-card-color">
-            <label class="form-label">Establishment</label>
+
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> Establishment</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.establishmentList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+       
 
 
             <select class="form-control" placeholder="Select"
@@ -395,17 +415,23 @@
                         data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                         formControlName="establishmentToDateControl" placement="center" [maxDate]="payrollAreaToDate"
                         [minDate]="organizationDetailsModel.establishmentList.fromDate"
+                        
+                      
                         [(ngModel)]="organizationDetailsModel.establishmentList.toDate"
                         [ngClass]="{'is-invalid' : OrganizationForm.get('establishmentToDateControl').status == 'INVALID'}">
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredSubLocationList?.length" class="col-sm-6 col-lg-3">
-        <div class="card p-3  row-card-color">
-            <label class="form-label">{{subLocationCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{subLocationCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.subLocationList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+        
             <!-- <p-autoComplete [suggestions]="filteredSubLocationList" placeholder="Select"
                     (completeMethod)="SearchSubLocation($event)" [dropdown]="true"
                     formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode"
@@ -457,12 +483,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredWorkLocationList?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{workLocationCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{workLocationCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.workLocationList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+     
             <!-- <p-autoComplete [suggestions]="filteredWorkLocationList" placeholder="Select"
                     (completeMethod)="SearchWorkLocation($event)" [dropdown]="true"
                     formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode"
@@ -511,12 +541,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredCostCenterList?.length" class="col-sm-6 col-lg-3">
-        <div class="card p-3  row-card-color">
-            <label class="form-label">{{costCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{costCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.costCenterList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+        
             <!-- <p-autoComplete [suggestions]="filteredCostCenterList" placeholder="Select"
                     (completeMethod)="SearchCost($event)" [dropdown]="true" formControlName="costCentreIdControl"
                     [(ngModel)]="costCode" (onSelect)="validateCostDatesSave();costObject($event);">
@@ -564,12 +598,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredSubCostCenterList?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{subCostCode}}</label>
+        <fieldset class=" card p-3 row-card-color ">
+            <legend class="cardBox"> {{subCostCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.subCostCenterList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+       
             <!-- <p-autoComplete [suggestions]="filteredSubCostCenterList" placeholder="Select"
                     (completeMethod)="SearchSubCost($event)" [dropdown]="true" formControlName="subCostCentreIdControl"
                     [(ngModel)]="subCostCode" (onSelect)="validateSubCostDatesSave();subCostObject($event);">
@@ -617,12 +655,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredDepartmentList?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{departmentCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{departmentCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.departmentList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+      
             <!-- <p-autoComplete [suggestions]="filteredDepartmentList" placeholder="Select"
                     (completeMethod)="SearchDepartment($event)" [dropdown]="true"
                     formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode"
@@ -672,12 +714,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredSubDepartmentList?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{subDepCode}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{subDepCode}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.subDepartmentList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+      
             <!-- <p-autoComplete [suggestions]="filteredSubDepartmentList" placeholder="Select"
                     (completeMethod)="SearchSubDepartment($event)" [dropdown]="true"
                     formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode"
@@ -731,14 +777,17 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
 
     <div *ngIf="filteredJob1List?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{job1Code}}</label>
-
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{job1Code}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.job1List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+        
             <select class="form-control" placeholder="Select" (completeMethod)="SearchJob1(job1.masterCode)"
                 (change)="validateJob1DatesSave();job1Object(job1);" formControlName="job1IdControl"
                 [(ngModel)]="organizationDetailsModel.job1List.masterCode">
@@ -783,13 +832,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredJob2List?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{job2Code}}</label>
-
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{job2Code}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.job2List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+       
             <select class="form-control" placeholder="Select" (completeMethod)="SearchJob2(job2.masterCode)"
                 (change)="validateJob2DatesSave();job2Object(job2);" formControlName="job2IdControl"
                 [(ngModel)]="organizationDetailsModel.job2List.masterCode">
@@ -834,12 +886,17 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredJob3List?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{job3Code}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{job3Code}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.job3List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+       
+        
 
             <select class="form-control" placeholder="Select" (completeMethod)="SearchJob3(job.masterCode)"
                 (change)="validateJob3DatesSave();job3Object(job3);" formControlName="job3IdControl"
@@ -885,12 +942,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredJob4List?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{job4Code}}</label>
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{job4Code}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.job4List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+        
 
             <select class="form-control" placeholder="Select" (completeMethod)="SearchJob4(job.masterCode)"
                 (change)="validateJob4DatesSave();job4Object(job4);" formControlName="job4IdControl"
@@ -936,13 +997,16 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div *ngIf="filteredJob5List?.length" class="col-sm-6 col-lg-3">
-        <div class=" card p-3  row-card-color">
-            <label class="form-label">{{job5Code}}</label>
-
+        <fieldset class=" card p-3 row-card-color">
+            <legend class="cardBox"> {{job5Code}}</legend>
+            <label class="form-label">Code
+                <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.job5List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+            </label>
+        
             <select class="form-control" placeholder="Select" (completeMethod)="SearchJob5(job5.masterCode)"
                 (change)="validateJob5DatesSave();job5Object(job5);" formControlName="job5IdControl"
                 [(ngModel)]="organizationDetailsModel.job5List.masterCode">
@@ -987,7 +1051,7 @@
 
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     </div>
@@ -995,8 +1059,8 @@
     <div class="row mt-15">
         <div class="col-12">
             <div class="float-right mb-15">
-                <button type="submit" [disabled]="OrganizationForm.invalid || OrganizationForm.untouched"
-                    class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green" tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : OrganizationForm.invalid || OrganizationForm.untouched,
+                <button type="submit" [disabled]="OrganizationForm.invalid || OrganizationForm.untouched || !checkEst()"
+                    class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green" tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : OrganizationForm.invalid || OrganizationForm.untouched || !checkEst(),
                            'btn-bg-green': !OrganizationForm.invalid}"><b><i
                             class="fa fa-floppy-o"></i></b>Save</button>
 
@@ -1012,3 +1076,140 @@
         </div>
     </div>
 </form>
+
+<ng-template class="modal-lg" #template1>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">History</h5>
+  
+  
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+  
+    <div class="modal-body">
+      <div class="card">
+        <div class="row mb-3 mt-1">
+          <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Detail : </span> <span class="text-black">   {{historyData[0].jobDetail}}</span></h3>
+        </div>
+            <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Field : </span>  <span class="text-black">   {{historyData[0].jobField}}</span></h3>
+          </div>
+        </div>
+  
+  
+        <div class="card-bodys">
+          <div class=" ">
+  
+            <p-table [value]="historyData" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+              [customSort]="true" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10,25,50,100,200]">
+  
+  
+  
+              <ng-template pTemplate="header">
+  
+                <tr>
+                  <th rowspan="1" class=" wd-5 text-center ">
+                    Sr. No.
+                  </th>
+                
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Code
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="value" pSortableColumn="value">
+                        </p-sortIcon>
+                        <p-columnFilter field="value" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+                  <th rowspan="1" class="wd-21 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Description
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="masterDescription" pSortableColumn="masterDescription">
+                        </p-sortIcon>
+                        <p-columnFilter field="masterDescription" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+  
+                
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      From Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="fromDate" pSortableColumn="fromDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="fromDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      To Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="toDate" pSortableColumn="toDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+                </tr>
+  
+              </ng-template>
+              <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+  
+                <tr class="p-selectable-row">
+  
+                  <td class="bg-color-light_gray text-center"><label
+                      class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+  
+                  <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.jobDetail}}">{{user1.jobDetail}}</label></td>
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.jobField}}">{{user1.jobField}}</label>
+                  </td> -->
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.value}}">{{user1.value}}</label>
+                  </td>
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                    tooltip="{{user1.masterDescription}}">{{user1.masterDescription}}</label>
+                 </td>
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.fromDate}}">{{user1.fromDate}}</label>
+                  </td>
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.toDate}}">{{user1.toDate}}</label>
+                  </td>
+  
+  
+  
+                </tr>
+              </ng-template>
+            </p-table>
+  
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+  </ng-template>

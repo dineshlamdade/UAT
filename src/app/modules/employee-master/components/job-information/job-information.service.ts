@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, JsonpClientBackend } from '@angular/common/http';
 import { environment } from './../../../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, distinctUntilChanged } from 'rxjs/operators';
@@ -15,11 +15,14 @@ export class JobInformationService {
   constructor(private httpClient: HttpClient) { }
 
   //GET summary API call
-  getSummaryDetails(payrollAreaId,employeeMasterId){
+  getSummaryDetails(payrollAreaId,employeeMasterId,summaryType,jobId,jobDetail){
 
    let formData: any = new FormData();
     formData.append('payrollAreaId',JSON.stringify(payrollAreaId));
-    formData.append('employeeMasterId',JSON.stringify(employeeMasterId))
+    formData.append('employeeMasterId',JSON.stringify(employeeMasterId));
+    formData.append('summaryType',Number(summaryType));
+    formData.append('jobId',jobId);
+    formData.append('jobDetail',jobDetail);
     // formData.append('type','summary')
  
     return this.httpClient.post(environment.baseUrl8082 + 'employee-job-information/summary/',formData,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
@@ -188,7 +191,7 @@ formData.append('employeeMasterId',JSON.stringify(employeeMasterId));
   //Minimum wages drop down GET API call
   getMinimumDropdown(){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/minimumwages-dropdown/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + 'minimumwages-dropdown/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

@@ -39,7 +39,7 @@ export class OrganizationDetailsModel {
 		public position4List:JobDetailsDTO,
 		public position5List:JobDetailsDTO,
 		public typeList:JobDetailsDTO,
-        public statusList:JobDetailsDTO,
+        //public statusList:JobDetailsDTO,
         public taxCategoryList:JobDetailsDTO,
 		public skillList:JobDetailsDTO,
 		public workList:JobDetailsDTO

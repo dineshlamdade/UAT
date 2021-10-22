@@ -1,11 +1,12 @@
 
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JobInformationService } from '../job-information.service';
 import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -33,8 +34,11 @@ export class JobSummaryComponent implements OnInit {
   data:Array<any>=[];
   primaryMainData: any;
   payrollType:any;
+  modalRef: any;
+  dataapi: any;
+  historyData: Array<any>=[];
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
-    private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
+    private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService, private modalService: BsModalService) { }
    
 
   ngOnInit(): void {
@@ -86,13 +90,15 @@ export class JobSummaryComponent implements OnInit {
     // }
    
 
-    
-    this.JobInformationService.getSummaryDetails(this.payrollAreaId,this.employeeMasterId).subscribe(res => {
+    const jobId='job1Id';
+    const jobDetail = 'Orgnization Details';
+    const summaryType=0;
+    this.JobInformationService.getSummaryDetails(this.payrollAreaId,this.employeeMasterId,summaryType,jobId,jobDetail).subscribe(res => {
 
       if (res.data.results[0]) {
        
        this.summaryGridData = res.data.results[0];
-
+       console.log('Summary Data',this.summaryGridData);
       }
     }, (error: any) => {
 
@@ -228,7 +234,7 @@ export class JobSummaryComponent implements OnInit {
     if (job === "Minimum Wages") {
       this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
     }
-    else if (job === "Organization Details") {
+    else if (job == "Organization Details") {
       this.router.navigate(['/employee-master/job-information/organization-details']);
     }
     else if (job === "Position Details") {
@@ -238,9 +244,26 @@ export class JobSummaryComponent implements OnInit {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
   }
+// for job hostory call 
+  showHistory(data){
 
+    const summaryType=1;
+    const jobId=data.jobId;
+    const jobDetail = data.jobDetail;
+    this.JobInformationService.getSummaryDetails(this.payrollAreaId,this.employeeMasterId,summaryType,jobId,jobDetail).subscribe(res => {
 
+      if (res.data.results[0]) { 
+       
+       this.historyData = res.data.results[0];
 
+      }
+    }, (error: any) => {
+
+      this.resetSummary();
+
+    })
+    // this.historyData[0] = this.summaryGridData.find(x=>x.value==data)
+  }
 
   //reset summary grid
   resetSummary() {
@@ -268,5 +291,18 @@ export class JobSummaryComponent implements OnInit {
     });
   
 }
+ViewModal(template: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-lg' }),
+  );
 
+console.log(this.dataapi);
+var el = (document.getElementById('somerow')) as HTMLTableRowElement;
+var k=(document.getElementById('particulars1')) as HTMLTableRowElement;
+const table = document.querySelector('#somerow');
+const rows = table;
+console.log(k);
+// console.log(table)    
+}
 }
