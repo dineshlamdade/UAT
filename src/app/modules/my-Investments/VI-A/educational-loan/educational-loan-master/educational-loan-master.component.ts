@@ -189,6 +189,7 @@ export class EducationalLoanMasterComponent implements OnInit {
         Validators.required
       ),
       lenderName: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanEndDate: new FormControl(null, Validators.required),
       educationalLoanMasterId: new FormControl(0),
