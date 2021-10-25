@@ -93,7 +93,7 @@ export class MediclaimMasterComponent implements OnInit {
   public familyRelationSame: boolean;
 
   public documentRemark: any;
-  public isECS = true;
+  public ecs = true;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -164,7 +164,7 @@ export class MediclaimMasterComponent implements OnInit {
       policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
-
+     // remark: new FormControl(null),
       frequencyOfPayment: new FormControl('', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
@@ -176,6 +176,7 @@ export class MediclaimMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       mediclaimMasterId: new FormControl(0),
+      remark: new FormControl(null),
       mediclaimPaymentDetailId: new FormControl(0),
       proofSubmissionId: new FormControl(''),
       // depositType: new FormControl("", Validators.required),
@@ -520,6 +521,7 @@ export class MediclaimMasterComponent implements OnInit {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
           institution: this.masterForm.institution.value,
+          //remark: this.masterForm.remark.value,
           policyNumber: this.masterForm.policyNumber.value,
           policyStartDate: this.masterForm.policyStartDate.value,
           policyEndDate: this.masterForm.policyEndDate.value,
@@ -533,7 +535,7 @@ export class MediclaimMasterComponent implements OnInit {
               .toString()
               .replace(/,/g, ''),
             annualAmount: this.masterForm.annualAmount.value,
-            isECS: this.masterForm.ecs.value,
+            ecs: this.masterForm.ecs.value,
             fromDate: this.masterForm.fromDate.value,
             toDate: this.masterForm.toDate.value,
           },
@@ -547,6 +549,7 @@ export class MediclaimMasterComponent implements OnInit {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
           institution: this.masterForm.institution.value,
+         // remak:this.masterForm.remak.value,
           // policyNumber: this.masterForm.policyNumber.value,
           // policyStartDate: this.masterForm.policyStartDate.value,
           // policyEndDate: this.masterForm.policyEndDate.value,
@@ -579,6 +582,7 @@ export class MediclaimMasterComponent implements OnInit {
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
                       'status' : element.documentInformationList[0].status,
+                      //'remark': element.documentInformationList[0].remark,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
@@ -595,6 +599,7 @@ export class MediclaimMasterComponent implements OnInit {
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
                       'status' : element.documentInformationList[1].status,
+                      'remark': element.documentInformationList[0].remark,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 

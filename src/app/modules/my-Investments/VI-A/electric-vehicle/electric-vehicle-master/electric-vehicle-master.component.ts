@@ -492,6 +492,7 @@ console.log('this.isEdit', this.isEdit);
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
+                      'remark':element.documentInformationList[1].remark,  
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
