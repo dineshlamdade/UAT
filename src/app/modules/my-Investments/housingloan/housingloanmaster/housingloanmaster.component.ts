@@ -42,6 +42,17 @@ export class HousingloanmasterComponent implements OnInit {
   @Input() public housePropertyMasterIds: any;
   documentPassword= [];
   remarkList = [];
+  stampDutydocumentPassword= [];
+  stampDutyremarkList = [];
+  loandocumentPassword= [];
+  loanremarkList = [];
+  possessiondocumentPassword= [];
+  possessionremarkList = [];
+
+  documentDataArray = [];
+  stampDutydocumentDataArray = [];
+  loandocumentDataArray = [];
+  possessiondocumentDataArray = [];
 
   public countriesList: Array<any> = [];
   public showOwner = false;
@@ -898,6 +909,55 @@ export class HousingloanmasterComponent implements OnInit {
     this.houseLoanUsageTypeList.length;
     this.loanDetailGridData.length;
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.stampDutydocumentPassword.length; i++) {
+      if(this.stampDutydocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.stampDutyremarkList[i],
+          "password": this.stampDutydocumentPassword[i]
+        };
+        this.stampDutydocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.loandocumentPassword.length; i++) {
+      if(this.loandocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.loanremarkList[i],
+          "password": this.loandocumentPassword[i]
+        };
+        this.loandocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.possessiondocumentPassword.length; i++) {
+      if(this.possessiondocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.possessionremarkList[i],
+          "password": this.possessiondocumentPassword[i]
+        };
+        this.possessiondocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
     // housingLoanForm housePropertyLoanDetailList HPUsageDetailForm HPOwnerDetailForm
     // houseLoanF  housePropertyLoanList HPUsageDetailF HPOwnerDetailF
     let invalidSubmission = false;
@@ -977,6 +1037,10 @@ export class HousingloanmasterComponent implements OnInit {
         housePropertyUsageTypeList: this.houseLoanUsageTypeList,
         housePropertyOwnerDetailList: this.houseLoanOwnerTypeList,
         housePropertyLoanDetailList: this.loanDetailGridData,
+        remarkPasswordList: this.documentDataArray,
+        stampDutyremarkPasswordList: this.stampDutydocumentDataArray,
+        loanremarkPasswordList: this.loandocumentDataArray,
+        possessionremarkPasswordList: this.possessiondocumentDataArray,
       };
 
       // data.housePropertyLoanDetailList = this.loanDetailGridData;

@@ -41,6 +41,7 @@ export class PpdeclarationComponent implements OnInit {
 
   documentRemarkList: any;
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -1341,7 +1342,7 @@ export class PpdeclarationComponent implements OnInit {
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -1501,7 +1502,7 @@ export class PpdeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
