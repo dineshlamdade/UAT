@@ -58,14 +58,17 @@
 
                                                                     </div>
                                                                 </div>
+
+                                                                <!-- Excel Download-->
+                                                                <a tooltip="Download" style="cursor: pointer;float:right; margin-left: 98%; margin-top: 7px;"
+                                                                    (click)="SummaryexportAsXLSX()">
+                                                                    <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                        aria-hidden="true">
+                                                                    </i>
+                                                                </a>
+
                                                             </div>
-                                                            <!-- Excel Download-->
-                                                            <a tooltip="Download" style="cursor: pointer;float:right;"
-                                                                (click)="SummaryexportAsXLSX()">
-                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                                                                    aria-hidden="true">
-                                                                </i>
-                                                            </a>
+                                                            
 
                                                             <p-table [value]="summeryData" class="mt-10"
                                                                 [paginator]="true" [rows]="10"
@@ -161,10 +164,10 @@
                                                                                 Type
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="payrollHeadMaster.displayName">
+                                                                                        field="type">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="payrollHeadMaster.displayName"
+                                                                                        field="type"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -178,10 +181,10 @@
                                                                                 Group Id
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="nonRecurringTransactionGroupId">
+                                                                                        field="nonSalaryTransactionGroupId">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="nonRecurringTransactionGroupId"
+                                                                                        field="nonSalaryTransactionGroupId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -226,10 +229,10 @@
                                                                                 Quantity
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="payrollHeadMaster.displayName">
+                                                                                        field="quantity">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="payrollHeadMaster.displayName"
+                                                                                        field="quantity"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -243,10 +246,10 @@
                                                                                 UOM
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="payrollHeadMaster.displayName">
+                                                                                        field="uom">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="payrollHeadMaster.displayName"
+                                                                                        field="uom"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -455,13 +458,14 @@
 
                                                                     <div style="float:right;margin-top:-25px;"
                                                                         *ngIf="selectedEmpData[index] && !showEmployeeSelectionFlag">
-                                                                        <strong>Record {{index + 1 }} of
+                                                                        <strong>Record <span>{{index + 1 }} </span> of
                                                                             {{selectedEmpData.length}}</strong>
                                                                     </div>
 
                                                                     <div style="float:right;margin-top:-25px;"
                                                                         *ngIf="payrollListEmpData && showDropdownDisabled">
-                                                                        <strong>Record {{parollListIndex + 1 }} of
+                                                                        <strong>Record <span>
+                                                                            {{parollListIndex + 1 }} </span> of
                                                                             {{payrollListEmpData.length}}</strong>
                                                                     </div>
 
@@ -666,10 +670,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headtype">
+                                                                                                        field="selectedStandardName">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headtype"
+                                                                                                        field="selectedStandardName"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -683,10 +687,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headtype">
+                                                                                                        field="type">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headtype"
+                                                                                                        field="type"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -700,10 +704,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headdesc">
+                                                                                                        field="nonSalaryDTO.descriptionHeadOfPayment">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headdesc"
+                                                                                                        field="nonSalaryDTO.descriptionHeadOfPayment"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -718,10 +722,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="onceevery">
+                                                                                                        field="onceEvery">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="onceevery"
+                                                                                                        field="onceEvery"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -773,10 +777,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="FromDate">
+                                                                                                        field="fromDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="FromDate"
+                                                                                                         type="date"
+                                                                                                        field="fromDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -791,10 +796,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="activity">
+                                                                                                        field="transactionsType">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="activity"
+                                                                                                        field="transactionsType"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -809,10 +814,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="Nooftrans">
+                                                                                                        field="numberOfTransactions">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="Nooftrans"
+                                                                                                    type="number"
+                                                                                                        field="numberOfTransactions"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -827,10 +833,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="ToDate">
+                                                                                                        field="toDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="ToDate"
+                                                                                                        type="date"
+                                                                                                        field="toDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -845,10 +852,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="openingval">
+                                                                                                        field="quantity">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="openingval"
+                                                                                                         type="number"
+                                                                                                        field="quantity"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -863,10 +871,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="closingamt">
+                                                                                                        field="quantity">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="closingamt"
+                                                                                                        type="number"
+                                                                                                        field="quantity"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -904,6 +913,7 @@
                                                                                             <input type="text"
                                                                                                 value="{{data.onceEvery}}"
                                                                                                 class="form-control"
+                                                                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 (focusout)="getOnceEveryChange($event.target.value)">
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
@@ -990,6 +1000,7 @@
                                                                                                 <input
                                                                                                     class="form-control"
                                                                                                     value="{{data.numberOfTransactions}}"
+                                                                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                     (focusout)="getUpdateNoOfTransaction($event.target.value)"
                                                                                                     [disabled]="selectedTransactionType != 'NoOfTransaction'">
                                                                                             </label>
@@ -1013,6 +1024,7 @@
                                                                                         <td class="bg-color-light_gray">
                                                                                             <input
                                                                                                 class="form-lable mb-0"
+                                                                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 value="{{data.quantity}}"
                                                                                                 disabled>
                                                                                         </td>
@@ -1020,6 +1032,7 @@
                                                                                             <input type="text"
                                                                                                 value="{{data.quantity}}"
                                                                                                 class="form-control"
+                                                                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
                                                                                                 (focusout)="getUpdateOpeningAmt($event.target.value,data)">
                                                                                         </td>
@@ -1070,7 +1083,7 @@
                                                                             </p-table>
 
                                                                             <!-- On click on transaction tab (save)-->
-                                                                            <p-table *ngIf="showEmployeeSelectionFlag"
+                                                                            <p-table *ngIf="showEmployeeSelectionFlag && NonRecurringTransactionGroupAPIEmpwiseData"
                                                                                 [value]="NonRecurringTransactionGroupAPIEmpwiseData"
                                                                                 [paginator]="true" [rows]="10"
                                                                                 [showCurrentPageReport]="true"
@@ -1090,10 +1103,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headtype">
+                                                                                                        field="headType">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headtype"
+                                                                                                        field="headType"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -1107,10 +1120,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headtype">
+                                                                                                        field="standardName">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headtype"
+                                                                                                        field="standardName"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -1124,10 +1137,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headdesc">
+                                                                                                        field="headDescription">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="headdesc"
+                                                                                                        field="headDescription"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1140,18 +1153,6 @@
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                                 Once Every
-                                                                                                <div
-                                                                                                    class="Sort_Filter_Position">
-                                                                                                    <p-sortIcon
-                                                                                                        field="onceevery">
-                                                                                                    </p-sortIcon>
-                                                                                                    <p-columnFilter
-                                                                                                        field="onceevery"
-                                                                                                        display="menu"
-                                                                                                        class="p-ml-auto">
-
-                                                                                                    </p-columnFilter>
-                                                                                                </div>
                                                                                             </div>
                                                                                         </th>
 
@@ -1181,10 +1182,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="FromDate">
+                                                                                                        field="fromDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="FromDate"
+                                                                                                        field="fromDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1199,10 +1200,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="activity">
+                                                                                                        field="transactionsType">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="activity"
+                                                                                                        field="transactionsType"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1217,10 +1218,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="Nooftrans">
+                                                                                                        field="NoOfTransaction">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="Nooftrans"
+                                                                                                        field="NoOfTransaction"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1235,10 +1236,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="ToDate">
+                                                                                                        field="toDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="ToDate"
+                                                                                                    type="date"
+                                                                                                        field="toDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1253,10 +1255,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="openingval">
+                                                                                                        field="quantity">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="openingval"
+                                                                                                    type="number"
+                                                                                                        field="quantity"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -1271,10 +1274,11 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="closingamt">
+                                                                                                        field="quantity">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="closingamt"
+                                                                                                    type="number"
+                                                                                                        field="quantity"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1343,6 +1347,7 @@
                                                                                         <td>
                                                                                             <input type="text" value="1"
                                                                                                 class="form-control"
+                                                                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 (focusout)="getOnceEveryChangeForSave($event.target.value,data)">
                                                                                         </td>
 
@@ -1428,6 +1433,7 @@
                                                                                                 class="form-lable mb-0">
                                                                                                 <input
                                                                                                     class="form-control"
+                                                                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                     [value]="data.transactionsType != 'NoOfTransaction' ? '' : 1"
                                                                                                     (focusout)="saveNoOfTransaction($event.target.value,data)"
                                                                                                     [disabled]="data.transactionsType != 'NoOfTransaction'">
@@ -1449,12 +1455,14 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <input class="form-control"
+                                                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 value="{{data.quantity | number: '1.2-2'}}"
                                                                                                 disabled>
                                                                                         </td>
                                                                                         <td>
                                                                                             <!-- [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'" -->
                                                                                             <input type="text"
+                                                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                                                                 value="{{data.quantity | number: '1.2-2'}}"
                                                                                                 class="form-control"
                                                                                                 (focusout)="transactionOpeningAmount($event.target.value,data,rowIndex)">
@@ -1545,6 +1553,8 @@
                                                                                 </button>
                                                                                 <button type="button" tooltip="Save"
                                                                                     *ngIf="showEmployeeSelectionFlag"
+                                                                                    [disabled]="svaeDisabledFlag"
+                                                                                    [ngClass]="{'disabled-btn-bg-green':svaeDisabledFlag}"
                                                                                     (click)="NonRecurringTransactionGroup()"
                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10">
                                                                                     <b><i class="fa fa-floppy-o"
@@ -1592,6 +1602,7 @@
                                                                                     Next
                                                                                 </button>
                                                                                 <button type="button" tooltip="Reset"
+                                                                                (click)="resetTransactionForm()"
                                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                                                                     <b><i class="fa fa-refresh"
                                                                                             aria-hidden="true"></i></b>
@@ -2074,13 +2085,14 @@
                                                                         <td class="bg-color-light_gray">
                                                                             <label
                                                                                 class="custom-control custom-checkbox checkbox-center">
+                                                                                {{ScheduleData.discard}}
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
                                                                                     (click)="getHoldScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                    [disabled]="ScheduleData.discard == true
-                                                                                    || (selecteddiscardIndex == rowIndex && discard == 1)
-                                                                                    || ScheduleData.isDisabledFlag"
+                                                                                    [disabled]="ScheduleData.discard == true || ScheduleData.isDisabledFlag"
                                                                                     [checked]="ScheduleData.hold == true" />
+                                                                                    <!-- || (selecteddiscardIndex == rowIndex && discard == 1) -->
+                                                                                    <!-- || ScheduleData.isDisabledFlag -->
                                                                                 <span
                                                                                     class="custom-control-label"></span>
                                                                             </label>
@@ -2091,10 +2103,11 @@
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
                                                                                     (click)="getDiscardScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                    [disabled]="ScheduleData.hold == true
-                                                                                    || (selecteddiscardIndex == rowIndex && hold == 1)
-                                                                                    || ScheduleData.isDisabledFlag"
+                                                                                    [disabled]="ScheduleData.hold == true || ScheduleData.isDisabledFlag"
                                                                                     [checked]="ScheduleData.discard == true" />
+                                                                                    
+                                                                                    <!-- || (selecteddiscardIndex == rowIndex && hold == 1) -->
+                                                                                    <!-- || ScheduleData.isDisabledFlag -->
                                                                                 <span
                                                                                     class="custom-control-label"></span>
                                                                             </label>
@@ -2580,13 +2593,15 @@
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                                 <i class="fa fa-floppy-o"></i></b> Save
                                                                             & Next</button> -->
-                                                                        <button type="button" tooltip="Next"
+                                                                        <button type="button" tooltip="Save"
                                                                             (click)="NonRecurringTransactionScheduleupdateById()"
+                                                                            [disabled]="updateScheduleData.length == 0"
+                                                                            [ngClass]="{'disabled-btn' : updateScheduleData.length == 0}"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
                                                                                     class="fa fa-floppy-o"
                                                                                     aria-hidden="true"></i></b>Save</button>
 
-                                                                        <button type="button" tooltip="Next"
+                                                                        <button type="button" tooltip="Cancel" (click)="cancelBtn()"
                                                                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                                                     class="fa fa-times"
                                                                                     aria-hidden="true"></i></b>Cancel</button>

@@ -68,7 +68,6 @@ export class GarnishmentTransactionComponent implements OnInit {
       this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
     }
 
-
     this.applicationForm = new FormGroup({
     "garnishmentApplicationMasterId": new FormControl(''),
       "employeeMasterId": new FormControl(""),
@@ -109,6 +108,8 @@ export class GarnishmentTransactionComponent implements OnInit {
         this.employeeFinDetailsData = res.data.results[0][0];
       }
     )
+
+    this.getEmployeePayrollArea()
   }
 
 
@@ -124,7 +125,6 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.payrollheadmaster()
     this.today = this.datepipe.transform(new Date(), 'dd-MMM-yyyy')
     this.getAllGarnishmentMaster()
-    this.getEmployeePayrollArea()
     this.getApplicationSummary()
   }
 
@@ -156,6 +156,8 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.editFlag = false
     this.viewFlag = false
     this.applicationForm.enable()
+    this.selectedEmpData = []
+    this.applicationForm.reset()
     this.garnishmentservice.getAllGarnishmentMaster().subscribe(res => {
       this.garnishmentMasterData = res.data.results;
     })
@@ -167,6 +169,24 @@ export class GarnishmentTransactionComponent implements OnInit {
       this.applicationSummaryData = res.data.results
     })
   }
+
+  /** When clicked on checkedbox summary page*/
+	isSelected(event, summeryData) {
+		if (event.checked) {
+			this.selectedEmpData.push(summeryData)
+		} else {
+			if (this.selectedEmpData.length > 0) {
+				this.selectedEmpData.forEach((element, index) => {
+					if (element.employeeMasterId == summeryData.employeeMasterId) {
+						let ind = index;
+						this.selectedEmpData.splice(ind, 1);
+					}
+				});
+			} else {
+				this.selectedEmpData = []
+			}
+		}
+	}
 
   /** Get Selected Garnishment Value */
   getSelectedGarnishment(garnishmentMasterId) {
@@ -304,7 +324,9 @@ export class GarnishmentTransactionComponent implements OnInit {
     
     console.log("save application : " + JSON.stringify(this.applicationForm.value))
 
-    this.garnishmentservice.saveApplication(this.applicationForm.value).subscribe(res => {
+    let data = [this.applicationForm.value]
+
+    this.garnishmentservice.saveApplication(data).subscribe(res => {
       this.alertService.success("Application data Saved successfully")
       this.editFlag = false;
       this.viewFlag = false;
@@ -315,6 +337,7 @@ export class GarnishmentTransactionComponent implements OnInit {
       this.viewFlag = false
       this.applicationForm.controls['goalBalanceAmount'].setValue(0)
       this.applicationForm.controls['goalBalanceAmount'].disable()
+      this.indexId = 1
     })
   }
 
@@ -323,6 +346,7 @@ export class GarnishmentTransactionComponent implements OnInit {
     let today = new Date()
     let applicationDate = ''
     applicationDate = this.datepipe.transform(new Date(today), 'yyyy-MM-dd')
+    this.applicationForm.enable()
     this.applicationForm.controls['applicationDate'].setValue(applicationDate)
     this.applicationForm.controls['employeeMasterId'].setValue(this.selectedEmployeeMasterId)
     this.applicationForm.controls['payrollAreaId'].setValue(parseInt(this.applicationForm.controls['payrollAreaId'].value))
@@ -352,22 +376,28 @@ export class GarnishmentTransactionComponent implements OnInit {
 
 
   /** Edit application */
+
+  editTransaction(){
+     this.editApplication(this.selectedEmpData)
+     this.getSelectedEmployeeCode(this.selectedEmpData[0].employeeMasterResponseDTO.employeeMasterId)
+  }
+
   editApplication(data){
     this.editFlag = true;
     this.viewFlag = false;
     this.indexId = 2
     const formData = new FormData();
-    formData.append('garnishmentApplicationMasterId', data.garnishmentApplicationMasterId)
+    formData.append('garnishmentApplicationMasterId', data[0].garnishmentApplicationMasterId)
 
     this.garnishmentApplicationMasterId = data.garnishmentApplicationMasterId
 
     this.garnishmentservice.getapplicationDataById(formData).subscribe(res => {
       this.editApplicationData = res.data.results[0];
-      this.applicationForm.controls['payrollAreaId'].setValue(this.editApplicationData.payrollArea.payrollAreaId)
-      this.applicationForm.controls['garnishmentMasterId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
-      this.getSelectedGarnishment(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
       this.applicationForm.enable()
       this.applicationForm.patchValue(this.editApplicationData)
+      this.applicationForm.controls['garnishmentMasterId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
+      this.applicationForm.controls['payrollAreaId'].setValue(this.editApplicationData.payrollArea.payrollAreaId)
+      this.getSelectedGarnishment(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
       this.applicationForm.controls['goalBalanceAmount'].setValue(0)
       this.applicationForm.controls['goalBalanceAmount'].disable()
       this.applicationForm.controls['payrollAreaId'].disable()
