@@ -407,13 +407,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         }
       });
      }
-    //  if(this.documentRemarkValidation){
-    //   this.alertService.sweetalertWarning(
-    //     'Please give Remark for Send Back Document'
-    //   );
-    //   this.documentRemarkValidation = false;
-    //   return;
-    // }
+     if(this.documentRemarkValidation){
+      this.alertService.sweetalertWarning(
+        'Please give Remark for Send Back Document'
+      );
+      this.documentRemarkValidation = false;
+      return;
+    }
      if(status=='Approved'){
 
        this.transactionInfo.documentList.forEach((doc)=>
@@ -587,7 +587,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     this.testRemark = event.target.value;
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
-
+    this.transactionInfo.documentList[0].remark = event.target.value;
     this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].remark =  event.target.value;
     console.log('remark::', this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].remark);
 

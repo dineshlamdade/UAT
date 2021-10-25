@@ -1081,7 +1081,7 @@
     </h5>
     <button
       type="button"
-      (click)="modalRef.hide()"
+      (click)="modalRef1.hide()"
       class="close"
       data-dismiss="modal"
       aria-label="Close"
@@ -1504,7 +1504,7 @@
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
                   <span class="title">
-                    {{ item.name }}
+                    {{ item?.name }}
                   </span>
                   <div>
                     <div style="float: left; width: 40%;">
@@ -1562,7 +1562,7 @@
           <div class="col-md-12" *ngFor="let doc of urlArray">
             <div class="labelbox" placement="left" tooltip="{{ doc.fileName }}">
               <i class="fa fa-paperclip text-orange"></i> &nbsp;
-              {{ doc.fileName }}
+              {{ doc?.fileName }}
             </div>
           </div>
         </div>
@@ -1828,7 +1828,7 @@
                                 </p-tableCheckbox>
                               </td> -->
                               <td>
-                                {{document.lastModifiedTime | date:'dd-MMM-yyyy' }}
+                                {{document?.lastModifiedTime | date:'dd-MMM-yyyy' }}
                               </td>
                               <td>
                                 <a
@@ -1842,11 +1842,11 @@
                                 "
                                   ></i>
                                   &nbsp;
-                                  {{ document.documentName }}
+                                  {{ document?.documentName }}
                                 </a>
                               </td>
-                              <td>{{ document.documentType }}</td>
-                              <td>{{ document.documentPassword }}</td>
+                              <td>{{ document?.documentType }}</td>
+                              <td>{{ document?.documentPassword }}</td>
                               <td>
                                 <!-- <div class="custom_Label_badge">
                                   <button
@@ -1864,12 +1864,12 @@
                                     >2</span
                                   >
                                 </div> -->
-                                {{document.documentRemark}}
+                                {{document?.documentRemark}}
                               </td>
-                              <td>{{ document.status }}</td>
-                              <td>{{ document.lastModifiedBy }}</td>
+                              <td>{{ document?.status }}</td>
+                              <td>{{ document?.lastModifiedBy }}</td>
                               <!-- <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td> -->
-                              <td>{{ document.lastModifiedTime | date:'h:mm a'  }}</td>
+                              <td>{{ document?.lastModifiedTime | date:'h:mm a'  }}</td>
                             </tr>
                           </ng-template>
                         </p-table>
@@ -1935,7 +1935,7 @@
       *ngIf="viewDocumentDetail"
       type="button"
       tooltip="Save Document"
-      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      (click)="modalRef1?.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-save"></i></b> Save

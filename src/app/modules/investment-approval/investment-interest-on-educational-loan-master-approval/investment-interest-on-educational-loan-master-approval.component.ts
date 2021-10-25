@@ -151,7 +151,7 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
         if (res != null || res != undefined) {
          
           this.masterInfo = res;
-          
+          debugger
           this.documentDetailList =
             this.masterInfo.masterDetail.documentDetailList;
             this.documentDetailList.forEach((doc)=>{
@@ -591,6 +591,7 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
               ''
             );
           }
+          debugger
           this.documentDetailList =
             res.data.results[0].masterDetail.documentDetailList;
           this.getMasterInfo(res.data.results[0].psidDetail.psid);
