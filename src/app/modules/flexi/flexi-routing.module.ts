@@ -4,13 +4,6 @@ import { FlexibasketallocationComponent } from './flexibasketallocation/flexibas
 import { FlexiinputComponent } from './flexiinput/flexiinput.component';
 
 const routes: Routes = [
-
-  // {
-  //   path: 'admindashboard',
-  //   component: AdminDashboardComponent,
-  //   data: { title: ':: Delizia-HR :: Home' },
-  // },
-
   {
     path: '',
     children: [

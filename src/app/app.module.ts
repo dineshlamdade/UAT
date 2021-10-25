@@ -86,6 +86,7 @@ import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ExcelserviceService } from './core/services/excelservice.service';
+import { FlexiModule } from './modules/flexi/flexi.module';
 
 
 
@@ -160,7 +161,8 @@ import { ExcelserviceService } from './core/services/excelservice.service';
     SignaturePadModule,
     InvestmentApprovalModule,
     ApprovedInvestmentModule,
-    FormulamasterModule
+    FormulamasterModule,
+    FlexiModule
 
   ],
 

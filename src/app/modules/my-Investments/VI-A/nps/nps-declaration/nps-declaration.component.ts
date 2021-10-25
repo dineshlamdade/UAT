@@ -66,9 +66,6 @@ export class NpsDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
 
-  viewDocumentName: any;
-  viewDocumentType: any;
-
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
@@ -182,7 +179,6 @@ export class NpsDeclarationComponent implements OnInit {
   remark3List: any;
   dateOfJoining: Date;
   selectedFrequency: any;
-  Remark: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -880,19 +876,6 @@ export class NpsDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  //----------- On change Transactional Line Item Remark --------------------------
-  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
-    debugger
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
-
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
-
-  }
-
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
@@ -1385,8 +1368,6 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
 
-
-
   public docViewer1(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
@@ -1471,28 +1452,6 @@ export class NpsDeclarationComponent implements OnInit {
           });
         });
       });
-  }
-
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, policyNo
-  ) {
-    debugger
-    this.Service.getRemarkList(
-      policyNo,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
   }
 
   // public docRemarkModal(
@@ -1733,23 +1692,6 @@ export class NpsDeclarationComponent implements OnInit {
         this.urlArray[this.urlIndex].blobURI,
       );
     }
-
-    zoomin(){
-      var myImg = document.getElementById("map");
-      var currWidth = myImg.clientWidth;
-      if(currWidth == 2500) return false;
-       else{
-          myImg.style.width = (currWidth + 100) + "px";
-      } 
-  }
-   zoomout(){
-      var myImg = document.getElementById("map");
-      var currWidth = myImg.clientWidth;
-      if(currWidth == 100) return false;
-   else{
-          myImg.style.width = (currWidth - 100) + "px";
-      }
-  }
 
     docViewer(template3: TemplateRef<any>, documentDetailList: any) {
       console.log("documentDetailList::", documentDetailList)

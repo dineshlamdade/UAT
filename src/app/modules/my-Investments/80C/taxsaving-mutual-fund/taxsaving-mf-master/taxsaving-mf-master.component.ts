@@ -110,9 +110,6 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
 
-  viewDocumentName: any;
-  viewDocumentType: any;
-
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
@@ -866,29 +863,9 @@ export class TaxsavingMfMasterComponent implements OnInit {
     );
   }
 
-  zoomin(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 2500) return false;
-     else{
-        myImg.style.width = (currWidth + 100) + "px";
-    } 
-}
- zoomout(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 100) return false;
- else{
-        myImg.style.width = (currWidth - 100) + "px";
-    }
-}
-
-  docViewer(template3: TemplateRef<any>,index:any, data: any) {
+  docViewer(template3: TemplateRef<any>,index:any) {
     console.log("---in doc viewer--");
     this.urlIndex = index;
-
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
 
 
     console.log('urlIndex::' , this.urlIndex);

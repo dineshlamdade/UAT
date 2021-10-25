@@ -1862,7 +1862,7 @@
               </label>
             </div>
           </div>
-          <div class="col-md-12 mt-6">
+          <!-- <div class="col-md-12 mt-6">
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-6">
@@ -1871,7 +1871,7 @@
               [(ngModel)]="documentRemark"
               rows="2"
             ></textarea>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -2162,7 +2162,7 @@
                               </td>
                               <td>
                                 <a
-                                  (click)=" docViewer1(template3,documentIndex, document)"
+                                  (click)=" docViewer1(template3,documentIndex)"
 
                                 >
                                   <i
@@ -2290,22 +2290,7 @@
 <!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
-    <!-- <h5 class="modal-title" id="jasdjgh">Document Viewer</h5> -->
-    <div class="row">
-      <div class="col-sm-6 col-md-6 align-right">
-          <label class="form-label">Document Name</label>
-           {{this.viewDocumentName}}
-      </div>
-      <div class="col-sm-6 col-md-6 align-right">
-          <label class="form-label">Document Type</label>
-          
-          {{this.viewDocumentType}}
-      </div>
-    
-      </div>
-      <div class="align-right">
-        <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
-<button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2315,7 +2300,6 @@
     >
       <span aria-hidden="true">×</span>
     </button>
-  </div>
   </div>
   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
      <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
@@ -2333,12 +2317,11 @@
         </button>
       </div>
       <div class="col-md-10">
-        <!-- <iframe
+        <iframe
           style="height: 100vh; width: 100%; display: block"
           [src]="urlSafe"
           provider="google"
-        ></iframe> -->
-        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
+        ></iframe>
       </div>
       <div class="col-md-1">
         <button

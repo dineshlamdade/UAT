@@ -76,9 +76,6 @@ export class LicmasterComponent implements OnInit {
   public document2Password: any;
   public documentPassword = [];
   public remarkList = [];
-
-  viewDocumentName: any;
-  viewDocumentType: any;
   
 ;  public document2Remark: any;
   public isECS = true;
@@ -921,23 +918,6 @@ export class LicmasterComponent implements OnInit {
     );
   }
 
-
-  zoomin(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 2500) return false;
-     else{
-        myImg.style.width = (currWidth + 100) + "px";
-    } 
-}
- zoomout(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 100) return false;
- else{
-        myImg.style.width = (currWidth - 100) + "px";
-    }
-}
   // ---------- For Doc Viewer -----------------------
   public nextDoc1Viewer() {
     this.premiumurlIndex = this.premiumurlIndex + 1;
@@ -952,12 +932,10 @@ export class LicmasterComponent implements OnInit {
       this.PremiumurlArray[this.premiumurlIndex].blobURI
     );
   }
-  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
+  public docViewer(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
     
 console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

@@ -181,12 +181,30 @@
                         </div>
                         <div class="row mt-10">
                           <div class="col-md-3">
-                            <label class="form-label">Student Name</label>
+                            <label class="form-label">Institution</label>
                             <input
                               class="form-control"
                               disabled
                               value="{{
-                                masterInfo.masterDetail.studentName
+                                masterInfo.masterDetail.institutionName
+                              }}"
+                            />
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Policy No.</label>
+                            <input
+                              class="form-control"
+                              disabled
+                              value="{{ masterInfo.masterDetail.policyNo }}"
+                            />
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Policy Holder Name</label>
+                            <input
+                              class="form-control"
+                              disabled
+                              value="{{
+                                masterInfo.masterDetail.policyholdername
                               }}"
                             />
                           </div>
@@ -198,38 +216,9 @@
                               value="{{ masterInfo.masterDetail.relationship }}"
                             />
                           </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Lender Name</label>
-                            <input
-                              class="form-control"
-                              disabled
-                              value="{{
-                                masterInfo.masterDetail.lenderName
-                              }}"
-                            />
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Loan Account No</label>
-                            <input
-                              class="form-control"
-                              disabled
-                              value="{{ masterInfo.masterDetail.loanAccountNumber }}"
-                            />
-                          </div>
-                          <!-- <div class="col-md-3">
-                            <label class="form-label">Policy No.</label>
-                            <input
-                              class="form-control"
-                              disabled
-                              value="{{ masterInfo.masterDetail.policyNo }}"
-                            />
-                          </div> -->
-                         
-                          
                         </div>
                         <div class="row mt-15">
-                          
-                          <!-- <div class="col-md-3">
+                          <div class="col-md-3">
                             <label class="form-label">Policy Start Date</label>
                             <input
                               class="form-control"
@@ -239,14 +228,14 @@
                                   | date: 'dd-MMM-yyyy'
                               }}"
                             />
-                          </div> -->
+                          </div>
                           <div class="col-md-3">
-                            <label class="form-label"> Loan End Date</label>
+                            <label class="form-label"> Policy End Date</label>
                             <input
                               class="form-control"
                               disabled
                               value="{{
-                                masterInfo.masterDetail.loanEndDate
+                                masterInfo.masterDetail.policyEndDate
                                   | date: 'dd-MMM-yyyy'
                               }}"
                             />
@@ -355,14 +344,14 @@
                             </div>
                           </div> -->
 
-                        <!-- <div class="row mt-25"> -->
+                        <div class="row mt-25">
                           <!-- <fieldset> -->
-                          <!-- <div class="col-12 col-md-12 col-sm-12">
+                          <div class="col-12 col-md-12 col-sm-12">
                             <legend>Payment Details</legend>
-                          </div> -->
-                        <!-- </div> -->
+                          </div>
+                        </div>
                         <!-- Master Payment Details -->
-                        <!-- <div class="row mt-15">
+                        <div class="row mt-15">
                           <div class="col-12 col-md-12 col-sm-12">
                             <div class="table-responsive Custom_Table">
                               <p-table
@@ -435,7 +424,7 @@
                               </p-table>
                             </div>
                           </div>
-                        </div> -->
+                        </div>
                         <!-- Master Payment Details End -->
 
                         <div class="row mt-10">

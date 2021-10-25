@@ -38,7 +38,6 @@ export class LicdeclarationComponent implements OnInit {
   @Input() public institution: string;
   @Input() public policyNo: string;
   @Input() public data: any;
-  documentRemarkList: any;
   public testPolicy = '';
   public selectPolicyName = '';
   public modalRef: BsModalRef;
@@ -64,10 +63,6 @@ export class LicdeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
   documentDataArray = [];
   editdDocumentDataArray = [];
-
-
-  viewDocumentName: any;
-  viewDocumentType: any;
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -199,7 +194,6 @@ export class LicdeclarationComponent implements OnInit {
    dateofsubmission: any;
    disableRemarkList = false
    disableRemark: any;
-   Remark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1089,19 +1083,6 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-   //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
-    debugger
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
-
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
-
-  }
-
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
@@ -1469,12 +1450,10 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.documentArray = [];
   }
 
-  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
+  public docViewer1(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
@@ -1564,28 +1543,6 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
         });
       });
   }
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, policyNo
-  ) {
-    debugger
-    this.Service.getRemarkList(
-      policyNo,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
-
 
   // Upload Document And save Edited Transaction
   public uploadUpdateTransaction() {
@@ -1827,23 +1784,6 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       this.urlArray[this.urlIndex].blobURI,
     );
   }
-
-  zoomin(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 2500) return false;
-     else{
-        myImg.style.width = (currWidth + 100) + "px";
-    } 
-}
- zoomout(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 100) return false;
- else{
-        myImg.style.width = (currWidth - 100) + "px";
-    }
-}
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     

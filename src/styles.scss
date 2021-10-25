@@ -34,3 +34,7 @@
 .p-datatable .p-component{
     height: 300px !important;
   }
+
+  .p-datatable-wrapper .ng-star-inserted{
+    overflow: auto !important;
+}

@@ -43,7 +43,6 @@ const routes: Routes = [
         path:   'Non-Recurring-qty',
         component:  NonRecurringQtyComponent,
         data: { title: ':: DelziaHR :: Non-Recurring-qty' },
-
       },
       {
         path:   'attendance',
@@ -55,7 +54,6 @@ const routes: Routes = [
         path:   'sdm-creation',
         component:  SdmStepperComponent,
         data: { title: ':: DelziaHR :: SDM Creation' },
-
       },
       {
         path:   'hold-release',
@@ -99,7 +97,7 @@ const routes: Routes = [
       {
         path: 'formula',
         component: FormulamasterComponent,
-        data: { title: ':: DelziaHR :: Garnishment Transaction'}
+        data: { title: ':: DelziaHR :: Formula'}
       },
     ],
   },

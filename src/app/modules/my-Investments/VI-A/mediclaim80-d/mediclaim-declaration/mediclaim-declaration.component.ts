@@ -39,8 +39,6 @@ export class MediclaimDeclarationComponent implements OnInit {
   @Input() public policyNo: string;
   @Input() public data: any;
 
-  documentRemarkList: any;
-
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -72,23 +70,6 @@ export class MediclaimDeclarationComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
-
-  documentDataArray = [];
-  editdDocumentDataArray = [];
-
-  viewDocumentName: any;
-  viewDocumentType: any;
-
-  documentArray: any[] =[];
-
-  documentPassword =[];
-  remarkList =[];
-  editdocumentPassword =[];
-  editremarkList =[];
-  document3Password: any;
-  remark3List: any;
-  Remark: any;
-
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -214,7 +195,6 @@ export class MediclaimDeclarationComponent implements OnInit {
   mediclaimTransactionList: any;
   mediclaimTransList = [];
   preventiveHealthCheckupTransactionList:any[] = [];
-  editDocumentRemark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -577,21 +557,6 @@ export class MediclaimDeclarationComponent implements OnInit {
   //     this.globalPolicy
   //   );
   // }
-
-  
-
-  onMasterUpload(event: { target: { files: string | any[] } }) {
-    // console.log('event::', event);
-    if (event.target.files.length > 0) {
-      for (const file of event.target.files) {
-        this.masterfilesArray.push(file);
-        // this.masterFileName = file.name
-        // this.masterFileType = file.type
-        // this.masterFileStatus = file.status
-      }
-    }
-    // console.log('this.masterfilesArray::', this.masterfilesArray);
-  }
 
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
@@ -1824,37 +1789,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-   //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
-    debugger
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
-
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
-
-  }
-  transactionDetail(arg0: string, transactionDetail: any) {
-    throw new Error('Method not implemented.');
-  }
-
   upload() {
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
-        let remarksPasswordsDto = {};
-        remarksPasswordsDto = {
-          "documentType": "Back Statement/ Premium Reciept",
-          "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
-        };
-        this.documentDataArray.push(remarksPasswordsDto);
-      }
-    }
-
-    console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1894,7 +1829,6 @@ export class MediclaimDeclarationComponent implements OnInit {
                 'yyyy-MM-dd'
               );
               innerElement.dateOfPayment = dateOfPaymnet;
-              
             });
             // }
           }
@@ -1927,7 +1861,6 @@ export class MediclaimDeclarationComponent implements OnInit {
           );
 
           innerElement.dateOfPayment = dateOfPaymnet;
-          remarkPasswordList: this.documentDataArray;
         }
       );
       }
@@ -2043,39 +1976,6 @@ export class MediclaimDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.masterGridData.forEach((element, index) => {
-            this.documentArray.push({
-
-              'dateofsubmission':new Date(),
-              'documentType':element.documentInformationList[0].documentType,
-              'documentName': element.documentInformationList[0].fileName,
-              'documentPassword':element.documentInformationList[0].documentPassword,
-              'documentRemark':element.documentInformationList[0].documentRemark,
-              'status' : element.documentInformationList[0].status,
-              'approverName' : element.documentInformationList[0].lastModifiedBy,
-              'Time' : element.documentInformationList[0].lastModifiedTime,
-
-              // 'documentStatus' : this.premiumFileStatus,
-
-            });
-
-            if(element.documentInformationList[1]) {
-              this.documentArray.push({
-
-                'dateofsubmission':new Date(),
-                'documentType':element.documentInformationList[1].documentType,
-                'documentName': element.documentInformationList[1].fileName,
-                'documentPassword':element.documentInformationList[1].documentPassword,
-                'documentRemark':element.documentInformationList[1].documentRemark,
-                'status' : element.documentInformationList[1].status,
-                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
-
-                // 'documentStatus' : this.premiumFileStatus,
-
-              });
-            }
-          });
           this.mediclaimPremiumTransactionDetail =
             res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
           this.preventiveHealthCheckupTransactionDetail =
@@ -2508,47 +2408,9 @@ export class MediclaimDeclarationComponent implements OnInit {
                 // );
               });
             }
-            this.masterGridData.forEach((element) => {
-              element.documentInformation.forEach(element => {
-            element.documentDetailList.forEach(element => {
-              // if(element!=null)
-              this.documentArray.push({
-                'dateofsubmission': element.dateOfSubmission,
-                'documentType':element.documentType,
-                'documentName': element.fileName,
-                'documentPassword':element.documentPassword,
-                'documentRemark':element.documentRemark,
-                'status' : element.status,
-                'lastModifiedBy' : element.lastModifiedBy,
-                'lastModifiedTime' : element.lastModifiedTime,
-              })
-              })
-        });
-      });
-    }
-      });
-      
-  this.documentArray = [];
-      
-  }
+          }
 
-  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
-    console.log('---in doc viewer--');
-    this.urlIndex = index;
-    // this.urlIndex = 0;
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
-
-    console.log('urlIndex::' , this.urlIndex);
-    console.log('urlArray::', this.urlArray);
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log('urlSafe::', this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
+      });
   }
 
   // -----------Common Function for filter to call API---------------
@@ -2575,21 +2437,6 @@ export class MediclaimDeclarationComponent implements OnInit {
           this.documentDetailList =
             res.data.results[0].mediclaimTransactionDocumentDetailList;
         }
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
-        console.log('documentArrayTest',this.documentArray);
         this.initialArrayIndex = [];
 
         if (this.mediclaimPremiumTransactionDetail != null) {
@@ -2671,44 +2518,8 @@ export class MediclaimDeclarationComponent implements OnInit {
       });
   }
 
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, policyNo
-  ) {
-    debugger
-    this.Service.getRemarkList(
-      policyNo,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
-
   // Upload Document And save Edited Transaction
   public uploadUpdateTransaction() {
-
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
-        let remarksPasswordsDto = {};
-        remarksPasswordsDto = {
-          "documentType": "Back Statement/ Premium Reciept",
-          "documentSubType": "",
-          "remark": this.editremarkList[i],
-          "password": this.editdocumentPassword[i]
-        };
-        this.editdDocumentDataArray.push(remarksPasswordsDto);
-      }
-    }
-
     let data: any = {};
 
     this.mediclaimTransList = [];
@@ -2817,10 +2628,6 @@ export class MediclaimDeclarationComponent implements OnInit {
     data.mediclaimTransactionIds = this.uploadGridData;
     data.receiptAmount = this.editReceiptAmount;
     data.proofSubmissionId = this.editProofSubmissionId;
-    data.documentRemark = this.editDocumentRemark;
-        data.remarkPasswordList = this.editdDocumentDataArray
-  
-    
     // data.documentRemark = this.documentRemark;
     console.log('data::', data);
 
@@ -2829,42 +2636,6 @@ export class MediclaimDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.editremarkList = [];
-          this.editdocumentPassword = [];
-          this.editfilesArray = [];
-          this.masterGridData.forEach((element, index) => {
-            this.documentArray.push({
-
-              'dateofsubmission':new Date(),
-              'documentType':element.documentInformationList[0].documentType,
-              'documentName': element.documentInformationList[0].fileName,
-              'documentPassword':element.documentInformationList[0].documentPassword,
-              'documentRemark':element.documentInformationList[0].documentRemark,
-              'status' : element.documentInformationList[0].status,
-              'approverName' : element.documentInformationList[0].lastModifiedBy,
-              'Time' : element.documentInformationList[0].lastModifiedTime,
-
-              // 'documentStatus' : this.premiumFileStatus,
-
-            });
-
-            if(element.documentInformationList[1]) {
-              this.documentArray.push({
-
-                'dateofsubmission':new Date(),
-                'documentType':element.documentInformationList[1].documentType,
-                'documentName': element.documentInformationList[1].fileName,
-                'documentPassword':element.documentInformationList[1].documentPassword,
-                'documentRemark':element.documentInformationList[1].documentRemark,
-                'status' : element.documentInformationList[1].status,
-                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
-
-                // 'documentStatus' : this.premiumFileStatus,
-
-              });
-            }
-          });
           this.mediclaimPremiumTransactionDetail =
             res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
           this.preventiveHealthCheckupTransactionDetail =
@@ -3151,24 +2922,6 @@ export class MediclaimDeclarationComponent implements OnInit {
       this.urlArray[this.urlIndex].blobURI
     );
   }
-
-  zoomin(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 2500) return false;
-     else{
-        myImg.style.width = (currWidth + 100) + "px";
-    } 
-}
- zoomout(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 100) return false;
- else{
-        myImg.style.width = (currWidth - 100) + "px";
-    }
-}
-
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     console.log('documentDetailList::', documentDetailList);

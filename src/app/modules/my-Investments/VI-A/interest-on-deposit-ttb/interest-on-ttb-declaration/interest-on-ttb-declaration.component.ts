@@ -38,7 +38,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   @Input() bankName: string;
   @Input() policyNo: string;
   @Input() data: any;
-  documentRemarkList: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -68,22 +68,6 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public editReceiptAmount: string;
   public editReceiptNumber: string;
   public editDocumentRemark: string;
-
-  documentDataArray = [];
-  editdDocumentDataArray = [];
-
-  viewDocumentName: any;
-  viewDocumentType: any;
-
-  documentArray: any[] =[];
-
-  documentPassword =[];
-  remarkList =[];
-  editdocumentPassword =[];
-  editremarkList =[];
-  document3Password: any;
-  remark3List: any;
-  Remark: any;
 
   public bankNameList: Array<any> = [];
   public transactionBankNameList: Array<any> = [];
@@ -378,19 +362,6 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   // ------- On Transaction Status selection show all transactions list accordingly all banks------
   selectedTransactionStatus(transactionStatus: any) {
     this.getTransactionFilterData(this.globalBank);
-  }
-
-  onMasterUpload(event: { target: { files: string | any[] } }) {
-    // console.log('event::', event);
-    if (event.target.files.length > 0) {
-      for (const file of event.target.files) {
-        this.masterfilesArray.push(file);
-        // this.masterFileName = file.name
-        // this.masterFileType = file.type
-        // this.masterFileStatus = file.status
-      }
-    }
-    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // -------- ON select to check input boxex--------
@@ -817,34 +788,8 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
   }
-  //----------- On change Transactional Line Item Remark --------------------------
-  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
-    debugger
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
-
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
-
-  }
 
   upload() {
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
-        let remarksPasswordsDto = {};
-        remarksPasswordsDto = {
-          "documentType": "Back Statement/ Premium Reciept",
-          "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
-        };
-        this.documentDataArray.push(remarksPasswordsDto);
-      }
-    }
-
-    console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -905,7 +850,6 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       receiptDate: '',
       proofSubmissionId: '',
       documentRemark: '',
-      remarkPasswordList: this.documentDataArray,
     };
 
 
@@ -914,39 +858,6 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.masterGridData.forEach((element, index) => {
-            this.documentArray.push({
-
-              'dateofsubmission':new Date(),
-              'documentType':element.documentInformationList[0].documentType,
-              'documentName': element.documentInformationList[0].fileName,
-              'documentPassword':element.documentInformationList[0].documentPassword,
-              'documentRemark':element.documentInformationList[0].documentRemark,
-              'status' : element.documentInformationList[0].status,
-              'approverName' : element.documentInformationList[0].lastModifiedBy,
-              'Time' : element.documentInformationList[0].lastModifiedTime,
-
-              // 'documentStatus' : this.premiumFileStatus,
-
-            });
-
-            if(element.documentInformationList[1]) {
-              this.documentArray.push({
-
-                'dateofsubmission':new Date(),
-                'documentType':element.documentInformationList[1].documentType,
-                'documentName': element.documentInformationList[1].fileName,
-                'documentPassword':element.documentInformationList[1].documentPassword,
-                'documentRemark':element.documentInformationList[1].documentRemark,
-                'status' : element.documentInformationList[1].status,
-                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
-
-                // 'documentStatus' : this.premiumFileStatus,
-
-              });
-            }
-          });
           this.transactionDetail =
             res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
@@ -1273,46 +1184,8 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
               );
             });
           });
-          this.masterGridData.forEach((element) => {
-            element.documentInformation.forEach(element => {
-          element.documentDetailList.forEach(element => {
-            // if(element!=null)
-            this.documentArray.push({
-              'dateofsubmission': element.dateOfSubmission,
-              'documentType':element.documentType,
-              'documentName': element.fileName,
-              'documentPassword':element.documentPassword,
-              'documentRemark':element.documentRemark,
-              'status' : element.status,
-              'lastModifiedBy' : element.lastModifiedBy,
-              'lastModifiedTime' : element.lastModifiedTime,
-            })
-            })
+
       });
-    });
-  }
-);
-this.documentArray = [];
-
-      // });
-  }
-  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
-    console.log('---in doc viewer--');
-    this.urlIndex = index;
-    // this.urlIndex = 0;
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
-
-    console.log('urlIndex::' , this.urlIndex);
-    console.log('urlArray::', this.urlArray);
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log('urlSafe::', this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
   }
 
     // --Remove Selected LicTransaction Document in Main Page----
@@ -1339,21 +1212,6 @@ this.documentArray = [];
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
-        console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
         this.initialArrayIndex = [];
         this.transactionDetail.forEach((element) => {
@@ -1381,42 +1239,7 @@ this.documentArray = [];
       });
   }
 
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, policyNo
-  ) {
-    debugger
-    this.Service.getRemarkList(
-      policyNo,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
-
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
-        let remarksPasswordsDto = {};
-        remarksPasswordsDto = {
-          "documentType": "Back Statement/ Premium Reciept",
-          "documentSubType": "",
-          "remark": this.editremarkList[i],
-          "password": this.editdocumentPassword[i]
-        };
-        this.editdDocumentDataArray.push(remarksPasswordsDto);
-      }
-    }
-
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
@@ -1486,8 +1309,7 @@ this.documentArray = [];
         proofSubmissionId: this.editProofSubmissionId,
         receiptAmount: this.editReceiptAmount,
         receiptNumber: this.editReceiptNumber,
-        documentRemark:this.editDocumentRemark,
-        remarkPasswordList: this.editdDocumentDataArray
+        documentRemark:this.editDocumentRemark
         };
 
 
@@ -1499,42 +1321,6 @@ this.documentArray = [];
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
-          this.editremarkList = [];
-          this.editdocumentPassword = [];
-          this.editfilesArray = [];
-          this.masterGridData.forEach((element, index) => {
-            this.documentArray.push({
-
-              'dateofsubmission':new Date(),
-              'documentType':element.documentInformationList[0].documentType,
-              'documentName': element.documentInformationList[0].fileName,
-              'documentPassword':element.documentInformationList[0].documentPassword,
-              'documentRemark':element.documentInformationList[0].documentRemark,
-              'status' : element.documentInformationList[0].status,
-              'approverName' : element.documentInformationList[0].lastModifiedBy,
-              'Time' : element.documentInformationList[0].lastModifiedTime,
-
-              // 'documentStatus' : this.premiumFileStatus,
-
-            });
-
-            if(element.documentInformationList[1]) {
-              this.documentArray.push({
-
-                'dateofsubmission':new Date(),
-                'documentType':element.documentInformationList[1].documentType,
-                'documentName': element.documentInformationList[1].fileName,
-                'documentPassword':element.documentInformationList[1].documentPassword,
-                'documentRemark':element.documentInformationList[1].documentRemark,
-                'status' : element.documentInformationList[1].status,
-                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
-
-                // 'documentStatus' : this.premiumFileStatus,
-
-              });
-            }
-          });
           this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
@@ -1635,22 +1421,6 @@ this.documentArray = [];
         this.urlArray[this.urlIndex].blobURI,
       );
     }
-    zoomin(){
-      var myImg = document.getElementById("map");
-      var currWidth = myImg.clientWidth;
-      if(currWidth == 2500) return false;
-       else{
-          myImg.style.width = (currWidth + 100) + "px";
-      } 
-  }
-   zoomout(){
-      var myImg = document.getElementById("map");
-      var currWidth = myImg.clientWidth;
-      if(currWidth == 100) return false;
-   else{
-          myImg.style.width = (currWidth - 100) + "px";
-      }
-  }
 
     docViewer(template3: TemplateRef<any>, documentDetailList: any) {
       console.log("documentDetailList::", documentDetailList)
