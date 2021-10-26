@@ -18,6 +18,7 @@ export interface InvestmentApprovalMasterInfo {
     employeeMasterId: number;
     institutionName: string;
     policyNo: string;
+    // loanAccountNumber: number;
     policyholdername: string;
     relationship: string;
     policyStartDate: Date;
