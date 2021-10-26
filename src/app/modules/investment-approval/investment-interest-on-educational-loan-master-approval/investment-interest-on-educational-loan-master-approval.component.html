@@ -525,7 +525,7 @@
                                   ripple
                                   mr-2
                                 "
-                                (click)="changeStatus(masterInfo, 'Re-Open')"
+                                (click)="changeStatus(masterInfo, 'Re-Open', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 Edit Approval
                               </button>
@@ -552,7 +552,7 @@
                                   masterInfo.masterDetail.masterStatus ==
                                     'SendBack'
                                 "
-                                (click)="changeStatus(masterInfo, 'SendBack')"
+                                (click)="changeStatus(masterInfo, 'SendBack', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 <b><i class="fa fa-reply-all"></i></b>
                                 SendBack
@@ -599,7 +599,7 @@
                                   masterInfo.masterDetail.masterStatus == ''
                                 
                                 "
-                                (click)="changeStatus(masterInfo, 'Approved')"
+                                (click)="changeStatus(masterInfo, 'Approved', masterInfo.masterDetail.loanAccountNumber)"
                                 tooltip="Approve"
                               >
                                 <b> <i class="fa fa-floppy-o"></i></b> Approve
