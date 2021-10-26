@@ -73,6 +73,9 @@ export class PostOfficeMasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public documentRemark: any;
   public isECS = true;
 
@@ -887,9 +890,30 @@ export class PostOfficeMasterComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>,index:any, data: any) {
     console.log("---in doc viewer--");
     this.urlIndex = index;
+
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+    
 
     console.log('urlIndex::' , this.urlIndex);
     console.log("urlArray::", this.urlArray);

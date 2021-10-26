@@ -66,11 +66,7 @@ const routes: Routes = [
     loadChildren:
       './modules/payroll-inputs/payroll-inputs.module#PayrollInputsModule',
   },
-  {
-    path: 'Flexi',
-    loadChildren:
-      './modules/flexi/flexi.module#FlexiModule',
-  },
+
   {
     path: 'formula',
     loadChildren:

@@ -75,6 +75,9 @@ export class MasterComponent implements OnInit {
   filesUrlArray = [];
   documentArray: any[] =[];
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public documentRemark: any;
   isVisibleTable = false;
 
@@ -171,7 +174,7 @@ export class MasterComponent implements OnInit {
     this.initiateMasterForm();
     this.getMasterFamilyInfo();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-    // this.deactivateRemark();
+   // this.deactivateRemark();
     this.getPreviousEmployer();
 
     if (this.disabilityTypeName != undefined || this.disabilityTypeName != null) {
@@ -190,6 +193,9 @@ export class MasterComponent implements OnInit {
       familyMemberName: new FormControl(null, Validators.required),
       relationship: new FormControl({value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
+
+      remark: new FormControl(null),
+
       handicappedDependentDetailMasterId:new FormControl()
     });
   }
@@ -412,6 +418,7 @@ export class MasterComponent implements OnInit {
       this.submitted = false;
       this.urlArray = [];
       this.documentRemark = [];
+      this.documentRemark = '';
       this.remarkList = [];
       this.documentPassword = [];
       this.isVisibleTable = false;
@@ -455,7 +462,19 @@ export class MasterComponent implements OnInit {
   //   this.isClear = true;
   //   this.masterfilesArray = this.masterGridData[i].documentInformationList
   // }
-
+  // Deactivate the Remark
+  deactivateRemark() {
+    if (this.form.value.active === false) {
+      // this.form.get('remark').enable();
+      this.hideRemarkDiv = true;
+      this.form.get('remark').setValidators([Validators.required]);
+    } else {
+      this.form.get('remark').clearValidators();
+      this.hideRemarkDiv = false;
+      // this.form.get('remark').disable();
+      this.form.get('remark').reset();
+    }
+  }
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
     this.isEdit = true;
@@ -542,6 +561,8 @@ export class MasterComponent implements OnInit {
     this.documentRemark = [];
   }
 
+
+  
   // On Master Edit functionality
   viewMaster(i: number) {
     //this.scrollToTop();

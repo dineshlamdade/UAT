@@ -177,8 +177,9 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
-                        initialArrayIndex[j] > i || summary.isECS === 1
+                      [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
@@ -191,7 +192,7 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
-                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -211,7 +212,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -223,10 +224,62 @@
                   <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right" disabled />
                 </td>
-                <td>
+                <!-- <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
+                </td> -->
+                <td>
+                  <div class="d-flex">
+                    <input
+                    style="width:100px;"
+                      type="text"
+                      class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted' || initialArrayIndex[j] > i"
+                      
+                      (change)="
+                      onChangeDocumentRemark(
+                          summary, i,
+                          $event
+                        )
+                      "
+                    
+                    />
+                    <div
+                      _ngcontent-ykc-c443=""
+                      class="
+                        custom_Label_badge
+                        mr-2
+                        ml-2
+                      "
+                    >
+                      <b>
+                        <i
+                          (click)="
+                            docRemarkModal(
+                              template8,
+                              documentDetailIndex,
+                              summary?.proofSubmissionId, summary?.investmentGroup2TransactionId
+                            )
+                          "
+                          class="
+                            fa fa-commenting
+                            text-dark-green
+                            fa-2x
+                            cursor-pointer
+                          "
+                        >
+                        </i
+                      ></b>
+                      <span
+                        _ngcontent-ykc-c443=""
+                        class="Label_badge"
+                        >{{
+                          documentDetail?.documentRemarkDetailList?.length
+                        }}</span
+                      >
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
@@ -1393,7 +1446,8 @@
                                 p-ai-center
                               "
                                 >
-                                  Date Of Submission
+                                  <!-- Date Of Submission -->
+                                  Creation Date
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -1568,7 +1622,8 @@
                                 p-ai-center
                               "
                                 >
-                                  Time
+                                  <!-- Time -->
+                                  Last Modified Time
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -1600,11 +1655,11 @@
                                 </p-tableCheckbox>
                               </td> -->
                               <td>
-                                {{dateofsubmission | date:'dd-MMM-yyyy' }}
+                                {{ document.lastModifiedTime | date:'dd-MMM-yyyy' }}
                               </td>
                               <td>
                                 <a
-                                  (click)=" docViewer1(template3,documentIndex)"
+                                  (click)=" docViewer1(template3,documentIndex, document)"
 
                                 >
                                   <i
@@ -1640,7 +1695,7 @@
                               </td>
                               <td>{{ document.status }}</td>
                               <td>{{ document.lastModifiedBy }}</td>
-                              <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
+                              <td>{{ document.lastModifiedTime | date:'h:mm a'  }}</td>
                             </tr>
                           </ng-template>
                         </p-table>
@@ -1707,10 +1762,26 @@
 </ng-template>
 <ng-template #template3>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <!-- <h5 class="modal-title" id="jasdjgh">Document Viewer</h5> -->
+    <div class="row">
+      <div class="col-sm-6 col-md-6 align-right">
+          <label class="form-label">Document Name</label>
+           {{this.viewDocumentName}}
+      </div>
+      <div class="col-sm-6 col-md-6 align-right">
+          <label class="form-label">Document Type</label>
+          
+          {{this.viewDocumentType}}
+      </div>
+    
+      </div>
+      <div class="align-right">
+        <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+<button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
+  </div>
   </div>
   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
      <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
@@ -1723,7 +1794,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
+        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
       </div>
       <div class="col-md-1">
         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -1885,6 +1957,63 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>
+
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span
+          >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
   </div>
 </ng-template>
 

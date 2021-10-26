@@ -34,6 +34,7 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
 })
 export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   @Input() public patientNames: any;
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public visibilityFlag = false;
@@ -70,6 +71,21 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+
+  public isEdit: boolean = false;
+
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
+
+
+  documentArray: any[] =[];
+  isVisibleTable = false;
+
+  viewDocumentName: any;
+  viewDocumentType: any;
+
 
   public documentRemark: any;
   public isECS = true;
@@ -247,7 +263,35 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       .subscribe((res) => {
         console.log('masterGridData::', res);
         this.masterGridData = res.data.results;
-      });
+        this.masterGridData.forEach((element) => {
+          element.documentInformationList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+    
+            })
+          });
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+    });
+      // });
   }
 
   //-------------- Post Master Page Data API call -------------------
@@ -257,13 +301,32 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Treatment Of Specified Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+
+  for (let i = 0; i <= this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.remarkList[i],
+        "password": this.documentPassword[i]
+      };
+      this.documentDataArray.push(remarksPasswordsDto);
+    }
+  }
+  console.log('this.documentDataArray', this.documentDataArray);
+  // else {
       // const data = this.form.getRawValue();
 
       // neurologicalDiseaseName: new FormControl(null),
@@ -289,6 +352,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
           specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
         }
         data.proofSubmissionId = this.proofSubmissionId;
+        data.remarkPasswordList = this.documentDataArray;
       }
 
       console.log('Treatment Of Specified Disease::', data);
@@ -299,7 +363,47 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
 
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
@@ -325,7 +429,12 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       this.urlArray = [];
       this.masterfilesArray = [];
       this.submitted = false;
-    }
+      this.documentRemark = '';
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -386,6 +495,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
     // ------------- On Master Edit functionality --------------------
     public editMaster(patientName) {
+      this.isEdit = true;
       this.scrollToTop();
       this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
         console.log('masterGridData::', res);
@@ -402,8 +512,27 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
           this.Index = obj.patientName;
           this.showUpdateButton = true;
           this.isClear = true;
-          this.urlArray = obj.doctorCertificate;
+          // this.urlArray = obj.doctorCertificate;
+          this.filesUrlArray = obj.documentInformationList;
           this.proofSubmissionId = obj.proofSubmissionId;
+          this.showdocument = false;
+          this.documentArray = [];
+          obj.documentInformationList.forEach(element => {
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+  
+            })
+            
+          });
+          console.log("documentArray::",this.documentArray);
+          this.isVisibleTable = true;
         }
       });
     }
@@ -512,9 +641,29 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     );
   }
 
-  public docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+
 
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(

@@ -72,6 +72,9 @@ export class DeclarationAndActualComponent implements OnInit {
   public familyMemberName: Array<any> = [];
   public remainingFamilyMemberName: Array<any> = [];
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public handicappedDependentForm: FormGroup;
   public currentEmployerForm: FormGroup;
   public previousEmployerForm: FormGroup;
@@ -318,7 +321,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -347,7 +350,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -586,7 +589,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -614,7 +617,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -1464,7 +1467,7 @@ export class DeclarationAndActualComponent implements OnInit {
         // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.handicappedDependentDetailMaster.relationship;
-        // this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        // this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.currentEmployerHandicappedDependentList.push(this.declarationService);
@@ -1492,6 +1495,19 @@ export class DeclarationAndActualComponent implements OnInit {
 //   }
 //   return amount;
 // }
+
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
 
 
   upload() {
@@ -1573,7 +1589,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         // this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
-        this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.previousEmployerHandicappedDependentList.push(this.declarationService);
@@ -1979,6 +1995,28 @@ export class DeclarationAndActualComponent implements OnInit {
     });
   }
 
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    psId, policyNo
+  ) {
+    
+    this.Service.getRemarkList(
+      policyNo,
+      psId
+    ).subscribe((res) => {
+      console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0].remarkList
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
     this.handicappedDependentService
@@ -2029,6 +2067,23 @@ export class DeclarationAndActualComponent implements OnInit {
       );
     }
 
+    zoomin(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 2500) return false;
+       else{
+          myImg.style.width = (currWidth + 100) + "px";
+      } 
+  }
+   zoomout(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 100) return false;
+   else{
+          myImg.style.width = (currWidth - 100) + "px";
+      }
+  }
+
     docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
       console.log("documentInformationResponseList::", documentInformationResponseList);
       this.urlArray = documentInformationResponseList;
@@ -2071,7 +2126,7 @@ export class DeclarationAndActualComponent implements OnInit {
 //   public familyMemberName: string;
 //   public previousEmployerId = 0;
 //   // public institution: 0;
-//   public claiming80U : 0;
+//   public isClaiming80U : 0;
 //   public declaredAmount: number;
 //   public actualAmount: number;
 //   public transactionStatus: string = 'Pending';
@@ -2104,7 +2159,7 @@ class DeclarationService {
     // limit: null,
     // documentRemark: null,
     documentInformationList: [],
-    claiming80U: true
+    isClaiming80U: true
   };
   constructor(obj?: any) {
     Object.assign(this, obj);
