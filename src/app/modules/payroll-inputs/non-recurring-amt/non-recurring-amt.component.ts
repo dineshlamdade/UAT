@@ -365,6 +365,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Display employee info by employeeMasterId */
 	employeeFinDetails() {
+		this.employeeFinDetailsData = null
 		// this.attendanceService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
 		this.nonRecService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
 			res => {
@@ -707,6 +708,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Navigate To Transaction Tab on click radio button */
 	navigateToTransaction() {
+		this.svaeDisabledFlag = true
 		if (this.selectedEmpData.length == 0) {
 			this.indexId = 2
 			this.showEmployeeSelectionFlag = true;
@@ -2759,7 +2761,7 @@ this.saveTransactionData.forEach(element => {
 			res => {
 				this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
-
+                this.svaeDisabledFlag = true;
 				if(this.showDropdownDisabled){
 				 if(this.payrollListEmpData.length == 1 || (this.payrollListEmpData.length-1) == this.parollListIndex){
 					this.indexId = 1;
