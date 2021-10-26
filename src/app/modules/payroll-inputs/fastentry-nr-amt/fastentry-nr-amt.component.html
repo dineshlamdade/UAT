@@ -15,7 +15,7 @@
                                     <div class="row mt-10">
                                         <div class="col-sm-3">
                                             <label class="form-label"> Head</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                                 (change)="getSelectedHead($event.target.value)">
                                                 <option value="null"> Select </option>
                                                 <option *ngFor="let head of headData" value="{{head.headMasterId}}"
@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
                                                 <option *ngFor="let payroll of parollArea"
@@ -200,7 +200,7 @@
                                                                                 data-date-autoclose="true"
                                                                                 class="form-control" placeholder="From Date"
                                                                                 [minDate]="effectiveFromDate"
-                                                                                [maxDate]="effectiveToDate"
+                                                                                [maxDate]="effectiveToDate || selectedToDate"
                                                                                 [value]="selectedFromDate | date :'dd-MMM-yyyy'"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                 (bsValueChange)="getFromDate($event)"
@@ -365,6 +365,7 @@
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Amount</label>
                                                                         <input type="number" class="form-control"
+                                                                        onkeypress="return event.charCode != 69"
                                                                             [(ngModel)]="selectedAmount">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -560,7 +561,7 @@
                                                     <input data-provide="datepicker"
                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                         data-date-autoclose="true" [minDate]="effectiveFromDate"
-                                                        [maxDate]="effectiveToDate"
+                                                        [maxDate]="effectiveToDate || selectedToDate"
                                                         value="{{data.fromDate | date:'dd-MMM-yyyy'}}"
                                                         (bsValueChange)="getSaveFromDate($event,data)"
                                                         class="form-control wd-120" placeholder="Date" bsDatepicker>
@@ -617,6 +618,7 @@
                                     </td>
                                     <td>
                                         <input type="number" class="form-control wd-100" value="{{data.amount}}"
+                                        onkeypress="return event.charCode != 69"
                                             (focusout)="saveAmounts($event.target.value,data)">
                                     </td>
                                     <td>
@@ -848,7 +850,7 @@
                                 tooltip="Save" (click)="saveFastEntries()"
                                 [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
                                 [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
-                                <b><i class="fa fa-floppy-o"></i></b> Save {{saveDisabledBtn}}
+                                <b><i class="fa fa-floppy-o"></i></b> Save
                             </button>&nbsp;
                             <button type="submit"
                                 class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
