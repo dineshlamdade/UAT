@@ -157,9 +157,26 @@
             <p-table [value]="CycleCreationList1" [paginator]="true" [rows]="10"
             [showCurrentPageReport]="true" [pageLinks]="5"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            totalRecords={{CycleCreationList1.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+            totalRecords={{CycleCreationList1.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+            #dt [globalFilterFields]="['businessCycleDefinition.cycleName','noOfCycles','businessYear','fromDate','toDate']">
 
             <ng-template pTemplate="header">
+              <br>
+              
+              <div style="text-align: right;display: flex;">
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
+                <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width: 203px;">
+                    &nbsp;&nbsp;&nbsp;
+                    <a tooltip="Download" style="cursor: pointer"
+                    (click)="exportAsXLSX()"><i
+                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                        aria-hidden="true"></i></a>
+              </div>
+
+              <br>
+              <br>
               <tr>
                 <th rowspan="1" class="wd-8 text-center">
                   Sr. No.
@@ -176,15 +193,6 @@
                   </div>
                 </th>
 
-
-                <th rowspan="1" class="wd-8">
-                  <div class="p-d-flex p-jc-between p-ai-center">
-                    No. of Cycles
-                    <div class="Sort_Filter_Position">
-                      <p-sortIcon field="noOfCycles" pSortableColumn="noOfCycles"></p-sortIcon>
-                      <p-columnFilter field="noOfCycles" display="menu" class="p-ml-auto"></p-columnFilter>
-                    </div>
-                  </div>
                 <th rowspan="1" class="wd-8">
                   <div class="p-d-flex p-jc-between p-ai-center">
                     Business Year
@@ -194,6 +202,7 @@
                     </div>
                   </div>
                 </th>
+
                 <th rowspan="1" class="wd-10">
                   <div class="p-d-flex p-jc-between p-ai-center">
                     From Date
@@ -212,6 +221,18 @@
                     </div>
                   </div>
                 </th>
+
+
+                <th rowspan="1" class="wd-8">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    No. of Cycles
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="noOfCycles" pSortableColumn="noOfCycles"></p-sortIcon>
+                      <p-columnFilter field="noOfCycles" display="menu" class="p-ml-auto"></p-columnFilter>
+                    </div>
+                  </div>
+                
+                
                 <th rowspan="1" class="wd-12">
                   <div class="p-d-flex p-jc-center p-ai-center">
                     Action
@@ -248,10 +269,12 @@
                 <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
                 <td class="bg-color-light_gray"><label
                     class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.businessYear}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fromDate | date : 'dd-MM-yyyy'}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.toDate | date : 'dd-MM-yyyy'}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.noOfCycles}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.businessYear}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fromDate}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.toDate}}</label></td>
+               
+                
 
                 <td>
                   <button type="button" class="btn btn-icon text-blue" tooltip="Extend">
@@ -402,6 +425,9 @@
 <ng-template #template2>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Preview Cycle</h5>
+
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+      aria-hidden="true">×</span></button>
   </div>
   <div class="modal-body">
     <div class="card">
@@ -468,9 +494,9 @@
                             <tr *ngFor="let summary of previewCycleList; let i = index">
                               <td class="align-center wd-10"><span>{{i+1}}</span>
                               </td>
-                              <td class="wd-10"><span tooltip="{{summary.periodName}}">{{summary.periodName}}</span>
+                              <td class="wd-10"><span tooltip="{{summary.periodName}}">{{summary.periodName }}</span>
                               </td>
-                              <td class="wd-10"><span tooltip="{{summary.fromDate}}">{{summary.fromDate}}</span>
+                              <td class="wd-10"><span tooltip="{{summary.fromDate}}">{{summary.fromDate | date: 'dd-MM-yyyy'}}</span>
                               </td>
                               <td class="wd-10">
                                 <input type="text"

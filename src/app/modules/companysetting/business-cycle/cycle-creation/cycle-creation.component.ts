@@ -7,6 +7,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CompanySettingsService } from '../../company-settings.service';
 import { SaveCycleCreation, UpdateflagCycleCreation } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
+import { ExcelserviceService } from '../../../excel_service/excelservice.service';
 
 @Component( {
   selector: 'app-cycle-creation',
@@ -166,11 +167,14 @@ export class CycleCreationComponent implements OnInit {
   data = [];
   businessYearUpdate: string;
   cycleCreationForm: FormGroup;
+  header: any[];
+  excelData: any[];
 
 
 
-
-  constructor( private modalService: BsModalService, private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
+  constructor( private modalService: BsModalService, private datepipe: DatePipe, 
+    private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, 
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
 
   }
 
@@ -189,21 +193,27 @@ export class CycleCreationComponent implements OnInit {
   DeleteCycleCreationById( businessCycleDefinitionId, BusinessYear ) {
 
     this.updateFlag = false;
-    this.companySetttingService.DeleteCycleCreationById( businessCycleDefinitionId, BusinessYear )
-      .subscribe( response => { //: saveBusinessYear[]
-
+    
+      this.companySetttingService.DeleteCycleCreationById(businessCycleDefinitionId, BusinessYear).subscribe((res)=>{
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllCycleCreation();
-        this.CycleCreationForm.reset();
-      } );
+      //   this.CycleCreationForm.reset();
+      },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      })
   }
   deletePreviewCycleDiscard() {
     ;
     this.updateFlag = false;
     this.companySetttingService.DeletePreviewCycleDiscard( this.businessCycleDefinitionId, this.Previewbusiness )
-      .subscribe( response => { //: saveBusinessYear[]
-
+      .subscribe( res => { //: saveBusinessYear[]
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllCycleCreation();
         this.cycleCreationForm.reset();
+      },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
   }
 
@@ -216,7 +226,7 @@ export class CycleCreationComponent implements OnInit {
       .subscribe( response => { //: saveBusinessYear[]
 
         this.CycleDefinitionByid = response.data.results;
-        console.log( 'cycle creation array', this.CycleDefinitionByid )
+        //console.log( 'cycle creation array', this.CycleDefinitionByid )
 
         this.name = response.data.results[0].businessCycleDefinition.name;
         // this.business = response.data.results[0].businessYear;
@@ -299,12 +309,12 @@ export class CycleCreationComponent implements OnInit {
     console.log( JSON.stringify( businessCycleDefinition ) );
     // if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
     this.companySetttingService.AddCycleCreation( businessCycleDefinition ).subscribe( ( res: any ) => {
-      console.log( 'add cycle creation', res );
+     // console.log( 'add cycle creation', res );
 
       this.previewCycleList = res.data.results;
       this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
       this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-      // this.Previewbusiness = res.data.results[0].businessYear;
+      this.Previewbusiness = res.data.results[0].businessYear;
       this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
       this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
       this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
@@ -386,7 +396,30 @@ export class CycleCreationComponent implements OnInit {
     this.businessCycleDefinitionIdforMoreCycle = businessCycleDefinitionid;
   }
 
-
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Cycle Definition","No. of Cycles","Business Year","From Date","To Date"]
+    //this.excelData = this.attendanceData
+    this.CycleCreationList1.forEach(element => {
+  
+  
+      let obj = {
+        "Cycle Definition": element.businessCycleDefinition.cycleName,
+        "No. of Cycles":element.noOfCycles,
+        "Business Year": element.businessYear,
+        "From Date": this.datepipe.transform(new Date(element.fromDate),'dd-MM-yyyy'),
+        "To Date": this.datepipe.transform(new Date(element.toDate),'dd-MM-yyyy'),
+        
+       
+  
+  
+      }
+      this.excelData.push(obj)
+    });
+   // console.log(this.excelData)
+    this.excelservice.exportAsExcelFile(this.excelData, 'Business Cycle','Business Cycle',this.header);
+  }
 
 
 }
