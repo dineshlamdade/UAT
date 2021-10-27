@@ -624,7 +624,7 @@ export class NpsMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
