@@ -27,6 +27,7 @@ export class PPFDeclarationComponent implements OnInit {
   @Input() public data: any;
   documentRemarkList: any;
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -1460,7 +1461,7 @@ console.log('this.transactionDetail', this.transactionDetail);
 
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );

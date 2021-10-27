@@ -44,6 +44,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
   documentRemarkList: any;
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -433,7 +434,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );

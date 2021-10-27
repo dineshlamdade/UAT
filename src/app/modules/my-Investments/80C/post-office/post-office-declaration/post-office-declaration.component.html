@@ -1063,7 +1063,7 @@
     </h5>
     <button
       type="button"
-      (click)="modalRef.hide()"
+      (click)="modalRef1.hide()"
       class="close"
       data-dismiss="modal"
       aria-label="Close"
@@ -1909,7 +1909,7 @@
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3,urlArray)"
+      (click)="modalRef?.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
@@ -1919,7 +1919,7 @@
       *ngIf="viewDocumentDetail"
       type="button"
       tooltip="Save Document"
-      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      (click)="modalRef1?.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-save"></i></b> Save

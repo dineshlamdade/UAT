@@ -39,6 +39,7 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
   public localStorageProofSubmissionIdList: Array<any> = [];
   public proofSubmissionIdListIndex: number;
   public masterRemark: any;
+  public empMasterid: any;
   public documentRemark: any;
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public previousDisabled: boolean = true;
@@ -149,8 +150,9 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
       .subscribe((res: InvestmentApprovalMasterInfo) => {
         console.log('res masterinfo::', res);
         if (res != null || res != undefined) {
-         
+         debugger
           this.masterInfo = res;
+         
           
           this.documentDetailList =
             this.masterInfo.masterDetail.documentDetailList;
@@ -183,6 +185,12 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
 
         }
         this.test = [];
+      });
+      this.investmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalService
+      .getMasterData(psid)
+      .subscribe((res) => { 
+        debugger
+this.empMasterid = res.data.results[0].employeeMasterId;;
       });
   }
 
@@ -312,7 +320,7 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
   }
 
   // ------------ Change PSID Status of Master --------------------------------------
-  changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
+  changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any, loanAccountNumber?) {
     
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
@@ -343,7 +351,8 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
     const data = {
       masterId: masterDetails.masterDetail.masterId,
       proofSubmissionId: masterDetails.psidDetail.psid,
-      policyNo: masterDetails.masterDetail.policyNo,
+      // policyNo: masterDetails.masterDetail.policyNo,
+      policyNo: loanAccountNumber,
       masterStatus: status,
       remark: this.masterRemark,
       group: masterDetails.psidDetail.groupName,
@@ -365,6 +374,7 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
     this.investmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalService
       .changeMasterStatus(formData)
       .subscribe((res: any) => {
+        debugger
         console.log('res asterinfo::', res);
 
         //if (res != null || res != undefined) {
@@ -560,6 +570,7 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
     });
+    debugger
     const data = this.documentList;
 
     console.log('data::', data);
@@ -607,13 +618,15 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalC
     documentDetail,
     masterDetail: InvestmentApprovalMasterInfo
   ) {
+    debugger
     console.log('checkValue::', checkValue);
     console.log('documentDetail::', documentDetail);
     // console.log("documentCheckBox::",this.documentCheckBox);
+    debugger
     if (checkValue) {
       const data = {
         documentInformationId: documentDetail.documentInformationId,
-        employeeMasterId: masterDetail.masterDetail.employeeMasterId,
+        employeeMasterId: 36,
         companyId: 1,
         proofSubmissionId: documentDetail.proofSubmissionId,
         statusRemark: documentDetail.statusRemark,

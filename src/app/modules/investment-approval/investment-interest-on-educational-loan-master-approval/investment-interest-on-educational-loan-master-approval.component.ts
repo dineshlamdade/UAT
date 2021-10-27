@@ -71,6 +71,7 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
       masterId: 0,
       employeeMasterId: 0,
       institutionName: '',
+      // loanAccountNumber: 0,
       policyNo: '',
       policyholdername: '',
       relationship: '',
@@ -151,7 +152,7 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
         if (res != null || res != undefined) {
          
           this.masterInfo = res;
-          
+          debugger
           this.documentDetailList =
             this.masterInfo.masterDetail.documentDetailList;
             this.documentDetailList.forEach((doc)=>{
@@ -312,8 +313,8 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
   }
 
   // ------------ Change PSID Status of Master --------------------------------------
-  changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
-    
+  changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any, loanAccountNumber?) {
+    debugger
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
     if (status == 'SendBack') {
@@ -339,11 +340,12 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
         }
       });
     }
+  
 
     const data = {
       masterId: masterDetails.masterDetail.masterId,
       proofSubmissionId: masterDetails.psidDetail.psid,
-      policyNo: masterDetails.masterDetail.policyNo,
+      loanAccountNumber: loanAccountNumber,
       masterStatus: status,
       remark: this.masterRemark,
       group: masterDetails.psidDetail.groupName,
@@ -591,6 +593,7 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
               ''
             );
           }
+          debugger
           this.documentDetailList =
             res.data.results[0].masterDetail.documentDetailList;
           this.getMasterInfo(res.data.results[0].psidDetail.psid);
@@ -613,7 +616,8 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
     if (checkValue) {
       const data = {
         documentInformationId: documentDetail.documentInformationId,
-        employeeMasterId: masterDetail.masterDetail.employeeMasterId,
+        // employeeMasterId: masterDetail.masterDetail.employeeMasterId,
+        employeeMasterId: 36,
         companyId: 1,
         proofSubmissionId: documentDetail.proofSubmissionId,
         statusRemark: documentDetail.statusRemark,

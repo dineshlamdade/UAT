@@ -29,17 +29,33 @@
                   Previous Employer Name
                 </th>
                 <th rowspan="2" class="wd-10 font700">
-                  <span tooltip="Electronic Clearing Service">Institution</span>
+                  <span tooltip="Institution">Institution</span>
                 </th>
-                <th rowspan="2" class="wd-11 font700">Account No</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS ID</th>
+                <th rowspan="2" class="wd-11 font700">
+                  <span tooltip="Account No">Account No</span>
+                  </th>
+                <th rowspan="2" class="wd-9 font700">
+                  <span tooltip="Declared">Declared</span>
+              </th>
+                <th rowspan="2" class="wd-11 font700">
+                  <span tooltip="Date of Payment">Date of Payment</span>
+                </th>
+                <th rowspan="2" class="wd-9 font700">
+                  <span tooltip="Actual">Actual</span>
+                 </th>
+                <th colspan="2" class="wd-17 font700">
+                  <span tooltip="Receipt Amount">Receipt Amount</span>
+                  </th>
+                <th rowspan="2" class="wd-7 font700">
+                  <span tooltip="Remark">Remark</span>
+                  </th>
+                <th rowspan="2" class="wd-8">
+                  <span tooltip="PS ID">PS ID</span>
+                  </th>
                 <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
-                <th rowspan="2" class="wd-10 font700">Status</th>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Status">Status</span>
+                  </th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -1558,7 +1574,7 @@
     </h5>
     <button
       type="button"
-      (click)="modalRef.hide()"
+      (click)="modalRef1.hide()"
       class="close"
       data-dismiss="modal"
       aria-label="Close"
@@ -1596,20 +1612,36 @@
                   </th> -->
 
                   <th rowspan="2" class="wd-10 font700">
-                    Previous Employer Name
+                    <span tooltip="Previous Employer Name">Previous Employer Name</span>
                   </th>
                   <th rowspan="2" class="wd-10 font700">
-                    <span tooltip="Electronic Clearing Service">Institution</span>
+                    <span tooltip="Institution">Institution</span>
                   </th>
-                  <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <th rowspan="2" class="wd-9 font700">Declared</th>
-                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                  <th rowspan="2" class="wd-9 font700">Actual</th>
-                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                  <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-11 font700">
+                    <span tooltip="Account No">Account No</span>
+                    </th>
+                  <th rowspan="2" class="wd-9 font700">
+                    <span tooltip="Declared">Declared</span>
+                    </th>
+                  <th rowspan="2" class="wd-11 font700">
+                    <span tooltip="Date of Payment">Date of Payment</span>
+                    </th>
+                  <th rowspan="2" class="wd-9 font700">
+                    <span tooltip="Actual">Actual</span>
+                    </th>
+                  <th colspan="2" class="wd-17 font700">
+                    <span tooltip="Receipt Amount">Receipt Amount</span>
+                    </th>
+                  <th rowspan="2" class="wd-7 font700">
+                    <span tooltip="Remark">Remark</span>
+                    </th>
+                  <th rowspan="2" class="wd-8">
+                    <span tooltip="PS ID">PS ID</span>
+                    </th>
                   <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
-                  <th rowspan="2" class="wd-10 font700">Status</th>
+                  <th rowspan="2" class="wd-10 font700">
+                    <span tooltip="Status">Status</span>
+                    </th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -2350,7 +2382,7 @@
     </button>
     &nbsp;&nbsp;
     <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
-      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      (click)="modalRef1?.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
