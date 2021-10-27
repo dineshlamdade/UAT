@@ -243,7 +243,7 @@ export class NpsMasterComponent implements OnInit {
         { value: null, disabled: true },
         Validators.required
       ),
-      policyStartDate: new FormControl(null, Validators.required),
+      policyStartDate: new FormControl(null, Validators.required),   
       policyEndDate: new FormControl(new Date("9999-12-31"), Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
@@ -285,7 +285,7 @@ export class NpsMasterComponent implements OnInit {
       this.form.patchValue({
         policyStartDate: this.ConvertedFinancialYearStartDate,
         fromDate: this.ConvertedFinancialYearStartDate,
-        policyEndDate: this.ConvertedFinancialYearEndDate,
+      //  policyEndDate: this.ConvertedFinancialYearEndDate,
         toDate: this.ConvertedFinancialYearEndDate,
   
       });
@@ -632,6 +632,7 @@ export class NpsMasterComponent implements OnInit {
               'Something went wrong. Please try again.'
             );
           }
+          this.resetView();
         });
 
       this.Index = -1;
@@ -651,12 +652,14 @@ export class NpsMasterComponent implements OnInit {
       this.documentRemark = '';
       this.getData();
       this.setMasterForm();
+      
      
     // }
     this.form.patchValue({
       accountType: 'Tier_1',
     });
     this.getNpsIdentityInformation();
+
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -818,7 +821,8 @@ export class NpsMasterComponent implements OnInit {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
-    //this.documentArray = [];
+    this.documentArray = [];
+
     this.urlArray = [];
     this.isCancel = false;
     this.form.get('accountHolderName').setValue('Aishwarya Malviya');
