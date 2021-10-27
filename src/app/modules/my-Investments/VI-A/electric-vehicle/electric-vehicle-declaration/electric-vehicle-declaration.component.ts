@@ -923,7 +923,7 @@ selectedTransactionLenderName(lenderName: any) {
       if(this.transactionDetail[0].electricVehicleLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
         {
           this.alertService.sweetalertError(
-            'Please enter value'
+            'Please enter value.'
           );
           return;
         }
@@ -931,13 +931,13 @@ selectedTransactionLenderName(lenderName: any) {
 
     if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
      }
      if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
 
@@ -1069,7 +1069,7 @@ selectedTransactionLenderName(lenderName: any) {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
     this.receiptAmount = '0.00';
     return false;
@@ -1077,7 +1077,7 @@ selectedTransactionLenderName(lenderName: any) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
     // this.receiptAmount = '0.00';
     // return false;

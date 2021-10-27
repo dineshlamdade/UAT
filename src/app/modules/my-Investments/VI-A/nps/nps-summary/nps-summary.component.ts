@@ -107,7 +107,7 @@ export class NpsSummaryComponent implements OnInit {
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.onChangeLimit();
-      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved.', '');
     });
   }
 

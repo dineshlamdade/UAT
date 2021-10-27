@@ -497,7 +497,7 @@ export class HousingloanmasterComponent implements OnInit {
     if(this.houseLoanOwnerTypeList.find(
       (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
       {
-    this.alertService.sweetalertWarning('Owner name is already exists');
+    this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
   
@@ -507,7 +507,7 @@ export class HousingloanmasterComponent implements OnInit {
       return item.ownerName === this.HPOwnerDetailForm.value.ownerName;
     });
   })) {
-    this.alertService.sweetalertWarning('Owner name is already exists');
+    this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
   
@@ -656,7 +656,7 @@ export class HousingloanmasterComponent implements OnInit {
 
     if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
       if(this.housePropertyLoanDetailList.value.lenderPANOrAadhar == undefined || this.housePropertyLoanDetailList.value.lenderPANOrAadhar == null ){
-        this.alertService.sweetalertWarning('Please enter PAN details');
+        this.alertService.sweetalertWarning('Please enter PAN details.');
         return
       }
     }
@@ -964,13 +964,13 @@ export class HousingloanmasterComponent implements OnInit {
     let invalidSubmission = false;
     if (this.housingLoanForm.invalid) {
       invalidSubmission = true;
-      this.alertService.sweetalertWarning('Please enter property details');
+      this.alertService.sweetalertWarning('Please enter property details.');
     }
 
     if (this.houseLoanOwnerTypeList.length == 0) {
       if (this.HPOwnerDetailForm.invalid) {
         invalidSubmission = true;
-        this.alertService.sweetalertWarning('Please enter house owner details');
+        this.alertService.sweetalertWarning('Please enter house owner details.');
       }
     }
 
@@ -978,7 +978,7 @@ export class HousingloanmasterComponent implements OnInit {
       if (this.HPUsageDetailForm.invalid) {
         invalidSubmission = true;
         this.alertService.sweetalertWarning(
-          'Please enter house loan usage details'
+          'Please enter house loan usage details.'
         );
       }
     }
@@ -986,7 +986,7 @@ export class HousingloanmasterComponent implements OnInit {
     if (this.loanDetailGridData.length == 0) {
       invalidSubmission = true;
       if (this.housePropertyLoanDetailList.invalid) {
-        this.alertService.sweetalertWarning('Please enter loan taken details');
+        this.alertService.sweetalertWarning('Please enter loan taken details.');
       }
     }
 
@@ -1007,7 +1007,7 @@ export class HousingloanmasterComponent implements OnInit {
     )
     {
       this.alertService.sweetalertWarning(
-        'Please upload all mandatory documents'
+        'Please upload all mandatory documents.'
       );
       console.log('urlArray.length', this.urlArray.length);
       return;
@@ -1271,7 +1271,7 @@ export class HousingloanmasterComponent implements OnInit {
         ].updateValueAndValidity()
       );
       this.alertService.sweetalertWarning(
-        'Please enter stamp duty registration date first to enter amount'
+        'Please enter stamp duty registration date first to enter amount.'
       );
     }
   }

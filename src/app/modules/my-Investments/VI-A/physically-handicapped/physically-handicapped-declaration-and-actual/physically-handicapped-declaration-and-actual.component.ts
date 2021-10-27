@@ -401,7 +401,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
           } else {
             // this.alertService.sweetalertWarning(res.status.messsage);
             this.alertService.sweetalertError(
-              'This Policy Holder Already Added'
+              'This Policy Holder Already Added.'
             );
           }
         } else {
@@ -1285,7 +1285,7 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Medical Certificate/Form 10-1A / Medical Certificate/Form 10-1A'
+        'Medical Certificate/Form 10-1A / Medical Certificate/Form 10-1A.'
       );
       return;
     }
@@ -1461,13 +1461,13 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
@@ -1682,7 +1682,7 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
       if (res.data.results[0].severity === undefined || res.data.results.severity === null) {
 
         this.alertService.sweetalertError(
-          'you are not applicable',
+          'you are not applicable.',
         );
       }else{
         this.physicallyHandicappedDetail = res.data.results[0].physicallyHandicappedDetail;
