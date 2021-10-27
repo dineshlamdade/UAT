@@ -904,6 +904,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+   
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
@@ -1037,10 +1038,10 @@ export class HousingloanmasterComponent implements OnInit {
         housePropertyUsageTypeList: this.houseLoanUsageTypeList,
         housePropertyOwnerDetailList: this.houseLoanOwnerTypeList,
         housePropertyLoanDetailList: this.loanDetailGridData,
-        remarkPasswordList: this.documentDataArray,
-        stampDutyremarkPasswordList: this.stampDutydocumentDataArray,
-        loanremarkPasswordList: this.loandocumentDataArray,
-        possessionremarkPasswordList: this.possessiondocumentDataArray,
+        propertyIndexRemarkPasswordList: this.documentDataArray,
+        stampDutyRegistrationRemarkPasswordList: this.stampDutydocumentDataArray,
+        loanSanctionLetterRemarkPasswordList: this.loandocumentDataArray,
+        possessionLetterRemarkPasswordList: this.possessiondocumentDataArray,
       };
 
       // data.housePropertyLoanDetailList = this.loanDetailGridData;
