@@ -423,7 +423,7 @@ export class EducationalLoanMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -487,7 +487,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     {
       this.isshowHideFlag = false;
       this.alertService.sweetalertWarning(
-        'You Have No Full Time Course Then Educational Loan Not To Apply ');
+        'You Have No Full Time Course Then Educational Loan Not To Apply. ');
     }
   }
 

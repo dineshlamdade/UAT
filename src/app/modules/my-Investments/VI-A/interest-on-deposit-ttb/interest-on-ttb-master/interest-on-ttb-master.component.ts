@@ -435,7 +435,7 @@ public showdocument = true;
         if (this.codeInvalid) {
           this.codeInvalid = false;
           this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable'
+            'Duplicate Account should Not be Acceptable.'
           );
           return;
         }
@@ -508,7 +508,7 @@ public showdocument = true;
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -544,7 +544,7 @@ public showdocument = true;
       this.accountNumberlistedit = element.accountNumber;
       if (event == element.accountNumber) {
         this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable'
+          'Duplicate Account should Not be Acceptable.'
         );
       }
       console.log(element.accountNumber);

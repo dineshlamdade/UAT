@@ -869,18 +869,18 @@
               <tbody>
                 <tr *ngFor="
                     let documentSummary of documentDetailList;
-                    let documentIndex = index
-                  ">
+                    let documentIndex = index ">
                   <td>
                     <span tooltip="{{ documentSummary.proofSubmissionId }}">
                       {{ documentSummary.proofSubmissionId }}
                     </span>
                   </td>
-                  <td class="padding-0" *ngIf="documentSummary.interest80TTBankList.length == 1">
-                    <!-- {{ documentSummary.bankName}} -->
-                    <!-- {{ documentSummary.accountNo}} -->
+                 <!--  <td class="padding-0" *ngIf="documentSummary.interest80TTBankList.length == 1">
                     {{ documentSummary.interest80TTBankList[0].bankName }} :
                     {{ documentSummary.interest80TTBankList[0].accountNumber }}
+                  </td> -->
+                  <td>
+
                   </td>
                   <td>
                     <span tooltip="{{

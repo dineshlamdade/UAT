@@ -847,7 +847,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1003,13 +1003,13 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.'
       );
     } else if (receiptAmount_ > globalSelectedAmount_) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount.'
       );
     }
     this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
