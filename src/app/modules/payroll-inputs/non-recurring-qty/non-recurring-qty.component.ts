@@ -124,6 +124,7 @@ export class NonRecurringQtyComponent implements OnInit {
 	savenonSalaryDetailId: any ='';
 	savetype: any;
 	svaeDisabledFlag: boolean = true;
+	selectedOption: string = 'single';
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private nonRecQtyService: NonRecurringQtyService,
@@ -324,6 +325,15 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/******************* Transaction when click on Edit Transaction *******************/
 
+	/** on Click on toggle Button */
+	getSelectedOption(event){
+		if(event.checked){
+			this.selectedOption = 'fastEntry'
+		}else{
+		  this.selectedOption = 'single'
+		}
+	  }
+	  
 	/** On Click edit Transaction button - summary */
 	editTransaction() {
 		if (this.selectedEmpData.length > 0) {

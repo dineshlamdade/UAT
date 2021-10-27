@@ -117,13 +117,14 @@ export class NonRecurringAmtComponent implements OnInit {
 	isRefererBonus: boolean;
 	selectedEmployeeLength: any = 0;
 	svaeDisabledFlag: boolean = true;
+	selectedOption: string = 'single';
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
 		if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
-			localStorage.removeItem('payrollListEmpData')
+			// localStorage.removeItem('payrollListEmpData')
 			this.indexId = 2
 			this.showEmployeeSelectionFlag = true;
 			this.selectedApplicableAt = ""
@@ -158,6 +159,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** On Click tab - summary */
 	navigateSummary() {
+		localStorage.removeItem('payrollListEmpData')
 		this.indexId = 1;
 		this.selectedEmpData = []
 		this.NonRecurringTransactionGroupSummery()
@@ -347,6 +349,15 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/******************* Transaction when click on Edit Transaction *******************/
 
+	/** on Click on toggle Button */
+	getSelectedOption(event){
+      if(event.checked){
+		  this.selectedOption = 'fastEntry'
+	  }else{
+		this.selectedOption = 'single'
+	  }
+	}
+
 	/** On Click edit Transaction button - summary */
 	editTransaction() {
 		if (this.selectedEmpData.length > 0) {
@@ -365,6 +376,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Display employee info by employeeMasterId */
 	employeeFinDetails() {
+		this.employeeFinDetailsData = null
 		// this.attendanceService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
 		this.nonRecService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
 			res => {
@@ -707,6 +719,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Navigate To Transaction Tab on click radio button */
 	navigateToTransaction() {
+		this.svaeDisabledFlag = true
 		if (this.selectedEmpData.length == 0) {
 			this.indexId = 2
 			this.showEmployeeSelectionFlag = true;
@@ -2759,7 +2772,7 @@ this.saveTransactionData.forEach(element => {
 			res => {
 				this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
-
+                this.svaeDisabledFlag = true;
 				if(this.showDropdownDisabled){
 				 if(this.payrollListEmpData.length == 1 || (this.payrollListEmpData.length-1) == this.parollListIndex){
 					this.indexId = 1;

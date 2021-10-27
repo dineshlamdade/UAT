@@ -27,16 +27,16 @@
                                         </div> -->
                                         <div class="col-sm-3">
                                             <label class="form-label"> NR Qty Head</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                             [(ngModel)]="nonSalaryDetailId"
                                                 (change)="getSelectedHead($event.target.value)">
-                                                <option value="null"> Select </option>
+                                                <option value=""> Select </option>
                                                 <option *ngFor="let data of summaryData" value="{{data.nonSalaryDetailId}}">{{data.code}}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label"> Type </label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                                [(ngModel)]="type"
                                                 (change)="getSelectedHeadType($event.target.value)">
                                                 <option value=""> Select </option>
@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                             [(ngModel)]="selectedPayrollArea"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
@@ -269,8 +269,9 @@
                                                                 <div class="row mt-20">
                                                                     <div class="col-sm-3">
                                                                         <label class="form-label">Quantity</label>
-                                                                        <input type="text" class="form-control"
-                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                                        <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" -->
+                                                                        <input type="number" class="form-control"
+                                                                        
                                                                             [(ngModel)]="selectedAmount">
                                                                     </div>
                                                                     <div class="col-sm-3">
@@ -284,8 +285,8 @@
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                             tooltip="Go" (click)="getAllSelectedData()"
-                                                                            [disabled]="selectedEmployeeData.length == 0"
-                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0}"
+                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''"
+                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''}"
                                                                             >
                                                                             <!-- [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''}"
@@ -446,7 +447,7 @@
                                     </td>
                                     <td>{{data.employeeName}}</td>
                                     <td>
-                                        <select name="payrollarea" class="form-control wd-100" disabled
+                                        <select name="payrollarea" class="form-control custom-select wd-100" disabled
                                             (change)="getSelectedSavePayroll($event.target.value,data)">
                                             <option value=""> Select</option>
                                             <option *ngFor="let payroll of parollArea"
@@ -511,8 +512,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control wd-100" value="{{data.quantity}}"
-                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                        <!-- onkeypress="return event.charCode >= 48 && event.charCode <= 57" -->
+                                        <input type="number" class="form-control wd-100" value="{{data.quantity}}"
+                                        
                                             (focusout)="saveAmounts($event.target.value,data)">
                                     </td>
                                     <td>
@@ -731,15 +733,15 @@
                             <button type="submit"
                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                 tooltip="Save" (click)="saveFastEntries()"
-                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
-                                [disabled]="saveTransactionData.length == 0">
-                                <b><i class="fa fa-floppy-o"></i></b> Save
+                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
+                                [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
+                                <b><i class="fa fa-floppy-o"></i></b> Save 
                             </button>&nbsp;
                             <button type="submit"
                                 class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
                                 tooltip="Save & Clear" (click)="saveAndClearFastEntries()"
-                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0}"
-                                [disabled]="saveTransactionData.length == 0">
+                                [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
+                                [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
                                 <b><i class="fa fa-floppy-o"></i></b>Save & Clear
                             </button>&nbsp;
                             <button type="button"

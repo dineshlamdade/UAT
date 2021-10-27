@@ -386,7 +386,19 @@
                                                 <div class="col-md-12">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="tabview-contents">
+                                                            <div>
+                                                                <!-- margin-top: 17px !important; -->
+                                                                <label style="float:right;font-size: 22px;" 
+                                                                    class="custom-switch mt_5" *ngIf="payrollListEmpData">
+                                                                        <span class="form-label">Single Entry</span>&nbsp;&nbsp;
+                                                                        <input type="checkbox" (click)="getSelectedOption($event.target)" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                        <span class="custom-switch-indicator" style="width: 40px; height: 21px;"></span>&nbsp;&nbsp;
+                                                                        <span class="form-label">Fast Entry</span>
+                                                                </label>
+                                                            </div>
+                                                            <br>
+                                                            <div class="tabview-contents" *ngIf="selectedOption == 'single' ">
+
                                                                 <div class="section-body bg-color-white">
 
                                                                     <div style="float:right;margin-top:-25px;"
@@ -400,6 +412,8 @@
                                                                         <strong>Record {{parollListIndex + 1 }} of
                                                                             {{payrollListEmpData.length}}</strong>
                                                                     </div>
+
+                                                                    
 
                                                                     <!-- Employee Selection Dropdown-->
                                                                     <div class="row mt-10"
@@ -1014,10 +1028,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="headpayrollHeadMaster.displayNametype">
+                                                                                                        field="headType">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="payrollHeadMaster.displayName"
+                                                                                                        field="headType"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
                                                                                                     </p-columnFilter>
@@ -1031,10 +1045,10 @@
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="payrollHeadMaster.description">
+                                                                                                        field="headDescription">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="payrollHeadMaster.description"
+                                                                                                        field="headDescription"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -1413,7 +1427,7 @@
                                                                         <div class="col-12">
                                                                             <div class="float-right mb-15">
                                                                                 <button type="submit"
-                                                                                    tooltip="Save & Next"
+                                                                                    tooltip="Update & Next"
                                                                                     *ngIf="!showEmployeeSelectionFlag"
                                                                                     (click)="saveAndNextTransaction()"
                                                                                     [disabled]="selectedEmpData.length == 1 || (selectedEmpData.length-1) == index"
@@ -1434,7 +1448,7 @@
                                                                                     </b>
                                                                                     Save & Next
                                                                                 </button>
-                                                                                <button type="button" tooltip="Save"
+                                                                                <button type="button" tooltip="Update"
                                                                                     *ngIf="!showEmployeeSelectionFlag"
                                                                                     (click)="updateSingleTransaction()"
                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10">
@@ -1511,7 +1525,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
+
+                                                            <app-fastentry-nr-amt *ngIf="selectedOption != 'single'"></app-fastentry-nr-amt>
                                                         </div>
                                                     </div>
                                                 </div>

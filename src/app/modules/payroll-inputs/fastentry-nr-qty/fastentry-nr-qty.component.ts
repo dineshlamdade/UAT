@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { familyAddressDetailRequestDTO } from '../../employee-master/components/family-information/family-information.model';
 import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
@@ -22,11 +23,11 @@ export class FastentryNrQtyComponent implements OnInit {
   selectedFrequency: any = 'Monthly';
   selectedTransactionType: any = 'NoOfTransaction';
   selectedNoOfTransaction: any = 1;
-  nonSalaryDetailId: any = null;
+  nonSalaryDetailId: any = '';
   tableData: any[];
   selectedClawBack: any;
-  selectedAmount: any;
-  selectedRemark: any;
+  selectedAmount: any = '';
+  selectedRemark: any = '';
   selectedFromDate: any = '';
   selectedToDate: any = '';
   setMinToDate: any;
@@ -242,6 +243,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
   /** Table data push */
   getAllSelectedData() {
+    this.saveDisabledBtn = false
     this.saveNumberTransaction = this.selectedNoOfTransaction
     this.saveAmount = this.selectedAmount
     this.saveRemark = this.selectedRemark
@@ -283,14 +285,20 @@ export class FastentryNrQtyComponent implements OnInit {
       })
     })
 
-    this.tableData.forEach(element =>{
-      if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
-			|| element.amount == '' || element.employeeMasterId == ''){
+    this.saveTransactionData.forEach(element =>{
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+      if(element.quantity == null){
+        element.quantity = ''
+      }
+      if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.employeeMasterId == '' || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
 				this.saveDisabledBtn = true
 			}
 
 			if(element.transactionsType == 'NoOfTransaction'){
-				if(element.numberOfTransactions == ''){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
 					this.saveDisabledBtn = true
 				}
 			}
@@ -302,6 +310,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
 
     })
+
   }
 
 
@@ -312,6 +321,7 @@ export class FastentryNrQtyComponent implements OnInit {
   }
 
   saveAmounts(value, data) {
+    this.saveDisabledBtn = false
     this.saveAmount = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -361,6 +371,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -426,9 +442,34 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.employeeMasterId == '' || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   saveRemarks(value, data) {
+    this.saveDisabledBtn = false
     this.saveRemark = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -447,6 +488,12 @@ export class FastentryNrQtyComponent implements OnInit {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
           console.log("value: "+ value)
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -519,9 +566,33 @@ export class FastentryNrQtyComponent implements OnInit {
     }
 
     console.log("save data remark: "+ JSON.stringify(this.saveTransactionData))
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.employeeMasterId == '' || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   getSaveFromDate(value, data) {
+    this.saveDisabledBtn = false
     this.setMinToDate = value;
     this.saveFromDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
     let todate = "";
@@ -537,6 +608,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -605,9 +682,33 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   getSaveToDate(value, data) {
+    this.saveDisabledBtn = false
     this.saveToDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -622,6 +723,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -690,10 +797,41 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   getsaveNumberTransaction(value, data) {
-    this.saveNumberTransaction = value;
+    this.saveDisabledBtn = false
+
+    if(value == '' || value == null || value == undefined){
+      this.saveNumberTransaction = ''
+      value = ''
+    }else{
+      this.saveNumberTransaction = value;
+    }
+
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
       todate = ""
@@ -707,6 +845,15 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(value == null){
+            value = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -777,9 +924,33 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+    
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null || element.numberOfTransactions == 'null'){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == '' || element.toDate == 'null' || element.toDate == null){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   getsaveTransactionType(value, rowindex, data) {
+    this.saveDisabledBtn = false
     //this.saveTransactionType = value
     this.selectedTransactionIndex = rowindex;
     this.selectedTransactionType = value
@@ -807,6 +978,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -877,9 +1054,33 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   getSelectedSavePayroll(value, data) {
+    this.saveDisabledBtn = false
     this.selectedPayrollArea = value
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -894,6 +1095,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -964,6 +1171,29 @@ export class FastentryNrQtyComponent implements OnInit {
         "nonsalaryTransactionGroupDeviationList": []
       })
     }
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   /** edit deviation popup */
@@ -1012,6 +1242,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
   /** Get Applcable At selected Value */
   getSelectedApplicable(value, data) {
+    this.saveDisabledBtn = false
     this.selectedApplicableAt = value
     this.selectedClawbackInputType = ""
     this.clawbackperiod = 0;
@@ -1030,6 +1261,13 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
+          
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1101,10 +1339,34 @@ export class FastentryNrQtyComponent implements OnInit {
       })
     }
     console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   /** Get Input Type selected Value */
   getSelectedInputType(value, data) {
+    this.saveDisabledBtn = false
     this.selectedClawbackInputType = value
     this.clawbackperiod = 0;
     this.clawbackDate = "";
@@ -1122,6 +1384,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1194,6 +1462,29 @@ export class FastentryNrQtyComponent implements OnInit {
       })
     }
     console.log("input type: " + JSON.stringify(this.saveTransactionData))
+
+    this.saveTransactionData.forEach(element => {
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+			if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.nonSalaryDetailId == '' || this.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+		});
   }
 
   /** Clawback Popup Show */
@@ -1224,6 +1515,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1312,6 +1609,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": data.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1401,6 +1704,12 @@ export class FastentryNrQtyComponent implements OnInit {
       this.saveTransactionData.forEach((element, index) => {
         if (element.employeeMasterId == data.employeeMasterId) {
           let ind = index;
+          if(element.numberOfTransactions == null){
+            element.numberOfTransactions = ''
+          }
+          if(element.quantity == null){
+            element.quantity = ''
+          }
           this.saveTransactionData.splice(ind, 1, {
             "employeeMasterId": element.employeeMasterId,
             "nonSalaryDetailId": element.nonSalaryDetailId,
@@ -1528,6 +1837,8 @@ export class FastentryNrQtyComponent implements OnInit {
         this.saveTransactionData = [];
         this.tempTableData = []
         this.tableData = []
+        this.selectedEmployeeData = []
+
       }
     )
   }
@@ -1536,13 +1847,14 @@ export class FastentryNrQtyComponent implements OnInit {
     this.nonrecqtyservice.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
       res => {
         this.toaster.success("", "Transaction Saved Successfully")
+        this.selectedEmployeeData = []
         this.saveTransactionData = [];
         this.tempTableData = [];
         this.selectedOnceEvery = 1;
         this.selectedFrequency = 'Monthly';
         this.selectedTransactionType = 'NoOfTransaction';
         this.selectedNoOfTransaction = 1;
-        this.nonSalaryDetailId = null
+        this.nonSalaryDetailId = ''
         this.tableData = [];
         this.selectedClawBack = ''
         this.selectedAmount = ''
@@ -1574,12 +1886,14 @@ export class FastentryNrQtyComponent implements OnInit {
 
   reset() {
     this.saveTransactionData = [];
+    this.selectedEmployeeData = []
+
     this.tempTableData = [];
     this.selectedOnceEvery = 1;
     this.selectedFrequency = 'Monthly';
     this.selectedTransactionType = 'NoOfTransaction';
     this.selectedNoOfTransaction = 1;
-    this.nonSalaryDetailId = null
+    this.nonSalaryDetailId = ''
     this.tableData = [];
     this.selectedClawBack = ''
     this.selectedAmount = ''
@@ -1614,6 +1928,8 @@ export class FastentryNrQtyComponent implements OnInit {
     this.saveTransactionData = [];
     this.tempTableData = []
     this.tableData = []
+    this.selectedEmployeeData = []
+
   }
 
 }

@@ -453,7 +453,20 @@
                                                 <div class="col-md-12">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="tabview-contents">
+
+                                                            <div>
+                                                                <!-- margin-top: 17px !important; -->
+                                                                <label style="float:right;font-size: 22px;" 
+                                                                    class="custom-switch mt_5" *ngIf="payrollListEmpData">
+                                                                        <span class="form-label">Single Entry</span>&nbsp;&nbsp;
+                                                                        <input type="checkbox" (click)="getSelectedOption($event.target)" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                        <span class="custom-switch-indicator" style="width: 40px; height: 21px;"></span>&nbsp;&nbsp;
+                                                                        <span class="form-label">Fast Entry</span>
+                                                                </label>
+                                                            </div>
+                                                            <br>
+
+                                                            <div class="tabview-contents" *ngIf="selectedOption == 'single' ">
                                                                 <div class="section-body bg-color-white">
 
                                                                     <div style="float:right;margin-top:-25px;"
@@ -1620,6 +1633,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <app-fastentry-nr-qty *ngIf="selectedOption != 'single'"></app-fastentry-nr-qty>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2085,10 +2101,11 @@
                                                                         <td class="bg-color-light_gray">
                                                                             <label
                                                                                 class="custom-control custom-checkbox checkbox-center">
+                                                                                {{ScheduleData.discard}}
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
                                                                                     (click)="getHoldScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                    [disabled]="ScheduleData.discard == true"
+                                                                                    [disabled]="ScheduleData.discard == true || ScheduleData.isDisabledFlag"
                                                                                     [checked]="ScheduleData.hold == true" />
                                                                                     <!-- || (selecteddiscardIndex == rowIndex && discard == 1) -->
                                                                                     <!-- || ScheduleData.isDisabledFlag -->
@@ -2102,7 +2119,7 @@
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
                                                                                     (click)="getDiscardScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                    [disabled]="ScheduleData.hold == true"
+                                                                                    [disabled]="ScheduleData.hold == true || ScheduleData.isDisabledFlag"
                                                                                     [checked]="ScheduleData.discard == true" />
                                                                                     
                                                                                     <!-- || (selecteddiscardIndex == rowIndex && hold == 1) -->
