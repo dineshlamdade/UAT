@@ -413,18 +413,18 @@ console.log('this.isEdit', this.isEdit);
             this.validVehicleNumbers = true;
           }
         });
-        if (this.validVehicleNumbers) {
+   /*      if (this.validVehicleNumbers) {
           this.validVehicleNumbers = false;
           this.alertService.sweetalertError(
             'Vehicle number is already present.'
           );
           return;
-        }
+        } */
       }
 
 
       console.log('loan Account Number ::', data);
-      if (data.loanAccountNumber) {
+  /*     if (data.loanAccountNumber) {
 
         this.loanAccountNumbers.results.forEach(results => {
           if (results.loanAccountNumber == data.loanAccountNumber) {
@@ -438,7 +438,7 @@ console.log('this.isEdit', this.isEdit);
           );
           return;
         }
-      }
+      } */
 
 
       // if (this.validVehicleNumbers) {
@@ -492,7 +492,7 @@ console.log('this.isEdit', this.isEdit);
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
-                      'remark':element.documentInformationList[1].remark,  
+                     // 'remark':element.documentInformationList[1].remark,  
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
