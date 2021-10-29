@@ -490,8 +490,18 @@ export class NpsMasterComponent implements OnInit {
     //Sutej chenges
     // console.log('urlArray.length', this.urlArray.length);
     if(!this.isEdit){
- /*    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) { */
-  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) {
+    if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) {
+ /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
+      this.alertService.sweetalertWarning(
+        'National Pension Scheme Document needed to Create Master.'
+      );
+      return;
+    } 
+  }
+
+  if(this.isEdit){
+    if (this.masterfilesArray.length === 0 &&  this.urlArray.length === 0 ) {
+ /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
       );
