@@ -50,9 +50,9 @@
                     <label class="form-label">
                       Own Fixed Limit Value
                     </label>
-                    <select name="sdmvalue" (change)="onChangeDefinationEmp($event.target.value)"
-                      id="sdmvalue" formControlName="sdmvalue"
-                      [ngClass]="{'is-invalid' : sectionForm.get('sdmvalue').status == 'INVALID'}"
+                    <select name="ownFixedLimitValue" (change)="onChangeDefinationEmp($event.target.value)"
+                      id="ownFixedLimitValue" formControlName="ownFixedLimitValue"
+                      [ngClass]="{'is-invalid' : sectionForm.get('ownFixedLimitValue').status == 'INVALID'}"
                       class="form-control">
                       <!-- <option [ngValue]="null">Select</option> -->
                       <option selected value=''>Select </option>
@@ -113,8 +113,12 @@
                         [required]="hideRemarkDiv2" formControlName="remark"
                        ></textarea> -->
 
-                       <textarea [required]="hideRemarkDiv2" formControlName="remark" autocomplete="off" placeholder="Enter Remark"
-                        class="form-control" rows="2"></textarea>
+                       <!-- <textarea [required]="hideRemarkDiv2" formControlName="remark" autocomplete="off" placeholder="Enter Remark"
+                        class="form-control" rows="2"></textarea> -->
+
+                        <textarea class="form-control" [required]="hideRemarkDiv2"
+                        formControlName="remark"  rows="4" placeholder="Enter Remark"> </textarea>
+
 
 
                     </div>
@@ -134,16 +138,12 @@
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i
                             class="fa fa-refresh"></i></b>
                         Reset</button>
-                      <!-- <button type="button" tooltip="Cancel" (click)="resetForm()"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
-                            class="fa fa-times"></i></b>
-                        Cancel</button> -->
                       </div>
                         <div class="float-right" *ngIf="isUpdateMode">
                           <button type="submit"
-                            [ngClass]="sectionForm.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
-                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                            (click)="putMethod()" [disabled]="sectionForm.invalid">
+                          [ngClass]="sectionForm.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                          (click)="putMethod()" [disabled]="sectionForm.invalid" >
                             <b><i class="fa fa-floppy-o"></i></b>Update</button>
                             <button type="button"
                             class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
@@ -187,8 +187,8 @@
                   </div>
                 </div>
                 </div>
-              <div class="row mt-25">
-                <div class="col-md-12">
+              <!-- <div class="row mt-25">
+                <div class="col-md-12"> -->
 
                   <!-- <p-table #dt1 [value]="ltaavailed1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                     (sortFunction)="customSort($event)" [customSort]="true"
@@ -203,7 +203,7 @@
                     'flexiSectionName',
                     'flexiSectionNo',
                     'ownFixLimit',
-                    'sdmvalue',
+                    'ownFixedLimitValue',
                     'balancingFigureApplicable']">
 
 
@@ -259,9 +259,9 @@
                           <div class="p-d-flex p-jc-between p-ai-center">
                             Own Fixed Limit value
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="sdmvalue" pSortableColumn="sdmvalue">
+                              <p-sortIcon field="sdmName" pSortableColumn="sdmName">
                               </p-sortIcon>
-                              <p-columnFilter type="text" field="sdmvalue" display="menu" class="p-ml-auto">
+                              <p-columnFilter type="text" field="sdmName" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -291,7 +291,7 @@
                         <td>{{user1.flexiSectionName}}</td>
                         <td>{{user1.flexiSectionNo}}</td>
                         <td>{{user1.ownFixLimit}}</td>
-                        <td>{{user1.sdmvalue}}</td>
+                        <td>{{user1.sdmName}}</td>
                         <td>{{user1.balancingFigureApplicable}}</td>
                         <!-- <td>{{user1.derivedValue}}</td> -->
 
@@ -301,12 +301,13 @@
                           </span></td> -->
 
                           <td class="wd-15 align-left">
-                            <button type="button" class="btn btn-icon" tooltip="View"
-                            (click)="viewMode(user1)">
-                            <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button>
+
                             <button type="button" class="btn btn-icon" tooltip="Edit"
                              (click)="editUpdateDataJobMaster(user1)">
                              <i class="fa fa-edit font-18 text-dark-green cursor-pointer"></i></button>
+                             <button type="button" class="btn btn-icon" tooltip="View"
+                             (click)="viewMode(user1)">
+                             <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button>
                               <button type="button" class="btn btn-icon" tooltip="Delete" *ngIf="!user1.isCheckedTruefalse"
                               (click)="UploadModal1(template22,user1)">
                               <i class="fa fa-trash font-18 text-red cursor-pointer"></i> </button>
@@ -325,8 +326,8 @@
                     </ng-template>
 
                   </p-table>
-                </div>
-              </div>
+                <!-- </div>
+              </div> -->
             </div>
 
           </form>

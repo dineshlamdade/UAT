@@ -126,11 +126,11 @@ export class SectionComponent implements OnInit {
       flexiSectionName: new FormControl('', Validators.required),
       flexiSectionNo: new FormControl('', Validators.required),
       ownFixLimit: new FormControl('', Validators.required),
-      sdmvalue: new FormControl('', Validators.required),
+      ownFixedLimitValue: new FormControl('', Validators.required),
       derivedValue: new FormControl('', Validators.required),
       balancingFigureApplicable: new FormControl('', Validators.required),
-      remark : new FormControl({ value: '', disabled: true },Validators.required),
-      isActive : new FormControl({ value: true, disabled: true }),
+      remark : new FormControl({value: '', disabled: true},Validators.required),
+      isActive : new FormControl({value: true, disabled: true}),
 
     });
   }
@@ -139,12 +139,12 @@ export class SectionComponent implements OnInit {
   getOwnFlexiDropDownList() {
     this.flexiInputService.getOwnFlexiDropDownList().subscribe((res) => {
       this.flexiList = res.data.results;
-      this.ownFlexiList = [];
+     this.ownFlexiList = [];
       console.log(this.flexiList);
       this.flexiList[0].forEach((element) => {
         const obj = {
           label: element.sdmvalue,
-          value: element.id,
+          value: element.id.toString(),
         };
         this.ownFlexiList.push(obj);
       });
@@ -157,8 +157,8 @@ export class SectionComponent implements OnInit {
       this.fixedAndDerived = false
       this.derivedNameList = [];
       this.ownFlexiList = [];
-      this.sectionForm.get('sdmvalue').clearValidators();
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
+      this.sectionForm.get('ownFixedLimitValue').clearValidators();
+      this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
       this.sectionForm.get('derivedValue').clearValidators();
       this.sectionForm.get('derivedValue').updateValueAndValidity();
       this.sectionForm.controls['balancingFigureApplicable'].setValue('Yes').value
@@ -172,13 +172,13 @@ export class SectionComponent implements OnInit {
       // });
     }else{
       this.fixedAndDerived = true
-      this.getOwnFlexiDropDownList();
+      // this.getOwnFlexiDropDownList();
       this.sectionForm.patchValue({
-        sdmvalue: '',
+        ownFixedLimitValue: '',
         derivedValue: '',
       });
-      this.sectionForm.get('sdmvalue').setValidators([Validators.required]);
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
+      this.sectionForm.get('ownFixedLimitValue').setValidators([Validators.required]);
+      this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
       this.sectionForm.get('derivedValue').setValidators([Validators.required]);
       this.sectionForm.get('derivedValue').updateValueAndValidity();
       // this.ngOnInit()
@@ -213,8 +213,10 @@ export class SectionComponent implements OnInit {
     }
   }
 
+
   //Get Table Data List API Call
   getTableData() {
+    // setTimeout(()=>{
     this.flexiInputService.getAllSectionTableList().subscribe((res) => {
       if(res.data.results.length > 0){
       this.tableDataList1 = res.data.results;
@@ -227,7 +229,8 @@ export class SectionComponent implements OnInit {
           flexiSectionName: element.flexiSectionName,
           flexiSectionNo: element.flexiSectionNo,
           ownFixLimit: element.ownFixLimit === 1 ? 'Yes' : 'No',
-          sdmvalue: element.ownFixedLimitValue,
+          sdmName: element.sdmName,
+          ownFixedLimitValue: element.ownFixedLimitValue,
           balancingFigureApplicable:
             element.balancingFigureApplicable === 1 ? 'Yes' : 'No',
             remark :  element.remark,
@@ -240,7 +243,7 @@ export class SectionComponent implements OnInit {
     }
 
     });
-
+    // 5000});
   }
 
   // find  ids
@@ -258,33 +261,33 @@ export class SectionComponent implements OnInit {
     console.log('toSelect', toSelect);
   }
 
-  //Post Section Json
+  //Post Section Json Save
   saveSectionData() {
     if (this.sectionForm.invalid) {
       return;
     };
 
-//     if(this.loanAccountNumbers.results.length > 0){
-//     if(this.sectionForm.controls['flexiSectionName'].value){
-//    const data = this.sectionForm.controls['flexiSectionName'].value;
-//    console.log(data);
-//     if (data) {
+    if(this.loanAccountNumbers.results.length > 0){
+    if(this.sectionForm.controls['flexiSectionName'].value){
+   const data = this.sectionForm.controls['flexiSectionName'].value;
+   console.log(data);
+    if (data) {
 
-//       this.loanAccountNumbers.results.forEach(results => {
-//         if (results.flexiSectionName == data) {
-//           this.validloanAccountNumber = true;
-//         }
-//       });
-//       if (this.validloanAccountNumber) {
-//         this.validloanAccountNumber = false;
-//         this.alertService.sweetalertError(
-//          'Flexi Section Name Already Exists'
-//         );
-//         return;
-//       }
-//     }
-//   }
-// }
+      this.loanAccountNumbers.results.forEach(results => {
+        if (results.flexiSectionName == data) {
+          this.validloanAccountNumber = true;
+        }
+      });
+      if (this.validloanAccountNumber) {
+        this.validloanAccountNumber = false;
+        this.alertService.sweetalertError(
+         'Flexi Section Name Already Exists'
+        );
+        this.sectionForm.controls['flexiSectionName'].reset();
+      }
+    }
+  }
+}
 
   if(this.sectionForm.get('ownFixLimit').value == "No"){
     const data = {
@@ -316,25 +319,27 @@ export class SectionComponent implements OnInit {
           'Something went wrong. Please try again.'
         );
       }
-    },error => {
-      if(error.error.status.code == '403'){
-        //this.toaster.success( 'Duplicate Area Set Name' );
-        this.alertService.sweetalertError('Flexi Section Name Already Exists');
-        this.sectionForm.controls['sectionForm'].reset();
-      }
+    }
+    // ,error => {
+    //   if(error.error.status.code == '403'){
+    //     //this.toaster.success( 'Duplicate Area Set Name' );
+    //     this.alertService.sweetalertError('Flexi Section Name Already Exists');
+    //     this.sectionForm.controls['sectionForm'].reset();
+    //   }
 
-    });
+    // }
+    );
     this.hideRemarkDiv2 = false;
     this.sectionForm.reset();
     this.fixedAndDerived = true
-    this.sectionForm.get('isActive').setValue(1);
+    this.sectionForm.get('isActive').setValue(true);
     this.sectionForm.get('isActive').disable();
     this.sectionForm.patchValue({
       flexiSectionName: '',
       flexiSectionNo: '',
       derivedValue: '',
       ownFixLimit: '',
-      sdmvalue: '',
+      ownFixedLimitValue: '',
       balancingFigureApplicable: '',
     });
 
@@ -352,7 +357,7 @@ export class SectionComponent implements OnInit {
       isActive: 1,
       ownFixLimit: this.sectionForm.get('ownFixLimit').value == 'Yes' ? 1 : 0,
       ownFixedLimitValue: this.getFlexiName(
-        this.sectionForm.get('sdmvalue').value
+        this.sectionForm.get('ownFixedLimitValue').value
       ),
     };
 
@@ -372,14 +377,15 @@ export class SectionComponent implements OnInit {
           'Something went wrong. Please try again.'
         );
       }
-    },error => {
-      if(error.error.status.code == '403'){
-        //this.toaster.success( 'Duplicate Area Set Name' );
-        this.alertService.sweetalertError('Flexi Section Name Already Exists');
-        this.sectionForm.controls['sectionForm'].reset();
-      }
-
     }
+    // ,error => {
+    //   if(error.error.status.code == '403'){
+    //     //this.toaster.success( 'Duplicate Area Set Name' );
+    //     this.alertService.sweetalertError('Flexi Section Name Already Exists');
+    //     this.sectionForm.controls['sectionForm'].reset();
+    //   }
+
+    // }
     );
     this.hideRemarkDiv2 = false;
     this.fixedAndDerived = true
@@ -391,7 +397,7 @@ export class SectionComponent implements OnInit {
       flexiSectionNo: '',
       derivedValue: '',
       ownFixLimit: '',
-      sdmvalue: '',
+      ownFixedLimitValue: '',
       balancingFigureApplicable: '',
     });
 
@@ -400,7 +406,7 @@ export class SectionComponent implements OnInit {
     // this.getTableData();
   }
 
-  //Edit
+
 
   //Delete API code
   UploadModal1(template: TemplateRef<any>, user1) {
@@ -449,51 +455,38 @@ export class SectionComponent implements OnInit {
       flexiSectionNo: '',
       derivedValue: '',
       ownFixLimit: '',
-      sdmvalue: '',
+      ownFixedLimitValue: '',
       balancingFigureApplicable: '',
     });
   }
 
-  //Edit functionality patch value for form control
+  // Edit functionality patch value for form control
   editUpdateDataJobMaster(data) {
-
+    // this.sectionForm.get('isActive').setValue(true);
     if(data.ownFixLimit == 'No'){
       this.fixedAndDerived = false
       this.derivedNameList = [];
       this.ownFlexiList = [];
-      this.sectionForm.get('sdmvalue').clearValidators();
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
+      this.sectionForm.get('ownFixedLimitValue').clearValidators();
+      this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
       this.sectionForm.get('derivedValue').clearValidators();
       this.sectionForm.get('derivedValue').updateValueAndValidity();
-    }else{
-      this.fixedAndDerived = true
-      this.getOwnFlexiDropDownList();
-      this.sectionForm.patchValue({
-        sdmvalue: '',
-        derivedValue: '',
-      });
-      this.sectionForm.get('sdmvalue').setValidators([Validators.required]);
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
-      this.sectionForm.get('derivedValue').setValidators([Validators.required]);
-      this.sectionForm.get('derivedValue').updateValueAndValidity();
-      // this.ngOnInit()
-    }
-
-    this.sectionForm.get('isActive').setValue(0)
+      this.sectionForm.get('isActive').setValue(1)
     this.hideRemarkDiv2 = false;
     this.isViewMode = false;
     this.sectionForm.enable();
     window.scrollTo(0, 0);
     this.hideRemarkDiv2 = false;
     this.sectionForm.get('flexiSectionName').disable();
-    // this.sectionForm.get('isActive').setValue(1);
+
     // this.sectionForm.get('isActive').enable();
     this.sectionForm.patchValue(data);
     console.log('data', data);
+    this.sectionForm.get('isActive').setValue(true);
     this.isUpdateMode = true;
     this.isUpdateModeSave = false;
     this.flexiSectionMasterIds = data.flexiSectionMasterId;
-    let str = data.sdmvalue;
+    let str = data.ownFixedLimitValue;
     this.onChangeDefinationEmp(str.toString());
     this.sectionForm.controls['flexiSectionName'].patchValue(
       data.flexiSectionName
@@ -507,14 +500,71 @@ export class SectionComponent implements OnInit {
     this.sectionForm.controls['ownFixLimit'].patchValue(
       data.ownFixLimit == 'Yes' ? 'Yes' : 'No'
     );
-    this.sectionForm.controls['sdmvalue'].patchValue(
-      this.getFlexiValueName(this.sectionForm.setValue('sdmvalue').value)
-    );
+    // this.sectionForm.controls['ownFixedLimitValue'].patchValue(
+    //   this.getFlexiValueName(this.sectionForm.setValue('ownFixedLimitValue').value)
+    // );
     this.sectionForm.controls['derivedName'].patchValue(
       this.derivedNamesListInEdit(
         this.sectionForm.setValue('derivedName').value
       )
     );
+    }else{
+          window.scrollTo(0, 0);
+          this.fixedAndDerived = true
+          // this.getOwnFlexiDropDownList();
+        //   this.sectionForm.patchValue({
+        //   ownFixedLimitValue: '',
+        //   derivedValue: '',
+        // });
+
+        // this.sectionForm.get('isActive').setValue(1)
+        this.hideRemarkDiv2 = false;
+        this.isViewMode = false;
+        this.sectionForm.enable();
+
+        this.hideRemarkDiv2 = false;
+        this.sectionForm.get('flexiSectionName').disable();
+        // this.sectionForm.get('isActive').enable();
+        this.sectionForm.patchValue(data);
+        this.sectionForm.controls['ownFixedLimitValue'].patchValue(
+        data.ownFixedLimitValue.toString()
+        );
+        console.log('vlue', data.ownFixedLimitValue.toString());
+        this.sectionForm.get('isActive').setValue(true);
+        console.log('data', data);
+        this.isUpdateMode = true;
+        this.isUpdateModeSave = false;
+        this.flexiSectionMasterIds = data.flexiSectionMasterId;
+        let str = data.ownFixedLimitValue;
+         this.onChangeDefinationEmp(str.toString());
+        // this.sectionForm.controls['flexiSectionName'].patchValue(
+        // data.flexiSectionName
+        // );
+        //this.sectionForm.controls['remark'].patchValue(data.remark);
+        // this.sectionForm.controls['isActive'].patchValue(data.isActive);
+        //this.sectionForm.controls['flexiSectionNo'].patchValue(data.flexiSectionNo);
+        // this.sectionForm.controls['balancingFigureApplicable'].patchValue(
+        // data.balancingFigureApplicable == 'Yes' ? 'Yes' : 'No'
+        // );
+        // this.sectionForm.controls['ownFixLimit'].patchValue(
+        // data.ownFixLimit == 'Yes' ? 'Yes' : 'No'
+        // );
+        // this.sectionForm.patchValue({'ownFixedLimitValue': data.ownFixedLimitValue});
+        // this.sectionForm.controls['ownFixedLimitValue'].patchValue(data.ownFixedLimitValue);
+        //this.sectionForm.controls['ownFixedLimitValue'].patchValue(this.getFlexiValueName(this.sectionForm.setValue('ownFixedLimitValue').value));
+
+        //
+        this.sectionForm.controls['derivedName'].patchValue(
+        this.derivedNamesListInEdit(
+          this.sectionForm.setValue('derivedName').value
+        )
+        );
+
+        // this.sectionForm.get('ownFixedLimitValue').setValidators([Validators.required]);
+        // this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
+        // this.sectionForm.get('derivedValue').setValidators([Validators.required]);
+        // this.sectionForm.get('derivedValue').updateValueAndValidity();
+    }
   }
 
   //DeActive for
@@ -538,7 +588,9 @@ export class SectionComponent implements OnInit {
 
   //Click on View button pach value and form will disabled
   viewMode(data) {
-    this.sectionForm.get('isActive').setValue(0)
+    this.isUpdateMode = false;
+    this.isUpdateModeSave = false;
+    this.sectionForm.get('isActive').setValue(1)
     this.hideRemarkDiv2 = false;
     // this.sectionForm.get('isActive').setValue(1);
     this.sectionForm.get('isActive').disable();
@@ -550,19 +602,19 @@ export class SectionComponent implements OnInit {
       this.fixedAndDerived = false
       this.derivedNameList = [];
       this.ownFlexiList = [];
-      this.sectionForm.get('sdmvalue').clearValidators();
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
+      this.sectionForm.get('ownFixedLimitValue').clearValidators();
+      this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
       this.sectionForm.get('derivedValue').clearValidators();
       this.sectionForm.get('derivedValue').updateValueAndValidity();
     }else{
       this.fixedAndDerived = true
-      this.getOwnFlexiDropDownList();
+      // this.getOwnFlexiDropDownList();
       this.sectionForm.patchValue({
-        sdmvalue: '',
+        ownFixedLimitValue: '',
         derivedValue: '',
       });
-      this.sectionForm.get('sdmvalue').setValidators([Validators.required]);
-      this.sectionForm.get('sdmvalue').updateValueAndValidity();
+      this.sectionForm.get('ownFixedLimitValue').setValidators([Validators.required]);
+      this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
       this.sectionForm.get('derivedValue').setValidators([Validators.required]);
       this.sectionForm.get('derivedValue').updateValueAndValidity();
       // this.ngOnInit()
@@ -575,21 +627,21 @@ export class SectionComponent implements OnInit {
     console.log('data', data);
     this.isUpdateModeSave = false;
     this.flexiSectionMasterIds = data.flexiSectionMasterId;
-    let str = data.sdmvalue;
+    let str = data.ownFixedLimitValue;
     this.onChangeDefinationEmp(str.toString());
-    this.sectionForm.controls['flexiSectionName'].patchValue(
-      data.flexiSectionName
-    );
-    this.sectionForm.controls['flexiSectionNo'].patchValue(data.flexiSectionNo);
-    this.sectionForm.controls['balancingFigureApplicable'].patchValue(
-      data.balancingFigureApplicable == 'Yes' ? 'Yes' : 'No'
-    );
-    this.sectionForm.controls['ownFixLimit'].patchValue(
-      data.ownFixLimit == 'Yes' ? 'Yes' : 'No'
-    );
-    this.sectionForm.controls['sdmvalue'].patchValue(
-      this.getFlexiValueName(this.sectionForm.setValue('sdmvalue').value)
-    );
+    // this.sectionForm.controls['flexiSectionName'].patchValue(
+    //   data.flexiSectionName
+    // );
+    // this.sectionForm.controls['flexiSectionNo'].patchValue(data.flexiSectionNo);
+    // this.sectionForm.controls['balancingFigureApplicable'].patchValue(
+    //   data.balancingFigureApplicable == 'Yes' ? 'Yes' : 'No'
+    // );
+    // this.sectionForm.controls['ownFixLimit'].patchValue(
+    //   data.ownFixLimit == 'Yes' ? 'Yes' : 'No'
+    // );
+    // this.sectionForm.controls['ownFixedLimitValue'].patchValue(data.sdmvalue);
+    //   // this.getFlexiValueName(this.sectionForm.setValue('ownFixedLimitValue').value)
+
     this.sectionForm.controls['derivedName'].patchValue(
       this.derivedNamesListInEdit(
         this.sectionForm.setValue('derivedName').value
@@ -598,6 +650,11 @@ export class SectionComponent implements OnInit {
 
     this.isUpdateMode = false;
     this.hideRemarkDiv2 = false;
+
+
+
+
+
   }
 
   // cancel view from update
@@ -621,22 +678,21 @@ export class SectionComponent implements OnInit {
       flexiSectionNo: '',
       derivedValue: '',
       ownFixLimit: '',
-      sdmvalue: '',
+      ownFixedLimitValue: '',
       balancingFigureApplicable: '',
     });
   }
 
   //cancel view from update mode
   cancelViewInUpdateView() {
-    this.sectionForm.enable();
-    this.isViewMode = false;
-    this.sectionForm.reset();
     this.isUpdateMode = false;
-    this.isUpdateModeSave = true;
+    this.isUpdateModeSave = false;
+    this.isViewMode = true;
+    this.sectionForm.enable();
+    this.sectionForm.reset();
     this.hideRemarkDiv2 = false;
     this.sectionForm.get( 'remark' ).disable();
      this.sectionForm.get( 'isActive' ).setValue(true);
-
     this.sectionForm.get('isActive').setValue(1);
     this.sectionForm.get('isActive').disable();
     this.sectionForm.patchValue({
@@ -644,7 +700,7 @@ export class SectionComponent implements OnInit {
       flexiSectionNo: '',
       derivedValue: '',
       ownFixLimit: '',
-      sdmvalue: '',
+      ownFixedLimitValue: '',
       balancingFigureApplicable: '',
     });
   }
@@ -665,12 +721,11 @@ export class SectionComponent implements OnInit {
     console.log('toSelect', toSelect);
   }
 
-  //Put Update method API bind
+  // Put Update method API bind
   putMethod() {
     this.sectionForm.get('isActive').setValue(true)
 
-    this.isUpdateMode = true;
-    this.isUpdateModeSave = false;
+
     // if (this.sectionForm.invalid) {
     //   return;
     // }
@@ -714,10 +769,12 @@ export class SectionComponent implements OnInit {
           this.sectionForm.get('flexiSectionName').enable();
           this.fixedAndDerived = true
           this.sectionForm.reset();
+          this.isUpdateMode = false;
+          this.isUpdateModeSave = true;
           this.sectionForm.get('isActive').setValue(true);
          this.sectionForm.get('isActive').disable()
-         this.sectionForm.get('sdmvalue').setValidators([Validators.required]);
-         this.sectionForm.get('sdmvalue').updateValueAndValidity();
+         this.sectionForm.get('ownFixedLimitValue').setValidators([Validators.required]);
+         this.sectionForm.get('ownFixedLimitValue').updateValueAndValidity();
          this.sectionForm.get('derivedValue').setValidators([Validators.required]);
          this.sectionForm.get('derivedValue').updateValueAndValidity();
          this.sectionForm.patchValue({
@@ -725,7 +782,7 @@ export class SectionComponent implements OnInit {
           flexiSectionNo: '',
           derivedValue: '',
           ownFixLimit: '',
-          sdmvalue: '',
+          ownFixedLimitValue: '',
           balancingFigureApplicable: '',
         });
         } else {
@@ -749,7 +806,7 @@ export class SectionComponent implements OnInit {
         flexiSectionMasterId: this.flexiSectionMasterIds,
         ownFixLimit: this.sectionForm.get('ownFixLimit').value == 'Yes' ? 1 : 0,
         ownFixedLimitValue: this.getFlexiName(
-          this.sectionForm.get('sdmvalue').value
+          this.sectionForm.get('ownFixedLimitValue').value
         ),
         isActive : this.sectionForm.get('isActive').value == 'true' ? 1 : 0,
         remark : this.sectionForm.get('remark').value,
@@ -767,6 +824,8 @@ export class SectionComponent implements OnInit {
             this.sectionForm.get('flexiSectionName').enable();
             this.fixedAndDerived = true
             this.sectionForm.reset();
+            this.isUpdateMode = false;
+            this.isUpdateModeSave = true;
             this.sectionForm.get('isActive').setValue(true);
            this.sectionForm.get('isActive').disable()
            this.sectionForm.patchValue({
@@ -774,7 +833,7 @@ export class SectionComponent implements OnInit {
             flexiSectionNo: '',
             derivedValue: '',
             ownFixLimit: '',
-            sdmvalue: '',
+            ownFixedLimitValue: '',
             balancingFigureApplicable: '',
           });
           } else {

@@ -27,14 +27,9 @@ export class FlexiInputService {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP
-      .get(
+    return this._HTTP.get(
         environment.baseUrl8084 +
-        'SDMDerivedMaster/GetByModuleName?derivedObjectName=FlexiSectionMaster'
-
-      )
-      .pipe(
-        map((res: any) => {
+        'SDMDerivedMaster/GetByModuleName?derivedObjectName=FlexiSectionMaster').pipe(map((res: any) => {
           return res;
         })
       );
@@ -80,14 +75,14 @@ export class FlexiInputService {
   }
 
 
-  // SectionMasterEditByID(data) {
-  //   return this._HTTP.get( environment.baseUrl8084 + 'FlexiSectionMaster/GetById?flexiSectionMasterId=', data )
-  //     .pipe( map( ( res: any ) => {
-  //       return res;
-  //     } ) );
-  // }
+  headEditByID() {
+    return this._HTTP.get( environment.baseUrl8084 + 'FlexiHeadSetting/UpdateFlexiHeadSetting')
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
 
-
+  8
     //get HeadCreationById by global
     sectionMasterEditByID( id: any ) {
       return this._HTTP.get( environment.baseUrl8084 + 'FlexiSectionMaster/GetById?flexiSectionMasterId=' + id )
@@ -118,5 +113,247 @@ export class FlexiInputService {
   }
 
 
+  
+  deleteHead( id: number) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.delete(environment.baseUrl8084 + 'FlexiHeadSetting/DeleteById?flexiHeadSettingId=' + id, { headers: headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+//// Head Setting
+
+// E/D Head Get API
+  getEDHead() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(
+        environment.baseUrl8084 +
+        'payrollhead-master/head-nature/earning').pipe(map((res: any) => {
+          return res;
+        })
+      );
+  }
+
+//   {
+//     "data": {
+//         "results": [
+//             {
+//                 "headMasterId": 1,           ",
+//                 "standardName": "HouseRentAllowance",
+//             },
+//        }
+// }
+
+
+
+
+// get Section of Flexi Form
+ getSectionOfFlexiForm(){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+return this._HTTP.get(
+    environment.baseUrl8084 +'FlexiSectionMaster/GetAllActive').pipe(map((res: any) => {
+      return res;
+    })
+  );
+ }
+
+//  {
+//
+// "flexiSectionMasterId": 28,
+// "flexiSectionName": "test121",
+// },
+//  Formula Name
+getFormulaName() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(
+      environment.baseUrl8084 +
+      'formula-master').pipe(map((res: any) => {
+        return res;
+      })
+    );
+}
+
+// {
+
+//   "formulaId": 1,
+//   "formulaName": "BASIC_MASTER",
+// },
+
+
+// SDM Name
+getSDMName() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(
+      environment.baseUrl8084 +
+      'SDMDerivedMaster/GetByModuleName?derivedObjectName=FlexiHeadSetting').pipe(map((res: any) => {
+        return res;
+      })
+    );
+}
+
+// {
+//   "id": 180,
+//   "sdmvalue": "SDM-Flexi"
+// }
+
+// Derived Name
+getHeadDerivedNameList(name) {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP
+    .get(
+      environment.baseUrl8084 +
+        'SDMDerivedMaster/GetByMasterId?derivedObjectName=FlexiHeadSetting&sdmMasterId=' +
+        name
+    )
+    .pipe(
+      map((res: any) => {
+        return res;
+      })
+    );
+}
+
+// "sdmDerivedMasterId": 155,
+// "derivedName": "SDM-Flexi-applicability",
+
+getApplicabilitySDM() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP
+    .get(
+      environment.baseUrl8084 +
+        'SDMDerivedMaster/GetByModuleName?derivedObjectName=FlexiHeadSetting'
+        // 'SDMDerivedMaster/GetByModuleName?derivedObjectName=FlexiHeadSetting' +
+        // name
+    )
+    .pipe(
+      map((res: any) => {
+        return res;
+      })
+    );
+}
+
+//  Updation Type
+getUpdationType() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP
+    .get(
+      environment.baseUrl8084 +
+        'FlexiSettingDD/FlexiSettingDDForUpdationType'
+    )
+    .pipe(
+      map((res: any) => {
+        return res;
+      })
+    );
+}
+// "flexiSettingDDId": 2,
+// "value": "Non-Amount",
+
+
+
+getPresentationMethod() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(environment.baseUrl8084 +
+      'FlexiSettingDD/FlexiSettingDDForPresentationMethod').pipe(map((res: any) => {return res;
+      })
+    );
+}
+
+// "flexiSettingDDId": 4,
+// "type": "Presentation Method",
+// "value": "Slider",
+
+
+getMinEligibilityMethod() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(environment.baseUrl8084 +
+      'FlexiSettingDD/FlexiSettingDDForMinEligibilityMethod').pipe(map((res: any) => {return res;
+      })
+    );
+}
+
+
+// "flexiSettingDDId": 7,
+//                 "type": "Min Eligibility Method",
+//                 "value": "Zero",
+
+getMaxEligibilityMethod() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(environment.baseUrl8084 +
+      'FlexiSettingDD/FlexiSettingDDForMaxEligibilityMethod').pipe(map((res: any) => {return res;
+      })
+    );
+}
+
+// "flexiSettingDDId": 10,
+// "type": "Max Eligibility Method",
+// "value": "SDM",
+
+
+
+getInBetweenMinMax() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get(environment.baseUrl8084 +
+      'FlexiSettingDD/FlexiSettingDDForInBetweenMinMax').pipe(map((res: any) => {return res;
+      })
+    );
+}
+// "flexiSettingDDId": 13,
+// "type": "In Between Min & Max",
+// "value": "Any Value",
+
+postHeadMaster(data) {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this.http
+    .post(environment.baseUrl8084 + 'FlexiHeadSetting', data)
+    .pipe(
+      map((res: any) => {
+        return res;
+      })
+    );
+}
+
+getHeadSettingTableData() {
+  const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP
+    .get(
+      environment.baseUrl8084 +
+        'FlexiHeadSetting'
+    )
+    .pipe(
+      map((res: any) => {
+        return res;
+      })
+    );
+}
 
 }
+
