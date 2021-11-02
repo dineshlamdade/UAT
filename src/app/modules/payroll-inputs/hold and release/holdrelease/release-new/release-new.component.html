@@ -1,0 +1,1146 @@
+<!-- <p>release-new works!</p> -->
+<!-- <app-leftmenu></app-leftmenu> -->
+<!-- Main body part  -->
+<!-- <div class="page"> -->
+<!-- <app-header></app-header> -->
+<!-- <div class="tabview-myform"> -->
+<!-- <div class="row"> -->
+<!-- <div class="col-12"> -->
+<!-- <div class="card"> -->
+<!-- <div class="card-body p-0"> -->
+<fieldset>
+    <form [formGroup]="releaseForm" #formDirective="ngForm">
+        <div class="approval-form">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  mb-3">
+                    <div class="row">
+
+                        <div class="col-12 mt-20">
+                            <div class="float-right ">
+
+
+
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Pending For Release" (click)="Areapendingforlockpopup(Areapendingforlock)">
+                                    <b><i class="fa fa-registered" aria-hidden="true"></i></b>
+                                    Pending for Release</button>
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label">Cycle Definition</label>
+                                    <select class="form-control" formControlName="name" id="name"
+                                        [ngClass]="{'is-invalid' : releaseForm.get('name').status == 'INVALID'}"
+                                        class="form-control" id="name"
+                                        (change)="onChangeDefination($event.target.value)">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let cycleNameDefination of NameofCycleDefinationEmp"
+                                            [value]="cycleNameDefination.value">
+                                            {{cycleNameDefination.label}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label">Cycle Name</label>
+                                    <select class="form-control" (change)="onSelectCycleName($event.target.value)"
+                                        [ngClass]="{'is-invalid' : releaseForm.get('periodName').status == 'INVALID'}"
+                                        class="form-control" id="periodName" class="form-control"
+                                      
+                                        formControlName="periodName">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let cycleList of periodNameList" [value]="cycleList.label">
+                                            {{cycleList.label}}
+                                        </option>>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+
+                                <div class="form-group">
+                                    <label class="form-label">Start Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                                            data-date-autoclose="true" class="form-control"
+                                            (bsValueChange)="setPolicyEndDate()" placeholder="" bsDatepicker
+                                            formControlName="fromDate" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+
+                                <div class="form-group">
+                                    <label class="form-label">End Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                                            data-date-autoclose="true" class="form-control"
+                                            (bsValueChange)="setPolicyEndDate()" placeholder="" bsDatepicker
+                                            formControlName="toDate" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+
+                    <fieldset>
+                        <legend>Organizational Selection</legend>
+
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label mb-3">Company Name</label>
+                                    <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                                    <select id="companyName" class="form-control" formControlName="companyName"
+                                    (change)="onSelectServiceNameEmp($event.target.value)">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let company of companyNameList" [value]="company.value">
+                                            {{company.label}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label mb-3">Service</label>
+                                    <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                                    <select id="serviceNameEmp" (change)="onSelectServiceNameEmp($event.target.value)"
+                                        [ngClass]="{'is-invalid' : releaseForm.get('serviceName').status == 'INVALID'}"
+                                        class="form-control  " formControlName="serviceName">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let service of serviceNamesEmp" [value]="service.value">
+                                            {{service.label}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label mb-3">Area</label>
+                                    <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                                    <select id="areaMasterCode" (change)="onSelectAreaInEmp($event.target.value)"
+                                        [ngClass]="{'is-invalid' : releaseForm.get('areaMasterCode').status == 'INVALID'}"
+                                        class="form-control  " formControlName="areaMasterCode">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let area of ServiceAreaListEmp" [value]="area.value">
+                                            {{area.label}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+
+                    <fieldset>
+                        <legend>Employee Selection</legend>
+
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+
+                                    <label class="form-label mb-3">Employee Code</label>
+                                    <p-multiSelect [options]="employeeCodes" optionLabel="name"
+                                         [required]="true"
+                                        (onChange) = "onSelectArea($event)" defaultLabel="Select"
+                                        [ngClass]="{'is-invalid' : releaseForm.get('employeeCode').status == 'INVALID'}"
+                                        optionLabel="name" resetFilterOnHide="true" formControlName="employeeCode">
+                                    </p-multiSelect>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label class="form-label mb-3">Employee Set</label>
+                                    <p-multiSelect [options]="empSetList" formControlName="employeeSet"
+                                    (onChange) = "onSelectArea1($event)"
+                                        optionLabel="name" resetFilterOnHide="true" placeholder="Select">
+                                    </p-multiSelect>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class="custom-controls-stacked mb-2">
+                                        <label class="custom-control custom-radio" tooltip="Emp List">
+                                            <input type="radio" class="custom-control-input" name="example- radios"
+                                                value="option1" (click)="Emplist(emplist)"  formControlName = "areaList"
+                                                (change)= "onSelectArea2($event)">
+                                            <div class="custom-control-label"> Employee List </div>
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </fieldset>
+                </div>
+
+                <div class="col-12">
+
+                    <div class="row">
+                        <!-- <div class="col-12 mt-20" *ngIf = "isTrue">
+                            <div class="float-right">
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Go" (click) = "saveEmp()"
+                                    [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
+                                    <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+                                    Go</button>
+                                     <button type="button" tooltip="Reset" (click)="resetEmpForm()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa  fa-refresh"></i></b> Reset</button>
+                            </div>
+                        </div> -->
+
+                        <div class="col-12 mt-20" *ngIf = "isHideEmpCode">
+                            <div class="float-right">
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Go" (click) = "saveEmp()"
+                                    [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
+                                    <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+                                    Go</button>
+                                     <button type="button" tooltip="Reset" (click)="resetEmpForm()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa  fa-refresh"></i></b> Reset</button>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-20" *ngIf = "isHideEmpSet && !isHideEmpCode">
+                            <div class="float-right">
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Go" (click) = "saveEmp2()"
+                                    [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
+                                    <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+                                    Go</button>
+                                     <button type="button" tooltip="Reset" (click)="resetEmpForm()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa  fa-refresh"></i></b> Reset</button>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-20" *ngIf = "isHideEmpList && !isHideEmpCode">
+                            <div class="float-right">
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Go" (click) = "saveEmp3()"
+                                    [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
+                                    <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
+                                    Go</button>
+                                     <button type="button" tooltip="Reset" (click)="resetEmpForm()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa  fa-refresh"></i></b> Reset</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</fieldset>
+<div class="cycle-table mt-4">
+    <div class="cycle-value pt-20 pb-20 bg-color-light_gray">
+        <h6 class="font-14">&nbsp; &nbsp;Total Records ({{getEmpTableList.length}}) &nbsp;&nbsp;
+            Selected Records ({{selectedUserEmp.length}}) <span class="float-right">
+                <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                    tooltip="Release" [disabled]="loading" (click)="smallpopup(holdtemplate)"
+                    [ngClass]="{'disabled-btn-bg-green' : checkedSummaryListEmp.length == 0, 'btn-bg-green': !checkedSummaryListEmp.length == 0}">
+                    <b><i class="fa fa-registered" aria-hidden="true"></i></b>
+                    Release</button>&nbsp; <i class="fa fa-file-excel-o font-38 text-dark-green  mr-10 float-right"
+                    (click)="exportExcelEmpTable()" aria-hidden="true"></i></span></h6>
+    </div>
+    <p-table [value]="getEmpTableList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10,25,50]" totalRecords={{getEmpTableList.length}}
+        [rowsPerPageOptions]="[10,25,50,100,200]" (sortFunction)="customSort3($event)" [customSort3]="true"
+        [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                </th>
+                <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Emp. Code
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="employeeCode"></p-sortIcon>
+                            <p-columnFilter type="text" field="employeeCode" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Emp. Name
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="fullName"></p-sortIcon>
+                            <p-columnFilter type="text" field="fullName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <!-- <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Cycle
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="periodName"></p-sortIcon>
+                            <p-columnFilter type="text" field="periodName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                        </div>
+                    </div>
+                </th> -->
+
+                <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Company Name
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="companyName"></p-sortIcon>
+                            <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <!-- <th rowspan="2" class="wd-8">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Service
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="serviceName"></p-sortIcon>
+                                            <p-columnFilter type="text" field="serviceName" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Area
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="payrollAreaCode"></p-sortIcon>
+                            <p-columnFilter field="payrollAreaCode" matchMode="in" display="menu"
+                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                class="p-ml-auto">
+                                <ng-template pTemplate="header">
+                                    <div class="p-px-3 p-pt-3 p-pb-0">
+                                        <span class="p-text-bold">Agent Picker</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any"
+                                        (onChange)="filter($event.value)" optionLabel="name">
+                                        <ng-template let-option pTemplate="item">
+                                            <div class="p-multiselect-representative-option">
+                                                <img [alt]="option.label"
+                                                    src="assets/showcase/images/demo/avatar/{{option.image}}" width="32"
+                                                    style="vertical-align: middle" />
+                                                <span class="p-ml-1">{{option.name}}</span>
+                                            </div>
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+
+                <!-- <th rowspan="2" class="wd-8">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Establishment
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Department
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Grade
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Designation
+                        <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th> -->
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+                <!-- <td><label class="custom-control custom-checkbox checkbox-center"
+                                          tooltip="Select All">
+                                          <input type="checkbox" class="custom-control-input" name="select" /> <span
+                                              class="custom-control-label"></span>
+                                      </label></td> -->
+                <td>
+                    <p-tableCheckbox [value]="user1" (click)="onCheckAreaEmp(e.checked,user1,rowIndex)" #e>
+                    </p-tableCheckbox>
+                </td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.employeeCode}}</label>
+
+                </td>
+
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td> -->
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.payrollAreaCode}}</label>
+
+                </td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label>
+
+                </td>
+
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.grade}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td> -->
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                        Available</span></td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+
+</div>
+
+
+<!-- </div> -->
+
+
+<!-- </div> -->
+<!-- </div> -->
+<ng-template #holdtemplate>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Release</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+
+                        <p-table [value]="checkedSummaryListEmp" [paginator]="true" [rows]="10"
+                            [showCurrentPageReport]="true" (sortFunction)="customSort3($event)" [customSort3]="true"
+                            [pageLinks]="5"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            totalRecords={{checkedSummaryListEmp.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                            [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+                            >
+                            <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-6 mt-10 d-flex ">
+                                        <label class="form-label mr-5">Total records
+                                            ({{checkedSummaryListEmp.length}})</label>
+                                        <label class="form-label">Selected records
+                                            ({{selectedUserInLockEmp.length}})</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="float-right">
+
+                                            <i class="fa fa-file-excel-o text-dark-green
+    fa-2x" (click)="exportExcelEmpLock()"></i>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 3rem">
+                                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                                    </th>
+
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp.Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="employeeCode" pSortableColumn="employeeCode">
+                                                </p-sortIcon>
+                                                <p-columnFilter field="employeeCode" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+
+
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Emp
+                                            Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="fullName" pSortableColumn="fullName"></p-sortIcon>
+                                                <p-columnFilter type="text" field="fullName" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Cycle
+
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="cycle" pSortableColumn="cycle"></p-sortIcon>
+                                                <p-columnFilter type="text" field="cycle" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Company Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="companyName" pSortableColumn="companyName">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="companyName" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Service
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="SubmissionDate"
+                                                    pSortableColumn="SubmissionDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text"
+                                                    field="SubmissionDate" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Area
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="name" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Establishment
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Type" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Department
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Type" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Grade
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="ItSection" pSortableColumn="ItSection">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="ItSection" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Designation
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Group" pSortableColumn="Group"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Group" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+
+
+
+
+
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                <tr class="p-selectable-row" [pSelectableRow]="user1">
+                                    <td>
+                                        <p-checkbox [value]="user1.employeeMasterId"
+                                            (click)="inPendingForRelease(e.checked,user1,rowIndex)" #e
+                                            [(ngModel)]="selectedAreaIdsEmp">
+
+                                        </p-checkbox>
+                                        <!-- (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e -->
+                                    </td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.employeeCode}}</label>
+
+                                    </td>
+
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.fullName}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.cycle}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.companyName}}</label></td>
+                                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.payrollAreaCode}}</label></td>
+                                    <!-- <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.establishment}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.department}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.grade}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.chngamount}}</label></td> -->
+
+
+
+
+
+
+                                </tr>
+                                <!-- <tr class="p-selectable-row">
+                                    <td>
+                                        <p-tableCheckbox [value]="customer">
+                                        </p-tableCheckbox>
+                                    </td>
+                                    <td>002</td>
+                                    <td>AAA</td>
+                                    <td> BBB</td>
+                                    <td>CCC </td>
+                                    <td>DDD</td>
+                                    <td> EEE</td>
+                                    <td> FFF</td>
+                                    <td>
+                                       GGG
+                                    </td>
+                                    <td>
+                                       HHH
+                                    </td>
+                                   <td>III</td>
+                                  
+                                    
+                                    
+                                    
+                                
+
+                                </tr> -->
+                            </ng-template>
+
+                        </p-table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            tooltip="Proceed" (click)="saveCheckedEmp()"
+            [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockListEmp.length == 0, 'btn-bg-green': !checkedFinalLockListEmp.length == 0}"><b> <i class="fa fa-arrow-circle-o-right "></i></b>
+            Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
+            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b>
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </b> Cancel</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #Areapendingforlock>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Pending for Release</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+
+                        <p-table [value]="pendingLockList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                            (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            totalRecords={{pendingLockList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                            <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-6 mt-10 d-flex ">
+                                        <label class="form-label mr-5">Total records
+                                            ({{pendingLockList.length}})</label>
+                                        <label class="form-label">Selected records
+                                            ({{selectedUserPending.length}})</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="float-right">
+
+                                            <i class="fa fa-file-excel-o text-dark-green fa-2x"
+                                                (click)="exportApprovalSummaryAsExcel()"></i>
+                                            <!-- <button
+                                            class="btn custom_btn btn-bg-green  mr-2"
+                                            tooltip=" Display Popup"
+                                            (click)="smallpopup (template)">
+                                            Lock
+                                            employee</button> -->
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <!-- <th style="width: 3rem">
+                                    <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e></p-tableHeaderCheckbox>
+                                </th>  
+                                                                                 -->
+                                    <th style="width: 3rem">
+                                        <!-- <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e>
+                                        </p-tableHeaderCheckbox> -->
+                                    </th>
+
+
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp. Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp. Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp.Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="employeeCode" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Cycle
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="cycle" pSortableColumn="cycle"></p-sortIcon>
+                                                <p-columnFilter type="text" field="cycle" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Company Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="name" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Area
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                   
+
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Establishment
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Type"
+                                                pSortableColumn="Type"></p-sortIcon>
+                                            <p-columnFilter type="text" field="Type"
+                                                display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Department
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Type"
+                                                pSortableColumn="Type"></p-sortIcon>
+                                            <p-columnFilter type="text" field="Type"
+                                                display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Grade
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Type"
+                                                pSortableColumn="Type"></p-sortIcon>
+                                            <p-columnFilter type="text" field="Type"
+                                                display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Designation
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Type"
+                                                pSortableColumn="Type"></p-sortIcon>
+                                            <p-columnFilter type="text" field="Type"
+                                                display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">From Date
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="ItSection"
+                                                pSortableColumn="ItSection">
+                                            </p-sortIcon>
+                                            <p-columnFilter type="text"
+                                                field="ItSection" display="menu"
+                                                class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                    <!-- <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        To Date
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Group"
+                                                pSortableColumn="Group"></p-sortIcon>
+                                            <p-columnFilter type="text" field="Group"
+                                                display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th> -->
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                <tr [class.active]="user1.isHighlightPending" (dblclick)="doubleClickOnLeftTable(user1)"
+                                    [ngClass]="{'outofstock':user1.isHighlightPending == true}">
+                                    <td>
+                                        <p-tableCheckbox [value]="user1"
+                                            (click)="inPendingForLock(e.checked,user1,rowIndex)" #e>
+                                        </p-tableCheckbox>
+                                        <!-- <p-tableCheckbox [value]="user1" (click)="onCheckedPendigLock(e.checked,user1)" #e>
+                            </p-tableCheckbox> -->
+                                    </td>
+                                    <!-- <td>{{ user1.employeeCode }} </td> -->
+                                    <!-- <td>{{ user1.fullName }} </td> -->
+                                    <td>{{ user1.employeeCode }} </td>
+                                    <td>{{ user1.cycle }} </td>
+                                    <!-- <td>{{ user1.companyName }} </td> -->
+                                    <td>{{ user1.payrollAreaCode }} </td>
+                                    
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                            Available</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            (click)="pendingLockProceed()"
+            [ngClass]="{'disabled-btn-bg-green' : finalpendingLockList.length == 0, 'btn-bg-green': !finalpendingLockList.length == 0}"
+            tooltip="Proceed"><b> <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+            (click)="modalRef.hide()"><b><i class="fa fa-times" aria-hidden="true"></i></b> Cancel</button>
+
+    </div>
+
+    <!-- cancel button resetPendingLock() -->
+</ng-template>
+
+<ng-template #emplist>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Employee List</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row  ">
+                    <div class="col-md-12">
+                        <textarea rows="3" cols="60" (paste)="employeeListPasteData($event)">    </textarea>
+                    </div>
+                </div>
+                <div class="row mt-15">
+                    <div class="col-md-12">
+                        <!-- <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    (sortFunction)="customSort($event)" [customSort]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10,25,50]"
+                    [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']"> -->
+                        <p-table #dt1 [value]="getEmpList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                            (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            totalRecords={{getEmpList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                            [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+                            <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-6 mt-10 d-flex ">
+                                        <label class="form-label mr-5">Total Records (10) </label>
+                                        <label class="form-label">Selected Records (2) </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="float-right">
+                                            <i class="fa fa-file-excel-o text-dark-green fa-2x mr-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Emp Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="empName" pSortableColumn="empName"></p-sortIcon>
+                                                <p-columnFilter type="text" field="empName" display="menu"
+                                                    class="p-ml-auto"> </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Company Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Service
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Area
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="name" display="menu"
+                                                    class="p-ml-auto"> </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Establishment
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Type" display="menu"
+                                                    class="p-ml-auto"> </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Department
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Type" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Grade
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="ItSection" pSortableColumn="ItSection"> </p-sortIcon>
+                                                <p-columnFilter type="text" field="ItSection" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Designation
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="ItSection" pSortableColumn="Group"></p-sortIcon>
+                                                <p-columnFilter type="text" field="Group" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-customer>
+                                <tr class="p-selectable-row">
+                                    <td>{{ customer.empcode}}</td>
+                                    <td>{{ customer.empName}}</td>
+                                    <td> {{customer.companyname}}</td>
+                                    <td> {{customer.service}}</td>
+                                    <td> {{customer.area}}</td>
+                                    <td> {{ customer.establishment}}</td>
+                                    <td> {{ customer.department}}</td>
+                                    <td> {{ customer.grade}}</td>
+                                    <td> {{ customer.designation}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            (click)="modalRef.hide()" tooltip="Proceed"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" class="btn btn-secondary" tooltip="Cancel" (click)="modalRef.hide()">Cancel</button> -->
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        tooltip="Proceed" (click)="modalRef.hide()"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+      <button type="button"  tooltip="Cancel" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+      
+    </div>
+</ng-template>
+
+
+
+
+

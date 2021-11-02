@@ -47,9 +47,9 @@
                               <label class="form-label">Service</label>
                               <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                               <select class="form-control" (change)="getAreasetByService($event.target.value)"
-                                formControlName="serviceMasterId"
+                                formControlName="serviceMasterId" placeholder = "Select Service" 
                                 [ngClass]="{'is-invalid' : areasetForm.get('serviceMasterId').status == 'INVALID'}">
-                                <option>Select Service</option>
+                                <option selected value=''>Select Service</option>
                                 <option *ngFor="let service of serviceData" value="{{service.serviceMasterId}}">
                                   {{service.serviceName}}
                                 </option>
@@ -69,86 +69,46 @@
                           <div class="row">
                             <!-- [(ngModel)]="areaList"  -->
                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                              <div class="form-group ">
-
+                              <div class="form-group">
                                 <label class="form-label">Area</label>
-                                <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                <p-multiSelect [options]="areaListData" class="multiple-select"
                                 formControlName="areaList" defaultLabel="Select Area"
-                                  resetFilterOnHide=true [(ngModel)]="areaList" [ngModelOptions]="{standalone: true}"
-                                  (onChange)="getArea(areaList,$event)" [filter]="true"
-                                  [ngClass]="{'is-invalid' : areasetForm.get('areaList').status == 'INVALID'}" >
-
+                                (onChange) = "onSelectArea($event)" defaultValue = "true"
+                                resetFilterOnHide="true" [(ngModel)]="areaList"
+                                (onChange)="getArea(areaListData,$event)" 
+                                [ngClass]="{'is-invalid' : areasetForm.get('areaList').status == 'INVALID'}">
                                 </p-multiSelect>
-                                <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"></p-multiSelect>  -->
-
-                                <!-- display="chip" -->
-                                <!-- <p-multiSelect [options]="areaListData" class="multiselect-custom"
-                                    [disabled]="viewFlag" [virtualScroll]="true"
-                                    formControlName="areaMaster" [filterPlaceHolder]="'Select'" [placeholder]="'Select Area'"
-                                    ngDefaultControl>
-                                    </p-multiSelect> -->
-
-
-                                <!-- <select class="form-control" (change)="getAreaMasterId($event.target.value)" formControlName = "areaSetMasterId">
-                                        <option>Select</option>
-                                        <option *ngFor="let area of areaListData" value="{{area.value}}">
-                                            {{area.label}}
-                                        </option>
-                                      </select> -->
-                                <!-- <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetMasterId').errors?.required">
-                                        Area is required</small> -->
                               </div>
                             </div>
 
                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                               <div class="form-group mt-20">
-
                                 <div class="custom-controls-stacked ml-5">
                                   <label class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="example- radios"
                                       value="option1" (click)="Arealistpop(arealistpop)" [checked]="radioStatus"
-                                      (change)="example($event)">
+                                      (change) = "onSelectArea1($event.target.value)"
+                                      (change)="example($event)" formControlName = "areaListRadio">
                                     <div class="custom-control-label form-label">Area List</div>
                                   </label>
                                 </div>
-
-
-
-
                               </div>
                             </div>
                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
                               <div class="form-group mt-20 p-d-inline-flex">
-
-
-                                <label class="form-label text-link text-bold mr-2" (click)="largepopup (template);exportApprovalSummaryAsExcel1()"> Selected
+                                <label class="form-label text-link text-bold mr-2" (click)="largepopup(template);exportApprovalSummaryAsExcel1()"> Selected
                                   Area List
                                 </label>
-                            
-                              <div>
+                                <div>
                                 <i class="fa fa-file-excel-o text-dark-green font-20"
                                   (click)="exportApprovalSummaryAsExcel()" style="cursor: pointer;"></i>
                                 </div>
-
-
-
                               </div>
-                             
-
-
+                             </div>
                             </div>
-
-
-
-                          </div>
-
-
-
-                        </fieldset>
+                          </fieldset>
                       </div>
-                      <!-- mt-50 ml-40 -->
-
-                    </div>
+                     </div>
 
                     <br>
                     <ng-container>
@@ -156,29 +116,23 @@
                         <div class="col-md-3 form-group">
                           <label class="custom-control custom-checkbox custom-control-inline pl-45">
                             <input autocomplete="off" type="checkbox" class="custom-control-input"
-                              name="example-inline-checkbox1" [checked]='!hideRemarkDiv2'
-                              (change)="changeEvent2($event)" readonly />
+                              name="example-inline-checkbox1" checked
+                              (change)="deactivateRemark()" formControlName = "isActive"/>
                             <span class="custom-control-label">Active </span>
                           </label>
                         </div>
                         <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
                           <label class="form-label">Remark</label>
-                          <textarea autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark"
-                            [required]="hideRemarkDiv2" formControlName="remark"
+                          <textarea autocomplete="off" class="form-control"
+                          name="example-textarea-input" rows="6"
+                           placeholder="Enter Remark"
+                             formControlName="remark"
                             [ngClass]="{'is-invalid' : areasetForm.get('remark').status == 'INVALID'}"></textarea>
                         </div>
                       </div>
                     </ng-container>
-                    <!-- <div class="float-left d-flex justify-content form-group">
-                <input type="checkbox"  class="mt-2">&nbsp;
-              <label class="form-label mt-2 margin-right:30px;" >Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label class="form-label mt-2">Remark</label>&nbsp;
-              <textarea type="text" formControlName = "remark">
-              
-              </textarea>
-              <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('remark').errors?.required">
-                </small>
-              </div>  -->
+                    <!-- [required]="hideRemarkDiv2" -->
+                    
 
                     <div class="row mt-10">
                       <div class="col-12">
@@ -211,7 +165,7 @@
                               <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
 
 
-
+                              
                           <button type="button" *ngIf="viewFormFlag || editFormFlag" (click)="formReset()"
                             class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                             tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
@@ -280,7 +234,6 @@
 
                             </td>
 
-
                             <td class="text-center">
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
@@ -288,7 +241,7 @@
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                                 (click)="viewAreaSet(data)" aria-hidden="true"></i>&nbsp;
                               <i class="fa fa-trash font-18 text-red cursor-pointer"
-                                (click)="deleteData(data.areaSetMasterId)" aria-hidden="true"
+                              (click)="smallpopup4(deleteTemp,data)" aria-hidden="true"
                                 tooltip="Delete"></i>&nbsp;
 
                             </td>
@@ -343,7 +296,7 @@
 
               <p-table #dt2 [value]="excelData1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort3($event)" [customSort3]="true"
-               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areacode','Status']">
+               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areaCode','Status']">
                 <ng-template pTemplate="caption">
                   <div class="row">
 
@@ -525,17 +478,42 @@
               <textarea rows="3" cols="60" (paste)="areaListPasteData($event)"></textarea>
             </div>
           </div>
-
         </div>
       </div>
     </div>
     <div class="modal-footer">
+      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      (click)="modalRef.hide()"
+        tooltip="Proceed"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
       <button type="button" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left" tooltip="Close"
         (click)="modalRef.hide()"><b>
           <i class="fa fa-times"></i></b> Close</button>
       <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
-      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      (click)="modalRef.hide()"
-        tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+      
     </div>
   </ng-template>
+
+  <ng-template #deleteTemp>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body mb-0 pb-0 pt-0">
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;Are
+                      you sure want to
+                      delete 
+                     </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary"  (click)="deleteData();modalRef.hide()">Yes</button>
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+    </div>
+</ng-template>

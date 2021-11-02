@@ -42,6 +42,8 @@ export class DeclarationAndActualComponent implements OnInit {
   @Input() policyNo: string;
   @Input() data: any;
 
+  documentRemarkList: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -70,6 +72,9 @@ export class DeclarationAndActualComponent implements OnInit {
   public familyMemberName: Array<any> = [];
   public remainingFamilyMemberName: Array<any> = [];
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public handicappedDependentForm: FormGroup;
   public currentEmployerForm: FormGroup;
   public previousEmployerForm: FormGroup;
@@ -77,6 +82,17 @@ export class DeclarationAndActualComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
+
+  documentDataArray = [];
+
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -305,7 +321,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -334,7 +350,7 @@ export class DeclarationAndActualComponent implements OnInit {
         proofSubmissionId: [null],
         transactionStatus: ['Pending'],
         relationship: [null],
-        claiming80U: [null],
+        isClaiming80U: [null],
         employeeMasterId: [null]
       })
     );
@@ -401,13 +417,13 @@ export class DeclarationAndActualComponent implements OnInit {
     // console.log("formData::", formData);
 
     if (this.handicappedDependentForm.invalid) {
-      this.alertService.sweetalertError('Please attach Receipt11111 / Certificate');
+      this.alertService.sweetalertError('Please attach Receipt11111 / Certificate.');
       return;
     }
 
 
     if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError('Please attach Receipt / Certificate');
+      this.alertService.sweetalertError('Please attach Receipt / Certificate.');
       return;
     }
 
@@ -478,7 +494,7 @@ export class DeclarationAndActualComponent implements OnInit {
           } else {
             // this.alertService.sweetalertWarning(res.status.messsage);
             this.alertService.sweetalertError(
-              'This Policy Holder Already Added'
+              'This Policy Holder Already Added.'
             );
           }
         } else {
@@ -573,7 +589,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -601,7 +617,7 @@ export class DeclarationAndActualComponent implements OnInit {
           // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
-          claiming80U: matchedElement.claiming80U,
+          isClaiming80U: matchedElement.isClaiming80U,
           employeeMasterId: matchedElement.employeeMasterId
         });
       } else {
@@ -925,6 +941,20 @@ export class DeclarationAndActualComponent implements OnInit {
     );
   }
 
+
+
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
   onEmployerCheckboxSelect(formArrayElement, handicappedDependentDetailMasterId, event) {
     if (handicappedDependentDetailMasterId > 0 && handicappedDependentDetailMasterId  != undefined && handicappedDependentDetailMasterId != null) {
       if (event.target.checked) {
@@ -1437,7 +1467,7 @@ export class DeclarationAndActualComponent implements OnInit {
         // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.handicappedDependentDetailMaster.relationship;
-        // this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        // this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.currentEmployerHandicappedDependentList.push(this.declarationService);
@@ -1466,8 +1496,37 @@ export class DeclarationAndActualComponent implements OnInit {
 //   return amount;
 // }
 
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
 
   upload() {
+
+    
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
     this.submitted = true;
     // stop here if form is invalid
     // if (this.handicappedDependentForm.invalid) {
@@ -1489,7 +1548,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1530,7 +1589,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
         // this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
-        this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        this.declarationService.handicappedDependentDetailMaster.isClaiming80U = element.isClaiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.previousEmployerHandicappedDependentList.push(this.declarationService);
@@ -1559,6 +1618,7 @@ export class DeclarationAndActualComponent implements OnInit {
       // receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
       proofSubmissionId: '',
+      remarkPasswordList: this.documentDataArray
     };
 
     // this.fileService.uploadSingleFile(this.currentFileUpload, data)
@@ -1590,6 +1650,39 @@ export class DeclarationAndActualComponent implements OnInit {
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );
+              this.masterGridData.forEach((element, index) => {
+                this.documentArray.push({
+    
+                  'dateofsubmission':new Date(),
+                  'documentType':element.documentInformationList[0].documentType,
+                  'documentName': element.documentInformationList[0].fileName,
+                  'documentPassword':element.documentInformationList[0].documentPassword,
+                  'documentRemark':element.documentInformationList[0].documentRemark,
+                  'status' : element.documentInformationList[0].status,
+                  'approverName' : element.documentInformationList[0].lastModifiedBy,
+                  'Time' : element.documentInformationList[0].lastModifiedTime,
+    
+                  // 'documentStatus' : this.premiumFileStatus,
+    
+                });
+    
+                if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+    
+                    'dateofsubmission':new Date(),
+                    'documentType':element.documentInformationList[1].documentType,
+                    'documentName': element.documentInformationList[1].fileName,
+                    'documentPassword':element.documentInformationList[1].documentPassword,
+                    'documentRemark':element.documentInformationList[1].documentRemark,
+                    'status' : element.documentInformationList[1].status,
+                    'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                    'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+    
+                    // 'documentStatus' : this.premiumFileStatus,
+    
+                  });
+                }
+              });
               // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
             });
           });
@@ -1628,13 +1721,13 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
@@ -1839,6 +1932,23 @@ export class DeclarationAndActualComponent implements OnInit {
         this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
         // this.documentInformationResponseList = res.data.results[0].documentInformation;
         this.documentInformationResponseList = res.data.results[0].documentInformationList;
+
+
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
         // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1885,6 +1995,28 @@ export class DeclarationAndActualComponent implements OnInit {
     });
   }
 
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    psId, policyNo
+  ) {
+    
+    this.Service.getRemarkList(
+      policyNo,
+      psId
+    ).subscribe((res) => {
+      console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0].remarkList
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
     this.handicappedDependentService
@@ -1903,6 +2035,23 @@ export class DeclarationAndActualComponent implements OnInit {
       });
   }
 
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
     // ---------------- Doc Viewr Code ----------------------------
     nextDocViewer() {
       this.urlIndex = this.urlIndex + 1;
@@ -1917,6 +2066,23 @@ export class DeclarationAndActualComponent implements OnInit {
         this.urlArray[this.urlIndex].blobURI,
       );
     }
+
+    zoomin(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 2500) return false;
+       else{
+          myImg.style.width = (currWidth + 100) + "px";
+      } 
+  }
+   zoomout(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 100) return false;
+   else{
+          myImg.style.width = (currWidth - 100) + "px";
+      }
+  }
 
     docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
       console.log("documentInformationResponseList::", documentInformationResponseList);
@@ -1960,7 +2126,7 @@ export class DeclarationAndActualComponent implements OnInit {
 //   public familyMemberName: string;
 //   public previousEmployerId = 0;
 //   // public institution: 0;
-//   public claiming80U : 0;
+//   public isClaiming80U : 0;
 //   public declaredAmount: number;
 //   public actualAmount: number;
 //   public transactionStatus: string = 'Pending';
@@ -1993,7 +2159,7 @@ class DeclarationService {
     // limit: null,
     // documentRemark: null,
     documentInformationList: [],
-    claiming80U: true
+    isClaiming80U: true
   };
   constructor(obj?: any) {
     Object.assign(this, obj);

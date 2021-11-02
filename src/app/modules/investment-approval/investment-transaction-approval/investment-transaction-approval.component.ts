@@ -18,7 +18,7 @@ import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-
   styleUrls: ['./investment-transaction-approval.component.scss'],
 })
 export class InvestmentTransactionApprovalComponent implements OnInit {
-
+  documentRemarkValidation = false;
   public documentList: Array<any> = [];
 
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
@@ -118,6 +118,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
      }
    };
    public approvedDisabled: boolean = true;
+  testRemark: any;
 
   constructor(
     private modalService: BsModalService,
@@ -388,6 +389,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   // ------------ Change PSID Status of Transactionwith Each Line Item --------------------------------------
   changePSIDStatusOfTransaction(status: any) {
     console.log("status::",status)
+    debugger
 
      if(status=='SendBack'){
 
@@ -396,7 +398,22 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       //      console.log("remarkValidation::",this.remarkValidation)
       //    return;
       //  }
+      this.transactionInfo.documentList.forEach((doc)=>
+      {
+        console.log("doc.documentStatus::",doc.documentStatus)
+        if(doc.remark == '' || doc.remark == null){
+        
+          this.documentRemarkValidation = true;
+        }
+      });
      }
+     if(this.documentRemarkValidation){
+      this.alertService.sweetalertWarning(
+        'Please give Remark for Send Back Document'
+      );
+      this.documentRemarkValidation = false;
+      return;
+    }
      if(status=='Approved'){
 
        this.transactionInfo.documentList.forEach((doc)=>
@@ -566,9 +583,11 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeTransactionalRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
+    debugger
+    this.testRemark = event.target.value;
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
-
+    this.transactionInfo.documentList[0].remark = event.target.value;
     this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].remark =  event.target.value;
     console.log('remark::', this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].remark);
 

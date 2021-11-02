@@ -38,6 +38,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
   @Input() public vehicleNo: any;
   public modalRef: BsModalRef;
+  public showdocument = true;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -70,6 +71,13 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
+
+  public isEdit: boolean = false;
 
   public documentRemark: any;
   public isECS = true;
@@ -113,6 +121,14 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  documentArray: any[] =[];
+  isVisibleTable = false;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public proofSubmissionId ;
   public vehicleNumbers: any;
   public loanAccountNumbers: any;
@@ -138,6 +154,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       vehicleModel: new FormControl(null, Validators.required),
       vehicleNumber: new FormControl(null, Validators.required),
       lenderName: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       accountHolderName: new FormControl(null, Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanStartDate: new FormControl(null, Validators.required),
@@ -308,7 +325,33 @@ export class ElectricVehicleMasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
+     
     });
   }
 
@@ -320,12 +363,18 @@ export class ElectricVehicleMasterComponent implements OnInit {
       return;
     }
 
+
+console.log('this.isEdit', this.isEdit);
+   
+  if(!this.isEdit){
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  } 
+  // else {
       const from = this.datePipe.transform(
         this.form.get('loanStartDate').value,
         'yyyy-MM-dd'
@@ -334,12 +383,26 @@ export class ElectricVehicleMasterComponent implements OnInit {
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
             data.proofSubmissionId = this.proofSubmissionId;
 
       data.loanStartDate = from;
       data.loanEndDate = to;
+      data.remarkPasswordList = this.documentDataArray;
       // data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('electric Vehicle ::', data);
@@ -350,18 +413,18 @@ export class ElectricVehicleMasterComponent implements OnInit {
             this.validVehicleNumbers = true;
           }
         });
-        if (this.validVehicleNumbers) {
+   /*      if (this.validVehicleNumbers) {
           this.validVehicleNumbers = false;
           this.alertService.sweetalertError(
             'Vehicle number is already present.'
           );
           return;
-        }
+        } */
       }
 
 
       console.log('loan Account Number ::', data);
-      if (data.loanAccountNumber) {
+  /*     if (data.loanAccountNumber) {
 
         this.loanAccountNumbers.results.forEach(results => {
           if (results.loanAccountNumber == data.loanAccountNumber) {
@@ -375,7 +438,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
           );
           return;
         }
-      }
+      } */
 
 
       // if (this.validVehicleNumbers) {
@@ -392,6 +455,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 // element.policyStartDate = new Date(element.policyStartDate);
@@ -399,6 +464,45 @@ export class ElectricVehicleMasterComponent implements OnInit {
                 element.loanStartDate = new Date(element.loanStartDate);
                 element.loanEndDate = new Date(element.loanEndDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                     // 'remark':element.documentInformationList[1].remark,  
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'Go to "Declaration & Actual" Page to see Schedule.'
@@ -421,8 +525,12 @@ export class ElectricVehicleMasterComponent implements OnInit {
         this.masterfilesArray = [];
         this.urlArray = [];
         this.submitted = false;
+        this.remarkList = [];
+        this.documentPassword = [];
+        this.isVisibleTable = false;
+        this.isEdit = false;
 
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -453,9 +561,25 @@ export class ElectricVehicleMasterComponent implements OnInit {
   }
 
 
+    // Deactivate the Remark
+    deactivateRemark() {
+      if (this.form.value.active === false) {
+        // this.form.get('remark').enable();
+        this.hideRemarkDiv = true;
+        this.form.get('remark').setValidators([Validators.required]);
+      } else {
+        this.form.get('remark').clearValidators();
+        this.hideRemarkDiv = false;
+        // this.form.get('remark').disable();
+        this.form.get('remark').reset();
+      }
+    }
+  
+
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -466,6 +590,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
+      
       console.log(vehicleNumber)
       const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
 
@@ -478,8 +603,28 @@ export class ElectricVehicleMasterComponent implements OnInit {
       this.Index = obj.vehicleNumber;
       this.showUpdateButton = true;
       this.isClear = true;
-      this.urlArray = obj.rcBook;
+      // this.urlArray = obj.rcBook;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+        
+      obj.documentInformationList.forEach(element => {
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+        
+      });
+      console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
 
       }
     });
@@ -579,13 +724,16 @@ public previousDocViewer() {
   );
 }
 
-public docViewer(template3: TemplateRef<any>, index: any) {
+public docViewer(template3: TemplateRef<any>, index: any, data: any) {
   console.log('---in doc viewer--');
   this.urlIndex = index;
 
+
+  console.log('urlIndex::' , this.urlIndex);
   console.log('urlArray::', this.urlArray);
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI
+    // this.urlArray[this.urlIndex].blobURI
+    this.filesUrlArray[this.urlIndex].blobURI
   );
   console.log('urlSafe::', this.urlSafe);
   this.modalRef = this.modalService.show(

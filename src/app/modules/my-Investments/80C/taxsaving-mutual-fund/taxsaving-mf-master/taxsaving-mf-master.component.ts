@@ -109,6 +109,10 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  
+
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -119,6 +123,9 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public globalSelectedAmount: string;
   documentArray: any[] =[];
   isVisibleTable = false;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
   public proofSubmissionId;
 
   constructor(
@@ -194,6 +201,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
+      remark: new FormControl(null),
       // remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
@@ -312,7 +320,31 @@ export class TaxsavingMfMasterComponent implements OnInit {
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
+
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
     });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -836,9 +868,29 @@ export class TaxsavingMfMasterComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>,index:any, data: any) {
     console.log("---in doc viewer--");
     this.urlIndex = index;
+
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
 
     console.log('urlIndex::' , this.urlIndex);

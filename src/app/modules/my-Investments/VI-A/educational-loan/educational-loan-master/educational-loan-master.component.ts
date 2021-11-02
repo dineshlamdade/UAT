@@ -27,6 +27,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   @Input() public: string;
   public modalRef: BsModalRef;
   public submitted = false;
+  public showdocument = true;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
@@ -43,6 +44,21 @@ export class EducationalLoanMasterComponent implements OnInit {
   public familyMemberNameList: Array<any> = [];
   public disabilityTypeList: Array<any> = [];
   public severityLevelList: Array<any> = [];
+
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
+  isVisibleTable = false;
+
+  documentArray: any[] =[];
+
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
+  viewDocumentName: any;
+  viewDocumentType: any;
+  public isEdit: boolean = false;
 
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
@@ -173,6 +189,7 @@ export class EducationalLoanMasterComponent implements OnInit {
         Validators.required
       ),
       lenderName: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanEndDate: new FormControl(null, Validators.required),
       educationalLoanMasterId: new FormControl(0),
@@ -257,6 +274,31 @@ export class EducationalLoanMasterComponent implements OnInit {
         this.loanAccountNumbers = res.data;
         this.masterGridData.forEach((element) => {
           element.loanEndDate = new Date(element.loanEndDate);
+          element.documentInformationList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+    
+            })
+          });
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
         });
       });
   }
@@ -268,20 +310,41 @@ export class EducationalLoanMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log('urlArray.length', this.urlArray.length);
+    
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
+    // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Educational Loan Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+  // else {
       const to = this.datePipe.transform(
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
 
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
+
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      data.remarkPasswordList = this.documentDataArray;
       data.loanEndDate = to;
       console.log('Educational Loan ::', data);
 
@@ -309,10 +372,50 @@ export class EducationalLoanMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.loanEndDate = new Date(element.loanEndDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'Go to "Declaration & Actual" Page to see Schedule.'
@@ -320,7 +423,7 @@ export class EducationalLoanMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -339,7 +442,11 @@ export class EducationalLoanMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
-    }
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -380,7 +487,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     {
       this.isshowHideFlag = false;
       this.alertService.sweetalertWarning(
-        'You Have No Full Time Course Then Educational Loan Not To Apply ');
+        'You Have No Full Time Course Then Educational Loan Not To Apply. ');
     }
   }
 
@@ -452,6 +559,7 @@ export class EducationalLoanMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(loanAccountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.educationalLoanServiceService
       .getEducationalLoanMaster()
@@ -474,8 +582,27 @@ export class EducationalLoanMasterComponent implements OnInit {
           this.Index = obj.loanAccountNumber;
           this.showUpdateButton = true;
           this.isClear = true;
-          this.urlArray = obj.loanSanctionLetter;
+          // this.urlArray = obj.loanSanctionLetter;
+          this.filesUrlArray = obj.documentInformationList;
+          this.showdocument = false;
           this.proofSubmissionId = obj.proofSubmissionId;
+          this.documentArray = [];
+          obj.documentInformationList.forEach(element => {
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+  
+            })
+            
+          });
+          console.log("documentArray::",this.documentArray);
+          this.isVisibleTable = true;
         }
       });
   }
@@ -549,13 +676,16 @@ export class EducationalLoanMasterComponent implements OnInit {
     );
   }
 
-  public docViewer(template3: TemplateRef<any>, index: any) {
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(

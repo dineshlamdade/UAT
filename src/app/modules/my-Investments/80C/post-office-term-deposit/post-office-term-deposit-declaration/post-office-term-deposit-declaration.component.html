@@ -29,17 +29,33 @@
                   Previous Employer Name
                 </th>
                 <th rowspan="2" class="wd-10 font700">
-                  <span tooltip="Electronic Clearing Service">Institution</span>
+                  <span tooltip="Institution">Institution</span>
                 </th>
-                <th rowspan="2" class="wd-11 font700">Account No</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS ID</th>
+                <th rowspan="2" class="wd-11 font700">
+                  <span tooltip="Account No">Account No</span>
+                  </th>
+                <th rowspan="2" class="wd-9 font700">
+                  <span tooltip="Declared">Declared</span>
+              </th>
+                <th rowspan="2" class="wd-11 font700">
+                  <span tooltip="Date of Payment">Date of Payment</span>
+                </th>
+                <th rowspan="2" class="wd-9 font700">
+                  <span tooltip="Actual">Actual</span>
+                 </th>
+                <th colspan="2" class="wd-17 font700">
+                  <span tooltip="Receipt Amount">Receipt Amount</span>
+                  </th>
+                <th rowspan="2" class="wd-7 font700">
+                  <span tooltip="Remark">Remark</span>
+                  </th>
+                <th rowspan="2" class="wd-8">
+                  <span tooltip="PS ID">PS ID</span>
+                  </th>
                 <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
-                <th rowspan="2" class="wd-10 font700">Status</th>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Status">Status</span>
+                  </th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -225,10 +241,61 @@
                     disabled
                   />
                 </td>
-                <td>
+                <!-- <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
+                </td> -->
+                <td>
+                  <div class="d-flex">
+                    <input
+                    style="width:100px;"
+                      type="text"
+                      class="form-control"
+                      
+                      (change)="
+                      onChangeDocumentRemark(
+                          summary, i,
+                          $event
+                        )
+                      "
+                    
+                    />
+                    <div
+                      _ngcontent-ykc-c443=""
+                      class="
+                        custom_Label_badge
+                        mr-2
+                        ml-2
+                      "
+                    >
+                      <b>
+                        <i
+                          (click)="
+                            docRemarkModal(
+                              template8,
+                              documentDetailIndex,
+                              summary?.proofSubmissionId, item?.policyNo
+                            )
+                          "
+                          class="
+                            fa fa-commenting
+                            text-dark-green
+                            fa-2x
+                            cursor-pointer
+                          "
+                        >
+                        </i
+                      ></b>
+                      <span
+                        _ngcontent-ykc-c443=""
+                        class="Label_badge"
+                        >{{
+                          documentDetail?.documentRemarkDetailList?.length
+                        }}</span
+                      >
+                    </div>
+                  </div>
                 </td>
                <!--  <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
@@ -1507,7 +1574,7 @@
     </h5>
     <button
       type="button"
-      (click)="modalRef.hide()"
+      (click)="modalRef1.hide()"
       class="close"
       data-dismiss="modal"
       aria-label="Close"
@@ -1545,20 +1612,36 @@
                   </th> -->
 
                   <th rowspan="2" class="wd-10 font700">
-                    Previous Employer Name
+                    <span tooltip="Previous Employer Name">Previous Employer Name</span>
                   </th>
                   <th rowspan="2" class="wd-10 font700">
-                    <span tooltip="Electronic Clearing Service">Institution</span>
+                    <span tooltip="Institution">Institution</span>
                   </th>
-                  <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <th rowspan="2" class="wd-9 font700">Declared</th>
-                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                  <th rowspan="2" class="wd-9 font700">Actual</th>
-                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                  <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-11 font700">
+                    <span tooltip="Account No">Account No</span>
+                    </th>
+                  <th rowspan="2" class="wd-9 font700">
+                    <span tooltip="Declared">Declared</span>
+                    </th>
+                  <th rowspan="2" class="wd-11 font700">
+                    <span tooltip="Date of Payment">Date of Payment</span>
+                    </th>
+                  <th rowspan="2" class="wd-9 font700">
+                    <span tooltip="Actual">Actual</span>
+                    </th>
+                  <th colspan="2" class="wd-17 font700">
+                    <span tooltip="Receipt Amount">Receipt Amount</span>
+                    </th>
+                  <th rowspan="2" class="wd-7 font700">
+                    <span tooltip="Remark">Remark</span>
+                    </th>
+                  <th rowspan="2" class="wd-8">
+                    <span tooltip="PS ID">PS ID</span>
+                    </th>
                   <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
-                  <th rowspan="2" class="wd-10 font700">Status</th>
+                  <th rowspan="2" class="wd-10 font700">
+                    <span tooltip="Status">Status</span>
+                    </th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -1971,7 +2054,8 @@
                                 p-ai-center
                               "
                                 >
-                                  Date Of Submission
+                                  <!-- Date Of Submission -->
+                                  Creation Date
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -2146,7 +2230,8 @@
                                 p-ai-center
                               "
                                 >
-                                  Time
+                                  <!-- Time -->
+                                  Last Modified Time
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -2178,11 +2263,11 @@
                                 </p-tableCheckbox>
                               </td> -->
                               <td>
-                                {{dateofsubmission | date:'dd-MMM-yyyy' }}
+                                {{ document.lastModifiedTime | date:'dd-MMM-yyyy' }}
                               </td>
                               <td>
                                 <a
-                                  (click)=" docViewer1(template3,documentIndex)"
+                                  (click)=" docViewer1(template3,documentIndex, document)"
 
                                 >
                                   <i
@@ -2218,7 +2303,7 @@
                               </td>
                               <td>{{ document.status }}</td>
                               <td>{{ document.lastModifiedBy }}</td>
-                              <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
+                              <td>{{ document.lastModifiedTime | date:'h:mm a'  }}</td>
                             </tr>
                           </ng-template>
                         </p-table>
@@ -2297,7 +2382,7 @@
     </button>
     &nbsp;&nbsp;
     <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
-      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      (click)="modalRef1?.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
@@ -2308,10 +2393,26 @@
 <!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <!-- <h5 class="modal-title" id="jasdjgh">Document Viewer</h5> -->
+    <div class="row">
+      <div class="col-sm-6 col-md-6 align-right">
+          <label class="form-label">Document Name</label>
+           {{this.viewDocumentName}}
+      </div>
+      <div class="col-sm-6 col-md-6 align-right">
+          <label class="form-label">Document Type</label>
+          
+          {{this.viewDocumentType}}
+      </div>
+    
+      </div>
+      <div class="align-right">
+        <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+<button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
+  </div>
   </div>
   <div class="card-body">
     <div class="row">
@@ -2322,7 +2423,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
+        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
       </div>
       <div class="col-md-1">
         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -2396,12 +2498,12 @@
               </label>
             </div>
           </div>
-          <div class="col-md-12 mt-10">
+          <!-- <div class="col-md-12 mt-10">
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-12">
             <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -2486,6 +2588,63 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>
+
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span
+          >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
   </div>
 </ng-template>
 

@@ -531,7 +531,7 @@ export class HouserentmasterComponent implements OnInit {
       this.declarationOfLandlordDocumentDetail.length === 0))
       {
         this.alertService.sweetalertWarning(
-          'PAN NOT AVAILABLE. Upload Landloard PAN Deatils'
+          'PAN NOT AVAILABLE. Upload Landloard PAN Deatils.'
         ); 
         return;
       }
@@ -550,7 +550,7 @@ export class HouserentmasterComponent implements OnInit {
     if (this.landLordDetailTableList.length === 0) {
     //  invalidSubmission = true;
       if (this.houseRentform.invalid) {
-        this.alertService.sweetalertWarning('Please enter House  taken details');
+        this.alertService.sweetalertWarning('Please enter House  taken details.');
       }
       return;
     }
@@ -562,7 +562,7 @@ export class HouserentmasterComponent implements OnInit {
     if (this.landLordDetailTableList.length === 0) {
     //  console.log('landLordDetailTableList',this.landLordDetailTableList.length );
       this.alertService.sweetalertWarning(
-        'Please Enter LandLord Detail Table Field'
+        'Please Enter LandLord Detail Table Field.'
       );
       return;
     }
@@ -573,7 +573,7 @@ export class HouserentmasterComponent implements OnInit {
     ) {
       this.agreementDetailssubmitted = true;
       this.alertService.sweetalertWarning(
-        'Please Enter  Agreement DetailList Table Field'
+        'Please Enter  Agreement DetailList Table Field.'
       );
 
       console.log(this.houseRentform.get('agreementDetail').invalid);
@@ -590,7 +590,7 @@ export class HouserentmasterComponent implements OnInit {
       (this.rentAgreementDocumentDetail.length === 0 ) )
      {
       this.alertService.sweetalertWarning(
-        'Please Upload All Mandatitory Documents'
+        'Please Upload All Mandatitory Documents.'
       );
     
       return;

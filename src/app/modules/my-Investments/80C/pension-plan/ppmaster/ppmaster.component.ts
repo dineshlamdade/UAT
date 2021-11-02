@@ -19,7 +19,8 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { startOfYear } from 'date-fns';
+import { debug } from 'console';
+import { startOfYear, toDate } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
@@ -76,6 +77,9 @@ export class PpmasterComponent implements OnInit {
   public documentRemark: any;
   public isECS = true;
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -124,6 +128,9 @@ export class PpmasterComponent implements OnInit {
   policyMaxDate: any;
   selectedPolicyFromDate: any;
   isVisibleTable = false;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
 
 
   constructor(
@@ -313,7 +320,32 @@ export class PpmasterComponent implements OnInit {
     //-------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
+
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
     });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
+   
 
     //-------------- Family Member List API call ---------------------------
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -378,7 +410,9 @@ export class PpmasterComponent implements OnInit {
   }
  //-------------------- Policy End Date Validations with Policy Start Date ---------------
  setPolicyEndDate() {
+ 
   this.policyMinDate = this.form.value.policyStartDate;
+
   const policyStart = this.datePipe.transform(
     this.form.get('policyStartDate').value,
     'yyyy-MM-dd'
@@ -387,7 +421,7 @@ export class PpmasterComponent implements OnInit {
     this.form.get('policyEndDate').value,
     'yyyy-MM-dd'
   );
-  this.minFormDate = this.policyMinDate;
+  
   if (policyStart > policyEnd) {
     this.form.controls.policyEndDate.reset();
   }
@@ -396,6 +430,7 @@ export class PpmasterComponent implements OnInit {
   });
 
   this.setPaymentDetailToDate();
+  this.minFormDate = this.form.get('policyStartDate').value;
 }
 
 //------------------ Policy End Date Validations with Current Finanacial Year -------------------
@@ -641,7 +676,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       setTimeout(()=>{                           
         this.getInitialData();
       this.getDetails();
-   }, 2000);
+   }, 3000);
     }
   
 
@@ -708,11 +743,15 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
+    
     this.isEdit = true;
     this.scrollToTop();
+    let ob = {};
+    this.form.get('toDate').patchValue('');
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
+      
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
@@ -725,6 +764,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
       if (obj != 'undefined') {
+       
         this.paymentDetailGridData = obj.paymentDetails;
         this.form.patchValue(obj);
         this.Index = obj.accountNumber;
@@ -847,9 +887,29 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     // );
   }
 
-  docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

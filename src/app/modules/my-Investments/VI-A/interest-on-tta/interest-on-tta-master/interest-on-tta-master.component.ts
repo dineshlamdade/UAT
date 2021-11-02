@@ -24,7 +24,7 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
 })
 export class InterestOnTtaMasterComponent implements OnInit {
   @Input() public accountNo: any;
-
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -54,6 +54,13 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public ifscCodeList: Array<any> = [];
   public bankNameLsit: Array<any> = [];
   public bankIFSC: any;
+
+  public isEdit: boolean = false;
+
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
 
   public accountNumberlistedit: Array<any> = [];
 
@@ -100,6 +107,12 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+
+  documentArray: any[] =[];
+  isVisibleTable = false;
+
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -174,6 +187,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
       state: new FormControl(null, Validators.required),
+      remark: new FormControl(null),
       bankName: new FormControl(
         { value: null, disabled: true },
         Validators.required
@@ -350,7 +364,36 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-    });
+   
+      this.masterGridData.forEach((element) => {
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+      });
+  });
+
   }
 
   // Post Master Page Data API call
@@ -361,14 +404,35 @@ export class InterestOnTtaMasterComponent implements OnInit {
       return;
     }
 
+    console.log('this.isEdit', this.isEdit);
+   
+  if(!this.isEdit){
+
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Deposit in Saving Account 80TTA Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+
+  for (let i = 0; i <= this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.remarkList[i],
+        "password": this.documentPassword[i]
+      };
+      this.documentDataArray.push(remarksPasswordsDto);
+    }
+  }
+  console.log('this.documentDataArray', this.documentDataArray);
+  // else {
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      data.remarkPasswordList = this.documentDataArray;
 
       console.log('Interest On 80TTA ::', data);
       console.log(data.accountNumber);
@@ -383,7 +447,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
         if (this.codeInvalid) {
           this.codeInvalid = false;
           this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable'
+            'Duplicate Account should Not be Acceptable.'
           );
           return;
         }
@@ -405,8 +469,52 @@ export class InterestOnTtaMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               // this.masterGridData = res.data.results[0].documentInformationList;
+
+
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                  //    'remark':element.documentInformationList[0].remark,                     
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                   //  'remark':element.documentInformationList[1].remark,   
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               console.log('masterGridData', this.masterGridData);
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
@@ -415,7 +523,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -434,7 +542,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
       this.submitted = false;
       this.documentRemark = '';
       this.showUpdateButton = false;
-    }
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
+    // }
   }
 
   //Duplicate account should not be acceptable
@@ -445,7 +557,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       this.accountNumberlistedit = element.accountNumber;
       if (event == element.accountNumber) {
         this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable'
+          'Duplicate Account should Not be Acceptable.'
         );
       }
       console.log(element.accountNumber);
@@ -472,6 +584,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -488,8 +601,29 @@ export class InterestOnTtaMasterComponent implements OnInit {
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
         this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        
+        
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
       }
     });
   }
@@ -577,9 +711,29 @@ export class InterestOnTtaMasterComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+
+  docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(

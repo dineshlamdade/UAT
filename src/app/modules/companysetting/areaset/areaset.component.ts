@@ -40,6 +40,10 @@ export class AreasetComponent implements OnInit {
   // cities: City[];
 
   // selectedCities: City[];
+  selectedItem: any = [];
+  isHideAreaList : boolean;
+  isHideAreaListRadio : boolean;
+
   public modalRef: BsModalRef;
 
   public apiUrl = environment.baseUrl8084;
@@ -50,7 +54,7 @@ export class AreasetComponent implements OnInit {
   summaryData: any;
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
-  hideRemarkDiv2:boolean = false;
+  hideRemarkDiv2 = false;
   isCancelButton: boolean = false;
   isReset:boolean = false;
   // anamePattern = "^[a-z0-9_-]{8,15}$";
@@ -74,11 +78,13 @@ export class AreasetComponent implements OnInit {
 
   excelData1: any;
   header1: any;
-
+  editedComplianceHeadId: number = 0;
   users1: User1[];
   displayedColumns: any;
   employeedata: any[] = [];
   empdataSource: any;
+  id: any;
+//  id: any;
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
     public alertService : AlertServiceService,private excelservice: ExcelserviceService,
@@ -94,15 +100,32 @@ export class AreasetComponent implements OnInit {
       areaSetMasterId: new FormControl(''),
       areaSetName: new FormControl('',[Validators.required,Validators.maxLength(25)]),
       serviceMasterId: new FormControl('',[Validators.required]),
-      remark: new FormControl(''),
+      remark: new FormControl({ value: '', disabled: true },Validators.required),
       serviceName : new FormControl(''),
       numberOfArea : new FormControl(''),
-      isActive : new FormControl(1),
-      areaList : new FormControl(''),
+      isActive : new FormControl({ value: true, disabled: true }),
+      areaList : new FormControl({ value: "", disabled: false }),
+      areaListRadio : new FormControl({ value: "", disabled: false }),
       
      areaSetMasterDetailsList: new FormControl([]) 
     })
 
+  }
+  deactivateRemark() {
+    console.log( 'in deactive remakr' );
+
+    if ( this.areasetForm.get( 'isActive' ).value === false ) {
+      this.areasetForm.get( 'remark' ).enable();
+      this.hideRemarkDiv2 = true;
+      this.areasetForm.controls['remark'].setValidators( Validators.required );
+      this.areasetForm.controls['remark'].updateValueAndValidity();
+    } else {
+     
+      this.hideRemarkDiv2 = false;
+      this.areasetForm.controls["remark"].clearValidators();
+      this.areasetForm.controls["remark"].updateValueAndValidity();
+     
+    }
   }
 
 
@@ -128,99 +151,114 @@ export class AreasetComponent implements OnInit {
     }
  }
   
+ onSelectArea(evt){
+  this.isHideAreaList = true;
+  this.isHideAreaListRadio = false;
+  console.log(evt);
+  if(evt.value.length >= 1){
+    this.areasetForm.get('areaListRadio').disable();
+  }
+  else {
+   this.areasetForm.get('areaListRadio').enable();
+  }
+ 
+}
+onSelectArea1(evt){
+  this.isHideAreaList = false;
+  this.isHideAreaListRadio = true;
+  console.log(evt);
+  if(evt.value.length >= 1){
+    this.areasetForm.get('areaList').disable();
+  }
+  else {
+   this.areasetForm.get('areaList').enable();
+  }
+ 
+}
+
+ smallpopup4(deleteTemp: TemplateRef<any>,data) {
+  this.modalRef = this.modalService.show(deleteTemp,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
+   this.id = data.areaSetMasterId;
+  console.log("this.summaryqueryGenerationEmpId",this.id);
+
+}
 
   ngOnInit(): void {
      this.getServiceList();
      this.getSummaryData();
-     
-    
      this.users1 = [
       { areaSetName: '1', nature: 'Earning'},
-  
-  
-  ];
-// this.testMultiSelect();
-  //    this.cities = [
-  //     {name: 'New York', code: 'NY'},
-  //     {name: 'Rome', code: 'RM'},
-  //     {name: 'London', code: 'LDN'},
-  //     {name: 'Istanbul', code: 'IST'},
-  //     {name: 'Paris', code: 'PRS'}
-  // ];
-  }
+    ];
+   }
 
-  // deleteRow(x){
-  //   var delBtn = confirm(" Do you want to delete ?");
-  //   if ( delBtn == true ) {
-  //     this.data.splice(x, 1 );
-  //   }   
-  // } 
+  
 
   /**save and submit data also add data*/
   onSubmit(){
-    //alert("hi")
-  // const data = this.areasetForm.getRawValue();
-    //console.log(this.areasetForm.value)
- 
-  // this.areasetForm.removeControl('areaSetMasterId')
- 
-  //this.areasetForm.controls['serviceMasterId'].setValue(parseInt(this.areasetForm.controls['serviceMasterId'].value))
+     if(this.areasetForm.get('areaList').value <= 0){
+         this.alertService.sweetalertWarning('Please Select Area');
+         return false;
+        }
        this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
-         // this.areasetService.saveAreaSet(data).subscribe((res) => {
-         console.log(res);
-         
-        //  this.summaryData = res.data.results;
-          this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
-          this.getSummaryData();
-         // this.areaListData = [];
-       // this.toaster.success('','Area set saved succefully');
-       // this.areaList = [];
-      //  this.areasetForm.controls.areaList.setValue("");
-     this.areaMaster=[];
-    
+       console.log(res);
+       this.areasetForm.get('isActive').setValue(true);
+       this.areasetForm.get('isActive').disable();
+       this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
+       this.getSummaryData();
+       this.areasetForm.get('areaList').enable();
+       this.areaMaster=[];
        this.areasetForm.controls['areaList'].setValue([]);
        this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
-      
-     
-       
-        this.getForm();
-        this.areasetForm.reset();
-      //  window.location.reload();
-      //  this.areasetForm.controls['areaList'].reset();
-     
-      
-        
+       this.areasetForm.get('areaList').enable()
+       this.areasetForm.get('areaListRadio').enable()
+       this.getForm();
+       this.areasetForm.reset();
+       this.areasetForm.patchValue({
+        serviceMasterId: '',
+      });
         this.editFormFlag = false;
         this.viewFormFlag = false;
-         this.hideRemarkDiv2 = false;
+        this.hideRemarkDiv2 = false;
+        this.areasetForm.get('isActive').setValue(1);
+        this.areasetForm.get('isActive').disable()
       },error => {
         if(error.error.status.code == '400'){
           //this.toaster.success( 'Duplicate Area Set Name' );
           this.alertService.sweetalertError('Dulicate Areaset');
           this.areasetForm.controls['areaSetName'].reset();
 
-        }
-      }
-      )
-        //this.areasetForm.reset();
+        }  
+      })      
   }
 
   
   
 /**Update data */
   onUpdate(){
+    
+    //  this.areasetForm.get('isActive').setValue(true)
       this.areasetService.updateAreaSet(this.areasetForm.value).subscribe((res)=>{
-      //this.toaster.success('','Area set updated succefully');
+     //this.toaster.success('','Area set updated succefully');
       this.alertService.sweetalertMasterSuccess('Success','Area Set Updated Successfully');
-      this.getSummaryData();
+     
+      this.hideRemarkDiv2 = false;
+      this.areasetForm.get('isActive').disable()
+      this.getSummaryData()
+      this.getForm();
       this.areasetForm.reset();
-     // this.areaList = [];
-
+      this.areasetForm.get('isActive').setValue(true);
+      this.areasetForm.get('areaList').enable()
+      this.areasetForm.get('areaListRadio').enable()
+      this.areasetForm.patchValue({
+      serviceMasterId: '',
+    });
       this.areaListData = [];
       this.editFormFlag = false;
-      this.viewFormFlag = false;
-      this.hideRemarkDiv2 = false;
+      this.viewFormFlag = false; 
     }
+    
     // ,error => {
     //   if(error.error.status.code == '400'){
     //     //this.toaster.success( 'Duplicate Area Set Name' );
@@ -229,6 +267,7 @@ export class AreasetComponent implements OnInit {
     //   }
     // }
     )
+    
  // console.log(this.areasetForm.value);
 // this.areasetForm.reset();
 }
@@ -240,10 +279,14 @@ formReset(){
       this.areaListData = [];
       this.editFormFlag = false;
       this.viewFormFlag = false;
-      this.areasetForm.enable();    
+      this.areasetForm.enable(); 
       this.hideRemarkDiv2 = false;
-      //this.areasetForm.get("areaSetMasterDetailsList").setValue([]);
-      //this.areasetForm.get('isActive').setValue(1);
+      this.areasetForm.get( 'remark' ).disable();
+      this.areasetForm.get( 'isActive' ).setValue(true);
+      this.areasetForm.get( 'isActive' ).disable();  
+      this.areasetForm.patchValue({
+        serviceMasterId: '',
+      })      
 }
 
 /**primeng multi select area master array payrollareaid and payrollareacode */
@@ -262,6 +305,8 @@ getAreaMasterId(e){
     // }) 
   }
 
+
+
   /**Summary data */
   getSummaryData(){
       this.areasetService.getSummaryData().subscribe(res =>{
@@ -277,9 +322,7 @@ getAreaMasterId(e){
        setTimeout(()=>{
         this.summaryData = []
        },200)
-      
-      }
-       )
+      })
   }
 
   /**Service list */
@@ -289,15 +332,14 @@ getAreaMasterId(e){
       this.serviceListData = res.data.results[0];
       this.serviceData=[];
       if(this.serviceListData.length >0){
-        this.serviceListData.forEach(element => {
+         this.serviceListData.forEach(element => {
          this.serviceData.push({serviceMasterId : element.serviceMasterId,
-          serviceCode : element.serviceCode,
-          serviceName : element.serviceName})
-        });
+            serviceCode : element.serviceCode,
+            serviceName : element.serviceName})
+            });
       }
-      console.log("servic list is",this.serviceData)
-   
-      })
+           console.log("servic list is",this.serviceData)
+   })
   }
 
 /**Service list by name with id */
@@ -320,11 +362,6 @@ getAreaMasterId(e){
             label: element.leaveAreaCode, 
             value: element.leaveAreaId
         })
-        }else if(servicName.serviceName=="Attendance") {
-          this.areaListData.push({
-            label: element.attendanceAreaCode, 
-            value: element.attendanceAreaId
-        })
         }
         else if(servicName.serviceName=="Reimbursement") {
           this.areaListData.push({
@@ -332,119 +369,86 @@ getAreaMasterId(e){
             value: element.reimbursementAreaId
         })
         }
+        else if(servicName.serviceName=="Attendance") {
+          this.areaListData.push({
+            label: element.attendanceAreaCode, 
+            value: element.attendanceAreaId
+        })
+        }
 
          console.log("area list is",this.areaListData)
          
          
        })
-    //   let location = this.serviceData.find(x=>x.serviceMasterId ==serviceid);
-    //    this.Area=location.serviceName;
-    //  console.log('areaSelected',this.Area)
-
-
-
-
-      // this.areasetService.getByServiceName(serviceid).subscribe(res =>{
-    // this.areaListData = res.data.results;
-     //console.log('result is',res);
-    
-//         var areaCode= this.Area+'AreaCode';
-//      //   let str= JSON.parse(+areaCode);
-//         var areaId=this.Area+'AreaId';
-//         for(let i=0;i<res.data.results[0].length;i++){
-         
-//  let obj=res.data.results[0][i].areaCode;
-//  console.log(obj);
-//         }
-//           res.data.results[0].forEach(element => {
-//      //   console.log('Area element is',element.payrollAreaCode)
-// let areaCode=this.Area+'AreaCode';
-// let areaId=this.Area+'AreaId';
-//  let obj=element.areaCode;
-//   value:element.areaId})
-
-//this.areaListData.push(obj)
-
-        // }
-          // console.log("this.areaListData: "+ this.areaListData)
-           
+   
       });
       
-  //  })
+ 
     
   }
 
   editAreaSet(data){
+      // this.areasetForm.get('isActive').setValue(0)
+      // this.hideRemarkDiv2 = true;
       this.editFormFlag =true;
       this.viewFormFlag = false;
-    //  this.isReset = false;
       this.areasetForm.enable();
       this.areasetForm.patchValue(data);
-      
-     // this.areasetForm.get('isActive').setValue(1);
-    this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
-     this.getAreasetByService(data.serviceMaster.serviceMasterId);
-     let abc = [];
-    //   // this.areaList = [{
-    //   //   label:'PA-Staff',
-    //   //   value:data.areaSetMasterDetailsList[0].areaCode
-    //   // }]
-
-      data.areaSetMasterDetailsList.forEach(element => {
-        abc.push({
-      label : element.areaCode,
-      value : element.areaId
-      
-      // label : element.serviceMaster.serviceCode,
-      //value : element.serviceMaster.serviceMasterId
-        })
-     });
-   this.areasetForm.controls['areaList'].setValue(abc);
-    //this.areasetForm.get('areaList').setValue(abc)
-let datatest = []
-   this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
-   datatest.push(ele.areaId) 
-
-
-   
-   // datatest.push(ele.serviceMaster.serviceMasterId)
-      
-    });
-   // this.areasetForm.controls['areaList'].setValue(datatest);
-   // this.areasetForm.controls['areaList'].setValue(abc)
-    this.areaList = datatest
-      console.log(data)
-      console.log("Area list is",this.areaList);
-  }
-
-  viewAreaSet(data){
-      this.editFormFlag =false;
-      this.viewFormFlag = true;
-    ///  this.isReset = false
-      this.areasetForm.disable();
-      this.areasetForm.patchValue(data);
+     
+     
       this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
       this.getAreasetByService(data.serviceMaster.serviceMasterId);
-      // this.areaList = [{
-      //   label:'PA-Staff',
-      //   value:data.areaSetMasterDetailsList[0].areaCode
-      // }]
-      console.log(data)
+     
+      let abc = [];
+      data.areaSetMasterDetailsList.forEach(element => {
+          abc.push({
+          label : element.areaCode,
+          value : element.areaId
+          })
+     });
+      this.areasetForm.controls['areaList'].setValue(abc);
+    //this.areasetForm.get('areaList').setValue(abc)
+     let datatest = []
+     this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
+     datatest.push(ele.areaId)   
+     });
+     this.areaList = datatest
+     console.log(data)
+     console.log("Area list is",this.areaList);
+  }
+
+
+  viewAreaSet(data){
+      // this.areasetForm.get('isActive').setValue(0)
+      // this.hideRemarkDiv2 = true;
+      this.editFormFlag =false;
+      this.viewFormFlag = true;
+      this.areasetForm.disable();
+      this.areasetForm.get('areaListRadio').disable();
+      this.areasetForm.patchValue(data);
+     
+      this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
+      this.getAreasetByService(data.serviceMaster.serviceMasterId);
+      // this.selectedItem =  this.selectedItem.concat(this.areaListData[1].value);
+      // console.log(this.selectedItem);
+      let abc = [];
+      data.areaSetMasterDetailsList.forEach(element => {
+          abc.push({
+          label : element.areaCode,
+          value : element.areaId
+          })
+     });
+      this.areasetForm.controls['areaList'].setValue(abc);
+      //console.log(data)
       let datatest = []
-    this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
+      this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
       datatest.push(ele.areaId) 
-      
-    });
-    this.areaList = datatest
+      });
+      this.areaList = datatest
       console.log(data)
       console.log("Area list is",this.areaList);
   }  
 
-//   isCancel(){
-// this.editFormFlag = false;
-// this.viewFormFlag = false;
-//     this.isReset =  true;
-//   }
 
   // Only AlphaNumeric with Some Characters [-_ ]
   keyPressAlphaNumericWithCharacters(event) {
@@ -463,23 +467,29 @@ let datatest = []
 
     console.log('getArea',data);
     console.log('elm',elm);
+    let areanew=this.areaListData.find(a=>a.label == data);
+   
     this.areaMaster.push({
-      "areaCode":'PA-Staff',
-      "areaId":elm.itemValue
+    "areaCode":areanew,
+     "areaId":elm.itemValue
+      // name:areanew,
+     // code:areanew1
     })
     this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);
    }
 
-   deleteData(id){
-     this.areasetService.deleteData(id).subscribe((res)=>{
-      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+   deleteData(data){
+     this.areasetService.deleteData(this.id).subscribe((res)=>{
+    this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+     //this.alertService.sweetalertMasterSuccess("Area Set Deleted", '' );
      // this.areasetService.getServiceList();
-    
       this.ngOnInit();
       this.getSummaryData();
      })
 
    }
+
+   
 
    //Area set Excel
   exportApprovalSummaryAsExcel(): void {
@@ -497,7 +507,6 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 //   // let emp = this.employeesetForm.get('empList').value
 //   // console.log('empdata',emp)
 //   // let empList= emp.split(',');
-
  if(this.areaList.length>0){
   this.areaList.forEach(element=>{
    let areaCode = this.areaListData.find(x=>x.value==element)
@@ -618,6 +627,7 @@ console.log('this.areaList::', this.areaList);
 
 
   Arealistpop(arealist: TemplateRef<any>) {
+    this.areasetForm.get('areaList').disable();
     this.modalRef = this.modalService.show(
       arealist,
       Object.assign({}, { class: 'gray modal-lg' })
@@ -669,8 +679,8 @@ area.push(obj)
    //   let serName = this.areasetForm.get('serviceMasterId').value;
 //let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
       if(element.areaCode+',' == areacode){
-       area.serviceMasterId = element.serviceMasterId
-     //  area.serviceName = element.serviceName
+      area.serviceMasterId = element.serviceMasterId
+      area.serviceName = element.serviceName
       
        
      // area.servName = element.serviceName

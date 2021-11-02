@@ -110,11 +110,11 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
-                            <label class="form-label">Premium Amount</label>
+                            <label class="form-label">Installment Amount</label>
                             <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                                 min="0"></p-inputNumber>
-                            <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
+                            <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-message">
+                                <div *ngIf="masterForm.premiumAmount.errors.required">Installment Amount is mandatory</div>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
@@ -220,8 +220,8 @@
                         </span>
                                             </td>
                                             <td class="wd-10">
-                                                <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
-                          {{summary.ecs==1?'Yes':'No'}}
+                                                <span tooltip="{{summary.isEcs==1?'Yes':'No'}}">
+                          {{summary.isEcs==1?'Yes':'No'}}
                         </span>
                                             </td>
                                         </tr>
@@ -559,7 +559,7 @@
                             </td>
                             <td>
                               <a
-                              (click)=" docViewer(template3,documentIndex)"
+                              (click)=" docViewer(template3,documentIndex, document)"
   
                               >
                                 <i
@@ -649,7 +649,7 @@
                 <div class="float-right mb-15">
                     <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
               <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                    <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+                    <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
               <i class="fa fa-refresh"></i></b> Reset</button>
                 </div>
             </div>
@@ -699,7 +699,7 @@
                                         </td>
                                         <!-- <td><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
                                         </td> -->
-                                        <td class="wd-10"><span tooltip="masterstatus">{{summary.masterstatus}}</span></td>
+                                        <td class="wd-10 text-light-green font700"><span tooltip="masterStatus">{{summary.masterStatus}}</span></td>
                                         <td>
                                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)=" editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                                         </td>
@@ -868,11 +868,29 @@
 <!-- For Doc Viewer  -->
 <ng-template #template3>
     <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+        <!-- <h5 class="modal-title" id="jasdjgh">Document Viewer</h5> -->
+        <div class="row">
+          <div class="col-sm-6 col-md-6 align-right">
+              <label class="form-label">Document Name</label>
+               {{this.viewDocumentName}}
+          </div>
+          <div class="col-sm-6 col-md-6 align-right">
+              <label class="form-label">Document Type</label>
+              
+              {{this.viewDocumentType}}
+          </div>
+        
+          </div>
+          <div class="align-right">
+          <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+<button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+       
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
+  </div>
     </div>
+   
     <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
     <div class="card-body">
@@ -883,7 +901,7 @@
         </button>
             </div>
             <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+                <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
                 <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
             </div>
             <div class="col-md-1">
