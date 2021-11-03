@@ -40,7 +40,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	employeeMasterId: any;
 	headMasterId: any;
 	indexId = 1;
-	employeeFinDetailsData: any;
+	employeeFinDetailsData: any = [];
 	index: number = 0;
 	showEmployeeSelectionFlag: boolean = false;
 	selectedTransactionIndex: any = -1;
@@ -52,7 +52,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	openingAmount: string = '';
 	remark: any = '';
 	standardName: any;
-	selectedPayrollArea: any = '';
+	selectedPayrollArea: any = 'PA-Staff';
 	editScheduleFlag: boolean = false;
 	selectedEmployeeMasterId: any = '';
 	employeeData: any;
@@ -91,7 +91,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	originalTransactionDate: any;
 	isReschedule: boolean;
 	payrollListData: any;
-	payrollListEmpData: any;
+	payrollListEmpData: any = '';
 	copyFlag: boolean = false;
 	showDropdownDisabled: boolean = false;
 	parollListIndex: number = 0;
@@ -118,6 +118,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	selectedEmployeeLength: any = 0;
 	svaeDisabledFlag: boolean = true;
 	selectedOption: string = 'single';
+	payrollAreaId: any = 1;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -136,10 +137,11 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
 			this.getAllEmployeeDetails();
-			this.selectedPayrollArea = 'PA-Staff'
+			
 			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
-
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 		}
 	}
 
@@ -532,7 +534,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				let inputdata = {
 					"employeeMasterId":this.selectedEmpData[this.index].employeeMasterId,
 					"headMasterId": parseInt(this.headMasterId),
-					"payrollAreaId":"1",
+					"payrollAreaId": this.payrollAreaId,
 					"amount": value,
 					"fromDate": this.selectedFromDate
 				}
@@ -678,7 +680,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex + 1
 		this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
@@ -692,7 +694,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex - 1
 		// this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 		this.selectedEmployeeMasterId = this.payrollListEmpData[this.parollListIndex].employeeMasterId
 	}
@@ -709,7 +711,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex + 1
 		// this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 		this.selectedEmployeeMasterId = this.payrollListEmpData[this.parollListIndex].employeeMasterId
 
@@ -764,6 +766,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	getSelectedPayrollArea(value) {
 		this.employeeFinDetailsData = []
 		this.selectedPayrollArea = value;
+		this.payrollListData.forEach(element => {
+			if(element.payrollAreaCode == value){
+				this.payrollAreaId = element.payrollAreaId
+			}
+		});
 		this.PayrollAreaByPayrollAreaCode(value)
 		if (this.selectedEmployeeMasterId != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
@@ -781,9 +788,13 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.payrollListData = ''
 		this.employeeFinDetailsData = []
 		this.selectedEmployeeMasterId = parseInt(value)
+		// this.selectedPayrollArea = ''
+		// if(this.payrollListEmpData != ''){
+		// 	this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+		// }
+		console.log(this.selectedPayrollArea)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
-
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
@@ -895,7 +906,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": element.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": parseInt(value),
 						"frequency": element.frequency,
@@ -934,7 +945,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": parseInt(value),
 							"frequency": data.frequency,
@@ -965,7 +976,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": parseInt(value),
 				"frequency": data.frequency,
@@ -1029,7 +1040,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			let inputdata = {
 				"employeeMasterId":this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
-				"payrollAreaId":"1",
+				"payrollAreaId": this.payrollAreaId,
 				"executeSDM": data.executeSDM,
 				"refferedEmpId":0,
 				"refferedpayrollAreaCode":"",
@@ -1046,14 +1057,14 @@ export class NonRecurringAmtComponent implements OnInit {
 		// 			let inputdata1 = {
 		// 				"employeeMasterId":this.selectedEmployeeMasterId,
 		// 				"headMasterId": data.headId,
-		// 				"payrollAreaId":"1",
+		// 				"payrollAreaId": this.payrollAreaId,
 		// 				"amount": this.SDMAmountValue,
 		// 				"fromDate": this.selectedFromDateForSave
 		// 			}
 		// 			// let inputdata1 = {
 		// 			// 	"employeeMasterId":1,
 		// 			// 	"headMasterId":49,
-		// 			// 	"payrollAreaId":"1",
+		// 			// 	"payrollAreaId": this.payrollAreaId,
 		// 			// 	 "amount":88000,
 		// 			// 	 "fromDate":"2020-04-08 00:00:00"
 		// 			// }
@@ -1098,7 +1109,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1129,7 +1140,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1160,7 +1171,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1269,7 +1280,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1300,7 +1311,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1331,7 +1342,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1404,7 +1415,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1435,7 +1446,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1466,7 +1477,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1535,7 +1546,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1566,7 +1577,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1597,7 +1608,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1664,7 +1675,7 @@ this.saveTransactionData.forEach(element => {
 				let inputdata = {
 					"employeeMasterId":this.selectedEmployeeMasterId,
 					"headMasterId": data.headId,
-					"payrollAreaId":"1",
+					"payrollAreaId": this.payrollAreaId,
 					"amount": value,
 					"fromDate": this.selectedFromDateForSave
 				}
@@ -1703,7 +1714,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1734,7 +1745,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1765,7 +1776,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1841,7 +1852,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": value,
@@ -1873,7 +1884,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": value,
@@ -1904,7 +1915,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": value,
@@ -1973,7 +1984,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2004,7 +2015,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2035,7 +2046,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2132,7 +2143,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2163,7 +2174,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2194,7 +2205,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2246,7 +2257,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2277,7 +2288,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2308,7 +2319,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2357,7 +2368,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2388,7 +2399,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2419,7 +2430,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2467,7 +2478,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2498,7 +2509,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2529,7 +2540,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2578,7 +2589,7 @@ this.saveTransactionData.forEach(element => {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"headMasterId": element.headMasterId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -2609,7 +2620,7 @@ this.saveTransactionData.forEach(element => {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -2640,7 +2651,7 @@ this.saveTransactionData.forEach(element => {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"headMasterId": data.headId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -2736,7 +2747,7 @@ this.saveTransactionData.forEach(element => {
 					"employeeMasterId": this.selectedEmployeeMasterId,
 					"headMasterId": element.headMasterId,
 					"standardName": element.standardName,
-					"payrollAreaId": "1",
+					"payrollAreaId": this.payrollAreaId,
 					"payrollAreaCode": element.payrollAreaCode,
 					"onceEvery": element.onceEvery,
 					"frequency": element.frequency,

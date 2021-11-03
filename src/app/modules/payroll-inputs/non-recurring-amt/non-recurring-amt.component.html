@@ -445,7 +445,7 @@
                                                                                 (change)="getSelectedPayrollArea($event.target.value)"
                                                                                 [disabled]="showDropdownDisabled">
                                                                                 <option value="">Select</option>
-                                                                                <option> PA-Staff </option>
+                                                                                <!-- <option> PA-Staff </option> -->
                                                                                 <!-- <option> PA_Worker</option> -->
                                                                                 <option
                                                                                     *ngFor="let payroll of payrollListData"
@@ -460,7 +460,7 @@
                                                                     <div class="row mt-10">
                                                                         <div class="col-md-12 pl-0 pr-0">
                                                                             <div class="box-line-border radius-10 p-2 mt-3"
-                                                                                *ngIf="employeeFinDetailsData">
+                                                                            *ngIf="employeeFinDetailsData">
                                                                                 <div class="row">
                                                                                     <div class="col-md-2">
                                                                                         <label
@@ -482,12 +482,21 @@
                                                                                             | date: 'dd-MMM-yyyy'}}
                                                                                         </label>
                                                                                     </div>
+                                                                                    
                                                                                     <div class="col-md-2">
                                                                                         <label
                                                                                             class="form-label mt-1 mb-0">Establishment</label>
                                                                                         <label
                                                                                             class="font-12 text-ellipsis mt-1 mb-0">
                                                                                             {{employeeFinDetailsData.establishment}}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <label
+                                                                                            class="form-label mt-1 mb-0">Department</label>
+                                                                                        <label
+                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                            
                                                                                         </label>
                                                                                     </div>
                                                                                     <div class="col-md-2">

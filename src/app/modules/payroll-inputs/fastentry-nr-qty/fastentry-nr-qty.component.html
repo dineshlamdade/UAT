@@ -1,9 +1,9 @@
-<app-leftmenu></app-leftmenu>
+<!-- <app-leftmenu></app-leftmenu> -->
 <!-- Main body part  -->
-<div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-        <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+<!-- <div class="page"> -->
+    <!-- <app-header></app-header> -->
+    <!-- <div class="section-body mt-3"> -->
+        <!-- <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;"> -->
             <div class="tabview-contents">
                 <div class="row">
                     <div class="col-12">
@@ -43,7 +43,7 @@
                                                 <option *ngFor="let data of nonSalaryOptionList">{{data.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <!-- <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
                                             <select name="payrollarea" class="form-control custom-select input-icon"
                                             [(ngModel)]="selectedPayrollArea"
@@ -54,7 +54,7 @@
                                                     {{payroll.name}}
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                     <br>
@@ -285,8 +285,8 @@
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                             tooltip="Go" (click)="getAllSelectedData()"
-                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''"
-                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''}"
+                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' "
+                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == ''}"
                                                                             >
                                                                             <!-- [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''}"
@@ -753,9 +753,9 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-    <app-footer></app-footer>
+        <!-- </div> -->
+    <!-- </div> -->
+    <!-- <app-footer></app-footer> -->
 
 
     <!-- Edit deviation and repeat-->
