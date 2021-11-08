@@ -37,7 +37,7 @@
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Account Holder Name</label>
               <input type="text" formControlName="accountHolderName" class="form-control"
-                onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Account Holder Name"
+                onkeypress="return /[a-zA-Z ']/i.test(event.key)" placeholder="Enter Account Holder Name"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
               <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.accountHolderName.errors.required">Account Holder Name Is Mandatory</div>
@@ -624,7 +624,7 @@
                     <!-- <td class="wd-10 text-light-green font700"><span tooltip="Submitted">Submitted</span>
                     </td> -->
                     <td class="wd-10 text-light-green font700"><span tooltip="masterStatus">{{summary.transactionStatus}}</span></td>
-                    
+
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.vehicleNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
@@ -758,7 +758,7 @@
                       </div>
                       <div class="col-md-12">
                         <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
-                      
+
                       </div>
 
                     </div>
