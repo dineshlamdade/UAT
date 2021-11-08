@@ -336,7 +336,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -351,7 +351,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
         })
       });
-     
+
     });
   }
 
@@ -365,15 +365,15 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
 
 console.log('this.isEdit', this.isEdit);
-   
+
   if(!this.isEdit){
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
       );
       return;
-    } 
-  } 
+    }
+  }
   // else {
       const from = this.datePipe.transform(
         this.form.get('loanStartDate').value,
@@ -466,11 +466,11 @@ console.log('this.isEdit', this.isEdit);
               });
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
@@ -481,31 +481,31 @@ console.log('this.isEdit', this.isEdit);
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
-                     // 'remark':element.documentInformationList[1].remark,  
+                     // 'remark':element.documentInformationList[1].remark,
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
               }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);
@@ -515,7 +515,14 @@ console.log('this.isEdit', this.isEdit);
               'Something went wrong. Please try again.'
             );
           }
-        });
+        }
+        ,error => {
+          if(error.error.status.code == '400'){
+            // this.alertService.sweetalertWarning("Vehicle Number already Present !");
+            this.alertService.sweetalertError( error["error"]["status"]["messsage"] );
+          }
+        }
+        );
 
         this.Index = -1;
         formDirective.resetForm();
@@ -574,7 +581,7 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('remark').reset();
       }
     }
-  
+
 
 
    //------------- On Master Edit functionality --------------------
@@ -582,6 +589,7 @@ console.log('this.isEdit', this.isEdit);
     this.isEdit = true;
     this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
+      this.isVisibleTable = true;
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -590,7 +598,7 @@ console.log('this.isEdit', this.isEdit);
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
-      
+
       console.log(vehicleNumber)
       const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
 
@@ -608,7 +616,7 @@ console.log('this.isEdit', this.isEdit);
       this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
       this.documentArray = [];
-        
+
       obj.documentInformationList.forEach(element => {
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,
@@ -621,7 +629,7 @@ console.log('this.isEdit', this.isEdit);
           'lastModifiedTime' : element.lastModifiedTime,
 
         })
-        
+
       });
       console.log("documentArray::",this.documentArray);
       this.isVisibleTable = true;

@@ -637,7 +637,7 @@ selectedTransactionLenderName(lenderName: any) {
     );
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
   }
- 
+
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
@@ -835,13 +835,13 @@ selectedTransactionLenderName(lenderName: any) {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
@@ -1219,7 +1219,7 @@ selectedTransactionLenderName(lenderName: any) {
     ].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    
+
    /*  console.log(
       'Actual Amount changed::',
       this.editTransactionUpload[j]
@@ -1453,7 +1453,7 @@ selectedTransactionLenderName(lenderName: any) {
               // this.documentArray.push({
               //   'dateofsubmission': ,
               // })
-              
+
               element.documentDetailList.forEach(element => {
               // if(element!=null)
               this.documentArray.push({
@@ -1535,20 +1535,7 @@ selectedTransactionLenderName(lenderName: any) {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
+
         console.log('documentArrayTest',this.documentArray);
 
         this.initialArrayIndex = [];
@@ -1586,7 +1573,7 @@ selectedTransactionLenderName(lenderName: any) {
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1835,7 +1822,7 @@ selectedTransactionLenderName(lenderName: any) {
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");
