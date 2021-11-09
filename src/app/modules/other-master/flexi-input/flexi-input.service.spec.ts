@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GeneralesService } from './generales.service';
+import { FlexiInputService } from './flexi-input.service';
 
-describe('GeneralesService', () => {
-  let service: GeneralesService;
+describe('FlexiInputService', () => {
+  let service: FlexiInputService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GeneralesService);
+    service = TestBed.inject(FlexiInputService);
   });
 
   it('should be created', () => {

@@ -1041,7 +1041,7 @@
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = false
+                        viewDocumentDetail = true
                       "
                       tooltip="view"
                     ></i>
@@ -1053,10 +1053,7 @@
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = true
-                      "
-                      tooltip="Edit"
-                    ></i>
+                        viewDocumentDetail = true"tooltip="Edit"></i>
                   </td>
                 </tr>
                 <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
@@ -1958,7 +1955,7 @@
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+      class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
     </button>

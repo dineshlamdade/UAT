@@ -1,5 +1,5 @@
 
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
 import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
@@ -12,6 +12,8 @@ import { EstablishmentMasterComponent } from './establishment-master/establishme
 import { JobMasterComponent } from './job-master/job-master.component';
 import { StatutoryComplianceComponent } from './statutory-compliance/statutory-compliance.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
+import { FlexiBasketAllocationComponent } from './flexi-basket-allocation/flexi-basket-allocation.component';
+import { FlexiInputComponent } from './flexi-input/flexi-input.component';
 
 const routes: Routes = [
   {
@@ -64,6 +66,9 @@ const routes: Routes = [
     component: JobMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
+  {path: 'flexiMaster',
+  component: FlexiInputComponent,
+  data:{title: ':: Delizia-HR :: Home'}},
   {
     path: 'complianceMapping',
     component: ComplianceMappingComponent,
