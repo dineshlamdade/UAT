@@ -16,7 +16,7 @@ export class DocumentviewerComponent implements OnInit {
   public modalRef: BsModalRef;
   public documentURLIndex: number;
   public documentType: string='';
-  public masterInfo: InvestmentApprovalMasterInfo;
+  public masterInfo: any;
   public documentList: InvestmentApprovalMasterDocumentInfo [];
   public documentInformationId: any;
 
@@ -30,7 +30,7 @@ export class DocumentviewerComponent implements OnInit {
     //console.log("getData::",this.router.getCurrentNavigation().extras.state);
     this.masterInfo = JSON.parse(localStorage.getItem("masterInfo"));
     console.log("masterInfo::",this.masterInfo);
-    localStorage.removeItem("masterInfo");
+    // localStorage.removeItem("masterInfo");
     console.log("masterInfo after remove::",localStorage.getItem("masterInfo"));
 
     this.documentInformationId =localStorage.getItem("documentInformationId");
@@ -52,10 +52,10 @@ export class DocumentviewerComponent implements OnInit {
   }
   public docViewer(documentViewerTemplate: TemplateRef<any>, index: any) {
 
-    this.documentURLIndex = index;
+    this.documentURLIndex = 0;
 
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
+      this.masterInfo.documentList[0].blobURI
     );
     this.documentType =
     this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;

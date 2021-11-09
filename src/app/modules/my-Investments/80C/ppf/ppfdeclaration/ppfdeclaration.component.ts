@@ -727,7 +727,8 @@ export class PPFDeclarationComponent implements OnInit {
 
   this.editTransactionUpload[j].groupTransactionList[
     i
-  ].declaredAmount = this.declarationService.declaredAmount;
+  ].actualAmount = this.declarationService.declaredAmount;
+  console.log( this.editTransactionUpload);
   const formatedDeclaredAmount = this.numberFormat.transform(
     this.editTransactionUpload[j].groupTransactionList[i].declaredAmount,
   );
@@ -751,6 +752,8 @@ export class PPFDeclarationComponent implements OnInit {
   });
 
   this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+  this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
   console.log(
     'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
   );
@@ -1299,6 +1302,7 @@ console.log('this.transactionDetail', this.transactionDetail);
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 
@@ -1620,7 +1624,7 @@ console.log('this.transactionDetail', this.transactionDetail);
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      res.documentDetailList.forEach(element => {
+      res?.documentDetailList?.forEach(element => {
         // if(element!=null)
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,

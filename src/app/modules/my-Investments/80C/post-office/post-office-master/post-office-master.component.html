@@ -1,5 +1,7 @@
 <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
     <div class="tabview-contents">
+      <fieldset>
+        <legend>Account Details</legend>
         <div class="row">
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Institution</label>
@@ -64,6 +66,7 @@
                 </div>
             </div>
         </div>
+      </fieldset>
         <div class="row mt-25">
             <div class="col-12">
                 <fieldset>
@@ -97,7 +100,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
+                            <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS </label>
                             <div class="custom-controls-stacked ml-15 mt-10">
                                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>

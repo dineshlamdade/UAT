@@ -325,7 +325,7 @@ export class PpdeclarationComponent implements OnInit {
 
     this.transactionInstitutionNames.push(data);
     this.transactionPolicyList.push(data);
-    this.refreshTransactionStatustList();
+    this?.refreshTransactionStatustList();
 
     this.getInstitutionListWithPolicyNo();
 
@@ -1042,6 +1042,7 @@ export class PpdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
@@ -1184,7 +1185,8 @@ export class PpdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[i].actualAmount = this.declarationService.declaredAmount;
+    console.log( this.editTransactionUpload);
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].groupTransactionList[i].declaredAmount
     );
@@ -1203,6 +1205,8 @@ export class PpdeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----

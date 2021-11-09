@@ -694,12 +694,17 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     i: number,
     j: number,
   ) {
+    
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
       summary.declaredAmount,
     );
-
+  debugger
+  this.editTransactionUpload[j].lictransactionList[
+    i
+    ].actualAmount = this.declarationService.declaredAmount;
+console.log( this.editTransactionUpload);
     this.editTransactionUpload[j].lictransactionList[
       i
       ].declaredAmount = this.declarationService.declaredAmount;
@@ -726,6 +731,9 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
+
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
     );
@@ -780,6 +788,8 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
+
+  
 
     this.transactionDetail[j].lictransactionList[
       i
@@ -1234,6 +1244,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 
@@ -1519,7 +1530,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,

@@ -161,6 +161,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       }
     }
   }
+  // this.getTransactionInfoByPSID(this.globalPSID);
 
   // -------------- Open Master Detail In PopUp -----------------------------------------
   openMasterDetailInPopUp(masterDetailtemplate: TemplateRef<any>, masterPSID:any) {
@@ -251,9 +252,11 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   // ------------ Open Document in Next Window -------------------
   navigateToDocumentViewer(documentInformationId: any) {
+    debugger
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['/investment-approval/documentview'])
     );
+  // const  url1 = this.transactionInfo.documentList[0].blobURI;
 
     localStorage.setItem('masterInfo', JSON.stringify(this.transactionInfo));
     localStorage.setItem('documentInformationId', documentInformationId);
@@ -334,6 +337,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     this.investmentMasterApprovalService
       .changeMasterDocumentStatus(formData)
       .subscribe((res: any) => {
+        debugger
         console.log('res Doc:', res);
         if (res != null || res != undefined) {
           if (this.documentList.length == 1) {
@@ -348,12 +352,15 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
               ''
             );
           }
+          
           this.documentDetailList =
             res.data.results[0].documentList;
-          this.getTransactionInfoByPSID(res.data.results[0].psidDetail.psid);
+          this.getTransactionInfoByPSID(res.data.results[0].body.data.results[0].psidDetail.psid);
+          // this.getTransactionInfoByPSID(this.globalPSID);
         }
         this.documentList = [];
       });
+
       this.approvedDisabled=true;
       this.transactionList=[];
   }
@@ -611,6 +618,7 @@ public postMethodCall(data):void{
        .subscribe((res: InvestmentApprovalTransactionInfo) => {
          console.log('res transaction Status::', res);
          console.log('this.transactionList.length::', this.transactionList.length);
+        
          if (this.transactionList.length == 1) {
           this.alertService.sweetalertMasterSuccess(
             'Transaction ' + status + ' sucessfully.',
@@ -630,6 +638,8 @@ public postMethodCall(data):void{
             transWithMaster.transactionDetailList.forEach((transaction)=>{
               transaction.amountApproved = this.numberFormatPipe.transform(transaction.amountApproved)
               transaction.amountRejected = this.numberFormatPipe.transform(transaction.amountRejected)
+           
+             
             });
           });
         }

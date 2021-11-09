@@ -76,6 +76,7 @@ export class PPFMasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
+  public showDeatil = false;
   public startDateModel: any = { date: null };
 
   public masterfilesArray: File[] = [];
@@ -309,13 +310,13 @@ export class PPFMasterComponent implements OnInit {
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearStart = res.data.results[0].fromDate;
       this.financialYearEnd = res.data.results[0].toDate; 
    
 
       
       this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
-      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+      let ConvertedFinancialYearStartDate1 = this?.datePipe?.transform(
         this.ConvertedFinancialYearStartDate,
         'yyyy-MM-dd'
       );
@@ -387,8 +388,8 @@ export class PPFMasterComponent implements OnInit {
       // console.log("edit", input)
       // this.editMaster(input);
       // console.log('editMaster policyNo', input);
-      this.editMaster(input.accountNumber);
-      console.log('editMaster accountNumber', input.accountNumber);
+      this.editMaster(input?.accountNumber);
+      console.log('editMaster accountNumber', input?.accountNumber);
     }
   
   }
@@ -632,13 +633,13 @@ export class PPFMasterComponent implements OnInit {
                   this.documentArray.push({
                   
                     'dateofsubmission':new Date(),
-                      'documentType':element.documentInformationList[0].documentType,
-                      'documentName': element.documentInformationList[0].fileName,
-                      'documentPassword':element.documentInformationList[0].documentPassword,
-                      'documentRemark':element.documentInformationList[0].documentRemark,
-                      'status' : element.documentInformationList[0].status,
-                      'approverName' : element.documentInformationList[0].lastModifiedBy,
-                      'Time' : element.documentInformationList[0].lastModifiedTime,
+                      'documentType':element?.documentInformationList[0]?.documentType,
+                      'documentName': element?.documentInformationList[0]?.fileName,
+                      'documentPassword':element?.documentInformationList[0]?.documentPassword,
+                      'documentRemark':element?.documentInformationList[0]?.documentRemark,
+                      'status' : element?.documentInformationList[0]?.status,
+                      'approverName' : element?.documentInformationList[0]?.lastModifiedBy,
+                      'Time' : element?.documentInformationList[0]?.lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
               
@@ -796,8 +797,14 @@ export class PPFMasterComponent implements OnInit {
   }
 
   // // On Master Edit functionality
-  editMaster(accountNumber) {
+  editMaster(accountNumber, frequency?) {
+    debugger
     this.isEdit = true;
+    if (frequency == 'As & When') {
+this.showDeatil = true;
+    } else {
+      this.showDeatil = false;
+    }
     this.scrollToTop();
     this.Service.getPPFMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -826,9 +833,9 @@ export class PPFMasterComponent implements OnInit {
 
       console.log('Edit Master', obj);
       // if (obj!= 'undefined'){
-      console.log('inedit as and when', obj.frequency);
+      console.log('inedit as and when', obj?.frequency);
       if (obj.frequency === 'As & When') {
-        this.form.patchValue({
+        this?.form?.patchValue({
           institution: obj.institution,
           accountNumber: obj.accountNumber,
           accountHolderName: obj.accountHolderName,
