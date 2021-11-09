@@ -399,7 +399,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       // console.log("edit", input)
       // this.editMaster(input);
       // console.log('editMaster policyNo', input);
-      this.editMaster(input.accountNumber);
+      this?.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
 
@@ -783,11 +783,11 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
 
         console.log('Edit Master', obj);
-        // if (obj != 'undefined') {
-          console.log('inedit as and when', obj?.frequency);
-      if (obj.frequency === 'As & When') {
+        if (obj != 'undefined') {
+      //     console.log('inedit as and when', obj?.frequency);
+      // if (obj.frequency === 'As & When') {
           this.paymentDetailGridData = obj.paymentDetails;
-          this.form.patchValue(obj);
+          this?.form.patchValue(obj);
           this.Index = obj.accountNumber;
           this.showUpdateButton = true;
           this.isClear = true;
