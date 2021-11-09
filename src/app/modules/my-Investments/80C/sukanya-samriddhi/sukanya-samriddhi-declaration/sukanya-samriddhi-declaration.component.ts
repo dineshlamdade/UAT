@@ -1041,6 +1041,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 

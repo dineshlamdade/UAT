@@ -44,6 +44,18 @@ export class HouserentmasterComponent implements OnInit {
 
   @Input() public houseRentalMasterIds: any;
 
+
+
+  rentAgreementdocumentPassword= [];
+  rentAgreementremarkList = [];
+  LandlordPANdocumentPassword= [];
+  LandlordPANremarkList = [];
+  
+
+  rentAgreementdocumentDataArray = [];
+  LandlordPANdocumentDataArray = [];
+ 
+
   public countriesList: Array<any> = [];
   public showOwner = false;
   public isloanTaken = true;
@@ -520,6 +532,32 @@ export class HouserentmasterComponent implements OnInit {
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.houseDetailsRentsubmitted = true;
 
+
+    for (let i = 0; i <= this.rentAgreementdocumentPassword.length; i++) {
+      if(this.rentAgreementdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.rentAgreementremarkList[i],
+          "password": this.rentAgreementdocumentPassword[i]
+        };
+        this.rentAgreementdocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.LandlordPANdocumentPassword.length; i++) {
+      if(this.LandlordPANdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.LandlordPANremarkList[i],
+          "password": this.LandlordPANdocumentPassword[i]
+        };
+        this.LandlordPANdocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
     console.log("rentDetail:::::",this.houseRentform.get('rentDetail').value);
    // let invalidSubmission = false;
     console.log('Houserentform', this.houseRentform);
@@ -599,6 +637,8 @@ export class HouserentmasterComponent implements OnInit {
 
       /*   data.housePropertyLoanDetailList = this.loanDetailGridData; */
       data.landLordDetailList = this.landLordDetailTableList;
+      data.rentAgreementRemarkPasswordList = this.rentAgreementdocumentDataArray,
+      data.declarationOfLandlordRemarkPasswordList = this.LandlordPANdocumentDataArray,
       console.log(this.houseRentform.get('agreementDetail').value);
 
       if (
@@ -678,6 +718,13 @@ export class HouserentmasterComponent implements OnInit {
       this.RentDetailTableList = [];
       this.declarationOfLandlordDocumentDetail = [];
       this.rentAgreementDocumentDetail = [];
+      this.rentAgreementdocumentDataArray = [];
+      this.LandlordPANdocumentDataArray = [];
+      this.LandlordPANremarkList = [];
+      this.LandlordPANdocumentPassword = [];
+      this.rentAgreementremarkList = [];
+     this.rentAgreementdocumentPassword = [];
+      
     }
   }
 

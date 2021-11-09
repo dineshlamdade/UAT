@@ -150,7 +150,7 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -159,7 +159,7 @@
                       " class="custom-control-input" value="option{{ summary.investmentGroup2TransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j);
@@ -1763,8 +1763,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
-      <b><i class="fa fa-eye"></i></b> View
+    class="custom_button custom_btn btn-bg-blue btn-labeled btn-labeled-left">
+      <b><i class="fa fa-eye"></i></b> View All
     </button>
     &nbsp;&nbsp;
     <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
