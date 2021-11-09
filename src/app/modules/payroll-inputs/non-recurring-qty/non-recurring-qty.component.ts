@@ -133,7 +133,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
 		if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
-			localStorage.removeItem('payrollListEmpData')
+			// localStorage.removeItem('payrollListEmpData')
 			this.indexId = 2
 			this.showEmployeeSelectionFlag = true;
 			this.selectedApplicableAt = ""
@@ -144,12 +144,12 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.showDropdownDisabled = true
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 			this.getAllEmployeeDetails();
 			
 			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
-			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
-			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 
 		}
 	}

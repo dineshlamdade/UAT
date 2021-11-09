@@ -13,7 +13,7 @@
 
                                         <!--------------- ------------- Summary ----------------------->
                                         <input name="nav" type="radio" class="about-radio" id="Summary"
-                                            [checked]="indexId == 1" (click)="getAllGarnishmentMaster()" />
+                                            [checked]="indexId == 1" (click)="getAllGarnishmentMaster();navigateToSummary()" />
 
                                         <div class="tabs about-page">
                                             <div class="row">
@@ -399,15 +399,25 @@
                                             (click)="navigateToTransaction()" id="Transaction"
                                             [disabled]="selectedEmpData.length > 0"
                                             [checked]="indexId == 2" />
-
                                         
                                         <div class="tabs about-page">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="tabview-contents">
-                                                                <div class="section-body bg-color-white">
+                                                            <div>
+                                                                <!-- margin-top: 17px !important; -->
+                                                                <label style="float:right;font-size: 22px;" 
+                                                                    class="custom-switch mt_5" *ngIf="payrollListEmpData">
+                                                                        <span class="form-label">Single Entry</span>&nbsp;&nbsp;
+                                                                        <input type="checkbox" (click)="getSelectedOption($event.target)" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                        <span class="custom-switch-indicator" style="width: 40px; height: 21px;"></span>&nbsp;&nbsp;
+                                                                        <span class="form-label">Fast Entry</span>
+                                                                </label>
+                                                            </div>
+                                                            <br>
+                                                            <!-- <div class="tabview-contents"> -->
+                                                                <div class="section-body bg-color-white" *ngIf="selectedOption == 'single' ">
 
                                                                     <div style="float:right;margin-top:-25px;"
                                                                         *ngIf="selectedEmpData[index] && !showEmployeeSelectionFlag">
@@ -1019,7 +1029,9 @@
 
 
                                                                 </div>
-                                                            </div>
+                                                            <!-- </div> -->
+
+                                                            <app-fastentry-garnishment *ngIf="selectedOption != 'single'"></app-fastentry-garnishment>
                                                         </div>
                                                     </div>
                                                 </div>

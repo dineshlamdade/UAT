@@ -1,9 +1,9 @@
-<app-leftmenu></app-leftmenu>
+<!-- <app-leftmenu></app-leftmenu> -->
 <!-- Main body part  -->
 <div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-        <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+    <!-- <app-header></app-header> -->
+    <!-- <div class="section-body mt-3"> -->
+        <!-- <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;"> -->
             <div class="tabview-contents">
                 <div class="row">
                     <div class="col-12">
@@ -13,7 +13,7 @@
                                     <br>
 
                                     <div class="row mt-10">
-                                        <div class="col-sm-3">
+                                        <!-- <div class="col-sm-3">
                                             <label class="form-label"> Head</label>
                                             <select name="payrollarea" class="form-control input-icon"
                                                 (change)="getSelectedHead($event.target.value)">
@@ -31,13 +31,9 @@
                                         <div class="col-sm-3">
                                             <label class="form-label"> SDM </label>
                                             <input type="text" class="form-control" disabled>
-                                        </div>
-                                        <div class="col-sm-3">
+                                        </div> -->
+                                        <!-- <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <!-- <p-multiSelect [options]="parollArea" [(ngModel)]="selectedPayrollArea"
-                                            (onSelect)="onPayrollSelect($event)"
-                                                optionLabel="name" placeholder="Select All">
-                                            </p-multiSelect> -->
                                             <select name="payrollarea" class="form-control input-icon"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
@@ -46,12 +42,12 @@
                                                     {{payroll.name}}
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                     <br>
                                     <!-- Empoyee Table -->
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12" *ngIf="selectedPayrollArea">
                                             <p-table [value]="payrollEmployeeData" [rows]="10" [paginator]="true"
                                                 [globalFilterFields]="['employeeCode',
@@ -138,7 +134,7 @@
 
                                             </p-table>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <br>
 
                                     <div class="row">
@@ -447,9 +443,21 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
+                                                                    <!-- <div class="col-md-3 mt-4 ">
+                                                                        <div class="float-right"> -->
+                                                                            <button type="submit"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
+                                                                            tooltip="Go" (click)="getAllSelectedData()"
+                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' "
+                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == ''}"
+                                                                            >
+                                                                            <b><i class="fa fa-arrow-right"></i></b> Go
+                                                                        </button>&nbsp;
+                                                                        <!-- </div>
+                                                                    </div> -->
                                                                 </div>
             
-                                                                <div class="row mt-25">
+                                                                <!-- <div class="row mt-25">
                                                                     <div class="col-md-12">
                                                                         <h4 class="font-14 text-purple font-bold">
                                                                             <b>Upload Document</b>
@@ -495,7 +503,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-            
+             -->
                                                             </form>
                                                         </fieldset>
                                                     </div>
@@ -962,6 +970,6 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-    <app-footer></app-footer>
+        <!-- </div> -->
+    <!-- </div> -->
+    <!-- <app-footer></app-footer> -->

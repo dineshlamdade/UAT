@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
@@ -70,11 +71,14 @@ export class FastentryGarnishmentComponent implements OnInit {
 
 
   applicationForm: FormGroup
+  saveDisabledBtn: boolean = true;
+  garnishmentMasterData: any;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
+    private garnishmentservice : GarnishmentService,
     private toaster: ToastrService) {
     this.headData = [
       { displayName: 'Incentive', headMasterId: 27 },
@@ -112,11 +116,28 @@ export class FastentryGarnishmentComponent implements OnInit {
         "remark": new FormControl(""),
         "isActive": new FormControl(1)
       })
+
+
+      if (localStorage.getItem('payrollListEmpData') != null) {
+        this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+        this.selectedEmployeeData = this.payrollEmployeeData
+        this.selectedPayrollArea = 'PA-Staff'
+      }  
   }
 
   ngOnInit(): void {
     this.getEmployeeList()
+    this.getAllGarnishmentMaster()
   }
+
+    /** Garnishment Master data */
+    getAllGarnishmentMaster() {
+      this.applicationForm.reset()
+      this.garnishmentservice.getAllGarnishmentMaster().subscribe(res => {
+        this.garnishmentMasterData = res.data.results;
+      })
+    }
+  
 
   getEmployeeList() {
     this.payrollEmployeeData = []
@@ -161,6 +182,57 @@ export class FastentryGarnishmentComponent implements OnInit {
     )
   }
 
-  
+  /** Table data push */
+  getAllSelectedData() {
+    this.saveDisabledBtn = false
+    this.saveNumberTransaction = this.selectedNoOfTransaction
+    this.saveAmount = this.selectedAmount
+    this.saveRemark = this.selectedRemark
+    this.tableData = []
+    this.selectedEmployeeData.forEach(element => {
+      this.tableData.push({
+        'employeeMasterId': element.employeeMasterId,
+        "employeeCode": element.employeeCode,
+        "employeeName": element.fullName,
+        'payrollArea': element.payrollAreaId,
+        'fromDate': this.selectedFromDate,
+        'transactionsType': this.selectedTransactionType,
+        'numberOfTransactions': this.selectedNoOfTransaction,
+        'toDate': this.selectedToDate,
+        'quantity': this.selectedAmount,
+        'remark': this.selectedRemark
+      })
+    });
+    this.selectedEmployeeData.forEach(element => {
+      this.applicationForm.controls['employeeMasterId'].setValue(element.employeeMasterId)
+      this.saveTransactionData.push(this.applicationForm.value)
+    })
 
+    this.saveTransactionData.forEach(element =>{
+      if(element.numberOfTransactions == null){
+        element.numberOfTransactions = ''
+      }
+      if(element.quantity == null){
+        element.quantity = ''
+      }
+      if(element.onceEvery == '' || element.onceEvery == null || element.onceEvery == 0 || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
+			|| element.quantity == '' || element.quantity == null || element.quantity == 0 || element.employeeMasterId == '' || element.nonSalaryDetailId == ''){
+				this.saveDisabledBtn = true
+			}
+
+			if(element.transactionsType == 'NoOfTransaction'){
+				if(element.numberOfTransactions == '' || element.numberOfTransactions == 0 || element.numberOfTransactions == null){
+					this.saveDisabledBtn = true
+				}
+			}
+			if(element.transactionsType == 'Defined Date'){
+				if(element.toDate == ''){
+					this.saveDisabledBtn = true
+				}
+			}
+
+
+    })
+
+  }
 }

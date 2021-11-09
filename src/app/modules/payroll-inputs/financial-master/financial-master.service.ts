@@ -64,7 +64,7 @@ public getfinancialmasterHeadHistory(empId, id): Observable<any>   {
   params = params.append('employeeMasterId', empId);
   params = params.append('HeadId', id);
   params = params.append('payrollArea', 'PA-Staff');
-  return this._HTTP.get(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', {params})
+  return this._HTTP.post(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', {params})
   .pipe(map((res: any) => {
     return res;
   },
