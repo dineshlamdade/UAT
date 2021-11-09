@@ -55,7 +55,7 @@
           {{item.institutionName}}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-5 pl-3 pr-0">
         <label class="form-label mt-1">Account No. :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -64,7 +64,7 @@
           {{ item.policyNo }}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-5 pl-3 pr-0">
         <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -73,7 +73,7 @@
           {{ item.policyholdername }}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-4 pl-3 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -1090,7 +1090,18 @@
     <div *ngFor="let item of editTransactionUpload; let j = index">
       <div class="row mt-25 d-flex">
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Institution & Policy No.</label>
+          <label class="form-label mt-1">Institution :</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label
+            class="font-12 text-ellipsis mt-1"
+            tooltip="{{ item.institutionName }}"
+          >
+            {{ item.institutionName }}</label
+          >
+        </div>
+        <div class="ml-5 pl-3 pr-0">
+          <label class="form-label mt-1">Policy No. :</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1100,7 +1111,7 @@
             {{ item.policyNo }}</label
           >
         </div>
-        <div class="ml-2 pl-1 pr-0">
+        <div class="ml-5 pl-3 pr-0">
           <label class="form-label mt-1 pl-10">Policy Holder Name</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
@@ -1111,7 +1122,7 @@
             {{ item.policyholdername }}</label
           >
         </div>
-        <div class="ml-2 pl-1 pr-0">
+        <div class="ml-5 pl-3 pr-0">
           <label class="form-label mt-1">Frequency</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
@@ -1939,6 +1950,16 @@
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-save"></i></b> Save
+    </button>
+    &nbsp;&nbsp;
+    <button
+    
+      type="button"
+      tooltip="Close Document"
+      (click)="modalRef1?.hide()"
+      class="custom_button custom_btn btn-bg-grey btn-labeled btn-labeled-left"
+    >
+    <b><i class="fa fa-times"></i></b> Close
     </button>
   </div>
 </ng-template>
