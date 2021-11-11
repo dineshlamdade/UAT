@@ -267,9 +267,8 @@ export class NpsMasterComponent implements OnInit {
   // Business Financial Year API Call
   getFinacialYear() {
     this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearStart = res.data.results[0].fromDate;
       this.financialYearEnd = res.data.results[0].toDate;
-
 
 
       this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);

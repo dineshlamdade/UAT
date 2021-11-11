@@ -124,7 +124,7 @@
                 count as c
               " [ngClass]="{ 'highlight': this.selectrow == summary.accountNumber }">
                               <td scope="row">
-                                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled" tooltip="Select institution for proof submission">
+                                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'" tooltip="Select institution for proof submission">
                 <input
                   type="checkbox"
                   [ngModel]="enableSelectAll"
@@ -138,7 +138,7 @@
                 />
                 <span class="custom-control-label"></span>
               </label>
-                                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'" class="custom-control custom-checkbox checkbox-center">
                 <input
                   type="checkbox"
                   [ngModel]="enableSelectAll"
@@ -2165,8 +2165,8 @@
       </div>
   </div>
   <div class="modal-footer">
-      <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
-    <b><i class="fa fa-eye"></i></b> View
+      <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)" class="custom_button custom_btn btn-bg-blue btn-labeled btn-labeled-left">
+    <b><i class="fa fa-eye"></i></b> View All
   </button> &nbsp;&nbsp;
       <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document" (click)="modalRef1?.hide(); uploadUpdateTransaction()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
     <b><i class="fa fa-save"></i></b> Save

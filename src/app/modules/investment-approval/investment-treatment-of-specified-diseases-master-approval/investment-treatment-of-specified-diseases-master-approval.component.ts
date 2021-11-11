@@ -613,7 +613,8 @@ export class InvestmentTreatmentOfSpecifiedDiseasesMasterApprovalComponent imple
     if (checkValue) {
       const data = {
         documentInformationId: documentDetail.documentInformationId,
-        employeeMasterId: masterDetail.masterDetail.employeeMasterId,
+        // employeeMasterId: masterDetail.masterDetail.employeeMasterId,
+        employeeMasterId: 36,
         companyId: 1,
         proofSubmissionId: documentDetail.proofSubmissionId,
         statusRemark: documentDetail.statusRemark,

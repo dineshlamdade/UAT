@@ -99,7 +99,7 @@
               <td scope="row">
                 <label
                   class="custom-control custom-checkbox checkbox-center"
-                  *ngIf="isDisabled"
+                  *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'"
                   tooltip="Select institution for proof submission"
                 >
                   <input
@@ -116,7 +116,7 @@
                   <span class="custom-control-label"></span>
                 </label>
                 <label
-                  *ngIf="!isDisabled"
+                *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'"
                   class="custom-control custom-checkbox checkbox-center"
                 >
                   <input
@@ -2377,8 +2377,8 @@
   </div> -->
   <div class="modal-footer">
     <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
-      <b><i class="fa fa-eye"></i></b> View
+    class="custom_button custom_btn btn-bg-blue btn-labeled btn-labeled-left">
+      <b><i class="fa fa-eye"></i></b> View All
     </button>
     &nbsp;&nbsp;
     <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
