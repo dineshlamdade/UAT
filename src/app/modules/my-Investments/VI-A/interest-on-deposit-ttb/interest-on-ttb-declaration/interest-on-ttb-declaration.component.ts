@@ -48,7 +48,9 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
   public summaryGridData: Array<any> = [];
+  public transactionWithLenderName: Array<any> = [];
   public summaryComputationGridDate: any;
+
   public masterGridData: Array<any> = [];
   public paymentDetailGridData: Array<any> = [];
   public declarationGridData: Array<any> = [];
@@ -68,6 +70,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public editReceiptAmount: string;
   public editReceiptNumber: string;
   public editDocumentRemark: string;
+  public AccountlenderNameList: Array<any> = [];
 
   documentDataArray = [];
   editdDocumentDataArray = [];
@@ -306,6 +309,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   declarationPage() {
     this.getBankNameList();
     this.resetAll();
+    this.selectedTransactionLenderName('All');
   }
 
   public getBankNameList() {
@@ -320,8 +324,8 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       this.transactionBankNameList = res.data.results;
       res.data.results.forEach((element) => {
         const obj = {
-          label: element.bankName,
-          value: element.interestOnSavingsDeposit80TTMasterId,
+          label: element,
+          value: element,
         };
         this.bankNameList.push(obj);
       });
@@ -366,14 +370,151 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       this.isDisabled = false;
     }
 
+    this.interestOnTtbService
+    .getAccountNo(bankMasterId)
+    .subscribe((res) => {
+      console.log('getTransactionFilterDataAccout No', res);
+      res.data.results[0].forEach(element => {
+
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.AccountlenderNameList.push(obj);
+        console.log("AccountlenderNameList", this.AccountlenderNameList)
+
+      });
+   });
+
     this.resetAll();
   }
 
   // -------- On Policy selection show all transactions list accordingly all banks---------
+  // selectedPolicy(policy: any) {
+  //   this.globalPolicy = policy;
+  //   this.getTransactionFilterData(this.globalBank);
+  // }
+
+
+
+
   selectedPolicy(policy: any) {
     this.globalPolicy = policy;
-    this.getTransactionFilterData(this.globalBank);
+    // this.getTransactionFilterData(
+    //   this.globalInstitution
+    // );
+    this.interestOnTtbService.getElectricVehicleNoList(this.globalBank,policy).subscribe((res) => {
+      console.log('getTransactionFilterData', res);
+      this.transactionDetail =
+      res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+    this.documentDetailList = res.data.results[0].documentInformation;
+    this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+    this.grandActualTotal = res.data.results[0].grandActualTotal;
+    this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+    this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+    res.documentDetailList.forEach(element => {
+      // if(element!=null)
+      this.documentArray.push({
+        'dateofsubmission':element.creatonTime,
+        'documentType':element.documentType,
+        'documentName': element.fileName,
+        'documentPassword':element.documentPassword,
+        'documentRemark':element.documentRemark,
+        'status' : element.status,
+        'lastModifiedBy' : element.lastModifiedBy,
+        'lastModifiedTime' : element.lastModifiedTime,
+
+      })
+    });
+    console.log('documentArrayTest',this.documentArray);
+    // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
+    this.initialArrayIndex = [];
+    this.transactionDetail.forEach((element) => {
+      if (element.interestOnSavingDeposit80TTTransactionList !== null) {
+        this.initialArrayIndex.push(
+          element.interestOnSavingDeposit80TTTransactionList.length
+        );
+        element.interestOnSavingDeposit80TTTransactionList.forEach(
+          (innerElement) => {
+            if (innerElement.interestReceivedDate !== null) {
+              innerElement.interestReceivedDate = new Date(
+                innerElement.interestReceivedDate
+              );
+            }
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          }
+        );
+      }
+    });
+    });
+
   }
+
+  // --------- On institution selection show all transactions list accordingly all policies--------
+selectedTransactionLenderName(lenderName: any) {
+  this.filesArray = [];
+  this.transactionDetail = [];
+  this.AccountlenderNameList = [];
+  this.globalBank = lenderName;
+  this.getTransactionFilterData(this.globalBank);
+  this.globalSelectedAmount = this.numberFormat.transform(0);
+  const data = {
+    label: 'All',
+    value: 'All',
+  };
+
+  // this.transactionPolicyList = [];
+  // this.transactionPolicyList.push(data);
+
+  this.transactionWithLenderName.forEach((element) => {
+    if (lenderName === element.lenderName) {
+      element.policies.forEach((element) => {
+        const policyObj = {
+          label: element,
+          value: element,
+        };
+        this.bankNameList.push(policyObj);
+      });
+    }
+  });
+
+  if (lenderName == 'All') {
+    this.grandTabStatus = true;
+    this.isDisabled = true;
+  } else {
+    this.grandTabStatus = false;
+    this.isDisabled = false;
+  }
+  this.resetAll();
+  console.log('isdisabled: ', this.isDisabled);
+
+
+   //Account No GEt by Lender Name
+  //  getAccountNumberByName(){
+
+
+    this.interestOnTtbService
+    .getAccountNo(lenderName)
+    .subscribe((res) => {
+      console.log('getTransactionFilterDataAccout No', res);
+      res.data.results[0].forEach(element => {
+
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.AccountlenderNameList.push(obj);
+        console.log("AccountlenderNameList", this.AccountlenderNameList)
+
+      });
+  });
+  // }
+}
 
   // ------- On Transaction Status selection show all transactions list accordingly all banks------
   selectedTransactionStatus(transactionStatus: any) {
@@ -820,13 +961,13 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
@@ -1350,7 +1491,7 @@ this.documentArray = [];
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         console.log('documentArrayTest',this.documentArray);
@@ -1386,7 +1527,7 @@ this.documentArray = [];
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1641,7 +1782,7 @@ this.documentArray = [];
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");

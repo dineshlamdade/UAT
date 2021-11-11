@@ -99,13 +99,20 @@ export class InterestOnTtaService {
     }));
   }
 
+  // getTransactionByProofSubmissionId(proofSubmissionId: String) {
+  //   return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/psid/' + proofSubmissionId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
-
 
 
   post80TTATransaction(data) {
@@ -129,6 +136,20 @@ export class InterestOnTtaService {
     }));
   }
 
+  getElectricVehicleNoList(lenderName:any, id) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/'+ lenderName + '/' + id )
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  getAccountNo(lenderName:any) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/accNoByBankName/' + lenderName)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
   uploadMultiple80TTAMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
