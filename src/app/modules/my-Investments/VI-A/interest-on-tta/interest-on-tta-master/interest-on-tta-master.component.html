@@ -37,7 +37,7 @@
             </div>
             <div class="col-sm-3">
               <label class="form-label">IFSC Code</label>
-              <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Search IFSC"
+              <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Enter Ifsc"
                 (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
                           onSelectIFSCCode(bankIFSC)">
                 <ng-template let-ifsc pTemplate="item">
@@ -45,7 +45,7 @@
                     <div>
                       {{ifsc}}</div>
                   </div>
-                </ng-template>                
+                </ng-template>
               </p-autoComplete>
               <i class="fa fa-chevron-down down-arrow-icon"></i>
               <div class="float-left" *ngIf="submitted && ifscCodeList.length == 0">
@@ -276,7 +276,7 @@
                             <!-- <th style="width: 3rem">
                               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th> -->
-  
+
                             <th>
                               <div
                                 class="
@@ -497,7 +497,7 @@
                             <td>
                               <a
                               (click)=" docViewer(template3,documentIndex, document)"
-  
+
                               >
                                 <i
                                   class="
@@ -558,7 +558,7 @@
                           ></b>
                           Approve
                         </button>
-  
+
                         <button
                           type="button"
                           tooltip="Send Back"
@@ -581,15 +581,31 @@
           </div>
         </div>
       </div>
-    <div class="row mt-15">
+    <div class="row mt-15" *ngIf="isShowSave">
       <div class="col-12">
         <div class="float-right mb-15">
-          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-            tooltip="Save"><b>
-              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+          <button type="submit"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2" tooltip="Save"
+          [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b> <i
+            class="fa fa-floppy-o"></i></b>Save</button>
+              &nbsp;
           <button type="button" (click)="resetView()"
-            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="reset"><b>
               <i class="fa fa-floppy-o"></i></b> Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-15" *ngIf="isShowUpdate">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="submit"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+         ><b> <i
+            class="fa fa-floppy-o"></i></b>Update</button>
+              &nbsp;
+          <button type="button" (click)="resetView()"
+          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Cancel</button>
         </div>
       </div>
     </div>
@@ -760,9 +776,9 @@
                         </div>
                         <div class="col-md-12">
                           <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
-                        
+
                         </div>
-  
+
                       </div>
                       <div style="float: right; width: 40%; margin-right: 59px">
                         <div class="col-md-8 mt-10">
@@ -778,8 +794,8 @@
                     <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
                   </div>
                 </label>
-  
-  
+
+
               </div>
             </div>
             <!-- <div class="col-md-12 mt-10">
@@ -799,7 +815,7 @@
 
 
 
-  
+
 
 <!-- For Doc Viewer  -->
 <ng-template #template3>
@@ -812,10 +828,10 @@
       </div>
       <div class="col-sm-6 col-md-6 align-right">
           <label class="form-label">Document Type</label>
-          
+
           {{this.viewDocumentType}}
       </div>
-    
+
       </div>
       <div class="align-right">
         <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
