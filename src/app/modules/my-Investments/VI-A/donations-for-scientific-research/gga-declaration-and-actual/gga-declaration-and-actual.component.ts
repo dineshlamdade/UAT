@@ -323,7 +323,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   onSelectReactiveCheckbox(event) {
     if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
       this.alertService.sweetalertError(
-        'Please Enter Declared Amount'
+        'Please Enter Declared Amount.'
       );
       return false;
     }
@@ -406,7 +406,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     if (this.receiptAmount < this.globalSelectedAmount) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
       );
       this.receiptAmount = '0.00';
       return;
@@ -467,7 +467,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           } else {
             // this.alertService.sweetalertWarning(res.status.messsage);
             this.alertService.sweetalertError(
-              'This Policy Holder Already Added'
+              'This Policy Holder Already Added.'
             );
           }
         } else {
@@ -1002,7 +1002,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1637,7 +1637,7 @@ this.documentArray = [];
         console.log(globalSelectedAmount_);
         if (receiptAmount_ < globalSelectedAmount_) {
         this.alertService.sweetalertError(
-          'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+          'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
         );
         this.receiptAmount = '0.00';
         return false;
@@ -1645,7 +1645,7 @@ this.documentArray = [];
         console.log(receiptAmount_);
         console.log(globalSelectedAmount_);
         this.alertService.sweetalertWarning(
-          'Receipt Amount is greater than Selected line Actual Amount',
+          'Receipt Amount is greater than Selected line Actual Amount.',
         );
         // this.receiptAmount = '0.00';
         // return false;

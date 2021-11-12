@@ -119,6 +119,24 @@ export class InterestOnTtbService {
 
 
 
+
+
+  getElectricVehicleNoList(lenderName:any, id) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/'+ lenderName + '/' + id )
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  getAccountNo(lenderName:any) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/accNoByBankName/' + lenderName)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
   post80TTBTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'interestOnDeposit80TTB-transaction', data)
     .pipe(map((res: any) => {

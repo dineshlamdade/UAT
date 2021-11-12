@@ -30,6 +30,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { AreaComponent } from './area/area.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import {CheckboxModule} from 'primeng/checkbox';
+import {GalleriaModule} from 'primeng/galleria';
 // import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     // NewlockComponent
   ],
   imports: [
+    GalleriaModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,

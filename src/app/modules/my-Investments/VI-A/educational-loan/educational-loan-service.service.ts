@@ -22,6 +22,9 @@ getEducationalLoanSummary() {
     ));
   }
 
+
+
+
   getEducationalLoanSummaryFuturePlan(data) {
 
     return this._HTTP.post(this.apiUrl + 'educationalLoanMaster/interestOnFutureLoan', data)
@@ -56,8 +59,20 @@ getEducationalLoanSummary() {
     }
     ));
   }
+  getAccountNo(lenderName:String) {
+    return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/loanAccNo/' + lenderName)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
-
+  getElectricVehicleNoList(lenderName:any, id) {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/'+ lenderName + '/' + id )
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
   // getElectricVehicleDeclarationLenderName() {
   //   return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/SBI')
   //   .pipe(map((res: any) => {

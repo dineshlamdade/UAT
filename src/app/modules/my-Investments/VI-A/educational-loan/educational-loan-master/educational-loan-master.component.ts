@@ -44,10 +44,9 @@ export class EducationalLoanMasterComponent implements OnInit {
   public familyMemberNameList: Array<any> = [];
   public disabilityTypeList: Array<any> = [];
   public severityLevelList: Array<any> = [];
-
+  public documentDataArray: Array<any> = [];
   documentPassword =[];
   remarkList =[];
-  documentDataArray = [];
   filesUrlArray = [];
   isVisibleTable = false;
 
@@ -59,7 +58,8 @@ export class EducationalLoanMasterComponent implements OnInit {
   viewDocumentName: any;
   viewDocumentType: any;
   public isEdit: boolean = false;
-
+  public  isShowUpdate = false;
+  public isShowSave = true;
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -152,7 +152,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
-  public ngOnInit(): void {  
+  public ngOnInit(): void {
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
@@ -285,7 +285,7 @@ export class EducationalLoanMasterComponent implements OnInit {
               'status' : element.status,
               'lastModifiedBy' : element.lastModifiedBy,
               'lastModifiedTime' : element.lastModifiedTime,
-    
+
             })
           });
           this.documentArray.push({
@@ -297,7 +297,7 @@ export class EducationalLoanMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
       });
@@ -310,9 +310,9 @@ export class EducationalLoanMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    
+
     console.log('this.isEdit', this.isEdit);
-   
+
     if(!this.isEdit){
     // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
@@ -320,7 +320,7 @@ export class EducationalLoanMasterComponent implements OnInit {
         'Educational Loan Document needed to Create Master.'
       );
       return;
-    } 
+    }
   }
   // else {
       const to = this.datePipe.transform(
@@ -328,8 +328,8 @@ export class EducationalLoanMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
 
-      for (let i = 0; i <= this.documentPassword.length; i++) {
-        if(this.documentPassword[i] != undefined){
+      for (let i = 0; i <= this.remarkList.length; i++) {
+        if(this.remarkList[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -349,21 +349,21 @@ export class EducationalLoanMasterComponent implements OnInit {
       console.log('Educational Loan ::', data);
 
         // console.log('loan Account Number ::', data);
-        if (data.loanAccountNumber) {
+        // if (data.loanAccountNumber) {
 
-          this.loanAccountNumbers.results.forEach(results => {
-            if (results.loanAccountNumber == data.loanAccountNumber) {
-              this.validloanAccountNumber = true;
-            }
-          });
-          if (this.validloanAccountNumber) {
-            this.validloanAccountNumber = false;
-            this.alertService.sweetalertError(
-              'Loan Account Number is already present.'
-            );
-            return;
-          }
-        }
+        //   this.loanAccountNumbers.results.forEach(results => {
+        //     if (results.loanAccountNumber == data.loanAccountNumber) {
+        //       this.validloanAccountNumber = true;
+        //     }
+        //   });
+        //   if (this.validloanAccountNumber) {
+        //     this.validloanAccountNumber = false;
+        //     this.alertService.sweetalertError(
+        //       'Loan Account Number is already present.'
+        //     );
+        //     return;
+        //   }
+        // }
 
 
       this.educationalLoanServiceService
@@ -372,6 +372,7 @@ export class EducationalLoanMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.documentDataArray = [];
               this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
@@ -380,11 +381,11 @@ export class EducationalLoanMasterComponent implements OnInit {
               });
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
@@ -395,12 +396,12 @@ export class EducationalLoanMasterComponent implements OnInit {
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
@@ -411,7 +412,7 @@ export class EducationalLoanMasterComponent implements OnInit {
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
@@ -423,7 +424,7 @@ export class EducationalLoanMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -431,14 +432,22 @@ export class EducationalLoanMasterComponent implements OnInit {
               'Something went wrong. Please try again.'
             );
           }
+        } ,error => {
+          if(error.error.status.code == '400'){
+            // this.alertService.sweetalertWarning("Vehicle Number already Present !");
+            this.alertService.sweetalertError( error["error"]["status"]["messsage"] );
+          }
         });
 
       this.Index = -1;
+      this.isShowUpdate = false;
+      this.isShowSave = true;
       formDirective.resetForm();
-      this.form.get('fullTimeCourse').setValue(0);
+      this.form.controls['fullTimeCourse'].setValue('true');
       this.form.reset();
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
+      this.documentDataArray = [];
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
@@ -446,6 +455,7 @@ export class EducationalLoanMasterComponent implements OnInit {
       this.documentPassword = [];
       this.isVisibleTable = false;
       this.isEdit = false;
+      this.ngOnInit();
     // }
   }
 
@@ -479,15 +489,16 @@ export class EducationalLoanMasterComponent implements OnInit {
   // }
 
   onRadioChange(value){
-    console.log(value) 
+    console.log(value)
     if(value == 'true'){
-      this.isshowHideFlag = true;    
+      this.isshowHideFlag = true;
     }
     else
     {
       this.isshowHideFlag = false;
+      this.isVisibleTable = false;
       this.alertService.sweetalertWarning(
-        'You Have No Full Time Course Then Educational Loan Not To Apply ');
+        'You Have No Full Time Course Then Educational Loan Not To Apply. ');
     }
   }
 
@@ -559,7 +570,10 @@ export class EducationalLoanMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(loanAccountNumber) {
-    this.isEdit = true;
+    this.isShowSave = false;
+    this.isShowUpdate = true;
+      this.isEdit = true;
+    this.form.controls['fullTimeCourse'].setValue('true');
     this.scrollToTop();
     this.educationalLoanServiceService
       .getEducationalLoanMaster()
@@ -579,6 +593,7 @@ export class EducationalLoanMasterComponent implements OnInit {
         if (obj != 'undefined') {
           this.paymentDetailGridData = obj.paymentDetails;
           this.form.patchValue(obj);
+          this.form.controls['fullTimeCourse'].setValue('true');
           this.Index = obj.loanAccountNumber;
           this.showUpdateButton = true;
           this.isClear = true;
@@ -597,9 +612,9 @@ export class EducationalLoanMasterComponent implements OnInit {
               'status' : element.status,
               'lastModifiedBy' : element.lastModifiedBy,
               'lastModifiedTime' : element.lastModifiedTime,
-  
+
             })
-            
+
           });
           console.log("documentArray::",this.documentArray);
           this.isVisibleTable = true;
@@ -646,7 +661,11 @@ export class EducationalLoanMasterComponent implements OnInit {
   //---------- On View Cancel -------------------
   resetView() {
     this.form.reset();
-   // this.form.get('fullTimeCourse').setValue(0);   
+    this.documentArray = [];
+    this.isVisibleTable = false
+    this.isShowUpdate = false;
+    this.isShowSave = true;
+   // this.form.get('fullTimeCourse').setValue(0);
     this.showUpdateButton = false;
     this.form.controls['fullTimeCourse'].setValue('true');
     this.paymentDetailGridData = [];

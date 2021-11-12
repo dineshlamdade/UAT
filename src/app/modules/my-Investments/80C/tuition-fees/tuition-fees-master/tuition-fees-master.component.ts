@@ -955,8 +955,8 @@ export class TuitionFeesMasterComponent implements OnInit {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
-    this.viewDocumentName = data.documentName;
-    this.viewDocumentType = data.documentType
+    this.viewDocumentName = data?.documentName;
+    this.viewDocumentType = data?.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

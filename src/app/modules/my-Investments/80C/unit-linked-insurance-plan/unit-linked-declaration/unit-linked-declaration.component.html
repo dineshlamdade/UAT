@@ -55,7 +55,7 @@
           {{item.institutionName}}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-5 pl-3 pr-0">
         <label class="form-label mt-1">Policy No. :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -64,7 +64,7 @@
           {{ item.policyNo }}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-5 pl-3 pr-0">
         <label class="form-label mt-1 pl-10">Policy Holder Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -73,7 +73,7 @@
           {{ item.policyholdername }}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <div class="ml-4 pl-3 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
@@ -150,7 +150,7 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -159,7 +159,7 @@
                       " class="custom-control-input" value="option{{ summary.investmentGroup2TransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j);
@@ -1043,7 +1043,7 @@
     <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
       View Document Details
     </h5>
-    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+    <button type="button" (click)="modalRef1.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1051,21 +1051,29 @@
     <div *ngFor="let item of editTransactionUpload; let j = index">
       <div class="row mt-25 d-flex">
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Institution & Policy No.</label>
+          <label class="form-label mt-1">Institution :</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.policyNo }}">
-            {{ item.policyNo }}</label>
+          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.institutionName }}">
+            {{ item.institutionName }}</label>
         </div>
-        <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1 pl-10">Policy Holder Name</label>
+        
+          <div class="ml-5 pl-3 pr-0">
+            <label class="form-label mt-1">Policy No. :</label>
+          </div>
+          <div class="ml-2 pl-1 pr-0">
+            <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.policyNo }}">
+              {{ item.policyNo }}</label>
+          </div>
+        <div class="ml-5 pl-3 pr-0">
+          <label class="form-label mt-1 pl-10">Policy Holder Name :</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.policyholdername }}">
             {{ item.policyholdername }}</label>
         </div>
-        <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Frequency</label>
+        <div class="ml-5 pl-3 pr-0">
+          <label class="form-label mt-1">Frequency :</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.frequency }}">
@@ -1139,21 +1147,23 @@
                     <div class="custom_icon_badge">
                       <input type="text" class="form-control" [minDate]="financialYearStartDate"
                         [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
-                        [disabled]="!summary.additionalPayment" (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
+                        disabled (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
                           onDueDateChangeInEditCase(summary, i, j)" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                         data-provide="datepicker" bsDatepicker />
                     </div>
                   </td>
-                  <td>
+                  <!-- [disabled]="!summary.additionalPayment" -->
+                  <td> 
                     <div class="custom_icon_badge">
                       <input type="text" id="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                         [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                         (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
-                        [disabled]="!summary.additionalPayment" />
+                         />
                     </div>
                   </td>
+                  <!-- [disabled]="!summary.additionalPayment" -->
                   <td>
                     <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                     [maxDate]="today"
@@ -1167,10 +1177,11 @@
                     <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup2TransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail" 
+                      disabled 
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
                   </td>
+                  <!-- [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"  -->
                   <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                       class="form-control align-right" disabled />
@@ -1763,16 +1774,26 @@
   </div>
   <div class="modal-footer">
     <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
-      <b><i class="fa fa-eye"></i></b> View
+    class="custom_button custom_btn btn-bg-blue btn-labeled btn-labeled-left">
+      <b><i class="fa fa-eye"></i></b> View All
     </button>
     &nbsp;&nbsp;
     <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
-      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      (click)="modalRef1?.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
-  </div>
+    &nbsp;&nbsp;
+    <button
+    
+      type="button"
+      tooltip="Close Document"
+      (click)="modalRef1?.hide()"
+      class="custom_button custom_btn btn-bg-grey btn-labeled btn-labeled-left"
+    >
+    <b><i class="fa fa-times"></i></b> Close
+    </button>
+</div>
 </ng-template>
 <ng-template #template3>
   <div class="modal-header">

@@ -68,6 +68,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
+  public AccountlenderNameList: Array<any> = [];
 
   documentDataArray = [];
   editdDocumentDataArray = [];
@@ -346,6 +347,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionLenderName(lenderName: any) {
     this.filesArray = [];
+  this.AccountlenderNameList = [];
     this.transactionDetail = [];
     this.globalInstitution = lenderName;
     this.getTransactionFilterData(this.globalInstitution);
@@ -379,15 +381,80 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     }
     this.resetAll();
     console.log('isdisabled: ', this.isDisabled);
+
+    this.educationalLoanServiceService
+    .getAccountNo(lenderName)
+    .subscribe((res) => {
+      console.log('getTransactionFilterDataAccout No', res);
+      res.data.results[0].forEach(element => {
+
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.AccountlenderNameList.push(obj);
+        console.log("AccountlenderNameList", this.AccountlenderNameList)
+
+      });
+  });
+  // }
+
   }
+
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
   selectedPolicy(policy: any) {
     this.globalPolicy = policy;
-    this.getTransactionFilterData(
-      this.globalInstitution
-    );
+    // this.getTransactionFilterData(
+    //   this.globalInstitution
+    // );
+    this.educationalLoanServiceService.getElectricVehicleNoList(this.globalInstitution,policy).subscribe((res) => {
+      this.transactionDetail =res.data.results[0].educationalLoanTransactionDetailList;
+        this.documentDetailList = res.data.results[0].educationalLoanTransactionDocumentDetailList;
+        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+        console.log('documentArrayTest',this.documentArray);
+
+        this.initialArrayIndex = [];
+
+        this.transactionDetail.forEach((element) => {
+
+        this.initialArrayIndex.push(element.educationalLoanTransactionPreviousEmployerList.length);
+          // format the amount from current emp list
+          element.educationalLoanTransactionList.forEach((item) => {
+
+            item.declaredAmount = this.numberFormat.transform(
+              item.declaredAmount
+            );
+            item.actualAmount = this.numberFormat.transform(
+              item.actualAmount
+            );
+          });
+
+          // format the amount from previous emp list
+          element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          });
+        });
+    });
+
   }
+  // -------- On Policy selection show all transactions list accordingly all policies---------
+  // selectedPolicy(policy: any) {
+  //   this.globalPolicy = policy;
+  //   this.getTransactionFilterData(
+  //     this.globalInstitution
+  //   );
+  // }
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
@@ -789,6 +856,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   i: number,
   j: number
 ) {
+  this.globalSelectedAmount = '0.00';
   this.declarationService = new DeclarationService(summary);
 
   this.transactionDetail[j].educationalLoanTransactionList[
@@ -1069,13 +1137,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
@@ -1152,7 +1220,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
        if(this.transactionDetail[0].educationalLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
          {
            this.alertService.sweetalertError(
-             'Please enter value'
+             'Please enter value.'
            );
            return;
          }
@@ -1160,13 +1228,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
        if(this.transactionDetail[0].educationalLoanTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
        this.alertService.sweetalertError(
-           'Please attach Premium Receipt / Premium Statement'
+           'Please attach Premium Receipt / Premium Statement.'
          );
          return;
        }
        if(this.transactionDetail[0].educationalLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
          this.alertService.sweetalertError(
-           'Please attach Premium Receipt / Premium Statement'
+           'Please attach Premium Receipt / Premium Statement.'
          );
          return;
 
@@ -1277,13 +1345,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
@@ -1637,20 +1705,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
+
         console.log('documentArrayTest',this.documentArray);
 
         this.initialArrayIndex = [];
@@ -1680,7 +1735,22 @@ export class EducationalLoanDeclarationComponent implements OnInit {
             );
           });
         });
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+        });
       });
+
   }
 
 
@@ -1689,7 +1759,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1931,7 +2001,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

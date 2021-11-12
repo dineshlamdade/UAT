@@ -525,7 +525,7 @@
                                   ripple
                                   mr-2
                                 "
-                                (click)="changeStatus(masterInfo, 'Re-Open')"
+                                (click)="changeStatus(masterInfo, 'Re-Open', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 Edit Approval
                               </button>
@@ -552,7 +552,7 @@
                                   masterInfo.masterDetail.masterStatus ==
                                     'SendBack'
                                 "
-                                (click)="changeStatus(masterInfo, 'SendBack')"
+                                (click)="changeStatus(masterInfo, 'SendBack', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 <b><i class="fa fa-reply-all"></i></b>
                                 SendBack
@@ -599,7 +599,7 @@
                                   masterInfo.masterDetail.masterStatus == ''
                                 
                                 "
-                                (click)="changeStatus(masterInfo, 'Approved')"
+                                (click)="changeStatus(masterInfo, 'Approved', masterInfo.masterDetail.loanAccountNumber)"
                                 tooltip="Approve"
                               >
                                 <b> <i class="fa fa-floppy-o"></i></b> Approve
@@ -787,8 +787,7 @@
                                       <p-table
                                         #dt2
                                         [value]="
-                                          masterInfo.masterDetail
-                                            .documentDetailList
+                                          masterInfo?.masterDetail?.documentDetailList
                                         "
                                         [selection]="documentList"
                                         [paginator]="true"
@@ -961,19 +960,19 @@
                                               >
                                                 Status
                                                 <div
-                                                  class="Sort_Filter_Position"
+                                                class="Sort_Filter_Position"
+                                              >
+                                                <p-sortIcon
+                                                  field="documentStatus"
+                                                  pSortableColumn="documentStatus"
+                                                ></p-sortIcon>
+                                                <p-columnFilter
+                                                  field="documentStatus"
+                                                  display="menu"
+                                                  class="p-ml-auto"
                                                 >
-                                                  <p-sortIcon
-                                                    field="documentStatus"
-                                                    pSortableColumn="documentStatus"
-                                                  ></p-sortIcon>
-                                                  <p-columnFilter
-                                                    field="documentStatus"
-                                                    display="menu"
-                                                    class="p-ml-auto"
-                                                  >
-                                                  </p-columnFilter>
-                                                </div>
+                                                </p-columnFilter>
+                                              </div>
                                               </div>
                                             </th>
                                             <th>
@@ -1053,19 +1052,19 @@
                                                 "
                                                 #e
                                                 [class.disableCheckbox]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 [disabled]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                               >
@@ -1073,7 +1072,7 @@
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.dateOfSubmission
+                                                documentDetail?.dateOfSubmission
                                                   | date: "dd-MMM-yyyy"
                                               }}
                                             </td>
@@ -1081,7 +1080,7 @@
                                               <a
                                                 (click)="
                                                   navigateAssociates(
-                                                    documentDetail.documentInformationId
+                                                    documentDetail?.documentInformationId
                                                   )
                                                 "
                                               >
@@ -1092,14 +1091,14 @@
                                                   "
                                                 ></i>
                                                 &nbsp;
-                                                {{ documentDetail.fileName }}
+                                                {{ documentDetail?.fileName }}
                                               </a>
                                             </td>
                                             <td>
-                                              {{ documentDetail.documentType }}
+                                              {{ documentDetail?.documentType }}
                                             </td>
                                             <td>
-                                              {{ documentDetail.password }}
+                                              {{ documentDetail?.password }}
                                             </td>
                                             <td>
                                               <div class="d-flex">
@@ -1113,11 +1112,11 @@
                                                     )
                                                   "
                                                   [disabled]="
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Approved' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discarded' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discard'
                                                   "
                                                 />
@@ -1135,7 +1134,7 @@
                                                         docRemarkModal(
                                                           template3,
                                                           documentDetailIndex,
-                                                          documentDetail.documentRemarkDetailList
+                                                          documentDetail?.documentRemarkDetailList
                                                         )
                                                       "
                                                       class="
@@ -1151,9 +1150,7 @@
                                                     _ngcontent-ykc-c443=""
                                                     class="Label_badge"
                                                     >{{
-                                                      documentDetail
-                                                        .documentRemarkDetailList
-                                                        .length
+                                                      documentDetail?.documentRemarkDetailList?.length
                                                     }}</span
                                                   >
                                                 </div>
@@ -1161,28 +1158,28 @@
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.documentStatus
+                                                documentDetail?.documentStatus
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedBy
+                                                documentDetail?.lastModifiedBy
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedDateTime
+                                                documentDetail?.lastModifiedDateTime
                                                   | date: "dd-MMM-yyyy HH:mm"
                                               }}
                                             </td>
                                             <td>
                                               <i
                                                 *ngIf="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 class="
@@ -1223,9 +1220,9 @@
                                           "
                                           tooltip="Approve"
                                           [class.disablegreenbutton]="
-                                            documentList.length == 0
+                                            documentList?.length == 0
                                           "
-                                          [disabled]="documentList.length == 0"
+                                          [disabled]="documentList?.length == 0"
                                         >
                                           <b> <i class="fa fa-floppy-o"></i></b>
                                           Approve
@@ -1244,9 +1241,9 @@
                                             changeDocumentStatus('Discarded')
                                           "
                                           [class.disableredbutton]="
-                                            documentList.length == 0
+                                            documentList?.length == 0
                                           "
-                                          [disabled]="documentList.length == 0"
+                                          [disabled]="documentList?.length == 0"
                                         >
                                           <b><i class="fa fa-times"></i></b>
                                           Discard
