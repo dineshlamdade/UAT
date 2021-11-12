@@ -13,15 +13,16 @@ export class EmployeeSummaryService {
   constructor(private httpClient: HttpClient) { }
 
 //get employee profile summary API
-  getEmployeeSummaryInfo(employeeMasterId,payrollAreaCode){
+  getEmployeeSummaryInfo(employeeMasterId,payrollAreaId){
     const params = new HttpParams()
-    .set('payrollAreaCode', payrollAreaCode);
+    .set('payrollAreaId', payrollAreaId);
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-summary/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+    return this.httpClient.get(environment.baseUrl8082 + 'employee-summary/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
+  
   
 }

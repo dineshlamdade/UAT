@@ -55,13 +55,24 @@ payrollAreaId:any;
       benchToDateControl: [{ value: null, disabled: true }],
     });
 
+     //
+     var myObj = JSON.parse(localStorage.getItem("adEmp"));
+     myObj.jobInformationPayrollAreaCode=event;     
+      localStorage.setItem("adEmp",JSON.stringify(myObj));
+     //
+
     this.payrollAreaCode = null;
     this.companyName = '';
+    
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).joiningDate);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).jobInformationCompanyName);
 
     //get company name from local storage
     const companyName = localStorage.getItem('jobInformationCompanyName')

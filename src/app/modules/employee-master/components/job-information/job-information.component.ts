@@ -71,6 +71,8 @@ export class JobInformationComponent implements OnInit {
 
     this.payrollAreaCode = '';
 
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -85,6 +87,15 @@ export class JobInformationComponent implements OnInit {
    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
     this.companyId=res.data.results[0][0].companyId;
     this.payrollAreaCode=res.data.results[0][0].payrollAreaCode
+
+    //
+    var myObj = JSON.parse(localStorage.getItem("adEmp"));
+    myObj.jobInformationPayrollAreaCode=this.payrollAreaCode;     
+    myObj.companyId=this.companyId;   
+     localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
+
     localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
     localStorage.setItem('companyId',this.companyId);
     this.payrollAreaId = res.data.results[0][0].payrollAreaId;
@@ -165,6 +176,14 @@ export class JobInformationComponent implements OnInit {
     this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
       this.companyId=res.data.results[0][0].companyId;
       this.payrollAreaCode=res.data.results[0][0].payrollAreaCode
+
+       //
+    var myObj = JSON.parse(localStorage.getItem("adEmp"));
+    myObj.jobInformationPayrollAreaCode=this.payrollAreaCode;     
+    myObj.companyId=this.companyId;   
+     localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
       localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
       localStorage.setItem('companyId',this.companyId);
 
@@ -212,6 +231,11 @@ export class JobInformationComponent implements OnInit {
   //set PayrollArea
   selectPayrollArea(event) {
 
+     //
+     var myObj = JSON.parse(localStorage.getItem("adEmp"));
+     myObj.jobInformationPayrollAreaCode=event;     
+      localStorage.setItem("adEmp",JSON.stringify(myObj));
+     //
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     let payrollArea = this.payrollAreaList.find(x=>x.payrollAreaCode==event);

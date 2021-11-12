@@ -37,6 +37,7 @@ import { PreviousEmploymentInformationComponent } from './components/previous-em
 import { PayrollAreaComponent } from './components/payroll-area-information/payroll-area/payroll-area.component';
 import { DisbursementsComponent } from './components/payroll-area-information/disbursements/disbursements.component';
 import { OtherAreasComponent } from './components/payroll-area-information/other-areas/other-areas.component';
+import { EmpMasterLandingPageComponent } from './components/emp-master-landing-page/emp-master-landing-page.component';
 
 const routes: Routes = [
 
@@ -47,6 +48,11 @@ const routes: Routes = [
         path: 'employee-summary',
         component: EmployeeSummaryComponent,
         data: { title: ':: DelziaHR :: employee-summary' },
+      },
+      {
+        path: 'emp-master-landing-page',
+        component: EmpMasterLandingPageComponent,
+        data: { title: ':: DelziaHR :: emp-master-landing-page' },
       },
       {
         path: 'personal-information',

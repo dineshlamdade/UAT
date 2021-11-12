@@ -1,0 +1,709 @@
+<app-leftmenu></app-leftmenu>
+
+<div class="page">
+    <!-- Header -->
+    <app-header></app-header>
+    <!-- Header End-->
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tabset">
+                                <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked="">
+                                <label for="tab1">Employee Details</label>
+                                <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+                                <label for="tab2">Graph</label>
+                                <div class="tab-panels">
+                                    <section id="marzen" class="tab-panel">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="wd-150">
+                                                            <div class="card text-center card3 btn-bg-green">
+                                                                <div class=" text-light detailedcard">
+                                                                    <h3>{{countSummary.newJoinees}}</h3>
+                                                                    <span>New Joinee</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div >
+                                                            <div class="card text-center card3 btn-bg-green">
+                                                                <div class=" text-light detailedcard">
+                                                                    <h3>{{countSummary.liveEmployees}}</h3>
+                                                                    <span>Live Employees</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div>
+                                                            <div class="card text-center card3 btn-bg-green">
+                                                                <div class=" text-light detailedcard">
+                                                                    <h3>{{countSummary.fandFEmployees}}</h3>
+                                                                    <span>F & F Employees</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div>
+                                                            <div class="card text-center card3 btn-bg-green">
+                                                                <div class=" text-light detailedcard">
+                                                                    <h3>{{countSummary.leftEmployees}}</h3>
+                                                                    <span>Left Employees</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="col-md-2">
+                                                        <div>
+                                                            <div class="card text-center card3 btn-bg-green">
+                                                                <div class=" text-light detailedcard">
+                                                                    <h3>{{countSummary.totalEmployees}}</h3>
+                                                                    <span>Total Employees</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   </div>
+                                             
+                                        </div>
+                                        </div>
+
+
+                                        <div class="row mt-25">
+                                            <div class="col-md-10">
+                                                <div class="row ">
+                                                    <div class="col-md-12">
+                                                        <div class="tabview-contents bck">
+        
+                                                            <div class="row">
+                                                                
+                                                              
+                                                                <div class="col-md-2">
+                                                                    <label class="form-label float-right">Select Criteria</label>  
+                                                                </div>
+                                                                    <div class="col-md-2">
+
+                                                                  
+                                                                    <div class="d-flex">
+                                                                  
+                                                                    <select name="Gender" class="form-control custom-select">
+                                                                        <option value="Male" > Emp Code </option>
+                                                                        <option value="Female"> First Name</option>
+                                                                        <option >Last Name</option>
+                                                                        <option >Mobile Number</option>
+                                                                        <option>Grade</option>
+                                                                        <option>Department</option>
+                                                                        <option>Estt</option>
+                                                                        <option>Status</option>
+                                                                        <option>Employee Type</option>
+                                                                          <option>Mobile Number</option>
+                                                                    </select>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <!-- <label class="form-label">First Name</label> -->
+                                                                    <input type="text" placeholder=" First Name"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="lname">
+                                                                    <!-- <label class="form-label">Last Name</label> -->
+                                                                    <input type="text" placeholder=" Last Name"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="mobilenumeber">
+                                                                    <!-- <label class="form-label">Mobile No.</label> -->
+                                                                    <input type="text" placeholder=" Mobile Number"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="garde">
+                                                                    <!-- <label class="form-label">Mobile No.</label> -->
+                                                                    <input type="text" placeholder=" Grade"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="estt">
+                                                                    <!-- <label class="form-label">Mobile No.</label> -->
+                                                                    <input type="text" placeholder=" Mobile Number"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="emptype">
+                                                                    <!-- <label class="form-label">Mobile No.</label> -->
+                                                                    <input type="text" placeholder=" Mobile Number"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2" *ngIf="Department">
+                                                                    <!-- <label class="form-label">Mobile No.</label> -->
+                                                                    <input type="text" placeholder=" Mobile Number"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <!-- <label class="form-label">Emp. List</label> -->
+                                                                    <label
+                                                                        class="custom-control custom-checkbox checkbox-center"
+                                                                        tooltip="Select All">
+                                                                        <input type="checkbox" (click)="Emplist(emplist)"
+                                                                            class="custom-control-input" name="select" /> <span
+                                                                            class="custom-control-label">Emp. List</span>
+                                                                    </label>        
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25 ">
+                                                                <div class="col-md-12">
+                                                                    <textarea rows="3" cols="60">    </textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row ">
+                                                                <div class="col-md-12">
+                                                                    <div class="float-right">
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "><b><i
+                                                                                    class="fa fa-check-square-o"></i></b> Apply
+                                                                        </button>
+                                                                        <button type="button" tooltip="Reset"
+                                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                                                                    class="fa fa-refresh"></i></b>
+                                                                            Reset</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-10">
+                                                <div class="card1">
+                                                    <div class="card-header">
+                                                        Quick Links
+                                                    </div>
+                                                    <label class="form-label text-link">New Joinee report</label>
+                                                    <label class="form-label text-link">F & Freport</label>
+                                                </div>
+                                                
+                                                
+                                               
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="">
+                                            <div class="row mt-25">
+                                                <div class="col-md-12">
+                                                    <div class="table-responsive Custom_Table">
+                                                        <p-table #dt1 
+                                                       
+                                                [value]="EmployeeSummary" [paginator]="true" [rows]="10"
+                                                            [showCurrentPageReport]="true"
+                                                            (sortFunction)="customSort($event)" [customSort]="true"
+                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                            [rowsPerPageOptions]="[10,25,50]"
+                                                            [globalFilterFields]="['employeeCode','fullName','officialMobileNumber','joiningDate','lastWorkingDate','status','establishment','department','grade','designation1']">
+
+                                                            <ng-template pTemplate="caption">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">   
+                                                                        <div  class="d-flex"> 
+                                                                            <button  type="button" tooltip="Button"  
+                                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                    class="fa fa-reply-all"></i></b> SendBack
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button" [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                                                        [disabled]="selectedEmployeeData.length == 0"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                                    [routerLink]="['/approved-investmentsecond']"><b><i
+                                                                                            class="fa fa-check-square-o"></i></b>
+                                                                                    Approvals</button>
+                                                                                   
+                                                                        <button type="button" tooltip="Button" [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                                                        [disabled]="selectedEmployeeData.length == 0"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"
+                                                                            (click)="UploadModal2 (template2)"><b><i
+                                                                                    class="fa fa-plus"></i></b>  Fields
+                                                                        </button>
+                                                                   
+                                                                        <!-- ;UploadModal2 (template2) -->
+                                                                                <button type="button" tooltip="Button" 
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2 "
+                                                                                    (click)="addNewEmployee()"
+                                                                                    [disabled]="selectedEmployeeData.length !=0"
+                                                                                    
+                                                                                    [routerLink]="['/employee-master/personal-information']"><b><i
+                                                                                            class="fa fa-plus"></i></b>
+                                                                                     New Joinee
+                                                                                </button>
+                                                                                <button type="button" tooltip="Button" [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                                                                [disabled]="selectedEmployeeData.length ==0"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+
+                                                                                    [routerLink]="['/employee-master/employment-information/re-joining-information']"><b><i
+                                                                                            class="fa fa-plus"></i></b>
+                                                                                     Rejoinee </button>
+                                                                                     <button type="button" tooltip="Button" [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                                                                     [disabled]="selectedEmployeeData.length == 0" (click)="navigateToQuery()"
+                                                                                     (click)="smallpopup(template)"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                                    [routerLink]="['/admin-query-generation']"><b><i
+                                                                                            class="fa fa-plus"></i></b>
+                                                                                     Query </button>
+                                                                                     <button type="button" tooltip="Button" [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                                                                     [disabled]="selectedEmployeeData.length == 0"
+                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                                     [routerLink]="['/uploadexcel/uploadexcelhome']"><b><i
+                                                                                             class="fa fa-upload"></i></b> Upload
+                                                                                 </button>
+                                                                              
+
+                                                                                <span
+                                                                                    class="p-input-icon-left p-ml-auto">
+                                                                                    <i class="pi pi-search"  style="top: 9px !important;"></i>
+                                                                                    <input pInputText type="text"  (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                                                        placeholder="Search " />
+
+                                                                                </span>
+                                                                                <i (click)="exportAsXLSX()" class="fa fa-file-excel-o text-dark-green  fa-2x ml-2  mr-2"></i>
+                                                                                <i class="fa fa-filter text-purple  fa-2x "></i>
+                                                                           
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="header">
+                                                                <tr >
+                                                                    <th style="width: 3rem">
+                                                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Emp.Code
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="empcode"
+                                                                                    pSortableColumn="empcode">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="empcode"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                          Emp.Name
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="fname"
+                                                                                    pSortableColumn="fname">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="fname" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Mobile Number
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="mnumber"
+                                                                                    pSortableColumn="mnumber">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="mnumber" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Joining Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="jdate"
+                                                                                    pSortableColumn="jdate">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="jdate" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Leaving Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="lname" pSortableColumn="lname">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"  field="lname" display="menu"  class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Status
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Status"
+                                                                                    pSortableColumn="Status">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="Status" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Establishment
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="etype"
+                                                                                    pSortableColumn="etype">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="etype" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Department
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="department"
+                                                                                    pSortableColumn="department">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="department" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    
+                                                                   
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Grade
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="grade"
+                                                                                    pSortableColumn="grade">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="PSIdDetails" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Designation
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="designation"
+                                                                                    pSortableColumn="designation">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="designation" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                   
+                                                                   
+                                                                   
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="body" let-user1>
+                                                                <tr class="p-selectable-row">
+                                                                    <td>
+                                                                        <p-tableCheckbox (click)="getSelectedEmployee(user1,e.checked)" #e [value]="user1">
+                                                                        </p-tableCheckbox>
+                                                                    </td>
+                                                                    <td tooltip="{{user1.employeeCode}}">{{user1.employeeCode}}</td>
+                                                                    <td tooltip="{{user1.fullName}}">{{user1.fullName}}</td>
+                                                                    <td tooltip="{{user1.officialMobileNumber}}">{{user1.officialMobileNumber}}</td>
+                                                                    <td tooltip="{{user1.joiningDate}}">{{user1.joiningDate}}</td>
+                                                                    <td tooltip="{{user1.lastWorkingDate}}">{{user1.lastWorkingDate}}</td>
+                                                                    <td tooltip="{{user1.status}}">{{user1.status}}</td>
+                                                                    <td tooltip="{{user1.establishment}}">{{user1.establishment}}</td>
+                                                                    <td tooltip="{{user1.department}}">{{user1.department}}</td>
+                                                                    <td tooltip="{{user1.grade}}">{{user1.grade}}</td>
+                                                                    <td tooltip="{{user1.designation1}}">{{user1.designation1}}</td>
+                                                                    
+                                                                 
+                                                                   
+                                                                    <td>
+                                                                        <div class="d-flex">
+                                                                        <i class="fa fa-eye fa2 mr-2 text-blue"></i>
+                                                                        <i (click)="editEmployee(user1)" [routerLink]="['/employee-master/personal-information']"
+                                                                            class="fa fa-pencil fa2 mr-2 text-dark-green"></i>
+                                                                      
+                                                                        <i
+                                                                            class="fa fa-check-square-o  text-purple fa2"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                
+                                                            </ng-template>
+                                                            <!-- <ng-template pTemplate="paginatorleft">
+                                                            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                                            </p-button>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="paginatorright">
+                                                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                                            </p-button>
+                                                              // <td>{{customer.officialMobileNumber}}</td>
+                                                        </ng-template> -->
+                                                        </p-table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </section>
+                                    <section id="rauchbier" class="tab-panel">
+
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #emplist>
+        <div class="modal-header">
+            <h5 class="modal-title" id="UploadModalLabel">Employee List</h5>
+            <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row  ">
+                        <div class="col-md-12">
+                            <textarea rows="3" cols="60"> </textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-15">
+                        <div class="col-md-12">
+                            <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10"
+                                [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="[10,25,50]"
+                                [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']">
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-10 d-flex ">
+                                            <label class="form-label mr-5">Total Records (10) </label>
+                                            <label class="form-label">Selected Records (2) </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="float-right">
+                                                <i class="fa fa-file-excel-o text-dark-green fa-2x mr-2"
+                                                (click)="exportAsXLSX()"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                                    <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Emp Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empName" pSortableColumn="empName"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="empName" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Company Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails">
+                                                    </p-sortIcon>
+                                                    <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Service
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate">
+                                                    </p-sortIcon>
+                                                    <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Area
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="proofsubmission"
+                                                        pSortableColumn="proofsubmission"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="name" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Establishment
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Type" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Department
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Type" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Grade
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="ItSection" pSortableColumn="ItSection">
+                                                    </p-sortIcon>
+                                                    <p-columnFilter type="text" field="ItSection" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center"> Designation
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="ItSection" pSortableColumn="Group"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Group" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-customer>
+                                    <tr class="p-selectable-row">
+                                        <td >{{ customer.empcode}}</td>
+                                        <td>{{ customer.empName}}</td>
+                                        <td> {{customer.companyname}}</td>
+                                        <td> {{customer.service}}</td>
+                                        <td> {{customer.area}}</td>
+                                        <td> {{ customer.establishment}}</td>
+                                        <td> {{ customer.department}}</td>
+                                        <td> {{ customer.grade}}</td>
+                                        <td> {{ customer.designation}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+            <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        </div>
+    </ng-template>
+</div>
+
+
+<ng-template #template>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="custom-controls-stacked">
+                                <span class="d-flex"> <label class="form-label mr-55">On
+                                        Behalf of Employee's</label>
+                                    <label
+                                        class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input"
+
+                                            id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
+                                        <span class="custom-control-label">Yes</span>
+                                    </label>
+                                    <label
+                                        class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input"
+
+                                            id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
+                                        <span class="custom-control-label">No</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-25">
+                            <div class="custom-controls-stacked">
+                                <span class="d-flex"> <label class="form-label mr-15">Same
+                                        Content For All Employee</label>
+                                    <label
+                                        class="custom-control custom-radio custom-control-inline ">
+                                        <input type="radio" class="custom-control-input" [disabled]='sameContentViewFlag'
+                                            id="sameContent"  name="querydata2" (click)="sameContent('yes')">
+                                        <span class="custom-control-label">Yes</span>
+                                    </label>
+                                    <label
+                                        class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input"  [disabled]='sameContentViewFlag'
+                                             id="sameContent"  name="querydata2" (click)="sameContent('no')">
+                                        <span class="custom-control-label">No</span>
+                                    </label></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [disabled]="!queryGenerationForm.valid" [ngClass]="{'disabled-btn-bg-green' :
+    queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" -->
+    <div class="modal-footer">
+        <button type="button" tooltip="Proceed" (click)="modalRef.hide();addQueryGeneration() "
+            [routerLink]="['/admin-query-generation']"
+            [disabled]="onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1"
+            [ngClass]="{'disabled-btn-bg-green' :onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1 }"
+            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
+            class="fa fa-arrow-circle-o-right" aria-hidden="true"
+              ></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
+            data-dismiss="modal" aria-label="Close"
+            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
+                    class="fa fa-times"></i></b> Cancel</button>
+    </div>
+</ng-template>

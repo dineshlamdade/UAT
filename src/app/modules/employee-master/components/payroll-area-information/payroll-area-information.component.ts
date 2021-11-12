@@ -35,6 +35,8 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
   }

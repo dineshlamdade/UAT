@@ -214,7 +214,7 @@ export class BankInformationComponent implements OnInit {
       this.accountNoMatched = false;
       if ( this.saveNextBoolean == true ) {
         this.saveNextBoolean = false;
-        this.router.navigate( ['/employee-master/payroll-area-information'] );
+        this.router.navigate( ['/employee-master/payroll-area-information/payrollArea-details'] );
       }
     }, ( error: any ) => {
       this.CommonDataService.sweetalertError( error["error"]["status"]["messsage"] );

@@ -82,6 +82,9 @@ export class JoiningInformationComponent implements OnInit {
       noticePeriod: ['']
     });
 
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -100,7 +103,7 @@ export class JoiningInformationComponent implements OnInit {
 
       }
     })
-    // this.getJoiningFormInformation();
+     this.getJoiningFormInformation();
 
     // this.EmploymentInformationService.getViewFlag().subscribe(number => {
     //   
@@ -218,6 +221,13 @@ export class JoiningInformationComponent implements OnInit {
         this.JoiningInformationModel = res.data.results[0];
         this.employementInfoId = this.JoiningInformationModel.employementInfoId;
         localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
+
+        //
+        var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        myObj.joiningDate=this.JoiningInformationModel.joiningDate;        
+         localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
         this.EventEmitterService.getcloseCurrentForm();
         if (this.confirmMsg) {
           this.onNoClick();
@@ -227,6 +237,11 @@ export class JoiningInformationComponent implements OnInit {
       //  localStorage.setItem('LastTransaction', 'Joining');
         this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
+
+        //
+        myObj.employementJoiningInfoId=this.employementInfoId; 
+        localStorage.setItem("adEmp",JSON.stringify(myObj));
+        //
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
         if (this.saveNextBoolean == true) {
           this.saveNextBoolean = false;
@@ -237,6 +252,12 @@ export class JoiningInformationComponent implements OnInit {
       })
     } else {
       localStorage.setItem('LastTransaction', 'Joining');
+//
+      var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        myObj.LastTransaction='Joining';        
+         localStorage.setItem("adEmp",JSON.stringify(myObj));
+
+//
       this.EmploymentInformationService.postJoiningInformation(JoiningInformationModel).subscribe(res => {
 
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
@@ -252,6 +273,14 @@ export class JoiningInformationComponent implements OnInit {
         localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
         
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId);
+
+        var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        myObj.joiningDate=this.JoiningInformationModel.joiningDate; 
+        myObj.employementJoiningInfoId=this.employementInfoId;        
+         localStorage.setItem("adEmp",JSON.stringify(myObj));
+
+
+
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -267,6 +296,14 @@ export class JoiningInformationComponent implements OnInit {
       this.employementInfoId = res.data.results[0].employementInfoId;
      
       localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
+
+      //
+      var myObj = JSON.parse(localStorage.getItem("adEmp"));
+      myObj.employementJoiningInfoId=this.employementInfoId;        
+       localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
+
       if (res.data.results[0]) {
         this.JoiningInformationModel = res.data.results[0];
         this.JoiningInformationModel.joiningDate = new Date(this.JoiningInformationModel.joiningDate);
@@ -330,6 +367,11 @@ export class JoiningInformationComponent implements OnInit {
 
 
   assignJoiningDateTo(joiningDate) {
+//
+    var myObj = JSON.parse(localStorage.getItem("adEmp"));
+    myObj.joiningDate=joiningDate;        
+     localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
 
     localStorage.setItem('joiningDate', joiningDate);
     this.JoiningInformationModel.originalHireDate = joiningDate;
@@ -347,6 +389,12 @@ export class JoiningInformationComponent implements OnInit {
 
     if (probationPeriodMonthModel) {
       probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
+//
+      var myObj = JSON.parse(localStorage.getItem("adEmp"));
+      myObj.joiningDate=joiningDate;        
+       localStorage.setItem("adEmp",JSON.stringify(myObj));
+///
+
       localStorage.setItem('joiningDate', joiningDate);
       let localjoiningDate = localStorage.getItem('joiningDate');
       let expectedConfirmationDate = new Date(localjoiningDate);
@@ -362,6 +410,12 @@ export class JoiningInformationComponent implements OnInit {
   calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, joiningDate) {
 
     probationPeriodDaysModel = parseInt(probationPeriodDaysModel);
+//
+    var myObj = JSON.parse(localStorage.getItem("adEmp"));
+    myObj.joiningDate=joiningDate;        
+     localStorage.setItem("adEmp",JSON.stringify(myObj));
+
+//
     localStorage.setItem('joiningDate', joiningDate);
     let localjoiningDate = localStorage.getItem('joiningDate');
     let expectedConfirmationDate = new Date(joiningDate);
@@ -373,6 +427,9 @@ export class JoiningInformationComponent implements OnInit {
   }
 
   setNoticePeriodMonthModel(noticePeriodMonthModel) {
+
+    
+
     localStorage.setItem('noticePeriodMonthModel', noticePeriodMonthModel);
     localStorage.removeItem('noticePeriodDaysModel');
   }

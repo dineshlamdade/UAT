@@ -185,10 +185,10 @@ public isCollapsedQuery = true;
     
     this.RoleRrivilegeService.employeeRoleAssignmentUser(this.subId).subscribe(res => {
        this.companyGroupMasterId = res.data.results.companyGroupMasterId
-       console.log(res.data.results)
-       if(res.data.results[0].groupName=="Employee"){
-        localStorage.setItem('employeeMasterId',this.userData.UserDetails.employeeMasterId);
-       }
+      //  console.log(res.data.results)
+      //  if(res.data.results[0].groupName=="Employee"){
+      //   localStorage.setItem('employeeMasterId',this.userData.UserDetails.employeeMasterId);
+      //  }
        
        this.userRoleId = res.data.results[0].userRoleId
        this.RoleRrivilegeService.getApplicationMenusData().subscribe(res =>{

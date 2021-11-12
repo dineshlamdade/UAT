@@ -21,7 +21,9 @@ export class EmployeeSummaryComponent implements OnInit {
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
   companyName: any;
-
+  payrollAreaId: any;
+  primaryMainData: any;
+  today:Date = new Date();
 
   constructor(private EmployeeSummaryService: EmployeeSummaryService,
     private PayrollAreaService: PayrollAreaInformationService,
@@ -48,17 +50,17 @@ export class EmployeeSummaryComponent implements OnInit {
 
     //get payroll area's
     this.getPayrollAreaInformation();
-    
+
     if (this.employeeMasterId) {
-      this.getSummaryForm();
+      //  this.getSummaryForm();
     }
   }
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
+
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
         // this.filteredPayrollAreaList.push(item.payrollAreaCode);
@@ -67,39 +69,54 @@ export class EmployeeSummaryComponent implements OnInit {
         this.filteredPayrollAreaList.push(item);
 
       });
+
+
+
       if (this.payrollAreaList.length == 1) {
         //set default payroll area
         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+        this.payrollAreaId = this.payrollAreaList[0].payrollAreaId;
         localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
 
         //set default company
         let result = res.data.results[0];
-        this.companyName = result[0].payrollAreaAndCompany;
+        this.companyName = result[0].companyname;
         //this.companyName = result[0].payrollAreaId.companyId.companyName;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
-        //get payroll area code from local storage
-        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-        this.payrollAreaCode = new String(payrollAreaCode);
+        //get primary  payroll area code 
 
-        //get company from local storage
-        const companyName = localStorage.getItem('jobInformationCompanyName')
-        if (companyName != null) {
-          this.companyName = new String(companyName);
+        this.primaryMainData = this.payrollAreaList.find(x => x.type == 'Primary Main');
+        if (this.primaryMainData) {
+          this.payrollAreaId = this.primaryMainData.payrollAreaId;
+          this.payrollAreaCode = this.primaryMainData.payrollAreaCode;
+          this.companyName = this.primaryMainData.companyname;
         }
+        //get payroll area code from local storage
+
+
+        // const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        // this.payrollAreaCode = new String(payrollAreaCode);
+
+        // //get company from local storage
+        // const companyName = localStorage.getItem('jobInformationCompanyName')
+        // if (companyName != null) {
+        //   this.companyName = new String(companyName);
+        // }
 
       }
+      this.getSummaryForm();
     })
 
   }
 
   getSummaryForm() {
-    
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
-      
+    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaId).subscribe(res => {
+      console.log('summary DaTA', res.data.results[0])
       if (res.data.results[0]) {
 
         this.EmployeeSummary.identitySummaryBean = res.data.results[0].employeeSummaryBean.identitySummaryBean;
@@ -130,13 +147,13 @@ export class EmployeeSummaryComponent implements OnInit {
   //set PayrollArea and company name in local storage when dropdown chanegs
   selectPayrollArea(event) {
     localStorage.setItem('jobInformationPayrollAreaCode', event);
-    this.payrollAreaCode = event;
+    this.payrollAreaId = Number(event);
 
     const toSelect = this.filteredPayrollAreaList.find(
-      (c) => c.payrollAreaCode === this.payrollAreaCode
+      (c) => c.payrollAreaId === this.payrollAreaId
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.getSummaryForm();

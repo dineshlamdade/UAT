@@ -74,6 +74,10 @@ export class EducationDetailComponent implements OnInit {
     private EducationSkillsInformationService: EducationSkillsInformationService,
     private CommonDataService: SharedInformationService,
     private modalService: BsModalService,) {
+
+      console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+      
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
