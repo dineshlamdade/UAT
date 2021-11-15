@@ -294,7 +294,7 @@ export class MediclaimDeclarationComponent implements OnInit {
         return;
       }
       //Sutej Check
-      
+
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -578,7 +578,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   //   );
   // }
 
-  
+
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     // console.log('event::', event);
@@ -1827,13 +1827,13 @@ export class MediclaimDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
   transactionDetail(arg0: string, transactionDetail: any) {
@@ -1842,7 +1842,7 @@ export class MediclaimDeclarationComponent implements OnInit {
 
   upload() {
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1857,7 +1857,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log('testtttttt', this.documentDataArray);
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1894,7 +1894,7 @@ export class MediclaimDeclarationComponent implements OnInit {
                 'yyyy-MM-dd'
               );
               innerElement.dateOfPayment = dateOfPaymnet;
-              
+
             });
             // }
           }
@@ -2180,6 +2180,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
   }
 
@@ -2197,7 +2198,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.'
       );
       this.receiptAmount = '0.00';
       return false;
@@ -2205,7 +2206,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount.'
       );
       // this.receiptAmount = '0.00';
       // return false;
@@ -2227,7 +2228,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log(globalSelectedAmountExpense_);
     if (receiptAmount_ < globalSelectedAmountExpense_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.'
       );
       this.receiptAmount = '0.00';
       return false;
@@ -2235,7 +2236,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       console.log(receiptAmount_);
       console.log(globalSelectedAmountExpense_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount.'
       );
       // this.receiptAmount = '0.00';
       // return false;
@@ -2257,7 +2258,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log(globalSelectedAmountPreventive_);
     if (receiptAmount_ < globalSelectedAmountPreventive_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.'
       );
       this.receiptAmount = '0.00';
       return false;
@@ -2265,7 +2266,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       console.log(receiptAmount_);
       console.log(globalSelectedAmountPreventive_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount.'
       );
       // this.receiptAmount = '0.00';
       // return false;
@@ -2527,9 +2528,9 @@ export class MediclaimDeclarationComponent implements OnInit {
       });
     }
       });
-      
+
   this.documentArray = [];
-      
+
   }
 
   public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
@@ -2586,7 +2587,7 @@ export class MediclaimDeclarationComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         console.log('documentArrayTest',this.documentArray);
@@ -2676,7 +2677,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -2819,8 +2820,8 @@ export class MediclaimDeclarationComponent implements OnInit {
     data.proofSubmissionId = this.editProofSubmissionId;
     data.documentRemark = this.editDocumentRemark;
         data.remarkPasswordList = this.editdDocumentDataArray
-  
-    
+
+
     // data.documentRemark = this.documentRemark;
     console.log('data::', data);
 
@@ -3158,7 +3159,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

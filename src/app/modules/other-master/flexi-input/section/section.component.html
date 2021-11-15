@@ -1,0 +1,409 @@
+<div class="tabview-containts">
+
+  <div class="tabs about-page">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+
+          <form [formGroup]="sectionForm">
+            <div class="card-body">
+              <div class="card1">
+                <div class="row">
+                  <div class="col-md-2"><label class="form-label">Flexi
+                      Section Name</label></div>
+                  <div class="col-md-4">
+                    <input type="text" placeholder="Please Enter Flexi Section Name" formControlName="flexiSectionName" class="form-control"  [ngClass]="{'is-invalid' : sectionForm.get('flexiSectionName').status == 'INVALID'}">
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-3">
+                    <label class="form-label">
+                      Flexi Section No.
+                    </label>
+                    <select name="flexiSectionNo" id="flexiSectionNo"
+                      [ngClass]="{'is-invalid' : sectionForm.get('flexiSectionNo').status == 'INVALID'}"
+                      class="form-control  " formControlName="flexiSectionNo">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let flexiSectionNumbers of flexiSextionNoList"
+                        [value]="flexiSectionNumbers.value">
+                        {{flexiSectionNumbers.label}}
+                      </option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">
+                      Own Fix Limit
+                    </label>
+                    <select name="ownFixLimit" id="ownFixLimit" formControlName="ownFixLimit"
+                      [ngClass]="{'is-invalid' : sectionForm.get('ownFixLimit').status == 'INVALID'}"
+                      class="form-control" (change)="onChengeOwnLimit($event.target.value)">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let ownFixLimit of ownFixList" [value]="ownFixLimit.value">
+                        {{ownFixLimit.label}}
+                      </option>
+                    </select>
+
+
+                  </div>
+                  <div class="col-md-3" *ngIf="fixedAndDerived">
+                    <label class="form-label">
+                      Own Fixed Limit Value
+                    </label>
+                    <select name="ownFixedLimitValue" (change)="onChangeDefinationEmp($event.target.value)"
+                      id="ownFixedLimitValue" formControlName="ownFixedLimitValue"
+                      [ngClass]="{'is-invalid' : sectionForm.get('ownFixedLimitValue').status == 'INVALID'}"
+                      class="form-control">
+                      <!-- <option [ngValue]="null">Select</option> -->
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let ownFix of ownFlexiList" [value]="ownFix.value">
+                        {{ownFix.label}}
+                      </option>
+
+                    </select>
+
+
+                  </div>
+                  <div class="col-md-3" *ngIf="fixedAndDerived">
+                    <label class="form-label">
+                      Derived Value
+                    </label>
+                    <select name="derivedValue" id="derivedValue" formControlName="derivedValue"
+                      [ngClass]="{'is-invalid' : sectionForm.get('derivedValue').status == 'INVALID'}"
+                      class="form-control">
+                      <!-- <option [ngValue]="null">Select</option> -->
+                      <option selected value=''>Select </option>
+                    <option *ngFor="let ownFixLimit of derivedNameList" [value]="ownFixLimit.value">
+                      {{ownFixLimit.label}}
+                    </option>
+                    </select>
+
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-3">
+                    <label class="form-label">
+                      Balancing Figure Applicable
+                    </label>
+                    <select name="balancingFigureApplicable" id="balancingFigureApplicable" formControlName="balancingFigureApplicable"
+                      [ngClass]="{'is-invalid' : sectionForm.get('balancingFigureApplicable').status == 'INVALID'}"
+                      class="form-control">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let balancings of balancingList" [value]="balancings.value">
+                        {{balancings.label}}
+                      </option>
+                    </select>
+                  </div>
+
+                </div>
+                <br>
+                <br>
+                <ng-container>
+                    <div class="col-md-3 form-group">
+                      <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                        <input autocomplete="off" type="checkbox" class="custom-control-input"
+                          name="example-inline-checkbox1"
+                          (change)="deactivateRemark()"  formControlName = "isActive"/>
+                        <span class="custom-control-label">Active </span>
+                      </label>
+                    </div>
+                    <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
+                      <label class="form-label">Remark</label>
+                      <!-- <textarea  autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark"
+                        [required]="hideRemarkDiv2" formControlName="remark"
+                       ></textarea> -->
+
+                       <!-- <textarea [required]="hideRemarkDiv2" formControlName="remark" autocomplete="off" placeholder="Enter Remark"
+                        class="form-control" rows="2"></textarea> -->
+
+                        <textarea class="form-control" [required]="hideRemarkDiv2"
+                        formControlName="remark"  rows="4" placeholder="Enter Remark"> </textarea>
+
+
+
+                    </div>
+
+                </ng-container>
+                <!-- [ngClass]="{'is-invalid' : sectionForm.get('remark').status == 'INVALID'}" -->
+
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                    <div class="float-right" *ngIf="isUpdateModeSave" >
+                      <button type="submit" (click)="saveSectionData()"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
+                        tooltip="Go"
+                        [ngClass]="{'disabled-btn-bg-green' : sectionForm.invalid,'btn-bg-green': !sectionForm.invalid}"> <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+                      <button type="button" tooltip="Reset" (click)="resetForm()"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i
+                            class="fa fa-refresh"></i></b>
+                        Reset</button>
+                      </div>
+                        <div class="float-right" *ngIf="isUpdateMode">
+                          <button type="submit"
+                          [ngClass]="sectionForm.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                          (click)="putMethod()" [disabled]="sectionForm.invalid" >
+                            <b><i class="fa fa-floppy-o"></i></b>Update</button>
+                            <button type="button"
+                            class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelViewInUpdate()"><b><i
+                                class="fa fa-times-circle"></i></b>Cancel</button>
+                    </div>
+                    <div class="float-right" *ngIf="isViewMode" >
+                      <button type="button"
+                            class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelViewInUpdateView()"><b><i
+                                class="fa fa-times-circle"></i></b>Cancel</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div row class="row mt-10">
+                <div class="col-md-12 ">
+                  <div class="justify-content-end p-d-inline-flex float-right">
+                    <div class="input-icon mb-3">
+                      <span class="p-input-icon-left p-ml-auto">
+                        <i
+                          class="pi pi-search"
+                          style="top: 9px !important"
+                        ></i>
+                        <input
+                          pInputText
+                          type="text"
+                          (input)="
+                            dt1.filterGlobal(
+                              $event.target.value,
+                              'contains'
+                            )
+                          "
+                          placeholder="Search keyword"
+                        />
+                      </span>
+                    </div>
+                      &nbsp;
+                      <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportApprovalSummaryAsExcel()"></i>
+                  </div>
+                </div>
+                </div>
+              <!-- <div class="row mt-25">
+                <div class="col-md-12"> -->
+
+                  <!-- <p-table #dt1 [value]="ltaavailed1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    (sortFunction)="customSort($event)" [customSort]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10,25,50]"> -->
+
+                  <p-table #dt1 [value]="tableDataList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    totalRecords={{tableDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                    [globalFilterFields]="[
+                    'flexiSectionName',
+                    'flexiSectionNo',
+                    'ownFixLimit',
+                    'ownFixedLimitValue',
+                    'balancingFigureApplicable']">
+
+
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th rowspan="1" class="wd-10 text-center">
+
+                          Sr.No.
+                          <!-- <div class="Sort_Filter_Position">
+                            <p-sortIcon field="flexiSectionMasterId" pSortableColumn="flexiSectionMasterId">
+                            </p-sortIcon>
+                            <p-columnFilter type="text" field="flexiSectionMasterId" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div> -->
+
+                        </th>
+
+
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Flexi Section Name <div class="Sort_Filter_Position">
+                              <p-sortIcon field="flexiSectionName" pSortableColumn="flexiSectionName">
+                              </p-sortIcon>
+                              <p-columnFilter type="text" field="flexiSectionName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Flexi Section No
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="flexiSectionNo" pSortableColumn="flexiSectionNo">
+                              </p-sortIcon>
+                              <p-columnFilter type="text" field="flexiSectionNo" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Own Fix Limit
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="ownFixLimit" pSortableColumn="ownFixLimit">
+                              </p-sortIcon>
+                              <p-columnFilter type="text" field="ownFixLimit" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Own Fixed Limit value
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="sdmName" pSortableColumn="sdmName">
+                              </p-sortIcon>
+                              <p-columnFilter type="text" field="sdmName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Balancing Fig. Applicable
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="balancingFigureApplicable" pSortableColumn="balancingFigureApplicable">
+                              </p-sortIcon>
+                              <p-columnFilter type="text" field="balancingFigureApplicable" display="menu"
+                                class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th>Action</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+
+                      <tr class="p-selectable-row">
+                        <td>
+                          {{rowIndex+1}}
+                        </td>
+                        <td>{{user1.flexiSectionName}}</td>
+                        <td>{{user1.flexiSectionNo}}</td>
+                        <td>{{user1.ownFixLimit}}</td>
+                        <td>{{user1.sdmName}}</td>
+                        <td>{{user1.balancingFigureApplicable}}</td>
+                        <!-- <td>{{user1.derivedValue}}</td> -->
+
+                        <!-- <td><span><i class="fa fa-pencil fa2 mr-2 text-blue font-16"></i>
+
+                            <i class="fa fa-times font-16 text-red"></i>
+                          </span></td> -->
+
+                          <td class="wd-15 align-left">
+
+                            <button type="button" class="btn btn-icon" tooltip="Edit"
+                             (click)="editUpdateDataJobMaster(user1)">
+                             <i class="fa fa-edit font-18 text-dark-green cursor-pointer"></i></button>
+                             <button type="button" class="btn btn-icon" tooltip="View"
+                             (click)="viewMode(user1)">
+                             <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button>
+                              <button type="button" class="btn btn-icon" tooltip="Delete" *ngIf="!user1.isCheckedTruefalse"
+                              (click)="UploadModal1(template22,user1)">
+                              <i class="fa fa-trash font-18 text-red cursor-pointer"></i> </button>
+
+
+                          </td>
+
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                            Available</span>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                  </p-table>
+                <!-- </div>
+              </div> -->
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #template22>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Delete
+      Job Master</h5>
+    <button type="button" (click)="deleteModalRef.hide()" class="close" data-dismiss="modal"
+      aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <label class="form-label">Are
+              you sure want to
+              delete? </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary"
+    (click)="DeletePayrollHeadGroup();deleteModalRef.hide()">Yes</button>
+    <button type="button" class="btn btn-secondary bg-btn-red" (click)="deleteModalRef.hide()">No</button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Updation Value</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive Custom_Table">
+          <table class="table table-striped table-bordered table-hover m-b-0">
+            <thead class="thead-dark">
+              <tr>
+                <th>Sr. No.</th>
+                <th>Updation Value</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Yes</td>
+                <td><i class="fa fa-plus text-dark-green"></i></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>No</td>
+                <td><i class="fa fa-times text-red"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>

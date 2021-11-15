@@ -93,7 +93,7 @@ export class MediclaimMasterComponent implements OnInit {
   public familyRelationSame: boolean;
 
   public documentRemark: any;
-  public isECS = true;
+  public ecs = true;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -164,7 +164,7 @@ export class MediclaimMasterComponent implements OnInit {
       policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
-
+     // remark: new FormControl(null),
       frequencyOfPayment: new FormControl('', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
@@ -176,6 +176,7 @@ export class MediclaimMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       mediclaimMasterId: new FormControl(0),
+      remark: new FormControl(null),
       mediclaimPaymentDetailId: new FormControl(0),
       proofSubmissionId: new FormControl(''),
       // depositType: new FormControl("", Validators.required),
@@ -445,7 +446,7 @@ export class MediclaimMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -480,7 +481,7 @@ export class MediclaimMasterComponent implements OnInit {
     }
 
     console.log('this.isEdit', this.isEdit);
-   
+
     if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0 &&  this.form.value.expenseType == 'Mediclaim Premium') {
@@ -488,11 +489,11 @@ export class MediclaimMasterComponent implements OnInit {
         'Mediclaim  Document Needed to Create Master.'
       );
       return;
-    } 
+    }
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -520,6 +521,7 @@ export class MediclaimMasterComponent implements OnInit {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
           institution: this.masterForm.institution.value,
+          //remark: this.masterForm.remark.value,
           policyNumber: this.masterForm.policyNumber.value,
           policyStartDate: this.masterForm.policyStartDate.value,
           policyEndDate: this.masterForm.policyEndDate.value,
@@ -533,7 +535,7 @@ export class MediclaimMasterComponent implements OnInit {
               .toString()
               .replace(/,/g, ''),
             annualAmount: this.masterForm.annualAmount.value,
-            isECS: this.masterForm.ecs.value,
+            ecs: this.masterForm.ecs.value,
             fromDate: this.masterForm.fromDate.value,
             toDate: this.masterForm.toDate.value,
           },
@@ -547,6 +549,7 @@ export class MediclaimMasterComponent implements OnInit {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
           institution: this.masterForm.institution.value,
+         // remak:this.masterForm.remak.value,
           // policyNumber: this.masterForm.policyNumber.value,
           // policyStartDate: this.masterForm.policyStartDate.value,
           // policyEndDate: this.masterForm.policyEndDate.value,
@@ -568,38 +571,40 @@ export class MediclaimMasterComponent implements OnInit {
               this.masterGridData = res.data.results;
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
                       'status' : element.documentInformationList[0].status,
+                      //'remark': element.documentInformationList[0].remark,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
                       'status' : element.documentInformationList[1].status,
+                      'remark': element.documentInformationList[0].remark,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
@@ -617,7 +622,7 @@ export class MediclaimMasterComponent implements OnInit {
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -725,7 +730,7 @@ export class MediclaimMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(i: number) {
-    
+
      this.isEdit = true;
     this.scrollToTop();
     const obj =  this.findByNumber(i,this.masterGridData);
@@ -759,7 +764,7 @@ export class MediclaimMasterComponent implements OnInit {
         'lastModifiedTime' : element.lastModifiedTime,
 
       })
-      
+
     });
     console.log("documentArray::",this.documentArray);
     this.isVisibleTable = true;
@@ -769,7 +774,7 @@ export class MediclaimMasterComponent implements OnInit {
       return masterGridData.find(x => x.accountNumber === i)
     }
 
-  
+
 
 
   // editMaster(i: number) {
@@ -985,7 +990,7 @@ export class MediclaimMasterComponent implements OnInit {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

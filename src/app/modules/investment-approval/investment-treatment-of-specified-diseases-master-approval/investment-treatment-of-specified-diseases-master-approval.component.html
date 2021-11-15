@@ -630,15 +630,15 @@
                                 "
                                 [class.disablegraybutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
@@ -657,22 +657,22 @@
                                 "
                                 [class.disableredbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 (click)="
@@ -699,22 +699,22 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                               >
@@ -732,13 +732,13 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   approved1Disabled
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   approved1Disabled
                                 "
@@ -778,8 +778,7 @@
                                       <p-table
                                         #dt2
                                         [value]="
-                                          masterInfo.masterDetail
-                                            .documentDetailList
+                                          masterInfo?.masterDetail?.documentDetailList
                                         "
                                         [selection]="documentList"
                                         [paginator]="true"

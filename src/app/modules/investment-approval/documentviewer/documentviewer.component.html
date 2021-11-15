@@ -28,31 +28,31 @@
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Group</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{masterInfo.psidDetail.groupName}}
+                          {{masterInfo?.psidDetail?.groupName}}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">IT-Section</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{masterInfo.psidDetail.section}}
+                          {{masterInfo?.psidDetail?.section}}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0"> Type</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{masterInfo.psidDetail.type}}
+                          {{masterInfo?.psidDetail?.type}}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{masterInfo.psidDetail.proofSubmissionStatus}}
+                          {{masterInfo?.psidDetail?.proofSubmissionStatus}}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Document Type</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{documentType}}
+                      
                         </label>
                       </div>
                     </div>
@@ -90,7 +90,7 @@
                     tooltip="Next Document"
                     (click)="nextDocViewer()"
                     [disabled]="
-                      documentURLIndex == masterInfo.masterDetail.documentDetailList.length - 1
+                      documentURLIndex == masterInfo?.masterDetail?.documentDetailList.length - 1
                     "
                   >
                     <i class="fa fa-angle-right text-white font-30 p-10"></i>

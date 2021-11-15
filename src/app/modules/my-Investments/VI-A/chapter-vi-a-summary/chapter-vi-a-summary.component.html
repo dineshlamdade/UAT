@@ -39,8 +39,11 @@
                                                     <td scope="row">
                                                         <span tooltip="1">{{i+1}}</span>
                                                     </td>
-                                                    <td class="align-left">
+                                                    <!-- <td class="align-left">
                                                         <span tooltip="{{summary.sectionName}}">{{summary.sectionName}}</span>
+                                                    </td> -->
+                                                    <td class="text-link wd-20 align-left">
+                                                      <a tooltip="{{summary.sectionName}}" routerLink="{{summary.routerUrl}}">{{summary.sectionName}}</a>
                                                     </td>
                                                     <td class="wd-15 align-right">
                                                         <span class="padding-right-12" tooltip="{{summary.declarationBenefit | number:'1.2-2'}}">

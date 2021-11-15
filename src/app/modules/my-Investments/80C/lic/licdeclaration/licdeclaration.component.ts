@@ -42,6 +42,7 @@ export class LicdeclarationComponent implements OnInit {
   public testPolicy = '';
   public selectPolicyName = '';
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -693,12 +694,17 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     i: number,
     j: number,
   ) {
+    
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
       summary.declaredAmount,
     );
-
+  debugger
+  this.editTransactionUpload[j].lictransactionList[
+    i
+    ].actualAmount = this.declarationService.declaredAmount;
+console.log( this.editTransactionUpload);
     this.editTransactionUpload[j].lictransactionList[
       i
       ].declaredAmount = this.declarationService.declaredAmount;
@@ -725,6 +731,9 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
+
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
     );
@@ -779,6 +788,8 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
+
+  
 
     this.transactionDetail[j].lictransactionList[
       i
@@ -1233,6 +1244,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 
@@ -1398,7 +1410,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
@@ -1518,7 +1530,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1867,6 +1879,8 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI,
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,

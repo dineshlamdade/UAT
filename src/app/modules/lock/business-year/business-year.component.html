@@ -1,193 +1,448 @@
 <div class="row">
   <div class="col-md-12">
-      <div class="card">
+
+    <div class="card">
+      <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" (ngSubmit)="getTypeAndID()" method="post"
+        novalidate>
+        <div class="card-body">
+          <div class="fourtabview-contents">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="float-right">
+                  <buttton class="btn btn-bg-green  mr-2" tooltip="Pending For Lock" (click)="clickOnLock(BusinessPendingForLock)">Pending
+                    for Lock
+                  </buttton>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <label class="form-label">Business Year Definition</label>
+                <select name="companyName" id="companyName"
+                  [ngClass]="{'is-invalid' : form.get('companyName').status == 'INVALID'}" class="form-control  "
+                  formControlName="companyName">
+                  <option selected value=''>Select </option>
+                  <option *ngFor="let companyNames of compnaysList" [value]="companyNames.value">
+                    {{companyNames.label}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Business Year</label>
+                <select name="type" id="type" (change)="onChangeDefinationEmp($event.target.value)"
+                  [ngClass]="{'is-invalid' : form.get('type').status == 'INVALID'}" class="form-control  "
+                  formControlName="type">
+                  <option selected value=''>Select </option>
+                  <option *ngFor="let types of typeList" [value]="types.value">
+                    {{types.label}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Start Date</label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="startDate"
+                      data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                      bsDatepicker disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">End Date</label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="endDate"
+                      data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                      bsDatepicker disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-25">
+              <div class="col-md-4">
+                <fieldset>
+                  <legend>Organizational Selection </legend>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label class="form-label">Company</label>
+                      <select id="companyName" class="form-control" formControlName="companyName"  [ngClass]="{'is-invalid' : form.get('companyName').status == 'INVALID'}">
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let company of compnaysList" [value]="company.value">
+                          {{company.label}}
+                        </option>
+                      </select>
+                      <!-- [ngClass]="{'is-invalid' : form.get('companyName').status == 'INVALID'}" -->
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Service</label>
+                      <select id="serviceName" (change)="onSelectServiceName($event.target.value)"
+                        [ngClass]="{'is-invalid' : form.get('serviceName').status == 'INVALID'}"
+                        class="form-control  " formControlName="serviceName">
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let service of serviceNames" [value]="service.value">
+                          {{service.label}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-8">
+                <fieldset>
+                  <legend>Area Selection </legend>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <lable class="form-label"> Area</lable>
+                      <p-multiSelect formControlName="areaMasterCode" defaultLabel="Select a Area"
+                        [ngClass]="{'is-invalid' : form.get('areaMasterCode').status == 'INVALID'}"
+                        [options]="ServiceAreaList" optionLabel="name"
+                        [ngClass]="{'is-invalid' : form.get('areaMasterCode').status == 'INVALID'}">
+                      </p-multiSelect>
+                    </div>
+                    <div class="col-md-4">
+                      <lable class="form-label"> Area Set</lable>
+                      <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name">
+                      </p-multiSelect>
+                    </div>
+                    <div class="col-md-4 ">
+                      <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                        <input type="checkbox" (click)="Arealistpop(arealistpop)" name="example-inline-radios"
+                          value="option3" class="custom-control-input" name="select" />
+                        <span class="custom-control-label">Area List</span>
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="row mt-15">
+              <div class="col-md-12">
+                <div class="float-right">
+                  <button type="submit"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2" tooltip="Go"
+                    [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b> <i
+                        class="fa fa-arrow-right"></i></b>Go</button>
+                  <button type="button" tooltip="Reset" (click)="resetForm()"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                        class="fa fa-refresh"></i></b>
+                    Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row mt-15">
+  <div class="col-md-12">
+    <h6 style="color:darkmagenta;">Areas to Lock</h6>
+  </div>
+</div>
+<div class="row mt-10">
+  <div class="col-md-12">
+    <p-table #dt1 [value]="goAsandWhenList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+      (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      totalRecords={{goAsandWhenList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+        'companyName',
+        'type',
+        'cycle',
+        'createDateTime',
+        'fromDate',
+        'toDate',
+      ]">
+      <ng-template pTemplate="caption">
+        <div class="row">
+          <div class="col-md-6 mt-10 d-flex ">
+            <label class="form-label mr-5">Total records ({{goAsandWhenList.length}})</label>
+            <label class="form-label">Selected records ({{selectedUser.length}})</label>
+          </div>
+          <div class="col-md-6">
+            <div class="float-right">
+              <button type="submit"
+                [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"
+                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
+                (click)="lockCycle(template2)" tooltip="Lock Cycle"><b>
+                  <i class="fa fa-lock" aria-hidden="true"></i>
+                </b> Lock
+              </button>
+              <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportApprovalSummaryAsExcel()"></i>
+
+
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox (click)="allCheckInCycleLockTable(e.checked)" #e></p-tableHeaderCheckbox>
+          </th>
+
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Area
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
+                </p-sortIcon>
+                <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto">
+                </p-columnFilter>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">Company
+              Name
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="companyName" pSortableColumn="companyName">
+                </p-sortIcon>
+                <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
+                </p-columnFilter>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Service
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="serviceName" pSortableColumn="serviceName"></p-sortIcon>
+                <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
+                </p-columnFilter>
+              </div>
+            </div>
+          </th>
+          <!-- <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Cycle Creation Date
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="createDateTime" pSortableColumn="createDateTime"></p-sortIcon>
+                <p-columnFilter field="createDateTime" display="menu" class="p-ml-auto"></p-columnFilter>
+              </div>
+            </div>
+          </th>
+
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">From Date
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="fromDate" pSortableColumn="fromDate"></p-sortIcon>
+                <p-columnFilter field="fromDate" display="menu" class="p-ml-auto"></p-columnFilter>
+              </div>
+            </div>
+
+          </th>
+          <th>
+            <div class="p-d-flex p-jc-between p-ai-center">
+              To Date
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="toDate" pSortableColumn="toDate"></p-sortIcon>
+                <p-columnFilter field="toDate" display="menu" class="p-ml-auto"></p-columnFilter>
+              </div>
+            </div>
+          </th> -->
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+        <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+          [ngClass]="{'outofstock':user1.isHighlight == true}">
+          <td>
+            <p-tableCheckbox [value]="user1" (click)="onCheckArea(e.checked,user1,rowIndex)" #e>
+            </p-tableCheckbox>
+          </td>
+          <td>{{ user1.payrollAreaCode }} </td>
+          <td>{{ user1.companyName }} </td>
+          <td>{{ user1.serviceName }} </td>
+          <!-- <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
+          <td>{{ user1.fromDate | date :"dd-MMM-yyyy" }} </td>
+          <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td> -->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+              Available</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!--As & When Lockpopup-->
+    <ng-template #template2>
+      <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">As & When /Supplementry Cycle Lock</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
           <div class="card-body">
-              <div class="fourtabview-contents">
-              <div class="approval-form">
+            <form class="card" role="form" [formGroup]="lockForm" #formDirective="ngForm" novalidate>
               <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  mb-3">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="float-right">
-                        <buttton class="btn btn-bg-green mt-20" tooltip="Pending For Lock"
-                          (click)="BusinessPendingForLockPopup(BusinessPendingForLock)">Pending for Lock
-                        </buttton>
+                <div class="col-md-4">
+                  <label class="form-label">Cycle</label>
+                     <input type="text" class="form-control" formControlName="lockCycleName" disabled placeholder="Cycle Name">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">From Date</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i> </span>
                       </div>
+                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                        bsDatepicker disabled>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <label class="form-label">Business Year Definition</label>
-                      <select name="Gender" class="form-control custom-select">
-                        <option value="Male"> 01Apr-31Mar
-                        </option>
-                        <option value="Female"> 01Apr-31Mar
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Business Year</label>
-                      <select name="Gender" class="form-control custom-select">
-                        <option value="Male"> 2020 </option>
-                        <option value="Female"> 2021</option>
-                      </select>
 
-
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Start Date</label>
-                      <div class="form-group">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="fa fa-calendar"></i>
-                            </span>
-                          </div>
-                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                            placeholder="Date" bsDatepicker disabled>
-                        </div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">To Date</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                       </div>
-
-
-
-
-
+                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                        bsDatepicker disabled>
                     </div>
-                    <div class="col-md-3">
-                      <label class="form-label">End Date</label>
-                      <div class="form-group">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="fa fa-calendar"></i>
-                            </span>
-                          </div>
-                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                            placeholder="Date" bsDatepicker disabled>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
-
-                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-
-                  <fieldset>
-                    <legend>Organizational Selection</legend>
-
-                    <div class="row">
-                      <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                          <label class="form-label mb-3">Company Name</label>
-                          <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
-                            [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-                            [(ngModel)]="selectedItems">
-                          </ng-multiselect-dropdown>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                          <label class="form-label mb-3">Service</label>
-                          <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
-                            [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-                            [(ngModel)]="selectedItems">
-                          </ng-multiselect-dropdown>
-                        </div>
-                      </div>
-
-                    </div>
-
-
-                  </fieldset>
-                </div>
-                <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
-
-                  <fieldset>
-                    <legend>Area Selection</legend>
-
-                    <div class="row">
-                      <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                        <div class="form-group">
-                          <div class="custom-controls-stacked mb-2 ">
-                            <label class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input" name="example- radios" value="option1"
-                                checked>
-                              <div class="custom-control-label">Area</div>
-                            </label>
+              </div>
+            </form>
+            <div class="row clearfix">
+              <div class="col-md-12">
+                <div class="row mt-10">
+                  <div class="col-md-12">
+                    <p-table #dt1 [value]="checkedSummaryList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" (sortFunction)="customSort3($event)" [customSort3]="true"
+                      [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                     >
+                      <ng-template pTemplate="caption">
+                        <div class="row">
+                          <div class="col-md-6 mt-10 d-flex ">
+                            <label class="form-label mr-5">Total records ({{checkedSummaryList.length}})</label>
+                            <label class="form-label">Selected records ({{selectedUserAsAndWhen.length}})</label>
                           </div>
-
-                          <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
-                            [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-                            [(ngModel)]="selectedItems">
-                          </ng-multiselect-dropdown>
-
-
-                        </div>
-                      </div>
-                      <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                        <div class="form-group">
-                          <div class="custom-controls-stacked mb-2">
-                            <label class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input" name="example- radios" value="option1"
-                                checked>
-                              <div class="custom-control-label">Area Set </div>
-                            </label>
+                          <div class="col-md-6">
+                            <div class="float-right">
+                              <i class="fa fa-file-excel-o text-dark-green fa-2x "
+                                (click)="AsWhenExportApprovalSummaryAsExcel()"></i>
+                            </div>
                           </div>
-
-                          <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
-                            [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-                            [(ngModel)]="selectedItems">
-                          </ng-multiselect-dropdown>
                         </div>
-                      </div>
-                      <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                        <div class="form-group">
-                          <div class="custom-controls-stacked mb-2">
-                            <label class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input" name="example- radios" value="option1"
-                                (click)="ViewHistory(template4)" checked>
-                              <div class="custom-control-label"> Area List </div>
-                            </label>
-                          </div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Area
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
+                                </p-sortIcon>
+                                <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">Company Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="companyName" pSortableColumn="companyName">
+                                </p-sortIcon>
+                                <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Service
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="serviceName" pSortableColumn="serviceName"></p-sortIcon>
+                                <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Cycle Creation Date
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="createDateTime" pSortableColumn="createDateTime"></p-sortIcon>
+                                <p-columnFilter field="createDateTime" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
 
-                        </div>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">From Date
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="fromDate" pSortableColumn="fromDate"></p-sortIcon>
+                                <p-columnFilter field="fromDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
 
-                      </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              To Date
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="toDate" pSortableColumn="toDate"></p-sortIcon>
+                                <p-columnFilter field="toDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th> -->
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+                          [ngClass]="{'outofstock':user1.isHighlight == true}">
+                          <td>
+                            <!-- <p-tableCheckbox [value]="user1" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
+                            </p-tableCheckbox> -->
+                            <p-checkbox [value]="user1.businessCycleId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
+                            </p-checkbox>
 
+                            <!-- <p-tableCheckbox [value]="user1.businessCycleId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
+                            </p-tableCheckbox> -->
 
-                    </div>
-
-
-
-                  </fieldset>
-                </div>
-
-                <div class="col-12">
-
-                  <div class="row">
-
-                    <div class="col-12 mt-20">
-                      <div class="float-right ">
-
-                        <!-- <button type="submit"
-                                            class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left"
-                                            tooltip="Save" [disabled]="loading">
-                                            <b><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>
-                                            Previous</button> -->
-
-                        <button type="submit"
-                          class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                          tooltip="show list" [disabled]="loading">
-                          <b><i class="fa fa-paper-plane" aria-hidden="true"></i></b>
-                          Go</button>
-
-
-                        <button type="button" tooltip="Reset"
-                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                              class="fa  fa-refresh"></i></b> Reset</button>
-                      </div>
-                    </div>
+                          </td>
+                          <td>{{ user1.payrollArea }} </td>
+                          <td>{{ user1.companyName }} </td>
+                          <td>{{ user1.serviceName }} </td>
+                          <!-- <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
+                          <td>{{ user1.fromDate | date :"dd-MMM-yyyy" }} </td>
+                          <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td> -->
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
                   </div>
                 </div>
               </div>
@@ -195,433 +450,187 @@
           </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <!-- saveLockProceed -->
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+          tooltip="Save" (click)="save()"
+          [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
+            <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="resetLock()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
+            <i class="fa fa-refresh"></i></b> Reset</button>
+      </div>
+    </ng-template>
   </div>
 </div>
-
-          <div class="row mt-15">
-            <div class="col-md-12">
-              <h6 style="color:darkmagenta;">Areas to Lock</h6>
-            </div>
-          </div>
+<ng-template #BusinessPendingForLock>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <form class="card" role="form" [formGroup]="pendingForm" #formDirective="ngForm" novalidate>
           <div class="row">
-            <div class="col-md-8">
-              <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                (sortFunction)="customSort($event)" [customSort]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="[10,25,50]">
-                <ng-template pTemplate="caption">
-                  <div class="row">
-                    <div class="col-md-6 mt-10 d-flex mt-10">
-                      <label class="form-label mr-5">Total
-                        records
-
-                        (10)</label>
-                      <label class="form-label">Selected
-                        records
-
-                        (2)</label>
-
-                    </div>
-                    <div class="col-md-6">
-                      <div class="float-right">
-                        <button type="submit"
-                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                          (click)="lockarea (template2)" tooltip="Area Lock"><b>
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                          </b> Lock
-                        </button>
-
-                        <!-- <button
-                            class="btn custom_btn btn-bg-green mr-2"
-                            tooltip=" Display Popup"
-                            (click)="lockarea (template2)">
-                            Lock
-                            Area</button> -->
-                        <i class="fa fa-file-excel-o text-dark-green
-fa-2x "></i>
-                      </div>
-                    </div>
+            <div class="col-md-4">
+              <label class="form-label">Cycle</label>
+                 <input type="text" class="form-control" formControlName="pendingCycleName" disabled placeholder="Cycle Name">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">From Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i> </span>
                   </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
+                </div>
+              </div>
 
-
-
-
-
-                </ng-template>
-
-
-
-
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width: 3rem">
-                      <p-tableHeaderCheckbox>
-                      </p-tableHeaderCheckbox>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Area
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="empcode" pSortableColumn="empcode">
-                          </p-sortIcon>
-                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Company
-                        Name
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="empcode" pSortableColumn="empcode">
-                          </p-sortIcon>
-                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Service
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="empcode" pSortableColumn="empcode">
-                          </p-sortIcon>
-                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-user1>
-                  <tr>
-                    <td>
-                      <p-tableCheckbox [value]="customer">
-                      </p-tableCheckbox>
-                    </td>
-                    <td>{{
-                      user1.area
-                      }} </td>
-                    <td>{{
-                      user1.cmpnyname
-                      }} </td>
-                    <td>{{
-                      user1.service
-                      }} </td>
-
-
-                  </tr>
-                </ng-template>
-              </p-table>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">To Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
+                </div>
+              </div>
             </div>
           </div>
-
-          <ng-template #BusinessPendingForLock>
-            <div class="modal-header">
-                <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
-                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label class="form-label">Business year</label>
-                                <input type="text" class="form-control"  value="Aug-2020" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">From Date</label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                       <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                           <i class="fa fa-calendar"></i>
-                                                      </span>
-                                       </div>
-                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
-                                 </div>
-                               </div>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">To Date</label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                       <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                           <i class="fa fa-calendar"></i>
-                                                      </span>
-                                       </div>
-                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
-                                 </div>
-                               </div>
-
-                            </div>
+        </form>
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <div class="row mt-10">
+              <div class="col-md-12">
+                <p-table #dt1 [value]="pendingLockList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                  (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  totalRecords={{pendingLockList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                 >
+                  <ng-template pTemplate="caption">
+                    <div class="row">
+                      <div class="col-md-6 mt-10 d-flex ">
+                        <label class="form-label mr-5">Total records ({{pendingLockList.length}})</label>
+                        <label class="form-label">Selected records ({{selectedUserPending.length}})</label>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="float-right">
+                          <i class="fa fa-file-excel-o text-dark-green fa-2x "
+                            (click)="exportApprovalPendingForLock()"></i>
                         </div>
-                        <div class="row clearfix">
-                            <div class="col-md-12">
-
-                                <p-table [value]="users1" [paginator]="true" [rows]="10"
-                                    [showCurrentPageReport]="true"
-                                    (sortFunction)="customSort($event)" [customSort]="true"
-                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                    [rowsPerPageOptions]="[10,25,50]">
-                                    <ng-template pTemplate="caption">
-                                        <div class="row">
-                                            <div class="col-md-6  mt-10 d-flex ">
-                                                <label
-                                                class="form-label mr-5">Total
-                                                    records
-
-                                                    (10)</label>
-                                                <label class="form-label">Selected
-                                                    records
-
-                                                    (2)</label>
-
-                                            </div>
-                                         <div class="col-md-6">
-                                                <div class="float-right">
-                                                    <i class="fa fa-file-excel-o text-dark-green fa-2x "></i>
-                                                </div>
-                                            </div>
-                                       </div>
-
-
-
-
-                                    </ng-template>
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width: 3rem">
-                                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                                            </th>
-                                            <th>
-                                                <div class="p-d-flex p-jc-between p-ai-center">
-                                                    Area
-                                                    <div class="Sort_Filter_Position">
-                                                        <p-sortIcon field="empcode"
-                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                        <p-columnFilter field="empcode"
-                                                            display="menu" class="p-ml-auto">
-                                                        </p-columnFilter>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                <div class="p-d-flex p-jc-between p-ai-center">
-                                                    Company Name
-                                                    <div class="Sort_Filter_Position">
-                                                        <p-sortIcon field="empcode"
-                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                        <p-columnFilter field="empcode"
-                                                            display="menu" class="p-ml-auto">
-                                                        </p-columnFilter>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                <div class="p-d-flex p-jc-between p-ai-center">
-                                                    Service
-                                                    <div class="Sort_Filter_Position">
-                                                        <p-sortIcon field="empcode"
-                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                        <p-columnFilter field="empcode"
-                                                            display="menu" class="p-ml-auto">
-                                                        </p-columnFilter>
-                                                    </div>
-                                                </div>
-                                            </th>
-
-
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-user1>
-                                        <tr>
-                                            <td>
-                                                <p-tableCheckbox [value]="customer">
-                                                </p-tableCheckbox>
-                                            </td>
-                                            <td>{{ user1.area }} </td>
-                                            <td>{{ user1.cmpnyname }} </td>
-                                            <td>{{ user1.service }} </td>
-
-
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-
-
-                            </div>
-                        </div>
+                      </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit"
-                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                    tooltip="Save"><b>
-                        <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-                        <button type="button" tooltip="Cancel"class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b> Reset</button>
-                        <!-- <button type="button" class="btn btn-secondary"
-                    (click)="modalRef.hide()">Clear</button> -->
-            </div>
-        </ng-template>
-
-              <!-- //AreaLockPOPUP -->
-              <ng-template #template2>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="UploadModalLabel">Area Lock</h5>
-                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label">Cycle</label>
-                                    <input type="text" class="form-control"  value="2020" disabled>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">From Date</label>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                           <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                               <i class="fa fa-calendar"></i>
-                                                          </span>
-                                           </div>
-                                   <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
-                                     </div>
-                                   </div>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">To Date</label>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                           <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                               <i class="fa fa-calendar"></i>
-                                                          </span>
-                                           </div>
-                                   <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
-                                     </div>
-                                   </div>
-
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-12">
-                                    <p-table [value]="users1" [paginator]="true" [rows]="10"
-                                        [showCurrentPageReport]="true"
-                                        (sortFunction)="customSort($event)" [customSort]="true"
-                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        [rowsPerPageOptions]="[10,25,50]">
-                                        <ng-template pTemplate="caption">
-                                            <div class="row">
-                                                <div class="col-md-6  mt-10 d-flex ">
-                                                    <label
-                                                    class="form-label mr-5">Total
-                                                        records
-
-                                                        (10)</label>
-                                                    <label class="form-label">Selected
-                                                        records
-
-                                                        (2)</label>
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="float-right">
-                                                      <i class="fa fa-file-excel-o text-dark-green
-fa-2x "></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-
-
-                                        </ng-template>
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th style="width: 3rem">
-                                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                                                </th>
-                                                <th>
-                                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                                        Area
-                                                        <div class="Sort_Filter_Position">
-                                                            <p-sortIcon field="empcode"
-                                                                pSortableColumn="empcode"></p-sortIcon>
-                                                            <p-columnFilter field="empcode"
-                                                                display="menu" class="p-ml-auto">
-                                                            </p-columnFilter>
-                                                        </div>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                                        Company Name
-                                                        <div class="Sort_Filter_Position">
-                                                            <p-sortIcon field="empcode"
-                                                                pSortableColumn="empcode"></p-sortIcon>
-                                                            <p-columnFilter field="empcode"
-                                                                display="menu" class="p-ml-auto">
-                                                            </p-columnFilter>
-                                                        </div>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                                        Service
-                                                        <div class="Sort_Filter_Position">
-                                                            <p-sortIcon field="empcode"
-                                                                pSortableColumn="empcode"></p-sortIcon>
-                                                            <p-columnFilter field="empcode"
-                                                                display="menu" class="p-ml-auto">
-                                                            </p-columnFilter>
-                                                        </div>
-                                                    </div>
-                                                </th>
-
-
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-user1>
-                                            <tr>
-                                                <td>
-                                                    <p-tableCheckbox [value]="customer">
-                                                    </p-tableCheckbox>
-                                                </td>
-                                                <td>{{ user1.area }} </td>
-                                                <td>{{ user1.cmpnyname }} </td>
-                                                <td>{{ user1.service }} </td>
-
-
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
-
-
-                                </div>
-                            </div>
+                  </ng-template>
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 3rem">
+                        <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e ></p-tableHeaderCheckbox>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Area
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
+                            </p-sortIcon>
+                            <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                        tooltip="Save"><b>
-                            <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-                            <button type="button" tooltip="Cancel"class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b> Reset</button>
-                            <!-- <button type="button" class="btn btn-secondary"
-                        (click)="modalRef.hide()">Clear</button> -->
-                </div>
-            </ng-template>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">Company Name
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="companyName" pSortableColumn="companyName">
+                            </p-sortIcon>
+                            <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Service
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="serviceName" pSortableColumn="serviceName"></p-sortIcon>
+                            <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <!-- <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Cycle Creation Date
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="createDateTime" pSortableColumn="createDateTime"></p-sortIcon>
+                            <p-columnFilter field="createDateTime" display="menu" class="p-ml-auto"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">From Date
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="fromDate" pSortableColumn="fromDate"></p-sortIcon>
+                            <p-columnFilter field="fromDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          To Date
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="toDate" pSortableColumn="toDate"></p-sortIcon>
+                            <p-columnFilter field="toDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                          </div>
+                        </div>
+                      </th> -->
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                    <tr [class.active]="user1.isHighlightPending" (dblclick)="doubleClickOnLeftTable(user1)"
+                      [ngClass]="{'outofstock':user1.isHighlightPending == true}">
+                      <td>
+                        <p-tableCheckbox [value]="user1" (click)="inPendingForLock(e.checked,user1,rowIndex)" #e>
+                        </p-tableCheckbox>
+                      </td>
+                      <td>{{ user1.payrollArea }} </td>
+                      <td>{{ user1.companyName }} </td>
+                      <td>{{ user1.serviceName }} </td>
+                      <!-- <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
+                      <td>{{ user1.fromDate | date :"dd-MMM-yyyy" }} </td>
+                      <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td> -->
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                          Available</span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      tooltip="Save" (click)="savePenidngForLock()"
+      [ngClass]="{'disabled-btn-bg-green' : finalpendingLockList.length == 0, 'btn-bg-green': !finalpendingLockList.length == 0}"><b>
+        <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+    <button type="button" tooltip="Cancel" (click)="resetPendingForLock()"
+      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
+        <i class="fa fa-refresh"></i></b> Reset</button>
+  </div>
+</ng-template>

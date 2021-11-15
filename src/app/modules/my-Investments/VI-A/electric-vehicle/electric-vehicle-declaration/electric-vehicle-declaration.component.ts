@@ -87,6 +87,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
 
   public transactionPolicyList: Array<any> = [];
   public transactionWithLenderName: Array<any> = [];
+  public transactionWithLenderName1: Array<any> = [];
+  public AccountlenderNameList: Array<any> = [];
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public editfilesArray: File[] = [];
@@ -104,6 +106,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public enableCheckbox: number;
   public enableCheckboxFlag: number;
   public enableCheckboxFlag3: boolean;
+  public isVisibleCancel: boolean =  false;
+
   public addRow1: boolean;
   public addRow2: number;
   public previousEmployeeList: Array<any> = [];
@@ -178,7 +182,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public transactionStatustList: any;
-  public globalInstitution = 'ALL';
+  public globalInstitution :any
   public globalPolicy = 'ALL';
   public globalTransactionStatus = 'ALL';
   public globalAddRowIndex: number;
@@ -225,9 +229,11 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       this.declarationPage();
       this.canEdit = true;
     } else {
+      this.isVisibleCancel = true;
       const input = this.data;
       this.globalInstitution = input.lenderName;
       this.getLenderNameList();
+      this.getLenderAccountList();
       this.getTransactionFilterData(input.lenderName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
@@ -318,6 +324,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.refreshTransactionStatustList();
 
     this.getLenderNameList();
+    this.getLenderAccountList();
 
     this.resetAll();
     this.selectedTransactionLenderName('All');
@@ -351,10 +358,65 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     console.log('lender Name List ', this.lenderNameList);
   }
 
+
+  public getLenderAccountList() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.AccountlenderNameList.push(data);
+    this.transactionPolicyList.push(data);
+
+    this.electricVehicleService
+      // .getElectricVehicleDeclarationLenderName()
+    //   .getElectricVehicleNoList()
+    //   .subscribe((res) => {
+    //     console.log('getLenderNameList', res);
+    //     this.transactionWithLenderName1 = res.data.results;
+    //     res.data.results[0].forEach((element) => {
+    //       console.log('element', element);
+    //       const obj = {
+    //         label: element,
+    //         value: element,
+    //       };
+    //       this.AccountlenderNameList.push(obj);
+    //     });
+    //   });
+    // console.log('lender Name List ', this.lenderNameList);
+  }
+
+
+  getLoanNumber(
+    lenderName: String, lenderNo:any
+    ){
+
+      this.globalInstitution = lenderName;
+    this.electricVehicleService
+    // .getElectricVehicleDeclarationLenderName()
+    .getElectricVehicleNoList(lenderName,lenderNo)
+    .subscribe((res) => {
+      console.log('getLenderNameList', res.data.results);
+      this.transactionWithLenderName = res.data.results;
+      res.data.results[0].forEach((element) => {
+        console.log('element', element);
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.transactionPolicyList.push(obj);
+      });
+    });
+  console.log('lender Name List ', this.lenderNameList);
+
+
+  }
+
 // --------- On institution selection show all transactions list accordingly all policies--------
 selectedTransactionLenderName(lenderName: any) {
   this.filesArray = [];
   this.transactionDetail = [];
+  this.AccountlenderNameList = [];
   this.globalInstitution = lenderName;
   this.getTransactionFilterData(this.globalInstitution);
   this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -387,14 +449,83 @@ selectedTransactionLenderName(lenderName: any) {
   }
   this.resetAll();
   console.log('isdisabled: ', this.isDisabled);
+
+
+   //Account No GEt by Lender Name
+  //  getAccountNumberByName(){
+
+
+    this.electricVehicleService
+    .getAccountNo(lenderName)
+    .subscribe((res) => {
+      console.log('getTransactionFilterDataAccout No', res);
+      res.data.results[0].forEach(element => {
+
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.AccountlenderNameList.push(obj);
+        console.log("AccountlenderNameList", this.AccountlenderNameList)
+
+      });
+  });
+  // }
 }
 
 
-  // -------- On Policy selection show all transactions list accordingly all policies---------
-  selectedPolicy(policy: any) {
+
+
+   // -------- On Policy selection show all transactions list accordingly all policies---------
+   selectedPolicy(policy: any) {
     this.globalPolicy = policy;
-    this.getTransactionFilterData(this.globalInstitution);
+    // this.getTransactionFilterData(
+    //   this.globalInstitution
+    // );
+    this.electricVehicleService.getElectricVehicleNoList(this.globalInstitution,policy).subscribe((res) => {
+      console.log('getTransactionFilterData', res);
+      this.transactionDetail =
+        res.data.results[0].electricVehicleLoanTransactionDetailList;
+      this.documentDetailList =
+        res.data.results[0].electricVehicleLoanTransactionDocumentDetailList;
+      this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+      this.grandActualTotal = res.data.results[0].grandActualTotal;
+      this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+      this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+      console.log('documentArrayTest',this.documentArray);
+
+      this.initialArrayIndex = [];
+
+      this.transactionDetail.forEach((element) => {
+        this.initialArrayIndex.push(
+          element.electricVehicleLoanTransactionPreviousEmployerList.length
+        );
+
+        // format the amount from current emp list
+        element.electricVehicleLoanTransactionList.forEach((item) => {
+          item.declaredAmount = this.numberFormat.transform(
+            item.declaredAmount
+          );
+          item.actualAmount = this.numberFormat.transform(item.actualAmount);
+        });
+
+        // format the amount from previous emp list
+        element.electricVehicleLoanTransactionPreviousEmployerList.forEach(
+          (innerElement) => {
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          }
+        );
+      });
+    });
+
   }
+
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
@@ -637,7 +768,40 @@ selectedTransactionLenderName(lenderName: any) {
     );
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
   }
- 
+
+
+  //Actual Amount
+  onActualAmountChangeCurrent(
+    summary: {
+      actualAmount: any;
+      dateOfPayment: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.globalSelectedAmount = '0.00';
+    this.declarationService = new DeclarationService(summary);
+    this.transactionDetail[j].electricVehicleLoanTransactionList[
+      i
+    ].actualAmount = this.declarationService.actualAmount;
+    const formatedDeclaredAmount = this.numberFormat.transform(
+      this.transactionDetail[j].electricVehicleLoanTransactionList[i]
+        .actualAmount
+    );
+    this.transactionDetail[j].electricVehicleLoanTransactionList[
+      i
+    ].actualAmount = formatedDeclaredAmount;
+    this.declarationTotal = 0;
+    this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
+      (element) => {
+        this.declarationTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+      }
+    );
+    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+  }
+
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
@@ -835,20 +999,20 @@ selectedTransactionLenderName(lenderName: any) {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -923,7 +1087,7 @@ selectedTransactionLenderName(lenderName: any) {
       if(this.transactionDetail[0].electricVehicleLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
         {
           this.alertService.sweetalertError(
-            'Please enter value'
+            'Please enter value.'
           );
           return;
         }
@@ -931,13 +1095,13 @@ selectedTransactionLenderName(lenderName: any) {
 
     if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
      }
      if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
 
@@ -1069,7 +1233,7 @@ selectedTransactionLenderName(lenderName: any) {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
     this.receiptAmount = '0.00';
     return false;
@@ -1077,7 +1241,7 @@ selectedTransactionLenderName(lenderName: any) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
     // this.receiptAmount = '0.00';
     // return false;
@@ -1219,7 +1383,7 @@ selectedTransactionLenderName(lenderName: any) {
     ].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    
+
    /*  console.log(
       'Actual Amount changed::',
       this.editTransactionUpload[j]
@@ -1453,7 +1617,7 @@ selectedTransactionLenderName(lenderName: any) {
               // this.documentArray.push({
               //   'dateofsubmission': ,
               // })
-              
+
               element.documentDetailList.forEach(element => {
               // if(element!=null)
               this.documentArray.push({
@@ -1535,20 +1699,7 @@ selectedTransactionLenderName(lenderName: any) {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
+
         console.log('documentArrayTest',this.documentArray);
 
         this.initialArrayIndex = [];
@@ -1578,15 +1729,34 @@ selectedTransactionLenderName(lenderName: any) {
             }
           );
         });
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+        });
       });
+
+
+
   }
+
+
 
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1835,7 +2005,7 @@ selectedTransactionLenderName(lenderName: any) {
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");
@@ -1859,6 +2029,12 @@ selectedTransactionLenderName(lenderName: any) {
         Object.assign({}, { class: 'gray modal-xl' }),
       );
     }
+
+    cancelViewInUpdateView(){
+      this.isVisibleCancel = false;
+      this.ngOnInit();
+    }
+
 }
 
 class DeclarationService {
