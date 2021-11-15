@@ -248,7 +248,7 @@ export class NpsMasterComponent implements OnInit {
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
-      frequencyOfPayment: new FormControl(null, Validators.required),
+      frequencyOfPayment: new FormControl('', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
@@ -518,7 +518,7 @@ export class NpsMasterComponent implements OnInit {
       );
 
       for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] != undefined){
+        if(this.remarkList[i] == undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -591,6 +591,10 @@ export class NpsMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
+              );
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
 
@@ -629,10 +633,7 @@ export class NpsMasterComponent implements OnInit {
                 }
                 });
               }
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
-              );
+
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(

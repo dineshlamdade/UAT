@@ -221,14 +221,14 @@ export class MasterComponent implements OnInit {
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
     if (this.form.get('familyMemberName').value == null) {
-      this.form.get('relationship').setValue(null);  
+      this.form.get('relationship').setValue(null);
       this.isRadioButtonDisabled = true;
     }
     const toSelect = this.familyMemberGroup.find(
       (element) => element.familyMemberName == this.form.get('familyMemberName').value
-      
+
     );
-    
+
     console.log("familyMemberInfoId:,",this.familyMemberName)
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
@@ -281,7 +281,7 @@ export class MasterComponent implements OnInit {
                     'status' : element.status,
                     'lastModifiedBy' : element.lastModifiedBy,
                     'lastModifiedTime' : element.lastModifiedTime,
-          
+
                   })
                 });
                 this.documentArray.push({
@@ -293,10 +293,10 @@ export class MasterComponent implements OnInit {
                   'status' : element.status,
                   'lastModifiedBy' : element.lastModifiedBy,
                   'lastModifiedTime' : element.lastModifiedTime,
-        
+
                 })
               });
-              
+
     });
   }
 
@@ -309,7 +309,7 @@ export class MasterComponent implements OnInit {
 
     }
     console.log('this.isEdit', this.isEdit);
-   
+
   if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
@@ -317,11 +317,11 @@ export class MasterComponent implements OnInit {
         'Handicapped Dependent Document needed to Create Master.'
       );
       return;
-    } 
+    }
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+    if(this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -356,11 +356,11 @@ export class MasterComponent implements OnInit {
               });
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
@@ -371,12 +371,12 @@ export class MasterComponent implements OnInit {
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
@@ -387,7 +387,7 @@ export class MasterComponent implements OnInit {
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
@@ -506,7 +506,7 @@ export class MasterComponent implements OnInit {
       this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
       this.documentArray = [];
-        
+
         obj.documentInformationList.forEach(element => {
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -519,7 +519,7 @@ export class MasterComponent implements OnInit {
             'lastModifiedTime' : element.lastModifiedTime,
 
           })
-          
+
         });
         console.log("documentArray::",this.documentArray);
         this.isVisibleTable = true;
@@ -533,7 +533,7 @@ export class MasterComponent implements OnInit {
       (x) => x.disabilityType === disabilityType);
   }
 
- 
+
 
    // scrollToTop Fuctionality
    public scrollToTop() {
@@ -562,7 +562,7 @@ export class MasterComponent implements OnInit {
   }
 
 
-  
+
   // On Master Edit functionality
   viewMaster(i: number) {
     //this.scrollToTop();
@@ -594,11 +594,11 @@ export class MasterComponent implements OnInit {
     this.form.reset();
   }
 
-  
+
   onRadioChange(checked) {
     console.log(checked)
     this.isSaveVisible = true;
-   
+
     if(checked) {
       this.isSaveVisible = false;
       this.alertService.sweetalertError(
@@ -628,7 +628,7 @@ export class MasterComponent implements OnInit {
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");

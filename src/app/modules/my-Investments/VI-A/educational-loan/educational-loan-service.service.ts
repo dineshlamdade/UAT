@@ -67,7 +67,7 @@ getEducationalLoanSummary() {
   }
 
   getElectricVehicleNoList(lenderName:any, id) {
-    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/'+ lenderName + '/' + id )
+    return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/'+ lenderName + '/' + id )
     .pipe(map((res: any) => {
       return res;
     }

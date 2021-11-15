@@ -136,8 +136,8 @@ export class InterestOnTtaService {
     }));
   }
 
-  getElectricVehicleNoList(lenderName:any, id) {
-    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/'+ lenderName + '/' + id )
+  getTTAAccontNoList(lenderName:any, id) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/'+ lenderName + '/' + id )
     .pipe(map((res: any) => {
       return res;
     }
