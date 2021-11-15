@@ -887,7 +887,7 @@ export class NpsDeclarationComponent implements OnInit {
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1078,6 +1078,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
   }
 
 
@@ -1503,7 +1504,7 @@ export class NpsDeclarationComponent implements OnInit {
 
 
     for (let i = 0; i <= this.editremarkList.length; i++) {
-      if(this.editremarkList[i] != undefined){
+      if(this.editremarkList[i] != undefined || this.editdDocumentDataArray[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1675,6 +1676,7 @@ export class NpsDeclarationComponent implements OnInit {
       });
     this.currentFileUpload = null;
     this.editfilesArray = [];
+    this.editdDocumentDataArray = [];
   }
 
   downloadTransaction(proofSubmissionId) {

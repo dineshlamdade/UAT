@@ -11,7 +11,7 @@
                     <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
                 </div>
             </div>
-            
+
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Account No.</label>
                 <input type="text" formControlName="accountNumber" class="form-control" onkeypress="return /[0-9]/i.test(event.key)" placeholder="Enter Account No.." [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
@@ -46,7 +46,7 @@
             </div>
             <div class="col-sm-6 col-md-3 mt-10">
                 <label class="form-label">PRAN</label>
-                <input type="text" formControlName="pran" class="form-control" 
+                <input type="text" formControlName="pran" class="form-control"
                 disabled [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }">
                 <div *ngIf="submitted && masterForm.pran.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.pran.errors.required">PRAN is mandatory</div>
@@ -60,7 +60,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                         formControlName="policyStartDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="account Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
                             [maxDate]="today">
                         <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
@@ -93,10 +93,11 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Frequency Of Payment</label>
-                            <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment" class="form-control custom-select" #frequencyOfPayment [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
-                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
-                  {{frequencyOfPayment.label}}
-                </option>
+                             <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment" class="form-control custom-select" #frequencyOfPayment [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
+                              {{frequencyOfPayment.label}}
+                            </option>
               </select>
                             <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
@@ -104,10 +105,10 @@
                         </div>
                         <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label">Contribution Amount</label>
-                            <p-inputNumber class="p-inputright" 
-                            formControlName="premiumAmount" name="Premium Amount" 
-                            (onBlur)="calculateAnnualAmount()" 
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" 
+                            <p-inputNumber class="p-inputright"
+                            formControlName="premiumAmount" name="Premium Amount"
+                            (onBlur)="calculateAnnualAmount()"
+                            [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }"
                             mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                             <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
 
@@ -375,7 +376,7 @@
                             <!-- <th style="width: 3rem">
                               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th> -->
-  
+
                             <th>
                               <div
                                 class="
@@ -596,7 +597,7 @@
                             <td>
                               <a
                               (click)=" docViewer(template3,documentIndex, document)"
-  
+
                               >
                                 <i
                                   class="
@@ -657,7 +658,7 @@
                           ></b>
                           Approve
                         </button>
-  
+
                         <button
                           type="button"
                           tooltip="Send Back"
@@ -871,9 +872,9 @@
                         </div>
                         <div class="col-md-12">
                           <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
-                        
+
                         </div>
-  
+
                       </div>
                       <div style="float: right; width: 40%; margin-right: 59px">
                         <div class="col-md-8 mt-10">
@@ -889,8 +890,8 @@
                     <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
                   </div>
                 </label>
-  
-  
+
+
               </div>
             </div>
             <!-- <div class="col-md-12 mt-10">
@@ -919,15 +920,15 @@
             </div>
             <div class="col-sm-6 col-md-6 align-right">
                 <label class="form-label">Document Type</label>
-                
+
                 {{this.viewDocumentType}}
             </div>
-          
+
             </div>
             <div class="align-right">
                 <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
       <button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
-             
+
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>

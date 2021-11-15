@@ -385,7 +385,7 @@ console.log('this.isEdit', this.isEdit);
         'yyyy-MM-dd'
       );
       for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] != undefined){
+        if(this.remarkList[i] == undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",

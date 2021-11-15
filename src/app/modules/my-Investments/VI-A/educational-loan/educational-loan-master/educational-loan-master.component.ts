@@ -329,7 +329,7 @@ export class EducationalLoanMasterComponent implements OnInit {
       );
 
       for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] != undefined){
+        if(this.remarkList[i] == undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",

@@ -271,11 +271,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
   }
 
   searchIFSC(searchTerm, bankIFSC) {
-    this.form.patchValue({
-      branchName: '',
-      bankAddress: '',
-      bankName: '',
-    });
+    // this.form.patchValue({
+    //   branchName: '',
+    //   bankAddress: '',
+    //   bankName: '',
+    // });
 
     if (searchTerm.query.length < 11) {
       this.ifscCodeList = [];
@@ -418,7 +418,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -474,7 +474,10 @@ export class InterestOnTtaMasterComponent implements OnInit {
               this.showdocument = false;
               this.masterGridData = res.data.results;
               // this.masterGridData = res.data.results[0].documentInformationList;
-
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Declaration & Actual" Page to see Schedule.'
+              );
 
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
@@ -516,11 +519,6 @@ export class InterestOnTtaMasterComponent implements OnInit {
                 }
                 });
               }
-              console.log('masterGridData', this.masterGridData);
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
@@ -535,6 +533,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
         });
       this.isShowUpdate = false;
       this.isShowSave = true;
+      this.documentDataArray = [];
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
@@ -551,21 +550,6 @@ export class InterestOnTtaMasterComponent implements OnInit {
     // }
   }
 
-  //Duplicate account should not be acceptable
-
-  matchAccountNumber(event: any) {
-    console.log('event...', event);
-    this.masterGridData.forEach((element) => {
-      this.accountNumberlistedit = element.accountNumber;
-      if (event == element.accountNumber) {
-        this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable.'
-        );
-      }
-      console.log(element.accountNumber);
-      return 0;
-    });
-  }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
@@ -767,4 +751,22 @@ export class InterestOnTtaMasterComponent implements OnInit {
       }, 3000);
     }
   }
+
+   //Duplicate account should not be acceptable
+
+   matchAccountNumber(event: any) {
+    console.log('event...', event);
+    this.masterGridData.forEach((element) => {
+      this.accountNumberlistedit = element.accountNumber;
+      if (event == element.accountNumber) {
+        this.alertService.sweetalertWarning(
+          'Duplicate Account should Not be Acceptable.'
+        );
+      }
+      console.log(element.accountNumber);
+      return 0;
+    });
+  }
+
+
 }
