@@ -60,6 +60,7 @@ export class FinancialMasterComponent implements OnInit {
   payrollListData: string;
   employeeFinDetailsData: any[];
   selectedEmployeeMasterId: number;
+  headType: any;
 
   constructor(private service: FinancialMasterService,
     private datePipe: DatePipe,
@@ -199,10 +200,10 @@ export class FinancialMasterComponent implements OnInit {
   }
 
   public getFrequencyMaster(id): void {
-    this.service.getFrequencyMaster(id).subscribe((res) => {
-      this.frequency = res.data.results[0].name;
-      // console.log('Frequency List', res);
-    });
+    // this.service.getFrequencyMaster(id).subscribe((res) => {
+    //   this.frequency = res.data.results[0].name;
+    //   // console.log('Frequency List', res);
+    // });
   }
 
   public setInitialClosingAmount(): void {
@@ -408,14 +409,24 @@ export class FinancialMasterComponent implements OnInit {
     return data;
   }
 
-  ViewHistory(template1: TemplateRef<any>, id: number, headname: string): void {
+  ViewHistory(template1: TemplateRef<any>, id, data): void {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-md' }),
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
-    const empId = this.employeeDetails.employeeMasterId;
-    this.headDescriptionName = headname;
-    this.service.getfinancialmasterHeadHistory(empId, id).subscribe((res) => {
+    console.log(data)
+
+    const empId = this.employeeDetails.employeeMasterId.toString();
+    this.headDescriptionName = data.headDescription;
+    this.headType = data.headType;
+   
+
+    let formData = new FormData();
+    formData.append('employeeMasterId',empId)
+    formData.append('payrollArea',this.selectedPayrollArea )
+    formData.append('HeadId',id)
+
+    this.service.getfinancialmasterHeadHistory(formData).subscribe((res) => {
       // console.log(res);
       this.historyArrayData = res.data.results;
     });

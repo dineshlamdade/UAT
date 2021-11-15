@@ -18,6 +18,21 @@ span{
 
 
  }
+ a{
+   color: white !important;
+ }
+ .bg-primary{
+   
+  text-align: center;
+  font-weight: 700;
+  height: 60px;
+  vertical-align: middle;
+  background: #38b449 !important;
+  border: 3px #116306 !important;
+}
+.card-height{
+  height: 103px !important;
+}
  .breadcrumb {
     display: -ms-flexbox;
     display: flex;
@@ -50,4 +65,11 @@ span{
 
 .form-label{
   color: black !important;
+}
+.p-input-icon-left>i:first-of-type {
+  top: 25px;
+  z-index: 1;
+  right: 42px;
+  color: #6c757d;
+  position: absolute;
 }

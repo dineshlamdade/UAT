@@ -79,6 +79,7 @@ export class GarnishmentMasterComponent implements OnInit {
       "standardName": new FormControl(''),
       "state": new FormControl(''),
       "villege": new FormControl(''),
+      "familyMemberInfoId": new FormControl(1)
     });
 
 

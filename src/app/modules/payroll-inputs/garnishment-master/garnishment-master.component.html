@@ -285,6 +285,12 @@
                                       <span class="custom-control-label">No</span>
                                     </label>
                                   </div>
+                                  <div class="custom-controls-stacked" *ngIf="garnishmentForm.controls.familyMember.value == true || garnishmentForm.controls.familyMember.value == 1">
+                                    <select id="family" class="form-control custom-select" formControlName="familyMemberInfoId">
+                                        <otion value="">Select</otion>  
+                                        <option value="1">Self</option>
+                                    </select>
+                                  </div>
                                 </div>
                                 <div class="col-md-6">
                                   <label class="form-label ml-15" tooltip="goal" placement="left">Goal</label>

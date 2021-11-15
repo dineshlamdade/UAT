@@ -73,6 +73,22 @@ export class FastentryGarnishmentComponent implements OnInit {
   applicationForm: FormGroup
   saveDisabledBtn: boolean = true;
   garnishmentMasterData: any;
+  selectedGarnishmentData: any;
+  address: string;
+  nature: any;
+  edHead: any;
+  familyMembers: string;
+  garnishmentMasterTransactionTypeList: any;
+  garnishmentMasterInputTypeList: any;
+  garnishmentMasterDocumentList: any;
+  garnishmentMasterFrequencyList: any;
+  editFlag: any;
+  editApplicationData: any;
+  selectedInputType: any;
+  selectedInputTypeName: any;
+  selectedTransactionTypeId: any;
+  selectedFrequencyType: any;
+  goalFlag: any;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
@@ -114,7 +130,8 @@ export class FastentryGarnishmentComponent implements OnInit {
         "goalBalanceAmount": new FormControl(0),
         "numberOfTransactions": new FormControl(""),
         "remark": new FormControl(""),
-        "isActive": new FormControl(1)
+        "isActive": new FormControl(1),
+        "familyMemberInfoId": new FormControl(1)
       })
 
 
@@ -128,6 +145,14 @@ export class FastentryGarnishmentComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployeeList()
     this.getAllGarnishmentMaster()
+    this.payrollheadmaster()
+  }
+
+  /** e&d head */
+  payrollheadmaster(){
+    this.garnishmentservice.payrollheadmaster().subscribe(res =>{
+      this.headData = res.data.results
+    })
   }
 
     /** Garnishment Master data */
@@ -235,4 +260,74 @@ export class FastentryGarnishmentComponent implements OnInit {
     })
 
   }
+
+
+   /** Get Selected Garnishment Value */
+   getSelectedGarnishment(garnishmentMasterId) {
+    this.garnishmentMasterData.forEach(element => {
+      if (element.garnishmentMasterId == garnishmentMasterId) {
+        this.selectedGarnishmentData = element
+      }
+    });
+
+    console.log("this.selectedGarnishmentData : " + JSON.stringify(this.selectedGarnishmentData))
+
+    this.address = this.selectedGarnishmentData.address1 + ',' + this.selectedGarnishmentData.address2 + ',' + this.selectedGarnishmentData.address3
+    this.nature = this.selectedGarnishmentData.nature
+    this.edHead = this.selectedGarnishmentData.headMasterId
+    if (this.selectedGarnishmentData.familyMember == false) {
+      this.familyMembers = 'false'
+    } else {
+      this.familyMembers = 'true'
+    } 
+
+
+    this.garnishmentMasterTransactionTypeList = this.selectedGarnishmentData.garnishmentMasterTransactionTypeList
+    this.garnishmentMasterInputTypeList = this.selectedGarnishmentData.garnishmentMasterInputTypeList
+    this.garnishmentMasterDocumentList = this.selectedGarnishmentData.garnishmentMasterDocumentList
+    this.garnishmentMasterFrequencyList = this.selectedGarnishmentData.garnishmentMasterFrequencyList
+
+    
+
+    if(this.editFlag){
+        this.applicationForm.controls['garnishmentMasterFrequencyId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterFrequencyId)
+        this.applicationForm.controls['garnishmentMasterTransactionTypeId'].setValue(this.editApplicationData.garnishmentMasterTransactionTypeResponseDTO.garnishmentMasterTransactionTypeId)
+        this.applicationForm.controls['garnishmentMasterInputTypeId'].setValue(this.editApplicationData.garnishmentMasterInputTypeResponseDTO.garnishmentMasterInputTypeId)
+    }
+
+    this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
+      if(element.defaultInput == true){
+        this.selectedInputType = element.garnishmentMasterInputTypeId
+        this.selectedInputTypeName = element.inputTypeName
+      }
+    });
+
+    this.selectedGarnishmentData.garnishmentMasterTransactionTypeList.forEach(element => {
+      if(element.defaultTransactionType == true){
+        this.selectedTransactionType = element.transactionTypeName
+        this.selectedTransactionTypeId = element.garnishmentMasterTransactionTypeId
+      }
+    });
+
+
+    if(this.selectedTransactionType != 'NoOfTransaction'){
+      this.applicationForm.controls['numberOfTransactions'].disable()
+    }
+
+    this.selectedGarnishmentData.garnishmentMasterFrequencyList.forEach(element => {
+        this.selectedFrequencyType = element.garnishmentMasterFrequencyId
+    });
+
+    this.goalFlag = this.selectedGarnishmentData.goal
+
+  }
+
+  getSelectedGarnishmentData(garnishment){
+    this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
+      if(element.garnishmentMasterInputTypeId == garnishment){
+        this.selectedInputTypeName = element.inputTypeName
+      }
+    }); 
+  }
+
 }

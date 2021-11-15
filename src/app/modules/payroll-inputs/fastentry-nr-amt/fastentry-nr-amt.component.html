@@ -227,7 +227,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-sm-3">
-                                                                    <label class="form-label">No. of Trans</label>
+                                                                    <label class="form-label">No. of Transactions</label>
                                                                     <input type="text" class="form-control"
                                                                         [(ngModel)]="selectedNoOfTransaction"
                                                                         onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -290,8 +290,7 @@
                                                                             <option
                                                                                 [selected]="selectedClawbackInputType == 'Specific Date'"
                                                                                 *ngIf="selectedApplicableAt != 'Schedule'">
-                                                                                Specific Date {{selectedApplicableAt
-                                                                                == 'Schedule'}}
+                                                                                Specific Date 
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -375,7 +374,7 @@
                                                                 <div class="col-sm-3">
                                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                     <!-- selectedPayrollArea == '' -->
-                                                                    <pre>{{selectedEmployeeData.length}}</pre>
+                                                                    <!-- <pre>{{selectedEmployeeData.length}}</pre> -->
                                                                     <button type="submit"
                                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                         tooltip="Go" (click)="getAllSelectedData()"

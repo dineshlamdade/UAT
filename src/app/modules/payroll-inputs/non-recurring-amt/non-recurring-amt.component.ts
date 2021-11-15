@@ -1,11 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
-import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PayrollInputsService } from '../payroll-inputs.service';
 import { ExcelserviceService } from '../../../core/services/excelservice.service';
-import { iif } from 'rxjs';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 @Component({
 	selector: 'app-non-recurring-amt',
@@ -121,7 +120,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	payrollAreaId: any = 1;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
-		private toaster: ToastrService, private datepipe: DatePipe,
+		private toaster: AlertServiceService, private datepipe: DatePipe,
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
 		if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
@@ -372,7 +371,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 			this.PayrollAreaByPayrollAreaCode(this.selectedEmpData[this.index].payrollArea.payrollAreaCode)
 		} else {
-			this.toaster.warning("", "Please select atleast one employee")
+			this.toaster.sweetalertWarning("Please select atleast one employee")
 		}
 	}
 
@@ -652,7 +651,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
-				this.toaster.success('', 'Transaction data updated sucessfully')
+				this.toaster.sweetalertMasterSuccess('', 'Transaction data updated sucessfully')
 				if (this.selectedEmpData.length == 1) {
 					this.indexId = 1;
 					this.navigateSummary()
@@ -2781,7 +2780,7 @@ this.saveTransactionData.forEach(element => {
 		console.log(JSON.stringify(this.saveTransactionData))
 		this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
 			res => {
-				this.toaster.success("", "Transaction Saved Successfully")
+				this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
                 this.svaeDisabledFlag = true;
 				if(this.showDropdownDisabled){
@@ -2835,7 +2834,7 @@ this.saveTransactionData.forEach(element => {
 			this.NonRecurringTransactionScheduleEMP()
 
 		} else {
-			this.toaster.warning("", "Please select atleast one employee")
+			this.toaster.sweetalertWarning("Please select atleast one employee")
 		}
 	}
 
@@ -3099,7 +3098,7 @@ this.saveTransactionData.forEach(element => {
 		console.log(JSON.stringify(this.updateScheduleData))
 		this.nonRecService.NonRecurringTransactionScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
-				this.toaster.success("", "Transaction Schedule updated successfully")
+				this.toaster.sweetalertMasterSuccess("", "Transaction Schedule updated successfully")
 				if (this.editScheduleFlag) {
 					this.NonRecurringTransactionScheduleEMP()
 				} else {

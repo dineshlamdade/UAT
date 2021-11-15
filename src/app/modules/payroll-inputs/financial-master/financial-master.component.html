@@ -21,6 +21,7 @@
     <div class="tabview-contents" *ngIf="selectedOption == 'single' ">
       <div class="section-body bg-color-white">
         <div class="row pb-0">
+
           <!-- <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
             <label class="text-purple form-label mt-15">Payroll Area</label>
           </div> -->
@@ -31,14 +32,15 @@
               <button type="button" class="btn bg-color-lightgray"> Apprentice </button>
             </div>
           </div> -->
+
            <!-- Employee Selection Dropdown-->
-           <div class="row mt-10"
-           >
-           <div class="col-md-4">
-               <label class="form-label mb-0">Employee Code
-               </label>
+           <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
+            <label class="text-purple form-label mt-15">Employee Code</label>
+          </div>
+           <div class="col-3 pr-0 pl-0">
+            <div class="mt-25 ml-4">
                <select name="EmployeeCode"
-                   class="form-control custom-select"
+                   class="form-control"
                    [(ngModel)]="selectedEmployeeMasterId"
                    [disabled]="showDropdownDisabled"
                    (change)="getSelectedEmployeeCode($event.target.value)">
@@ -50,13 +52,16 @@
                        {{emp.employeeCode}}
                    </option>
                </select>
-
+             </div>
            </div>
-           <div class="col-md-4">
-               <label class="form-label mb-0">Payroll
-                   Area</label>
+           <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1 ml-15">
+            <label class="text-purple form-label mt-15">Payroll Area</label>
+          </div>
+           <div class="col-3 pr-0 pl-0">
+            <div class="mt-25 ml-4">
+              <div class="custom-controls-stacked ml-12">
                <select name="PayrollArea"
-                   class="form-control custom-select"
+                   class="form-control"
                    [(ngModel)]="selectedPayrollArea"
                    (change)="getSelectedPayrollArea($event.target.value)"
                    [disabled]="showDropdownDisabled">
@@ -68,10 +73,11 @@
                        [selected]="selectedPayrollArea == payroll.payrollAreaCode">
                        {{payroll.payrollAreaCode}}</option>
                </select>
+             </div>  
+            </div>   
            </div>
 
-       </div>
-          <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
+          <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1 ml-15">
             <label class="text-purple form-label mt-15">Job Field</label>
           </div>
           <div class="col-2 pr-0 pl-0">
@@ -94,12 +100,6 @@
                   <span class="custom-control-label"><b>Gardner</b></span>
                 </label> -->
               </div>
-            </div>
-          </div>
-          <div class="mt-20 col-2 pr-0 pl-0">
-            <div class="float-right"> <button type="button" tooltip="Compension and Benefit Summary"
-                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
-                <b> <i class="fa fa-file"></i></b>C&B Summary</button>
             </div>
           </div>
         </div>
@@ -214,6 +214,12 @@
                 <span class="ml-10 mt-7"><i class="fa fa-file-excel-o font-18 text-dark-green"
                   tooltip="Export to Excel"></i></span>
             
+                  <div class="mt-20 col-2 pr-0 pl-0">
+                    <div class="float-right"> <button type="button" tooltip="Compension and Benefit Summary"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+                        <b> <i class="fa fa-file"></i></b>C&B Summary</button>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -385,7 +391,7 @@
                 <tr class="p-selectable-row" *ngIf="headsFlag[rowIndex]">
                   <td><span>{{summary.srNo}} </span></td>
                   <td class="bg-color-light_gray">
-                    <span class="text-link" (click)="ViewHistory(template,summary.id,summary.headType)">{{summary.headDescription}}</span>
+                    <span class="text-link" (click)="ViewHistory(template,summary.id,summary)">{{summary.headDescription}}</span>
                   </td>
                  
                   <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}">{{ summary.headType }} </span>
@@ -855,7 +861,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h5 class="modal-title" id="UploadModalLabel">History</h5>
+    <h5 class="modal-title" id="UploadModalLabel">Head History</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
@@ -864,9 +870,17 @@
     <div class="card">
       <div class="card-body p-0 m-0">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <label class="form-label">Head Name</label>
-            <input type="text" class="form-control" disabled />
+            <input type="text" class="form-control" [(ngModel)]="headDescriptionName" disabled />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Head Type</label>
+            <input type="text" class="form-control" [(ngModel)]="headType" disabled />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Payroll Area </label>
+            <input type="text" class="form-control" [(ngModel)]="selectedPayrollArea" disabled />
           </div>
         </div>
         <div class="row clearfix mt-10">
@@ -879,29 +893,20 @@
                     <th class="wd-15 font700">To Date</th>
                     <th class="wd-15 font700">Opening Value</th>
                     <th class="wd-15 font700">Change Value</th>
-                    <th class="wd-10 font700">Change %</th>
-                    <th class="wd-15 font700">Closing Value</th>
+                    <th class="wd-10 font700">Change Percentage</th>
+                    <th class="wd-15 font700">Closing closingAmount</th>
                     <th class="wd-15 font700">Unit of Measure</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>12-Apr-2018</td>
-                    <td>12-Apr-2019</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                  </tr>
-                  <tr>
-                    <td>14-Mar-2018</td>
-                    <td>14-Mar-2019</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
-                    <td>0.0</td>
+                  <tr *ngFor="let data of historyArrayData;">
+                    <td>{{data.fromdate}}</td>
+                    <td>{{data.todate}}</td>
+                    <td>{{data.openingAmount | number :'1.2-2'}}</td>
+                    <td>{{data.changeValue | number :'1.2-2'}}</td>
+                    <td>{{data.changePercenatge | number :'1.2-2'}}</td>
+                    <td>{{data.openingAmount | number :'1.2-2'}}</td>
+                    <td>{{data.uom}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -917,6 +922,7 @@
     </button>
   </div>
 </ng-template>
+
 <ng-template #template2>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">

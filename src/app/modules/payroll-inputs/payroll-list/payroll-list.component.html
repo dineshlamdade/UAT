@@ -4,148 +4,209 @@
     <app-header></app-header>
     <ol class="breadcrumb ">
         <li><a>Payroll Input</a></li>
-        <li class="active">
+        <!-- <li class="active">
             <a [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> Payroll List</a>
-        </li>
+        </li> -->
     </ol>
     <div class="section-body mt-3">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <div class="row clearfix">
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a (click)="navigateToFinancialMaster()" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-list"></i>
-                                        <span>Financial Master</span>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <a (click)="navigateToFinancialMaster()" href="javascript:void(0)">
+                                        <i class="fa fa-list font-30"></i>
+                                        <div class=" font-12 font900">
+                                            <div class="custom_Label_badge">
+                                                Financial Master
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <a (click)="navigateToNRAmt()" href="javascript:void(0)" class="">
+                                        <i class="fas fa-money-bill-wave font-30"></i>
+                                        <div class=" font-12 font900">
+                                            <div class="custom_Label_badge">
+                                                Non-Recurring Amount
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <a (click)="navigateToNRQty()" href="javascript:void(0)" class=" ">
+                                        <i class="fas fa-coins font-30"></i>
+                                        <div class=" font-12 font900">
+                                            <div class="custom_Label_badge">
+                                                Non-Recurring Quantity
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <a (click)="navigateToGarnishmentApplication()" href="javascript:void(0)" class="" tooltip="Non-Recurring Garnishment">
+                                        <i class="fas fa-people-carry font-30"></i>
+                                        <div class=" font-12 font900">
+                                            <div class="custom_Label_badge">
+                                                Garnishment
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text"><i
+                                        class="fas fa-hands font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            Loan
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <i class="far fa-calendar-alt font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            Attendance
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <i class="fas fa-hand-holding-usd font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            Investment
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <i class="fas fa-wallet font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            Asset
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <i class="fas fa-chart-line font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            ESOP
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <i class="fa fa-user-circle-o font-30"></i>
+                                    <div class=" font-12 font900">
+                                        <div class="custom_Label_badge">
+                                            Hold & Release
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="card  align-items-center align-items-stretch border-0 text-number-card card-height">
+
+                                <div class="col-12 py-3 bg-primary rounded-right text-number-card-text">
+                                    <a (click)="navigateToGarnishmentApplication()" href="javascript:void(0)" class="">
+                                        <i class="far fa-question-circle font-30"></i>
+                                        <div class=" font-12 font900">
+                                            <div class="custom_Label_badge">
+                                                Query
+                                            </div>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a (click)="navigateToNRAmt()" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-money"></i>
-                                        <span>Non-Recurring Amount</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a (click)="navigateToNRQty()" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-money"></i>
-                                        <span>Non-Recurring Quantity</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <div class="ribbon-box psgreen"></div>
-                                    <a (click)="navigateToGarnishmentApplication()" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-university"></i>
-                                        <span>Non Recurring Garnishment</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a  href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class=" fa fa-file-text"></i>
-                                        <span>Loan</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a [routerLink]="['/PayrollInputs/attendance']" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-clock-o"></i>
-                                        <span>Attendance</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a  href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-dollar"></i>
-                                        <span>Investment</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a  href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-outdent"></i>
-                                        <span>Asset</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a  href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-user-circle-o"></i>
-                                        <span>ESOP</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <a  href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-user-circle-o"></i>
-                                        <span>Hold & Release</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-2">
-                            <div class="card bg-card">
-                                <div class="card-body">
-                                    <!-- (click)="navigateToQuery()" -->
-                                    <a 
-                                    (click)="smallpopup(template);navigateToQuery()" href="javascript:void(0)"
-                                        class="my_sort_cut text-muted">
-                                        <i class="fa fa-question-circle"></i>
-                                        <span>Query</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <br>
-                    <div class="row clearfix">
+                    <div class="row ">
 
                         <div class="col-md-12">
 
-                            <p-table [value]="users" [rows]="10" [paginator]="true"
-                                [rowsPerPageOptions]="[5,10,25,50,100,200]">
+                            <p-table [value]="users" [rows]="10" [paginator]="true" #dt1
+                                [rowsPerPageOptions]="[5,10,25,50,100,200]"
+                                [globalFilterFields]="['employeeCode','fullName','payrollAreaCode']">
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">
+                                                    <span class="p-input-icon-left p-ml-auto">
+                                                        <i class="pi pi-search" style="top: 9px !important;"></i>
+                                                        <input pInputText type="text"
+                                                            (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                            placeholder="Search" />
+                                                    </span>
+                                                    <i
+                                                        class="fa fa-file-excel-o text-dark-green ml-2 mt-1  font-24"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
 
                                 <ng-template pTemplate="header">
                                     <tr>
@@ -158,9 +219,9 @@
                                         </th>
                                         <th rowspan="2">
                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                Employee Code
+                                                Emp. Code
                                                 <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="employeeCode"></p-sortIcon>
+                                                    <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
                                                     <p-columnFilter type="text" field="employeeCode" display="menu"
                                                         class="p-ml-auto"></p-columnFilter>
                                                 </div>
@@ -168,9 +229,9 @@
                                         </th>
                                         <th rowspan="2">
                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                Employee Name
+                                                Emp. Name
                                                 <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="fullName"></p-sortIcon>
+                                                    <p-sortIcon field="fullName" pSortableColumn="fullName"></p-sortIcon>
                                                     <p-columnFilter type="text" field="fullName" display="menu"
                                                         class="p-ml-auto"></p-columnFilter>
                                                 </div>
@@ -180,7 +241,67 @@
                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                 Payroll Area
                                                 <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode"></p-sortIcon>
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Comapny Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Establishment
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Department
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Emp. Type
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Grade
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Designation
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
                                                     <p-columnFilter type="text" field="payrollAreaCode" display="menu"
                                                         class="p-ml-auto"></p-columnFilter>
                                                 </div>
@@ -201,6 +322,24 @@
                                                 class="form-lable mb-0">{{user1.fullName}}</label></td>
                                         <td class="bg-color-light_gray">
                                             <label class="form-lable mb-0">{{user1.payrollAreaCode}} </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -226,8 +365,8 @@
 <ng-template #template>
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-            aria-label="Close"><span aria-hidden="true">×</span></button>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
     </div>
     <div class="modal-body">
         <div class="card">
@@ -238,18 +377,14 @@
                             <div class="custom-controls-stacked">
                                 <span class="d-flex"> <label class="form-label mr-55">On
                                         Behalf of Employee's</label>
-                                    <label
-                                        class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input"
-
-                                            id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="BehalfOfEmployee"
+                                            name="querydata1" (click)="onBehalf('yes')">
                                         <span class="custom-control-label">Yes</span>
                                     </label>
-                                    <label
-                                        class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input"
-
-                                            id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="BehalfOfEmployee"
+                                            name="querydata1" (click)="onBehalf('no')">
                                         <span class="custom-control-label">No</span>
                                     </label>
                                 </span>
@@ -259,16 +394,16 @@
                             <div class="custom-controls-stacked">
                                 <span class="d-flex"> <label class="form-label mr-15">Same
                                         Content For All Employee</label>
-                                    <label
-                                        class="custom-control custom-radio custom-control-inline ">
-                                        <input type="radio" class="custom-control-input" [disabled]='sameContentViewFlag'
-                                            id="sameContent"  name="querydata2" (click)="sameContent('yes')">
+                                    <label class="custom-control custom-radio custom-control-inline ">
+                                        <input type="radio" class="custom-control-input"
+                                            [disabled]='sameContentViewFlag' id="sameContent" name="querydata2"
+                                            (click)="sameContent('yes')">
                                         <span class="custom-control-label">Yes</span>
                                     </label>
-                                    <label
-                                        class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input"  [disabled]='sameContentViewFlag'
-                                             id="sameContent"  name="querydata2" (click)="sameContent('no')">
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input"
+                                            [disabled]='sameContentViewFlag' id="sameContent" name="querydata2"
+                                            (click)="sameContent('no')">
                                         <span class="custom-control-label">No</span>
                                     </label></span>
                             </div>
@@ -286,11 +421,9 @@
             [disabled]="onBehalfValue == '' || sameContentValue == '' &&  selectedEmpLength > 1"
             [ngClass]="{'disabled-btn-bg-green' :onBehalfValue == '' || sameContentValue == '' &&  selectedEmpLength > 1 }"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
-            class="fa fa-arrow-circle-o-right" aria-hidden="true"
-              ></i></b> Proceed</button>
-        <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
-            data-dismiss="modal" aria-label="Close"
-            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
-                    class="fa fa-times"></i></b> Cancel</button>
+                    class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="modalRef.hide()" data-dismiss="modal" aria-label="Close"
+            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i class="fa fa-times"></i></b>
+            Cancel</button>
     </div>
 </ng-template>

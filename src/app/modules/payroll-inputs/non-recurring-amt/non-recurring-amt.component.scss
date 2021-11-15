@@ -20,6 +20,7 @@
     background: #a7adaf !important;
 }
 
+
 .disabled-btn{
     background: #a7adaf !important;
 }
@@ -30,6 +31,13 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
+}
+.p-input-icon-left>i:first-of-type {
+    top: 25px;
+    z-index: 1;
+    right: 36px;
+    color: #6c757d;
+    position: absolute;
 }
 
 /* Firefox */
