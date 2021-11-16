@@ -189,10 +189,20 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    documentRemarkList
+    documentRemarkList,
+    psid
   ) {
+    debugger
+    this.investmentMasterApprovalService.getMasterDocumentApprovalRemarkList(
+      psid,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    });
     console.log('documentDetail::', documentRemarkList);
-    this.documentRemarkList = documentRemarkList;
+    // this.documentRemarkList = documentRemarkList;
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-s' })
@@ -202,15 +212,26 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   // -------------- Master Remark Modal ---------------------------
   public masterRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
-    documentRemarkList
+    documentRemarkList,
+    masterId
   ) {
+    debugger
+    this.investmentMasterApprovalService.getMasterApprovalRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    });
     console.log('documentRemarkDetail::', documentRemarkList);
-    this.documentRemarkList = documentRemarkList;
+    // this.documentRemarkList = documentRemarkList;
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+  getLicMasterApprovalRemarkList
 
   // ----------- Custom sort for Table -------------------------
   customSort(event: SortEvent) {

@@ -42,4 +42,17 @@ export class InvestmentTransactionApprovalService {
       )
     );
   }
+  public getTransactionDocumentApprovalRemarkList(psId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'lic-transaction/GetRemarkTransactionDocument/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  
+  public getTransactionApprovalRemarkList(transactionId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'lic-transaction/GetRemarkTransaction/' + transactionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 }

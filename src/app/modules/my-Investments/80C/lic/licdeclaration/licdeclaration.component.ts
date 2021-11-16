@@ -73,6 +73,7 @@ export class LicdeclarationComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
+  public EditGrandTotalAmount:any;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -1419,6 +1420,7 @@ console.log( this.editTransactionUpload);
       (res) => {
         
         console.log('edit Data:: ', res);
+        this.EditGrandTotalAmount = res.data.results;
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
@@ -1591,12 +1593,11 @@ console.log( this.editTransactionUpload);
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    lictransactionID
   ) {
-    
+    debugger
     this.Service.getLicRemarkList(
-      transactionID,
-      psId
+      lictransactionID,
     ).subscribe((res) => {
       console.log('docremark', res);
       
