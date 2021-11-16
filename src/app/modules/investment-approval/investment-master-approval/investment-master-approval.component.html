@@ -458,7 +458,8 @@
                                         masterRemarkModal(
                                           template3,
                                           masterInfo.masterDetail
-                                            .masterRemarkDetailList
+                                            .masterRemarkDetailList,
+                                            masterInfo.masterDetail.masterId
                                         )
                                       "
                                       class="
@@ -1123,7 +1124,9 @@
                                                         docRemarkModal(
                                                           template3,
                                                           documentDetailIndex,
-                                                          documentDetail.documentRemarkDetailList
+                                                          documentDetail.documentRemarkDetailList,
+                                                          documentDetail?.proofSubmissionId
+
                                                         )
                                                       "
                                                       class="
@@ -1336,3 +1339,4 @@
     </div>
   </div>
 </div>
+ 

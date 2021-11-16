@@ -283,15 +283,50 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    documentRemarkList
+    documentRemarkList,
+    psid
   ) {
+    debugger
+    this.investmentTransactionApprovalService.getTransactionDocumentApprovalRemarkList(
+      psid,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    });
     console.log('documentDetail::', documentRemarkList);
-    this.documentRemarkList = documentRemarkList;
+    // this.documentRemarkList = documentRemarkList;
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+
+  // -------------- Master Remark Modal ---------------------------
+  public transactionRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    documentRemarkList,
+    data,
+    transactionId
+  ) {
+    debugger
+    this.investmentTransactionApprovalService.getTransactionApprovalRemarkList(
+      transactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    });
+    console.log('documentRemarkDetail::', documentRemarkList);
+    // this.documentRemarkList = documentRemarkList;
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+  // getLicMasterApprovalRemarkList
 
   //---------------- Edit Document Detail for Approval or Discard ---------------------------
   public editDocument(docDetail) {
