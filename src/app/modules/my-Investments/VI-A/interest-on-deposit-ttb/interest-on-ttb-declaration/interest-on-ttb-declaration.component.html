@@ -16,7 +16,7 @@
       <select
       name="bankName"
       class="form-control custom-select"
-      (change)="selectedTransactionBankName($event.target.value)"
+      (change)="selectedTransactionLenderName($event.target.value)"
     >
       <option
         *ngFor="let bankName of bankNameList"
@@ -28,6 +28,18 @@
     </select>
     </div>
 
+    <div class="ml-2 pl-1 pr-0">
+      <label class="form-label mt-2 pl-10">Loan Account No</label>
+    </div>
+    <div class="col-2">
+      <select name="loanAccountNumber" class="form-control custom-select" (change)="selectedPolicy($event.target.value)">
+        <option selected value=''>Select </option>
+        <option *ngFor="let transactionPolicy of AccountlenderNameList" [value]="transactionPolicy.value"
+          [selected]="transactionPolicy.value == globalPolicy">
+          {{ transactionPolicy.label }}
+        </option>
+      </select>
+    </div>
   </div>
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
@@ -197,14 +209,14 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
-                      
+
                       (change)="
                       onChangeDocumentRemark(
                           summary, i,
                           $event
                         )
                       "
-                    
+
                     />
                     <div
                       _ngcontent-ykc-c443=""
@@ -513,7 +525,7 @@
             <div class="card">
               <div class="mb-0">
                 <h3 class="font-14 text-purple font-bold">
-                  Document
+                  Document 123
                 </h3>
               </div>
               <div class="col-12 col-md-12 col-sm-12">
@@ -904,11 +916,11 @@
              <!--      <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length == 1"> -->
                     <!-- {{ documentSummary.bankName}} -->
                     <!-- {{ documentSummary.accountNo}} -->
-                 <!--    {{ documentSummary.interest80TTBankList[0].bankName }} 
+                 <!--    {{ documentSummary.interest80TTBankList[0].bankName }}
                     {{ documentSummary.interest80TTBankList[0].accountNumber }}
                   </td> -->
                   <td>
-                    
+
                   </td>
                   <td>
                     <span
@@ -1998,10 +2010,10 @@
       </div>
       <div class="col-sm-6 col-md-6 align-right">
           <label class="form-label">Document Type</label>
-          
+
           {{this.viewDocumentType}}
       </div>
-    
+
       </div>
       <div class="align-right">
         <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>

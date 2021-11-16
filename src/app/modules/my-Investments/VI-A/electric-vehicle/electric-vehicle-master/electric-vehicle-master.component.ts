@@ -71,7 +71,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
-
+  public isShowUpdate = false;
+  public isShowSave = true;
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
@@ -383,8 +384,8 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.documentPassword.length; i++) {
-        if(this.documentPassword[i] != undefined){
+      for (let i = 0; i <= this.remarkList.length; i++) {
+        if(this.remarkList[i] == undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -455,6 +456,7 @@ console.log('this.isEdit', this.isEdit);
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.documentDataArray = [];
               this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
@@ -504,9 +506,7 @@ console.log('this.isEdit', this.isEdit);
                 });
               }
               this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
-              );
+                'Record saved Successfully.', '');
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);
             }
@@ -523,9 +523,11 @@ console.log('this.isEdit', this.isEdit);
           }
         }
         );
-
+        this.isShowUpdate = false;
+        this.isShowSave = true;
         this.Index = -1;
         formDirective.resetForm();
+        this.documentDataArray = [];
         this.form.reset();
         this.showUpdateButton = false;
         this.paymentDetailGridData = [];
@@ -586,6 +588,8 @@ console.log('this.isEdit', this.isEdit);
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
+    this.isShowUpdate = true;
+    this.isShowSave = false;
     this.isEdit = true;
     this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
@@ -681,8 +685,13 @@ console.log('this.isEdit', this.isEdit);
     this.isCancel = true;
   }
 
+
   //---------- On View Cancel -------------------
   resetView() {
+    this.isShowUpdate = false;
+    this.isShowSave =  true;
+    this.documentArray = [];
+    this.isVisibleTable = false
     this.form.reset();
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
