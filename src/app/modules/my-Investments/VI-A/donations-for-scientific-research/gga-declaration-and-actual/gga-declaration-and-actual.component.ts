@@ -388,7 +388,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.submitted = true;
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -480,6 +480,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.Index = -1;
     formDirective.resetForm();
     this.eightyGGAForm.reset();
+    this.documentDataArray = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';

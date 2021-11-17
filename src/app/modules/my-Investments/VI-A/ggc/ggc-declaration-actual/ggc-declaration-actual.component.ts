@@ -398,7 +398,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.submitted = true;
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -499,6 +499,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.Index = -1;
     formDirective.resetForm();
     this.eightyGGCForm.reset();
+    this.documentDataArray = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -1059,7 +1060,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1336,7 +1337,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
   public uploadUpdateTransaction() {
 
     for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1466,7 +1467,9 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-      this.resetEditVariable()
+      this.resetEditVariable();
+      this.editdDocumentDataArray = [];
+
   }
 
     resetEditVariable() {

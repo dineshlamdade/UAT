@@ -488,25 +488,27 @@ export class NpsMasterComponent implements OnInit {
     console.log('this.isEdit', this.isEdit);
     //Sutej chenges
     // console.log('urlArray.length', this.urlArray.length);
-    if(!this.isEdit){
-    if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) {
- /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
-      this.alertService.sweetalertWarning(
-        'National Pension Scheme Document needed to Create Master.'
-      );
-      return;
-    }
-  }
 
-  if(this.isEdit){
-    if (this.masterfilesArray.length === 0 &&  this.urlArray.length === 0 ) {
- /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
-      this.alertService.sweetalertWarning(
-        'National Pension Scheme Document needed to Create Master.'
-      );
-      return;
+
+    if(!this.isEdit){
+      if (this.masterfilesArray.length == 0 && this.documentArray.length == 0 ) {
+   /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
+        this.alertService.sweetalertWarning(
+          'National Pension Scheme Document needed to Create Master.'
+        );
+        return;
+      }
     }
-  }
+
+    if(this.isEdit){
+      if (this.masterfilesArray.length == 0 &&  this.urlArray.length == 0 ) {
+   /*  if (this.masterfilesArray.length === 0 && this.documentArray.length === 0 ) { */
+        this.alertService.sweetalertWarning(
+          'National Pension Scheme Document needed to Create Master.'
+        );
+        return;
+      }
+    }
   // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
@@ -517,8 +519,8 @@ export class NpsMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
 
-      for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] == undefined){
+      for (let i = 0; i < this.remarkList.length; i++) {
+        if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -656,6 +658,7 @@ export class NpsMasterComponent implements OnInit {
         });
 
       this.Index = -1;
+      this.documentArray = [];
       formDirective.resetForm();
       this.documentDataArray = [];
       this.form.reset();
@@ -767,7 +770,7 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-
+this.documentArray = [];
    // this.isEdit = true;
     this.scrollToTop();
     this.npsService.getNpsMaster().subscribe((res) => {
