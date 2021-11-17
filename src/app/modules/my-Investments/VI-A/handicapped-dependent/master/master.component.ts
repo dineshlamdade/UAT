@@ -320,7 +320,7 @@ export class MasterComponent implements OnInit {
     }
   }
 
-  for (let i = 0; i <= this.documentPassword.length; i++) {
+  for (let i = 0; i < this.documentPassword.length; i++) {
     if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
@@ -551,7 +551,10 @@ export class MasterComponent implements OnInit {
 
   // On Edit Cancel
   resetView() {
+    this.isVisibleTable = false;
     this.form.reset();
+    this.documentDataArray  = []; 
+    this.documentArray = [];
     this.form.get('isClaiming80U').setValue(0);
     this.urlArray = [];
     this.paymentDetailGridData = [];

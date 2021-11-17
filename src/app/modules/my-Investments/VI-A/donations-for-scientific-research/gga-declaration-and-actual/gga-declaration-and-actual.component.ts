@@ -387,8 +387,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -481,6 +481,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     formDirective.resetForm();
     this.eightyGGAForm.reset();
     this.documentDataArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -985,8 +987,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   upload() {
 
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1131,8 +1133,12 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
     // this.eightyGGAForm.get('reactiveCheckbox').setValue(null);
   }
@@ -1238,8 +1244,8 @@ this.documentArray = [];
 
      //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1374,6 +1380,9 @@ this.documentArray = [];
         }
       });
       this.resetEditVariable()
+      this.editremarkList = [];
+      this.editdocumentPassword = [];
+      this.editdDocumentDataArray = [];
   }
 
     resetEditVariable() {

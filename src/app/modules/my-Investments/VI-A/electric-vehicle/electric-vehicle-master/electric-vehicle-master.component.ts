@@ -367,7 +367,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
 console.log('this.isEdit', this.isEdit);
 
-  if(!this.isEdit){
+  if(!this.isEdit){ 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
