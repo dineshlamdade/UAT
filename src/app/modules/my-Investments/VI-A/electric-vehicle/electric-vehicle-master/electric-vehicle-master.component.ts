@@ -384,8 +384,8 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] == undefined){
+      for (let i = 0; i < this.remarkList.length; i++) {
+        if(this.remarkList[i] == undefined || this.remarkList[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",

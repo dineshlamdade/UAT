@@ -1513,8 +1513,8 @@ export class DeclarationAndActualComponent implements OnInit {
   upload() {
 
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1697,6 +1697,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
     this.priviousEmpFormArray.reset();
     this.currEmpFormArray.reset();
     }

@@ -314,7 +314,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] == undefined){
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -422,6 +422,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
+      this.documentDataArray = [];
       // this.form.get('active').setValue(true);
       // this.form.get('ecs').setValue(0);
       this.showUpdateButton = false;

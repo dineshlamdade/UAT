@@ -321,7 +321,7 @@ export class MasterComponent implements OnInit {
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] == undefined){
+    if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -413,6 +413,7 @@ export class MasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('isClaiming80U').setValue(0);
+      this.documentDataArray  = [];
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
