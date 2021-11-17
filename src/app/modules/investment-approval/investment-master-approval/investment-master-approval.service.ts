@@ -60,4 +60,17 @@ export class InvestmentMasterApprovalService {
       formData
     );
   }
+
+  public getMasterDocumentApprovalRemarkList(psId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'licmaster-detail/GetDocumentRemarkMaster/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  public getMasterApprovalRemarkList(masterId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'licmaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 }

@@ -403,7 +403,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     // this.getTransactionFilterData(
     //   this.globalInstitution
     // );
-    this.interestOnTtbService.getElectricVehicleNoList(this.globalBank,policy).subscribe((res) => {
+    this.interestOnTtbService.getAccountNoList(this.globalBank,policy).subscribe((res) => {
       console.log('getTransactionFilterData', res);
       this.transactionDetail =
       res.data.results[0].interestOnSavingDeposit80TTTransactionList;
@@ -973,7 +973,7 @@ selectedTransactionLenderName(lenderName: any) {
 
   upload() {
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1480,20 +1480,7 @@ this.documentArray = [];
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
 
-          })
-        });
         console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
         this.initialArrayIndex = [];
@@ -1518,6 +1505,20 @@ this.documentArray = [];
               }
             );
           }
+        });
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
         });
       });
   }
@@ -1546,7 +1547,7 @@ this.documentArray = [];
 
   public uploadUpdateTransaction() {
     for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1717,6 +1718,7 @@ this.documentArray = [];
       });
     this.currentFileUpload = null;
     this.editfilesArray = [];
+    this.editdDocumentDataArray = [];
   }
 
   downloadTransaction(proofSubmissionId) {

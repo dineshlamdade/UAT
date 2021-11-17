@@ -121,7 +121,7 @@ export class InterestOnTtbService {
 
 
 
-  getElectricVehicleNoList(lenderName:any, id) {
+  getAccountNoList(lenderName:any, id) {
     return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/'+ lenderName + '/' + id )
     .pipe(map((res: any) => {
       return res;

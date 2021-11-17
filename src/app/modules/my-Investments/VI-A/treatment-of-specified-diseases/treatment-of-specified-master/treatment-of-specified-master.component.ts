@@ -275,7 +275,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
               'status' : element.status,
               'lastModifiedBy' : element.lastModifiedBy,
               'lastModifiedTime' : element.lastModifiedTime,
-    
+
             })
           });
           this.documentArray.push({
@@ -287,7 +287,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
     });
@@ -302,7 +302,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       return;
     }
     console.log('this.isEdit', this.isEdit);
-   
+
     if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
@@ -310,11 +310,11 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         'Treatment Of Specified Document needed to Create Master.'
       );
       return;
-    } 
+    }
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+    if(this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -368,11 +368,11 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
               this.masterGridData = res.data.results;
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
@@ -383,12 +383,12 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
@@ -399,7 +399,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
@@ -527,9 +527,9 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
               'status' : element.status,
               'lastModifiedBy' : element.lastModifiedBy,
               'lastModifiedTime' : element.lastModifiedTime,
-  
+
             })
-            
+
           });
           console.log("documentArray::",this.documentArray);
           this.isVisibleTable = true;
@@ -647,7 +647,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

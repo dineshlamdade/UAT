@@ -1012,7 +1012,7 @@ selectedTransactionLenderName(lenderName: any) {
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1728,6 +1728,20 @@ selectedTransactionLenderName(lenderName: any) {
               );
             }
           );
+        });
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
         });
       });
 

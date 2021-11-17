@@ -412,7 +412,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       });
 
     this.Index = -1;
-    formDirective.resetForm();    
+    formDirective.resetForm();
     this.physicallyHandicappedForm.reset();
     this.filesArray = [];
     this.submitted = false;
@@ -421,7 +421,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.documentRemark = '';
     this.masterfilesArray = [];
     this.urlArray = [];
- 
+
     //}
   }
 
@@ -553,7 +553,7 @@ this.documentArray = [];
         this.editdDocumentDataArray.push(remarksPasswordsDto);
       }
     }
-    
+
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
@@ -1257,20 +1257,21 @@ unformatAmount(amount) {
 //----------- On change Transactional Line Item Remark --------------------------
 public onChangeDocumentRemark(transactionDetail, transIndex, event) {
   console.log('event.target.value::', event.target.value);
-  
+
  console.log('this.transactionDetail', this.transactionDetail);
   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
   // console.log('index::', index);
 
   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
- 
+
 
 }
 
 
   upload() {
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
+
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1443,8 +1444,11 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.documentDataArray = [];
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+
     this.globalSelectedAmount = '0.00';
     this.documentRemark = '';
   // }
@@ -1694,20 +1698,7 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
         this.limit = res.data.results[0].limit;
         this.severity = res.data.results[0].severity;
         this.proofSubmissionId = res.data.results[0].proofSubmissionId;
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
+
         console.log('documentArrayTest',this.documentArray);
         // this.documentDetailList = res.data.results[0].documentInformation;
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
@@ -1735,6 +1726,21 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
             element.actualAmount
           );
         });
+
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+        });
       }
     });
   }
@@ -1744,7 +1750,7 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1819,7 +1825,7 @@ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");
