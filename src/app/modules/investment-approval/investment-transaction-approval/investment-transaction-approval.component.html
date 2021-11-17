@@ -391,10 +391,11 @@
                                             <b>
                                               <i
                                                 (click)="
-                                                  docRemarkModal(
+                                                  transactionRemarkModal(
                                                     template3,
                                                     transactionIndex,
-                                                    transaction.documentRemarkDetailList
+                                                    transaction.documentRemarkDetailList,
+                                                    transaction?.transactionId
                                                   )
                                                 "
                                                 class="
@@ -1172,7 +1173,8 @@
                                                 docRemarkModal(
                                                   template3,
                                                   documentDetailIndex,
-                                                  documentDetail.documentRemarkDetailList
+                                                  documentDetail.documentRemarkDetailList,
+                                                  documentDetail?.proofSubmissionId
                                                 )
                                               "
                                               class="
