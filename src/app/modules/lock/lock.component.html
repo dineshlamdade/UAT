@@ -95,7 +95,9 @@
                   <!-- <app-supplementry-cycle *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-supplementry-cycle> -->
                   <app-supplementry-cycle *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-supplementry-cycle>
                 </div>
+
                 <label class="nav" for="Master">
+
                   <span>As & When/ Supplementry Cycle </span>
                 </label>
 
@@ -106,6 +108,7 @@
                 </div>
 
                 <label class="nav" for="Declaration">
+
                   <span>Business Year</span>
                 </label>
 
@@ -113,6 +116,8 @@
                 <input name="nav" type="radio" class="about-radio" id="claimtax" (change)="changeTabIndex(3)"
                   [checked]="tabIndex == 3" />
                 <div class="fourtabs  about-page ">
+
+                  <!-- <app-employee #licdeclaration [data]="data" *ngIf="tabIndex == 3"></app-employee> -->
                   <app-summary #licdeclaration [data]="data" *ngIf="tabIndex == 3"></app-summary>
                 </div>
                 <label class="nav" for="claimtax">

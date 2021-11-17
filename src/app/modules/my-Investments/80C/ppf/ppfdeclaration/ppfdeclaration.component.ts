@@ -27,6 +27,7 @@ export class PPFDeclarationComponent implements OnInit {
   @Input() public data: any;
   documentRemarkList: any;
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -726,7 +727,8 @@ export class PPFDeclarationComponent implements OnInit {
 
   this.editTransactionUpload[j].groupTransactionList[
     i
-  ].declaredAmount = this.declarationService.declaredAmount;
+  ].actualAmount = this.declarationService.declaredAmount;
+  console.log( this.editTransactionUpload);
   const formatedDeclaredAmount = this.numberFormat.transform(
     this.editTransactionUpload[j].groupTransactionList[i].declaredAmount,
   );
@@ -750,6 +752,8 @@ export class PPFDeclarationComponent implements OnInit {
   });
 
   this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+  this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
   console.log(
     'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
   );
@@ -1274,6 +1278,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
+
 console.log('this.transactionDetail', this.transactionDetail);
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1297,6 +1302,7 @@ console.log('this.transactionDetail', this.transactionDetail);
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 
@@ -1459,7 +1465,7 @@ console.log('this.transactionDetail', this.transactionDetail);
 
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -1590,6 +1596,8 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
@@ -1616,7 +1624,7 @@ console.log('this.transactionDetail', this.transactionDetail);
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      res.documentDetailList.forEach(element => {
+      res?.documentDetailList?.forEach(element => {
         // if(element!=null)
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,

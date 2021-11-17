@@ -214,27 +214,8 @@
                     </div>
                     <div class="">
                         <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[10,25,50,100,200]"
-                        #dt [globalFilterFields]="['periodName','fromDate','toDate','businessCycleDefinition.cycleName','oldPeriodName'
-                       ,'remark']">
+                        [rowsPerPageOptions]="[10,25,50,100,200]">
                             <ng-template pTemplate="header">
-
-                              <br>
-              
-              <div style="text-align: right;display: flex;">
-                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                <input type="text" pInputText size="50" placeholder="Search"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')"
-                    style="width: 203px;">
-                    &nbsp;&nbsp;&nbsp;
-                    <a tooltip="Download" style="cursor: pointer"
-                    (click)="exportAsXLSX()"><i
-                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                        aria-hidden="true"></i></a>
-              </div>
-
-              <br>
-              <br>
                                 <tr>
                                     <th rowspan="2" >
                                         Sr. No.

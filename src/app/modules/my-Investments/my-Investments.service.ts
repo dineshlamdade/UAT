@@ -322,8 +322,8 @@ public apiUrl = environment.baseUrl8085;
     }));
   }
 
-  public getLicRemarkList(psId: String, policyNo: String,): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'lic-transaction/GetRemark/' + psId + '/' + policyNo)
+  public getLicRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/GetRemarkTransaction/' + psId)
     .pipe(map((res: any) => {
       return res;
     }));

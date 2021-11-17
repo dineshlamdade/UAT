@@ -6,7 +6,7 @@ import { CompanySettingsService } from '../../company-settings.service';
 import { SaveBusinessYear } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ExcelserviceService } from '../../../excel_service/excelservice.service';
+
 
 @Component( {
   selector: 'app-business-year',
@@ -56,23 +56,8 @@ export class BusinessYearComponent implements OnInit {
 
   updateFlag: boolean;
   BusinessyearList = [];
-  header: any[];
-  excelData: any[];
-  getBusinessYears: any;
-  currentYear: number;
 
-  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, 
-    private formBuilder: FormBuilder, private alertService: AlertServiceService, private modalService: BsModalService,
-    private excelservice: ExcelserviceService ) {
-   
-      this.getBusinessYears = []
-      this.currentYear  = new Date().getFullYear();
-      this.BusinessYear.forEach(ele =>{
-        if(parseInt(ele.label) <= this.currentYear){
-          this.getBusinessYears.push(ele)
-        }
-      })
-      
+  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService, private modalService: BsModalService ) {
 
   }
 
@@ -96,14 +81,12 @@ export class BusinessYearComponent implements OnInit {
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, 'dd-MMM' );
       console.log( JSON.stringify( addBusinessYear ) );
       this.companySetttingService.AddBusinessYear( addBusinessYear ).subscribe( ( res: any ) => {
-
-        this.alertService.sweetalertMasterSuccess(res.status.message, "" );
-        // if ( res.status.code == "503" ) {
-        //   this.alertService.sweetalertError( res.status.message );
-        // } else {
-        //   this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        if ( res.status.code == "503" ) {
+          this.alertService.sweetalertError( res.status.message );
+        } else {
+          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
    
-        // }
+        }
 
 
 
@@ -140,7 +123,7 @@ export class BusinessYearComponent implements OnInit {
     this.BusinessyearList = [];
     this.companySetttingService.getAllBusinessYear().subscribe( res => {
       this.BusinessyearList = res.data.results;
-      //console.log( 'Business year list', this.BusinessyearList );
+      console.log( 'Business year list', this.BusinessyearList );
     },
       ( error: any ) => {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -191,7 +174,7 @@ export class BusinessYearComponent implements OnInit {
 
     this.companySetttingService.GetBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]
-       // console.log( response );
+        console.log( response );
         this.BusinessYearform.patchValue( { id: response.data.results[0].businessYearDefinitionId } );
         this.BusinessYearform.patchValue( { description: response.data.results[0].description } );
         this.BusinessYearform.patchValue( { fromDate: response.data.results[0].fromDate } );
@@ -226,26 +209,5 @@ export class BusinessYearComponent implements OnInit {
       template,
       Object.assign( {}, { class: 'gray modal-md' } )
     );
-  }
-
-  exportAsXLSX(): void {
-    this.excelData = [];
-    this.header = []
-    this.header =["Description","Year Definition"]
-    //this.excelData = this.attendanceData
-    this.BusinessyearList.forEach(element => {
-
-
-			let obj = {
-				"Description": element.description,
-				"Year Definition": element.fullFromDate + ' ' + 'To' + ' '  + element.fullToDate,
-        
-
-
-			}
-			this.excelData.push(obj)
-		});
-   // console.log(this.excelData)
-    this.excelservice.exportAsExcelFile(this.excelData, 'Business Year Defination','Business Year Defination',this.header);
   }
 }

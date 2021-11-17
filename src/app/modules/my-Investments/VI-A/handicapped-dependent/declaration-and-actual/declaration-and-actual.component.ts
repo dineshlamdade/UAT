@@ -417,13 +417,13 @@ export class DeclarationAndActualComponent implements OnInit {
     // console.log("formData::", formData);
 
     if (this.handicappedDependentForm.invalid) {
-      this.alertService.sweetalertError('Please attach Receipt11111 / Certificate');
+      this.alertService.sweetalertError('Please attach Receipt11111 / Certificate.');
       return;
     }
 
 
     if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError('Please attach Receipt / Certificate');
+      this.alertService.sweetalertError('Please attach Receipt / Certificate.');
       return;
     }
 
@@ -494,7 +494,7 @@ export class DeclarationAndActualComponent implements OnInit {
           } else {
             // this.alertService.sweetalertWarning(res.status.messsage);
             this.alertService.sweetalertError(
-              'This Policy Holder Already Added'
+              'This Policy Holder Already Added.'
             );
           }
         } else {
@@ -1499,22 +1499,21 @@ export class DeclarationAndActualComponent implements OnInit {
  //----------- On change Transactional Line Item Remark --------------------------
  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
   console.log('event.target.value::', event.target.value);
-  
+
  console.log('this.transactionDetail', this.transactionDetail);
   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
   // console.log('index::', index);
 
   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
- 
+
 
 }
 
 
   upload() {
 
-    
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1548,7 +1547,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1600,8 +1599,16 @@ export class DeclarationAndActualComponent implements OnInit {
         this.uploadGridData.push(element.handicappedDependentTransactionId)
       });
 
-      const parentsDelete = this.previousEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+      
+  for (let i = 0; i < this.previousEmployerHandicappedDependentList.length; i++) {
+    const parentsDelete = this.previousEmployerHandicappedDependentList[i].handicappedDependentDetailMaster;
       delete parentsDelete.documentInformationList;
+  }
+
+
+
+      // const parentsDelete = this.previousEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+      // delete parentsDelete.documentInformationList;
 
     }
 
@@ -1652,7 +1659,7 @@ export class DeclarationAndActualComponent implements OnInit {
               );
               this.masterGridData.forEach((element, index) => {
                 this.documentArray.push({
-    
+
                   'dateofsubmission':new Date(),
                   'documentType':element.documentInformationList[0].documentType,
                   'documentName': element.documentInformationList[0].fileName,
@@ -1661,14 +1668,14 @@ export class DeclarationAndActualComponent implements OnInit {
                   'status' : element.documentInformationList[0].status,
                   'approverName' : element.documentInformationList[0].lastModifiedBy,
                   'Time' : element.documentInformationList[0].lastModifiedTime,
-    
+
                   // 'documentStatus' : this.premiumFileStatus,
-    
+
                 });
-    
+
                 if(element.documentInformationList[1]) {
                   this.documentArray.push({
-    
+
                     'dateofsubmission':new Date(),
                     'documentType':element.documentInformationList[1].documentType,
                     'documentName': element.documentInformationList[1].fileName,
@@ -1677,9 +1684,9 @@ export class DeclarationAndActualComponent implements OnInit {
                     'status' : element.documentInformationList[1].status,
                     'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                     'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
-    
+
                     // 'documentStatus' : this.premiumFileStatus,
-    
+
                   });
                 }
               });
@@ -1694,9 +1701,13 @@ export class DeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.documentPassword = [];
+    this.remarkList = [];
     this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
     this.priviousEmpFormArray.reset();
     this.currEmpFormArray.reset();
     }
@@ -1721,13 +1732,13 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
@@ -1945,7 +1956,7 @@ export class DeclarationAndActualComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         console.log('documentArrayTest',this.documentArray);
@@ -2000,7 +2011,7 @@ export class DeclarationAndActualComponent implements OnInit {
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -2073,7 +2084,7 @@ export class DeclarationAndActualComponent implements OnInit {
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");

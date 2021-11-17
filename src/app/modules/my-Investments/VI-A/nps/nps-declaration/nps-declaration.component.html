@@ -1,7 +1,7 @@
 <div class="tabview-contents">
   <div class="row mb-15" *ngIf="isDisabled">
     <div class="col-md-12">
-      <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span> Select institution for proof
+      <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span>Select institution for proof
         submission
       </label>
     </div>
@@ -188,17 +188,17 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input  *ngIf = "item.frequency !=='As & When'"
-                    type="text" 
-                    class="form-control" 
+                    type="text"
+                    class="form-control"
                     [minDate]="financialYearStartDate"
-                      [maxDate]="today" 
-                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      [maxDate]="today"
+                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
                       [disabled]="initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
-                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
-                      data-provide="datepicker" 
-                      bsDatepicker 
+                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                      data-provide="datepicker"
+                      bsDatepicker
                       />
                       <input
                     *ngIf = "item.frequency ==='As & When'"
@@ -211,14 +211,14 @@
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input   
-                    type="text" 
+                    <input
+                    type="text"
                     id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                       [(ngModel)]="summary.declaredAmount"
-                      class="form-control align-right" 
+                      class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'" 
+                      [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
                       />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
@@ -233,30 +233,30 @@
                   </div>
                 </td>
                 <td>
-                  <input type="text" 
+                  <input type="text"
                   [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate" 
+                    [minDate]="financialYearStartDate"
                     [maxDate]="today"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
-                    data-provide="datepicker" 
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    data-provide="datepicker"
                     data-date-autoclose="true"
                     (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
                       (isDisabled && !canEdit) || summary.transactionStatus === 'Submitted'
-                    " class="form-control" 
-                    bsDatepicker 
+                    " class="form-control"
+                    bsDatepicker
                     />
                 </td>
                 <td>
-                  <input type="text" 
+                  <input type="text"
                   id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}"
                     [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
-                    [(ngModel)]="summary.actualAmount" 
+                    [(ngModel)]="summary.actualAmount"
                     (change)="onActualAmountChange(summary, i, j)"
-                    class="form-control align-right" 
+                    class="form-control align-right"
                     />
                 </td>
                 <td>
@@ -278,14 +278,14 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
-                      
+
                       (change)="
                       onChangeDocumentRemark(
                           summary, i,
                           $event
                         )
                       "
-                    
+
                     />
                     <div
                       _ngcontent-ykc-c443=""
@@ -323,15 +323,15 @@
                     </div>
                   </div>
                 </td>
-                
+
                   <td>
                     <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
                       <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                       <!-- {{ summary.proofSubmissionId }} -->
                     </span>
                   </td>
-  
-                
+
+
                 <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
@@ -357,7 +357,7 @@
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-               
+
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -492,9 +492,9 @@
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col" class="font700 wd-8">Sr No.</th>
-                    <th scope="col" class="font700 wd-40">Document Name</th>
+                    <th scope="col" class="font700 wd-30">Document Name</th>
                     <th scope="col" class="font700 wd-20">Attachment</th>
-                    <th scope="col" class="font700 wd-16">
+                    <th scope="col" class="font700 wd-20">
                       Total Selected Amount
                     </th>
                     <th scope="col" class="font700 wd-16">Receipt Amount</th>
@@ -561,7 +561,7 @@
             <div class="card">
               <div class="mb-0">
                 <h3 class="font-14 text-purple font-bold">
-                  Document
+                  Document 123
                 </h3>
               </div>
               <div class="col-12 col-md-12 col-sm-12">
@@ -1034,14 +1034,14 @@
                   </td>
                   <td>
 
-                    <i 
+                    <i
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       (click)="
                       editViewTransaction(
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = false
+                        viewDocumentDetail = true
                       "
                       tooltip="view"
                     ></i>
@@ -1053,10 +1053,7 @@
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = true
-                      "
-                      tooltip="Edit"
-                    ></i>
+                        viewDocumentDetail = true"tooltip="Edit"></i>
                   </td>
                 </tr>
                 <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
@@ -1958,7 +1955,7 @@
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+      class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
     </button>
@@ -1986,10 +1983,10 @@
       </div>
       <div class="col-sm-6 col-md-6 align-right">
           <label class="form-label">Document Type</label>
-          
+
           {{this.viewDocumentType}}
       </div>
-    
+
       </div>
       <div class="align-right">
         <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>

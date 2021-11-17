@@ -592,6 +592,7 @@ export class WorkflowMasterComponent implements OnInit {
       }else{
         element.autoApproval = 'No'
       }
+
 			let obj = {
 				"Code": element.workflowCode,
 				"Description": element.description,

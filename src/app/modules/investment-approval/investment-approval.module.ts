@@ -13,12 +13,12 @@ import { InvestmentOnetimetransactionApprovalComponent } from './investment-onet
 import { InvestmentHandicappeddependentmasterApprovalComponent } from './investment-handicappeddependentmaster-approval/investment-handicappeddependentmaster-approval.component';
 import { InvestmentIntereston80TTATTBMasterApprovalComponent } from './investment-intereston80-tta-ttb-master-approval/investment-intereston80-tta-ttb-master-approval.component';
 import { InvestmentInterestOnEducationalLoanMasterApprovalComponent } from './investment-interest-on-educational-loan-master-approval/investment-interest-on-educational-loan-master-approval.component';
-// import { InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalComponent } from './investment-interest-on-loan-for-purchase-of-electric-vehicle-master-approval/investment-interest-on-loan-for-purchase-of-electric-vehicle-master-approval.component';
+import { InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalComponent } from './investment-interest-on-loan-for-purchase-of-electric-vehicle-master-approval/investment-interest-on-loan-for-purchase-of-electric-vehicle-master-approval.component';
 import { InvestmentMediclaim80DMasterApprovalComponent } from './investment-mediclaim80-dmaster-approval/investment-mediclaim80-dmaster-approval.component';
 import { InvestmentTreatmentOfSpecifiedDiseasesMasterApprovalComponent } from './investment-treatment-of-specified-diseases-master-approval/investment-treatment-of-specified-diseases-master-approval.component';
 import { InvestmentHandicappedDependenttransactionApprovalComponent } from './investment-handicapped-dependenttransaction-approval/investment-handicapped-dependenttransaction-approval.component';
 import { InvestmentInterestOn80TTATTBTransactionApprovalComponent } from './investment-interest-on80-tta-ttb-transaction-approval/investment-interest-on80-tta-ttb-transaction-approval.component';
-// import { InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionApprovalComponent } from './investment-interest-on-loan-for-purchase-of-electric-vehicletransaction-approval/investment-interest-on-loan-for-purchase-of-electric-vehicletransaction-approval.component';
+import { InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionApprovalComponent } from './investment-interest-on-loan-for-purchase-of-electric-vehicletransaction-approval/investment-interest-on-loan-for-purchase-of-electric-vehicletransaction-approval.component';
 import { InvestmentInterestOnEducationalLoantransactionApprovalComponent } from './investment-interest-on-educational-loantransaction-approval/investment-interest-on-educational-loantransaction-approval.component';
 import { InvestmentMediclaim80DtransactionApprovalComponent } from './investment-mediclaim80-dtransaction-approval/investment-mediclaim80-dtransaction-approval.component';
 import { InvestmentTreatmentOfSpecifiedDiseasestransactionApprovalComponent } from './investment-treatment-of-specified-diseasestransaction-approval/investment-treatment-of-specified-diseasestransaction-approval.component';
@@ -42,12 +42,12 @@ import { InvestmentChildEducationAllowanceMasterApprovalComponent } from './inve
     InvestmentHandicappeddependentmasterApprovalComponent,
     InvestmentIntereston80TTATTBMasterApprovalComponent,
     InvestmentInterestOnEducationalLoanMasterApprovalComponent,
-    // InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalComponent,
+    InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalComponent,
     InvestmentMediclaim80DMasterApprovalComponent,
     InvestmentTreatmentOfSpecifiedDiseasesMasterApprovalComponent,
     InvestmentHandicappedDependenttransactionApprovalComponent,
     InvestmentInterestOn80TTATTBTransactionApprovalComponent,
-    // InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionApprovalComponent,
+    InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionApprovalComponent,
     InvestmentInterestOnEducationalLoantransactionApprovalComponent,
     InvestmentMediclaim80DtransactionApprovalComponent,
     InvestmentTreatmentOfSpecifiedDiseasestransactionApprovalComponent,

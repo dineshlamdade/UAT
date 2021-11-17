@@ -314,7 +314,7 @@ export class CycleCreationComponent implements OnInit {
       this.previewCycleList = res.data.results;
       this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
       this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-      this.Previewbusiness = res.data.results[0].businessYear;
+      // this.Previewbusiness = res.data.results[0].businessYear;
       this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
       this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
       this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;

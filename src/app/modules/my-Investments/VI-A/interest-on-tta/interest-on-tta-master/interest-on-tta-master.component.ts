@@ -39,7 +39,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public paymentDetailGridData: Array<any> = [];
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
-
+  public  isShowSave   = true
+  public   isShowUpdate = false
   public familyMemberNameList: Array<any> = [];
 
   public transactionDetail: Array<any> = [];
@@ -270,11 +271,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
   }
 
   searchIFSC(searchTerm, bankIFSC) {
-    this.form.patchValue({
-      branchName: '',
-      bankAddress: '',
-      bankName: '',
-    });
+    // this.form.patchValue({
+    //   branchName: '',
+    //   bankAddress: '',
+    //   bankName: '',
+    // });
 
     if (searchTerm.query.length < 11) {
       this.ifscCodeList = [];
@@ -364,7 +365,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-   
+
       this.masterGridData.forEach((element) => {
         element.documentInformationList.forEach(element => {
           // if(element!=null)
@@ -377,7 +378,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -405,7 +406,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     }
 
     console.log('this.isEdit', this.isEdit);
-   
+
   if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
@@ -413,11 +414,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
         'Deposit in Saving Account 80TTA Document needed to Create Master.'
       );
       return;
-    } 
+    }
   }
 
   for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -438,20 +439,20 @@ export class InterestOnTtaMasterComponent implements OnInit {
       console.log(data.accountNumber);
       console.log(this.accountNumberlistedit);
 
-      if (data.accountNumber) {
-        this.masterGridData.forEach(results => {
-          if (results.accountNumber == data.accountNumber) {
-            this.codeInvalid = true;
-          }
-        });
-        if (this.codeInvalid) {
-          this.codeInvalid = false;
-          this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable'
-          );
-          return;
-        }
-      }
+      // if (data.accountNumber) {
+      //   this.masterGridData.forEach(results => {
+      //     if (results.accountNumber == data.accountNumber) {
+      //       this.codeInvalid = true;
+      //     }
+      //   });
+      //   if (this.codeInvalid) {
+      //     this.codeInvalid = false;
+      //     this.alertService.sweetalertError(
+      //       'Duplicate Account should Not be Acceptable.'
+      //     );
+      //     return;
+      //   }
+      // }
 
      /*  this.masterGridData.forEach((element) => {
         if (data.accountNumber == element.accountNumber) {
@@ -473,57 +474,55 @@ export class InterestOnTtaMasterComponent implements OnInit {
               this.showdocument = false;
               this.masterGridData = res.data.results;
               // this.masterGridData = res.data.results[0].documentInformationList;
-
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Declaration & Actual" Page to see Schedule.'
+              );
 
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
-                      'remark':element.documentInformationList[0].remark,                     
+                  //    'remark':element.documentInformationList[0].remark,
                       'status' : element.documentInformationList[0].status,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
-                      'remark':element.documentInformationList[0].remark,   
+                   //  'remark':element.documentInformationList[1].remark,
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
               }
-              console.log('masterGridData', this.masterGridData);
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -532,7 +531,9 @@ export class InterestOnTtaMasterComponent implements OnInit {
             );
           }
         });
-
+      this.isShowUpdate = false;
+      this.isShowSave = true;
+      this.documentDataArray = [];
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
@@ -549,21 +550,6 @@ export class InterestOnTtaMasterComponent implements OnInit {
     // }
   }
 
-  //Duplicate account should not be acceptable
-
-  matchAccountNumber(event: any) {
-    console.log('event...', event);
-    this.masterGridData.forEach((element) => {
-      this.accountNumberlistedit = element.accountNumber;
-      if (event == element.accountNumber) {
-        this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable'
-        );
-      }
-      console.log(element.accountNumber);
-      return 0;
-    }); 
-  }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
@@ -584,6 +570,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isShowUpdate = true
+    this.isShowSave = false
     this.isEdit = true;
     this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
@@ -606,8 +594,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
         this.proofSubmissionId = obj.proofSubmissionId;
         this.showdocument = false;
         this.documentArray = [];
-        
-        
+
+
         obj.documentInformationList.forEach(element => {
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -620,7 +608,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
             'lastModifiedTime' : element.lastModifiedTime,
 
           })
-          
+
         });
         console.log("documentArray::",this.documentArray);
         this.isVisibleTable = true;
@@ -717,7 +705,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");
@@ -763,4 +751,22 @@ export class InterestOnTtaMasterComponent implements OnInit {
       }, 3000);
     }
   }
+
+   //Duplicate account should not be acceptable
+
+   matchAccountNumber(event: any) {
+    console.log('event...', event);
+    this.masterGridData.forEach((element) => {
+      this.accountNumberlistedit = element.accountNumber;
+      if (event == element.accountNumber) {
+        this.alertService.sweetalertWarning(
+          'Duplicate Account should Not be Acceptable.'
+        );
+      }
+      console.log(element.accountNumber);
+      return 0;
+    });
+  }
+
+
 }

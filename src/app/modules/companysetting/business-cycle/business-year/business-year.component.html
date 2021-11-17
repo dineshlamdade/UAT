@@ -50,8 +50,7 @@
         <select [ngClass]="{'is-invalid' : BusinessYearform.get('businessYear').status == 'INVALID'}"
           name="businessYear" id="businessYear" class="form-control  " formControlName="businessYear">
           <option selected value=''>Select </option>
-          <option *ngFor="let businessYear of getBusinessYears" [value]="businessYear.value" [selected]="currentYear">
-            
+          <option *ngFor="let businessYear of BusinessYear" [value]="businessYear.value">
             {{businessYear.label}}
           </option>
         </select>
@@ -194,28 +193,10 @@
             <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10"
             [showCurrentPageReport]="true" [pageLinks]="5"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            totalRecords={{BusinessyearList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
-            #dt [globalFilterFields]="['description','fullFromDate','fullToDate']">
+            totalRecords={{BusinessyearList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
 
             <ng-template pTemplate="header">
-              <br>
-              
-              <div style="text-align: right;display: flex;">
-                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                <input type="text" pInputText size="50" placeholder="Search"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')"
-                    style="width: 203px;">
-                    &nbsp;&nbsp;&nbsp;
-                    <a tooltip="Download" style="cursor: pointer"
-                    (click)="exportAsXLSX()"><i
-                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                        aria-hidden="true"></i></a>
-              </div>&nbsp;&nbsp;&nbsp;
-             
-              <br>
-              <br>
               <tr>
-                
                 <th class="wd-8 text-center">
                   Sr. No.
                 </th>
@@ -271,8 +252,7 @@
               </label></td> -->
                 <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
-                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td> -->
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullFromDate | date: 'dd-MM-yyyy'}} To {{user1.fullToDate | date: 'dd-MM-yyyy'}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td>
                 <td class="wd-10 align-left">
                   <button *ngIf="!user1.used; " type="button"
                     (click)="GetBussinessyearById(user1.businessYearDefinitionId, true)" class="btn btn-icon text-blue"
@@ -305,8 +285,7 @@
                               you sure want to
                               delete Business
                               Year Definition
-                             </label>
-                             <!-- from-{{BusinessyearList.fullFromDate | date: 'dd-MM-yyyy'}} To {{BusinessyearList.fullToDate | date: 'dd-MM-yyyy'}} -->
+                              from-{{Name}}</label>
                           </div>
                         </div>
                       </div>

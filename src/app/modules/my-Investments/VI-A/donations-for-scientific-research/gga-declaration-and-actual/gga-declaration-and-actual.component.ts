@@ -323,7 +323,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   onSelectReactiveCheckbox(event) {
     if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
       this.alertService.sweetalertError(
-        'Please Enter Declared Amount'
+        'Please Enter Declared Amount.'
       );
       return false;
     }
@@ -387,8 +387,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -406,7 +406,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     if (this.receiptAmount < this.globalSelectedAmount) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
       );
       this.receiptAmount = '0.00';
       return;
@@ -467,7 +467,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           } else {
             // this.alertService.sweetalertWarning(res.status.messsage);
             this.alertService.sweetalertError(
-              'This Policy Holder Already Added'
+              'This Policy Holder Already Added.'
             );
           }
         } else {
@@ -480,6 +480,9 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.Index = -1;
     formDirective.resetForm();
     this.eightyGGAForm.reset();
+    this.documentDataArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -971,21 +974,21 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
   upload() {
-    
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1002,7 +1005,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -1130,8 +1133,12 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
     // this.eightyGGAForm.get('reactiveCheckbox').setValue(null);
   }
@@ -1171,7 +1178,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.grandApprovedTotalEditModal =    res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
-        
+
         //console.log(this.urlArray);
       //  this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1180,7 +1187,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
        // });
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
-        
+
         this.editTransactionUpload.forEach((element) => {
           element.donations80GGTransactionList.forEach((innerElement) => {
             innerElement.declaredAmount = this.numberFormat.transform(
@@ -1237,8 +1244,8 @@ this.documentArray = [];
 
      //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1373,6 +1380,9 @@ this.documentArray = [];
         }
       });
       this.resetEditVariable()
+      this.editremarkList = [];
+      this.editdocumentPassword = [];
+      this.editdDocumentDataArray = [];
   }
 
     resetEditVariable() {
@@ -1637,7 +1647,7 @@ this.documentArray = [];
         console.log(globalSelectedAmount_);
         if (receiptAmount_ < globalSelectedAmount_) {
         this.alertService.sweetalertError(
-          'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+          'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
         );
         this.receiptAmount = '0.00';
         return false;
@@ -1645,7 +1655,7 @@ this.documentArray = [];
         console.log(receiptAmount_);
         console.log(globalSelectedAmount_);
         this.alertService.sweetalertWarning(
-          'Receipt Amount is greater than Selected line Actual Amount',
+          'Receipt Amount is greater than Selected line Actual Amount.',
         );
         // this.receiptAmount = '0.00';
         // return false;
@@ -1681,20 +1691,7 @@ this.documentArray = [];
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-            res.documentDetailList.forEach(element => {
-              // if(element!=null)
-              this.documentArray.push({
-                'dateofsubmission':element.creatonTime,
-                'documentType':element.documentType,
-                'documentName': element.fileName,
-                'documentPassword':element.documentPassword,
-                'documentRemark':element.documentRemark,
-                'status' : element.status,
-                'lastModifiedBy' : element.lastModifiedBy,
-                'lastModifiedTime' : element.lastModifiedTime,
-      
-              })
-            });
+
             console.log('documentArrayTest',this.documentArray);
 
             this.initialArrayIndex = [];
@@ -1709,6 +1706,20 @@ this.documentArray = [];
                 );
               });
             }
+            res.documentDetailList.forEach(element => {
+              // if(element!=null)
+              this.documentArray.push({
+                'dateofsubmission':element.creatonTime,
+                'documentType':element.documentType,
+                'documentName': element.fileName,
+                'documentPassword':element.documentPassword,
+                'documentRemark':element.documentRemark,
+                'status' : element.status,
+                'lastModifiedBy' : element.lastModifiedBy,
+                'lastModifiedTime' : element.lastModifiedTime,
+
+              })
+            });
 
           }
           else {
@@ -1722,7 +1733,7 @@ this.documentArray = [];
         index: any,
         psId, policyNo
       ) {
-        
+
         this.Service.getRemarkList(
           policyNo,
           psId
@@ -1738,7 +1749,7 @@ this.documentArray = [];
           Object.assign({}, { class: 'gray modal-s' })
         );
       }
-    
+
 
 
 
@@ -1798,7 +1809,7 @@ this.documentArray = [];
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");
