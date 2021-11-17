@@ -72,6 +72,11 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate:boolean;
+  
+
   public isEdit: boolean = false;
 
   documentPassword =[];
@@ -200,7 +205,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-
+    this.isShowSave=true;
+    this.isShowCancel=false;
     //-------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
@@ -298,7 +304,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
 
-    if (this.form.invalid) {
+    if (this.form.invalid) {  
       return;
     }
     console.log('this.isEdit', this.isEdit);
@@ -496,6 +502,55 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     // ------------- On Master Edit functionality --------------------
     public editMaster(patientName) {
       this.isEdit = true;
+      this.isShowCancel=false;
+      this.isShowSave=false;
+      this.isShowUpdate=true
+      this.scrollToTop();
+      this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        console.log(patientName);
+        const obj = this.findByPolicyNo(patientName, this.masterGridData);
+
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log('Edit Master', obj);
+        if (obj != 'undefined') {
+          this.paymentDetailGridData = obj.paymentDetails;
+          this.form.patchValue(obj);
+          this.visibilityFlag = true;
+          this.Index = obj.patientName;
+          this.showUpdateButton = true;
+          this.isClear = true;
+          // this.urlArray = obj.doctorCertificate;
+          this.filesUrlArray = obj.documentInformationList;
+          this.proofSubmissionId = obj.proofSubmissionId;
+          this.showdocument = false;
+          this.documentArray = [];
+          obj.documentInformationList.forEach(element => {
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+  
+            })
+            
+          });
+          console.log("documentArray::",this.documentArray);
+          this.isVisibleTable = true;
+        }
+      });
+    }
+    public viewMaster(patientName) {
+
+      this.form.disable(); 
+      this.isShowCancel=true;
+      this.isShowSave=false;
+      this.isShowUpdate=false;
       this.scrollToTop();
       this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
         console.log('masterGridData::', res);
@@ -566,7 +621,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   //------------------- On Master View functionality -----------------------
-  viewMaster(i: number) {
+  view(i: number) {
     //this.scrollToTop();
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
@@ -597,6 +652,9 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   //---------- On View Cancel -------------------
   cancelView() {
     this.form.reset();
+    this.isShowSave=true;
+    this.isShowCancel=false;
+    this.isShowUpdate=false;
     // this.form.get('active').setValue(true);
     // this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;

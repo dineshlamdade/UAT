@@ -82,6 +82,9 @@ export class NpsMasterComponent implements OnInit {
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  
   public addNewRowId: number;
   public declarationTotal: number;
   public declaredAmount: number;
@@ -169,6 +172,7 @@ export class NpsMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.isShowSave = true;
     // this.initiateMasterForm();
     // this.getFinacialYear();
     // this.getMasterFamilyInfo();
@@ -221,6 +225,10 @@ export class NpsMasterComponent implements OnInit {
       const input = this.accountNo;
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
+
+      this.viewMaster(input.accountNumber);
+      console.log('viewMaster accountNumber', input.accountNumber);
+
     }
     this.startDateModel =  '31-dec-9999';
   }
@@ -742,7 +750,6 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-   
    // this.isEdit = true;
     this.scrollToTop();
     this.npsService.getNpsMaster().subscribe((res) => {   
@@ -795,6 +802,64 @@ export class NpsMasterComponent implements OnInit {
     });
   }
 
+  viewMaster(accountNumber) {
+    
+    // this.isEdit = true;
+    this.isShowCancel=true; 
+    this.isShowSave=false;
+    
+    this.form.disable();
+     this.scrollToTop();
+     this.npsService.getNpsMaster().subscribe((res) => {   
+       this.isVisibleTable = true;
+       console.log('masterGridData::', res);
+     
+       
+       this.masterGridData = res.data.results;
+       this.masterGridData.forEach((element) => {
+         element.policyStartDate = new Date(element.policyStartDate);
+         element.policyEndDate = new Date(element.policyEndDate);
+         element.fromDate = new Date(element.fromDate);
+         element.toDate = new Date(element.toDate);
+       });
+       console.log(accountNumber);
+       const obj = this.findByaccountNumber(accountNumber, this.masterGridData);
+ 
+       // Object.assign({}, { class: 'gray modal-md' }),
+       console.log('Edit Master', obj);
+       if (obj != 'undefined') {
+         this.paymentDetailGridData = obj.paymentDetails;
+         
+         console.log('.....................::',res.paymentDetails);
+         this.form.patchValue(obj);
+         this.Index = obj.accountNumber;
+         this.showUpdateButton = true;
+         this.isClear = true;
+         this.filesUrlArray = obj.documentInformationList;
+         this.showdocument = false;
+         // this.urlArray = obj.documentInformationList;
+         this.proofSubmissionId = obj.proofSubmissionId;
+         this.documentArray = [];
+         obj.documentInformationList.forEach(element => {
+           this.documentArray.push({
+             'dateofsubmission':element.creatonTime,
+             'documentType':element.documentType,
+             'documentName': element.fileName,
+             'documentPassword':element.documentPassword,
+             'documentRemark':element.documentRemark,
+             'status' : element.status,
+             'lastModifiedBy' : element.lastModifiedBy,
+             'lastModifiedTime' : element.lastModifiedTime,
+ 
+           })
+         });
+         console.log("documentArray::",this.documentArray);
+         this.isVisibleTable = true;
+           
+       }
+     });
+   }
+
   findByaccountNumber(accountNumber, masterGridData) {
     return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
@@ -826,8 +891,26 @@ export class NpsMasterComponent implements OnInit {
     this.form.get('accountType').setValue('Tier_1');
   }
 
-  // On View Cancel
   cancelView() {
+    this.isShowSave = true;
+    this.isShowCancel =false;
+    this.form.enable();
+    this.form.reset();
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue('0');
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    //this.documentArray = [];
+    this.urlArray = [];
+    this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
+    this.form.get('accountType').setValue('Tier_1');
+  }
+
+  // On View Cancel
+  canclView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
