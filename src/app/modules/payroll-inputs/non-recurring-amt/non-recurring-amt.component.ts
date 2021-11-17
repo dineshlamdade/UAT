@@ -39,7 +39,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	employeeMasterId: any;
 	headMasterId: any;
 	indexId = 1;
-	employeeFinDetailsData: any = [];
+	employeeFinDetailsData: any = '';
 	index: number = 0;
 	showEmployeeSelectionFlag: boolean = false;
 	selectedTransactionIndex: any = -1;
@@ -51,7 +51,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	openingAmount: string = '';
 	remark: any = '';
 	standardName: any;
-	selectedPayrollArea: any = 'PA-Staff';
+	selectedPayrollArea: any = '';
 	editScheduleFlag: boolean = false;
 	selectedEmployeeMasterId: any = '';
 	employeeData: any;
@@ -117,7 +117,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	selectedEmployeeLength: any = 0;
 	svaeDisabledFlag: boolean = true;
 	selectedOption: string = 'single';
-	payrollAreaId: any = 1;
+	payrollAreaId: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: AlertServiceService, private datepipe: DatePipe,
@@ -161,6 +161,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** On Click tab - summary */
 	navigateSummary() {
 		localStorage.removeItem('payrollListEmpData')
+		this.payrollListEmpData = ''
 		this.indexId = 1;
 		this.selectedEmpData = []
 		this.NonRecurringTransactionGroupSummery()
@@ -170,6 +171,8 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.employeeFinDetailsData = null;
 		this.NonRecurringTransactionGroupAPIEmpwiseData = null;
 		this.selectedEmployeeLength = 0
+		this.showDropdownDisabled = true
+		this.selectedOption = 'single'
 	}
 
 	/** When clicked on checkedbox summary page*/
@@ -785,7 +788,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** Get Selected Employee master Id */
 	getSelectedEmployeeCode(value) {
 		this.payrollListData = ''
-		this.employeeFinDetailsData = []
+		this.employeeFinDetailsData = ''
 		this.selectedEmployeeMasterId = parseInt(value)
 		// this.selectedPayrollArea = ''
 		// if(this.payrollListEmpData != ''){

@@ -184,175 +184,177 @@
                     <div class="row ">
 
                         <div class="col-md-12">
-
+                         <div class="table-responsive Custom_Table">
                             <p-table [value]="users" [rows]="10" [paginator]="true" #dt1
-                                [rowsPerPageOptions]="[5,10,25,50,100,200]"
-                                [globalFilterFields]="['employeeCode','fullName','payrollAreaCode']">
+                            [rowsPerPageOptions]="[5,10,25,50,100,200]"
+                            [globalFilterFields]="['employeeCode','fullName','payrollAreaCode']">
 
-                                <ng-template pTemplate="caption">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="float-right">
-                                                <div class="d-flex">
-                                                    <span class="p-input-icon-left p-ml-auto">
-                                                        <i class="pi pi-search" style="top: 9px !important;"></i>
-                                                        <input pInputText type="text"
-                                                            (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                            placeholder="Search" />
-                                                    </span>
-                                                    <i
-                                                        class="fa fa-file-excel-o text-dark-green ml-2 mt-1  font-24"></i>
-                                                </div>
+                            <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="float-right">
+                                            <div class="d-flex">
+                                                <i class=" fas fa-filter text-purple mr-2 mt-1  font-24"></i>
+                                                <span class="p-input-icon-left p-ml-auto">
+                                                    <i class="pi pi-search" style="top: 9px !important;"></i>
+                                                    <input pInputText type="text"
+                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                        placeholder="Search" />
+                                                </span>
+                                                <i  class="fa fa-file-excel-o text-dark-green ml-2 mt-1  font-24"></i>
                                             </div>
                                         </div>
                                     </div>
-                                </ng-template>
+                                </div>
+                            </ng-template>
 
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th rowspan="2">
-                                            <!-- <input type="checkbox"
-                                                    class="custom-control-input"
-                                                    name="select"
-                                                    (change)="getSelectedEmployee(users)"
-                                                    > -->
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Emp. Code
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="employeeCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th rowspan="2">
+                                        <!-- <input type="checkbox"
+                                                class="custom-control-input"
+                                                name="select"
+                                                (change)="getSelectedEmployee(users)"
+                                                > -->
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp. Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="employeeCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Emp. Name
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="fullName" pSortableColumn="fullName"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="fullName" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp. Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="fullName" pSortableColumn="fullName"></p-sortIcon>
+                                                <p-columnFilter type="text" field="fullName" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Payroll Area
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Payroll Area
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Comapny Name
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Comapny Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Establishment
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Establishment
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Department
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Department
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Emp. Type
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Emp. Type
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Grade
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Grade
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                Designation
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                                                    <p-columnFilter type="text" field="payrollAreaCode" display="menu"
-                                                        class="p-ml-auto"></p-columnFilter>
-                                                </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Designation
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollAreaCode" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
                                             </div>
-                                        </th>
-                                    </tr>
-                                </ng-template>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
 
-                                <ng-template pTemplate="body" let-user1>
-                                    <tr class="p-selectable-row">
-                                        <td style="width: 3rem">
-                                            <input type="checkbox" (change)="getSelectedEmployee(user1,$event.target)">
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0">{{user1.employeeCode}}</label>
-                                        </td>
-                                        <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.fullName}}</label></td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0">{{user1.payrollAreaCode}} </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0"> </label>
-                                        </td>
-                                    </tr>
-                                </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                                <tr class="p-selectable-row">
+                                    <td style="width: 3rem">
+                                        <input type="checkbox" (change)="getSelectedEmployee(user1,$event.target)">
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0">{{user1.employeeCode}}</label>
+                                    </td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.fullName}}</label></td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0">{{user1.payrollAreaCode}} </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> </label>
+                                    </td>
+                                </tr>
+                            </ng-template>
 
-                                <ng-template pTemplate="emptymessage">
-                                    <tr>
-                                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No
-                                                Data
-                                                Available</span></td>
-                                    </tr>
-                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No
+                                            Data
+                                            Available</span></td>
+                                </tr>
+                            </ng-template>
 
-                            </p-table>
+                        </p-table>
+                         </div>
+                            
                         </div>
                     </div>
                 </div>
