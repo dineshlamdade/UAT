@@ -5,6 +5,8 @@ import { EmployeeSummaryBean } from './employee-summary.model';
 import { EmployeeSummaryService } from './employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { AuthService } from './../../../auth/auth.service';
+import { DatePipe } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-summary',
@@ -15,7 +17,7 @@ export class EmployeeSummaryComponent implements OnInit {
 
   imageUrl: any = "./assets/images/profile_Img.png";
   employeeMasterId: number;
-  EmployeeSummary = new EmployeeSummaryBean();
+  EmployeeSummary = new EmployeeSummaryBean('','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
   Subscription: Subscription;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
@@ -24,8 +26,10 @@ export class EmployeeSummaryComponent implements OnInit {
   payrollAreaId: any;
   primaryMainData: any;
   today:Date = new Date();
+  EmpData: any;
+  public sanitizer: DomSanitizer
 
-  constructor(private EmployeeSummaryService: EmployeeSummaryService,
+  constructor(private EmployeeSummaryService: EmployeeSummaryService,public datepipe: DatePipe,
     private PayrollAreaService: PayrollAreaInformationService,
     private EventEmitterService: EventEmitterService,
     private AuthService: AuthService) { }
@@ -115,17 +119,18 @@ export class EmployeeSummaryComponent implements OnInit {
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaId).subscribe(res => {
+    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId).subscribe(res => {
       console.log('summary DaTA', res.data.results[0])
       if (res.data.results[0]) {
-
-        this.EmployeeSummary.identitySummaryBean = res.data.results[0].employeeSummaryBean.identitySummaryBean;
-        if (res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage) {
-          this.imageUrl = 'data:' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.type + ';base64,' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.profilePicture;
-        }
-        this.EmployeeSummary.personalSummaryBean = res.data.results[0].employeeSummaryBean.personalSummaryBean;
-        this.EmployeeSummary.workSummaryBean = res.data.results[0].employeeSummaryBean.workSummaryBean;
-        this.EmployeeSummary.nominationSummaryBean = res.data.results[0].employeeSummaryBean.nominationSummaryBean;
+         this.EmployeeSummary = res.data.results[0];
+         this.EmployeeSummary.dateOfJoining = this.datepipe.transform(this.EmployeeSummary.dateOfJoining, "dd-MMM-yyyy");
+         this.EmployeeSummary.dateOfBirth = this.datepipe.transform(this.EmployeeSummary.dateOfBirth, "dd-MMM-yyyy");
+       
+         if (res.data.results[0].employeeProfileImage) {
+           this.imageUrl = 'data:' + res.data.results[0].type + ';base64,' +res.data.results[0].employeeProfileImage;
+         }
+        
+      
       }
 
     })

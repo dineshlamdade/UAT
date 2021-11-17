@@ -631,7 +631,7 @@
     "project": "Project",
     "costCenter": "Cost Center",
     "payrollArea": "Payroll Area",
-
+    "businessArea":"Business Area",
     "grade": "Grade",
     "department": "Department",
     "nominationDetails": "Nomination Details",
@@ -639,6 +639,9 @@
     "employeePensionScheme": "Emp Pension Scheme",
     "superAnnuationFund": "Super Annuation",
     "gratuity": "Gratuity",
-    "salary": "Salary"
+    "salary": "Salary",
+    "localAddress":"Local Address",
+    "permanentAddress":"Permanent Address"
+
   }
 }
