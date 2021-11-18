@@ -1389,7 +1389,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     );
 
     this.interestOnTtaService
-      .getTransactionByProofSubmissionId('211115030701240492')
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
@@ -1726,7 +1726,7 @@ this.documentArray = [];
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
     this.interestOnTtaService
-      .getTransactionByProofSubmissionId('211115030701240492')
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
                this.urlArray =  res.data.results[0].documentInformation[0].documentDetailList;
       this.urlArray.forEach((element) => {element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
