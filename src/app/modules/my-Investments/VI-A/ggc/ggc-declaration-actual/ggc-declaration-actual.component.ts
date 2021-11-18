@@ -119,6 +119,8 @@ export class GgcDeclarationActualComponent implements OnInit {
   public childNameList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
+  public viewDocumentList: Array<any> = [];
+  
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
@@ -1228,6 +1230,7 @@ export class GgcDeclarationActualComponent implements OnInit {
         console.log('proofSubmissionId edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+        this.viewDocumentList = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
         this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
@@ -1237,7 +1240,7 @@ export class GgcDeclarationActualComponent implements OnInit {
             element.actualAmount = this.numberFormat.transform(
               element.actualAmount
             );
-          });
+          }); 
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1277,20 +1280,18 @@ export class GgcDeclarationActualComponent implements OnInit {
       //   });
       // });
   //}
-  this.editTransactionUpload.forEach((element) => {
-    element.donations80GGTransactionList.forEach((innerElement) => {
-      innerElement.declaredAmount = this.numberFormat.transform(
-        innerElement.declaredAmount,
-      );
-      innerElement.actualAmount = this.numberFormat.transform(
-        innerElement.actualAmount,
-      );
-    });
-  });
+  // this.editTransactionUpload.forEach((element) => {
+  //   element.donations80GGTransactionList.forEach((innerElement) => {
+  //     innerElement.declaredAmount = this.numberFormat.transform(
+  //       innerElement.declaredAmount,
+  //     );
+  //     innerElement.actualAmount = this.numberFormat.transform(
+  //       innerElement.actualAmount,
+  //     );
+  //   });
+  // });
 
-  this.masterGridData.forEach((element) => {
-    element.documentInformation.forEach(element => {
-  element.documentDetailList.forEach(element => {
+  this.viewDocumentList.forEach(element => {
     // if(element!=null)
     this.documentArray.push({
       'dateofsubmission': element.dateOfSubmission,
@@ -1303,8 +1304,25 @@ export class GgcDeclarationActualComponent implements OnInit {
       'lastModifiedTime' : element.lastModifiedTime,
     })
     })
-});
-});
+
+
+//   this.masterGridData.forEach((element) => {
+//     element.documentInformation.forEach(element => {
+//   element.documentDetailList.forEach(element => {
+//     // if(element!=null)
+//     this.documentArray.push({
+//       'dateofsubmission': element.dateOfSubmission,
+//       'documentType':element.documentType,
+//       'documentName': element.fileName,
+//       'documentPassword':element.documentPassword,
+//       'documentRemark':element.documentRemark,
+//       'status' : element.status,
+//       'lastModifiedBy' : element.lastModifiedBy,
+//       'lastModifiedTime' : element.lastModifiedTime,
+//     })
+//     })
+// });
+// });
 }
 );
 this.documentArray = [];
