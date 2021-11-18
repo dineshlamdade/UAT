@@ -1395,6 +1395,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
       .uploadPhysicallyHandicappedTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
+        this.ngOnInit();
         if (res.data.results.length > 0) {
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
