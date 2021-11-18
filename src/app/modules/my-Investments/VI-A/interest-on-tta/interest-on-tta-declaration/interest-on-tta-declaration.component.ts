@@ -960,7 +960,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
+    for (let i = 0; i < this.documentPassword.length; i++) {
       if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
@@ -1130,6 +1130,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
     this.documentRemark = '';
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
   }
 
   changeReceiptAmountFormat() {
@@ -1386,7 +1389,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     );
 
     this.interestOnTtaService
-      .getTransactionByProofSubmissionId('211115030701240492')
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
@@ -1544,7 +1547,7 @@ this.documentArray = [];
   }
 
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+    for (let i = 0; i < this.editdocumentPassword.length; i++) {
       if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
@@ -1723,7 +1726,7 @@ this.documentArray = [];
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
     this.interestOnTtaService
-      .getTransactionByProofSubmissionId('211115030701240492')
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
                this.urlArray =  res.data.results[0].documentInformation[0].documentDetailList;
       this.urlArray.forEach((element) => {element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(

@@ -97,6 +97,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   donations80GGTransactionListNewRow : Array<any> = [];
   public childNameList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
+  public viewDocumentList: Array<any> = [];
+  
   public proofSubmissionPolicyNoList: Array<any> = [];
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
@@ -1161,6 +1163,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         console.log('proofSubmissionId edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          
+        this.viewDocumentList = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
         this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
@@ -1188,19 +1192,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
 
-        this.editTransactionUpload.forEach((element) => {
-          element.donations80GGTransactionList.forEach((innerElement) => {
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount,
-            );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount,
-            );
-          });
-        });
-        this.masterGridData.forEach((element) => {
-          element.documentInformation.forEach(element => {
-        element.documentDetailList.forEach(element => {
+        // this.editTransactionUpload.forEach((element) => {
+        //   element.donations80GGTransactionList.forEach((innerElement) => {
+        //     innerElement.declaredAmount = this.numberFormat.transform(
+        //       innerElement.declaredAmount,
+        //     );
+        //     innerElement.actualAmount = this.numberFormat.transform(
+        //       innerElement.actualAmount,
+        //     );
+        //   });
+        // });
+        // this.masterGridData.forEach((element) => {
+        //   element.documentInformation.forEach(element => {
+        this.viewDocumentList.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission': element.dateOfSubmission,
@@ -1213,8 +1217,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
             'lastModifiedTime' : element.lastModifiedTime,
           })
           })
-    });
-  });
+  //   });
+  // });
 }
 );
 this.documentArray = [];
