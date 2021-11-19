@@ -254,7 +254,7 @@ export class NpsDeclarationComponent implements OnInit {
       this.dateOfJoining = new Date(res.data.results[0].joiningDate);
  console.log(this.dateOfJoining)
  res.data.results.forEach((element) => {
-        
+
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -263,8 +263,8 @@ export class NpsDeclarationComponent implements OnInit {
       });
     });
 
- 
-  
+
+
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -321,6 +321,16 @@ export class NpsDeclarationComponent implements OnInit {
     this.selectedTransactionInstName('All');
   }
 
+
+   // -------- On Policy selection show all transactions list accordingly all policies---------
+   selectedPolicy(policy: any) {
+    this.globalPolicy = policy;
+    this.getTransactionFilterData(
+      this.globalInstitution,
+      this.globalPolicy,
+      null,
+    );
+  }
   public getInstitutionListWithPolicyNo() {
 
     const data = {
@@ -400,15 +410,6 @@ export class NpsDeclarationComponent implements OnInit {
     this.resetAll();
   }
 
-  // -------- On Policy selection show all transactions list accordingly all policies---------
-  selectedPolicy(policy: any) {
-    this.globalPolicy = policy;
-    this.getTransactionFilterData(
-      this.globalInstitution,
-      this.globalPolicy,
-      null
-    );
-  }
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
@@ -443,7 +444,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.selectedFrequency = frequency;
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
-        'Please Enter Declared Amount'
+        'Please Enter Declared Amount.'
       );
       this.enableSelectAll = false;
       event.target.checked = false;
@@ -613,7 +614,7 @@ export class NpsDeclarationComponent implements OnInit {
   });
       this.grandDeclarationTotal = this.declarationTotal;
   }
-  
+
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -883,20 +884,20 @@ export class NpsDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -915,7 +916,7 @@ export class NpsDeclarationComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement.'
       );
       return;
     }
@@ -960,31 +961,31 @@ export class NpsDeclarationComponent implements OnInit {
       // return false;
     }
     if (this.licDeclarationData.dateOfPayment == null) {
-      
+
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected date of payment for all selected lines',
-        'Please Select Date Of Payment',
+        'Please Select Date Of Payment.',
       );
       return false;
     }
     if (this.selectedFrequency !== 'As & When' && this.licDeclarationData.dueDate == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected due date for all selected lines',
-        'Please Select Date Of DueDate',
+        'Please Select Date Of DueDate.',
       );
       return false;
     }
     if (this.licDeclarationData.declaredAmount == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected declared amount for all selected lines',
-        'Please Select Date Of Declared Amount',
+        'Please Select Date Of Declared Amount.',
       );
       return false;
     }
     if (this.licDeclarationData.actualAmount == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected actual amount for all selected lines',
-        'Please Select Date Of Actual Amount',
+        'Please Select Date Of Actual Amount.',
       );
       return false;
     }
@@ -1038,7 +1039,7 @@ export class NpsDeclarationComponent implements OnInit {
             }
           });
           this.selectedTransactionInstName(this.globalInstitution);
-         
+
           // this.transactionDetail =
           //   res.data.results[0].investmentGroupTransactionDetail;
           // this.documentDetailList = res.data.results[0].documentInformation;
@@ -1077,8 +1078,7 @@ export class NpsDeclarationComponent implements OnInit {
           //   });
           // });
 
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
+          this.alertService.sweetalertMasterSuccess('Transaction Saved Successfully.',
             ''
           );
         } else {
@@ -1088,6 +1088,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
   }
 
 
@@ -1103,7 +1104,7 @@ export class NpsDeclarationComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines.',
     );
     this.receiptAmount = '0.00';
     return false;
@@ -1111,7 +1112,7 @@ export class NpsDeclarationComponent implements OnInit {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Actual Amount',
+      'Receipt Amount is greater than Selected line Actual Amount.',
     );
     // this.receiptAmount = '0.00';
     // return false;
@@ -1346,7 +1347,7 @@ export class NpsDeclarationComponent implements OnInit {
             // this.documentArray.push({
             //   'dateofsubmission': ,
             // })
-            
+
             element.documentDetailList.forEach(element => {
             // if(element!=null)
             this.documentArray.push({
@@ -1372,6 +1373,23 @@ export class NpsDeclarationComponent implements OnInit {
           //   'lastModifiedTime' : element.lastModifiedTime,
           //
           // })
+        });
+
+        this.editTransactionUpload.forEach((element) => {
+          // this.initialArrayIndex.push(
+          //   element.investmentGroupTransactionDetail.length
+          // );
+
+          // format the amount from current emp list
+          element.investmentGroupTransactionDetail.forEach((item) => {
+            item.groupTransactionList.forEach((evt) => {
+            evt.declaredAmount = this.numberFormat.transform(
+              evt.declaredAmount
+            );
+            evt.actualAmount = this.numberFormat.transform(evt.actualAmount);
+          });
+
+        });
         });
         //console.log(this.urlArray);
         // this.urlArray.forEach((element) => {
@@ -1424,20 +1442,7 @@ export class NpsDeclarationComponent implements OnInit {
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
-          })
-        });
+
         console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
 
@@ -1470,6 +1475,20 @@ export class NpsDeclarationComponent implements OnInit {
             );
           });
         });
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+        });
       });
   }
 
@@ -1478,7 +1497,7 @@ export class NpsDeclarationComponent implements OnInit {
     index: any,
     psId, transactionID
   ) {
-    
+
     this.npsService.getnpsRemarkList(
       transactionID,
       psId
@@ -1511,8 +1530,8 @@ export class NpsDeclarationComponent implements OnInit {
   public uploadUpdateTransaction() {
 
 
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i <= this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editdDocumentDataArray[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1684,6 +1703,7 @@ export class NpsDeclarationComponent implements OnInit {
       });
     this.currentFileUpload = null;
     this.editfilesArray = [];
+    this.editdDocumentDataArray = [];
   }
 
   downloadTransaction(proofSubmissionId) {
@@ -1740,7 +1760,7 @@ export class NpsDeclarationComponent implements OnInit {
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");

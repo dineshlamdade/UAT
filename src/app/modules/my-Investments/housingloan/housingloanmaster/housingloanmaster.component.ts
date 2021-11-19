@@ -40,7 +40,19 @@ import { truncateSync } from 'node:fs';
 })
 export class HousingloanmasterComponent implements OnInit {
   @Input() public housePropertyMasterIds: any;
+  documentPassword= [];
+  remarkList = [];
+  stampDutydocumentPassword= [];
+  stampDutyremarkList = [];
+  loandocumentPassword= [];
+  loanremarkList = [];
+  possessiondocumentPassword= [];
+  possessionremarkList = [];
 
+  documentDataArray = [];
+  stampDutydocumentDataArray = [];
+  loandocumentDataArray = [];
+  possessiondocumentDataArray = [];
 
   public countriesList: Array<any> = [];
   public showOwner = false;
@@ -485,7 +497,7 @@ export class HousingloanmasterComponent implements OnInit {
     if(this.houseLoanOwnerTypeList.find(
       (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
       {
-    this.alertService.sweetalertWarning('Owner name is already exists');
+    this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
   
@@ -495,7 +507,7 @@ export class HousingloanmasterComponent implements OnInit {
       return item.ownerName === this.HPOwnerDetailForm.value.ownerName;
     });
   })) {
-    this.alertService.sweetalertWarning('Owner name is already exists');
+    this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
   
@@ -644,7 +656,7 @@ export class HousingloanmasterComponent implements OnInit {
 
     if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
       if(this.housePropertyLoanDetailList.value.lenderPANOrAadhar == undefined || this.housePropertyLoanDetailList.value.lenderPANOrAadhar == null ){
-        this.alertService.sweetalertWarning('Please enter PAN details');
+        this.alertService.sweetalertWarning('Please enter PAN details.');
         return
       }
     }
@@ -892,23 +904,73 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+   
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
     this.loanDetailGridData.length;
+
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.stampDutydocumentPassword.length; i++) {
+      if(this.stampDutydocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.stampDutyremarkList[i],
+          "password": this.stampDutydocumentPassword[i]
+        };
+        this.stampDutydocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.loandocumentPassword.length; i++) {
+      if(this.loandocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.loanremarkList[i],
+          "password": this.loandocumentPassword[i]
+        };
+        this.loandocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    for (let i = 0; i <= this.possessiondocumentPassword.length; i++) {
+      if(this.possessiondocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.possessionremarkList[i],
+          "password": this.possessiondocumentPassword[i]
+        };
+        this.possessiondocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
 
     // housingLoanForm housePropertyLoanDetailList HPUsageDetailForm HPOwnerDetailForm
     // houseLoanF  housePropertyLoanList HPUsageDetailF HPOwnerDetailF
     let invalidSubmission = false;
     if (this.housingLoanForm.invalid) {
       invalidSubmission = true;
-      this.alertService.sweetalertWarning('Please enter property details');
+      this.alertService.sweetalertWarning('Please enter property details.');
     }
 
     if (this.houseLoanOwnerTypeList.length == 0) {
       if (this.HPOwnerDetailForm.invalid) {
         invalidSubmission = true;
-        this.alertService.sweetalertWarning('Please enter house owner details');
+        this.alertService.sweetalertWarning('Please enter house owner details.');
       }
     }
 
@@ -916,7 +978,7 @@ export class HousingloanmasterComponent implements OnInit {
       if (this.HPUsageDetailForm.invalid) {
         invalidSubmission = true;
         this.alertService.sweetalertWarning(
-          'Please enter house loan usage details'
+          'Please enter house loan usage details.'
         );
       }
     }
@@ -924,7 +986,7 @@ export class HousingloanmasterComponent implements OnInit {
     if (this.loanDetailGridData.length == 0) {
       invalidSubmission = true;
       if (this.housePropertyLoanDetailList.invalid) {
-        this.alertService.sweetalertWarning('Please enter loan taken details');
+        this.alertService.sweetalertWarning('Please enter loan taken details.');
       }
     }
 
@@ -945,7 +1007,7 @@ export class HousingloanmasterComponent implements OnInit {
     )
     {
       this.alertService.sweetalertWarning(
-        'Please upload all mandatory documents'
+        'Please upload all mandatory documents.'
       );
       console.log('urlArray.length', this.urlArray.length);
       return;
@@ -976,6 +1038,10 @@ export class HousingloanmasterComponent implements OnInit {
         housePropertyUsageTypeList: this.houseLoanUsageTypeList,
         housePropertyOwnerDetailList: this.houseLoanOwnerTypeList,
         housePropertyLoanDetailList: this.loanDetailGridData,
+        propertyIndexRemarkPasswordList: this.documentDataArray,
+        stampDutyRegistrationRemarkPasswordList: this.stampDutydocumentDataArray,
+        loanSanctionLetterRemarkPasswordList: this.loandocumentDataArray,
+        possessionLetterRemarkPasswordList: this.possessiondocumentDataArray,
       };
 
       // data.housePropertyLoanDetailList = this.loanDetailGridData;
@@ -1205,7 +1271,7 @@ export class HousingloanmasterComponent implements OnInit {
         ].updateValueAndValidity()
       );
       this.alertService.sweetalertWarning(
-        'Please enter stamp duty registration date first to enter amount'
+        'Please enter stamp duty registration date first to enter amount.'
       );
     }
   }

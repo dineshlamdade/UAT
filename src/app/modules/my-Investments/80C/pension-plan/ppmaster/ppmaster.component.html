@@ -1,5 +1,7 @@
 <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
     <div class="tabview-contents">
+      <fieldset>
+        <legend>Account Details</legend>
         <div class="row">
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Institution</label>
@@ -65,6 +67,7 @@
                 </div>
             </div>
         </div>
+      </fieldset>
         <div class="row mt-25">
             <div class="col-12">
                 <fieldset>
@@ -99,7 +102,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
+                            <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS </label>
                             <div class="custom-controls-stacked ml-15 mt-10">
                                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>
@@ -179,24 +182,25 @@
                                             </td>
                                             <td class="wd-20">
                                                 <span tooltip="{{summary.frequencyOfPayment}}">
-                          {{summary.frequencyOfPayment=='Halfyearly'?'Half-Yearly':summary.frequencyOfPayment}}
+                          {{summary?.frequencyOfPayment=='Halfyearly'?'Half-Yearly':summary?.frequencyOfPayment}}
                         </span>
                                             </td>
                                             <td class="wd-19 align-right">
                                                 <span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">
-                          {{summary.premiumAmount | number:'1.2-2'}}
+                          {{summary?.premiumAmount | number:'1.2-2'}}
                         </span>
                                             </td>
                                             <td class="wd-14 align-right">
                                                 <span tooltip=" {{summary.annualAmount | number:'1.2-2'}}">
-                          {{summary.annualAmount | number:'1.2-2'}}
+                          {{summary?.annualAmount | number:'1.2-2'}}
                         </span>
                                             </td>
                                             <td class="wd-10">
-                                                <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
-                          {{summary.ecs==1?'Yes':'No'}}
-                        </span>
-                                            </td>
+                                              <span tooltip="{{summary.isEcs=='1' ? 'Yes':'No'}}">
+                
+                        <span> {{summary?.isEcs == '1' ? 'Yes' : 'No'}} </span>
+                      </span>
+                </td>
                                         </tr>
                                         <tr *ngIf="!paymentDetailGridData?.length">
                                             <td colspan="7">
@@ -622,7 +626,7 @@
                 <div class="float-right mb-15">
                     <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
               <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                    <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+                    <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
               <i class="fa fa-refresh"></i></b> Reset</button>
                 </div>
             </div>

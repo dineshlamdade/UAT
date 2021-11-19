@@ -1,9 +1,9 @@
-<app-leftmenu></app-leftmenu>
+<!-- <app-leftmenu></app-leftmenu> -->
 <!-- Main body part  -->
-<div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-        <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+<!-- <div class="page"> -->
+    <!-- <app-header></app-header> -->
+    <!-- <div class="section-body mt-3"> -->
+        <!-- <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;"> -->
             <div class="tabview-contents">
                 <div class="row">
                     <div class="col-12">
@@ -27,7 +27,7 @@
                                         </div> -->
                                         <div class="col-sm-3">
                                             <label class="form-label"> NR Qty Head</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                             [(ngModel)]="nonSalaryDetailId"
                                                 (change)="getSelectedHead($event.target.value)">
                                                 <option value=""> Select </option>
@@ -36,16 +36,16 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label"> Type </label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                                [(ngModel)]="type"
                                                 (change)="getSelectedHeadType($event.target.value)">
                                                 <option value=""> Select </option>
                                                 <option *ngFor="let data of nonSalaryOptionList">{{data.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <!-- <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <select name="payrollarea" class="form-control input-icon"
+                                            <select name="payrollarea" class="form-control custom-select input-icon"
                                             [(ngModel)]="selectedPayrollArea"
                                                 (change)="onPayrollSelect($event.target.value)">
                                                 <option value=""> Select </option>
@@ -54,12 +54,12 @@
                                                     {{payroll.name}}
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                     <br>
                                     <!-- Empoyee Table -->
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12" *ngIf="selectedPayrollArea">
                                             <p-table [value]="payrollEmployeeData" [rows]="10" [paginator]="true"
                                                 [globalFilterFields]="['employeeCode',
@@ -146,7 +146,7 @@
 
                                             </p-table>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <br>
 
                                     <div class="row">
@@ -285,8 +285,8 @@
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                             tooltip="Go" (click)="getAllSelectedData()"
-                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''"
-                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' || selectedPayrollArea == ''}"
+                                                                            [disabled]="selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == '' "
+                                                                            [ngClass]="{'disabled-btn-bg-green': selectedEmployeeData.length == 0 || nonSalaryDetailId == '' || type == ''}"
                                                                             >
                                                                             <!-- [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''}"
@@ -447,7 +447,7 @@
                                     </td>
                                     <td>{{data.employeeName}}</td>
                                     <td>
-                                        <select name="payrollarea" class="form-control wd-100" disabled
+                                        <select name="payrollarea" class="form-control custom-select wd-100" disabled
                                             (change)="getSelectedSavePayroll($event.target.value,data)">
                                             <option value=""> Select</option>
                                             <option *ngFor="let payroll of parollArea"
@@ -753,9 +753,9 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-    <app-footer></app-footer>
+        <!-- </div> -->
+    <!-- </div> -->
+    <!-- <app-footer></app-footer> -->
 
 
     <!-- Edit deviation and repeat-->

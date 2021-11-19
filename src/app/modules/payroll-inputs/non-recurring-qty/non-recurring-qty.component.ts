@@ -124,6 +124,8 @@ export class NonRecurringQtyComponent implements OnInit {
 	savenonSalaryDetailId: any ='';
 	savetype: any;
 	svaeDisabledFlag: boolean = true;
+	selectedOption: string = 'single';
+	payrollAreaId: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private nonRecQtyService: NonRecurringQtyService,
@@ -131,7 +133,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
 		if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
-			localStorage.removeItem('payrollListEmpData')
+			// localStorage.removeItem('payrollListEmpData')
 			this.indexId = 2
 			this.showEmployeeSelectionFlag = true;
 			this.selectedApplicableAt = ""
@@ -142,8 +144,10 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.showDropdownDisabled = true
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 			this.getAllEmployeeDetails();
-			this.selectedPayrollArea = 'PA-Staff'
+			
 			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
 
@@ -324,6 +328,15 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/******************* Transaction when click on Edit Transaction *******************/
 
+	/** on Click on toggle Button */
+	getSelectedOption(event){
+		if(event.checked){
+			this.selectedOption = 'fastEntry'
+		}else{
+		  this.selectedOption = 'single'
+		}
+	  }
+	  
 	/** On Click edit Transaction button - summary */
 	editTransaction() {
 		if (this.selectedEmpData.length > 0) {
@@ -500,7 +513,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				let inputdata = {
 					"employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
 					"headMasterId": parseInt(this.headMasterId),
-					"payrollAreaId": "1",
+					"payrollAreaId": this.payrollAreaId,
 					"amount": value,
 					"fromDate": this.selectedFromDate
 				}
@@ -584,7 +597,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			"employeeMasterId": this.selectedEmployeeMasterId,
 			"nonSalaryDetailId": this.selectedEmpData[this.index].nonSalaryDTO.nonSalaryDetailId,
 			"standardName": this.selectedStandardName,
-			"payrollAreaId": "1",
+			"payrollAreaId": this.payrollAreaId,
 			"payrollAreaCode": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
 			"onceEvery": this.onceEvery,
 			"frequency": this.updatefrequency,
@@ -642,7 +655,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex + 1
 		this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
@@ -656,7 +669,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex - 1
 		this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
@@ -672,7 +685,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex + 1
 		this.getAllEmployeeDetails();
-		this.selectedPayrollArea = 'PA-Staff'
+		this.selectedPayrollArea = this.payrollListEmpData[this.parollListIndex].payrollAreaCode
 		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
@@ -848,7 +861,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": parseInt(value),
 						"frequency": element.frequency,
@@ -872,7 +885,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": parseInt(value),
 							"frequency": data.frequency,
@@ -896,7 +909,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": parseInt(value),
 				"frequency": data.frequency,
@@ -970,7 +983,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -994,7 +1007,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1018,7 +1031,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1113,7 +1126,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1137,7 +1150,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1161,7 +1174,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1226,7 +1239,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1250,7 +1263,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1274,7 +1287,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1339,7 +1352,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1363,7 +1376,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1387,7 +1400,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1446,7 +1459,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			let inputdata = {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"amount": value,
 				"fromDate": this.selectedFromDateForSave
 			}
@@ -1485,7 +1498,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1509,7 +1522,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1533,7 +1546,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1607,7 +1620,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": value,
@@ -1631,7 +1644,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": value,
@@ -1655,7 +1668,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": value,
@@ -1720,7 +1733,7 @@ export class NonRecurringQtyComponent implements OnInit {
 						"employeeMasterId": this.selectedEmployeeMasterId,
 						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
-						"payrollAreaId": "1",
+						"payrollAreaId": this.payrollAreaId,
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
 						"frequency": element.frequency,
@@ -1744,7 +1757,7 @@ export class NonRecurringQtyComponent implements OnInit {
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"nonSalaryDetailId": this.savenonSalaryDetailId,
 							"standardName": data.headDescription,
-							"payrollAreaId": "1",
+							"payrollAreaId": this.payrollAreaId,
 							"payrollAreaCode": data.payrollArea,
 							"onceEvery": data.onceEvery,
 							"frequency": data.frequency,
@@ -1768,7 +1781,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"employeeMasterId": this.selectedEmployeeMasterId,
 				"nonSalaryDetailId": this.savenonSalaryDetailId,
 				"standardName": data.headDescription,
-				"payrollAreaId": "1",
+				"payrollAreaId": this.payrollAreaId,
 				"payrollAreaCode": data.payrollArea,
 				"onceEvery": data.onceEvery,
 				"frequency": data.frequency,
@@ -1879,7 +1892,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					"employeeMasterId": this.selectedEmployeeMasterId,
 					"nonSalaryDetailId": element.nonSalaryDetailId,
 					"standardName": element.standardName,
-					"payrollAreaId": "1",
+					"payrollAreaId": this.payrollAreaId,
 					"payrollAreaCode": element.payrollAreaCode,
 					"onceEvery": element.onceEvery,
 					"frequency": element.frequency,

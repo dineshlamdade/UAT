@@ -319,8 +319,8 @@ export class PpmasterComponent implements OnInit {
 
     //-------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
-      this.financialYearEnd = res.data.results[0].toDate; 
+      // this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearEnd = res.data.results[0].toDate; 
    
 
       
@@ -410,7 +410,9 @@ export class PpmasterComponent implements OnInit {
   }
  //-------------------- Policy End Date Validations with Policy Start Date ---------------
  setPolicyEndDate() {
+ 
   this.policyMinDate = this.form.value.policyStartDate;
+
   const policyStart = this.datePipe.transform(
     this.form.get('policyStartDate').value,
     'yyyy-MM-dd'
@@ -419,7 +421,7 @@ export class PpmasterComponent implements OnInit {
     this.form.get('policyEndDate').value,
     'yyyy-MM-dd'
   );
-  this.minFormDate = this.policyMinDate;
+  
   if (policyStart > policyEnd) {
     this.form.controls.policyEndDate.reset();
   }
@@ -428,6 +430,7 @@ export class PpmasterComponent implements OnInit {
   });
 
   this.setPaymentDetailToDate();
+  this.minFormDate = this.form.get('policyStartDate').value;
 }
 
 //------------------ Policy End Date Validations with Current Finanacial Year -------------------
@@ -761,6 +764,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
       if (obj != 'undefined') {
+       
         this.paymentDetailGridData = obj.paymentDetails;
         this.form.patchValue(obj);
         this.Index = obj.accountNumber;

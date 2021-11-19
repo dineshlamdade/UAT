@@ -453,7 +453,20 @@
                                                 <div class="col-md-12">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="tabview-contents">
+
+                                                            <div>
+                                                                <!-- margin-top: 17px !important; -->
+                                                                <label style="float:right;font-size: 22px;" 
+                                                                    class="custom-switch mt_5" *ngIf="payrollListEmpData">
+                                                                        <span class="form-label">Single Entry</span>&nbsp;&nbsp;
+                                                                        <input type="checkbox" (click)="getSelectedOption($event.target)" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                        <span class="custom-switch-indicator" style="width: 40px; height: 21px;"></span>&nbsp;&nbsp;
+                                                                        <span class="form-label">Fast Entry</span>
+                                                                </label>
+                                                            </div>
+                                                            <br>
+
+                                                            <div class="tabview-contents" *ngIf="selectedOption == 'single' ">
                                                                 <div class="section-body bg-color-white">
 
                                                                     <div style="float:right;margin-top:-25px;"
@@ -542,6 +555,14 @@
                                                                                         <label
                                                                                             class="font-12 text-ellipsis mt-1 mb-0">
                                                                                             {{employeeFinDetailsData.establishment}}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <label
+                                                                                            class="form-label mt-1 mb-0">Department</label>
+                                                                                        <label
+                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                            
                                                                                         </label>
                                                                                     </div>
                                                                                     <div class="col-md-2">
@@ -1620,6 +1641,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <app-fastentry-nr-qty *ngIf="selectedOption != 'single'"></app-fastentry-nr-qty>
+
                                                         </div>
                                                     </div>
                                                 </div>

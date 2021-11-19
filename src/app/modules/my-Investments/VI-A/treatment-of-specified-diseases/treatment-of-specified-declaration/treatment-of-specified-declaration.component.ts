@@ -1151,13 +1151,13 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
     this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-   
+
 
   }
 
@@ -1165,7 +1165,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
   upload() {
     for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1325,6 +1325,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
    this.proofForAmountSpent = [];
     this.proofForRecoveryFromInsuranceCompany = [];
+    this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
   }
 
@@ -1783,7 +1784,7 @@ this.documentArray = [];
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         console.log('documentArrayTest',this.documentArray);
@@ -1825,7 +1826,7 @@ this.documentArray = [];
     index: any,
     psId, policyNo
   ) {
-    
+
     this.Service.getRemarkList(
       policyNo,
       psId
@@ -1844,7 +1845,7 @@ this.documentArray = [];
 
   public uploadUpdateTransaction() {
     for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -2021,7 +2022,7 @@ this.documentArray = [];
         }
       });
     this.currentFileUpload = null;
-    // this.editfilesArray = [];
+    this.editdDocumentDataArray = [];
    this.editProofForAmountSpent = [];
   this.editProofForRecoveryFromInsuranceCompany = [];
   }
@@ -2084,7 +2085,7 @@ this.documentArray = [];
       if(currWidth == 2500) return false;
        else{
           myImg.style.width = (currWidth + 100) + "px";
-      } 
+      }
   }
    zoomout(){
       var myImg = document.getElementById("map");

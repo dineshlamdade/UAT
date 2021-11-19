@@ -209,8 +209,28 @@
                 <div class="col-10">
                   <div class="card">
                     <div class="mb-10 text-purple font-bold">
-                      <!-- <h3 class="card-title  font-bold"></h3> -->
-                      Summary
+                      <h3 class="font-14 text-purple font-bold">Summary</h3>
+        
+
+                      <div class="cycle-table">
+                      <div class="cycle-value pt-10 pb-40 bg-color-light_gray">
+                         <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
+                        <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
+                            <div class="float-right d-flex  justify-content">
+                              
+                               <div class="rup mt-2">
+                                  <div class="input-icon mb-3">
+                                     <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
+                                     type="text" pInputText class="form-control" placeholder="Search...">
+                                     <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                                  </div>
+                               </div>
+                               &nbsp;&nbsp;
+                               <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3" aria-hidden="true"></i>
+                            </div>
+                         </div>
+                      </div>
+                      </div>
                     </div>
                     <div class="">
                         <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -219,22 +239,7 @@
                        ,'remark']">
                             <ng-template pTemplate="header">
 
-                              <br>
-              
-              <div style="text-align: right;display: flex;">
-                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                <input type="text" pInputText size="50" placeholder="Search"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')"
-                    style="width: 203px;">
-                    &nbsp;&nbsp;&nbsp;
-                    <a tooltip="Download" style="cursor: pointer"
-                    (click)="exportAsXLSX()"><i
-                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                        aria-hidden="true"></i></a>
-              </div>
-
-              <br>
-              <br>
+                              
                                 <tr>
                                     <th rowspan="2" >
                                         Sr. No.
@@ -278,11 +283,7 @@
                                   <th colspan="2">
                                       <div class="p-d-flex p-jc-between p-ai-center ml-50">
                                      Primary Cycle
-                                          <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="businessCycleDefinition.cycleName"></p-sortIcon>
-                                              <p-columnFilter type="text" field="businessCycleDefinition.cycleName" display="menu"
-                                                  class="p-ml-auto"></p-columnFilter>
-                                          </div>
+                                          
                                       </div>
                                   </th>
                                

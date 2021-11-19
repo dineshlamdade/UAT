@@ -54,6 +54,9 @@ export class GarnishmentTransactionComponent implements OnInit {
   payrollheaders: any;
   indexId = 1
   selectedEmpData: any = []
+  selectedPayrollArea: any;
+  payrollAreaId: any;
+	selectedOption: string = 'single';
 
   constructor(private modalService: BsModalService, private payrollservice: PayrollInputsService,
     private garnishmentservice: GarnishmentService, private nonRecService: NonRecurringAmtService,
@@ -64,6 +67,10 @@ export class GarnishmentTransactionComponent implements OnInit {
       this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
       this.selectedEmpData = this.payrollListEmpData
       // localStorage.removeItem('payrollListEmpData')
+			this.indexId = 2
+			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
       this.getAllEmployeeDetails();
       this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
     }
@@ -88,7 +95,8 @@ export class GarnishmentTransactionComponent implements OnInit {
       "goalBalanceAmount": new FormControl(0),
       "numberOfTransactions": new FormControl(""),
       "remark": new FormControl(""),
-      "isActive": new FormControl(1)
+      "isActive": new FormControl(1),
+      "familyMemberInfoId": new FormControl(1),
     })
   }
 
@@ -128,6 +136,16 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.getApplicationSummary()
   }
 
+  /** on Click on toggle Button */
+	getSelectedOption(event){
+		if(event.checked){
+			this.selectedOption = 'fastEntry'
+		}else{
+		  this.selectedOption = 'single'
+		}
+	  }
+	
+
   /** e&d head */
   payrollheadmaster(){
     this.garnishmentservice.payrollheadmaster().subscribe(res =>{
@@ -152,7 +170,7 @@ export class GarnishmentTransactionComponent implements OnInit {
 
   /** Garnishment Master data */
   getAllGarnishmentMaster() {
-    this.indexId = 1
+    // this.indexId = 1
     this.editFlag = false
     this.viewFlag = false
     this.applicationForm.enable()
@@ -161,6 +179,11 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.garnishmentservice.getAllGarnishmentMaster().subscribe(res => {
       this.garnishmentMasterData = res.data.results;
     })
+  }
+
+
+  navigateToSummary(){
+    this.indexId = 1
   }
 
   /** Get Application Summary Data */
@@ -249,6 +272,9 @@ export class GarnishmentTransactionComponent implements OnInit {
   }
 
   getSelectedGarnishmentData(garnishment){
+  this.selectedInputTypeName = ''
+  this.applicationForm.controls['percentage'].setValue('')
+  this.applicationForm.controls['amount'].setValue('')
     this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
       if(element.garnishmentMasterInputTypeId == garnishment){
         this.selectedInputTypeName = element.inputTypeName

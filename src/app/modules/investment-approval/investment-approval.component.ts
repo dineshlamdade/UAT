@@ -196,11 +196,15 @@ export class InvestmentApprovalComponent implements OnInit {
     {
       this.router.navigate(['/investment-approval/interestoneducationalloanmaster']);
     }
+    else if (this.psidList[0].itSection == 'ELECTRICVEHICLE') 
+    {
+      this.router.navigate(['/investment-approval/interestonloanforpurchaseofelectricvehiclemaster']);
+    }
     else if (this.psidList[0].itSection == 'SPECIFIEDDISEASE') 
     {
       this.router.navigate(['/investment-approval/treatmentofspecifieddiseasesmaster']);
     }
-    else if (this.psidList[0].itSection == 'MEDICLAIM')
+    else if (this.psidList[0].itSection == '80-D')
     {
       this.router.navigate(['/investment-approval/mediclaim80dmaster']);
     }
@@ -227,11 +231,15 @@ export class InvestmentApprovalComponent implements OnInit {
     {
       this.router.navigate(['/investment-approval/interestoneducationalloantransaction']);
     }
+    else if (this.psidList[0].itSection == 'ELECTRICVEHICLE') 
+    {
+      this.router.navigate(['/investment-approval/interestonloanforpurchaseofelectricvehicletransaction']);
+    }
     else if (this.psidList[0].itSection == 'SPECIFIEDDISEASE')
     {
       this.router.navigate(['/investment-approval/treatmentofspecifieddiseasestransaction']);
     }
-    else if (this.psidList[0].itSection == 'MEDICLAIM') 
+    else if (this.psidList[0].itSection == '80-D') 
     {
       this.router.navigate(['/investment-approval/mediclaim80dtransaction']);
     }
@@ -239,12 +247,16 @@ export class InvestmentApprovalComponent implements OnInit {
     {
       this.router.navigate(['/investment-approval/handicappeddependenttransaction']);
     }
-    else if (this.psidList[0].itSection == '80GGA') 
+    else if (this.psidList[0].itSection == 'DONATIONS80GGA') 
     {
       this.router.navigate(['/investment-approval/donationsforscientificresearchggatransaction']);
     }
+    else if (this.psidList[0].itSection == '80-U') 
+    {
+      this.router.navigate(['/investment-approval/physicallyhandicappedtransaction']);
+    }
 
-    else if (this.psidList[0].itSection == '80GGC') 
+    else if (this.psidList[0].itSection == 'DONATIONS80GGC') 
     {
       this.router.navigate(['/investment-approval/donationsforregisteredpoliticalpartyelectoraltrustsec80ggctransaction']);
     }

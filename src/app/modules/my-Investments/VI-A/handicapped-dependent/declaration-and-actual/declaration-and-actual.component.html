@@ -111,7 +111,7 @@
                   <!-- <span tooltip="{{ element.proofSubmissionId }}">
                     {{ element.proofSubmissionId }}
                   </span> -->
-                  <span tooltip="{{ element.proofSubmissionId }}" *ngIf="element.transactionStatus === 'Submitted'">
+                  <span tooltip="{{element.proofSubmissionId }}" *ngIf="element.transactionStatus === 'Submitted'">
                     <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                     <!-- {{ summary.proofSubmissionId }} -->
                   </span>
@@ -507,7 +507,6 @@
         </div>
       </div>
     </div>
-    <hr />
   </div>
 </div>
 
@@ -1207,11 +1206,10 @@
                 </tr>
               </tbody>
             </table>
-
+            <br>
           </div>
         </div>
       </div>
-      <hr />
     </div>
 
     <hr />
@@ -1301,7 +1299,7 @@
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+      class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
     </button>

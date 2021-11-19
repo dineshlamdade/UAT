@@ -74,13 +74,13 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
   public isEdit: boolean = false;
 
-  documentPassword =[];
-  remarkList =[];
+  documentPassword = [];
+  remarkList = [];
   documentDataArray = [];
   filesUrlArray = [];
 
 
-  documentArray: any[] =[];
+  documentArray: any[] = [];
   isVisibleTable = false;
 
   viewDocumentName: any;
@@ -116,6 +116,11 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public hideRemoveRow: boolean;
   public isClear: boolean;
   public isCancel: boolean;
+
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate: boolean;
+
   public today = new Date();
   public proofSubmissionId = '';
   public transactionStatustList: any;
@@ -143,8 +148,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       familyMemberInfoId: new FormControl(null, Validators.required),
       patientName: new FormControl(null, Validators.required),
-      relationship: new FormControl({ value: null, disabled: true },Validators.required),
-      neurologicalDiseaseName: new FormControl(null,Validators.required),
+      relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+      neurologicalDiseaseName: new FormControl(null, Validators.required),
       specifiedDiseaseName: new FormControl(null, Validators.required),
       proofSubmissionId: new FormControl(''),
       specifiedDiseaseMasterId: new FormControl(0),
@@ -199,6 +204,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.isShowSave = true;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     //-------------- Business Financial Year API Call -------------------------------
@@ -267,173 +273,177 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
           element.documentInformationList.forEach(element => {
             // if(element!=null)
             this.documentArray.push({
-              'dateofsubmission':element.creatonTime,
-              'documentType':element.documentType,
+              'dateofsubmission': element.creatonTime,
+              'documentType': element.documentType,
               'documentName': element.fileName,
-              'documentPassword':element.documentPassword,
-              'documentRemark':element.documentRemark,
-              'status' : element.status,
-              'lastModifiedBy' : element.lastModifiedBy,
-              'lastModifiedTime' : element.lastModifiedTime,
-    
+              'documentPassword': element.documentPassword,
+              'documentRemark': element.documentRemark,
+              'status': element.status,
+              'lastModifiedBy': element.lastModifiedBy,
+              'lastModifiedTime': element.lastModifiedTime,
+
             })
           });
           this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
             'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-  
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
+
           })
         });
-    });
-      // });
+      });
+    // });
   }
 
   //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
+    this.isShowCancel = false;
+    this.isShowUpdate = false;
+    this.isShowSave = true;
 
     if (this.form.invalid) {
       return;
     }
     console.log('this.isEdit', this.isEdit);
-   
-    if(!this.isEdit){
 
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
-      this.alertService.sweetalertWarning(
-        'Treatment Of Specified Document needed to Create Master.'
-      );
-      return;
-    } 
-  }
+    if (!this.isEdit) {
 
-  for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
-      let remarksPasswordsDto = {};
-      remarksPasswordsDto = {
-        "documentType": "Back Statement/ Premium Reciept",
-        "documentSubType": "",
-        "remark": this.remarkList[i],
-        "password": this.documentPassword[i]
-      };
-      this.documentDataArray.push(remarksPasswordsDto);
-    }
-  }
-  console.log('this.documentDataArray', this.documentDataArray);
-  // else {
-      // const data = this.form.getRawValue();
-
-      // neurologicalDiseaseName: new FormControl(null),
-      // specifiedDiseaseName:
-      let data: any = {};
-      if(this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above'){
-        data = {
-          specifiedDiseaseMasterId : 0,
-          familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
-          patientName: this.masterForm.patientName.value,
-          relationship: this.masterForm.relationship.value,
-          neurologicalDiseaseName : '',
-          specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
-          },
-          data.proofSubmissionId = this.proofSubmissionId;
-      }else {
-        data = {
-          specifiedDiseaseMasterId : 0,
-          familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
-          patientName: this.masterForm.patientName.value,
-          relationship: this.masterForm.relationship.value,
-          neurologicalDiseaseName: this.masterForm.neurologicalDiseaseName.value,
-          specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
-        }
-        data.proofSubmissionId = this.proofSubmissionId;
-        data.remarkPasswordList = this.documentDataArray;
+      if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
+        this.alertService.sweetalertWarning(
+          'Treatment Of Specified Document needed to Create Master.'
+        );
+        return;
       }
+    }
 
-      console.log('Treatment Of Specified Disease::', data);
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if (this.documentPassword[i] != undefined || this.documentPassword[i] == undefined) {
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+    console.log('this.documentDataArray', this.documentDataArray);
+    // else {
+    // const data = this.form.getRawValue();
 
-      this.treatmentOfSpecifiedService
-        .uploadMultipleMasterFiles(this.masterfilesArray, data)
-        .subscribe((res) => {
-          console.log(res);
-          if (res) {
+    // neurologicalDiseaseName: new FormControl(null),
+    // specifiedDiseaseName:
+    let data: any = {};
+    if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
+      data = {
+        specifiedDiseaseMasterId: 0,
+        familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
+        patientName: this.masterForm.patientName.value,
+        relationship: this.masterForm.relationship.value,
+        neurologicalDiseaseName: '',
+        specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
+      },
+        data.proofSubmissionId = this.proofSubmissionId;
+    } else {
+      data = {
+        specifiedDiseaseMasterId: 0,
+        familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
+        patientName: this.masterForm.patientName.value,
+        relationship: this.masterForm.relationship.value,
+        neurologicalDiseaseName: this.masterForm.neurologicalDiseaseName.value,
+        specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
+      }
+      data.proofSubmissionId = this.proofSubmissionId;
+      data.remarkPasswordList = this.documentDataArray;
+    }
+
+    console.log('Treatment Of Specified Disease::', data);
+
+    this.treatmentOfSpecifiedService
+      .uploadMultipleMasterFiles(this.masterfilesArray, data)
+      .subscribe((res) => {
+        console.log(res);
+        if (res) {
+          if (res.data.results.length > 0) {
+            this.isEdit = false;
+            this.showdocument = false;
+            this.masterGridData = res.data.results;
             if (res.data.results.length > 0) {
-              this.isEdit = false;
-              this.showdocument = false;
               this.masterGridData = res.data.results;
-              if (res.data.results.length > 0) {
-                this.masterGridData = res.data.results;
-                
-            
-                this.masterGridData.forEach((element, index) => {
+
+
+              this.masterGridData.forEach((element, index) => {
+                this.documentArray.push({
+
+                  'dateofsubmission': new Date(),
+                  'documentType': element.documentInformationList[0].documentType,
+                  'documentName': element.documentInformationList[0].fileName,
+                  'documentPassword': element.documentInformationList[0].documentPassword,
+                  'documentRemark': element.documentInformationList[0].documentRemark,
+                  'status': element.documentInformationList[0].status,
+                  'approverName': element.documentInformationList[0].lastModifiedBy,
+                  'Time': element.documentInformationList[0].lastModifiedTime,
+
+                  // 'documentStatus' : this.premiumFileStatus,
+
+                });
+
+                if (element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
-                    'dateofsubmission':new Date(),
-                      'documentType':element.documentInformationList[0].documentType,
-                      'documentName': element.documentInformationList[0].fileName,
-                      'documentPassword':element.documentInformationList[0].documentPassword,
-                      'documentRemark':element.documentInformationList[0].documentRemark,
-                      'status' : element.documentInformationList[0].status,
-                      'approverName' : element.documentInformationList[0].lastModifiedBy,
-                      'Time' : element.documentInformationList[0].lastModifiedTime,
 
-                      // 'documentStatus' : this.premiumFileStatus,
-              
-                  });
+                    'dateofsubmission': new Date(),
+                    'documentType': element.documentInformationList[1].documentType,
+                    'documentName': element.documentInformationList[1].fileName,
+                    'documentPassword': element.documentInformationList[1].documentPassword,
+                    'documentRemark': element.documentInformationList[1].documentRemark,
+                    'status': element.documentInformationList[1].status,
+                    'lastModifiedBy': element.documentInformationList[1].lastModifiedBy,
+                    'lastModifiedTime': element.documentInformationList[1].lastModifiedTime,
 
-                  if(element.documentInformationList[1]) {
-                  this.documentArray.push({
-                  
-                    'dateofsubmission':new Date(),
-                      'documentType':element.documentInformationList[1].documentType,
-                      'documentName': element.documentInformationList[1].fileName,
-                      'documentPassword':element.documentInformationList[1].documentPassword,
-                      'documentRemark':element.documentInformationList[1].documentRemark,
-                      'status' : element.documentInformationList[1].status,
-                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+                    // 'documentStatus' : this.premiumFileStatus,
 
-                      // 'documentStatus' : this.premiumFileStatus,
-              
                   });
                 }
-                });
-              }
-
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Transaction" Page to see Schedule.'
-              );
-            } else {
-              this.alertService.sweetalertWarning(res.status.messsage);
+              });
             }
-          } else {
-            this.alertService.sweetalertError(
-              'Something went wrong. Please try again.'
-            );
-          }
-        });
 
-      this.Index = -1;
-      formDirective.resetForm();
-      this.form.reset();
-      // this.form.get('active').setValue(true);
-      // this.form.get('ecs').setValue(0);
-      this.showUpdateButton = false;
-      // this.paymentDetailGridData = [];
-      this.urlArray = [];
-      this.masterfilesArray = [];
-      this.submitted = false;
-      this.documentRemark = '';
-      this.remarkList = [];
-      this.documentPassword = [];
-      this.isVisibleTable = false;
-      this.isEdit = false;
+            this.alertService.sweetalertMasterSuccess(
+              'Record saved Successfully.',
+              'Go to "Transaction" Page to see Schedule.'
+            );
+          } else {
+            this.alertService.sweetalertWarning(res.status.messsage);
+          }
+        } else {
+          this.alertService.sweetalertError(
+            'Something went wrong. Please try again.'
+          );
+        }
+      });
+
+    this.Index = -1;
+    formDirective.resetForm();
+    this.form.reset();
+    this.documentDataArray = [];
+    // this.form.get('active').setValue(true);
+    // this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    // this.paymentDetailGridData = [];
+    this.urlArray = [];
+    this.masterfilesArray = [];
+    this.submitted = false;
+    this.documentRemark = '';
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.isVisibleTable = false;
+    this.isEdit = false;
     // }
   }
 
@@ -493,51 +503,153 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   // }
 
 
-    // ------------- On Master Edit functionality --------------------
-    public editMaster(patientName) {
-      this.isEdit = true;
-      this.scrollToTop();
-      this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
-        console.log('masterGridData::', res);
-        this.masterGridData = res.data.results;
-        console.log(patientName);
-        const obj = this.findByPolicyNo(patientName, this.masterGridData);
+  // ------------- On Master Edit functionality --------------------
+  public editMaster(patientName) {
+    this.isEdit = true;
+    this.isShowUpdate = true;
+    this.isShowSave = false;
+    this.isShowCancel = false;
+    this.form.enable();
+    this.form.get('relationship').disable();
+    this.scrollToTop();
+    this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      console.log(patientName);
+      const obj = this.findByPolicyNo(patientName, this.masterGridData);
 
-        // Object.assign({}, { class: 'gray modal-md' }),
-        console.log('Edit Master', obj);
-        if (obj != 'undefined') {
-          this.paymentDetailGridData = obj.paymentDetails;
-          this.form.patchValue(obj);
-          this.visibilityFlag = true;
-          this.Index = obj.patientName;
-          this.showUpdateButton = true;
-          this.isClear = true;
-          // this.urlArray = obj.doctorCertificate;
-          this.filesUrlArray = obj.documentInformationList;
-          this.proofSubmissionId = obj.proofSubmissionId;
-          this.showdocument = false;
-          this.documentArray = [];
-          obj.documentInformationList.forEach(element => {
-            this.documentArray.push({
-              'dateofsubmission':element.creatonTime,
-              'documentType':element.documentType,
-              'documentName': element.fileName,
-              'documentPassword':element.documentPassword,
-              'documentRemark':element.documentRemark,
-              'status' : element.status,
-              'lastModifiedBy' : element.lastModifiedBy,
-              'lastModifiedTime' : element.lastModifiedTime,
-  
-            })
-            
-          });
-          console.log("documentArray::",this.documentArray);
-          this.isVisibleTable = true;
-        }
-      });
-    }
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.visibilityFlag = true;
+        this.Index = obj.patientName;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.doctorCertificate;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
+            'documentName': element.fileName,
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
 
-      // Find patientName
+          })
+
+        });
+        console.log("documentArray::", this.documentArray);
+        this.isVisibleTable = true;
+      }
+    });
+  }
+  //View Master Functionality
+
+  public viewMaster(patientName) {
+    this.isEdit = true;
+    this.isShowUpdate = false;
+    this.isShowSave = false;
+    this.isShowCancel = true;
+    this.form.disable();
+    this.form.get('relationship').disable();
+    this.scrollToTop();
+    this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      console.log(patientName);
+      const obj = this.findByPolicyNo(patientName, this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.visibilityFlag = true;
+        this.Index = obj.patientName;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.doctorCertificate;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
+            'documentName': element.fileName,
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::", this.documentArray);
+        this.isVisibleTable = true;
+      }
+    });
+  }
+
+  // -------------On Master view functionality not working
+  public viewMasters(patientName) {
+    this.form.disable();
+    this.isShowSave = false;
+    this.isShowCancel = true;
+    this.isShowUpdate = false;
+    this.isEdit = true;
+    this.scrollToTop();
+    this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      console.log(patientName);
+      const obj = this.findByPolicyNo(patientName, this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.visibilityFlag = true;
+        this.Index = obj.patientName;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.doctorCertificate;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
+            'documentName': element.fileName,
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::", this.documentArray);
+        this.isVisibleTable = true;
+      }
+    });
+  }
+
+  // Find patientName
   public findByPolicyNo(patientName, masterGridData) {
     return masterGridData.find((x) => x.patientName === patientName);
   }
@@ -565,8 +677,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isClear = false;
   }
 
-  //------------------- On Master View functionality -----------------------
-  viewMaster(i: number) {
+  //------------------- On Master View functionality -(Function is Not Used in HTML )----------------
+  viewMaste(i: number) {
     //this.scrollToTop();
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
@@ -595,13 +707,32 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   //---------- On View Cancel -------------------
-  cancelView() {
+  cancleView() {
     this.form.reset();
     // this.form.get('active').setValue(true);
     // this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.isCancel = false;
   }
+
+  //__________On Cancel View
+  cancelView() {
+    this.form.reset();
+    this.form.enable();
+    this.isShowCancel = false;
+    this.isShowUpdate = false;
+    this.isShowSave = true;
+    this.form.get("relationship").disable();
+    this.masterfilesArray = [];
+    this.isCancel = false;
+    this.urlArray = [];
+    this.visibilityFlag = false;
+    this.isClear = false;
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+  }
+
 
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -626,8 +757,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     }
   }
 
-   // ---------- For Doc Viewer -----------------------
-   public nextDocViewer() {
+  // ---------- For Doc Viewer -----------------------
+  public nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
@@ -641,22 +772,22 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     );
   }
 
-  zoomin(){
+  zoomin() {
     var myImg = document.getElementById("map");
     var currWidth = myImg.clientWidth;
-    if(currWidth == 2500) return false;
-     else{
-        myImg.style.width = (currWidth + 100) + "px";
-    } 
-}
- zoomout(){
-    var myImg = document.getElementById("map");
-    var currWidth = myImg.clientWidth;
-    if(currWidth == 100) return false;
- else{
-        myImg.style.width = (currWidth - 100) + "px";
+    if (currWidth == 2500) return false;
+    else {
+      myImg.style.width = (currWidth + 100) + "px";
     }
-}
+  }
+  zoomout() {
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 100) return false;
+    else {
+      myImg.style.width = (currWidth - 100) + "px";
+    }
+  }
 
   public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');

@@ -21,7 +21,20 @@
         </option>
       </select>
     </div>
+
+  <div class="ml-2 pl-1 pr-0">
+    <label class="form-label mt-2 pl-10">Loan Account No</label>
   </div>
+  <div class="col-2">
+    <select name="loanAccountNumber" class="form-control custom-select" (change)="selectedPolicy($event.target.value)">
+      <option selected value=''>Select </option>
+      <option *ngFor="let transactionPolicy of AccountlenderNameList" [value]="transactionPolicy.value"
+        [selected]="transactionPolicy.value == globalPolicy">
+        {{ transactionPolicy.label }}
+      </option>
+    </select>
+  </div>
+</div>
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
@@ -174,14 +187,14 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
-                      
+
                       (change)="
                       onChangeDocumentRemark(
                           summary, i,
                           $event
                         )
                       "
-                    
+
                     />
                     <div
                       _ngcontent-ykc-c443=""
@@ -322,7 +335,7 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
                       [(ngModel)]="summary.actualAmount" class="form-control align-right"
-                      (change)="onActualAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" [disabled]="
+                      (change)="onActualAmountChangeCurrent(summary, i, j)" [disabled]="initialArrayIndex[j] > i" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
                     " />
                   </div>
@@ -812,9 +825,21 @@
           " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
           <b><i class="fa fa-floppy-o"></i></b> Save
         </button>
+
+
       </div>
+
     </div>
   </div>
+<div class="row mt-10" *ngIf="isVisibleCancel">
+  <div class="col-12">
+  <div class="float-right mb-15">
+    <button type="button"
+    class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+    tooltip="Cancel" (click)="cancelViewInUpdateView()"><b><i class="fa fa-times-circle"></i></b>Cancel</button>
+  </div>
+  </div>
+</div>
   <!-- <div class="row mt-10">
    <div class="col-12">
       <p-messages [(value)]="msgs2" [enableService]="false" width=100></p-messages>
@@ -1642,7 +1667,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+      class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left">
       <b><i class="fa fa-eye"></i></b> View
     </button> &nbsp;&nbsp;
     <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document"
@@ -1662,10 +1687,10 @@
       </div>
       <div class="col-sm-6 col-md-6 align-right">
           <label class="form-label">Document Type</label>
-          
+
           {{this.viewDocumentType}}
       </div>
-    
+
       </div>
       <div class="align-right">
         <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>

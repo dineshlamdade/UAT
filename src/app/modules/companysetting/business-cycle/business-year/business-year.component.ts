@@ -94,7 +94,7 @@ export class BusinessYearComponent implements OnInit {
       delete addBusinessYear.id;
       addBusinessYear.fromDate = this.datepipe.transform( addBusinessYear.fromDate, 'dd-MMM' );
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, 'dd-MMM' );
-      console.log( JSON.stringify( addBusinessYear ) );
+      // console.log( JSON.stringify( addBusinessYear ) );
       this.companySetttingService.AddBusinessYear( addBusinessYear ).subscribe( ( res: any ) => {
 
         this.alertService.sweetalertMasterSuccess(res.status.message, "" );
@@ -107,8 +107,8 @@ export class BusinessYearComponent implements OnInit {
 
 
 
-        this.getAllBusinessyear();
         this.BusinessYearform.reset();
+        this.getAllBusinessyear();
       },
         ( error: any ) => {
           this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -140,7 +140,6 @@ export class BusinessYearComponent implements OnInit {
     this.BusinessyearList = [];
     this.companySetttingService.getAllBusinessYear().subscribe( res => {
       this.BusinessyearList = res.data.results;
-      //console.log( 'Business year list', this.BusinessyearList );
     },
       ( error: any ) => {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -231,12 +230,13 @@ export class BusinessYearComponent implements OnInit {
   exportAsXLSX(): void {
     this.excelData = [];
     this.header = []
-    this.header =["Description","Year Definition"]
+    this.header =["S.No.","Description","Year Definition"]
     //this.excelData = this.attendanceData
-    this.BusinessyearList.forEach(element => {
+    this.BusinessyearList.forEach((element,index) => {
 
 
 			let obj = {
+        "S.No.":index+1,
 				"Description": element.description,
 				"Year Definition": element.fullFromDate + ' ' + 'To' + ' '  + element.fullToDate,
         

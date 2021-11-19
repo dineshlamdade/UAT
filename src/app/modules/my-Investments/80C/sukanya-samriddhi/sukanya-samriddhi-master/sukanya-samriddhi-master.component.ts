@@ -54,6 +54,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
+
+  public showDeatil = false;
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
@@ -314,7 +316,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearStart = res.data.results[0].fromDate;
       this.financialYearEnd = res.data.results[0].toDate; 
    
 
@@ -397,7 +399,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       // console.log("edit", input)
       // this.editMaster(input);
       // console.log('editMaster policyNo', input);
-      this.editMaster(input.accountNumber);
+      this?.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
 
@@ -757,8 +759,13 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   }
 
   // On Master Edit functionality
-  editMaster(accountNumber) {
+  editMaster(accountNumber, frequency?) {
     this.isEdit = true;
+    if (frequency == 'As & When') {
+      this.showDeatil = true;
+          } else {
+            this.showDeatil = false;
+          }
     this.scrollToTop();
     this.sukanyaSamriddhiService
       .getSukanyaSamriddhiMaster()
@@ -777,8 +784,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
         console.log('Edit Master', obj);
         if (obj != 'undefined') {
+      //     console.log('inedit as and when', obj?.frequency);
+      // if (obj.frequency === 'As & When') {
           this.paymentDetailGridData = obj.paymentDetails;
-          this.form.patchValue(obj);
+          this?.form.patchValue(obj);
           this.Index = obj.accountNumber;
           this.showUpdateButton = true;
           this.isClear = true;
