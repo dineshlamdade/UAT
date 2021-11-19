@@ -60,11 +60,6 @@ export class BankMasterAtCompanyComponent implements OnInit {
       reEnterAccountNumber: ['', Validators.required],
       pfFormArray: ( [] ),
       companyGroup: ['', Validators.required],
-//new
-      // ontactPersonName: ['',Validators.required],
-      // designation: ['',Validators.required],
-      // emailId: ['', Validators.required],
-
     },
       {
         validator: MustMatch( 'accountNumber', 'reEnterAccountNumber' ),
