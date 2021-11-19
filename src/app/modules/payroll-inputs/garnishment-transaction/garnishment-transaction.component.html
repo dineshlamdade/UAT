@@ -60,6 +60,7 @@
                                                                 </i>
                                                             </a> -->
 
+                                                            <div class="table-responsive Custom_Table">
                                                             <p-table #dt1 [value]="applicationSummaryData"
                                                                 [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
@@ -88,7 +89,8 @@
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="employeeMasterResponseDTO.employeeCode">
+                                                                                        field="employeeMasterResponseDTO.employeeCode"
+                                                                                        pSortableColumn="employeeMasterResponseDTO.employeeCode">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="employeeMasterResponseDTO.employeeCode"
@@ -104,7 +106,8 @@
                                                                                 Emp. Name
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="employeeMasterResponseDTO.fullName">
+                                                                                        field="employeeMasterResponseDTO.fullName"
+                                                                                        pSortableColumn="employeeMasterResponseDTO.fullName">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="employeeMasterResponseDTO.fullName"
@@ -121,7 +124,8 @@
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
-                                                                                        field="payrollArea.payrollAreaCode">
+                                                                                        field="payrollArea.payrollAreaCode"
+                                                                                        pSortableColumn="payrollArea.payrollAreaCode">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="payrollArea.payrollAreaCode"
@@ -136,11 +140,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Application No.
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="employeeName"
-                                                                                        pSortableColumn="employeeName">
+                                                                                    <p-sortIcon field="garnishmentApplicationMasterId"
+                                                                                        pSortableColumn="garnishmentApplicationMasterId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="employeeName"
+                                                                                    <p-columnFilter type="number"
+                                                                                        field="garnishmentApplicationMasterId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -152,11 +156,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Application Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="createDateTime"
+                                                                                        pSortableColumn="createDateTime">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                    <p-columnFilter type="date"
+                                                                                        field="createDateTime" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -167,11 +171,12 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Master
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="garnishmentMasterResponseDTO.nameOfInstitution"
+                                                                                        pSortableColumn="garnishmentMasterResponseDTO.nameOfInstitution">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                        field="garnishmentMasterResponseDTO.nameOfInstitution" 
+                                                                                        display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -182,11 +187,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Nature
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="garnishmentMasterResponseDTO.nature"
+                                                                                        pSortableColumn="garnishmentMasterResponseDTO.nature">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                        field="garnishmentMasterResponseDTO.nature" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -197,11 +202,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Percentage (%)
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="percentage"
+                                                                                        pSortableColumn="percentage">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                        field="percentage" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -212,11 +217,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Amount
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="amount"
+                                                                                        pSortableColumn="amount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                    <p-columnFilter type="number"
+                                                                                        field="amount" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -227,11 +232,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 From Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="fromDate"
+                                                                                        pSortableColumn="fromDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                    <p-columnFilter type="date"
+                                                                                        field="fromDate" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -242,11 +247,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 To Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="toDate"
+                                                                                        pSortableColumn="toDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                    <p-columnFilter type="date"
+                                                                                        field="toDate" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -257,11 +262,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Balance Goal
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="goalBalanceAmount"
+                                                                                        pSortableColumn="goalBalanceAmount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                    <p-columnFilter type="number"
+                                                                                        field="goalBalanceAmount" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -272,11 +277,11 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Remark
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="remark"
+                                                                                        pSortableColumn="remark">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                        field="remark" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -287,18 +292,16 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Status
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="itGroup"
-                                                                                        pSortableColumn="itGroup">
+                                                                                    <p-sortIcon field="status"
+                                                                                        pSortableColumn="status">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter type="text"
-                                                                                        field="itGroup" display="menu"
+                                                                                        field="status" display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-
-
 
                                                                         <th>
                                                                             <div class="align-center">Action</div>
@@ -383,6 +386,7 @@
                                                                 </ng-template>
 
                                                             </p-table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -554,7 +558,7 @@
                                                                                     <div class="col-md-3">
                                                                                         <label
                                                                                             class="form-label">Application
-                                                                                            Date.</label>
+                                                                                            Date</label>
                                                                                         <input type="text"
                                                                                             class="form-control"
                                                                                             [(ngModel)]="today"
@@ -670,10 +674,10 @@
                                                                                             formControlName="referenceName">
                                                                                     </div>
 
-                                                                                    <div class="col-md-3">
+                                                                                    <div class="col-md-3" *ngIf="familyMembers == 'true' || familyMembers == true">
                                                                                         <label class="form-label">
                                                                                             Family Members</label>
-                                                                                        <select
+                                                                                        <!-- <select
                                                                                             class="form-control custom-select"
                                                                                             [(ngModel)]="familyMembers"
                                                                                             [ngModelOptions]="{standalone: true}"
@@ -684,8 +688,11 @@
                                                                                             </option>
                                                                                             <option value="false"> No
                                                                                             </option>
+                                                                                        </select> -->
+                                                                                        <select id="family" class="form-control custom-select" formControlName="familyMemberInfoId">
+                                                                                            <otion value="">Select</otion>  
+                                                                                            <option value="1">Self</option>
                                                                                         </select>
-
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row mt-25">
@@ -802,7 +809,7 @@
                                                                                     <div class="col-md-3">
                                                                                         <label class="form-label">No. Of
                                                                                             Transaction
-                                                                                            {{selectedTransactionType}}</label>
+                                                                                            </label>
                                                                                         <input type="text"
                                                                                             class="form-control"
                                                                                             [disabled]="selectedTransactionType != 'NoOfTransaction'"
@@ -887,7 +894,7 @@
                                                                                             class="form-control"
                                                                                             formControlName="amount">
                                                                                     </div>
-                                                                                    <div class="col-md-3"
+                                                                                    <!-- <div class="col-md-3"
                                                                                         *ngIf="selectedInputTypeName == 'SDM'">
                                                                                         <label
                                                                                             class="form-label">Derived
@@ -895,7 +902,7 @@
                                                                                         <select class="form-control">
                                                                                             <option>Select</option>
                                                                                         </select>
-                                                                                    </div>
+                                                                                    </div> -->
                                                                                     <div class="col-md-3"
                                                                                         *ngIf="goalFlag">
                                                                                         <label class="form-label">Goal
@@ -904,7 +911,7 @@
                                                                                             class="form-control"
                                                                                             formControlName="goalAmount">
                                                                                     </div>
-                                                                                    <div class="col-md-3">
+                                                                                    <!-- <div class="col-md-3">
                                                                                         <label
                                                                                             class="form-label">Balance
                                                                                             Goal</label>
@@ -912,7 +919,7 @@
                                                                                             class="form-control"
                                                                                             disabled
                                                                                             formControlName="goalBalanceAmount">
-                                                                                    </div>
+                                                                                    </div> -->
                                                                                     <div class="col-md-3">
                                                                                         <label
                                                                                             class="form-label">Remark</label>
@@ -958,6 +965,7 @@
                                                                                                         <th>Sr. No.</th>
                                                                                                         <th>Document
                                                                                                             Name</th>
+                                                                                                        <th>Mandatory</th>     
                                                                                                         <th>Attachment
                                                                                                         </th>
                                                                                                         <th>Action</th>
@@ -970,6 +978,7 @@
                                                                                                         </td>
                                                                                                         <td>{{doc.documentName}}
                                                                                                         </td>
+                                                                                                        <td></td>
                                                                                                         <td><i
                                                                                                                 class=" fa fa-paperclip text-red"></i>
                                                                                                         </td>
@@ -1291,21 +1300,6 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th rowspan="2">
-                                                                            <div
-                                                                                class="p-d-flex p-jc-between p-ai-center">
-                                                                                Clawback Date
-                                                                                <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="clawbackDate">
-                                                                                    </p-sortIcon>
-                                                                                    <p-columnFilter field="clawbackDate"
-                                                                                        type="date" display="menu"
-                                                                                        class="p-ml-auto">
-
-                                                                                    </p-columnFilter>
-                                                                                </div>
-                                                                            </div>
-                                                                        </th>
                                                                         <th rowspan="2"> Hold </th>
                                                                         <th rowspan="2"> Discard </th>
                                                                         <th rowspan="2">
@@ -1437,11 +1431,7 @@
                                                                             </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0 wd-100">{{ScheduleData.clawbackDate
-                                                                                | date: 'dd-MMM-yyyy'}}
-                                                                            </label>
-                                                                        </td>
+                                                                       
                                                                         <td class="bg-color-light_gray">
                                                                             <label
                                                                                 class="custom-control custom-checkbox checkbox-center">

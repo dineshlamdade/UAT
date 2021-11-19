@@ -95,7 +95,8 @@ export class GarnishmentTransactionComponent implements OnInit {
       "goalBalanceAmount": new FormControl(0),
       "numberOfTransactions": new FormControl(""),
       "remark": new FormControl(""),
-      "isActive": new FormControl(1)
+      "isActive": new FormControl(1),
+      "familyMemberInfoId": new FormControl(1),
     })
   }
 
@@ -271,6 +272,9 @@ export class GarnishmentTransactionComponent implements OnInit {
   }
 
   getSelectedGarnishmentData(garnishment){
+  this.selectedInputTypeName = ''
+  this.applicationForm.controls['percentage'].setValue('')
+  this.applicationForm.controls['amount'].setValue('')
     this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
       if(element.garnishmentMasterInputTypeId == garnishment){
         this.selectedInputTypeName = element.inputTypeName
