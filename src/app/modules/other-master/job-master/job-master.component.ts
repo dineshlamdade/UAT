@@ -409,6 +409,7 @@ export class JobMasterComponent implements OnInit {
           jobMasterType: element.jobMasterType,
           isActive: element.active,
           toDate: new Date( '31-Dec-9999' ),
+          // toDate: new Date( element.toDate ),
           fromDate: null,
           isCheckedTruefalse: this.getAllMappingDetailListNew.find(x=>x.jobMasterValueId == element.jobMasterValueId)!=null ?true:false,
         };

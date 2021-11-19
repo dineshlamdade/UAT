@@ -29,6 +29,7 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
 import { PrimeNGModule } from 'src/app/app.primeNG.module';
 import { JobMasterComponent } from './job-master/job-master.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule( {
@@ -47,6 +48,7 @@ import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapp
 
   ],
   imports: [
+    TableModule,
     BsDatepickerModule,
     BsDatepickerModule.forRoot(),
     CommonModule,

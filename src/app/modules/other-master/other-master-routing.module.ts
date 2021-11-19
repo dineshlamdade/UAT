@@ -35,7 +35,7 @@ const routes: Routes = [
     data: { title: ':: Delizia-HR :: Home' },
   },
   {
-    path: 'statutoryCompliance',
+    path: 'statutoryComplianceOffice',
     component: StatutoryComplianceComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
