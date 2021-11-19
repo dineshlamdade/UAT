@@ -492,7 +492,7 @@ export class MediclaimMasterComponent implements OnInit {
     }
   }
 
-  for (let i = 0; i <= this.documentPassword.length; i++) {
+  for (let i = 0; i < this.documentPassword.length; i++) {
     if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
