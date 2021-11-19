@@ -119,6 +119,8 @@ export class GgcDeclarationActualComponent implements OnInit {
   public childNameList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
+  public viewDocumentList: Array<any> = [];
+  
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
@@ -397,8 +399,8 @@ export class GgcDeclarationActualComponent implements OnInit {
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -499,6 +501,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.Index = -1;
     formDirective.resetForm();
     this.eightyGGCForm.reset();
+    this.documentDataArray = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -1045,21 +1048,21 @@ export class GgcDeclarationActualComponent implements OnInit {
     //----------- On change Transactional Line Item Remark --------------------------
     public onChangeDocumentRemark(transactionDetail, transIndex, event) {
       console.log('event.target.value::', event.target.value);
-      
+
      console.log('this.transactionDetail', this.transactionDetail);
       // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
       // console.log('index::', index);
-  
+
       this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-     
-  
+
+
     }
 
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1227,6 +1230,7 @@ export class GgcDeclarationActualComponent implements OnInit {
         console.log('proofSubmissionId edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+        this.viewDocumentList = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
         this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
@@ -1236,7 +1240,7 @@ export class GgcDeclarationActualComponent implements OnInit {
             element.actualAmount = this.numberFormat.transform(
               element.actualAmount
             );
-          });
+          }); 
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1276,20 +1280,18 @@ export class GgcDeclarationActualComponent implements OnInit {
       //   });
       // });
   //}
-  this.editTransactionUpload.forEach((element) => {
-    element.donations80GGTransactionList.forEach((innerElement) => {
-      innerElement.declaredAmount = this.numberFormat.transform(
-        innerElement.declaredAmount,
-      );
-      innerElement.actualAmount = this.numberFormat.transform(
-        innerElement.actualAmount,
-      );
-    });
-  });
+  // this.editTransactionUpload.forEach((element) => {
+  //   element.donations80GGTransactionList.forEach((innerElement) => {
+  //     innerElement.declaredAmount = this.numberFormat.transform(
+  //       innerElement.declaredAmount,
+  //     );
+  //     innerElement.actualAmount = this.numberFormat.transform(
+  //       innerElement.actualAmount,
+  //     );
+  //   });
+  // });
 
-  this.masterGridData.forEach((element) => {
-    element.documentInformation.forEach(element => {
-  element.documentDetailList.forEach(element => {
+  this.viewDocumentList.forEach(element => {
     // if(element!=null)
     this.documentArray.push({
       'dateofsubmission': element.dateOfSubmission,
@@ -1302,8 +1304,25 @@ export class GgcDeclarationActualComponent implements OnInit {
       'lastModifiedTime' : element.lastModifiedTime,
     })
     })
-});
-});
+
+
+//   this.masterGridData.forEach((element) => {
+//     element.documentInformation.forEach(element => {
+//   element.documentDetailList.forEach(element => {
+//     // if(element!=null)
+//     this.documentArray.push({
+//       'dateofsubmission': element.dateOfSubmission,
+//       'documentType':element.documentType,
+//       'documentName': element.fileName,
+//       'documentPassword':element.documentPassword,
+//       'documentRemark':element.documentRemark,
+//       'status' : element.status,
+//       'lastModifiedBy' : element.lastModifiedBy,
+//       'lastModifiedTime' : element.lastModifiedTime,
+//     })
+//     })
+// });
+// });
 }
 );
 this.documentArray = [];
@@ -1335,8 +1354,8 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
      //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
 
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1466,7 +1485,11 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-      this.resetEditVariable()
+      this.resetEditVariable();
+      this.editdDocumentDataArray = [];
+      this.editdocumentPassword = [];
+      this.editremarkList = [];
+      this.editremarkList = [];
   }
 
     resetEditVariable() {
@@ -1778,7 +1801,19 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-            res.documentDetailList.forEach(element => {
+           
+            console.log('documentArrayTest',this.documentArray);
+
+            this.initialArrayIndex = [];
+
+            if (this.transactionDetail != undefined){
+              this.transactionDetail.forEach((element) => {
+                element.declaredAmount = this.numberFormat.transform(element.declaredAmount);
+                element.actualAmount = this.numberFormat.transform(element.actualAmount);
+              });
+            }
+            this.documentDetailList.forEach(element => {
+              element.documentDetailList.forEach(element => {
               // if(element!=null)
               this.documentArray.push({
                 'dateofsubmission':element.creatonTime,
@@ -1789,24 +1824,10 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
                 'status' : element.status,
                 'lastModifiedBy' : element.lastModifiedBy,
                 'lastModifiedTime' : element.lastModifiedTime,
-      
+
               })
             });
-            console.log('documentArrayTest',this.documentArray);
-
-            this.initialArrayIndex = [];
-
-            if (this.transactionDetail != undefined){
-              this.transactionDetail.forEach((element) => {
-                element.declaredAmount = this.numberFormat.transform(
-                  element.declaredAmount
-                );
-                element.actualAmount = this.numberFormat.transform(
-                  element.actualAmount
-                );
-              });
-            }
-
+          });
           }
           else {
             this.addRowInList(this.declarationService, 0);
@@ -1820,7 +1841,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
         index: any,
         psId, policyNo
       ) {
-        
+
         this.Service.getRemarkList(
           policyNo,
           psId
@@ -1894,7 +1915,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

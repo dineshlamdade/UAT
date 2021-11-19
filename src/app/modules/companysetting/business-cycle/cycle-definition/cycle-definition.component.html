@@ -50,29 +50,11 @@
             </option>
           </select>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="col-sm-6 col-md-3" >
-          <label class="form-label">Incomplete Days Falls</label>
-          <select  name="" id=""  class="form-control">
-            <option selected value=''>Select </option>
-            <option value="Start">
-             Start
-            </option>
-            <option value="End">
-              End
-             </option>
-          </select>
-        </div>
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
           <label class="form-label">Days In Cycle</label>
           <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
         </div>
-
-        
 
 
 
@@ -264,25 +246,8 @@
         <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
           [pageLinks]="5"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          totalRecords={{CycleDefinitionList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
-          #dt [globalFilterFields]="['cycleName','description','fullFromDate','fullToDate']">
+          totalRecords={{CycleDefinitionList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
           <ng-template pTemplate="header">
-            <br>
-              
-              <div style="text-align: right;display: flex;">
-                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                <input type="text" pInputText size="50" placeholder="Search"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')"
-                    style="width: 203px;">
-                    &nbsp;&nbsp;&nbsp;
-                    <a tooltip="Download" style="cursor: pointer"
-                    (click)="exportAsXLSX()"><i
-                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                        aria-hidden="true"></i></a>
-              </div>
-
-              <br>
-              <br>
             <tr>
               <th rowspan="1" class="wd-8 text-center">
                 Sr. No.
@@ -388,9 +353,9 @@
               <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
               <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
               <td class="bg-color-light_gray"><label
-                  class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate | date: 'dd-MM-yyyy'}}</label></td>
+                  class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate}}</label></td>
               <td class="bg-color-light_gray"><label
-                  class="form-lable mb-0">{{user1.businessYearDefinition.fullToDate | date: 'dd-MM-yyyy'}}</label></td>
+                  class="form-lable mb-0">{{user1.businessYearDefinition.fullToDate}}</label></td>
               <td>
                 <button *ngIf="!user1.isUsed" type="button" class="btn btn-icon text-blue" tooltip="Edit"><i
                     (click)="GetCycleDefinitionbyId(user1.id)" class="fa fa-edit"></i></button>

@@ -122,7 +122,7 @@ public showdocument = true;
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-  
+
   codeInvalid: boolean = false;
 
   public transactionStatustList: any;
@@ -272,11 +272,11 @@ public showdocument = true;
     }
 
     searchIFSC(searchTerm, bankIFSC) {
-      this.form.patchValue({
-        branchName:'',
-        bankAddress: '',
-        bankName:'',
-      });
+      // this.form.patchValue({
+      //   branchName:'',
+      //   bankAddress: '',
+      //   bankName:'',
+      // });
 
       if (searchTerm.query.length < 11) {
         this.ifscCodeList = []
@@ -369,7 +369,7 @@ public showdocument = true;
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -396,18 +396,18 @@ public showdocument = true;
       return;
     }
     console.log('this.isEdit', this.isEdit);
-   
+
     if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Deposit in Saving Account 80TTA Document needed to Create Master.'
+        'Deposit in Saving Account 80TTBDocument needed to Create Master.'
       );
       return;
-    } 
+    }
   }
-  for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+  for (let i = 0; i < this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -425,7 +425,7 @@ public showdocument = true;
       data.proofSubmissionId = this.proofSubmissionId;
       data.remarkPasswordList = this.documentDataArray;
 
-      console.log('Interest On 80TTA ::', data);
+      console.log('Interest On 80TTB::', data);
       if (data.accountNumber) {
         this.masterGridData.forEach(results => {
           if (results.accountNumber == data.accountNumber) {
@@ -435,7 +435,7 @@ public showdocument = true;
         if (this.codeInvalid) {
           this.codeInvalid = false;
           this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable'
+            'Duplicate Account should Not be Acceptable.'
           );
           return;
         }
@@ -448,7 +448,7 @@ public showdocument = true;
           return 0;
           this.form.reset();
         }
-      });  */     
+      });  */
 
       this.interestOnTtbService
         .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
@@ -459,30 +459,34 @@ public showdocument = true;
               this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
-
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Declaration & Actual" Page to see Schedule.'
+              );
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
                       'status' : element.documentInformationList[0].status,
+                      'remark':element.documentInformationList[0].remark,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
@@ -493,21 +497,18 @@ public showdocument = true;
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
               }
               // this.masterGridData = res.data.results[0].documentInformationList;
               console.log("masterGridData",this.masterGridData);
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
+
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -521,6 +522,7 @@ public showdocument = true;
       formDirective.resetForm();
       this.form.reset();
       this.paymentDetailGridData = [];
+      this.documentDataArray  = [];
       this.masterfilesArray = [];
       this.urlArray = [];
       this.showUpdateButton = false;
@@ -543,7 +545,7 @@ public showdocument = true;
       this.accountNumberlistedit = element.accountNumber;
       if (event == element.accountNumber) {
         this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable'
+          'Duplicate Account should Not be Acceptable.'
         );
       }
       console.log(element.accountNumber);
@@ -551,7 +553,7 @@ public showdocument = true;
     return 0;
   }
 
-  
+
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -608,7 +610,7 @@ public showdocument = true;
             'lastModifiedTime' : element.lastModifiedTime,
 
           })
-          
+
         });
         console.log("documentArray::",this.documentArray);
         this.isVisibleTable = true;
@@ -684,7 +686,7 @@ public showdocument = true;
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

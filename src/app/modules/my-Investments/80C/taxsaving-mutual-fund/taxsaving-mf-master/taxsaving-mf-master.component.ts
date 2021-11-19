@@ -319,8 +319,8 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
-      this.financialYearEnd = res.data.results[0].toDate; 
+      // this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearEnd = res.data.results[0].toDate; 
    
 
       
@@ -840,8 +840,8 @@ export class TaxsavingMfMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
-    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
-    this.form.get('relationship').setValue('Self');
+    // this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    // this.form.get('relationship').setValue('Self');
   }
 
   UploadModal(template: TemplateRef<any>) {

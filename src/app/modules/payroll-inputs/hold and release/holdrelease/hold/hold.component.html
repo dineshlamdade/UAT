@@ -100,7 +100,8 @@
                                                   
                                                  placeholder="Selected All"></p-multiSelect> -->
 
-                            <select id="companyName" class="form-control" formControlName="companyName">
+                            <select id="companyName" class="form-control" formControlName="companyName"
+                            (change)="onSelectServiceNameEmp($event.target.value)">
                                 <option selected value=''>Select </option>
                                 <option *ngFor="let company of companyNameList" [value]="company.value">
                                     {{company.label}}
@@ -116,7 +117,7 @@
                                                     [ngClass]="{'is-invalid' : holdform.get('serviceName').status == 'INVALID'}"
                                                     formControlName="serviceName" resetFilterOnHide = "true"
                                                    placeholder="Selected All"></p-multiSelect> -->
-                            <select id="serviceNameEmp" (change)="onSelectServiceNameEmp($event.target.value)"
+                            <select id="serviceNameEmp" 
                                 [ngClass]="{'is-invalid' : holdform.get('serviceName').status == 'INVALID'}"
                                 class="form-control  " formControlName="serviceName">
                                 <option selected value=''>Select </option>
@@ -134,7 +135,8 @@
                                                     resetFilterOnHide = "true" placeholder="Selected All"></p-multiSelect> -->
                             <select id="areaMasterCode" (change)="onSelectAreaInEmp($event.target.value)"
                                 [ngClass]="{'is-invalid' : holdform.get('areaMasterCode').status == 'INVALID'}"
-                                class="form-control  " formControlName="areaMasterCode">
+                                class="form-control" formControlName="areaMasterCode" placeholder = "Select"
+                               >
                                 <option selected value=''>Select </option>
                                 <option *ngFor="let area of ServiceAreaListEmp" [value]="area.value">
                                     {{area.label}}
@@ -158,12 +160,12 @@
 
                             <label class="form-label mb-3">Employee Code</label>
                             <p-multiSelect [options]="employeeCodes" formControlName="employeeCode"
-                            (onChange) = "onSelectArea($event)" defaultLabel="Select"
+                            (onChange) = "onSelectArea($event)" optionLabel="name" defaultLabel="Select"
                             [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}"
-                         optionLabel="name" resetFilterOnHide = "true"
-                         class="multiselect-custom"
+                         optionLabel="name" resetFilterOnHide = "true" [placeholder]="'Select'"
+                         class="multiselect-custom" 
                          [required]="true"></p-multiSelect>
-
+ 
 
                         </div>
                         <!-- [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}" -->
@@ -194,10 +196,11 @@
                         </div>
 
                     </div> -->
+                    
                     <div class="col-md-4 ">
-                        <label class="custom-control custom-radio radio-center" tooltip="Select All">
-                          <input type="radio" (change)="onSelectArea2($event.target.value)" (click)="Emplist(emplist)" formControlName="areaList" name="example-inline-radios"
-                            value="option3" class="custom-control-input" name="select" />
+                        <label class="custom-control custom-radio radio-center" tooltip="Emp List">
+                          <input type="radio" (change)="onSelectArea2($event)" (click)="Emplist(emplist)" formControlName="areaList" name="example-inline-radios"
+                            value="option3" class="custom-control-input" name="select"/>
                           <span class="custom-control-label">Employee List</span>
                         </label>
                       </div>
@@ -239,11 +242,11 @@
                                     class="fa  fa-refresh"></i></b> Reset</button>
                      </div>
                 </div>
-                <div class="col-12 mt-20" *ngIf = "isHideEmpSet">
+                <div class="col-12 mt-20" *ngIf = "isHideEmpSet && !isHideEmpCode">
                     <div class="float-right">
                         <button type="submit"
                             class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                            tooltip="show list" (click) = "saveEmp2()"
+                            tooltip="Go" (click) = "saveEmp2()"
                             [ngClass]="{'disabled-btn-bg-green' : holdform.invalid,'btn-bg-green': !holdform.invalid}">
                             <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
                             Go</button>
@@ -252,11 +255,11 @@
                                     class="fa  fa-refresh"></i></b> Reset</button>
                     </div>
                 </div>
-                <div class="col-12 mt-20" *ngIf = "isHideEmpList">
+                <div class="col-12 mt-20" *ngIf = "isHideEmpList && !isHideEmpCode">
                     <div class="float-right">
                         <button type="submit"
                             class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                            tooltip="show list" (click) = "saveEmp3()"
+                            tooltip="Go" (click) = "saveEmp3()"
                             [ngClass]="{'disabled-btn-bg-green' : holdform.invalid,'btn-bg-green': !holdform.invalid}">
                             <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
                             Go</button>
@@ -276,13 +279,13 @@
 <div class="cycle-table mt-4">
     <div class="cycle-value pt-20 pb-20 bg-color-light_gray">
         <h6 class="font-14">&nbsp; &nbsp;Total Records ({{getEmpTableList.length}}) &nbsp;&nbsp; Selected Records
-            ({{selectedUserEmp.length}})
+            ({{selectedAreaIdsEmp.length}})
             <span class="float-right">
                 <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                    tooltip="Hold" (click)="smallpopup(holdtemplate)"
+                    tooltip="Hold" (click)="smallpopup(holdtemplate)" 
                     [ngClass]="{'disabled-btn-bg-green' : checkedSummaryListEmp.length == 0, 'btn-bg-green': !checkedSummaryListEmp.length == 0}">
                     <b><i class="fa fa-hand-paper-o" aria-hidden="true"></i></b>
-                    Hold</button>&nbsp;
+                    Hold</button>&nbsp; 
                 <i class="fa fa-file-excel-o font-34 text-dark-green  mr-10 float-right" (click)="exportExcelEmpTable()"
                     aria-hidden="true"></i></span>
         </h6>
@@ -298,7 +301,8 @@
                                                 Select
                                             </th> -->
                 <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    <!-- <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e>
+                                        </p-tableHeaderCheckbox> -->
                 </th>
                 <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
@@ -722,11 +726,12 @@
             tooltip="Proceed"
             [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockListEmp.length == 0, 'btn-bg-green': !checkedFinalLockListEmp.length == 0}"
             (click)="saveCheckedEmp()"><b> <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-        <button type="button" tooltip="Reset"
-        (click)="resetEmpLock()"
-            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i
-               
-                    class="fa fa-refresh"></i></b> Reset</button>
+        <button type="button" tooltip="Cancel"
+        (click)="modalRef.hide()"
+       
+            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b>
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </b> Cancel</button>
     </div>
 </ng-template>
 
@@ -867,9 +872,10 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
-      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-        tooltip="Save" (click)="modalRef.hide()"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        tooltip="Proceed" (click)="modalRef.hide()"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+      <button type="button"  tooltip="Cancel" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+      
     </div>
   </ng-template>
 

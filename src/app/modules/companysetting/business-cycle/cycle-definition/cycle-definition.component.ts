@@ -5,8 +5,7 @@ import { CompanySettingsService } from '../../company-settings.service';
 import { SaveCycleDefinition } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ExcelserviceService } from '../../../excel_service/excelservice.service';
-import { DatePipe } from '@angular/common';
+
 @Component( {
   selector: 'app-cycle-definition',
   templateUrl: './cycle-definition.component.html',
@@ -30,13 +29,9 @@ export class CycleDefinitionComponent implements OnInit {
   Multiselectflag = false;
   updateFlag = false;
   sortedFrequencyList = [];
-  header: any[];
-  excelData: any[];
 
   constructor( private companySettings: CompanySettingsService, private formBuilder: FormBuilder,
-    private alertService: AlertServiceService, private modalService: BsModalService,
-    private datePipe: DatePipe,
-    private excelservice: ExcelserviceService  ) {
+    private alertService: AlertServiceService, private modalService: BsModalService ) {
       this.getAllCycleDefinition();
       this.getActiveFrequency();
       this.getAllBusinessYear();
@@ -88,9 +83,9 @@ export class CycleDefinitionComponent implements OnInit {
     this.BusinessyearList = [];
 
     this.companySettings.getAllBusinessYear().subscribe( res => {
-     // console.log("BusinessyearList", res);
+      console.log("BusinessyearList", res);
       this.BusinessyearList = res.data.results;
-      //console.log("BusinessyearList", this.BusinessyearList);
+      console.log("BusinessyearList", this.BusinessyearList);
     } );
 
   }
@@ -98,7 +93,7 @@ export class CycleDefinitionComponent implements OnInit {
     this.CycleDefinitionList = [];
     this.companySettings.getAllCycleDefinition().subscribe( res => {
       this.CycleDefinitionList = res.data.results;
-     // console.log( 'cycle creation res', this.CycleDefinitionList );
+      console.log( 'cycle creation res', this.CycleDefinitionList );
 
     } );
 
@@ -156,7 +151,7 @@ export class CycleDefinitionComponent implements OnInit {
         const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'adhoc' );
         this.sortedFrequencyList.push( this.activeFrequencyList[index] );
       }
-      //console.log( ' this.sortedFrequencyList', this.sortedFrequencyList );
+      console.log( ' this.sortedFrequencyList', this.sortedFrequencyList );
     } );
   }
 
@@ -204,7 +199,7 @@ export class CycleDefinitionComponent implements OnInit {
       // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
       // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
       // addCycleDefinition.serviceName = this.serviceName;
-     // console.log( 'json', JSON.stringify( addCycleDefinition ) );
+      console.log( 'json', JSON.stringify( addCycleDefinition ) );
       this.companySettings.UpdateCycleDefinition( addCycleDefinition ).subscribe( ( res: any ) => {
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllCycleDefinition();
@@ -283,9 +278,8 @@ export class CycleDefinitionComponent implements OnInit {
 
         const index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId );
         this.cycleDefinitionForm.patchValue( {
-          yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate),'dd-MM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate),'dd-MM-yyyy'),
+          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
         } );
-        
         // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
         // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
         this.cycleDefinitionForm.disable();
@@ -307,7 +301,7 @@ export class CycleDefinitionComponent implements OnInit {
     this.CycleupdateFlag1 = true;
     this.companySettings.GetCycleDefinitionById( id )
       .subscribe( response => { // : saveBusinessYear[]
-        //console.log( 'xx', );
+        console.log( 'xx', );
 
         this.cycleDefinitionForm.patchValue( { id: response.data.results[0].id } );
         this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName.split( '_' )[0] } );
@@ -316,9 +310,7 @@ export class CycleDefinitionComponent implements OnInit {
         // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
         this.cycleDefinitionForm.patchValue( {
-          //yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' To ' + response.data.results[0].businessYearDefinition.fullToDate,
-
-          yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate),'dd-MM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate),'dd-MM-yyyy'),
+          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
         } );
         // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
         // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
@@ -392,8 +384,7 @@ export class CycleDefinitionComponent implements OnInit {
     } else {
       const index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == evt );
       this.cycleDefinitionForm.patchValue( {
-        yearDefinition: this.datePipe.transform(new Date(this.BusinessyearList[index].fullFromDate),'dd-MM-yyyy') + ' To ' + this.datePipe.transform(new Date(this.BusinessyearList[index].fullToDate),'dd-MM-yyyy'),
-       
+        yearDefinition: this.BusinessyearList[index].fullFromDate + ' / ' + this.BusinessyearList[index].fullToDate,
       } );
     }
 
@@ -406,28 +397,5 @@ export class CycleDefinitionComponent implements OnInit {
   }
   getCycleName( name ): void {
     // this.CycleName = name;
-  }
-
-  exportAsXLSX(): void {
-    this.excelData = [];
-    this.header = []
-    this.header =["Cycle Name","Description","From Date","To Date"]
-    //this.excelData = this.attendanceData
-    this.CycleDefinitionList.forEach(element => {
-
-
-			let obj = {
-				"Cycle Name": element.cycleName,
-				"Description": element.description,
-        "From Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullFromDate),'dd-MM-yyyy'),
-        "To Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullToDate),'dd-MM-yyyy')
-        
-
-
-			}
-			this.excelData.push(obj)
-		});
-   // console.log(this.excelData)
-    this.excelservice.exportAsExcelFile(this.excelData, 'Business Cycle Defination','Business Cycle Defination',this.header);
   }
 }
