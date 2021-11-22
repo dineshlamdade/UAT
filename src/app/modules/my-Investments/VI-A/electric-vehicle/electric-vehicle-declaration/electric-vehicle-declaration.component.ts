@@ -67,7 +67,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
-
+  public editDocumentByPSID: Array<any> = [];
   documentDataArray = [];
   editdDocumentDataArray = [];
 
@@ -1011,8 +1011,8 @@ selectedTransactionLenderName(lenderName: any) {
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1572,10 +1572,11 @@ selectedTransactionLenderName(lenderName: any) {
   // When Edit of Document Details
   editViewTransaction(
     template2: TemplateRef<any>,
-    proofSubmissionId: string
+        proofSubmissionId: string
   ) {
     this.documentRemark = '';
-
+    this.editDocumentByPSID = [];
+    this.documentArray = [];
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1590,6 +1591,22 @@ selectedTransactionLenderName(lenderName: any) {
         console.log('test', res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount);
 
         this.updateReceiptAmount = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount;
+        this.editDocumentByPSID = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList;
+        this.editDocumentByPSID.forEach(element => {
+          element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.password,
+              'documentRemark':element.remark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            });
+            });
+          });
         this.urlArray =
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload =
@@ -1607,46 +1624,46 @@ selectedTransactionLenderName(lenderName: any) {
 
           this.masterGridData = res.data.results;
 
-          this.masterGridData.forEach((element) => {
-            // element.policyStartDate = new Date(element.policyStartDate);
-            // element.policyEndDate = new Date(element.policyEndDate);
-            // element.fromDate = new Date(element.fromDate);
-            // element.toDate = new Date(element.toDate);
-            element.documentInformation.forEach(element => {
-              // this.dateofsubmission = element.dateOfSubmission;
-              // this.documentArray.push({
-              //   'dateofsubmission': ,
-              // })
+          // this.masterGridData.forEach((element) => {
+          //   // element.policyStartDate = new Date(element.policyStartDate);
+          //   // element.policyEndDate = new Date(element.policyEndDate);
+          //   // element.fromDate = new Date(element.fromDate);
+          //   // element.toDate = new Date(element.toDate);
+          //   element.documentInformation.forEach(element => {
+          //     // this.dateofsubmission = element.dateOfSubmission;
+          //     // this.documentArray.push({
+          //     //   'dateofsubmission': ,
+          //     // })
 
-              element.documentDetailList.forEach(element => {
-              // if(element!=null)
-              this.documentArray.push({
-                'dateofsubmission': element.dateOfSubmission,
-                'documentType':element.documentType,
-                'documentName': element.fileName,
-                'documentPassword':element.documentPassword,
-                'documentRemark':element.documentRemark,
-                'status' : element.status,
-                'lastModifiedBy' : element.lastModifiedBy,
-                'lastModifiedTime' : element.lastModifiedTime,
-              })
-              })
-            });
-            // this.documentArray.push({
-            //   'dateofsubmission':element.creatonTime,
-            //   'documentType':element.documentType,
-            //   'documentName': element.fileName,
-            //   'documentPassword':element.documentPassword,
-            //   'documentRemark':element.documentRemark,
-            //   'status' : element.status,
-            //   'lastModifiedBy' : element.lastModifiedBy,
-            //   'lastModifiedTime' : element.lastModifiedTime,
-            //
-            // })
-          });
+          //     element.documentDetailList.forEach(element => {
+          //     // if(element!=null)
+          //     this.documentArray.push({
+          //       'dateofsubmission': element.dateOfSubmission,
+          //       'documentType':element.documentType,
+          //       'documentName': element.fileName,
+          //       'documentPassword':element.documentPassword,
+          //       'documentRemark':element.documentRemark,
+          //       'status' : element.status,
+          //       'lastModifiedBy' : element.lastModifiedBy,
+          //       'lastModifiedTime' : element.lastModifiedTime,
+          //     })
+          //     })
+          //   });
+          //   // this.documentArray.push({
+          //   //   'dateofsubmission':element.creatonTime,
+          //   //   'documentType':element.documentType,
+          //   //   'documentName': element.fileName,
+          //   //   'documentPassword':element.documentPassword,
+          //   //   'documentRemark':element.documentRemark,
+          //   //   'status' : element.status,
+          //   //   'lastModifiedBy' : element.lastModifiedBy,
+          //   //   'lastModifiedTime' : element.lastModifiedTime,
+          //   //
+          //   // })
+          // });
         }
       );
-      this.documentArray = [];
+
         // //console.log(this.urlArray);
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1775,8 +1792,8 @@ selectedTransactionLenderName(lenderName: any) {
 
   public uploadUpdateTransaction() {
 
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",

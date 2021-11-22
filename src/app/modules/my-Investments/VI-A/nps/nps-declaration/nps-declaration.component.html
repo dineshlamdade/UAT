@@ -25,7 +25,7 @@
       <label class="form-label mt-2 pl-10">Account No.</label>
     </div>
     <div class="col-2">
-      <select name="policyNo" class="form-control custom-select" (change)="getInstitutionListWithPolicyNo($event.target.value)">
+      <select name="policyNo" class="form-control custom-select" (change)="selectedPolicy($event.target.value)">
         <option *ngFor="let transactionPolicy of transactionPolicyList" [value]="transactionPolicy.value"
           [selected]="transactionPolicy.value == globalPolicy">
           {{ transactionPolicy.label }}

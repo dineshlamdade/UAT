@@ -1512,9 +1512,8 @@ export class DeclarationAndActualComponent implements OnInit {
 
   upload() {
 
-
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1600,8 +1599,16 @@ export class DeclarationAndActualComponent implements OnInit {
         this.uploadGridData.push(element.handicappedDependentTransactionId)
       });
 
-      const parentsDelete = this.previousEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+      
+  for (let i = 0; i < this.previousEmployerHandicappedDependentList.length; i++) {
+    const parentsDelete = this.previousEmployerHandicappedDependentList[i].handicappedDependentDetailMaster;
       delete parentsDelete.documentInformationList;
+  }
+
+
+
+      // const parentsDelete = this.previousEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+      // delete parentsDelete.documentInformationList;
 
     }
 
@@ -1694,9 +1701,13 @@ export class DeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.documentPassword = [];
+    this.remarkList = [];
     this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
     this.priviousEmpFormArray.reset();
     this.currEmpFormArray.reset();
     }
