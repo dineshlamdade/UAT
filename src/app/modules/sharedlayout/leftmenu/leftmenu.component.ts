@@ -182,10 +182,14 @@ public isCollapsedQuery = true;
     this.userData = this.authService.getprivileges()
     console.log("userData::", this.userData);
     this.subId = this.userData.sub
-
+    
     this.RoleRrivilegeService.employeeRoleAssignmentUser(this.subId).subscribe(res => {
        this.companyGroupMasterId = res.data.results.companyGroupMasterId
-       console.log(res.data.results)
+      //  console.log(res.data.results)
+      //  if(res.data.results[0].groupName=="Employee"){
+      //   localStorage.setItem('employeeMasterId',this.userData.UserDetails.employeeMasterId);
+      //  }
+       
        this.userRoleId = res.data.results[0].userRoleId
        this.RoleRrivilegeService.getApplicationMenusData().subscribe(res =>{
         //this.menuData = res.data.results

@@ -18,7 +18,8 @@ export class ProjectDetailComponent implements OnInit {
   projectForm: FormGroup;
   tomorrow = new Date();
   projectDetailsModel = new ProjectDetailsModel('', '', null, null, null, '', '', null, '', '', '', '', '');
-  projectList = 'Project1,Project2,Project3,Project4,Project5'.split(',');
+  projectList :Array<any>=[];
+  //'Project1,Project2,Project3,Project4,Project5'.split(',');
   billableList = 'Billable,Not Billable,Not Applicable'.split(',');
 
   employeeMasterId: number;
@@ -30,7 +31,8 @@ export class ProjectDetailComponent implements OnInit {
   payrollAreaCode: any;
   companyName: any;
   joiningDate: any;
-
+companyId:any;
+payrollAreaId:any;
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
     private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private router: Router,
@@ -53,20 +55,42 @@ export class ProjectDetailComponent implements OnInit {
       benchToDateControl: [{ value: null, disabled: true }],
     });
 
+     //
+     var myObj = JSON.parse(localStorage.getItem("adEmp"));
+     myObj.jobInformationPayrollAreaCode=event;     
+      localStorage.setItem("adEmp",JSON.stringify(myObj));
+     //
+
     this.payrollAreaCode = null;
     this.companyName = '';
+    
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).joiningDate);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).jobInformationCompanyName);
 
     //get company name from local storage
     const companyName = localStorage.getItem('jobInformationCompanyName')
     if (companyName != null) {
       this.companyName = new String(companyName);
     }
+    
+this.JobInformationService.getJobMasterByType('Project').subscribe(res=>{
+  const jobMasterId = res.data.results[0].jobMasterId;
+  this.JobInformationService.getJobMasterByJobMasterId(jobMasterId).subscribe(res=>{
+    let project:Array<any> = res.data.results;
+    this.projectList =project.find((d)=>d.groupCompanyId===this.companyId)
+   console.log(this.projectList);
+   })
+})
 
+        
+     
     //get payroll area's list
     this.getPayrollAreaInformation();
 
@@ -354,7 +378,7 @@ export class ProjectDetailComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
@@ -376,7 +400,7 @@ export class ProjectDetailComponent implements OnInit {
         //set default company
         let result = res.data.results[0];
         //this.companyName = result[0].payrollAreaId.companyId.companyName;
-        this.companyName = result[0].payrollAreaAndCompany;
+        this.companyName = result[0].companyname;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
@@ -416,13 +440,16 @@ export class ProjectDetailComponent implements OnInit {
       (c) => c.payrollAreaCode === this.payrollAreaCode
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
+    localStorage.setItem('jobInformationCompanyName', this.payrollAreaId);
+    this.companyId= toSelect.companyId;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
-
+ 
     this.resetProjectForm();
     this.getProjectFormForm();
   }
 
+ 
   resetProjectForm() {
 
     this.projectForm.reset();

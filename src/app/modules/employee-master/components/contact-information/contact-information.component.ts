@@ -73,6 +73,10 @@ export class ContactInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeCode);
+
+
     const empCode = localStorage.getItem('employeeCode')
     this.employeeCode = Number(empCode);
 
@@ -441,6 +445,9 @@ export class ContactInformationComponent implements OnInit {
 
 
     // getting employeeMasterId from sessionStorage
+    
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
     const empId = localStorage.getItem('employeeMasterId')
     var employeeMasterId = Number(empId);
     this.contactInformation.employeeMasterRequestDTO.employeeMasterId = employeeMasterId;

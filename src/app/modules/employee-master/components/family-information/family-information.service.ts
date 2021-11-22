@@ -86,7 +86,7 @@ export class FamilyInformationService {
 
   getESICGridInfo(employeeMasterId){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/family-nomination/esic/all/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + 'family-nomination/esic/all/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

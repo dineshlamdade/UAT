@@ -81,6 +81,8 @@ export class EmploymentInformationComponent implements OnInit {
   ngOnInit(): void {
 
 
+ 
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
@@ -250,9 +252,13 @@ export class EmploymentInformationComponent implements OnInit {
      
       if (this.TransactionHistory.length > 0) {
         this.LastTransaction = this.TransactionHistory[this.TransactionHistory.length - 1].transaction;
+
+        
         localStorage.setItem('LastTransaction', this.LastTransaction);
       }
    
+    },(error: any) => {
+     // this.joiningTabValidation();
     });
      
   }
