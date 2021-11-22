@@ -80,6 +80,7 @@ import { PayrollAreaComponent } from './components/payroll-area-information/payr
 import { DisbursementsComponent } from './components/payroll-area-information/disbursements/disbursements.component';
 import { OtherAreasComponent } from './components/payroll-area-information/other-areas/other-areas.component';
 import { EmpMasterLandingPageComponent } from './components/emp-master-landing-page/emp-master-landing-page.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 
 @NgModule( {
   declarations: [
@@ -123,7 +124,8 @@ import { EmpMasterLandingPageComponent } from './components/emp-master-landing-p
     PayrollAreaComponent,
     DisbursementsComponent,
     OtherAreasComponent,
-    EmpMasterLandingPageComponent
+    EmpMasterLandingPageComponent,
+    EmployeeDashboardComponent
   ],
   imports: [
     CommonModule,

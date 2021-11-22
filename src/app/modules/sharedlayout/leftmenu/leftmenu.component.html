@@ -456,6 +456,11 @@
             transloco }}</span></a>
         <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
           <!-- [class.disabled]="!checkEmpId()" -->
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+            <a class="submenu" [routerLink]="['/employee-master/employee-dashboard']"><span>Employee Dashboard</span></a>
+          </li>
+
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
             <a class="submenu" [routerLink]="['/employee-master/emp-master-landing-page']"><span>Admin Landing Page</span></a>
           </li>
