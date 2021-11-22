@@ -162,13 +162,12 @@
 
 
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="mb-0">
                   <h3 class="font-14 text-purple font-bold">Summary</h3>
                 </div>
-                <!-- <div class=""> -->
                 <div class="table-responsive Custom_Table">
                   <table class="table table-striped table-hover table-bordered m-b-0">
                     <thead class="thead-dark">
@@ -232,7 +231,175 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
+<!--Prime Ng  -->
+          <br>
+          <div class="row mb-0">
+            <div class="col-md-12">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search" style="top: 9px !important"></i>
+                    <input pInputText type="text"
+                      (input)="
+                      dt.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+
+                &nbsp;
+                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
+                  tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+
+              </div>
+            </div>
+           </div>
+
+          <div class="row">
+            <div class="col-12 ">
+              <div class="card">
+                  <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
+                  [showCurrentPageReport]="true"
+                  (sortFunction)="customSort($event)"
+                   [customSort]="true"
+                    [pageLinks]="5" 
+                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                   totalRecords={{summaryHtmlDataList.length}} 
+                   [rowsPerPageOptions]="[10,25,50,100,200]"
+                   
+                   [globalFilterFields]="['complianceHeadName', 'shortName',  'country','aplicabilityLevel','authorityHandling','remark']">
+
+                     <ng-template pTemplate="header">
+                       <tr>
+                         <th class=" text-center">
+                          Sr. No.
+                           
+                         </th>
+                        
+
+                       <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Head Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
+                              <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Type
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
+                              <p-columnFilter field="shortName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                         <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Country
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="country" pSortableColumn="country"></p-sortIcon>
+                              <p-columnFilter field="country" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Applicability Level
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="aplicabilityLevel" pSortableColumn="aplicabilityLevel"></p-sortIcon>
+                              <p-columnFilter field="aplicabilityLevel" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Authority Handling
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="authorityHandling" pSortableColumn="authorityHandling"></p-sortIcon>
+                              <p-columnFilter field="authorityHandling" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Remark
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
+                              <p-columnFilter field="remark" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="text-center wd-12">
+                          Action
+                        </th>        
+                       </tr>
+                     </ng-template>
+                     <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
+                      <tr class="p-selectable-row">
+                          <td class="text-center">{{rowIndex + 1}}</td>
+                          <td>
+                              <label
+                                  class="form-lable mb-0">
+                                  {{summary.complianceHeadName}}</label>
+                          </td>
+                          <td>
+                              <label
+                                  class="form-lable mb-0 ">{{summary.shortName}}</label>
+                          </td>
+
+                          <td> <label
+                                  class="form-lable mb-0 ">{{summary.country}}</label>
+                                  </td>
+                                  <td> <label
+                                    class="form-lable mb-0 ">{{summary.aplicabilityLevel}}</label>
+                                    </td>
+                                    <td> <label
+                                      class="form-lable mb-0 ">{{summary.authorityHandling}}</label>
+                                      </td>
+                                        <td> <label
+                                        class="form-lable mb-0 ">{{summary.remark}}</label>
+                                        </td>
+
+                                        <td class="text-center">
+
+                                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                            (click)="editMaster(rowIndex,summary.complianceHeadId)" tooltip="Edit"></i>
+                
+                                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(rowIndex)"
+                                            tooltip="View"></i> &nbsp;&nbsp;
+                                          &nbsp;
+                                          <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                                            (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)" tooltip="Delete"></i>
+                                        </td>
+
+                      </tr>
+                  </ng-template>
+
+                     <ng-template pTemplate="emptymessage">
+                       <tr>
+                         <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                             Available</span>
+                         </td>
+                       </tr>
+                     </ng-template>
+                   </p-table>
+</div>
+</div>
+</div>
 
 
 
