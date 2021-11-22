@@ -46,7 +46,7 @@ export class BankMasterAtGroupComponent implements OnInit {
       bankName: new FormControl({ value: '', disabled: true }),
       branchName: new FormControl({ value: '', disabled: true }),
       branchAddress: new FormControl({ value: '', disabled: true }),
-      // state: new FormControl(''),
+      // state: new FormControl(''),branchAddress
       country: new FormControl({ value: '', disabled: true }),
     });
 
@@ -70,6 +70,7 @@ export class BankMasterAtGroupComponent implements OnInit {
     this.summaryHtmlDataList = [];
     this.bankMasterDetailsResponse = {};
     this.bankMasterAtGroupService.getBankMasterDetails().subscribe((res) => {
+      
       console.log('getBankMasterDetails', res);
       this.bankMasterDetailsResponse = res.data.results;
 
@@ -79,6 +80,7 @@ export class BankMasterAtGroupComponent implements OnInit {
           SrNo: i++,
           bankName: element.bankName,
           branchName: element.branchName,
+          branchAddress:element.branchAddress,
           companyBankMasterId: element.companyBankMasterId,
           ifscCode: element.ifscCode,
           isActive: element.isActive,
