@@ -165,13 +165,13 @@
 
 
 
-                  <div class="row mt-20">
+                  <!-- <div class="row mt-20">
                     <div class="col-12">
                       <div class="card">
                         <div class="mb-0">
                           <h3 class="font-14 text-purple font-bold">Summary</h3>
                         </div>
-                        <!-- <div class=""> -->
+                       
 
 
                         <div class="table-responsive Custom_Table">
@@ -179,7 +179,7 @@
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col" class="wd-50">Sr. No.</th>
-                                <!-- <th scope="col" class="wd-50">Job Field</th> -->
+                               
                                 <th scope="col" class="wd-50">complianceSDMMappingId</th>
                                 <th scope="col" class="wd-50">complianceMasterId</th>
                                 <th scope="col" class="wd-50">complianceApplicabilitySDMId</th>
@@ -195,8 +195,7 @@
                               <tr *ngFor="let summary of summaryHtmlDataListComplianceApplicability; let i = index">
                                 <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
                                 </td>
-                                <!-- <td class="wd-10"><span tooltip="{{summary.jobMasterType}}">{{summary.jobMasterType}}</span>
-                                            </td> -->
+                                
                                 <td class="wd-10"><span
                                     tooltip="{{summary.complianceSDMMappingId}}">{{summary.complianceSDMMappingId}}</span>
                                 </td>
@@ -243,7 +242,190 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
+
+                   <br>
+          <div class="row mb-0">
+            <div class="col-md-12">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search" style="top: 9px !important"></i>
+                    <input pInputText type="text"
+                      (input)="
+                      dt.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+
+                &nbsp;
+                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
+                  tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+
+              </div>
+            </div>
+           </div>
+
+          <div class="row">
+            <div class="col-md-12 ">
+              <div class="card">
+                <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true"
+                (sortFunction)="customSort($event)"
+                 [customSort]="true"
+                  [pageLinks]="5" 
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 totalRecords={{summaryHtmlDataList.length}} 
+                 [rowsPerPageOptions]="[10,25,50,100,200]"
+                 
+                 [globalFilterFields]="['complianceSDMMappingId', 'complianceMasterId',  'complianceApplicabilitySDMId',
+                 'statutoryFrequency','statutoryFreqPeriodsDef','deductionFrequency','incomePeriod']">
+
+                   <ng-template pTemplate="header">
+                     <tr>
+                       <th class=" text-center">
+                        Sr. No.
+                         
+                       </th>
+                      
+
+                     <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance SDM MappingId
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceSDMMappingId" pSortableColumn="complianceSDMMappingId"></p-sortIcon>
+                            <p-columnFilter field="complianceSDMMappingId" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance MasterId
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceMasterId" pSortableColumn="complianceMasterId"></p-sortIcon>
+                            <p-columnFilter field="complianceMasterId" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                       <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance Applicability SDMId
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceApplicabilitySDMId" pSortableColumn="complianceApplicabilitySDMId"></p-sortIcon>
+                            <p-columnFilter field="complianceApplicabilitySDMId" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Statutory Frequency SDMId
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="statutoryFrequency" pSortableColumn="statutoryFrequency"></p-sortIcon>
+                            <p-columnFilter field="statutoryFrequency" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Statutory Freq Periods Def
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="statutoryFreqPeriodsDef" pSortableColumn="statutoryFreqPeriodsDef"></p-sortIcon>
+                            <p-columnFilter field="statutoryFreqPeriodsDef" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Deduction Frequency
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="deductionFrequency" pSortableColumn="deductionFrequency"></p-sortIcon>
+                            <p-columnFilter field="deductionFrequency" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                       <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Income Period
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="incomePeriod" pSortableColumn="incomePeriod"></p-sortIcon>
+                            <p-columnFilter field="incomePeriod" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th class="text-center">
+                        Action 
+                      </th>        
+                     </tr>
+                   </ng-template>
+                   <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
+                    <tr class="p-selectable-row">
+                        <td class="text-center">{{rowIndex + 1}}</td>
+                        <td>
+                            <label
+                                class="form-lable mb-0">
+                                {{summary.complianceName}}</label>
+                        </td>
+                        <td>
+                            <label
+                                class="form-lable mb-0 ">{{summary.complianceSDMMappingId}}</label>
+                        </td>
+
+                        <td> <label
+                                class="form-lable mb-0 ">{{summary.complianceMasterId}}</label>
+                                </td>
+                                <td> <label
+                                  class="form-lable mb-0 ">{{summary.statutoryFrequency}}</label>
+                                  </td>
+                                  <td> <label
+                                    class="form-lable mb-0 ">{{summary.statutoryFreqPeriodsDef}}</label>
+                                    </td>
+                                    <td> <label
+                                      class="form-lable mb-0 ">{{summary.deductionFrequency}}</label>
+                                      </td>
+                                     <td> <label
+                                      class="form-lable mb-0 ">{{summary.incomePeriod}}</label>
+                                      </td>
+                                    <td class="text-center">
+                                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                      (click)="editMasterComplinaceApplicability(rowIndex,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                      tooltip="Edit"></i>
+  
+                                    <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                                      (click)="viewMasterComplianceApplicability(rowIndex,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                      tooltip="View"></i> &nbsp;&nbsp;
+  
+                                    <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                                      (click)="ConfirmationDialog(confirmdialog,rowIndex,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                      tooltip="Delete"></i>
+                  </td>
+                                   
+                    </tr>
+                </ng-template>
+
+                   <ng-template pTemplate="emptymessage">
+                     <tr>
+                       <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                           Available</span>
+                       </td>
+                     </tr>
+                   </ng-template>
+                 </p-table>
+</div>
+</div>
+</div>
+
 
                 </div> <!-- card body -->
               </div>

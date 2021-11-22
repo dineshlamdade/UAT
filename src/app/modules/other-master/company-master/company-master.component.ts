@@ -7,6 +7,10 @@ import { CompanyGroupMasterService } from '../company-group-master/company-group
 import { companyMasterRequestDTOs, EmployeeMasterRequestDTO, requestDTOString } from './dto-models/company-master-dto';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+// import { Table } from 'primeng/table';
+
 @Component( {
   selector: 'app-company-master',
   templateUrl: './company-master.component.html',
@@ -61,10 +65,11 @@ export class CompanyMasterComponent implements OnInit {
 
   public groupNameScaleNameStartDateObject: any[] = [];
 
-
+  header: any[];
+  excelData: any[];
 
   constructor( private shortenString: ShortenStringPipe, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private datePipe: DatePipe, private companyMasterService: CompanyMasterService,
-    private companyGroupMasterService: CompanyGroupMasterService, private alertService: AlertServiceService ) {
+    private companyGroupMasterService: CompanyGroupMasterService, private alertService: AlertServiceService, private excelservice: ExcelserviceService ) {
     this.summaryHtmlDataList = [];
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '' };
 
@@ -289,8 +294,11 @@ export class CompanyMasterComponent implements OnInit {
           SrNo: i++,
           shortName: element.shortName,
           shortenShortName: this.shortenString.transform( element.shortName ),
-          StartDate: element.startDate,
-          EndDate: element.endDate,
+    //for date format
+          StartDate: new Date(element.startDate),
+          //end date format
+          // EndDate: element.endDate,
+          EndDate:new Date(element.endDate),
           Scale: element.scale,
           companyGroupId: element.companyGroupId,
           globalCompanyMasterId: element.globalCompanyMasterId,
@@ -912,6 +920,7 @@ export class CompanyMasterComponent implements OnInit {
       coClassification: '',
       reason: '',
       isContractor: '',
+      
     } );
 
     this.deactiveActiveCheckBox();
@@ -993,4 +1002,74 @@ export class CompanyMasterComponent implements OnInit {
 
 
   }
+  //excel
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Code","Name","Short Name","Association","Industry Type","Scale","Type of Establishment",
+    "Engagement Start Date","Engagement End Date","Service Age","Country","City"];
+    this.excelData=[];
+
+
+    
+    if(this.summaryHtmlDataList.length>0){
+    this.summaryHtmlDataList.forEach(element => {
+      let obj = {
+        "Code":element.code,
+        "Name":element.shortenCompanyName,
+        "Short Name": element.shortenShortName,
+        "Association":element.isContractor,
+        "Industry Type":element.shortenIndustryType,
+        "Scale":element.Scale,
+        "Type of Establishment":element.typeOfEstablishment,
+        "Engagement Start Date":element.StartDate,
+        "Engagement End Date":element.EndDate,
+        "Service Age":element.servicePeriodShort,
+        "Country":element.country,
+        "City":element.city,
+
+
+
+      
+      }
+      this.excelData.push(obj)
+    });
+    console.log('this.excelData::', this.excelData);
+  }
+   
+    this.excelservice.exportAsExcelFile(this.excelData, 'Company Master ','Company Master',this.header);
+  
+  }
+  
+  //sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
+
+// @ViewChild("dt") dataTableComponent: Table;
+
+// setup(value, id){
+//    if(value != null)
+//      this.dataTableComponent.filters[id][0].value = value;
+//  }
+
+  
 }
