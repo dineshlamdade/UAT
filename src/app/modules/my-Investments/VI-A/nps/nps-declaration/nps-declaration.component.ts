@@ -157,6 +157,11 @@ export class NpsDeclarationComponent implements OnInit {
   public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
+  
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate: boolean;
+
   public isClear: boolean;
   public isCancel: boolean;
   public financialYear: any;

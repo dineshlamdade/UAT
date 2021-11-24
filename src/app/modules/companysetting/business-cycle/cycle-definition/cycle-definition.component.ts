@@ -190,10 +190,11 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
       console.log("addCycleDefinition: "+ JSON.stringify(addCycleDefinition))
       let data={
         "businessCycleDefinitionId": addCycleDefinition.businessCycleDefinitionId ,
-    "frequencyMasterId": this.frequencyMasterId,
-    "businessYearDefinitionId":addCycleDefinition.businessYearDefinitionId,
-    "cycleName":  this.cycleName,
-    "incompleteDaysFalls": this.cycleDefinitionForm.controls["incompleteDaysFalls"].value
+        "frequencyMasterId": this.frequencyMasterId,
+        
+        "businessYearDefinitionId":addCycleDefinition.businessYearDefinitionId,
+        "cycleName":  this.cycleName,
+        "incompleteDaysFalls": this.cycleDefinitionForm.controls["incompleteDaysFalls"].value
 
       }
 
@@ -224,7 +225,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
   onChangeFrequencyFromCycleDefinition(event) {
     //alert(event);
    this.frequencyId = event
-
+   this.frequencyMasterId = event
   //alert(this.frequencyName)
     // console.log(this.selectedFrequency);
     const findIndex = this.activeFrequencyList.findIndex(o => o.id == event);
@@ -300,6 +301,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
           yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate), 'dd-MMM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate), 'dd-MMM-yyyy'),
         });
 
+
         // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
         // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
         this.cycleDefinitionForm.disable();
@@ -321,6 +323,9 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     this.CycleupdateFlag1 = true;
     this.cycleDefinitionForm.controls['cycleName'].disable();
     this.cycleDefinitionForm.controls['addDays'].disable();
+    // this.cycleDefinitionForm.controls['frequencyMasterId'].disable();
+    // this.cycleDefinitionForm.controls['incompleteDaysFalls'].disable();
+
     this.companySettings.GetCycleDefinitionById(id)
       .subscribe(response => { // : saveBusinessYear[]
         //console.log( 'xx', );
@@ -332,7 +337,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
         this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
         this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
         this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
-        this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls });
+        this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls});
         this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
         this.cycleDefinitionForm.patchValue({
           //yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' To ' + response.data.results[0].businessYearDefinition.fullToDate,

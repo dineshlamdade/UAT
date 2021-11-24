@@ -8,7 +8,7 @@
 
         <div class="col-sm-6 col-md-3">
           <label class="form-label">Cycle Definition</label>
-          <input [disabled]="CycleDefinitionFlag" type="text" formControlName="cycleName" class="form-control"
+          <input type="text" formControlName="cycleName" class="form-control"
             (keypress)="keyPressedSpaceNotAllow($event)"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('cycleName').status == 'INVALID'}"
             placeholder="Enter Cycle Definition">
@@ -16,7 +16,7 @@
 
 
         <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
-          <label class="form-label">Business Year</label>
+          <label class="form-label">Business Year Defination</label>
           <select placeholder="select" name="businessYearDefinitionId" id="businessYearDefinitionId"
             class="form-control  " formControlName="businessYearDefinitionId"
             (change)="onChangeBusinessYear($event.target.value)"
@@ -54,31 +54,42 @@
         <br>
         <br>
         <br>
-        
+        <div class="col-sm-6 col-md-3">
+          <label class="form-label">Last Cycle Crossing financial Year</label>
+          <select class="form-control">
+            <option selected value=''>Select</option>
+            <option value="Do Nothing">Do Nothing</option>
+            <option value="Force Stop Till Business Year Ends">Force Stop Till Business Year Ends</option>
+            <option value="Remove Last Cycle">Remove Last Cycle</option>
+          </select>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
           <label class="form-label">Days In a Cycle</label>
           <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
         </div>
 
-        <div class="col-sm-6 col-md-3" *ngIf="frequencyId == 1 || frequencyId == 2 || frequencyId == 3 || frequencyId == 4 || (frequencyId == 5 && cycleDefinitionForm.controls.addDays.value > '30')">
+        <div class="col-sm-6 col-md-3"
+          *ngIf="frequencyId == 1 || frequencyId == 2 || frequencyId == 3 || frequencyId == 4 || (frequencyId == 5 ) || CycleupdateFlag1">
+          <!-- && cycleDefinitionForm.controls.addDays.value > '30' -->
           <!-- *ngIf="activeFrequencyList.name != Quarterly || activeFrequencyList.name != Yearly  -->
-        <!-- || activeFrequencyList.name != Half-Yearly || activeFrequencyList.name != Adhoc" -->
+          <!-- || activeFrequencyList.name != Half-Yearly || activeFrequencyList.name != Adhoc" -->
           <!-- <label class="form-label">Incomplete Days Falls</label> -->
 
           <label class="form-label">Cycle spanning two months-
-            <br>Treat as part of which month</label>
-          <select formControlName="incompleteDaysFalls"  name="incompleteDaysFalls" id=""  class="form-control" >
+            <br>Treat as part of which month {{CycleupdateFlag1}}</label>
+          <select formControlName="incompleteDaysFalls" name="incompleteDaysFalls" id="" class="form-control">
             <option selected value=''>Select </option>
-            <option value="Start Date Falls">
-             Start Date Falls
-            </option>
-            <option value="End Date Falls">
-              End Date Falls
-             </option>
+            <option value="Start">Start</option>
+            <option value="End">End</option>
           </select>
         </div>
-        
+
 
 
 
@@ -122,63 +133,48 @@
   </div>
 
 
-  
+
 
 
 
   <div class="row">
-    
+
 
     <div class="col-md-10">
       <div class="col-md-11">
         <h3 class="font-14 text-purple font-bold">Summary</h3>
         <div class="cycle-table">
           <div class="cycle-value pt-10 pb-40 bg-color-light_gray">
-             <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
-            <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
-                <div class="float-right d-flex  justify-content">
-                  
-                   <div class="rup mt-2">
-                      <div class="input-icon mb-3">
-                         <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
-                         type="text" pInputText class="form-control" placeholder="Search...">
-                         <span class="input-icon-addon"><i class="fe fe-search"></i></span>
-                      </div>
-                   </div>
-                   &nbsp;&nbsp;
-                   <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3" aria-hidden="true"></i>
+            <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
+              <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
+              <div class="float-right d-flex  justify-content">
+
+                <div class="rup mt-2">
+                  <div class="input-icon mb-3">
+                    <input (input)="dt.filterGlobal($event.target.value, 'contains')" type="text" pInputText
+                      class="form-control" placeholder="Search...">
+                    <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                  </div>
                 </div>
-             </div>
+                &nbsp;&nbsp;
+                <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3"
+                  aria-hidden="true"></i>
+              </div>
+            </div>
           </div>
-          </div>
-  
-  
+        </div>
+
+
         <div class="cycle-table mt-4">
-         
-  
-        
+
+
+
           <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-            [pageLinks]="5"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            totalRecords={{CycleDefinitionList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
-            #dt [globalFilterFields]="['cycleName','incompleteDaysFalls','description','fullFromDate','fullToDate']">
+            [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            totalRecords={{CycleDefinitionList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" #dt
+            [globalFilterFields]="['cycleName','incompleteDaysFalls','description','fullFromDate','fullToDate']">
             <ng-template pTemplate="header">
-              <!-- <br>
-                
-                <div style="text-align: right;display: flex;">
-                  <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                  <input type="text" pInputText size="50" placeholder="Search"
-                      (input)="dt.filterGlobal($event.target.value, 'contains')"
-                      style="width: 203px;">
-                      &nbsp;&nbsp;&nbsp;
-                      <a tooltip="Download" style="cursor: pointer"
-                      (click)="exportAsXLSX()"><i
-                          class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                          aria-hidden="true"></i></a>
-                </div>
-  
-                <br>
-                <br> -->
+
               <tr>
                 <th rowspan="1" class="wd-8 text-center">
                   Sr. No.
@@ -192,18 +188,9 @@
                     </div>
                   </div>
                 </th>
-  
-                <th>
-                  <div class="p-d-flex p-jc-between p-ai-center">
-                    Cycle spanning two months-Treat as part of which month
-  
-                    <div class="Sort_Filter_Position">
-                      <p-sortIcon field="incompleteDaysFalls"></p-sortIcon>
-                      <p-columnFilter type="text" field="incompleteDaysFalls" display="menu" class="p-ml-auto"></p-columnFilter>
-                    </div>
-                  </div>
-                </th>
-  
+
+
+
                 <th>
                   <div class="p-d-flex p-jc-between p-ai-center">
                     Description
@@ -213,37 +200,46 @@
                     </div>
                   </div>
                 </th>
-                
+
                 <th colspan="2" class="wd-16">
                   <div class="p-d-flex p-ai-center p-jc-center">
                     Business Year
-                    <!-- <div class="Sort_Filter_Position">
-                      <p-sortIcon field="fullFromDate"></p-sortIcon>
-                      <p-columnFilter type="text" field="fullFromDate" display="menu" class="p-ml-auto"></p-columnFilter>
-                    </div> -->
                   </div>
                 </th>
-  
-  
-  
+
+                <th colspan="1">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Cycle spanning two months-Treat as part of which month
+
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="incompleteDaysFalls"></p-sortIcon>
+                      <p-columnFilter type="text" field="incompleteDaysFalls" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+                    </div>
+                  </div>
+                </th>
+
+
+
                 <th rowspan="1" class="wd-10 text-center">
                   Action
                 </th>
-  
-               
+
+
               </tr>
               <tr>
                 <th></th>
                 <th></th>
                 <th></th>
-                <th></th>
+                <!-- <th></th> -->
                 <!-- <th scope="col">From Date</th> -->
                 <th scope="col" class="wd-14">
                   <div class="p-d-flex p-jc-between p-ai-center">
                     From Date
                     <div class="Sort_Filter_Position">
                       <p-sortIcon field="fullFromDate"></p-sortIcon>
-                      <p-columnFilter type="date" field="fullFromDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                      <p-columnFilter type="date" field="fullFromDate" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
                     </div>
                   </div>
                 </th>
@@ -258,14 +254,15 @@
                   </div>
                 </th>
                 <th scope="col"></th>
+                <th scope="col"></th>
                 <!-- <th></th> -->
-  
+
               </tr>
-  
+
             </ng-template>
-  
-  
-  
+
+
+
             <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
               <tr class="p-selectable-row">
                 <!-- <td><label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
@@ -274,31 +271,38 @@
                   </label></td> -->
                 <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycleName}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0"></label>{{user1.incompleteDaysFalls}}</td>
+
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
-               
+
                 <td class="bg-color-light_gray"><label
-                    class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate | date: 'dd-MMM-yyyy'}}</label></td>
-                <td class="bg-color-light_gray"><label
-                    class="form-lable mb-0">{{user1.businessYearDefinition.fullToDate | date: 'dd-MMM-yyyy'}}</label></td>
-               
+                    class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate | date: 'dd-MMM'}}</label>
+                </td>
+                <td class="bg-color-light_gray">
+                  <label class="form-lable mb-0">{{user1.businessYearDefinition.fullToDate
+                    | date: 'dd-MMM'}}</label>
+                </td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0"></label>{{user1.incompleteDaysFalls}}
+                </td>
+
                 <td class="wd-10 text-center">
-                 
-                  
-                  <button *ngIf="!user1.isUsed" type="button" class="btn btn-icon text-dark-green" tooltip="Edit"><i
-                      (click)="GetCycleDefinitionbyId(user1.id)" class="fa fa-edit"></i></button>
-  
-                  <button (click)="GetCycleDefinitionbyIdDisable(user1.id)" type="button"
-                    class="btn btn-icon text-blue" tooltip="View">
+                  <!-- commented edit -suggested by rakesh sir -17th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.isUsed" type="button" class="btn btn-icon text-dark-green" tooltip="Edit"><i
+                      (click)="GetCycleDefinitionbyId(user1.id)" class="fa fa-edit"></i></button> -->
+
+                  <button (click)="GetCycleDefinitionbyIdDisable(user1.id)" type="button" class="btn btn-icon text-blue"
+                    tooltip="View">
                     <i class="fa fa-eye"></i></button>
-  
-                  <button *ngIf="!user1.isUsed" type="button"
+
+                  <!-- commented delete -suggested by rakesh sir -17th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.isUsed" type="button"
                     (click)="UploadModal1(templatecycle);getCycleName(user1.cycleName)" data-toggle="modal"
                     data-target="#UploadModal" class="btn btn-icon js-sweetalert text-red" tooltip="Delete"
-                    data-type="confirm"><i class="fa fa-trash"></i></button>
+                    data-type="confirm"><i class="fa fa-trash"></i></button> -->
                 </td>
-  
-  
+
+
                 <ng-template #templatecycle>
                   <div class="modal-header">
                     <h5 class="modal-title" id="UploadModalLabel">Delete
@@ -339,8 +343,8 @@
         </div>
 
       </div>
-      
-      
+
+
     </div>
   </div>
 </form>

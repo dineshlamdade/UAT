@@ -11,7 +11,7 @@ export class StatuatoryComplianceService {
   constructor(private _HTTP: HttpClient) { }
 
   getLocationInformationOrCountryList() {
-
+//change
     return this._HTTP.get(environment.baseUrl8082 + '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
       .pipe(map((res: any) => {
         return res;

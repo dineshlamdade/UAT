@@ -282,7 +282,7 @@ getActiveFrequency() {
 
   getAllCycleDefinition() {
     this.CycleDefinitionList = [];
-    this.companySettings.getAllCycleDefinition().subscribe( res => {
+    this.companySettings.CycleDefinitionList().subscribe( res => {
       this.CycleDefinitionList = res.data.results;
      
 

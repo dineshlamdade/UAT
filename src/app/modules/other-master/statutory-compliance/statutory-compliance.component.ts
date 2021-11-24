@@ -7,12 +7,17 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 
 import { ShortenStringPipe } from './../../../core/utility/pipes/shorten-string.pipe';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+
 @Component( {
   selector: 'app-statutory-compliance',
   templateUrl: './statutory-compliance.component.html',
   styleUrls: ['./statutory-compliance.component.scss']
 } )
 export class StatutoryComplianceComponent implements OnInit {
+
+
   hideRemarkDiv: boolean;
   selectedIsdCode = [];
   countryCode: Array<any> = [];
@@ -40,10 +45,12 @@ export class StatutoryComplianceComponent implements OnInit {
   tempObjForgroupNameScaleStartDate: any;
   isEditMode: boolean = false;
 
+  header: any[];
+  excelData: any[];
 
   public groupNameScaleNameStartDateObject: any[] = [];
   constructor( private shortenString: ShortenStringPipe, private formBuilder: FormBuilder, private statuatoryComplianceService: StatuatoryComplianceService, private complianceHeadService: ComplianceHeadService,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService  ) {
 
     this.form = this.formBuilder.group( {
       headName: new FormControl( '', Validators.required ),
@@ -72,7 +79,7 @@ export class StatutoryComplianceComponent implements OnInit {
   }
   ngOnInit(): void {
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
-
+//change
     this.statuatoryComplianceService.getLocationInformationOrCountryList().subscribe( res => {
       this.countries = res.data.results;
     } );
@@ -124,6 +131,28 @@ export class StatutoryComplianceComponent implements OnInit {
       } );
     }
   }
+  // getPermanentAddressFromPIN() {
+  //   console.log( this.form.get( 'pinCode' ).value );
+  //   if ( this.form.get( 'pinCode' ).value.length < 6 ) {
+  //     this.form.get( 'state' ).setValue( '' );
+  //     this.form.get( 'city' ).setValue( '' );
+  //   }
+  //   else if ( this.form.get( 'pinCode' ).value.length == 6 && this.form.get( 'country' ).value == 'India' ) {
+  //     this.statuatoryComplianceService.getAddressFromPIN( this.form.get( 'pinCode' ).value ).subscribe( res => {
+  //       console.log( res );
+  //       this.form.get( 'state' ).setValue( res.data.results[0].state );
+  //       this.form.get( 'city' ).setValue( res.data.results[0].city );
+
+  //     }, ( error: any ) => {
+  //       this.alertService.sweetalertError( error['error']['status']['messsage'] );
+
+  //     } );
+  //   }else{
+  //     this.form.get('state').disable();
+  //     this.form.get('city').disable();
+  //   }
+    
+  // }
 
   onSelectScale( scale1: any ) {
     console.log( scale1 );
@@ -360,12 +389,47 @@ export class StatutoryComplianceComponent implements OnInit {
     } );
     this.form.get( 'state' ).disable();
     this.form.get( 'city' ).disable();
+    // this.form.get( 'state' ).enable();
+    // this.form.get( 'city' ).enable();
+    
     this.form.get( 'institutionCode' ).disable();
     this.form.get( 'institutionCode' ).disable();
-
-
-
   }
+//   onSelectCountry( evt: any ) {
+// if(evt=='India'){
+//   this.form.patchValue( {
+//     pinCode: '',
+//     state: '',
+//     city: '',
+//     village: ''
+//   } );
+//   this.form.get( 'state' ).disable();
+//   this.form.get( 'city' ).disable();
+//   // this.form.get( 'state' ).enable();
+//   // this.form.get( 'city' ).enable();
+  
+//   this.form.get( 'institutionCode' ).disable();
+//   this.form.get( 'institutionCode' ).disable();
+
+// }
+// else
+// {
+//   this.form.patchValue( {
+//     pinCode: '',
+//     state: '',
+//     city: '',
+//     village: ''
+//   } );
+  
+//   this.form.get( 'state' ).enable();
+//   this.form.get( 'city' ).enable();
+  
+//   this.form.get( 'institutionCode' ).disable();
+//   this.form.get( 'institutionCode' ).disable();
+// }
+// }
+
+  
   keyPress( event: any ) {
 
     const pattern = /[0-9]/;
@@ -389,5 +453,59 @@ export class StatutoryComplianceComponent implements OnInit {
       this.form.controls["remark"].updateValueAndValidity();
     }
   }
+
+  //excel
+
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Code","Country","Head Name","Type Of Office","State","Add1","City","Remark"];
+    this.excelData=[];
+    
+    if(this.summaryHtmlDataList.length>0){
+    this.summaryHtmlDataList.forEach(element => {
+      let obj = {
+        "Code":element.institutionCode,
+        "Country":element.country,
+        "Head Name": element.headNameShorten,
+        "Type Of Office":element.typeOfOffice,
+        "State":element.state,
+        "Add1":element.address1,
+        "City":element.city,
+        "Remark":element.remark,
+
+      
+      }
+      this.excelData.push(obj)
+    });
+    console.log('this.excelData::', this.excelData);
+  }
+   
+    this.excelservice.exportAsExcelFile(this.excelData, 'Statutory Compliance','Statutory Compliance',this.header);
+  
+  }
+  
+  //Sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
 
 }

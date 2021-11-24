@@ -1,4 +1,4 @@
-<form [formGroup]="PositionForm" (ngSubmit)="positionFormSubmit(positionDetailsModel)">
+<form [formGroup]="PositionForm" (ngSubmit)="positionFormSubmit(positionDetailsModel,organizationDetailsModel)">
     <div class="row">
         <div class="col-sm-6 col-md-3">
             <label class="form-label">Payroll Area</label>
@@ -17,41 +17,75 @@
         </select> -->
             <select class="form-control" placeholder="Select"
                 (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
-                (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
+                (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaId"
                 [ngModelOptions]="{standalone: true}">
                 <option value="" selected disabled>Select</option>
-                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaId">
                     {{option.payrollAreaCode}}
                 </option>
             </select>
         </div>
+        <!-- <div class="col-sm-6 col-md-3">
+            <label class="form-label">Establishment Area</label>
+            <select class="form-control" placeholder="Select"
+            (completeMethod)="filterEstablishmentAreaArea(establishmentCode)" (change)="selectEstablishmentArea(establishmentCode)"
+            [(ngModel)]="establishmentCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let option of filteredEstablishmentList" [value]="option.establishmentCode">
+                {{option.establishmentCode}}
+            </option>
+           </select>
+         </div> -->
+         <div class="col-sm-6 col-md-3">
+            <label class="form-label">Type</label>
+            <input type="text" class="form-control" [(ngModel)]="payrollType" [ngModelOptions]="{standalone: true}"
+           disabled>
+        </div>
+
         <div class="col-sm-6 col-md-3">
             <label class="form-label">Company Name</label>
             <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
                 disabled>
         </div>
+        <div class="col-sm-6 col-md-3" *ngIf="filteredPayrollAreaList?.length>1">
+            <label class="form-label">Copy From </label>
+            <select class="form-control" placeholder="Select"
+            formControlName="copyFromControl"
+                (change)="selectCopyFrom()" [(ngModel)]="copyFromCode"
+                [ngModelOptions]="{standalone: true}">
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let copy of copyFromFilteredList" [value]="copy.payrollAreaId">
+                    {{copy.payrollAreaCode}}
+                </option>
+            </select>
+        </div>  
     </div>
     <br>
+    <hr class="line">
     <div class="row row-cards">
-        <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">Employee Type</label>
+        <div  *ngIf="filteredEmployeeTypeList?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> Employee Type</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.typeList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+            
                 <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                     (completeMethod)="employeeTypeList($event)" [dropdown]="true"
                     formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType"
                     (onSelect)="validatEmployeeTypeDate();employeeTypeObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select" (completeMethod)="employeeTypeList(employee.value)"
+                <select class="form-control" placeholder="Select" (completeMethod)="employeeTypeList(employee.masterCode)"
                     (change)="employeeTypeObject(employee);validatEmployeeTypeDate();"
-                    formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType">
+                    formControlName="employeeTypeControl" [(ngModel)]="organizationDetailsModel.typeList.masterCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredEmployeeTypeList" [value]="employee.value">
-                        {{employee.value}}
+                    <option *ngFor="let employee of filteredEmployeeTypeList" [value]="employee.masterCode">
+                        {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
                 <input type="text" class="form-control" formControlName="employeeTypeDescriptionControl"
-                    [(ngModel)]="positionDetailsModel.employeeTypeDescription" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="organizationDetailsModel.typeList.description" [ngModelOptions]="{standalone: true}"
                     disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -62,9 +96,9 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeTypeFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.employeeTypeFromDate"
-                            (bsValueChange)="validateEmployeeTypeToDate()"
+                            formControlName="employeeTypeFromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.typeList.fromDate" placement="center"
+                            (ngModelChange)="validateEmployeeTypeToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeTypeFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -78,36 +112,36 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeTypeToDateControl"
-                            [minDate]="positionDetailsModel.employeeTypeFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeTypeToDate"
+                            formControlName="employeeTypeToDateControl"  [maxDate]="payrollAreaToDate"
+                            [minDate]="organizationDetailsModel.employeeTypeFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.typeList.toDate"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeTypeToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
-        <div class="col-sm-6 col-lg-3">
+        <!-- <div  *ngIf="filteredEmployeeStatusList?.length" class="col-sm-6 col-lg-3">
             <div class="card p-3 row-card-color">
-                <label class="form-label">Employee Status</label>
+                <label class="form-label">Employee Status</label> -->
                 <!-- <p-autoComplete [suggestions]="employeeStatusList" placeholder="Select"
                     (completeMethod)="searchEmployeeStatus($event)" [dropdown]="true"
                     formControlName="employeeStatusControl" [(ngModel)]="positionDetailsModel.employeeStatus"
                     (onSelect)="validatEmployeeStatusDate();employeeStatusObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select"
-                    (completeMethod)="searchEmployeeStatus(employee.value)"
+                <!-- <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchEmployeeStatus(employee.masterCode)"
                     (change)="validatEmployeeStatusDate();employeeStatusObject(employee);"
-                    formControlName="employeeStatusControl" [(ngModel)]="positionDetailsModel.employeeStatus">
+                    formControlName="employeeStatusControl" [(ngModel)]="organizationDetailsModel.statusList.masterCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredEmployeeStatusList" [value]="employee.value">
-                        {{employee.value}}
+                    <option *ngFor="let employee of filteredEmployeeStatusList" [value]="employee.masterCode">
+                        {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
                 <input type="text" class="form-control" formControlName="employeeStatusDescriptionControl"
-                    [(ngModel)]="positionDetailsModel.employeeStatusDescription" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="organizationDetailsModel.statusList.description" [ngModelOptions]="{standalone: true}"
                     disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -118,9 +152,9 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeStatusFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.employeeStatusFromDate"
-                            (bsValueChange)="validateEmployeeStatusToDate()"
+                            formControlName="employeeStatusFromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.statusList.fromDate" placement="center"
+                            (ngModelChange)="validateEmployeeStatusToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeStatusFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -134,36 +168,40 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeStatusToDateControl"
-                            [minDate]="positionDetailsModel.employeeStatusFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeStatusToDate"
+                            formControlName="employeeStatusToDateControl"  [maxDate]="payrollAreaToDate"
+                            [minDate]="organizationDetailsModel.employeeStatusFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.statusList.toDate"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeStatusToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">Employee Tax Category</label>
+        <div  *ngIf="filteredEmployeeTaxCategoryList?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> Employee Tax Category</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.taxCategoryList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+            
                 <!-- <p-autoComplete [suggestions]="employeeTaxCategoryList" placeholder="Select"
                     (completeMethod)="searchEmployeeTaxCategory($event)" [dropdown]="true"
                     formControlName="employeeTaxCategoryControl" [(ngModel)]="positionDetailsModel.employeeTaxCategory"
                     (onSelect)="validatEmployeeTaxCategoryDate();employeeTaxCategoryObject($event);">
                 </p-autoComplete> -->
                 <select class="form-control" placeholder="Select"
-                    (completeMethod)="searchEmployeeTaxCategory(employee.value)"
+                    (completeMethod)="searchEmployeeTaxCategory(employee.masterCode)"
                     (change)="validatEmployeeTaxCategoryDate();employeeTaxCategoryObject(employee);"
-                    formControlName="employeeTaxCategoryControl" [(ngModel)]="positionDetailsModel.employeeTaxCategory">
+                    formControlName="employeeTaxCategoryControl" [(ngModel)]="organizationDetailsModel.taxCategoryList.masterCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredEmployeeTaxCategoryList" [value]="employee.value">
-                        {{employee.value}}
+                    <option *ngFor="let employee of filteredEmployeeTaxCategoryList" [value]="employee.masterCode">
+                        {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
                 <input type="text" class="form-control" formControlName="employeeTaxCategoryDescriptionControl"
-                    [(ngModel)]="positionDetailsModel.employeeTaxCategoryDescription"
+                    [(ngModel)]="organizationDetailsModel.taxCategoryList.description"
                     [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -174,9 +212,9 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeTaxCategoryFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.employeeTaxCategoryFromDate"
-                            (bsValueChange)="validateEmployeeTaxCategoryToDate()"
+                            formControlName="employeeTaxCategoryFromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.taxCategoryList.fromDate" placement="center"
+                            (ngModelChange)="validateEmployeeTaxCategoryToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeTaxCategoryFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -190,19 +228,23 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="employeeTaxCategoryToDateControl"
-                            [minDate]="positionDetailsModel.employeeTaxCategoryFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeTaxCategoryToDate"
+                            formControlName="employeeTaxCategoryToDateControl"  [maxDate]="payrollAreaToDate"
+                            [minDate]="organizationDetailsModel.taxCategoryList.fromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.taxCategoryList.toDate"
                             [ngClass]="{'is-invalid' : PositionForm.get('employeeTaxCategoryToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
-        <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">Grade</label>
+        <div *ngIf="filteredGradeList?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{gradeCode}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.gradeList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+            
                 <!-- <p-autoComplete [suggestions]="gradeList" placeholder="Select"
                     (completeMethod)="SearchGrade($event)" [dropdown]="true"
                     formControlName="gradeMasterIdControl" [(ngModel)]="gradeCode"
@@ -210,14 +252,14 @@
                 </p-autoComplete> -->
                 <select class="form-control" placeholder="Select" (completeMethod)="SearchGrade(employee.masterCode)"
                     (change)="validatGradeDate();gradeObject(employee);" formControlName="gradeMasterIdControl"
-                    [(ngModel)]="gradeCode">
+                    [(ngModel)]="organizationDetailsModel.gradeList.masterCode">
                     <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredGradeList" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" [(ngModel)]="description" [ngModelOptions]="{standalone: true}"
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.gradeList.description" [ngModelOptions]="{standalone: true}"
                     disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -228,8 +270,8 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="gradeFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.gradeFromDate" (bsValueChange)="validateGradeToDate()"
+                            formControlName="gradeFromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.gradeList.fromDate" (ngModelChange)="validateGradeToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('gradeFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -243,18 +285,22 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="gradeToDateControl" [minDate]="positionDetailsModel.gradeFromDate"
-                            [(ngModel)]="positionDetailsModel.gradeToDate"
+                            formControlName="gradeToDateControl" [minDate]="organizationDetailsModel.gradeList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.gradeList.toDate"  [maxDate]="payrollAreaToDate" placement="center"
                             [ngClass]="{'is-invalid' : PositionForm.get('gradeToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
-        <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">Designation 1</label>
+        <div *ngIf="filteredDesignation1List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{designation1Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.designation1List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+       
                 <!-- <p-autoComplete [suggestions]="designation1List" placeholder="Select"
                     (completeMethod)="searchDesignation1($event)" [dropdown]="true"
                     formControlName="designation1Control" [(ngModel)]="designation1Code"
@@ -263,14 +309,14 @@
                 <select class="form-control" placeholder="Select"
                     (completeMethod)="searchDesignation1(employee.masterCode)"
                     (change)="validatDesignation1Date();designation1Object(employee);"
-                    formControlName="designation1Control" [(ngModel)]="designation1Code">
+                    formControlName="designation1Control" [(ngModel)]="organizationDetailsModel.designation1List.masterCode">
                     <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredDesignation1List" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" [(ngModel)]="designation1Desc"
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.designation1List.description"
                     [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -279,11 +325,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="designation1FromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.designation1FromDate"
-                            (bsValueChange)="validateDesignation1ToDate()"
+                            formControlName="designation1FromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.designation1List.fromDate"
+                            (ngModelChange)="validateDesignation1ToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('designation1FromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -295,21 +341,25 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="designation1ToDateControl"
-                            [minDate]="positionDetailsModel.designation1FromDate"
-                            [(ngModel)]="positionDetailsModel.designation1ToDate"
+                            formControlName="designation1ToDateControl"  [maxDate]="payrollAreaToDate"
+                            [minDate]="organizationDetailsModel.designation1List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.designation1List.toDate"
                             [ngClass]="{'is-invalid' : PositionForm.get('designation1ToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
-        <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">Designation 2</label>
+        <div *ngIf="filteredDesignation2List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{designation2Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.designation2List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+            
                 <!-- <p-autoComplete [suggestions]="designation2List" placeholder="Select"
                     (completeMethod)="searchDesignation2($event)" [dropdown]="true"
                     formControlName="designation2Control" [(ngModel)]="designation2Code"
@@ -318,14 +368,14 @@
                 <select class="form-control" placeholder="Select"
                     (completeMethod)="searchDesignation2(employee.masterCode)"
                     (change)="validatDesignation2Date();designation2Object(employee);"
-                    formControlName="designation2Control" [(ngModel)]="designation2Code">
+                    formControlName="designation2Control" [(ngModel)]="organizationDetailsModel.designation2List.masterCode">
                     <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredDesignation2List" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" [(ngModel)]="designation2Desc"
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.designation2List.description"
                     [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -334,11 +384,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="designation2FromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.designation2FromDate"
-                            (bsValueChange)="validateDesignation2ToDate()"
+                            formControlName="designation2FromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.designation2List.fromDate"
+                            (ngModelChange)="validateDesignation2ToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('designation2FromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -352,44 +402,32 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="designation2ToDateControl"
-                            [minDate]="positionDetailsModel.designation2FromDate"
-                            [(ngModel)]="positionDetailsModel.designation2ToDate"
+                            formControlName="designation2ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.designation2List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.designation2List.toDate"
                             [ngClass]="{'is-invalid' : PositionForm.get('designation2ToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
-        <div class="col-sm-6 col-lg-3">
+        <!-- <div  class="col-sm-6 col-lg-3">
             <div class="card p-3 row-card-color">
                 <label class="form-label">Reporting To</label>
-                <!-- <p-autoComplete [suggestions]="designation1List" placeholder="Select"
-                    (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
-                    formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
-                </p-autoComplete> -->
-                <!-- <select class="form-control" placeholder="Select Reporting to"
-                    (completeMethod)="searchReportingTo(employee)"
-                    (change)="validatReportingDate();enableReportingDate();"
-                    formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
-                    <option value="" selected disabled>Select Reporting to</option>
-                    <option *ngFor="let employee of filteredReportingToList" [value]="employee">
-                        {{employee}}
-                    </option>
-                </select> -->
+               
                 <select class="form-control" placeholder="Select"
-                    (completeMethod)="searchReportingTo(employee.fullNameAndEmployeeCode)"
+                    (completeMethod)="searchReportingTo(employee.codeName)"
                     (change)="validatReportingDate();reportingToObject(employee);" formControlName="reportingToControl"
-                    [(ngModel)]="reportingToCode">
+                    [(ngModel)]="positionDetailsModel.reportingToList.value">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredReportingToList" [value]="employee.fullNameAndEmployeeCode">
-                        {{employee.fullNameAndEmployeeCode}}
+                    <option *ngFor="let employee of filteredReportingToList[0]" [value]="employee.codeName">
+                        {{employee.codeName}}
                     </option>
                 </select>
 
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" [(ngModel)]="reportingToDesc"
+                <input type="text" class="form-control" [(ngModel)]="positionDetailsModel.reportingToList.description"
                     [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
@@ -400,10 +438,65 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="reportingFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.reportingFromDate"
-                            (bsValueChange)="validateReportingToDate()"
+                            formControlName="reportingFromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="positionDetailsModel.reportingToList.fromDate"
+                            (ngModelChange)="validateReportingToDate($event)"
                             [ngClass]="{'is-invalid' : PositionForm.get('reportingFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="reportingToDateControl" [minDate]="positionDetailsModel.reportingToList.fromDate"
+                            [(ngModel)]="positionDetailsModel.reportingToList.toDate"  [maxDate]="payrollAreaToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('reportingToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        
+        <div *ngIf="filteredPosition1List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{position1Code}}</legend>
+                <label class="form-label">
+                    Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.position1List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> </label>
+        
+              
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchPosition1(employee.masterCode)"
+                    (change)="validatPosition1Date();position1Object(employee);"
+                    formControlName="position1Control" [(ngModel)]="organizationDetailsModel.position1List.masterCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredPosition1List" [value]="employee.masterCode">
+                        {{employee.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.position1List.description"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position1FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.position1List.fromDate"
+                            (ngModelChange)="validatePosition1ToDate($event)"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position1FromDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
@@ -416,14 +509,241 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="reportingToDateControl" [minDate]="positionDetailsModel.reportingFromDate"
-                            [(ngModel)]="positionDetailsModel.reportingToDate"
-                            [ngClass]="{'is-invalid' : PositionForm.get('reportingToDateControl').status == 'INVALID'}">
+                            formControlName="position1ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.position1List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.position1List.toDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position1ToDateControl').status == 'INVALID'}">
                    
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
+
+        <div *ngIf="filteredPosition2List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{position2Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.position2List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+           
+              
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchPosition2(employee.masterCode)"
+                    (change)="validatPosition2Date();position2Object(employee);"
+                    formControlName="position2Control" [(ngModel)]="organizationDetailsModel.position2List.masterCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredPosition2List" [value]="employee.masterCode">
+                        {{employee.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.position2List.description"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position2FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.position2List.fromDate"
+                            (ngModelChange)="validatePosition2ToDate($event)"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position2FromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position2ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.position2List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.position2List.toDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position2ToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+        <div *ngIf="filteredPosition3List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{position3Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.position3List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+           
+              
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchPosition3(employee.masterCode)"
+                    (change)="validatPosition3Date();position3Object(employee);"
+                    formControlName="position3Control" [(ngModel)]="organizationDetailsModel.position3List.masterCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredPosition3List" [value]="employee.masterCode">
+                        {{employee.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.position3List.description"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position3FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.position3List.fromDate"
+                            (ngModelChange)="validatePosition3ToDate($event)"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position3FromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position3ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.position3List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.position3List.toDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position3ToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+        <div *ngIf="filteredPosition4List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{position4Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.position4List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+           
+              
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchPosition4(employee.masterCode)"
+                    (change)="validatPosition4Date();position4Object(employee);"
+                    formControlName="position4Control" [(ngModel)]="organizationDetailsModel.position4List.masterCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredPosition4List" [value]="employee.masterCode">
+                        {{employee.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.position4List.description"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div> 
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position4FromDateControl" [minDate]="payrollAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.position4List.fromDate"
+                            (ngModelChange)="validatePosition4ToDate($event)"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position4FromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position4ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.position4List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.position4List.toDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position4ToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+
+        <div *ngIf="filteredPosition5List?.length" class="col-sm-6 col-lg-3">
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> {{position5Code}}</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.position5List)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+          
+              
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="searchPosition5(employee.masterCode)"
+                    (change)="validatPosition5Date();position5Object(employee);"
+                    formControlName="position5Control" [(ngModel)]="organizationDetailsModel.position5List.masterCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredPosition5List" [value]="employee.masterCode">
+                        {{employee.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="organizationDetailsModel.position5List.description"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position5FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
+                            [(ngModel)]="organizationDetailsModel.position5List.fromDate"
+                            (ngModelChange)="validatePosition5ToDate($event)"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position5FromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="position5ToDateControl"  [maxDate]="payrollAreaToDate" placement="center"
+                            [minDate]="organizationDetailsModel.position5List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.position5List.toDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('position5ToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
 
         <div class="col-sm-6 col-lg-3">
         </div>
@@ -455,3 +775,136 @@
         </div>
     </div>
 </form>
+
+<ng-template class="modal-lg" #template1>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">History</h5>
+  
+  
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+  
+    <div class="modal-body">
+      <div class="card">
+        <div class="row mb-3 mt-1">
+          <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Detail : </span> <span class="text-black">   {{historyData[0].jobDetail}}</span></h3>
+        </div>
+            <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Field : </span>  <span class="text-black">   {{historyData[0].jobField}}</span></h3>
+          </div>
+        </div>
+  
+  
+        <div class="card-bodys">
+          <div class=" ">
+  
+            <p-table [value]="historyData" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+              [customSort]="true" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10,25,50,100,200]">
+  
+  
+  
+              <ng-template pTemplate="header">
+  
+                <tr>
+                  <th rowspan="1" class="  text-center ">
+                    Sr. No.
+                  </th>
+                 
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Code
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="value" pSortableColumn="value">
+                        </p-sortIcon>
+                        <p-columnFilter field="value" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th rowspan="1" class="wd-21 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Description
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="masterDescription" pSortableColumn="masterDescription">
+                        </p-sortIcon>
+                        <p-columnFilter field="masterDescription" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+  
+                 
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      From Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="fromDate" pSortableColumn="fromDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="fromDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      To Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="toDate" pSortableColumn="toDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+                </tr>
+  
+              </ng-template>
+              <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+  
+                <tr class="p-selectable-row">
+  
+                  <td class="bg-color-light_gray text-center"><label
+                      class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+  
+                  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.value}}">{{user1.value}}</label>
+                  </td>
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                    tooltip="{{user1.masterDescription}}">{{user1.masterDescription}}</label>
+                 </td>
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.fromDate}}">{{user1.fromDate}}</label>
+                  </td>
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.toDate}}">{{user1.toDate}}</label>
+                  </td>
+  
+  
+  
+                </tr>
+              </ng-template>
+            </p-table>
+  
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+  </ng-template>

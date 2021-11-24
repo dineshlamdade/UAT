@@ -68,25 +68,10 @@
             <p-table [value]="CycleCreationList1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               totalRecords={{CycleCreationList1.length}} [rowsPerPageOptions]="[10,25,50,100,200]" #dt
-              [globalFilterFields]="['businessCycleDefinition.cycleName','noOfCycles','businessYear','fromDate','toDate']">
+              [globalFilterFields]="['cycleName','noOfCycles','businessYear','fromDate','toDate']">
 
               <ng-template pTemplate="header">
-                <!-- <br>
                 
-                <div style="text-align: right;display: flex;">
-                  <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
-                  <input type="text" pInputText size="50" placeholder="Search"
-                      (input)="dt.filterGlobal($event.target.value, 'contains')"
-                      style="width: 203px;">
-                      &nbsp;&nbsp;&nbsp;
-                      <a tooltip="Download" style="cursor: pointer"
-                      (click)="exportAsXLSX()"><i
-                          class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                          aria-hidden="true"></i></a>
-                </div>
-  
-                <br>
-                <br> -->
                 <tr>
                   <th rowspan="1" class="wd-8 text-center">
                     Sr. No.
@@ -95,9 +80,8 @@
                     <div class="p-d-flex p-jc-between p-ai-center">
                       Cycle Definition
                       <div class="Sort_Filter_Position">
-                        <p-sortIcon field="businessCycleDefinition.cycleName"
-                          pSortableColumn="businessCycleDefinition.cycleName"></p-sortIcon>
-                        <p-columnFilter field="businessCycleDefinition.cycleName" display="menu" class="p-ml-auto">
+                        <p-sortIcon field="cycleName" pSortableColumn="cycleName"></p-sortIcon>
+                        <p-columnFilter field="cycleName" display="menu" class="p-ml-auto">
                         </p-columnFilter>
                       </div>
                     </div>
@@ -185,18 +169,23 @@
                       'dd-MMM-yyyy'}}</label></td>
                   <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.noOfCycles}}</label></td>
                   <td class="bg-color-light_gray text-center">
-                    <i class="fa fa-lock font-18" *ngIf="user1.locked" aria-hidden="true"></i><i
-                      class="fa fa-unlock font-18" *ngIf="!user1.locked" aria-hidden="true"></i>
+                    <i class="fa fa-lock font-18" *ngIf="user1.locked" aria-hidden="true"></i>
+                    <!-- <i
+                      class="fa fa-unlock font-18" *ngIf="!user1.locked" aria-hidden="true"></i> -->
                   </td>
 
 
                   <td class="wd-10 text-center">
-                    <button type="button" class="btn btn-icon text-blue" tooltip="Extend">
+                    <button [hidden]="!user1.extended" type="button" class="btn btn-icon text-dark-green" tooltip="Extend">
+                      <!-- [hidden]="!user1.extended" -->
                       <i class="fa fa-arrows-alt"
                         (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessYearDefinitionId,user1.businessCycleDefinitionId)"
-                        data-toggle="modal" data-target="#UploadModal"></i></button>
+                        data-toggle="modal" data-target="#UploadModal"></i>
+                    </button>
 
-                    <button type="button" class="btn btn-icon text-dark-green" tooltip="Edit"
+                   <!-- commented edit -suggested by rakesh sir -18th Nov 2021 -->
+
+                    <button  type="button" class="btn btn-icon text-dark-green" tooltip="Edit"
                       (click)="UploadModal2(template3);GetCycleCreationById(user1.businessCycleDefinitionId,user1.businessYear,user1)"
                       data-toggle="modal" data-target="#UploadModal">
                       <i class="fa fa-edit"></i></button>
@@ -206,10 +195,13 @@
                       data-toggle="modal" data-target="#UploadModal">
                       <i class="fa fa-eye"></i></button>
 
-                    <button type="button" *ngIf="!user1.used"
+                   
+                    <!-- commented delete -suggested by rakesh sir -18th Nov 2021 -->
+
+                    <!-- <button type="button" *ngIf="!user1.used"
                       (click)="UploadModal1(templatecyclecreation);getCycleCreationName(user1.cycleName)"
                       data-toggle="modal" data-target="#UploadModal" class="btn btn-icon js-sweetalert text-red"
-                      tooltip="Delete" data-type="confirm"><i class="fa fa-trash"></i></button>
+                      tooltip="Delete" data-type="confirm"><i class="fa fa-trash"></i></button> -->
                   </td>
                   <ng-template #templatecyclecreation>
                     <div class="modal-header">
@@ -414,22 +406,14 @@
                           [showCurrentPageReport]="true"
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                           [rowsPerPageOptions]="[10,25,50,100,200]" #dt
-                          [globalFilterFields]="['periodName','displayCycleName','fromDate','toDate','noOfDays','remark']">
-                          <ng-template pTemplate="header">
+                          [globalFilterFields]="['periodName','cycleDisplayName','fromDate','toDate','noOfDays','remark']">
 
+                          <ng-template pTemplate="header">
+                           
                             <tr>
-                              <th class="wd-10">
+                              <th class="wd-8">
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   Sr. No. &nbsp;&nbsp;
-                                    <!-- <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="date"
-                                          pSortableColumn="date">
-                                      </p-sortIcon>
-                                      <p-columnFilter field="date"
-                                          display="menu"
-                                          class="p-ml-auto">
-                                      </p-columnFilter>
-                                  </div> -->
                                 </div>
                               </th>
                               <th class="wd-10">
@@ -447,14 +431,14 @@
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   Cycle Display Name &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="displayCycleName" pSortableColumn="displayCycleName">
+                                    <p-sortIcon field="cycleDisplayName" pSortableColumn="cycleDisplayName">
                                     </p-sortIcon>
-                                    <p-columnFilter field="displayCycleName" display="menu" class="p-ml-auto">
+                                    <p-columnFilter field="cycleDisplayName" display="menu" class="p-ml-auto">
                                     </p-columnFilter>
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-8">
+                              <th class="wd-10">
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   <span tooltip="From Date" placement="bottom">From Date</span> &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position">
@@ -465,7 +449,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-8">
+                              <th class="wd-10">
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   <span tooltip="To Date" placement="bottom">
                                     To Date</span>
@@ -478,7 +462,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-8">
+                              <th class="wd-6">
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   <span tooltip="No. Of Days" placement="bottom">No. Of Days</span>
                                   &nbsp;&nbsp;
@@ -504,6 +488,7 @@
 
                             </tr>
                           </ng-template>
+
                           <ng-template pTemplate="body" let-summary let-rowIndex=rowIndex class="tablebodyscroll">
                             <tr class="p-selectable-row">
                               <td class="bg-color-light_gray">
@@ -517,23 +502,29 @@
                               <td class="bg-color-light_gray"><label
                                   class="form-lable mb-0">{{summary.periodName}}</label>
                               </td>
-                              <td class="bg-color-light_gray"><label
-                                  class="form-lable mb-0">{{summary.displayCycleName}}</label>
+                              <td class="bg-color-light_gray">
+                                <!-- <label
+                                  class="form-lable mb-0">{{summary.cycleDisplayName}}
+                                </label> -->
+                                <input disabled type="text" [value]="summary.cycleDisplayName"
+                                  (focusout)="addCycleDisplayName($event.target.value,summary)" class="form-control"
+                                  placeholder="Enter Remark">
                               </td>
                               <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summary.fromDate | date:
                                   'dd-MMM-yyyy'}}</label>
                               </td>
                               <!-- <td class="bg-color-light_gray"><label
-                                  class="form-lable mb-0">{{summary.businessCycleDefinition.businessYearDefinition.fullFromDate | date: 'dd-MMM-yyyy'}}</label>
-                              </td> -->
+                                    class="form-lable mb-0">{{summary.businessCycleDefinition.businessYearDefinition.fullFromDate | date: 'dd-MMM-yyyy'}}</label>
+                                </td> -->
                               <td>
                                 <!-- (ngModelChange)="UploadModalYesNo(template12445);OntoDateChange($event,summary)" -->
                                 <div class="d-flex">
-                                  <input type="text" style="width: 100px !important;"
-                                    (bsValueChange)="OntoDateChange($event,summary,rowIndex)" data-toggle="modal"
+                                  <input disabled type="text"
+                                    (bsValueChange)="OntoDateChange($event,summary)" data-toggle="modal"
+                                   
                                     data-target="#UploadModal" [value]="summary.toDate | date: 'dd-MMM-yyyy'"
                                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                                    data-date-autoclose="true" class="form-control" bsDatepicker>
+                                    data-date-autoclose="true" class="form-control inputWidth" bsDatepicker>
                                   <!--  [disabled]="!todisabletodate"-->
                                 </div>
                               </td>
@@ -542,7 +533,7 @@
                               </td>
 
                               <td>
-                                <input type="text" [(ngModel)]="summary.remark" [disabled]="selectedRowIndex != rowIndex"
+                                <input disabled type="text" [(ngModel)]="summary.remark"
                                   (focusout)="addRemark($event.target.value,summary)" class="form-control"
                                   placeholder="Enter Remark">
                               </td>
@@ -695,7 +686,7 @@
                             [rowsPerPageOptions]="[10,25,50,100,200]">
                             <ng-template pTemplate="header">
                               <tr>
-                                <th class="wd-10">
+                                <th class="wd-8">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     Sr. No. &nbsp;&nbsp;
 
@@ -715,14 +706,14 @@
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     Display Cycle Name &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="displayCycleName" pSortableColumn="displayCycleName">
+                                      <p-sortIcon field="cycleDisplayName" pSortableColumn="cycleDisplayName">
                                       </p-sortIcon>
-                                      <p-columnFilter field="displayCycleName" display="menu" class="p-ml-auto">
+                                      <p-columnFilter field="cycleDisplayName" display="menu" class="p-ml-auto">
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-10">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="From Date" placement="bottom">From Date</span> &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
@@ -732,7 +723,7 @@
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-10">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="To Date" placement="bottom">
                                       To Date</span>
@@ -743,7 +734,7 @@
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-6">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="No. Of Days" placement="bottom">No. Of Days</span>
                                     &nbsp;&nbsp;
@@ -787,8 +778,14 @@
                                 </td>
                                 <td class="bg-color-light_gray"><label
                                     class="form-lable mb-0">{{summary.periodName}}</label></td>
-                                <td class="bg-color-light_gray"><label
-                                    class="form-lable mb-0">{{summary.displayCycleName}}</label></td>
+                                <td class="bg-color-light_gray">
+                                  <!-- <label
+                                    class="form-lable mb-0">{{summary.cycleDisplayName}}
+                                  </label> -->
+                                  <input type="text" [value]="summary.cycleDisplayName"
+                                  (focusout)="addCycleDisplayName($event.target.value,summary)" class="form-control"
+                                  placeholder="Enter Remark">
+                                </td>
                                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summary.fromDate |
                                     date: 'dd-MMM-yyyy'}}</label></td>
 
@@ -796,12 +793,18 @@
                                     class="form-lable mb-0">{{summary.businessCycleDefinition.businessYearDefinition.fullFromDate | date: 'dd-MMM-yyyy'}}</label></td> -->
                                 <td *ngIf="!summary.locked">
                                   <div class="d-flex">
-                                    <input type="text" style="width:100px !important;"
+                                    <input type="text"
                                       (bsValueChange)="OntoDateChange($event,summary)" data-toggle="modal"
                                       data-target="#UploadModal" [value]="summary.toDate | date: 'dd-MMM-yyyy'"
+                                      [maxDate]="summary.maxDate"
                                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" [disabled]="!todisabletodate"
-                                      data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                      bsDatepicker>
+                                      data-provide="datepicker" data-date-autoclose="true" class="form-control inputWidth"
+                                      bsDatepicker 
+                                      >
+
+                                      <!-- <input formControlName="toDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                      data-provide="datepicker" data-date-autoclose="true"
+                                         class="form-control" placeholder="Date" bsDatepicker> -->
                                     <!-- [(ngModel)]="summary.toDate" -->
                                   </div>
                                 </td>
@@ -823,8 +826,9 @@
                                 </td>
 
                                 <td class="bg-color-light_gray text-center">
-                                  <i class="fa fa-lock font-18" *ngIf="summary.locked" aria-hidden="true"></i><i
-                                    class="fa fa-unlock font-18" *ngIf="!summary.locked" aria-hidden="true"></i>
+                                  <i class="fa fa-lock font-18" *ngIf="summary.locked" aria-hidden="true"></i>
+                                  <!-- <i
+                                    class="fa fa-unlock font-18" *ngIf="!summary.locked" aria-hidden="true"></i> -->
                                 </td>
 
                                 <!-- <td  class="bg-color-light_gray"class="wd-10">
@@ -857,15 +861,15 @@
                   </div>
                 </div>
 
-                <div class="row mt-15">
+                <!-- <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button (click)="forceEnd()" type="button" class="btn btn-primary btn-bg-green">Force -
                         Year End</button>
-                      <!-- (click)="ForcetoYearEndofcycleCreation() -->
+                      
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -916,11 +920,11 @@
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">From Date: {{fromDate}}</label>
+                    <label class="form-label">From Date: {{fromDate | date: 'dd-MMM-yyyy'}}</label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">To Date: {{toDate}}</label>
+                    <label class="form-label">To Date: {{toDate | date: 'dd-MMM-yyyy'}}</label>
                   </div>
 
                 </div>
@@ -957,10 +961,26 @@
                             [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                             [rowsPerPageOptions]="[10,25,50,100,200]" #dt
-                            [globalFilterFields]="['periodName','displayCycleName','fromDate','toDate','noOfDays','remark']">
+                            [globalFilterFields]="['periodName','cycleDisplayName','fromDate','toDate','noOfDays','remark']">
                             <ng-template pTemplate="header">
+                              <!-- <br>
+              
+              <div style="text-align: right;display: flex;">
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
+                <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width: 203px;">
+                    &nbsp;&nbsp;&nbsp;
+                    <a tooltip="Download" style="cursor: pointer"
+                    (click)="ViewCycleExportAsXLSX()"><i
+                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                        aria-hidden="true"></i></a>
+              </div>
+
+              <br>
+              <br> -->
                               <tr>
-                                <th class="wd-10">
+                                <th class="wd-8">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     Sr. No. &nbsp;&nbsp;
 
@@ -980,14 +1000,14 @@
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     Display Cycle Name &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="displayCycleName" pSortableColumn="displayCycleName">
+                                      <p-sortIcon field="cycleDisplayName" pSortableColumn="cycleDisplayName">
                                       </p-sortIcon>
-                                      <p-columnFilter field="displayCycleName" display="menu" class="p-ml-auto">
+                                      <p-columnFilter field="cycleDisplayName" display="menu" class="p-ml-auto">
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-10">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="From Date" placement="bottom">From Date</span> &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
@@ -997,7 +1017,7 @@
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-10">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="To Date" placement="bottom">
                                       To Date</span>
@@ -1008,7 +1028,7 @@
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-8">
+                                <th class="wd-6">
                                   <div class="p-d-flex p-jc-center p-ai-center">
                                     <span tooltip="No. Of Days" placement="bottom">No. Of Days</span>
                                     &nbsp;&nbsp;
@@ -1053,7 +1073,7 @@
                                 <td class="bg-color-light_gray"><label
                                     class="form-lable mb-0">{{summary.periodName}}</label></td>
                                 <td class="bg-color-light_gray"><label
-                                    class="form-lable mb-0">{{summary.displayCycleName}}</label></td>
+                                    class="form-lable mb-0">{{summary.cycleDisplayName}}</label></td>
                                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summary.fromDate |
                                     date: 'dd-MMM-yyyy'}}</label></td>
                                 <!-- <td class="bg-color-light_gray"><label
@@ -1084,12 +1104,13 @@
                                 </td> -->
                                 <!-- *ngIf="summary.locked" -->
                                 <td class="bg-color-light_gray" class="wd-10"><span
-                                    tooltip="{{summary.noOfDays}}">{{summary.remark}}</span>
+                                    tooltip="{{summary.remark}}">{{summary.remark}}</span>
                                 </td>
 
                                 <td class="bg-color-light_gray text-center">
-                                  <i class="fa fa-lock font-18" *ngIf="summary.locked" aria-hidden="true"></i><i
-                                    class="fa fa-unlock font-18" *ngIf="!summary.locked" aria-hidden="true"></i>
+                                  <i class="fa fa-lock font-18" *ngIf="summary.locked" aria-hidden="true"></i>
+                                  <!-- <i
+                                    class="fa fa-unlock font-18" *ngIf="!summary.locked" aria-hidden="true"></i> -->
                                 </td>
 
                                 <!-- <td  class="bg-color-light_gray"class="wd-10">

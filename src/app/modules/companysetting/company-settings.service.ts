@@ -34,7 +34,7 @@ export class CompanySettingsService {
 
 
   forceEnd(businessCycleDefinitionId, businessYear, data) {
-    return this._HTTP.put<any>(this.url + `business-cycle/update/` + businessCycleDefinitionId + `/` + businessYear, data);
+    return this._HTTP.put<any>(this.url + `business-cycle/force-end/` + businessCycleDefinitionId + `/` + businessYear, data);
   }
 
 
@@ -308,7 +308,7 @@ export class CompanySettingsService {
   //get all cycle-definition
 
   // http://localhost:8086/hrms/v1/business-cycle-definition/getAllActiveNonActive
-  getAllCycleDefinition() {
+  CycleDefinitionList() {
 
     return this._HTTP.get(environment.baseUrl8086 + 'business-cycle-definition/getAllActive')
       .pipe(map((res: any) => {
@@ -316,6 +316,14 @@ export class CompanySettingsService {
       }));
   }
 
+
+  getAllCycleDefinition() {
+
+    return this._HTTP.get(environment.baseUrl8086 + 'business-cycle-definition/getAllActiveNonActive')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
   addBusiness_cycle_cycle_definition(data: any) {
 

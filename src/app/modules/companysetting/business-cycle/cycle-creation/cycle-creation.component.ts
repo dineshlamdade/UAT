@@ -172,7 +172,8 @@ export class CycleCreationComponent implements OnInit {
   excelData: any[];
   previewCycleDefinationData: any;
   previewCycleData: any = [];
-  selectedRowIndex: any = -1;
+  selectedRowIndex: any;
+  minFromDate: Date;
 
 
 
@@ -193,7 +194,7 @@ export class CycleCreationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.companySetttingService.getAllCycleDefinition().subscribe(res => {
+    this.companySetttingService.CycleDefinitionList().subscribe(res => {
       this.CycleDefinitionList = res.data.results;
     });
   }
@@ -204,6 +205,7 @@ export class CycleCreationComponent implements OnInit {
 
     this.companySetttingService.DeleteCycleCreationById(businessCycleDefinitionId, BusinessYear).subscribe((res) => {
       this.alertService.sweetalertMasterSuccess(res.status.message, '');
+      this.getAllCycleCreationList();
       this.getAllCycleCreation();
       //   this.CycleCreationForm.reset();
     },
@@ -212,6 +214,7 @@ export class CycleCreationComponent implements OnInit {
       })
   }
   deletePreviewCycleDiscard() {
+    ;
     this.updateFlag = false;
     this.companySetttingService.DeletePreviewCycleDiscard(this.businessCycleDefinitionId, this.Previewbusiness)
       .subscribe(res => { //: saveBusinessYear[]
@@ -239,16 +242,20 @@ export class CycleCreationComponent implements OnInit {
 
   previewCycleDefination() {
     // this.modalRef = this.modalService.show(
-    // 	template2,
-    // 	Object.assign({}, {
-    // 		class: 'gray modal-xl'
-    // 	})
+    //  template2,
+    //  Object.assign({}, {
+    //    class: 'gray modal-xl'
+    //  })
     // );
     let data = {
       "businessCycleDefinitionId": this.businessCycleDefinitionId
     }
     this.previewCycleData = []
     this.companySetttingService.previewCycleDefination(data).subscribe(res => {
+      // res.data.results.forEach(element => {
+        
+      // });
+      
       this.previewCycleDefinationData = res.data.results;
 
       this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
@@ -258,8 +265,12 @@ export class CycleCreationComponent implements OnInit {
       this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fullToDate;
 
       this.previewCycleDefinationData.forEach(element => {
+       
+
         this.previewCycleData.push({
           "periodId": element.periodId,
+          "cycleDisplayName": element.cycleDisplayName,
+          "isExtended": element.extended,
           "periodName": element.periodName,
           "isLocked": element.locked,
           "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
@@ -284,8 +295,9 @@ export class CycleCreationComponent implements OnInit {
           "businessCycleDefinitionId": element.businessCycleDefinition.id
         })
       });
-      
-     
+
+      console.log("this.previewCycleDefinationData + " + JSON.stringify(this.previewCycleDefinationData))
+
 
     },
       (error: any) => {
@@ -293,6 +305,7 @@ export class CycleCreationComponent implements OnInit {
       })
 
   }
+
 
   GetCycleCreationById(businessCycleDefinitionId, BusinessYear, data) {
     window.scrollTo(0, 0);
@@ -318,20 +331,31 @@ export class CycleCreationComponent implements OnInit {
         //console.log( 'cycle creation array', this.CycleDefinitionByid )
 
         this.name = response.data.results[0].businessCycleDefinition.cycleName;
-        // this.business = response.data.results[0].businessYear;
+        this.business = response.data.results[0].businessYear;
         this.Frequency = response.data.results[0].businessCycleDefinition.frequency.name;
-        this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
-        this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
+        // this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
+        // this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
+
+        this.fromDate = response.data.results[0].fromDate;
+        this.toDate = response.data.results[0].toDate;
 
         this.businessCycleDefinitionId = businessCycleDefinitionId;
         // this.businessYearUpdate = BusinessYear;
         this.data = this.CycleDefinitionByid;
         this.adjustedToNextCycle = false;
 
-        this.CycleDefinitionByid.forEach(element =>{
+        this.CycleDefinitionByid.forEach(element => {
+          let fromdate = new Date(element.fromDate).getMonth()
+          // console.log(fromdate)
+          element.maxDate = new Date()
+          element.maxDate = element.maxDate.setMonth(fromdate + 1);
+          element.maxDate = new Date(element.maxDate)
+          
           // console.log("element is: "+ JSON.stringify(element))
           this.previewCycleData.push({
             "periodId": element.periodId,
+            "cycleDisplayName": element.cycleDisplayName,
+            "isExtended": element.extended,
             "periodName": element.periodName,
             "isLocked": element.locked,
             "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
@@ -354,7 +378,7 @@ export class CycleCreationComponent implements OnInit {
             "isAdhoc": element.adhoc,
             "businessYearDefinitionId": element.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
             "businessCycleDefinitionId": element.businessCycleDefinition.id
-        
+
           })
 
           // console.log(JSON.stringify(this.previewCycleData) + 'json')
@@ -364,10 +388,11 @@ export class CycleCreationComponent implements OnInit {
         // this.CycleCreationForm.reset();
       });
 
-    
 
-    
+
+
   }
+
 
   ForcetoYearEndofcycleCreation() {
 
@@ -391,13 +416,15 @@ export class CycleCreationComponent implements OnInit {
         });
 
   }
+
   getAllCycleCreation(): void {
     this.CycleCreationList = [];
-    this.companySetttingService.getAllCycleDefinition().subscribe(res => {
+    this.companySetttingService.CycleDefinitionList().subscribe(res => {
 
       this.CycleCreationList = res.data.results;
     });
   }
+
   getAllCycleCreationList() {
     this.CycleCreationList1 = [];
     this.companySetttingService.getAllCycleCreation().subscribe(res => {
@@ -463,7 +490,7 @@ export class CycleCreationComponent implements OnInit {
 
   // }
 
-  OntoDateChange(value, data,rowIndex) {
+  OntoDateChange(value, data, rowIndex) {
     this.selectedRowIndex = rowIndex
     if (this.previewCycleData.length > 0) {
       this.previewCycleData.forEach((element, index) => {
@@ -471,6 +498,8 @@ export class CycleCreationComponent implements OnInit {
           let ind = index;
           this.previewCycleData.splice(ind, 1, {
             "periodId": element.periodId,
+            "cycleDisplayName": element.cycleDisplayName,
+            "isExtended": element.extended,
             "periodName": element.periodName,
             "isLocked": element.isLocked,
             "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
@@ -494,9 +523,10 @@ export class CycleCreationComponent implements OnInit {
             "businessYearDefinitionId": element.businessYearDefinitionId,
             "businessCycleDefinitionId": element.businessCycleDefinitionId
           })
+
         } else {
           let length = this.previewCycleData.length - 1
-            if (this.previewCycleData[length].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 1].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 2].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 3].periodId == data.periodId) { return; }
@@ -557,40 +587,49 @@ export class CycleCreationComponent implements OnInit {
           if (this.previewCycleData[length - 58].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 59].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 60].periodId == data.periodId) { return; }
-            else{
-              this.previewCycleData.push({
-                "periodId": data.periodId,
-                "periodName": data.periodName,
-                "isLocked": data.locked,
-                "fromDate": this.datepipe.transform(data.fromDate, 'dd-MMM-yyyy'),
-                "toDate": this.datepipe.transform(value, 'dd-MMM-yyyy'),
-                "businessYear": data.businessYear,
-                "noOfDays": data.noOfDays,
-                "noOfCycles": data.noOfCycles,
-                "isForceToYearEnd": data.forceToYearEnd,
-                "remark": data.remark,
-                "isUsed": data.used,
-                "isActive": data.active,
-                "isAdjustedToNextCycle": false,
-                "createdBy": data.createdBy,
-                "lastModifiedBy": data.lastModifiedBy,
-                // "createDateTime": data.createDateTime,
-                // "lastModifiedDateTime":data.lastModifiedDateTime,
-                "AWPHGName": data.awphgname,
-                "isArrear": false,
-                "isSupplimentary": data.supplimentary,
-                "isAdhoc": data.adhoc,
-                "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
-                "businessCycleDefinitionId": data.businessCycleDefinition.id
-              })
-            }
-          
+          else {
+            this.previewCycleData.push({
+              "periodId": data.periodId,
+              "cycleDisplayName": data.cycleDisplayName,
+              "isExtended": data.extended,
+              "periodName": data.periodName,
+              "isLocked": data.locked,
+              "fromDate": this.datepipe.transform(data.fromDate, 'dd-MMM-yyyy'),
+              "toDate": this.datepipe.transform(value, 'dd-MMM-yyyy'),
+              "businessYear": data.businessYear,
+              "noOfDays": data.noOfDays,
+              "noOfCycles": data.noOfCycles,
+              "isForceToYearEnd": data.forceToYearEnd,
+              "remark": data.remark,
+              "isUsed": data.used,
+              "isActive": data.active,
+              "isAdjustedToNextCycle": false,
+              "createdBy": data.createdBy,
+              "lastModifiedBy": data.lastModifiedBy,
+              // "createDateTime": data.createDateTime,
+              // "lastModifiedDateTime":data.lastModifiedDateTime,
+              "AWPHGName": data.awphgname,
+              "isArrear": false,
+              "isSupplimentary": data.supplimentary,
+              "isAdhoc": data.adhoc,
+              "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
+              "businessCycleDefinitionId": data.businessCycleDefinition.id
+            })
+          }
+
         }
       });
     } else {
       // alert(data.fromDate)
+
+      this.minFromDate = new Date();
+      this.minFromDate.setDate(data.fromDate.getDate() + 1);
+      alert(this.minFromDate)
+
       this.previewCycleData.push({
         "periodId": data.periodId,
+        "cycleDisplayName": data.cycleDisplayName,
+        "isExtended": data.extended,
         "periodName": data.periodName,
         "isLocked": data.locked,
         "fromDate": this.datepipe.transform(data.fromDate, 'dd-MMM-yyyy'),
@@ -619,6 +658,7 @@ export class CycleCreationComponent implements OnInit {
 
   }
 
+
   addRemark(value, data) {
     // debugger
     if (this.previewCycleData.length > 0) {
@@ -627,6 +667,8 @@ export class CycleCreationComponent implements OnInit {
           let ind = index;
           this.previewCycleData.splice(ind, 1, {
             "periodId": element.periodId,
+            "cycleDisplayName": element.cycleDisplayName,
+            "isExtended": element.extended,
             "periodName": element.periodName,
             "isLocked": element.isLocked,
             "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
@@ -713,38 +755,42 @@ export class CycleCreationComponent implements OnInit {
           if (this.previewCycleData[length - 58].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 59].periodId == data.periodId) { return; }
           if (this.previewCycleData[length - 60].periodId == data.periodId) { return; }
-            else{
-              this.previewCycleData.push({
-                "periodId": element.periodId,
-                "periodName": element.periodName,
-                "isLocked": element.locked,
-                "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
-                "toDate": element.toDate,
-                "businessYear": element.businessYear,
-                "noOfDays": element.noOfDays,
-                "noOfCycles": element.noOfCycles,
-                "isForceToYearEnd": element.forceToYearEnd,
-                "remark": value,
-                "isUsed": element.used,
-                "isActive": element.active,
-                "isAdjustedToNextCycle": false,
-                "createdBy": element.createdBy,
-                "lastModifiedBy": element.lastModifiedBy,
-                // "createDateTime": element.createDateTime,
-                // "lastModifiedDateTime":element.lastModifiedDateTime,
-                "AWPHGName": element.awphgname,
-                "isArrear": false,
-                "isSupplimentary": element.supplimentary,
-                "isAdhoc": element.adhoc,
-                "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
-                "businessCycleDefinitionId": data.businessCycleDefinition.id
-              })
-            }
+          else {
+            this.previewCycleData.push({
+              "periodId": element.periodId,
+              "cycleDisplayName": element.cycleDisplayName,
+              "isExtended": element.extended,
+              "periodName": element.periodName,
+              "isLocked": element.locked,
+              "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
+              "toDate": element.toDate,
+              "businessYear": element.businessYear,
+              "noOfDays": element.noOfDays,
+              "noOfCycles": element.noOfCycles,
+              "isForceToYearEnd": element.forceToYearEnd,
+              "remark": value,
+              "isUsed": element.used,
+              "isActive": element.active,
+              "isAdjustedToNextCycle": false,
+              "createdBy": element.createdBy,
+              "lastModifiedBy": element.lastModifiedBy,
+              // "createDateTime": element.createDateTime,
+              // "lastModifiedDateTime":element.lastModifiedDateTime,
+              "AWPHGName": element.awphgname,
+              "isArrear": false,
+              "isSupplimentary": element.supplimentary,
+              "isAdhoc": element.adhoc,
+              "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
+              "businessCycleDefinitionId": data.businessCycleDefinition.id
+            })
+          }
         }
       });
     } else {
       this.previewCycleData.push({
         "periodId": data.periodId,
+        "cycleDisplayName": data.cycleDisplayName,
+        "isExtended": data.extended,
         "periodName": data.periodName,
         "isLocked": data.locked,
         "fromDate": this.datepipe.transform(data.fromDate, 'dd-MMM-yyyy'),
@@ -773,13 +819,177 @@ export class CycleCreationComponent implements OnInit {
     console.log("remark data: " + JSON.stringify(this.previewCycleData))
   }
 
-  forceEnd(){
+  addCycleDisplayName(value, data) {
+    // debugger
+    if (this.previewCycleData.length > 0) {
+      this.previewCycleData.forEach((element, index) => {
+        if (element.periodId == data.periodId) {
+          let ind = index;
+          this.previewCycleData.splice(ind, 1, {
+            "periodId": element.periodId,
+            "cycleDisplayName": value,
+            "isExtended": element.extended,
+            "periodName": element.periodName,
+            "isLocked": element.isLocked,
+            "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
+            "toDate": element.toDate,
+            "businessYear": element.businessYear,
+            "noOfDays": element.noOfDays,
+            "noOfCycles": element.noOfCycles,
+            "isForceToYearEnd": element.isForceToYearEnd,
+            "remark": element.remark,
+            "isUsed": element.isUsed,
+            "isActive": element.isActive,
+            "isAdjustedToNextCycle": false,
+            "createdBy": element.createdBy,
+            "lastModifiedBy": element.lastModifiedBy,
+            // "createDateTime": element.createDateTime,
+            // "lastModifiedDateTime":element.lastModifiedDateTime,
+            "AWPHGName": element.AWPHGName,
+            "isArrear": false,
+            "isSupplimentary": element.isSupplimentary,
+            "isAdhoc": element.isAdhoc,
+            "businessYearDefinitionId": element.businessYearDefinitionId,
+            "businessCycleDefinitionId": element.businessCycleDefinitionId
+          })
+        } else {
+          let length = this.previewCycleData.length - 1
+          if (this.previewCycleData[length].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 1].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 2].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 3].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 4].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 5].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 6].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 7].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 8].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 9].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 10].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 11].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 12].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 13].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 14].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 15].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 16].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 17].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 18].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 19].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 20].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 21].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 22].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 23].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 24].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 25].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 26].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 27].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 28].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 29].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 30].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 31].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 32].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 33].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 34].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 35].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 36].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 37].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 38].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 39].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 40].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 41].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 42].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 43].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 44].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 45].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 46].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 47].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 48].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 49].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 50].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 51].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 52].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 53].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 54].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 55].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 56].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 57].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 58].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 59].periodId == data.periodId) { return; }
+          if (this.previewCycleData[length - 60].periodId == data.periodId) { return; }
+          else {
+            this.previewCycleData.push({
+              "periodId": element.periodId,
+              "cycleDisplayName": value,
+              "isExtended": element.extended,
+              "periodName": element.periodName,
+              "isLocked": element.locked,
+              "fromDate": this.datepipe.transform(element.fromDate, 'dd-MMM-yyyy'),
+              "toDate": element.toDate,
+              "businessYear": element.businessYear,
+              "noOfDays": element.noOfDays,
+              "noOfCycles": element.noOfCycles,
+              "isForceToYearEnd": element.forceToYearEnd,
+              "remark": element.remark,
+              "isUsed": element.used,
+              "isActive": element.active,
+              "isAdjustedToNextCycle": false,
+              "createdBy": element.createdBy,
+              "lastModifiedBy": element.lastModifiedBy,
+              // "createDateTime": element.createDateTime,
+              // "lastModifiedDateTime":element.lastModifiedDateTime,
+              "AWPHGName": element.awphgname,
+              "isArrear": false,
+              "isSupplimentary": element.supplimentary,
+              "isAdhoc": element.adhoc,
+              "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
+              "businessCycleDefinitionId": data.businessCycleDefinition.id
+            })
+          }
+        }
+      });
+    } else {
+      this.previewCycleData.push({
+        "periodId": data.periodId,
+        "cycleDisplayName": value,
+        "isExtended": data.extended,
+        "periodName": data.periodName,
+        "isLocked": data.locked,
+        "fromDate": this.datepipe.transform(data.fromDate, 'dd-MMM-yyyy'),
+        "toDate": this.datepipe.transform(data.toDate, 'dd-MMM-yyyy'),
+        "businessYear": data.businessYear,
+        "noOfDays": data.noOfDays,
+        "noOfCycles": data.noOfCycles,
+        "isForceToYearEnd": data.forceToYearEnd,
+        "remark": data.remark,
+        "isUsed": data.used,
+        "isActive": data.active,
+        "isAdjustedToNextCycle": false,
+        "createdBy": data.createdBy,
+        "lastModifiedBy": data.lastModifiedBy,
+        // "createDateTime": data.createDateTime,
+        // "lastModifiedDateTime":data.lastModifiedDateTime,
+        "AWPHGName": data.awphgname,
+        "isArrear": false,
+        "isSupplimentary": data.supplimentary,
+        "isAdhoc": data.adhoc,
+        "businessYearDefinitionId": data.businessCycleDefinition.businessYearDefinition.businessYearDefinitionId,
+        "businessCycleDefinitionId": data.businessCycleDefinition.id
+      })
+    }
+
+    console.log("cycleDisplayName data: " + JSON.stringify(this.previewCycleData))
+  }
+
+  forceEnd() {
     let data = {
-      "businessCycleList" : this.previewCycleData
-    } 
+      "businessCycleList": this.previewCycleData
+    }
     this.companySetttingService.forceEnd(this.businessCycleDefinitionId, this.BusinessYear, data).subscribe(res => {
       this.alertService.sweetalertMasterSuccess(res.status.message, '');
-    })
+    },
+      (error: any) => {
+
+        this.alertService.sweetalertError(error["error"]["status"]["message"]);
+      });
   }
 
   addCycleCreation() {
@@ -788,24 +998,35 @@ export class CycleCreationComponent implements OnInit {
     this.companySetttingService.addBusinessCycle(this.previewCycleData).subscribe(res => {
       this.alertService.sweetalertMasterSuccess(res.status.message, '');
       this.getAllCycleCreationList()
-      this.companySetttingService.getAllCycleDefinition().subscribe(res => {
+
+      this.companySetttingService.CycleDefinitionList().subscribe(res => {
         this.CycleDefinitionList = res.data.results;
       });
-    })
+    },
+      (error: any) => {
+
+        this.alertService.sweetalertError(error["error"]["status"]["message"]);
+      });
   }
+
 
   updateBusinessCycle() {
     let data = {
-      "businessCycleList" : this.previewCycleData
-    }  
+      "businessCycleList": this.previewCycleData
+    }
     this.companySetttingService.updateBusinessCycle(this.businessCycleDefinitionId, this.BusinessYear, data).subscribe(res => {
       this.alertService.sweetalertMasterSuccess(res.status.message, '');
       this.getAllCycleCreationList()
-      this.companySetttingService.getAllCycleDefinition().subscribe(res => {
+      this.companySetttingService.CycleDefinitionList().subscribe(res => {
         this.CycleDefinitionList = res.data.results;
-      });
+      },
+        (error: any) => {
+
+          this.alertService.sweetalertError(error["error"]["status"]["message"]);
+        });
     })
   }
+
 
 
 
@@ -840,7 +1061,7 @@ export class CycleCreationComponent implements OnInit {
 
 
       this.alertService.sweetalertMasterSuccess(res.status.message, "");
-
+      this.getAllCycleCreationList()
     },
       (error: any) => {
         this.alertService.sweetalertError(error["error"]["status"]["message"]);
@@ -866,8 +1087,8 @@ export class CycleCreationComponent implements OnInit {
 
       let obj = {
         "S.No.": index + 1,
+        // "Cycle Definition": element.businessCycleDefinition.cycleName,
         "Cycle Definition": element.cycleName,
-
         "Business Year": element.businessYear,
         "From Date": this.datepipe.transform(new Date(element.fromDate), 'dd-MM-yyyy'),
         "To Date": this.datepipe.transform(new Date(element.toDate), 'dd-MM-yyyy'),
