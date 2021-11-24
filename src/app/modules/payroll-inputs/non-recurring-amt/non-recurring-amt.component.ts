@@ -118,6 +118,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	svaeDisabledFlag: boolean = true;
 	selectedOption: string = 'single';
 	payrollAreaId: any;
+	isvisible: boolean = false;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: AlertServiceService, private datepipe: DatePipe,
@@ -747,7 +748,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.effectiveFromDate = new Date(res.data.results[0].effectiveFromDate)
 				this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
 				this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
-				//alert(this.effectiveFromDate)
+				// alert(this.effectiveFromDate)
 				// this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
 				// 	res => {
 				// 		this.frequencyDataByPayroll = res.data.results
@@ -3235,5 +3236,10 @@ this.saveTransactionData.forEach(element => {
 		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
-
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
+	}
 }

@@ -483,7 +483,7 @@
                                                                             <label class="form-label mb-0">Employee Code
                                                                             </label>
                                                                             <select name="EmployeeCode"
-                                                                                class="form-control custom-select"
+                                                                                class="form-control "
                                                                                 [(ngModel)]="selectedEmployeeMasterId"
                                                                                 [disabled]="showDropdownDisabled"
                                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
@@ -500,7 +500,7 @@
                                                                             <label class="form-label mb-0">Payroll
                                                                                 Area</label>
                                                                             <select name="PayrollArea"
-                                                                                class="form-control custom-select"
+                                                                                class="form-control "
                                                                                 [(ngModel)]="selectedPayrollArea"
                                                                                 (change)="getSelectedPayrollArea($event.target.value)"
                                                                                 [disabled]="showDropdownDisabled">
@@ -517,7 +517,7 @@
                                                                     </div>
 
                                                                     <!-- Selected Employee basic infrmation-->
-                                                                    <div class="col-md-12 pl-0 pr-0">
+                                                                    <!-- <div class="col-md-12 pl-0 pr-0">
                                                                         <div class="box-line-border radius-10 p-2 mt-3"
                                                                             *ngIf="employeeFinDetailsData">
                                                                             <div class="row">
@@ -540,16 +540,7 @@
                                                                                     </label>
                                                                                 </div>
 
-                                                                                <!-- <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Date
-                                                                                            of Joining</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.joiningDate
-                                                                                            | date: 'dd-MMM-yyyy'}}
-                                                                                        </label>
-                                                                                    </div> -->
+                                                                               
                                                                                 <div class="col-md-2">
                                                                                     <label
                                                                                         class="form-label mt-1 mb-0">Establishment</label>
@@ -566,15 +557,7 @@
 
                                                                                     </label>
                                                                                 </div>
-                                                                                <!-- <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Employee
-                                                                                            Type</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.employeeType}}
-                                                                                        </label>
-                                                                                    </div> -->
+                                                                               
                                                                                 <div class="col-md-1">
                                                                                     <label
                                                                                         class="form-label mt-1 mb-0">Grade</label>
@@ -601,8 +584,112 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div> -->
+
+                                                                    <div class="col-md-12 pl-0 pr-0">
+                                                                        <div class="box-line-border radius-10 p-2 mt-3"
+                                                                            *ngIf="employeeFinDetailsData">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Emp.
+                                                                                        No.</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.employeeCode}}
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Emp.
+                                                                                        Name</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.fullName}}
+                                                                                    </label>
+                                                                                </div>
+
+
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Establishment</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.establishment}}
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Department</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-1">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Grade</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.grade}}
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Designation</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.designation}}
+                                                                                    </label>
+                                                                                </div>
+
+                                                                                <div class="col-md-1">
+                                                                                    <i class="fas fa-chevron-up arrow font-16 mt-2 text-purple float-right mr-2"
+                                                                                        (click)="hideempdetails()"
+                                                                                        *ngIf="isvisible"></i>
+                                                                                    <i class="fas fa-chevron-down arrow font-16 mt-2 text-purple float-right mr-2"
+                                                                                        (click)="visibleempdetails()"
+                                                                                        *ngIf="!isvisible"></i>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="row mt-10" *ngIf="isvisible">
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Payroll
+                                                                                        Area</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Date
+                                                                                        of Joining</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        {{employeeFinDetailsData.joiningDate
+                                                                                        | date: 'dd-MMM-yyyy'}}
+                                                                                    </label>
+                                                                                </div>
+
+                                                                                <div class="col-md-2">
+                                                                                    <label
+                                                                                        class="form-label mt-1 mb-0">Status</label>
+                                                                                    <label
+                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                        Probation
+                                                                                    </label>
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
 
+                                                                    
                                                                     <div class="row mt-20">
                                                                         <div class="col-md-12 pr-0 pl-0">
                                                                             <div class="border-card p-2 mt_2">
@@ -940,7 +1027,7 @@
                                                                                             class="form-lable mb-0">{{data.frequency}}
                                                                                         </label> -->
                                                                                                 <select
-                                                                                                    class="form-control custom-select wd-200"
+                                                                                                    class="form-control  wd-200"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -994,7 +1081,7 @@
                                                                                             <td>
                                                                                                 <select
                                                                                                     name="revision type"
-                                                                                                    class="form-control custom-select wd-120"
+                                                                                                    class="form-control  wd-120"
                                                                                                     (change)="getTransactionType($event.target.value,rowIndex,data)">
                                                                                                     <option value=""
                                                                                                         [selected]="data.transactionsType == null || data.transactionsType == ''">
@@ -1198,8 +1285,8 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
-                                                                                            <!-- *ngIf="isRefererBonus" -->
-                                                                                            <th rowspan="2"
+                                                                                            <!--  -->
+                                                                                            <th rowspan="2" *ngIf="isRefererBonus"
                                                                                                 class="wd-1">
                                                                                             </th>
                                                                                             <th rowspan="2"
@@ -1393,8 +1480,8 @@
                                                                                                 &nbsp;&nbsp;&nbsp;
 
                                                                                             </td>
-                                                                                            <!-- *ngIf="data.headDescription == 'RefererBonus'" *ngIf="isRefererBonus"-->
-                                                                                            <td>
+                                                                                            <!-- *ngIf="isRefererBonus" -->
+                                                                                            <td *ngIf="data.headDescription == 'RefererBonus'" >
                                                                                                 <i class="fa fa-users font-16 text-blue cursor-pointer"
                                                                                                     aria-hidden="true"
                                                                                                     (click)="openReferalPopup(referalPopup,data)">
@@ -1411,7 +1498,7 @@
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control custom-select wd-200"
+                                                                                                    class="form-control  wd-200"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1474,7 +1561,7 @@
                                                                                             <td>
                                                                                                 <select
                                                                                                     name="revision type"
-                                                                                                    class="form-control custom-select wd-120"
+                                                                                                    class="form-control  wd-120"
                                                                                                     (change)="getTransactionTypeForSave($event.target.value,rowIndex,data)">
                                                                                                     <option value=""
                                                                                                         [selected]="data.transactionsType == null || data.transactionsType == ''">
@@ -3380,7 +3467,7 @@
                             <div class="row">
                                 <div class="col-md-3">Applicable At</div>
                                 <div class="col-md-6">
-                                    <select class="form-control custom-select wd-200"
+                                    <select class="form-control  wd-200"
                                         (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
                                         <option value="">Select</option>
                                         <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
@@ -3392,7 +3479,7 @@
                                 <br>
                                 <div class="col-md-3">Input Type</div>
                                 <div class="col-md-6">
-                                    <select class="form-control custom-select wd-200"
+                                    <select class="form-control  wd-200"
                                         (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
                                         <option value="">Select</option>
                                         <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
@@ -3419,7 +3506,7 @@
                                     <br><br>
                                     <div class="col-md-3">Frequency</div>
                                     <div class="col-md-6">
-                                        <select class="form-control custom-select wd-200"
+                                        <select class="form-control  wd-200"
                                             (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
                                             <option value="">Select</option>
                                             <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
@@ -3493,7 +3580,7 @@
                                         <div class="row mb-10">
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Emp. Code</label>
-                                                <select class="form-control custom-select"
+                                                <select class="form-control "
                                                     (change)="getEmployeeCode($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let emp of employeeData"
@@ -3508,7 +3595,7 @@
                                             </div>
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Payroll Area</label>
-                                                <select class="form-control custom-select"
+                                                <select class="form-control "
                                                     (change)="getEmployeePayrollArea($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let payroll of refralPayrollListData"

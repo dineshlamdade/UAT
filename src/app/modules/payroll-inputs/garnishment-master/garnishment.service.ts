@@ -157,5 +157,10 @@ export class GarnishmentService {
     return this._HTTP.get<any>(this.apiUrl + `payrollhead-master/global-getAll`)
   }
 
+  /** Get Family Information */
+  getFamilyInformation(empid):Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl4 + `family-details/summary/employeeMasterId/`+empid)
+  }
+
 
 }
