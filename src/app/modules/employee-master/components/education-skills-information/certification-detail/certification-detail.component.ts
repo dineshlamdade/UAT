@@ -109,6 +109,10 @@ export class CertificationDetailComponent implements OnInit {
     // temp8.disable();
 
     this.certificateNameList = certificateNameArray;
+
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 

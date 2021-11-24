@@ -37,6 +37,12 @@ export class TransferInformationComponent implements OnInit {
     private router: Router, private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
+
+    
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -104,6 +110,14 @@ export class TransferInformationComponent implements OnInit {
     if (this.employeeTransferId) {
       this.putTransferFormSubmit(TransferToInformation);
     } else {
+
+      //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.LastTransaction='Transfer';        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
+
       localStorage.setItem('LastTransaction', 'Transfer');
       this.EmploymentInformationService.postTransferToForm(TransferToInformation).subscribe(res => {
         // this.TransferToInformation = res.data.results[0];

@@ -9,6 +9,9 @@ import { EstablishmentMasterService } from '../establishment-master/establishmen
 import { StatuatoryComplianceService } from '../statutory-compliance/statuatory-compliance.service';
 import { combineLatest } from 'rxjs';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+
 @Component( {
   selector: 'app-compliance-mapping',
   templateUrl: './compliance-mapping.component.html',
@@ -33,13 +36,14 @@ export class ComplianceMappingComponent implements OnInit {
   forQuarterly = [{ id: 1, itemName: 'Jan-Jun' }, { id: 2, itemName: 'Feb-Apr' }, { id: 3, itemName: 'Mar-May' }];
   forHalfYearly = [{ id: 1, itemName: 'Jan-Jun' }, { id: 2, itemName: 'Feb-Jul' }, { id: 3, itemName: 'Mar-Aug' }, { id: 1, itemName: 'Apr-Sep' }, { id: 2, itemName: 'May-Oct' }, { id: 3, itemName: 'Jun-Nov' }];
 
-
+  header: any[];
+  excelData: any[];
 
   constructor( private formBuilder: FormBuilder, private complianceHeadService: ComplianceHeadService, private modalService: BsModalService,
     private statuatoryComplianceService: StatuatoryComplianceService,
     private establishmentMasterService: EstablishmentMasterService, private datePipe: DatePipe,
     private complianceMasterService: ComplianceMasterService,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
 
   }
 
@@ -534,4 +538,57 @@ export class ComplianceMappingComponent implements OnInit {
       // this.refreshHtmlTableData();
     } );
   }
+//excel
+exportAsXLSX(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["Compliance Name","compliance Master Id","compliance Applicability SDMId",
+  "statutory Frequency SDMId","statutory Freq Periods Def","deduction Frequency","Income Period"];
+  this.excelData=[];
+
+  if(this.summaryHtmlDataList.length>0){
+  this.summaryHtmlDataList.forEach(element => {
+    let obj = {
+      "Compliance Name":element.complianceSDMMappingId,
+      "compliance Master Id":element.complianceMasterId,
+      "compliance Applicability SDMId": element.complianceApplicabilitySDMId,
+      "statutory Frequency SDMId":element.statutoryFrequency,
+      "statutory Freq Periods Def":element.statutoryFreqPeriodsDef,
+      "deduction Frequency":element.deductionFrequency,
+      "Income Period":element.incomePeriod,
+ 
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+}
+ 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Compliance Master ','Compliance Master',this.header);
+
+}
+
+//Sort
+
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+
+}
+
 }

@@ -5,9 +5,10 @@
     <div class="section-body mt-3">
         <div class="container-fluid">
             <div class="row">
+                
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" >
                             <form [formGroup]="BasicInfoForm" (ngSubmit)="personalInfoSubmit(personalInformationModel)">
                                 <div class="row">
                                     &nbsp;&nbsp;
@@ -213,6 +214,7 @@
                                                     [maxDate]="today" formControlName="birthDate" placement="center"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (click)="birthDateClickEvent($event);"
+                                                    [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}"
                                                     (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth,confirmation);"
                                                     >
                                             </div>
@@ -247,8 +249,7 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-20">
-                                        <label class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco
-                                            }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco}}</label>
                                         <select class="form-control" formControlName="maritalStatus" placement="center"
                                             [(ngModel)]="personalInformationModel.maritialStatus"
                                             (change)="clearMarriageDate(personalInformationModel.maritialStatus);validateDropdown()"
