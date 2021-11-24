@@ -10,6 +10,7 @@ export class NonRecurringAmtService {
 
   public apiUrl = environment.baseUrl8084;
   public apiUrl1 = environment.baseUrl8082;
+  
   constructor(private HttpClient: HttpClient) { }
 
   /** All Summary Data */

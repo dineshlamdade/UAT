@@ -12,6 +12,9 @@ import { StatuatoryComplianceService } from '../statutory-compliance/statuatory-
 import { ComplianceMasterService } from './compliance-master.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+
 @Component( {
   selector: 'app-compliance-master',
   templateUrl: './compliance-master.component.html',
@@ -117,11 +120,14 @@ export class ComplianceMasterComponent implements OnInit {
   public selectedObjectForUpdate: any;
   public pfForm: FormGroup;
 
+  header: any[];
+  excelData: any[];
+
   constructor( private formBuilder: FormBuilder, private complianceHeadService: ComplianceHeadService, private modalService: BsModalService,
     private statuatoryComplianceService: StatuatoryComplianceService,
     private establishmentMasterService: EstablishmentMasterService, private datePipe: DatePipe,
     private complianceMasterService: ComplianceMasterService,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       pfFormArray: new FormArray( [] ),
       'epsArray': new FormArray( [] ),
@@ -139,10 +145,12 @@ export class ComplianceMasterComponent implements OnInit {
       complianceHeadName: new FormControl( { value: null, disabled: true } ),
       shortName: new FormControl( { value: null, disabled: true } ),
       groupCompanyId: new FormControl( '' ),
-      administratedBy: new FormControl( '', Validators.required ),
+     administratedBy: new FormControl( '', Validators.required ),
+     //address
+     // address: new FormControl({ value: null, disabled:true } ),
 
       // establishmentCode: new FormControl(''),
-      issueDate: new FormControl( '' ),
+      issueDate: new FormControl( ''),
       coverageDate: new FormControl( '' ),
       userNameForWebsite: new FormControl( '' ),
 
@@ -204,6 +212,11 @@ export class ComplianceMasterComponent implements OnInit {
       employeeFromDate: new FormControl( '' ),
       employeeToDate: new FormControl( '31-Dec-9999' ),
 
+      employeeconFormDate: new FormControl(''),
+      employeeconToDate: new FormControl('31-Dec-9999'),
+
+      password: new FormControl(''),
+
     } );
     this.complianceApplicationForm = this.formBuilder.group( {
       complianceMasterId: new FormControl( '', Validators.required ),
@@ -256,10 +269,12 @@ export class ComplianceMasterComponent implements OnInit {
     this.complianceHeadService.getComplianceHeadDetails().subscribe( ( res ) => {
       console.log( res.data.results );
       this.complianceHeadDetailsObject = res.data.results;
-
+//for headname
       res.data.results.forEach( ( element ) => {
         this.complianceHeadNameList.push( element.complianceHeadName );
-        this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.push( { complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName } );
+        this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.push( 
+          { complianceHeadId: element.complianceHeadId, country: element.country,
+             aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName } );
       } );
     } );
 
@@ -570,7 +585,7 @@ export class ComplianceMasterComponent implements OnInit {
         issueDate: data.issueDate,
         coverageDate: data.coverageDate,
         userNameForWebsite: data.userNameForWebsite,
-        administratedBy: data.administratedBy,
+administratedBy: data.administratedBy,
         complianceDetails: complianceDetails[0],
         pfWagesDetails: {
           basicDABelowWageCelling: data.basicDABelowWageCelling,
@@ -984,6 +999,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get( 'shortName' ).disable();
     this.form.get( 'establishmentMasterId' ).disable();
     this.form.get( 'statutoryInstituteName' ).disable();
+   // this.form.get( 'address' ).disable();
   }
 
 
@@ -1144,6 +1160,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get( 'companyContribution' ).disable();
     this.form.get( 'shortName' ).disable();
 
+   // this.form.get( 'address' ).disable();
 
 
 
@@ -1296,7 +1313,8 @@ export class ComplianceMasterComponent implements OnInit {
     this.getComplianceInstitutionMasterGridListObject = {};
     this.complianceHeadDetailsObject = {};
 
-    combineLatest( [this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(), this.complianceMasterService.getComplianceMasterDetails()] ).subscribe( ( res: any ) => {
+    combineLatest( [this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(), 
+      this.complianceMasterService.getComplianceMasterDetails()] ).subscribe( ( res: any ) => {
       console.log( res[0] );
       console.log( res[1] );
       this.getComplianceHeadDetailsObject = res[0];
@@ -1380,6 +1398,8 @@ export class ComplianceMasterComponent implements OnInit {
           userNameForWebsite: element.userNameForWebsite,
           filter: filteredEvents[0],
           isActive: element.isActive,
+
+          //
         };
         this.summaryHtmlDataList.push( obj );
       } );
@@ -1434,6 +1454,10 @@ export class ComplianceMasterComponent implements OnInit {
   }
   onSelectStatuatoryInstitutionMaster( value: any ) {
 
+// this.complianceHeadService.getComplianceHeadDetails(this.form.get('statutoryInstituteName').
+// value).subscribe(res=>{
+//   this.form.get('address').setValue(res.data.result[0].address);
+// });
 
     // this.form.patchValue({
     //   complianceName: '',
@@ -1615,6 +1639,9 @@ export class ComplianceMasterComponent implements OnInit {
 
     }
 
+
+
+    
   }
   getEstablishmentMasterDetailsAndRefreshHtmlTable() {
     this.dropdownList = [];
@@ -3661,6 +3688,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get( 'statutoryInstituteName' ).setValue( '' );
     this.form.get( 'establishmentMasterId' ).setValue( '' );
 
+   //this.form.get( 'address' ).disable();
 
 
   }
@@ -4143,4 +4171,56 @@ export class ComplianceMasterComponent implements OnInit {
     } );
 
   }
+//Excel
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Compliance Name","Statutory Institution Master","Compliance Head Name","Compliance Short Name.",
+    "Account No","Registration No.","Establishment Code"];
+    this.excelData=[];
+    
+    if(this.summaryHtmlDataList.length>0){
+    this.summaryHtmlDataList.forEach(element => {
+      let obj = {
+        "Compliance Name":element.complianceName,
+        "Statutory Institution Master":element.statutoryInstituteName,
+        "Compliance Head Name": element.complianceHeadName,
+        "Compliance Short Name":element.complianceHeadShortName,
+        "Account No":element.accountNumber,
+        "Registration No.":element.registrationNumber,
+        "Establishment Code":element.establishmentCode,
+   
+      }
+      this.excelData.push(obj)
+    });
+    console.log('this.excelData::', this.excelData);
+  }
+   
+    this.excelservice.exportAsExcelFile(this.excelData, 'Compliance Master ','Compliance Master',this.header);
+  
+  }
+//Sort
+
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+
+}
+
 }

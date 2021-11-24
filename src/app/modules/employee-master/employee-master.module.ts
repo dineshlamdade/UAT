@@ -34,6 +34,7 @@ registerLocaleData( localeGb, 'en-GB' );
 import { PrimeNGModule } from './../../app.primeNG.module';
 // import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
+import { TableModule } from 'primeng/table';
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { FamilyInformationComponent } from './components/family-information/family-information.component';
 import { FamilyDetailsComponent } from './components/family-information/family-details/family-details.component';
@@ -65,6 +66,21 @@ import { ComplianceSummaryComponent } from './components/compliance-information/
 import { JobSummaryComponent } from './components/job-information/job-summary/job-summary.component';
 import { LandingPageComponent } from './../../modules/employee-master/components/landing-page/landing-page.component';
 import { BlockCopyPasteDirective } from './../../core/utility/directives/appBlockCopyPasteDirective';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { ToastModule } from 'primeng/toast';
+
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { PayrollAreaComponent } from './components/payroll-area-information/payroll-area/payroll-area.component';
+import { DisbursementsComponent } from './components/payroll-area-information/disbursements/disbursements.component';
+import { OtherAreasComponent } from './components/payroll-area-information/other-areas/other-areas.component';
+import { EmpMasterLandingPageComponent } from './components/emp-master-landing-page/emp-master-landing-page.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 
 @NgModule( {
   declarations: [
@@ -104,7 +120,12 @@ import { BlockCopyPasteDirective } from './../../core/utility/directives/appBloc
     ComplianceSummaryComponent,
     JobSummaryComponent,
     LandingPageComponent,
-    BlockCopyPasteDirective
+    BlockCopyPasteDirective,
+    PayrollAreaComponent,
+    DisbursementsComponent,
+    OtherAreasComponent,
+    EmpMasterLandingPageComponent,
+    EmployeeDashboardComponent
   ],
   imports: [
     CommonModule,
@@ -132,6 +153,15 @@ import { BlockCopyPasteDirective } from './../../core/utility/directives/appBloc
     TranslocoModule,
     DemoMaterialModule,
     PrimeNGModule,
+    TableModule,
+    CalendarModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    ButtonModule,
+    ToastModule,
+
   ],
 
   providers: [DatePipe, NumberFormatPipe,

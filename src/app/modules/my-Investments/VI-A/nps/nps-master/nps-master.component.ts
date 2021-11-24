@@ -234,7 +234,7 @@ export class NpsMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-      institution: new FormControl(null, Validators.required),
+      institution: new FormControl('', Validators.required),
       accountType: new FormControl('Tier_1'),
       pran: new FormControl(
         { value: null, disabled: true },
@@ -606,6 +606,17 @@ export class NpsMasterComponent implements OnInit {
               'Record saved Successfully.',
               'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
             );
+            this.form.patchValue({
+              accountType: 'Tier_1',
+            });
+            this.getNpsIdentityInformation();
+            this.ngOnInit();
+            this.form.patchValue({
+              frequencyOfPayment : '',
+              policyEndDate : '',
+              ecs :'',
+              toDate : ''
+            })
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
 
@@ -665,6 +676,7 @@ export class NpsMasterComponent implements OnInit {
           this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }
       });
+     
 
     this.Index = -1;
     this.documentArray = [];
@@ -693,7 +705,12 @@ export class NpsMasterComponent implements OnInit {
     });
     this.getNpsIdentityInformation();
     this.ngOnInit();
-
+    this.form.patchValue({
+      frequencyOfPayment : '',
+      policyEndDate : '',
+      ecs :'',
+      toDate : ''
+    })
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
