@@ -1547,8 +1547,8 @@ this.documentArray = [];
   }
 
   public uploadUpdateTransaction() {
-    for (let i = 0; i < this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",

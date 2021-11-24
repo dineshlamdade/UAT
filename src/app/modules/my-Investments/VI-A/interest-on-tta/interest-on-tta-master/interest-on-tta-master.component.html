@@ -18,23 +18,21 @@
                       </option>
                     </select>
                   </div> -->
-            <div class="col-sm-6 col-md-3">
-              <label class="form-label">State Name</label>
-              <select name="family_Member_Name" id="state" formControlName="state"
-                (change)='onSelectState($event.target.value)' class="form-control custom-select"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                <option [ngValue]="null">Select</option>
-                <option *ngFor="let state of stateNameList" [value]="state">
-                  {{state}}
-                  <!-- <option *ngFor="let state of stateNameList" [value]="state.value">
-                        {{state.label}} -->
-                </option>
-              </select>
-              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
-              </div>
+            
 
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Account Number</label>
+              <input type="password" [type]="accountNo ? 'text' : 'password'"
+                onkeypress="return /[0-9]/i.test(event.key)" (change)="matchAccountNumber($event.target.value)"
+                formControlName="accountNumber" class="form-control" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+              <i class="fa fa-eye text-blue cursor-pointer" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              </div>
             </div>
+
             <div class="col-sm-3">
               <label class="form-label">IFSC Code</label>
               <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Enter Ifsc"
@@ -55,7 +53,7 @@
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Bank Name</label>
               <input type="text" formControlName="bankName" class="form-control" disabled
-                [ngClass]="{ 'is-invalid': submitted && masterForm.bankName.errors }">
+                [ngClass]="{ 'is-invalid': submitted && masterForm.bankName.errors }" placeholder="">
               <div *ngIf="submitted && masterForm.bankName.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.bankName.errors.required">Bank Name Is Mandatory</div>
               </div>
@@ -88,16 +86,24 @@
               </div>
             </div> -->
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">Account Number</label>
-              <input type="password" [type]="accountNo ? 'text' : 'password'"
-                onkeypress="return /[0-9]/i.test(event.key)" (change)="matchAccountNumber($event.target.value)"
-                formControlName="accountNumber" class="form-control" placeholder="Enter Account Number"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-              <i class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
-                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
-              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              <label class="form-label">State Name</label>
+              <!-- <select name="family_Member_Name" id="state" formControlName="state"
+             
+                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                <option [ngValue]="null">Select</option>
+                <option *ngFor="let state of stateNameList" [value]="state">
+                  {{state}}
+                </option>
+              </select>
+              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
+              </div> -->
+              <input type="text" formControlName="state" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.state.errors.required">State Name Is Mandatory</div>
               </div>
+
             </div>
           </div>
 
@@ -231,7 +237,7 @@
         </div>
       </div>
     </div>
-
+   
        <!-- <pre>{{ documentArray | json }}</pre> -->
        <div class="row" *ngIf="isVisibleTable" >
         <div class="col-md-12">
@@ -609,6 +615,15 @@
         </div>
       </div>
     </div>
+    <div class="row mt-15" *ngIf="viewCancel">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="button" (click)="resetView()"
+          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Cancel</button>
+        </div>
+      </div>
+    </div>
     <div class="row mt-20">
       <div class="col-12">
         <div class="card">
@@ -646,6 +661,8 @@
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                        <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                        (click)="ViewMaster(summary.accountNumber)" tooltip="View"></i>
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">
