@@ -16,6 +16,7 @@ export class NpsSummaryComponent implements OnInit {
   @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
+  public nps80CCSummaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
@@ -34,9 +35,16 @@ export class NpsSummaryComponent implements OnInit {
   // public futureNewPolicyDeclaredAmount: string;
   public limitD: number = 50000;
   public deductionEDeclared: number;
+  public minAmt: number;
+  public minAmtActual: number;
+  limit80CCD1: any;
+  
   public eligibleForDeductionFDeclared: number;
+  public minAmtEligibleForDeductionFDeclared: number;
+  
   public deductionEActual: number;
   public eligibleForDeductionFActual: number;
+  minAmtEligibleForDeductionFActual: number;
   constructor(
     private service: MyInvestmentsService,
     private npsService: NpsService,
@@ -46,6 +54,7 @@ export class NpsSummaryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.summaryPage();
+    this.nps80CCSummaryGetPage();
   }
   redirectToDeclarationActual(
     institution: string,
@@ -74,6 +83,13 @@ export class NpsSummaryComponent implements OnInit {
     this.accountNo.emit(accountNo);
   }
   // ---------------------Summary ----------------------
+  nps80CCSummaryGetPage() {
+    this.npsService.getEmployeeNPSCCD1().subscribe((res) => {
+      this.nps80CCSummaryGridData = res.data.results[0];
+      console.log("this.nps80CCSummaryGridData", this.nps80CCSummaryGridData );
+    });
+  }
+
   // Summary get Call
   summaryPage() {
     this.npsService.getNpsSummary().subscribe((res) => {
@@ -87,9 +103,11 @@ export class NpsSummaryComponent implements OnInit {
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.onChangeLimit();
+      this.minOfCandG();
     }
     });
   }
+
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
@@ -107,6 +125,7 @@ export class NpsSummaryComponent implements OnInit {
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.onChangeLimit();
+      this.minOfCandG();
       this.alertService.sweetalertMasterSuccess('Future Amount was saved.', '');
     });
   }
@@ -147,5 +166,14 @@ export class NpsSummaryComponent implements OnInit {
     
   }
 
-  
+  minOfCandG() {
+    this.minAmt = Math.min(this.grandTotalDeclaredAmount, this.nps80CCSummaryGridData[0].limit80CCD1);
+    this.minAmtEligibleForDeductionFDeclared = this.grandTotalDeclaredAmount, this.minAmt;
+
+      this.minAmtActual = Math.min(this.grandTotalActualAmount, this.nps80CCSummaryGridData[0].limit80CCD1);
+      this.minAmtEligibleForDeductionFActual =this.minAmtActual;
+    console.log("limit80CCD1",this.limit80CCD1);
+    console.log("minAmt",this.minAmt);
+      console.log("minAmtEligibleForDeductionFDeclared", this.minAmtEligibleForDeductionFDeclared)
+  }
 }
