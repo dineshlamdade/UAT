@@ -1,0 +1,23 @@
+node {
+
+  stage 'checkout scm'
+  checkout scm
+
+  stage 'Docker build Web'
+  dir("${env.WORKSPACE}/") {
+    docker.build('paysquare/deliziahrnewui')
+    
+    }
+
+  stage 'Docker push Web'
+  docker.withRegistry('', 'dockerhubaccount') {
+    docker.image('paysquare/deliziahrnewui').push("${BUILD_NUMBER}")
+    docker.image('paysquare/deliziahrnewui').push('Latest')
+    }
+
+  stage('Remove Unused docker image') {
+  sh ("echo y | docker system prune")
+  }
+  
+}
+
