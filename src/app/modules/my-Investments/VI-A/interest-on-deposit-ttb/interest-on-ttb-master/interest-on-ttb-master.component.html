@@ -18,31 +18,17 @@
                       </option>
                     </select>
                   </div> -->
-            <div class="col-sm-6 col-md-3">
-              <label class="form-label">State Name</label>
-              <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState($event.target.value)'
-                class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                <option [ngValue]="null">Select</option>
-                <option *ngFor="let state of stateNameList" [value]="state">
-                  {{state}}
-                  <!-- <option *ngFor="let state of stateNameList" [value]="state.value">
-                        {{state.label}} -->
-                </option>
-              </select>
-              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
-              </div>
-            </div>
+
             <div class="col-sm-3">
               <label class="form-label">IFSC Code</label>
-              <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Search IFSC"
+              <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Enter Ifsc"
                 (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
-                          onSelectIFSCCode(bankIFSC)">
+                                onSelectIFSCCode(bankIFSC)">
                 <ng-template let-ifsc pTemplate="item">
                   <div class="country-item">
                     <div>
                       {{ifsc}}</div>
-                  </div>                  
+                  </div>
                 </ng-template>
               </p-autoComplete>
               <i class="fa fa-chevron-down down-arrow-icon"></i>
@@ -50,6 +36,21 @@
                 <label class="text-red mb-0" id="s2">Please Enter IFSC Code</label>
               </div>
             </div>
+
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Account Number</label>
+              <input type="password" [type]="accountNo ? 'text' : 'password'"
+                onkeypress="return /[0-9]/i.test(event.key)" formControlName="accountNumber" class="form-control"
+                (change)="matchAccountNumber($event.target.value)" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+              <i class="fa fa-eye mt-2 text-blue" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              </div>
+            </div>
+
+
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Bank Name</label>
               <input type="text" formControlName="bankName" class="form-control" disabled
@@ -87,21 +88,27 @@
             </div> -->
 
 
+
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">Account Number</label>
-              <input type="password" [type]="accountNo ? 'text' : 'password'"   onkeypress="return /[0-9]/i.test(event.key)" 
-              formControlName="accountNumber" class="form-control" (change)="matchAccountNumber($event.target.value)"
-                placeholder="Enter Account Number"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-                <i
-                   class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)" 
-                   [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
-              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              <label class="form-label">State Name</label>
+              <!-- <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState($event.target.value)'
+                class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                <option [ngValue]="null">Select</option>
+                <option *ngFor="let state of stateNameList" [value]="state">
+                  {{state}}
+                  <!- <option *ngFor="let state of stateNameList" [value]="state.value">
+                        {{state.label}} ->
+                </option>
+              </select>
+              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
+              </div> -->
+              <input type="text" formControlName="state" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.state.errors.required">State Name Is Mandatory</div>
               </div>
             </div>
-
-
           </div>
 
           <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
@@ -208,7 +215,8 @@
                   <tbody>
                     <tr>
                       <th scope="row"><span tooltip="1">1</span></th>
-                      <td><span tooltip="Interest Certificate / Bank Statement"></span>Interest Certificate / Bank Statement</td>
+                      <td><span tooltip="Interest Certificate / Bank Statement"></span>Interest Certificate / Bank
+                        Statement</td>
                       <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                         <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
@@ -225,6 +233,7 @@
                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
                           (click)="UploadModal(template)" data-toggle="modal"
                           data-target="#UploadModal"></i>&nbsp;&nbsp;
+                          
                       </td>
                     </tr>
                   </tbody>
@@ -235,34 +244,24 @@
         </div>
       </div>
     </div>
-      <!-- <pre>{{ documentArray | json }}</pre> -->
-      <div class="row" *ngIf="isVisibleTable" >
-        <div class="col-md-12">
-          <div class="border-box">
-            <div class="row mt-30">
-              <div class="col-12">
-                <div class="card">
-                  <div class="mb-0">
-                    <h3 class="font-14 text-purple font-bold">
-                      Document
-                    </h3>
-                  </div>
-                  <div class="col-12 col-md-12 col-sm-12">
-                    <div
-                      class="table-responsive Custom_Table"
-                    >
-                      <p-table
-                      *ngIf="documentArray"
-                        #dt2
-                        [value]="documentArray"
-                        [paginator]="true"
-                        [rows]="10"
-                        [showCurrentPageReport]="true"
-                        (sortFunction)="customSort($event)"
-                        [customSort]="true"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[10, 25, 50]"
-                        [globalFilterFields]="[
+    <!-- <pre>{{ documentArray | json }}</pre> -->
+    <div class="row" *ngIf="isVisibleTable">
+      <div class="col-md-12">
+        <div class="border-box">
+          <div class="row mt-30">
+            <div class="col-12">
+              <div class="card">
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">
+                    Document
+                  </h3>
+                </div>
+                <div class="col-12 col-md-12 col-sm-12">
+                  <div class="table-responsive Custom_Table">
+                    <p-table *ngIf="documentArray" #dt2 [value]="documentArray" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="[
                           'empcode',
                           'empName',
                           'Group',
@@ -272,250 +271,152 @@
                           'PSIdDetails',
                           'SubmissionDate',
                           'Status'
-                        ]"
-                      >
-                        <ng-template pTemplate="header">
-                          <tr>
-                            <!-- <th style="width: 3rem">
+                        ]">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <!-- <th style="width: 3rem">
                               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th> -->
-  
-                            <th>
-                              <div
-                                class="
+
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Date Of Submission
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Date Of Submission
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Document Name
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="documentName"
-                                    pSortableColumn="documentName"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="documentName"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Document Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="documentName" pSortableColumn="documentName"></p-sortIcon>
+                                <p-columnFilter field="documentName" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Document Type
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="documentType"
-                                    pSortableColumn="documentType"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="documentType"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Document Type
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="documentType" pSortableColumn="documentType"></p-sortIcon>
+                                <p-columnFilter field="documentType" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Password
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Password
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Remark
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Remark
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Status
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Status
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Approver Name
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Approver Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
+                            </div>
+                          </th>
+                          <th>
+                            <div class="
                                   p-d-flex
                                   p-jc-between
                                   p-ai-center
-                                "
-                              >
-                                Time
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="empcode"
-                                    pSortableColumn="empcode"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="empcode"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
+                                ">
+                              Time
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
-                            </th>
-                          </tr>
-                        </ng-template>
-                        <ng-template
-                          pTemplate="body"
-                          let-document
-                          let-documentIndex = "rowIndex"
-                        >
-                          <tr class="p-selectable-row">
-                            <!-- <td>
+                            </div>
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-document let-documentIndex="rowIndex">
+                        <tr class="p-selectable-row">
+                          <!-- <td>
                               <p-tableCheckbox
                                 [value]="customer"
                               >
                               </p-tableCheckbox>
                             </td> -->
-                            <td>
-                              {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
-                            </td>
-                            <td>
-                              <a
-                              (click)=" docViewer(template3,documentIndex, document)"
-  
-                              >
-                                <i
-                                  class="
+                          <td>
+                            {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
+                          </td>
+                          <td>
+                            <a (click)=" docViewer(template3,documentIndex, document)">
+                              <i class="
                                     fa fa-paperclip
                                     text-orange
-                                  "
-                                ></i>
-                                &nbsp;
-                                {{ document.documentName }}
-                              </a>
-                            </td>
-                            <td>{{ document.documentType }}</td>
-                            <td>{{ document.documentPassword }}</td>
-                            <td>
-                              <!-- <div class="custom_Label_badge">
+                                  "></i>
+                              &nbsp;
+                              {{ document.documentName }}
+                            </a>
+                          </td>
+                          <td>{{ document.documentType }}</td>
+                          <td>{{ document.documentPassword }}</td>
+                          <td>
+                            <!-- <div class="custom_Label_badge">
                                 <button
                                   class="
                                     btn btn-bg-green
@@ -531,17 +432,17 @@
                                   >2</span
                                 >
                               </div> -->
-                              {{document.documentRemark}}
-                            </td>
-                            <td>{{ document.status }}</td>
-                            <td>{{ document.lastModifiedBy }}</td>
-                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
-                          </tr>
-                        </ng-template>
-                      </p-table>
-                    </div>
+                            {{document.documentRemark}}
+                          </td>
+                          <td>{{ document.status }}</td>
+                          <td>{{ document.lastModifiedBy }}</td>
+                          <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm' }}</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
                   </div>
-                  <!-- <div class="row mt-25">
+                </div>
+                <!-- <div class="row mt-25">
                     <div class="col-md-12">
                       <div class="float-right">
                         <button
@@ -578,13 +479,13 @@
                       </div>
                     </div>
                   </div> -->
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    <div class="row mt-15">
+    </div>
+    <div class="row mt-15" *ngIf="isShowSave">
       <div class="col-12">
         <div class="float-right mb-15">
           <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
@@ -596,6 +497,32 @@
         </div>
       </div>
     </div>
+
+    <div class="row mt-15" *ngIf="isShowUpdate">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="submit"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+         ><b> <i
+            class="fa fa-floppy-o"></i></b>Update</button>
+              &nbsp;
+          <button type="button" (click)="resetView()"
+          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-15" *ngIf="isShowCancel">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="button" (click)="resetView()"
+          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Cancel</button>
+        </div>
+      </div>
+    </div>
+
     <div class="row mt-20">
       <div class="col-12">
         <div class="card">
@@ -633,6 +560,8 @@
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                      <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                        (click)="ViewMaster(summary.accountNumber)" tooltip="View"></i>
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">
@@ -728,7 +657,7 @@
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-      aria-hidden="true">×</span></button>
+        aria-hidden="true">×</span></button>
   </div>
   <div class="modal-body">
     <div class="card">
@@ -743,20 +672,20 @@
                 <i class="fa fa-upload">
                 </i>
                 <span class="title">
-                    Choose file
-                  </span>
+                  Choose file
+                </span>
                 <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
-                       accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
             <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
               <span class="text-purple font-14 font700">Selected Files</span>
               <label *ngFor="let item of masterfilesArray;let index = index;" class="filelabeldisplay">
                 <div class="text-ellipsis"><i class="fa fa-paperclip">
-                </i>
+                  </i>
                   <span class="title" tooltip="{{item.name}}">
-                      {{ item.name }}
-                    </span>
+                    {{ item.name }}
+                  </span>
                   <div>
                     <div style="float: left; width: 40%;">
                       <div class="col-md-8 mt-10">
@@ -764,7 +693,7 @@
                       </div>
                       <div class="col-md-12">
                         <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
-                      
+
                       </div>
 
                     </div>
@@ -807,23 +736,23 @@
     <!-- <h5 class="modal-title" id="jasdjgh">Document Viewer</h5> -->
     <div class="row">
       <div class="col-sm-6 col-md-6 align-right">
-          <label class="form-label">Document Name</label>
-           {{this.viewDocumentName}}
+        <label class="form-label">Document Name</label>
+        {{this.viewDocumentName}}
       </div>
       <div class="col-sm-6 col-md-6 align-right">
-          <label class="form-label">Document Type</label>
-          
-          {{this.viewDocumentType}}
+        <label class="form-label">Document Type</label>
+
+        {{this.viewDocumentType}}
       </div>
-    
-      </div>
-      <div class="align-right">
-        <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
-<button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
-    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button>
-  </div>
+
+    </div>
+    <div class="align-right">
+      <button type="button" (click)="zoomin()"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+      <button type="button" (click)="zoomout()"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
   </div>
   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
@@ -837,7 +766,7 @@
       </div>
       <div class="col-md-10">
         <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
-        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
+        <img id='map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
         <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
       </div>
       <div class="col-md-1">
