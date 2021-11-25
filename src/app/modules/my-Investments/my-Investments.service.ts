@@ -328,6 +328,12 @@ public apiUrl = environment.baseUrl8085;
       return res;
     }));
   }
+  public getLicMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
   // -----------------PPF-API---------------------
   public getPPFMaster(): Observable<any> {
