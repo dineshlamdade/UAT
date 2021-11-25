@@ -49,8 +49,9 @@
         <label class="form-label">Business Year</label>
         <select [ngClass]="{'is-invalid' : BusinessYearform.get('businessYear').status == 'INVALID'}"
           name="businessYear" id="businessYear" class="form-control  " formControlName="businessYear">
-          <option selected value=''>Select </option>
-          <option *ngFor="let businessYear of BusinessYear" [value]="businessYear.value">
+          <option value=''>Select </option>
+          <option *ngFor="let businessYear of getBusinessYears" [value]="businessYear.value" [selected]="currentYear == businessYear.value">
+            
             {{businessYear.label}}
           </option>
         </select>
@@ -93,77 +94,7 @@
       </div>
     </div>
 
-    <!-- <div class="row mt-20">
-      <div class="col-12">
-        <div class="card">
-          <div class="mb-0">
-            <h3 class="font-14 text-purple font-bold">Summary</h3>
-          </div>
-          <div class="">
-            <div class="table-responsive Custom_Table">
-              <table class="table table-striped table-hover table-bordered m-b-0">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col" class="font700 wd-8">Sr. No. </th>
-                    <th scope="col" class="wd-40">Description </th>
-                    <th scope="col" class="wd-40">Business Year Definition </th>
-                    <th scope="col" class="wd-12">Action</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr *ngFor="let summary of BusinessyearList; let i = index">
-                    <td class="align-left wd-10"> <span>{{i+1}}</span> </td>
-                    <td class="align-left wd-10"> <span>{{summary.description}}</span> </td>
-                    <td class="align-left wd-10"> <span>{{summary.yearDefinition}}</span> </td>
-                    <td class="wd-10 align-left">
-                      <button *ngIf="!summary.used" type="button"
-                        (click)="GetBussinessyearById(summary.businessYearDefinitionId)" class="btn btn-icon"
-                        title="Edit"><i class="fa fa-edit"></i>
-                      </button>
-
-                      <button *ngIf="!summary.used" type="button" (click)="UploadModal1(template12); "
-                        data-toggle="modal" data-target="#UploadModal" class="btn btn-icon js-sweetalert" title="Delete"
-                        data-type="confirm"><i class="fa fa-trash-o"></i></button>
-                    </td>
-
-                    <ng-template #template12>
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="UploadModalLabel">Delete
-                          Business Year Definition</h5>
-                        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                          aria-label="Close"><span aria-hidden="true">×</span></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="row clearfix">
-                              <div class="col-md-12">
-                                <label class="form-label">Are
-                                  you sure want to
-                                  delete Business
-                                  Year Definition
-                                  from-{{Name}}</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"
-                          (click)="DeleteBussinessyearById(summary.businessYearDefinitionId);modalRef.hide()">Yes</button>
-                        <button type="button" class="btn btn-secondary bg-btn-red" (click)="modalRef.hide()">No</button>
-                      </div>
-                    </ng-template>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
+    
 
 
 
@@ -176,27 +107,59 @@
     <div class="row mb-10">
       <div class="col-md-8">
 
+        <h3 class="font-14 text-purple font-bold">Summary</h3>
+        
+
+          <div class="cycle-table">
+          <div class="cycle-value pt-10 pb-40 bg-color-light_gray">
+             <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
+            <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
+                <div class="float-right d-flex  justify-content">
+                  
+                   <div class="rup mt-2">
+                      <div class="input-icon mb-3">
+                         <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
+                         type="text" pInputText class="form-control" placeholder="Search...">
+                         <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                      </div>
+                   </div>
+                   &nbsp;&nbsp;
+                   <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3" aria-hidden="true"></i>
+                </div>
+             </div>
+          </div>
+          </div>
 
 
+        <div class="cycle-table">
 
-
-
-        <div class="cycle-table mt-4">
-
-          <h3 class="font-14 text-purple font-bold">Summary</h3>
-
-<!--
-          <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+         
 
             <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10"
             [showCurrentPageReport]="true" [pageLinks]="5"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            totalRecords={{BusinessyearList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+            totalRecords={{BusinessyearList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+            #dt [globalFilterFields]="['description','fullFromDate','fullToDate']">
 
+            <!-- <ng-template pTemplate="caption">
+              <div style="text-align: right;display: flex;width: 200px;margin-left: 734px;">
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>&nbsp;
+                <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width: 203px;">
+                    &nbsp;&nbsp;&nbsp;
+                    <a tooltip="Download" style="cursor: pointer"
+                    (click)="exportAsXLSX()"><i
+                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                        aria-hidden="true"></i></a>
+              </div>
+          </ng-template> -->
+          
+            
             <ng-template pTemplate="header">
+              
               <tr>
+                
                 <th class="wd-8 text-center">
                   Sr. No.
                 </th>
@@ -214,9 +177,9 @@
                   <div class="p-d-flex p-jc-between p-ai-center">
                     Business Year Definition
                     <div class="Sort_Filter_Position">
-                      <p-sortIcon field="yearDefinition" pSortableColumn="yearDefinition"></p-sortIcon>
-                      <p-columnFilter field="yearDefinition" display="menu" class="p-ml-auto"></p-columnFilter>
-
+                      <p-sortIcon field="fullFromDate" pSortableColumn="fullFromDate"></p-sortIcon>
+                      <p-columnFilter field="fullFromDate" display="menu" class="p-ml-auto"></p-columnFilter>
+                      <!-- {{user1.fullFromDate | date: 'dd-MMM-yyyy'}} To {{user1.fullToDate | date: 'dd-MMM-yyyy'}} -->
                     </div>
                   </div>
                 </th>
@@ -252,12 +215,16 @@
               </label></td> -->
                 <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td>
-                <td class="wd-10 align-left">
-                  <button *ngIf="!user1.used; " type="button"
-                    (click)="GetBussinessyearById(user1.businessYearDefinitionId, true)" class="btn btn-icon text-blue"
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td> -->
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullFromDate | date: 'dd-MMM'}} To {{user1.fullToDate | date: 'dd-MMM'}}</label></td>
+                <td class="wd-10 text-center">
+
+                   <!-- commented edit -suggested by rakesh sir -18th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.used; " type="button"
+                    (click)="GetBussinessyearById(user1.businessYearDefinitionId, true)" class="btn btn-icon text-dark-green"
                     tooltip="Edit"><i class="fa fa-edit"></i>
-                  </button>
+                  </button> -->
 
                   <button type="button" class="btn btn-icon text-blue" tooltip="View"
                   (click)="GetBussinessyearById(user1.businessYearDefinitionId, false)"
@@ -265,9 +232,11 @@
                   <i class="fa fa-eye"></i></button>
                   <!-- (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessCycleDefinition.businessYearDefinitionId)" -->
 
-                  <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
-                    data-target="#UploadModal" class="btn btn-icon js-sweetalert text-blue" tooltip="Delete"
-                    data-type="confirm"><i class="fa fa-trash-o"></i></button>
+                  <!-- commented delete -suggested by rakesh sir -18th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
+                    data-target="#UploadModal" class="btn btn-icon js-sweetalert text-red" tooltip="Delete"
+                    data-type="confirm"><i class="fa fa-trash"></i></button> -->
                 </td>
                 <ng-template #template12>
                   <div class="modal-header">
@@ -285,7 +254,8 @@
                               you sure want to
                               delete Business
                               Year Definition
-                              from-{{Name}}</label>
+                             </label>
+                             <!-- from-{{BusinessyearList.fullFromDate | date: 'dd-MM-yyyy'}} To {{BusinessyearList.fullToDate | date: 'dd-MM-yyyy'}} -->
                           </div>
                         </div>
                       </div>

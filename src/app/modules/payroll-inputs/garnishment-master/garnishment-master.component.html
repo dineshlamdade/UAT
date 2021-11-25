@@ -18,44 +18,98 @@
                         <div class="row ">
                           <div class="col-md-3" *ngIf="!isEditMode">
                             <label class="form-label">Institution Code</label>
-                            <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
+                            <select name="nameOfInstitution" id="nameOfInstitution" class="form-control" required
                               [ngClass]="{'is-invalid' : garnishmentForm.get('nameOfInstitution').status == 'INVALID'}"
-                              formControlName="nameOfInstitution" (change)='onSelectThirdPartyMasterId($event)'>
+                              formControlName="nameOfInstitution" (change)="getInstitutionName($event.target.value)">
+                              <option value="">Select</option>
                               <option *ngFor="let data of institutionMasterData">{{data.institutionName}}</option>
                             </select>
                           </div>
                           <div class=" col-md-3">
                             <label class="form-label">Description</label>
-                            <input type="text" formControlName="description" class="form-control align-right"
-                              name="description" [ngClass]="{'is-invalid' : garnishmentForm.get('description').status == 'INVALID'}">
+                            <input type="text" formControlName="description" class="form-control " name="description"
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('description').status == 'INVALID'}"
+                              disabled>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Address1</label>
+                            <input type="text" formControlName="address1" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.address1.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Address2</label>
+                            <input type="text" formControlName="address2" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && form.address2.errors }">
+                          </div>
+                        </div>
+                        <div class="row mt-25">
+
+                          <div class="col-md-3">
+                            <label class="form-label">Address3</label>
+                            <input type="text" formControlName="address3" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && form.address3.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Country</label>
+                            <select name="country" id="country" formControlName="country" disabled
+                              class="form-control custom-select">
+                              <option value="">Select</option>
+                              <option *ngFor="let data of countryList">{{data}}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">PIN</label>
+                            <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
+                              disabled [ngClass]="{'is-invalid' : garnishmentForm.get('pinCode').status == 'INVALID'}"
+                              formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">State</label>
+                            <input type="text" formControlName="state" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.state.errors }">
+                          </div>
+                        </div>
+                        <div class="row mt-25">
+
+                          <div class="col-md-3">
+                            <label class="form-label">City</label>
+                            <input type="text" formControlName="city" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.city.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Village</label>
+                            <input type="text" formControlName="villege" class="form-control" disabled
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.villege.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Nature</label>
-                            <select name="nature" class="form-control custom-select" formControlName="nature">
+                            <select name="nature" class="form-control custom-select" formControlName="nature" required>
                               <option>Select</option>
                               <option>Garnishment</option>
                               <option>Third Party</option>
                             </select>
                           </div>
-
-                        </div>
-                        <div class="row mt-25">
                           <div class="col-md-3">
                             <label class="form-label">Contact Person Name</label>
-                            <input type="text" formControlName="contactPerson" class="form-control"
+                            <input type="text" formControlName="contactPerson" class="form-control" required
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.contactPerson.errors }">
                             <div *ngIf="submitted && form.contactPerson.errors" class="invalid-feedback">
-                              <div *ngIf="garnishmentForm.contactPerson.errors.required">Contact Person is mandatory</div>
+                              <div *ngIf="garnishmentForm.contactPerson.errors.required">Contact Person is mandatory
+                              </div>
                             </div>
                           </div>
+                        </div>
+
+
+
+                        <div class="row mt-25">
                           <div class="col-md-1 country-code">
-                            <select class="form-control selectpicker mt-24" placeholder="ISD">
-                              <option value="" selected>ISD
+                            <select class="form-control selectpicker mt-24" placeholder="ISD" [(ngModel)]="isdCode"
+                              [ngModelOptions]="{standalone: true}" required>
+                              <option value="">ISD</option>
+                              <option *ngFor="let code of countryCode">
+                                {{code}}
                               </option>
-                              <option> 91 </option>
-                              <option> 1-684 </option>
-                              <option> 92 </option>
-                              <option> 93</option>
                             </select>
                           </div>
                           <div class="col-md-2">
@@ -63,106 +117,69 @@
                             <div class="form-group">
                               <div class="input-group">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class=""></i></span>
+                                  <!-- <span class="input-group-text"><i class=""></i></span> -->
                                 </div>
-                                <input type="text" formControlName="phoneNumber" class="form-control align-right"
-                                  minlength="10" maxlength="12" name="phoneNumber"
+                                <input type="text" formControlName="phoneNumber" class="form-control " minlength="10"
+                                  maxlength="12" name="phoneNumber" required
                                   [ngClass]="{ 'is-invalid': submitted && garnishmentForm.phoneNumber.errors } ">
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Email Id</label>
-                            <input type="text" formControlName="emailId" class="form-control"
+                            <input type="email" formControlName="emailId" class="form-control" required
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.emailId.errors }">
                           </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Address1</label>
-                            <input type="text" formControlName="address1" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.address1.errors }">
-                          </div>
 
-                        </div>
-                        <div class="row mt-25">
-                          <div class="col-md-3">
-                            <label class="form-label">Address2</label>
-                            <input type="text" formControlName="address2" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && form.address2.errors }">
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Address3</label>
-                            <input type="text" formControlName="address3" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && form.address3.errors }">
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Country</label>
-                            <select name="country" id="country" formControlName="country" class="form-control custom-select">
-                              <option *ngFor="let data of countryList">{{data}}</option>
-                            </select>
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">PIN</label>
-                            <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
-                            [ngClass]="{'is-invalid' : garnishmentForm.get('pinCode').status == 'INVALID'}"
-                                formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
-                            </div>
-                        </div>
-                        <div class="row mt-25">
-                          <div class="col-md-3">
-                            <label class="form-label">State</label>
-                            <input type="text" formControlName="state" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.state.errors }">
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">City</label>
-                            <input type="text" formControlName="city" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.city.errors }">
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Village</label>
-                            <input type="text" formControlName="villege" class="form-control"
-                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.villege.errors }">
-                          </div>
-                          <div class="col-md-3">
+                          <!-- <div class="col-md-3">
                             <label class="form-label">PAN</label>
                             <input type="text" formControlName="pan" class="form-control"
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.pan.errors }">
-                          </div>
+                          </div> -->
+
                         </div>
+
+
                         <div class="row mt-25">
                           <div class="col-md-6">
                             <fieldset>
                               <legend>Emp. Acc. No. in Payee Books</legend>
-                              <div class="row mt-10">
+                              <div class="row mt-10" style="margin-top: -14px !important;">
                                 <div class="col-md-6">
                                   <label class="form-label">Applicable</label>
-                                  <select name="accountnumber" class="form-control custom-select" formControlName="accountNoInPayeeBook">
+                                  <select name="accountnumber" class="form-control custom-select"
+                                    formControlName="empAccNoApplicable">
                                     <option>Select</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                    <option value="1"
+                                      [selected]="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1">
+                                      Yes</option>
+                                    <option value="0"
+                                      [selected]="garnishmentForm.controls.empAccNoApplicable.value == false || garnishmentForm.controls.empAccNoApplicable.value == 0">
+                                      No</option>
                                   </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6"
+                                  *ngIf="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1">
                                   <label class="form-label">Display Name</label>
-                                  <input type="text" class="form-control">
+                                  <input type="text" class="form-control" [required]="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1"
+                                    formControlName="empAccNoInCoBooksDisplayName">
                                 </div>
                               </div>
                             </fieldset>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Company Acc. No. in Payee Books</label>
-                            <input type="text" formControlName="accountNoInPayeeBook" class="form-control"
+                            <input type="text" formControlName="accountNoInPayeeBook" class="form-control" required
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.accountNoInPayeeBook.errors }">
                           </div>
                         </div>
 
 
                         <div class="row">
-              
+
                           <div class="col-md-3" *ngIf="isEditMode">
                             <label class="form-label"> Code</label>
-                            <input type="text" formControlName="nameOfInstitution" class="form-control"
-                              name="nameOfInstitution">
+                            <input type="text" class="form-control" name="code">
                           </div>
                         </div>
                       </fieldset>
@@ -175,11 +192,11 @@
                         <div class="row ">
                           <div class="col-md-3">
                             <label class="form-label">E/D Head</label>
-                            <select name="standardName" id="standardName" formControlName="standardName"
-                              class="form-control custom-select" (change)='onSelectMasterHead($event)'
+                            <select name="standardName" id="headMasterId" formControlName="headMasterId"
+                              class="form-control custom-select"
                               [ngClass]="{'is-invalid' : garnishmentForm.get('standardName').status == 'INVALID'}">
-                              <option *ngFor="let standardName of deductionHeadList" [value]="standardName.value">
-                                {{standardName.value}}
+                              <option *ngFor="let standardName of headData" [value]="standardName.headMasterId">
+                                {{standardName.displayName}}
                               </option>
                             </select>
                           </div>
@@ -191,26 +208,42 @@
                             <label class="form-label" tooltip="emp" placement="left">Emp. Application Process</label>
                             <div class="custom-controls-stacked  mt-10">
                               <label class="custom-control custom-radio custom-control-inline">
-                                <input formControlName="emp" type="radio" class="custom-control-input" name="emp"
-                                  [value]="true?0:1">
+                                <input formControlName="empApplicationProcess" type="radio" class="custom-control-input"
+                                  [value]="1"
+                                  [checked]="garnishmentForm.controls.empApplicationProcess.value == true || garnishmentForm.controls.empApplicationProcess.value == 1">
                                 <span class="custom-control-label">Yes</span>
                               </label>
                               <label class="custom-control custom-radio custom-control-inline">
-                                <input formControlName="emp" type="radio" class="custom-control-input" name="emp"
-                                  [value]="false?0:1">
+                                <input formControlName="empApplicationProcess" type="radio" class="custom-control-input"
+                                  [value]="0"
+                                  [checked]="garnishmentForm.controls.empApplicationProcess.value == true || garnishmentForm.controls.empApplicationProcess.value == 0">
                                 <span class="custom-control-label">No</span>
                               </label>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Permissible Frequency /ies</label>
-                            <select name="frequency" id="frequency" formControlName="frequency"
-                              class="form-control custom-select"
-                              [ngClass]="{'is-invalid' : garnishmentForm.get('frequency').status == 'INVALID'}">
-                              <option *ngFor="let frequency of frequencyList" [value]="frequency.value">
-                                {{frequency.value}}
-                              </option>
-                            </select>
+                            <!-- formControlName="garnishmentMasterFrequencyList" -->
+                            <!-- <select id="frequency" class="form-control custom-select"
+                              (change)="getFrequencyData($event.target.value)"
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('garnishmentMasterFrequencyList').status == 'INVALID'}">
+                              <option value="">Select</option>
+                              <option value="1,Monthly">Month</option>
+                              <option value="2,Quarterly">Quarter </option>
+                              <option value="3,HalfYearly">HalfYear</option>
+                              <option value="4,Yearly">Year </option>
+                              <option value="5,SemiMonthly">SemiMonth</option>
+                              <option value="6,Weekly">Week </option>
+                              <option value="7,BiWeekly">BiWeek </option>
+                            </select> -->
+
+
+                            <ng-multiselect-dropdown class="form-control" [placeholder]="'Select Frequency'"
+                              [settings]="dropdownSettings" [data]="frequencyData"
+                              (onSelect)="onSelectDataValue($event)" (onDeSelect)="deSelectValueListDataValue($event)"
+                              [(ngModel)]="editFrequencyData" [ngModelOptions]="{standalone : true}"
+                              (onSelectAll)="onSelectAllValueListDataValue($event)">
+                            </ng-multiselect-dropdown>
                           </div>
 
                         </div>
@@ -218,21 +251,23 @@
 
                           <div class="col-md-3">
                             <label class="form-label">Income Tax Group</label>
-                            <select name="investmentgroup" id="investmentgroup" formControlName="investmentgroup"
+                            <select id="incomeTaxGroup" formControlName="incomeTaxGroup"
                               class="form-control custom-select">
-                              <option>
-                                select
-                              </option>
+                              <option value=""> select </option>
+                              <option value="1"> Yes </option>
+                              <option value="2"> No </option>
                             </select>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Income Tax Section</label>
-                            <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
+                            <select id="incomeTaxSection" formControlName="incomeTaxSection"
                               class="form-control custom-select"
-                              [ngClass]="{'is-invalid' : garnishmentForm.get('investmentSection').status == 'INVALID'}">
-                              <option *ngFor="let investmentSection of incomeTexList">
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('incomeTaxSection').status == 'INVALID'}">
+                              <!-- <option *ngFor="let investmentSection of incomeTexList">
                                 {{investmentSection.description}}
-                              </option>
+                              </option> -->
+                              <option> select </option>
+                              <option> ABC </option>
                             </select>
                           </div>
 
@@ -251,27 +286,32 @@
                                   <div class="custom-controls-stacked ml-15 mt-10">
                                     <label class="custom-control custom-radio custom-control-inline">
                                       <input formControlName="familyMember" type="radio" class="custom-control-input"
-                                        name="familyMember" [value]="true?0:1">
+                                        [value]="1"
+                                        [checked]="garnishmentForm.controls.familyMember.value == true || garnishmentForm.controls.familyMember.value == 1">
                                       <span class="custom-control-label">Yes</span>
                                     </label>
                                     <label class="custom-control custom-radio custom-control-inline">
                                       <input formControlName="familyMember" type="radio" class="custom-control-input"
-                                        name="familyMember" [value]="false?0:1">
+                                        [value]="0"
+                                        [checked]="garnishmentForm.controls.familyMember.value == false || garnishmentForm.controls.familyMember.value == 0">
                                       <span class="custom-control-label">No</span>
                                     </label>
                                   </div>
+
                                 </div>
                                 <div class="col-md-6">
                                   <label class="form-label ml-15" tooltip="goal" placement="left">Goal</label>
                                   <div class="custom-controls-stacked ml-15 mt-10">
                                     <label class="custom-control custom-radio custom-control-inline">
-                                      <input formControlName="goal" type="radio" (click)="showtable()"
-                                        class="custom-control-input" name="goal" [value]="true?0:1">
+                                      <input formControlName="goal" type="radio" class="custom-control-input"
+                                        [value]="1"
+                                        [checked]="garnishmentForm.controls.goal.value == true || garnishmentForm.controls.goal.value == 1">
                                       <span class="custom-control-label">Yes</span>
                                     </label>
                                     <label class="custom-control custom-radio custom-control-inline">
-                                      <input formControlName="goal" type="radio" class="custom-control-input" name="goal"
-                                        [value]="false?0:1">
+                                      <input formControlName="goal" type="radio" class="custom-control-input"
+                                        name="goal" [value]="0"
+                                        [checked]="garnishmentForm.controls.goal.value == false || garnishmentForm.controls.goal.value == 0">
                                       <span class="custom-control-label">No</span>
                                     </label>
                                   </div>
@@ -336,43 +376,28 @@
                                       <th class="th1 ">Transaction Types</th>
                                       <th class="th1 ">Default</th>
                                     </thead>
-                                    <tbody class="tbody1">
+                                    <tbody class="tbody1" *ngFor="let data of transactionTypeData; let index = index;">
                                       <tr class=" tr1 gray1">
                                         <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike" checked>
+                                          <input type="checkbox" name="transactionTypeCheckbox_{{index}}"
+                                            [checked]="data.checked == true" [disabled]="viewFlag"
+                                            (click)="getTransactionTypeCheck($event.target,data.transactionTypeName,data.transactionTypeId)">
                                         </td>
-                                        <td class="td1">Defined Date</td>
-                                        <td class="td1"><label class="custom-switch mt_5">
-                                            <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
-                                            <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
-                                          </label>
-                                        </td>
-                                      </tr>
-                                      <tr class=" tr1 gray1">
                                         <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike">
+                                          <span class="form-label"
+                                            *ngIf="data.transactionTypeName != 'NoOfTransaction'">{{data.transactionTypeName}}</span>
+                                          <span class="form-label"
+                                            *ngIf="data.transactionTypeName == 'NoOfTransaction'">No Of
+                                            Transaction</span>
                                         </td>
-                                        <td class="td1">No. Of Transaction</td>
                                         <td class="td1"><label class="custom-switch mt_5">
+                                            <span class="form-label">No</span>&nbsp;
                                             <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
+                                              class="custom-switch-input" [disabled]="viewFlag"
+                                              [checked]="data.default == true || data.default == 1"
+                                              (click)="getDefaultValueTransactionType($event.target,data.transactionTypeName,data.transactionTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
-                                          </label>
-                                        </td>
-                                      </tr>
-                                      <tr class=" tr1 gray1">
-                                        <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike">
-                                        </td>
-                                        <td class="td1">Prepetual</td>
-                                        <td class="td1"><label class="custom-switch mt_5">
-                                            <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
-                                            <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
+                                            <span class="form-label">Yes</span>
                                           </label>
                                         </td>
                                       </tr>
@@ -393,46 +418,26 @@
                                       <th class="th1 ">Input Types</th>
                                       <th class="th1 ">Default</th>
                                     </thead>
-                                    <tbody class="tbody1">
+                                    <tbody class="tbody1" *ngFor="let data of inputTypeData;let iindex = index;">
                                       <tr class=" tr1 gray1">
                                         <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike" checked>
+                                          <input type="checkbox" name="inputTypeCheckbox" [disabled]="viewFlag"
+                                            (click)="getInputTypeCheck($event.target,data.inputTypeName,data.inputTypeId)"
+                                            [checked]="data.checked == true">
                                         </td>
-                                        <td class="td1">Formula</td>
+                                        <td class="td1"><span class="form-label">{{data.inputTypeName}}</span></td>
                                         <td class="td1"><label class="custom-switch mt_5">
-                                            <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
+                                            <span class="form-label">No</span>&nbsp;
+                                            <input type="checkbox" name="custom-switch-checkbox" [disabled]="viewFlag"
+                                              class="custom-switch-input"
+                                              [checked]="data.default == true || data.default == 1"
+                                              (click)="getDefaultValueInputType($event.target,data.inputTypeName,data.inputTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
+                                            <span class="form-label">Yes</span>
                                           </label>
                                         </td>
                                       </tr>
-                                      <tr class=" tr1 gray1">
-                                        <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike">
-                                        </td>
-                                        <td class="td1">SDM</td>
-                                        <td class="td1"><label class="custom-switch mt_5">
-                                            <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
-                                            <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
-                                          </label>
-                                        </td>
-                                      </tr>
-                                      <tr class=" tr1 gray1">
-                                        <td class="td1">
-                                          <input type="checkbox" name="vehicle1" value="Bike">
-                                        </td>
-                                        <td class="td1">Amount</td>
-                                        <td class="td1"><label class="custom-switch mt_5">
-                                            <input type="checkbox" name="custom-switch-checkbox"
-                                              class="custom-switch-input">
-                                            <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
-                                          </label>
-                                        </td>
-                                      </tr>
+
                                     </tbody>
                                   </table>
                                 </div>
@@ -440,6 +445,30 @@
                             </fieldset>
                           </div>
                         </div>
+                        
+                        <div class="row mt-10">
+                          <div class="col-md-3" *ngIf="selectedInputTypeName == 'SDM'">
+                            <label class="form-label">SDM Name</label>
+                            <select class="form-control">
+                              <option>Select</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3" *ngIf="selectedInputTypeName == 'SDM'">
+                            <label class="form-label">Derived
+                              Type</label>
+                            <select class="form-control">
+                              <option>Select</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-3" *ngIf="selectedInputTypeName == 'Percentage'">
+                            <label class="form-label">Formula</label>
+                            <select class="form-control">
+                              <option>Select</option>
+                            </select>
+                          </div>
+                       </div> 
+
                         <div class="row mt-25">
                           <div class="col-md-6">
                             <h4 class="font-14 text-purple font-bold"><b>List of Documents</b></h4>
@@ -448,8 +477,7 @@
                         <div class="row mt-10">
                           <div class="col-md-6">
                             <div class="table-responsive Custom_Table">
-                              <p-table #dt1 [value]="users1" (sortFunction)="customSort($event)" [customSort]="true">
-
+                              <p-table [value]="documentList" [customSort]="true">
                                 <ng-template pTemplate="header">
                                   <tr>
                                     <th>
@@ -495,16 +523,32 @@
                                 <ng-template pTemplate="body" let-User1>
                                   <tr class="p-selectable-row">
 
-                                    <td class=" align-center bg-color-light_gray">1</td>
-                                    <td class=" align-center bg-color-light_gray"><input type="text" class="form-control"
-                                        value="{{User1.DocumentName}}"></td>
-                                    <td class=" align-center bg-color-light_gray"><input type="checkbox"
-                                        value="{{User1.Mandatory}}">
+                                    <td class=" align-center bg-color-light_gray"></td>
+                                    <td class=" align-center bg-color-light_gray">
+                                      <input type="text" class="form-control" [(ngModel)]="documentName"
+                                        [ngModelOptions]="{standalone:true}" [disabled]="viewFlag">
                                     </td>
-
-                                    <td class=" align-center bg-color-light_gray"><i
-                                        class="fa fa-plus-circle font-16 cursor-pointer text-dark-green "></i></td>
-
+                                    <td class=" align-center bg-color-light_gray">
+                                      <input type="checkbox" (click)="getDocMandatory($event.target)"
+                                        [checked]="mandatoryFlag" [disabled]="viewFlag">
+                                    </td>
+                                    <td class=" align-center bg-color-light_gray">
+                                      <i class="fa fa-plus-circle font-16 cursor-pointer text-dark-green" *ngIf="!viewFlag"
+                                        (click)="addDocumentList()" [disabled]="viewFlag"></i>
+                                    </td>
+                                  </tr>
+                                  <tr *ngFor="let doc of garnishmentMasterDocumentList; let index = index;">
+                                    <td class=" align-center bg-color-light_gray">{{index+1}}</td>
+                                    <td class=" align-center bg-color-light_gray">
+                                      {{doc.documentName}}
+                                    </td>
+                                    <td class=" align-center bg-color-light_gray">
+                                      <spna *ngIf="doc.mandetory == 1"> Yes</spna>
+                                    </td>
+                                    <td class=" align-center bg-color-light_gray">
+                                      <i class="fa fa-times font-16 cursor-pointer text-dark-red" *ngIf="!editFlag && !viewFlag"
+                                        (click)="openDeletePopup(index,deleteTemp)"></i>
+                                    </td>
                                   </tr>
                                 </ng-template>
                               </p-table>
@@ -515,7 +559,7 @@
                         <div class="row mt-25">
                           <div class="col-md-3">
                             <label class="form-label">Remark</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" formControlName="remark"></textarea>
                           </div>
                         </div>
                       </fieldset>
@@ -524,15 +568,22 @@
                   <div class="row mt-25">
                     <div class="col-md-12">
                       <div class="float-right">
-                        <button type="button" tooltip="Button"
-                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
-                              class="fa fa-floppy-o"></i></b> Save </button>
-                        <button type="button" tooltip="Reset"
-                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i
-                              class="fa fa-refresh"></i></b> Reset</button>
-                        <button type="button" tooltip="Reset"
-                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
-                          (click)="modalRef.hide()"><b><i class="fa fa-times"></i></b> Close</button>
+                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                          tooltip="Save" *ngIf="!editFlag" (click)="saveMasterData()">
+                          <b><i class="fa fa-floppy-o"></i></b> Save
+                        </button>
+                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                          tooltip="Update" *ngIf="editFlag" (click)="updateMasterData()">
+                          <b><i class="fa fa-floppy-o"></i></b> Update
+                        </button>
+                        <button type="button" tooltip="Reset" *ngIf="!viewFlag" (click)="resetData()"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                          <b><i class="fa  fa-refresh"></i></b> Reset
+                        </button>
+                        <button type="button" tooltip="Reset" *ngIf="viewFlag" (click)="resetData()"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                          <b><i class="fa  fa-refresh"></i></b> Cancel
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -545,67 +596,157 @@
                         <h3 class="font-14 text-purple font-bold">Summary</h3>
                       </div>
                       <div class="table-responsive Custom_Table">
-                        <table class="table table-striped table-hover table-bordered m-b-0">
-                          <thead class="thead-dark">
-                            <tr>
-                              <th scope="col" class="wd-15">Sr. No.</th>
-                              <th scope="col" class="wd-15"> Institution</th>
-                              <th scope="col" class="wd-20">City / Village</th>
-                              <th scope="col" class="wd-20">Nature</th>
-                              <th scope="col" class="wd-10">E/D Head</th>
-                              <th scope="col" class="wd-20">Emp. Application process</th>
-                              <th scope="col" class="wd-20">Goal</th>
-                              <th scope="col" class="wd-10">Remark</th>
-                              <th scope="col" class="wd-15">Action</th>
+                        
 
-                            </tr>
-                          </thead>
-                          <tbody>
+                        <div class="table-responsive Custom_Table">
+                          <p-table [value]="garnishmentData" class="mt-10"
+                              [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              [rowsPerPageOptions]="[10,25,50,100,200]"
+                              [style]="{'width':'100%', overflow: auto}" #dt1
+                              [globalFilterFields]="['nameOfInstitution','city','villege','nature','headMasterId',
+                              'empApplicationProcess','goal','remark']">
 
-                            <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
-                              <td><span tooltip="{{i+1}}">{{i+1}}</span>
-                              </td>
+                              <ng-template pTemplate="caption">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="float-right">
+                                              <div class="d-flex">
+                                                  <span
+                                                      class="p-input-icon-left p-ml-auto">
+                                                      <i class="pi pi-search"
+                                                          style="top: 9px !important;"></i>
+                                                      <input pInputText
+                                                          type="text"
+                                                          (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                          placeholder="Search " />
+                                                  </span>
+                                                  <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
+                                                      (click)="SummaryexportAsXLSX()"></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </ng-template>
 
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Sr. No.
+                                    </div>
+                                  </th>
 
-                              <td><span tooltip="{{summary.code}}">{{summary.nameOfInstitution}}</span>
-                              </td>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Institution
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="nameOfInstitution" pSortableColumn="nameOfInstitution"></p-sortIcon>
+                                        <p-columnFilter field="nameOfInstitution" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
-                              <td><span tooltip="{{summary.deductionHead}}">{{summary.standardName}}</span>
-                              </td>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      City / Village
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="city" pSortableColumn="city"></p-sortIcon>
+                                        <p-columnFilter field="city" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
-                              <td><span tooltip="{{summary.formula}}">{{summary.formula}}</span>
-                              </td>
-                              <td><span tooltip="{{summary.sdm}}">{{summary.sdm}}</span>
-                              </td>
-                              <td><span tooltip="{{summary.investmentSection}}">{{summary.investmentSection}}</span>
-                              </td>
-                              <td><span tooltip="{{summary.familyMember}}">{{summary.familyMember ? 'yes' : 'no'}}
-                                </span>
-                              </td>
-                              <td><span tooltip="{{summary.generalRemark}}">{{summary.isActive}}</span>
-                              </td>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Nature
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="nature" pSortableColumn="nature"></p-sortIcon>
+                                        <p-columnFilter field="nature" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      E/D Head
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="headMasterId" pSortableColumn="headMasterId"></p-sortIcon>
+                                        <p-columnFilter field="headMasterId" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
-                              <td class="wd-10">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)"
-                                  tooltip="Edit"></i>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Emp. Application process
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="empApplicationProcess" pSortableColumn="empApplicationProcess"></p-sortIcon>
+                                        <p-columnFilter field="empApplicationProcess" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
-                                  tooltip="View"></i>
-                                <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3"
-                                  (click)="deleteMaster(summary.thirdPartyMasterId)" tooltip="delete"></i>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Goal
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="goal" pSortableColumn="goal"></p-sortIcon>
+                                        <p-columnFilter field="goal" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
 
-                                <!-- <i class="fa fa-times text-red font-18" (click)="removeSelectedRow(i)"></i> -->
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Remark
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
+                                        <p-columnFilter field="remark" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+                                  <th>
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Action
+                                    </div>
+                                  </th>
+                                </tr>
+                              </ng-template>
 
-                              </td>
-                            </tr>
-                            <tr *ngIf="!summaryHtmlDataList?.length">
-                              <td colspan="10">
-                                <span class="font-14 font500 align-center text-red">No Data Available</span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                              <ng-template pTemplate="body" let-summary let-rowIndex = "rowIndex">
+                                <tr>
+                                <td><span tooltip="{{rowIndex+1}}">{{rowIndex+1}}</span></td>
+                                <td><span tooltip="{{summary.nameOfInstitution}}">{{summary.nameOfInstitution}}</span>
+                                </td>
+                                <td><span tooltip="{{summary.villege}}">{{summary.city}}/{{summary.villege}}</span></td>
+                                <td><span tooltip="{{summary.nature}}">{{summary.nature}}</span></td>
+                                <td><span tooltip="{{summary.headMasterId}}">{{summary.headMasterId}}</span></td>
+                                <td><span
+                                    *ngIf="summary.empApplicationProcess == true">Yes</span>
+                                </td>
+                                <td><span *ngIf="summary.goal == true">Yes</span></td>
+                                <td><span tooltip="{{summary.remark}}">{{summary.remark}}</span></td>
+                                <td class="wd-10">
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                    (click)="editMasterData(summary)" tooltip="Edit"></i>
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                                    (click)="viewMasterData(summary)" tooltip="View"></i>
+                                
+                                </td>
+                              </tr>  
+                              </ng-template>
+                          </p-table>
+
+                      </div>
                       </div>
                     </div>
                   </div>
@@ -621,3 +762,28 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #deleteTemp>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body mb-0 pb-0 pt-0">
+      <div class="card mb-0">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+                      <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;
+                        Are you sure want to delete?
+                   </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="removeDocumentList();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+  </div>
+</ng-template>

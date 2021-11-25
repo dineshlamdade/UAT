@@ -77,7 +77,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public familyRelationSame: boolean;
 
   public documentRemark: any;
-
+public viewCancel : boolean = false
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -179,6 +179,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       const input = this.accountNo;
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
+      this.ViewMaster(input.accountNumber);
     }
   }
 
@@ -235,6 +236,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
           branchName: res.data.results[0].branchName,
           bankAddress: res.data.results[0].address,
           bankName: res.data.results[0].bankName,
+          state: res.data.results[0].state,
+
         });
       });
     }
@@ -247,6 +250,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
           branchName: res.data.results[0].branchName,
           bankAddress: res.data.results[0].address,
           bankName: res.data.results[0].bankName,
+          state: res.data.results[0].state,
         });
       });
     }
@@ -532,8 +536,12 @@ export class InterestOnTtaMasterComponent implements OnInit {
           }
         });
       this.isShowUpdate = false;
+      this.documentArray = [];
+      this.isVisibleTable = false;
       this.isShowSave = true;
       this.documentDataArray = [];
+  
+        
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
@@ -615,6 +623,55 @@ export class InterestOnTtaMasterComponent implements OnInit {
       }
     });
   }
+  ViewMaster(accountNumber) {
+    this.viewCancel = true;
+    
+    this.isShowUpdate = false;
+    this.isShowSave = false
+    this.isEdit = true;
+    this.scrollToTop();
+    this.form.disable();
+    this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+
+      console.log(accountNumber);
+      const obj = this.findByaccountNumber(accountNumber, this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+
+
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
+      }
+    });
+  }
 
   findByaccountNumber(accountNumber, masterGridData) {
     return masterGridData.find((x) => x.accountNumber === accountNumber);
@@ -643,17 +700,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.isClear = false;
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-
-    this.isCancel = true;
-  }
+ 
 
   // On View Cancel
   cancelView() {
@@ -673,7 +720,12 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
   //---------- On View Cancel -------------------
   resetView() {
+    this.isShowUpdate = false;
+    this.viewCancel = false;
+    this.isShowSave = true;
     this.form.reset();
+    this.documentArray = [];
+    this.isVisibleTable = false;
     this.urlArray = [];
     //this.form.get('active').setValue(true);
     // this.form.get('ecs').setValue(0);

@@ -13,7 +13,7 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
   // @Input() institution: string;
   @Input() patientName: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() patientNames = new EventEmitter<any>();
+  @Output() specifiedDiseaseMasterId = new EventEmitter<any>();
 
 
   public summaryGridData: Array<any> = [];
@@ -70,11 +70,11 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
 
   jumpToMasterPage(patientName: string) {
     this.tabIndex = 1;
-    const patientNames = {
+    const specifiedDiseaseMasterId = {
       patientName: patientName,
       tabIndex: this.tabIndex,
     };
-    this.patientNames.emit(patientNames);
+    this.specifiedDiseaseMasterId.emit(specifiedDiseaseMasterId);
   }
 
 

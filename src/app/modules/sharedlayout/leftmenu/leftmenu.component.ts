@@ -180,7 +180,7 @@ public isCollapsedQuery = true;
     } )
 
     this.userData = this.authService.getprivileges()
-    console.log("userData::", this.userData);
+    //console.log("userData::", this.userData);
     this.subId = this.userData.sub
     
     this.RoleRrivilegeService.employeeRoleAssignmentUser(this.subId).subscribe(res => {
@@ -201,15 +201,15 @@ public isCollapsedQuery = true;
           actualMenuData.forEach(actualmenu => {
             privillegemenu.forEach(privillege => {
               if(privillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
-                console.log("main menu")
-                console.log(actualmenu)
+                //console.log("main menu")
+                //console.log(actualmenu)
                 if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
                   this.menuData.push(actualmenu)
                 }
               }
               if(privillege.childItems != null){
                 privillege.childItems.forEach(childprivillege => {
-                  console.log("child menu")
+                  //console.log("child menu")
                   if(childprivillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
                     if(childprivillege.modifyAccess == 1 || childprivillege.readAccess == 1 || childprivillege.writeAccess == 1 || childprivillege.deleteAccess == 1){
                       this.menuData.push(actualmenu)
@@ -217,7 +217,7 @@ public isCollapsedQuery = true;
                   }
                   if(childprivillege.childItems != null){
                     childprivillege.childItems.forEach(subchildprivillege => {
-                      console.log("sub child menu")
+                      //console.log("sub child menu")
                       if(subchildprivillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
                         if(subchildprivillege.modifyAccess == 1 || subchildprivillege.readAccess == 1 || subchildprivillege.writeAccess == 1 || subchildprivillege.deleteAccess == 1){
                           this.menuData.push(actualmenu)
@@ -243,7 +243,7 @@ public isCollapsedQuery = true;
   // [routerLink]="['/{{subMenus.routerLink}}']"
   navigateToChildMenu(link){
     let routerlink  = "'/"+link+"'"
-    console.log(routerlink)
+    //console.log(routerlink)
    this.router.navigate(['/userrolesandpermission'])
    //this.router.navigate([routerlink])
   }
@@ -358,7 +358,7 @@ public isCollapsedQuery = true;
           }
         }
       }
-      console.log( this.toggle3 );
+      //console.log( this.toggle3 );
     } );
   }
 
