@@ -97,6 +97,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   donations80GGTransactionListNewRow : Array<any> = [];
   public childNameList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
+  public viewDocumentList: Array<any> = [];
+  
   public proofSubmissionPolicyNoList: Array<any> = [];
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
@@ -387,8 +389,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -480,6 +482,9 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.Index = -1;
     formDirective.resetForm();
     this.eightyGGAForm.reset();
+    this.documentDataArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -984,8 +989,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   upload() {
 
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1130,8 +1135,12 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
+      this.ngOnInit();
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
     // this.eightyGGAForm.get('reactiveCheckbox').setValue(null);
   }
@@ -1154,6 +1163,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         console.log('proofSubmissionId edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          
+        this.viewDocumentList = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
         this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
@@ -1181,19 +1192,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
 
-        this.editTransactionUpload.forEach((element) => {
-          element.donations80GGTransactionList.forEach((innerElement) => {
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount,
-            );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount,
-            );
-          });
-        });
-        this.masterGridData.forEach((element) => {
-          element.documentInformation.forEach(element => {
-        element.documentDetailList.forEach(element => {
+        // this.editTransactionUpload.forEach((element) => {
+        //   element.donations80GGTransactionList.forEach((innerElement) => {
+        //     innerElement.declaredAmount = this.numberFormat.transform(
+        //       innerElement.declaredAmount,
+        //     );
+        //     innerElement.actualAmount = this.numberFormat.transform(
+        //       innerElement.actualAmount,
+        //     );
+        //   });
+        // });
+        // this.masterGridData.forEach((element) => {
+        //   element.documentInformation.forEach(element => {
+        this.viewDocumentList.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission': element.dateOfSubmission,
@@ -1206,8 +1217,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
             'lastModifiedTime' : element.lastModifiedTime,
           })
           })
-    });
-  });
+  //   });
+  // });
 }
 );
 this.documentArray = [];
@@ -1237,8 +1248,8 @@ this.documentArray = [];
 
      //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1373,6 +1384,9 @@ this.documentArray = [];
         }
       });
       this.resetEditVariable()
+      this.editremarkList = [];
+      this.editdocumentPassword = [];
+      this.editdDocumentDataArray = [];
   }
 
     resetEditVariable() {

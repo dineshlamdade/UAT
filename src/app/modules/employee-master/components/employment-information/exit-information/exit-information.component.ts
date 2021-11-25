@@ -42,6 +42,10 @@ export class ExitInformationComponent implements OnInit {
     private router: Router, private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
+     
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     
@@ -150,11 +154,25 @@ export class ExitInformationComponent implements OnInit {
       this.putExitSubmit(ExitInformation);
     } else {
       localStorage.setItem('LastTransaction', 'Exit');
+
+       //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.LastTransaction='Exit';        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
       this.EmploymentInformationService.postExitForm(ExitInformation).subscribe(res => {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         // this.ExitInformation = res.data.results[0];
         
         this.employeeExitInfoId = res.data.results[0].employeeExitInfoId;
+
+         //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.employeeExitInfoId=this.employeeExitInfoId;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
         localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.ExitForm.reset();

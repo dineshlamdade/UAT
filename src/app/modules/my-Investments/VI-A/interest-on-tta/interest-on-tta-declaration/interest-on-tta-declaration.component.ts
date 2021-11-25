@@ -960,7 +960,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
+    for (let i = 0; i < this.documentPassword.length; i++) {
       if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
@@ -1130,6 +1130,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.documentDataArray = [];
     this.globalSelectedAmount = '0.00';
     this.documentRemark = '';
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
   }
 
   changeReceiptAmountFormat() {
@@ -1544,8 +1547,8 @@ this.documentArray = [];
   }
 
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",

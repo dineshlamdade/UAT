@@ -401,12 +401,12 @@ public showdocument = true;
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Deposit in Saving Account 80TTA Document needed to Create Master.'
+        'Deposit in Saving Account 80TTBDocument needed to Create Master.'
       );
       return;
     }
   }
-  for (let i = 0; i <= this.documentPassword.length; i++) {
+  for (let i = 0; i < this.documentPassword.length; i++) {
     if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
@@ -425,7 +425,7 @@ public showdocument = true;
       data.proofSubmissionId = this.proofSubmissionId;
       data.remarkPasswordList = this.documentDataArray;
 
-      console.log('Interest On 80TTA ::', data);
+      console.log('Interest On 80TTB::', data);
       if (data.accountNumber) {
         this.masterGridData.forEach(results => {
           if (results.accountNumber == data.accountNumber) {

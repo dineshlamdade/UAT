@@ -972,8 +972,8 @@ selectedTransactionLenderName(lenderName: any) {
   }
 
   upload() {
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1129,6 +1129,9 @@ selectedTransactionLenderName(lenderName: any) {
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
     this.documentRemark = '';
+    this.remarkList = [];
+    this.documentPassword = [];
+    this.documentDataArray = [];
   }
 
   changeReceiptAmountFormat() {
@@ -1546,8 +1549,8 @@ this.documentArray = [];
   }
 
   public uploadUpdateTransaction() {
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",

@@ -66,6 +66,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public educationalLoanTransactionPreviousEmployerList;
   public educationalLoanTransactionList;
   public editTransactionUpload: Array<any> = [];
+  public editDocumentByPSID: Array<any> = [];
+
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
   public AccountlenderNameList: Array<any> = [];
@@ -1149,8 +1151,9 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] == undefined){
+
+    for (let i = 0; i < this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1272,8 +1275,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
               'dateofsubmission':new Date(),
               'documentType':element.documentInformationList[0].documentType,
               'documentName': element.documentInformationList[0].fileName,
-              'documentPassword':element.documentInformationList[0].documentPassword,
-              'documentRemark':element.documentInformationList[0].documentRemark,
+              'documentPassword':element.documentInformationList[0].password,
+              'documentRemark':element.documentInformationList[0].remark,
               'status' : element.documentInformationList[0].status,
               'approverName' : element.documentInformationList[0].lastModifiedBy,
               'Time' : element.documentInformationList[0].lastModifiedTime,
@@ -1331,7 +1334,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
-    this.globalSelectedAmount = '0.00';
+    this.documentDataArray = [];
+     this.globalSelectedAmount = '0.00';
   }
 
   changeReceiptAmountFormat() {
@@ -1601,7 +1605,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
-
+    this.editDocumentByPSID = [];
+    this.documentArray = [];
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
@@ -1609,20 +1614,32 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
-
     this.educationalLoanServiceService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
-
         console.log('test', res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount);
-
         this.updateReceiptAmount = res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount;
-
+        this.editDocumentByPSID = res.data.results[0].educationalLoanTransactionDocumentDetailList;
+        this.editDocumentByPSID.forEach(element => {
+          element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.password,
+              'documentRemark':element.remark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            });
+            });
+          });
         this.urlArray =
           res.data.results[0].educationalLoanTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].educationalLoanTransactionDetailList;
-          // this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
+          this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
           this.editProofSubmissionId = proofSubmissionId;
           this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
@@ -1633,42 +1650,34 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
 
-         this.editTransactionUpload.forEach(element => {
-            element.educationalLoanTransactionList.forEach(innerElement => {
 
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount);
 
-            });
-            element.educationalLoanTransactionPreviousEmployerList.forEach(innerElement => {
+        //  this.editTransactionUpload.forEach(element => {
+        //     element.educationalLoanTransactionList.forEach(innerElement => {
 
-              // innerElement.declaredAmount = this.numberFormat.transform(
-              //   innerElement.declaredAmount
-              // );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount);
+        //       innerElement.declaredAmount = this.numberFormat.transform(
+        //         innerElement.declaredAmount
+        //       );
+        //       innerElement.actualAmount = this.numberFormat.transform(
+        //         innerElement.actualAmount);
 
-            });
-            element.documentDetailList.forEach(element => {
-              // if(element!=null)
-              this.documentArray.push({
-                'dateofsubmission': element.dateOfSubmission,
-                'documentType':element.documentType,
-                'documentName': element.fileName,
-                'documentPassword':element.documentPassword,
-                'documentRemark':element.documentRemark,
-                'status' : element.status,
-                'lastModifiedBy' : element.lastModifiedBy,
-                'lastModifiedTime' : element.lastModifiedTime,
-              })
-              })
+        //     });
+        //     element.educationalLoanTransactionPreviousEmployerList.forEach(innerElement => {
 
-          });
+        //       // innerElement.declaredAmount = this.numberFormat.transform(
+        //       //   innerElement.declaredAmount
+        //       // );
+        //       innerElement.actualAmount = this.numberFormat.transform(
+        //         innerElement.actualAmount);
+
+        //     });
+
+
+        //   });
+
+
+
       });
-      this.documentArray = [];
   }
 
   public docViewer1(template3: TemplateRef<any>, index: any) {
@@ -1779,8 +1788,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   public uploadUpdateTransaction() {
 
-    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
-      if(this.editdocumentPassword[i] != undefined){
+    for (let i = 0; i < this.editremarkList.length; i++) {
+      if(this.editremarkList[i] != undefined || this.editremarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1943,7 +1952,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         }
       });
     this.currentFileUpload = null;
-    // this.editfilesArray = [];
+    this.editdDocumentDataArray = [];
   }
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);

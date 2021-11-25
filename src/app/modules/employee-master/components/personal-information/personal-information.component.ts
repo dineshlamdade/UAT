@@ -10,6 +10,7 @@ import { SharedInformationService } from './../../employee-master-services/share
 import { PersonalInfoLabels } from '../../dto-models/language-info-labels/personal-info-labels.model';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { EmpMasterLandingPageServiceService } from '../emp-master-landing-page/emp-master-landing-page-service.service';
 
 @Component({
   selector: 'app-personal-information',
@@ -35,7 +36,8 @@ export class PersonalInformationComponent implements OnInit {
   weatherOnCOCOptions = 'Yes,No'.split(',');
   allGenders = 'Male,Female,Transgender'.split(',');
   @Input() staticLabels: boolean;
-  @Input() item: any
+  @Input() item: any;
+  @Input() public data: any;
   physicallyChallenged: any
   countryList: Array<any> = [];
   @ViewChild('fileInput') el: ElementRef;
@@ -76,17 +78,39 @@ export class PersonalInformationComponent implements OnInit {
   confirmation: TemplateRef<any>;
   empBirthdateConfirmMsg: string;
   selectedLanguage: any;
+  sharedEmpData: any;
 
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private PersonalInformationService: PersonalInformationService,
     private EventEmitterService: EventEmitterService,
+    private employeelandingPageService: EmpMasterLandingPageServiceService,
     public datepipe: DatePipe,
     private router: Router, private CommonDataService: SharedInformationService,
     private modalService: BsModalService, private SharedInformationService: SharedInformationService) { }
 
   ngOnInit(): void {
+this.sharedEmpData=[];
+   this.sharedEmpData = this.employeelandingPageService.getSharedEmployeeData();
+    if(this.sharedEmpData){
+      this.employeeMasterId = this.sharedEmpData.employeeMasterId;
+      
+      //adEmp - admin this.getEmployeeData;
+      var adEmp = {employeeMasterId : this.sharedEmpData.employeeMasterId}
+      localStorage.setItem("adEmp",JSON.stringify(adEmp));
+    //   var myObj = JSON.parse(localStorage.getItem("adEmp"));
+
+    //  localStorage.setItem("adEmp",JSON.stringify(myObj));
+    //  console.log('checkdata',JSON.parse(localStorage.getItem("adEmp")).personal);
+
+     // localStorage.getItem("AdminEmp");
+
+      
+   //commented for object
+      localStorage.setItem('employeeMasterId', JSON.stringify(this.employeeMasterId))
+    }
+
     this.BasicInfoForm = this.formBuilder.group({
       employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
@@ -97,10 +121,10 @@ export class PersonalInformationComponent implements OnInit {
       lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       fullName: [{ value: null, disabled: true },],
       displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      fatherName:['',Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      motherName:['',Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      fatherName:['',Validators.compose([ Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      motherName:['',Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       husbandName:['',Validators.compose([ Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      birthDate: [this.tomorrow, Validators.required],
+      birthDate: [Validators.required, this.tomorrow, Validators.required],
       bloodGroup: [''],
       maritalStatus: [''],
       nationality: [''],
@@ -120,13 +144,11 @@ export class PersonalInformationComponent implements OnInit {
     });
 
 
-    const empId = localStorage.getItem('employeeMasterId')
-    this.employeeMasterId = Number(empId);
+    // const empId = localStorage.getItem('employeeMasterId')
+    // this.employeeMasterId = Number(empId);
 
     this.selectedLanguage = localStorage.getItem('selectedLanguage');
-    // if(this.selectedLanguage == 'hi'){
-    //   this.selectedLanguage = 'hindi';
-    // }
+  
 
     this.Physically = 'No';
     this.expatBoolean1 = 'No';
@@ -169,7 +191,11 @@ export class PersonalInformationComponent implements OnInit {
         this.employeeMasterId = null;
         setTimeout(() => {
           this.employeeMasterId = element.employeeMasterId;
-          localStorage.setItem('employeeMasterId', element.employeeMasterId)
+
+      var myObj = JSON.parse(localStorage.getItem("adEmp")).employeeMasterId=element.employeeMasterId;
+      localStorage.setItem("adEmp",JSON.stringify(myObj));
+
+      //    localStorage.setItem('employeeMasterId', element.employeeMasterId)
           this.getEmployeeData();
         }, 400)
         this.rejoinee = element.rejoinee;
@@ -510,6 +536,15 @@ export class PersonalInformationComponent implements OnInit {
         this.personalInformationModel = res.data.results[0];
         this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO
         this.internationalWorkerRequestDTO = res.data.results[0].internationalWorkerResponseDTO;
+
+        var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        myObj.employeeMasterId=res.data.results[0].employeeMasterId;  
+        
+        myObj.birthDate=this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth;
+        myObj.employeeCode =res.data.results[0].employeeMasterResponseDTO.employeeCode;
+
+         localStorage.setItem("adEmp",JSON.stringify(myObj));
+
         localStorage.setItem('employeeMasterId', res.data.results[0].employeeMasterId);
         localStorage.setItem('birthDate', this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         // this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
@@ -538,11 +573,21 @@ export class PersonalInformationComponent implements OnInit {
         this.personalInformationModel = res.data.results[0];
         this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
         localStorage.setItem('birthDate', this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+
+        // var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        // myObj.birthDate=this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth;  
+        // localStorage.setItem("adEmp",JSON.stringify(myObj));
         // this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
 
         if (res.data.results[0].imageResponseDTO) {
           this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
         }
+
+        var myObj = JSON.parse(localStorage.getItem("adEmp"));
+        myObj.employeeMasterId=res.data.results[0].employeeMasterId; 
+        myObj.employeeCode=res.data.results[0].employeeMasterResponseDTO.employeeCode;  
+        localStorage.setItem("adEmp",JSON.stringify(myObj));
+
         localStorage.setItem('employeeMasterId', res.data.results[0].employeeMasterId);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode);
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
@@ -595,6 +640,12 @@ export class PersonalInformationComponent implements OnInit {
     if (res.data.results[0].imageResponseDTO) {
       this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
     }
+
+    var myObj = JSON.parse(localStorage.getItem("adEmp"));
+    myObj.birthDate=this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth; 
+    myObj.fullName=this.personalInformationModel.employeeMasterRequestDTO.fullName;  
+    localStorage.setItem("adEmp",JSON.stringify(myObj))
+
     localStorage.setItem('birthDate', this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
     localStorage.setItem('fullName', this.personalInformationModel.employeeMasterRequestDTO.fullName);
 
@@ -742,6 +793,11 @@ export class PersonalInformationComponent implements OnInit {
     this.exportFullNameToIdentityInformation = this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.middleName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.lastName;
+
+      // var myObj = JSON.parse(localStorage.getItem("adEmp"));     
+      // myObj.fullName=this.exportFullNameToIdentityInformation;  
+      // localStorage.setItem("adEmp",JSON.stringify(myObj))
+
     localStorage.setItem('fullName', this.exportFullNameToIdentityInformation);
     this.formTouch();
   }
@@ -949,5 +1005,7 @@ export class PersonalInformationComponent implements OnInit {
     return;
   }
 
-  
+  GetAdminPageData(event){
+    console.log(event);
+  }
 }

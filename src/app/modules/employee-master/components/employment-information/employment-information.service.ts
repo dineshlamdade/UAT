@@ -48,9 +48,10 @@ export class EmploymentInformationService {
       }))
   }
 
-  getReJoiningInformation(employeeMasterId) {
+  getReJoiningInformation() {
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employment-info/rejoining/employementInfoId/' + employeeMasterId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+    return this.httpClient.get(environment.baseUrl8082 + '/employment-info/rejoining/employementInfoId/')
+   
       .pipe(map((res: any) => {
         return res;
       }))

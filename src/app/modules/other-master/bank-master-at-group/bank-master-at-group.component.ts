@@ -1,11 +1,10 @@
-import { error } from '@angular/compiler/src/util';
 import { Component, OnInit, TemplateRef, } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { id } from 'date-fns/locale';
-import { combineLatest } from 'rxjs';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from './bank-master-at-group.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-bank-master-at-group',
@@ -37,15 +36,17 @@ export class BankMasterAtGroupComponent implements OnInit {
   companyBankMasterId: number;
   isIfscCodeValid: boolean = false;
 
+  header: any[];
+  excelData: any[];
 
-
-  constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private bankMasterAtGroupService: BankMasterAtGroupService, private alertService: AlertServiceService) {
+  constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private bankMasterAtGroupService: BankMasterAtGroupService,
+     private alertService: AlertServiceService,private excelservice: ExcelserviceService) {
     this.form = this.formBuilder.group({
       ifscCode: new FormControl('', Validators.required),
       bankName: new FormControl({ value: '', disabled: true }),
       branchName: new FormControl({ value: '', disabled: true }),
       branchAddress: new FormControl({ value: '', disabled: true }),
-      // state: new FormControl(''),
+      // state: new FormControl(''),branchAddress
       country: new FormControl({ value: '', disabled: true }),
     });
 
@@ -69,6 +70,7 @@ export class BankMasterAtGroupComponent implements OnInit {
     this.summaryHtmlDataList = [];
     this.bankMasterDetailsResponse = {};
     this.bankMasterAtGroupService.getBankMasterDetails().subscribe((res) => {
+      
       console.log('getBankMasterDetails', res);
       this.bankMasterDetailsResponse = res.data.results;
 
@@ -78,6 +80,7 @@ export class BankMasterAtGroupComponent implements OnInit {
           SrNo: i++,
           bankName: element.bankName,
           branchName: element.branchName,
+          branchAddress:element.branchAddress,
           companyBankMasterId: element.companyBankMasterId,
           ifscCode: element.ifscCode,
           isActive: element.isActive,
@@ -215,6 +218,8 @@ export class BankMasterAtGroupComponent implements OnInit {
       ifscCode: this.form.get('ifscCode').value,
       bankName: this.form.get('bankName').value,
       branchName: this.form.get('branchName').value,
+      //change bug 12
+      branchAddress: this.form.get('branchAddress').value,
 
     });
     console.log(JSON.stringify(saveData));
@@ -373,4 +378,51 @@ export class BankMasterAtGroupComponent implements OnInit {
   clickedOnYes() {
     this.DeleteBankMaster(this.companyBankMasterId);
   }
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["IFSC","Bank Name","Branch Name","Branch Address"];
+    this.excelData=[];
+    
+    if(this.summaryHtmlDataList.length>0){
+    this.summaryHtmlDataList.forEach(element => {
+      let obj = {
+        "IFSC":element.ifscCode,
+        "Bank Name":element.bankName,
+        "Branch Name": element.branchName,
+        "Branch address":element.branchAddress,
+       
+      
+      }
+      this.excelData.push(obj)
+    });
+    console.log('this.excelData::', this.excelData);
+  }
+   
+    this.excelservice.exportAsExcelFile(this.excelData, 'Bank Master At Group','Bank Master At Group',this.header);
+  
+  }
+
+  //Sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
 }

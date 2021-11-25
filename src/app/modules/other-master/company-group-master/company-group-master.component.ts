@@ -7,6 +7,10 @@ import { CompanyGroupMasterService } from './company-group-master.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 import { ShortenStringPipe } from './../../../core/utility/pipes/shorten-string.pipe';
+
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { trackByHourSegment } from 'angular-calendar/modules/common/util';
+import { SortEvent } from 'primeng/api';
 @Component( {
   selector: 'app-company-group-master',
   templateUrl: './company-group-master.component.html',
@@ -38,8 +42,15 @@ export class CompanyGroupMasterComponent implements OnInit {
   scaleList = [];
   summaryHtmlDataList = [];
   public form: any = FormGroup;
+
+  header: any[];
+  excelData: any[];
+  isActive: boolean = true;
+
+  // hideRemark=false;
+
   constructor( private shortenString: ShortenStringPipe, private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private datePipe: DatePipe,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       companyGroupCode: new FormControl( { value: null, disabled: true } ),
       companyGroupName: new FormControl( null, Validators.required ),
@@ -116,6 +127,13 @@ export class CompanyGroupMasterComponent implements OnInit {
   onSelectReasonForExit() {
     console.log( this.form.value.reasonForExit );
   }
+  // deactiveActiveCheckBox(event) {
+  //   if(event.checked){
+  //     this.isActive = true
+  //   }else{
+  //     this.isActive = false
+  //   }
+  //   this.form.controls['companyGroupActive'].setValue(this.isActive)
   deactiveActiveCheckBox() {
     this.deactivateRemark();
   }
@@ -211,6 +229,8 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.companyGroupId = -1;
     this.form.get( 'companyGroupActive' ).setValue( true );
     this.saveFormValidation();
+//change 
+    // this.hideRemark=false;
 
 
   }
@@ -243,7 +263,7 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.index = this.summaryHtmlDataList.findIndex( function ( rowData ) {
       return rowData.companyGroupId === companyGroupId;
     } );
-    console.log( this.masterGridDataList );
+    console.log( this.masterGridDataList[i] );
     this.form.patchValue( this.masterGridDataList[i] );
 
     this.form.controls['endDate'].clearValidators();
@@ -251,16 +271,23 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.controls["endDate"].updateValueAndValidity();
     this.form.controls["remark"].updateValueAndValidity();
     this.form.get( 'companyGroupCode' ).disable();
+    
     this.form.get( 'companyGroupActive' ).disable();
+
+    // this.form.get( 'companyGroupActive' ).enable();
     this.deactivateRemark();
   }
   viewMaster( i: number, companyGroupId: number ) {
     window.scrollTo( 0, 0 );
     this.showButtonSaveAndReset = false;
+    // this.showButtonSaveAndReset = true;
 
     this.form.reset();
     this.form.patchValue( this.masterGridDataList[i] );
+    // this.form.get('companyGroupActive').enable();
     this.form.disable();
+
+    
   }
   refreshHtmlTableData() {
     this.summaryHtmlDataList = [];
@@ -279,8 +306,11 @@ export class CompanyGroupMasterComponent implements OnInit {
           shortenCompanyGroupName: this.shortenString.transform( element.companyGroupName ),
           shortName: element.shortName,
           shortenShortName: this.shortenString.transform( element.shortName ),
-          StartDate: element.startDate,
-          EndDate: element.endDate,
+
+          // StartDate: element.startDate,
+          StartDate: new Date(element.startDate),
+          // EndDate: element.endDate,
+          EndDate:new Date(element.endDate),
           ReasonforExit: element.reasonForExit,
           Scale: element.scale,
           companyGroupId: element.companyGroupId,
@@ -301,6 +331,7 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.get( 'reasonForExit' ).disable();
     this.form.get( 'remark' ).disable();
     this.form.get( 'companyGroupActive' ).disable();
+    
     this.form.get( 'companyGroupActive' ).setValue( true );
 
 
@@ -325,8 +356,10 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.controls["startDate"].setValidators( Validators.required );
     this.form.controls["startDate"].updateValueAndValidity();
 
+    
     this.form.get( 'companyGroupActive' ).setValue( true );
     this.form.get( 'companyGroupActive' ).disable();
+   
     this.form.get( 'endDate' ).disable();
     this.form.patchValue( {
       scale: '',
@@ -407,18 +440,48 @@ export class CompanyGroupMasterComponent implements OnInit {
   }
   deactivateRemark() {
 
+    
+//Change 
+    // if ( this.form.get( 'companyGroupActive' ).value === false ) {
+      
     if ( this.form.get( 'companyGroupActive' ).value === false ) {
       this.form.get( 'remark' ).enable();
       /// this.hideRemarkDiv = false;
 
       this.form.get( 'remark' ).setValidators( [Validators.required] );
+      // this.isActive = false
     } else {
       // this.form.get('remark').clearValidators();
       //  this.hideRemarkDiv = true;
       // this.form.get('remark').disable();
       // this.form.get('remark').reset();
+      //change
+      //  this.form.get('companyGroupActive').enable();
+      //  this.isActive = true
     }
   }
+
+//  deactivateRemark() {
+//     console.log( 'in deactive remakr' );
+
+//     if ( this.form.get( 'companyGroupActive' ).value === false ) {
+//       this.form.get( 'remark' ).enable();
+//       this.hideRemark = true;
+//       this.form.controls['remark'].setValidators( Validators.required );
+//       this.form.controls['remark'].updateValueAndValidity();
+//     } else {
+//       this.hideRemark = false;
+
+//       // this.form.get('remark').disable();
+//       // this.form.controls['remark'].clearValidator();
+
+//       this.form.controls["remark"].clearValidators();
+//       this.form.controls["remark"].updateValueAndValidity();
+//       // this.form.get('remark').reset();
+//     }
+//   } 
+
+
   // get remark1(){
   //   const temp = <FormGroup>this.form.control.remark;
   //   return temp.controls.remark;
@@ -504,4 +567,57 @@ export class CompanyGroupMasterComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  //Excel
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Code","Name","Short Name","Scale","Engagement Start Date","Engagement End Date","Service Age","Reason For Exit"];
+    this.excelData=[];
+    
+    if(this.summaryHtmlDataList.length>0){
+    this.summaryHtmlDataList.forEach(element => {
+      let obj = {
+        "Code":element.companyGroupCode,
+        "Name":element.shortenCompanyGroupName,
+        "Short Name": element.shortenShortName,
+        "Scale":element.Scale,
+        "Engagement Start Date":element.StartDate,
+        "Engagement End Date":element.EndDate,
+        "Service Age":element.servicePeriodShort,
+        "Reason For Exit":element.ReasonforExit,
+      
+      }
+      this.excelData.push(obj)
+    });
+    console.log('this.excelData::', this.excelData);
+  }
+   
+    this.excelservice.exportAsExcelFile(this.excelData, 'Company Group Master','Company Group Master',this.header);
+  
+  }
+
+  //Sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
+  
 }

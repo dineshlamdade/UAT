@@ -157,6 +157,11 @@ export class NpsDeclarationComponent implements OnInit {
   public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
+  
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate: boolean;
+
   public isClear: boolean;
   public isCancel: boolean;
   public financialYear: any;
@@ -321,6 +326,16 @@ export class NpsDeclarationComponent implements OnInit {
     this.selectedTransactionInstName('All');
   }
 
+
+   // -------- On Policy selection show all transactions list accordingly all policies---------
+   selectedPolicy(policy: any) {
+    this.globalPolicy = policy;
+    this.getTransactionFilterData(
+      this.globalInstitution,
+      this.globalPolicy,
+      null,
+    );
+  }
   public getInstitutionListWithPolicyNo() {
 
     const data = {
@@ -886,8 +901,8 @@ export class NpsDeclarationComponent implements OnInit {
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -1363,6 +1378,23 @@ export class NpsDeclarationComponent implements OnInit {
           //   'lastModifiedTime' : element.lastModifiedTime,
           //
           // })
+        });
+
+        this.editTransactionUpload.forEach((element) => {
+          // this.initialArrayIndex.push(
+          //   element.investmentGroupTransactionDetail.length
+          // );
+
+          // format the amount from current emp list
+          element.investmentGroupTransactionDetail.forEach((item) => {
+            item.groupTransactionList.forEach((evt) => {
+            evt.declaredAmount = this.numberFormat.transform(
+              evt.declaredAmount
+            );
+            evt.actualAmount = this.numberFormat.transform(evt.actualAmount);
+          });
+
+        });
         });
         //console.log(this.urlArray);
         // this.urlArray.forEach((element) => {

@@ -58,7 +58,6 @@ export class MasterComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
-  public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public glbalECS: number;
@@ -66,6 +65,10 @@ export class MasterComponent implements OnInit {
   public Index: number;
   public showUpdateButton: boolean;
   public isEdit: boolean = false;
+  public isCancelShow: boolean = false;
+  public isUpdateShow: boolean = false;
+  public isSaveShow: boolean = true;
+
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
@@ -181,6 +184,8 @@ export class MasterComponent implements OnInit {
       const input = this.disabilityTypeName;
       this.editMaster(input.disabilityType);
       console.log('editMaster disabilityType', input.disabilityType);
+      this.viewMaster(input.disabilityType);
+      console.log('editMaster disabilityType', input.disabilityType);
     }
   }
 
@@ -206,13 +211,23 @@ export class MasterComponent implements OnInit {
     this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
+
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
         if (element.relation !== 'Self') {
-          this.familyMemberName.push(obj);
+          this.masterGridData.forEach((element) => {
+
+            // remove saved family member from dropdown
+            const index = this.familyMemberNameList.findIndex(item => item.label == element.familyMemberName)
+
+            if (index > -1) {
+              this.familyMemberNameList.splice(index, 1);
+            }
+          })
+          this.familyMemberNameList.push(obj);
         }
       });
     });
@@ -224,12 +239,13 @@ export class MasterComponent implements OnInit {
       this.form.get('relationship').setValue(null);
       this.isRadioButtonDisabled = true;
     }
+
     const toSelect = this.familyMemberGroup.find(
       (element) => element.familyMemberName == this.form.get('familyMemberName').value
 
     );
 
-    console.log("familyMemberInfoId:,",this.familyMemberName)
+    console.log("familyMemberInfoId:,",this.familyMemberNameList)
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
 
@@ -265,10 +281,10 @@ export class MasterComponent implements OnInit {
       this.masterGridData.forEach((element) => {
 
                 // remove saved family member from dropdown
-                const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+                const index = this.familyMemberNameList.findIndex(item => item.label == element.familyMemberName)
 
                 if (index > -1) {
-                  this.familyMemberName.splice(index, 1);
+                  this.familyMemberNameList.splice(index, 1);
                 }
                 element.documentInformationList.forEach(element => {
                   // if(element!=null)
@@ -320,8 +336,8 @@ export class MasterComponent implements OnInit {
     }
   }
 
-  for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] == undefined){
+  for (let i = 0; i < this.documentPassword.length; i++) {
+    if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -413,6 +429,7 @@ export class MasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('isClaiming80U').setValue(0);
+      this.documentDataArray  = [];
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
@@ -477,6 +494,9 @@ export class MasterComponent implements OnInit {
   }
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
+    this.isCancelShow = false;
+    this.isSaveShow = false;
+    this.isUpdateShow = true;
     this.isEdit = true;
     this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
@@ -550,7 +570,13 @@ export class MasterComponent implements OnInit {
 
   // On Edit Cancel
   resetView() {
+    this.isCancelShow = false;
+    this.isSaveShow = true;
+    this.isUpdateShow = false;
+    this.isVisibleTable = false;
     this.form.reset();
+    this.documentDataArray  = [];
+    this.documentArray = [];
     this.form.get('isClaiming80U').setValue(0);
     this.urlArray = [];
     this.paymentDetailGridData = [];
@@ -564,24 +590,94 @@ export class MasterComponent implements OnInit {
 
 
   // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
+  // viewMaster(disabilityType) {
+  //   this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   this.form.get('isClaiming80U').setValue(0);
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   this.isCancel = true;
+  // }
+  viewMaster(disabilityType) {
+    this.isCancelShow = true;
+    this.isSaveShow = false;
+    this.isUpdateShow = false;
+    this.form.disable();
+    this.isEdit = true;
+    this.scrollToTop();
     this.isCancel = true;
-  }
+    this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
 
+      console.log('masterGridData::', res);
+
+      this.masterGridData = res.data.results;
+
+      console.log('masterGridData::', res);
+
+      this.disability = res.data.results[0].disability;
+      this.severity = res.data.results[0].severity;
+      console.log(disabilityType)
+      const obj =  this.findBydisabilityType(disabilityType,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+      this.paymentDetailGridData = obj.familyMemberName;
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.disabilityType;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      // this.urlArray = obj.documentInformationList;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
+      this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
+
+      }
+    });
+
+  }
   // On View Cancel
   cancelView() {
-    this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('isClaiming80U').setValue(0);
-    this.showUpdateButton = false;
-    this.paymentDetailGridData = [];
-    this.isCancel = false;
+    this.form.enable()
+    this.form.get('relationship').disable()
+    this.isCancelShow = false;
+     this.isSaveShow = true;
+     this.isUpdateShow = false;
+     this.isCancelShow = false;
+     this.isSaveShow = true;
+     this.isUpdateShow = false;
+     this.isVisibleTable = false;
+     this.form.reset();
+     this.documentDataArray  = [];
+     this.documentArray = [];
+     this.form.get('isClaiming80U').setValue(0);
+     this.urlArray = [];
+     this.paymentDetailGridData = [];
+     this.isClear = false;
+     this.showUpdateButton = false;
+     this.urlArray = [];
+     this.masterfilesArray = [];
+     this.documentRemark = [];
   }
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(

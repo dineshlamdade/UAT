@@ -72,6 +72,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
   public isShowUpdate = false;
+  public isShow :boolean;
   public isShowSave = true;
   documentPassword =[];
   remarkList =[];
@@ -177,6 +178,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+    this.form.enable();
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
@@ -367,7 +369,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
 console.log('this.isEdit', this.isEdit);
 
-  if(!this.isEdit){
+  if(!this.isEdit){ 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
@@ -384,8 +386,8 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.remarkList.length; i++) {
-        if(this.remarkList[i] == undefined){
+      for (let i = 0; i < this.remarkList.length; i++) {
+        if(this.remarkList[i] == undefined || this.remarkList[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -590,7 +592,68 @@ console.log('this.isEdit', this.isEdit);
    editMaster(vehicleNumber) {
     this.isShowUpdate = true;
     this.isShowSave = false;
+    this.isShow=false
     this.isEdit = true;
+    this.form.enable();
+    this.scrollToTop();
+    this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
+      this.isVisibleTable = true;
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.loanStartDate = new Date(element.loanStartDate);
+        element.loanEndDate = new Date(element.loanEndDate);
+      });
+
+      console.log(vehicleNumber)
+      const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.vehicleNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      // this.urlArray = obj.rcBook;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
+      this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+
+      obj.documentInformationList.forEach(element => {
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+
+      });
+      console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
+
+      }
+    });
+
+  }
+
+  // On Master view functionality
+  viewMaster(vehicleNumber) {
+    this.isShowUpdate = false;
+    this.isShowSave = false;
+    this.isShow=true
+    this.isEdit = true;
+    this.form.disable();
     this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
       this.isVisibleTable = true;
@@ -669,27 +732,12 @@ console.log('this.isEdit', this.isEdit);
     this.isClear = false;
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
-
-
-  //---------- On View Cancel -------------------
+  //---------- On reset Cancel -------------------
   resetView() {
     this.isShowUpdate = false;
     this.isShowSave =  true;
+    this.isShow=false;
+    this.form.enable();
     this.documentArray = [];
     this.isVisibleTable = false
     this.form.reset();
