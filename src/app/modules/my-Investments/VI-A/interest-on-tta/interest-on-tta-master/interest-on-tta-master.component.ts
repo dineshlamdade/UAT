@@ -179,7 +179,7 @@ public viewCancel : boolean = false
       const input = this.accountNo;
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
-      this.ViewMaster(input.accountNumber);
+      // this.ViewMaster(input.accountNumber);
     }
   }
 
@@ -580,7 +580,14 @@ public viewCancel : boolean = false
   editMaster(accountNumber) {
     this.isShowUpdate = true
     this.isShowSave = false
+    this.viewCancel= false;
     this.isEdit = true;
+    this.form.enable();
+    this.form.get("bankName").disable();
+    this.form.get("branchName").disable();
+    this.form.get("bankAddress").disable();
+    this.form.get("state").disable();
+
     this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -625,7 +632,6 @@ public viewCancel : boolean = false
   }
   ViewMaster(accountNumber) {
     this.viewCancel = true;
-    
     this.isShowUpdate = false;
     this.isShowSave = false
     this.isEdit = true;
@@ -724,6 +730,13 @@ public viewCancel : boolean = false
     this.viewCancel = false;
     this.isShowSave = true;
     this.form.reset();
+    this.form.enable();
+
+    this.form.get("bankName").disable();
+    this.form.get("branchName").disable();
+    this.form.get("bankAddress").disable();
+    this.form.get("state").disable();
+
     this.documentArray = [];
     this.isVisibleTable = false;
     this.urlArray = [];
