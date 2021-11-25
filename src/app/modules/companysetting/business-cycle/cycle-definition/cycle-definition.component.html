@@ -54,19 +54,18 @@
         <br>
         <br>
         <br>
-        <div class="col-sm-6 col-md-3">
-          <label class="form-label">Last Cycle Crossing financial Year</label>
-          <select class="form-control">
+        <div class="col-sm-6 col-md-3" *ngIf="frequencyId == 2 || frequencyId == 3 || frequencyId == 5">
+          <label class="form-label">Last Cycle Crossing Business Year</label>
+          <select formControlName="lastCycleCrossByYear" class="form-control">
             <option selected value=''>Select</option>
-            <option value="Do Nothing">Do Nothing</option>
-            <option value="Force Stop Till Business Year Ends">Force Stop Till Business Year Ends</option>
+            <option value="No Change">No Change</option>
+            <option value="Force Stop Till Business Year End">Force Stop Till Business Year End</option>
             <option value="Remove Last Cycle">Remove Last Cycle</option>
           </select>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
+        <!-- <br>
+        <br> -->
+        
 
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
@@ -113,11 +112,11 @@
               class="fa fa-floppy-o"></i></b>
           Save</button>
 
-        <button type="submit" *ngIf="CycleupdateFlag1"
+        <!-- <button type="submit" *ngIf="CycleupdateFlag1"
           [ngClass]="{'disabled-btn-bg-green' : cycleDefinitionForm.invalid,'btn-bg-green': !cycleDefinitionForm.invalid}"
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
               class="fa fa-floppy-o"></i></b>
-          Update</button>
+          Update</button> -->
 
         <button type="button" (click)="CancelBusiness()" *ngIf="CycleupdateFlag"
           class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b><i
@@ -219,6 +218,18 @@
                   </div>
                 </th>
 
+                <th colspan="1">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Last Cycle Crossing financial Year
+
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="lastCycleCrossByYear"></p-sortIcon>
+                      <p-columnFilter type="text" field="lastCycleCrossByYear" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+                    </div>
+                  </div>
+                </th>
+
 
 
                 <th rowspan="1" class="wd-10 text-center">
@@ -255,7 +266,7 @@
                 </th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <!-- <th></th> -->
+                <th scope="col"></th>
 
               </tr>
 
@@ -282,6 +293,9 @@
                     | date: 'dd-MMM'}}</label>
                 </td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0"></label>{{user1.incompleteDaysFalls}}
+                </td>
+
+                <td class="bg-color-light_gray"><label class="form-lable mb-0"></label>{{user1.lastCycleCrossByYear}}
                 </td>
 
                 <td class="wd-10 text-center">
