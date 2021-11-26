@@ -6,8 +6,8 @@
 
   },
   "compilerOptions": {
-     "strictTemplates": false,
-    "strictInjectionParameters": true,
+    //  "strictTemplates": false,
+    // "strictInjectionParameters": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
