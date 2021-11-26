@@ -124,6 +124,7 @@
               <th rowspan="2" class="wd-7 font700"><span tooltip="Remark">Remark</span></th>
               <th rowspan="2" class="wd-4"><span tooltip="PS ID">PS ID</span></th>
               <th rowspan="2" class="wd-8 font700"><span tooltip="Status">Status</span></th>
+              <th rowspan="2" class="wd-8 font700"><span tooltip="Status">Action</span></th>
             </tr>
             <tr>
               <th>Rejected</th>
@@ -149,6 +150,7 @@
               <th rowspan="2" class="wd-10 font700">Remark</th>
               <th rowspan="2" class="wd-4">PS.ID.</th>
               <th rowspan="2" class="wd-20 font700">Status</th>
+              <th rowspan="2" class="wd-20 font700">Action</th>
             </tr>
             <tr>
               <th>Rejected</th>
@@ -374,6 +376,16 @@
                     {{ summary.transactionStatus }}
                   </span>
               </td>
+              <td>
+                <i *ngIf="canEdit" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                  editViewTransaction(
+                      template2,
+                      summary.proofSubmissionId
+                    );
+                    viewTransactionDetail = true
+                  " tooltip="Edit"></i>
+
+              </td>
             </tr>
             <tr *ngIf="!isDisabled && canEdit && item.frequency!='SinglePremium'">
 
@@ -393,9 +405,45 @@
               </td>
             </tr>
             <tr>
+              <td  class="bg-lightgray font-18 font700 wd-10">Total</td>
+              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray wd-10 font-18 font700 align-right"></td>
+               <!-- <td class="bg-lightgray wd-10 font-18 font700 align-right"></td>  -->
+              <td class="bg-lightgray font-18 wd-10 font700 align-right">
+                  <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.declarationTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-10"></td>
+              <td class="bg-lightgray wd-10 font-18 font700 align-right"></td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-10">
+                  <span
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
+                    class="padding-right-12"
+                  >
+
+                    {{ item.actualTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-10">
+                  <span tooltip=" {{ item.totalRejectedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalRejectedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-10">
+                  <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalApprovedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 wd-10"></td>
+              <td class="bg-lightgray font-18 font700 wd-10"></td>
+              <td class="bg-lightgray font-18 font700 wd-10"></td>
+              <td class="bg-lightgray wd-10 font-18 font700 align-right"></td> 
+              
+              
+            </tr>
+            <!-- <tr>
               <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
-              <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td> -->
-              <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+             
               <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -425,7 +473,7 @@
               <td class="bg-lightgray font-18 font700"></td>
               <td class="bg-lightgray font-18 font700"></td>
               <td class="bg-lightgray font-18 font700"></td>
-            </tr>
+            </tr> -->
             </tbody>
           </table>
         </div>
@@ -440,14 +488,85 @@
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
           <tbody>
           <tr>
-            <td class="bg-gray font-18 font700 wd-14">Grand Total</td>
+            <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
+            <td class="bg-gray font-18 font700 align-right wd-11"></td>
             <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
-            <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
-            <!-- <td class="bg-lightgray font-18 font700 align-right">
+            <td class="bg-lightgray font-18 font700 align-right wd-10">
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
                 </span>
-            </td> -->
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-11"></td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ grandActualTotal | number: '1.2-2' }}"
+                >
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <!-- placement="left" -->
+          </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+          <tbody>
+          <tr>
+            <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
+            <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
+            <td class="bg-gray font-18 font700 align-right wd-11"></td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-11"></td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row mt-15" *ngIf="transactionDetail?.length">
+    <div class="col-12">
+      <div class="table-responsive Custom_Table">
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
+          <tbody>
+          <tr>
+            <td colspan="2" class="bg-gray font-18 font700 wd-14">Grand Total</td>
+            
             <td class="bg-lightgray font-18 font700 align-right">
               <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                 {{ grandDeclarationTotal | number: "1.2-2" }}
@@ -476,7 +595,7 @@
             <td class="bg-gray font-18 font700 wd-7"></td>
             <td class="bg-gray font-18 font700 wd-4"></td>
             <td class="bg-gray font-18 font700 wd-10"></td>
-            <!-- placement="left" -->
+           
           </tr>
           </tbody>
         </table>
@@ -484,8 +603,7 @@
           <tbody>
           <tr>
             <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
-            <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
-            <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
+           
             <td class="bg-gray font-18 font700 align-right wd-9">
                 <span class="padding-right-12" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
@@ -516,7 +634,7 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -1705,7 +1823,7 @@
               <div class="row mt-30">
                 <div class="col-12">
                   <div class="card">
-                    <div class="mb-0">
+                    <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">
                         Document Summary
                       </h3>

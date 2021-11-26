@@ -387,10 +387,12 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
               ''
             );
           }
-          
+          debugger
           this.documentDetailList =
             res.data.results[0].documentList;
           this.getTransactionInfoByPSID(res.data.results[0].body.data.results[0].psidDetail.psid);
+          this.getEmployeeInfo(60);
+ this.getTransactionInfoByPSID(this.globalPSID);
           // this.getTransactionInfoByPSID(this.globalPSID);
         }
         this.documentList = [];
@@ -673,8 +675,9 @@ public postMethodCall(data):void{
             transWithMaster.transactionDetailList.forEach((transaction)=>{
               transaction.amountApproved = this.numberFormatPipe.transform(transaction.amountApproved)
               transaction.amountRejected = this.numberFormatPipe.transform(transaction.amountRejected)
-           
-             
+           debugger
+              this.getEmployeeInfo(60);
+ this.getTransactionInfoByPSID(this.globalPSID);
             });
           });
         }
