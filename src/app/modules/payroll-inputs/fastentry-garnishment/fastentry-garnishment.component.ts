@@ -150,7 +150,10 @@ export class FastentryGarnishmentComponent implements OnInit {
 
   /** e&d head */
   payrollheadmaster(){
-    this.garnishmentservice.payrollheadmaster().subscribe(res =>{
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Garnishment');
+    
+    this.garnishmentservice.payrollheadmaster(formdata).subscribe(res =>{
       this.headData = res.data.results
     })
   }

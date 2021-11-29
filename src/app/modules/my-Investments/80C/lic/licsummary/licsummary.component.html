@@ -6,11 +6,11 @@
               <thead class="thead-dark">
                  <tr>
                     <th scope="col" class="wd-20">Institution</th>
-                    <th scope="col" class="wd-5">Policy no.</th>
-                    <th scope="col" class="wd-5">Policy Holder Name</th>
-                    <th scope="col" class="wd-3">Declared Amount</th>
-                    <th scope="col" class="wd-5">Actual Amount</th>
-                    <th scope="col" class="wd-15">Action</th>
+                    <th scope="col" class="wd-6">Policy no.</th>
+                    <th scope="col" class="wd-6">Policy Holder Name</th>
+                    <th scope="col" class="wd-6">Declared Amount</th>
+                    <th scope="col" class="wd-6">Actual Amount</th>
+                    <th scope="col" class="wd-6">Action</th>
                  </tr>
               </thead>
               <tbody>
@@ -19,9 +19,9 @@
                     <td class="text-link wd-20 align-left" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" (click)="jumpToMasterPage(summary.licMasterId)">
                        <span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
                     </td>
-                    <td class="wd-5 align-right"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
+                    <td class="wd-6 align-right"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
                     </td>
-                    <td class="wd-5 align-left">
+                    <td class="wd-6 align-left">
                        <span tooltip="{{summary.policyholdername}}">
                        {{summary.policyholdername}}
                        </span>
@@ -31,12 +31,12 @@
                        {{summary.declaredAmount | number:'1.2-2'}}
                        </span>
                     </td>
-                    <td class="wd-5 align-right">
+                    <td class="wd-6 align-right">
                        <span  class="padding-right-9" tooltip="{{summary.actualAmount | number:'1.2-2'}}">
                        {{summary.actualAmount | number:'1.2-2'}}
                        </span>
                     </td>
-                    <td class="wd-10">
+                    <td class="wd-6">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="redirectToDeclarationActual(summary.institutionName, summary.policyNo, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
                       <i class="fa fa-eye font-16 text-blue cursor-pointer"

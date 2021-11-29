@@ -88,7 +88,11 @@ export class FinancialMasterComponent implements OnInit {
     ]
 
     this.headData = []
-    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+
+    const formdata = new FormData();
+    formdata.append('categoryName', 'FinancialMaster');
+
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
       res.data.results.forEach(element => {
         this.headData.push({
           'headMasterId':element.headMasterId,

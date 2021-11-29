@@ -64,6 +64,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
       frequencyMasterId: new FormControl('', Validators.required),
       addDays: new FormControl(''),
       incompleteDaysFalls: new FormControl('', Validators.required),
+      lastCycleCrossByYear: new FormControl(''),
       yearDefinition: new FormControl({ value: '', disabled: true }), // this. is from date to date autopopulated field..
 
     });
@@ -296,6 +297,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
         // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
         this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls });
+        this.cycleDefinitionForm.patchValue({ lastCycleCrossByYear: response.data.results[0].lastCycleCrossByYear });
         const index = this.BusinessyearList.findIndex(o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId);
         this.cycleDefinitionForm.patchValue({
           yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate), 'dd-MMM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate), 'dd-MMM-yyyy'),
@@ -338,6 +340,8 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
         this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
         this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
         this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls});
+        this.cycleDefinitionForm.patchValue({ lastCycleCrossByYear: response.data.results[0].lastCycleCrossByYear});
+        
         this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
         this.cycleDefinitionForm.patchValue({
           //yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' To ' + response.data.results[0].businessYearDefinition.fullToDate,
@@ -435,7 +439,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
   exportAsXLSX(): void {
     this.excelData = [];
     this.header = []
-    this.header = ["S.No.","Cycle Name","Cycle spanning two months-Treat as part of which month", "Description", "From Date", "To Date"]
+    this.header = ["S.No.","Cycle Name","Cycle spanning two months-Treat as part of which month","Last Cycle Crossing financial Year", "Description", "From Date", "To Date"]
     //this.excelData = this.attendanceData
     
     this.CycleDefinitionList.forEach((element,index) => {
@@ -445,6 +449,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
         "S.No.":index+1,
         "Cycle Name": element.cycleName,
         "Cycle spanning two months-Treat as part of which month":element.incompleteDaysFalls,
+        "Last Cycle Crossing financial Year":element.lastCycleCrossByYear,
         "Description": element.description,
         "From Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullFromDate), 'dd-MMM-yyyy'),
         "To Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullToDate), 'dd-MMM-yyyy')

@@ -1355,36 +1355,36 @@ export class PpdeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
-        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
+        this.documentRemark =res?.data?.results[0]?.documentInformation[0]?.documentRemark;
         this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
-          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
+          res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
+          this.disableRemark = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
         this.editTransactionUpload =
-          res.data.results[0].investmentGroupTransactionDetail;
-          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
+          res?.data?.results[0]?.investmentGroupTransactionDetail;
+          this.editProofSubmissionId = res?.data?.results[0]?.proofSubmissionId;
+          this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
         this.grandDeclarationTotalEditModal =
-          res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+          res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
         this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
+          res?.data?.results[0]?.grandRejectedTotal;
         this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
+          res?.data?.results[0]?.grandApprovedTotal;
 
 
-          this.masterGridData = res.data.results;
+          this.masterGridData = res?.data?.results;
 
-        this.masterGridData.forEach((element) => {
+        this.masterGridData?.forEach((element) => {
           // element.policyStartDate = new Date(element.policyStartDate);
           // element.policyEndDate = new Date(element.policyEndDate);
           // element.fromDate = new Date(element.fromDate);
           // element.toDate = new Date(element.toDate);
-          element.documentInformation.forEach(element => {
+          element?.documentInformation?.forEach(element => {
             // this.dateofsubmission = element.dateOfSubmission;
             // this.documentArray.push({
             //   'dateofsubmission': ,
             // })
-            element.documentDetailList.forEach(element => {
+            element?.documentDetailList?.forEach(element => {
             // if(element!=null)
             this.documentArray.push({
               // 'dateofsubmission': element.dateOfSubmission,
