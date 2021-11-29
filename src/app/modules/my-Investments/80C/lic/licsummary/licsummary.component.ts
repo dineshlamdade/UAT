@@ -116,7 +116,7 @@ export class LicsummaryComponent implements OnInit {
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
 
     });
-    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+    this.alertService.sweetalertMasterSuccess('Future Amount Saved', '');
   }
 
 

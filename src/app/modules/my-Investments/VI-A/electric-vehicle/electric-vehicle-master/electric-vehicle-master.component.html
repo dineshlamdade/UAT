@@ -606,6 +606,16 @@
         </div>
       </div>
     </div>
+    <div class="row mt-15" *ngIf="isShow">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="button" (click)="resetView()"
+          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Cancel</button>
+        </div>
+      </div>
+    </div>
+
 
     <div class="row mt-20">
       <div class="col-9">
@@ -619,6 +629,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col" class="wd-10">Sr.No</th>
+                    <th scope="col" class="wd-10">PS ID</th>
                     <th scope="col" class="wd-12">Lender Name</th>
                     <th scope="col" class="wd-10">Vehicle Model</th>
                     <th scope="col" class="wd-10">Vehicle Number</th>
@@ -630,6 +641,8 @@
                 <tbody>
                   <tr *ngFor="let summary of masterGridData; let i = index">
                     <td>{{i + 1}}</td>
+                    <td class="wd-10"><span tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
+                    </td>
                     <td class="wd-10"><span tooltip="{{summary.lenderName}}">{{summary.lenderName}}</span>
                     </td>
                     <td class="wd-10"><span tooltip="{{summary.vehicleModel}}">{{summary.vehicleModel}}</span>
@@ -645,6 +658,8 @@
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.vehicleNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                        <i class="fa fa-eye font-16 text-blue cursor-pointer" 
+                        (click)="viewMaster(summary.vehicleNumber)"  tooltip="View"></i>
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">

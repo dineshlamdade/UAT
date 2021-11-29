@@ -23,7 +23,7 @@ export class EmployeesNPS80CCD1Component implements OnInit {
 summaryPage() {
   this.employeesNPS80CCD1Service.getEmployeeNPSCCD1().subscribe((res) => {
     this.summaryGridData = res.data.results;
-    console.log(this.summaryGridData[0].actualBalance80CCD1 );
+    console.log("actualBalance80CCD1",this.summaryGridData[0].actualBalance80CCD1 );
   });
 }
 

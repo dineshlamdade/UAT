@@ -65,6 +65,7 @@ export class LicdeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
   documentDataArray = [];
   editdDocumentDataArray = [];
+  public remarkCount : any;
 
 
   viewDocumentName: any;
@@ -72,6 +73,9 @@ export class LicdeclarationComponent implements OnInit {
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   public EditGrandTotalAmount:any;
 
@@ -189,6 +193,8 @@ export class LicdeclarationComponent implements OnInit {
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
 
+  public ispreviousEmploy = true;
+
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
@@ -269,7 +275,7 @@ export class LicdeclarationComponent implements OnInit {
       }
       console.log(res.data.results[0].joiningDate);
 
-      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      this.dateOfJoining = new Date(res.data.results[0].dateOfJoining);
       console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
 
@@ -701,7 +707,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       'onDeclaredAmountChangeInEditCase Amount change::' +
       summary.declaredAmount,
     );
-  debugger
+  
   this.editTransactionUpload[j].lictransactionList[
     i
     ].actualAmount = this.declarationService.declaredAmount;
@@ -1427,6 +1433,9 @@ console.log( this.editTransactionUpload);
           this.disableRemark = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editTransactionUpload = res.data.results[0].licTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1595,7 +1604,7 @@ console.log( this.editTransactionUpload);
     index: any,
     lictransactionID
   ) {
-    debugger
+  
     this.Service.getLicRemarkList(
       lictransactionID,
     ).subscribe((res) => {
@@ -1603,6 +1612,30 @@ console.log( this.editTransactionUpload);
       
     
     this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+  public docRemarkModal1(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    lictransactionID
+  ) {
+    
+    this.Service.getLicRemarkList(
+      lictransactionID,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1819,6 +1852,12 @@ console.log( this.editTransactionUpload);
     this.transactionDetail[j].lictransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].lictransactionList[i].dateOfPayment);
+    
+    if (new Date(summary.dateOfPayment) > this.dateOfJoining) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 
   // ---- Set Date of Payment On Edit Modal----
