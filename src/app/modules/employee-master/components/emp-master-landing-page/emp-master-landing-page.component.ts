@@ -58,7 +58,17 @@ console.log('countSummary',this.countSummary);
      
     console.log('EmployeeSummary',this.EmployeeSummary);
       })
+
+      //check [payment tracking API]
+
+  // this.employeelandingPageService.getPaymentTrackingData().subscribe(res => {
+
+  //  let Emp= res.data.results;   
+  // console.log('Emp',Emp);
+  //   })
   }
+
+
 
   Emplist(emplist: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -125,7 +135,5 @@ editEmployee(user1){
   }  
   onBehalf(value) {
     this.onBehalfValue = value;
-
   }
-  
 }
