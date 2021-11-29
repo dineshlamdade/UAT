@@ -82,6 +82,8 @@ export class ReJoiningInformationComponent implements OnInit {
       ContinuationService: ['No']
     });
 
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -201,6 +203,14 @@ export class ReJoiningInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.ReJoiningInformationModel = res.data.results[0];
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
+
+//
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.RejoiningEmployementInfoId=this.ReJoiningInformationModel.employementInfoId;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
+
         this.EventEmitterService.getcloseCurrentForm();
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         if (this.confirmMsg) {
@@ -214,12 +224,26 @@ export class ReJoiningInformationComponent implements OnInit {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     } else {
+
+      //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.LastTransaction='Re-Joining';        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
       localStorage.setItem('LastTransaction', 'Re-Joining');
       this.EmploymentInformationService.postReJoiningInformation(ReJoiningInformationModel).subscribe(res => {
 
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.ReJoiningInformationModel = res.data.results[0];
         this.employementInfoId = this.ReJoiningInformationModel.employementInfoId;
+
+           //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.RejoiningEmployementInfoId=this.ReJoiningInformationModel.employementInfoId;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
         this.EventEmitterService.getcloseCurrentForm();
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
@@ -241,7 +265,7 @@ export class ReJoiningInformationComponent implements OnInit {
     // this.employementInfoId=4;
     const employementInfoId = localStorage.getItem('RejoiningEmployementInfoId')
     this.employementInfoId = Number(employementInfoId);
-    this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
+    this.EmploymentInformationService.getReJoiningInformation().subscribe(res => {
 
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
@@ -251,6 +275,14 @@ export class ReJoiningInformationComponent implements OnInit {
           companyName: this.ReJoiningInformationModel.companyName,
         })
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
+
+         //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.RejoiningEmployementInfoId=this.ReJoiningInformationModel.employementInfoId;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
+
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';
           this.ReJoiningForm.get('noticePeriod').setValue('false');
@@ -305,6 +337,13 @@ export class ReJoiningInformationComponent implements OnInit {
   }
   assignReJoiningDateTo(ReJoiningDate) {
     localStorage.setItem('rejoiningDate', ReJoiningDate);
+
+       //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.rejoiningDate=ReJoiningDate;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
     this.ReJoiningInformationModel.originalHireDate = ReJoiningDate;
     this.ReJoiningInformationModel.joiningDateForGratuity = ReJoiningDate;
   }
@@ -348,6 +387,13 @@ export class ReJoiningInformationComponent implements OnInit {
 
     if (probationPeriodMonthModel) {
       probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
+
+      //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.rejoiningDate=rejoiningDate;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
       localStorage.setItem('rejoiningDate', rejoiningDate);
       let localrejoiningDate = localStorage.getItem('rejoiningDate');
       let expectedConfirmationDate = new Date(localrejoiningDate);
@@ -361,6 +407,13 @@ export class ReJoiningInformationComponent implements OnInit {
   calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, rejoiningDate) {
 
     probationPeriodDaysModel = parseInt(probationPeriodDaysModel);
+
+    //
+var myObj = JSON.parse(localStorage.getItem("adEmp"));
+myObj.rejoiningDate=rejoiningDate;        
+ localStorage.setItem("adEmp",JSON.stringify(myObj));
+//
+
     localStorage.setItem('rejoiningDate', rejoiningDate);
     let localrejoiningDate = localStorage.getItem('rejoiningDate');
     let expectedConfirmationDate = new Date(localrejoiningDate);

@@ -5,6 +5,9 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { ComplianceHeadService } from './compliance-head.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+
 
 @Component( {
   selector: 'app-compliance-head',
@@ -27,8 +30,11 @@ export class ComplianceHeadComponent implements OnInit {
   public modalRef: BsModalRef;
   public invalidComplianceHeadName: boolean = false;
 
+  header: any[];
+  excelData: any[];
+
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       complianceHeadName: new FormControl( null, Validators.required ),
       shortName: new FormControl( '', Validators.required ),
@@ -281,4 +287,54 @@ export class ComplianceHeadComponent implements OnInit {
       this.form.get( 'complianceHeadName' ).status = 'INVALID';
     }
   }
+//Excel
+exportAsXLSX(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["Head Name","Type","Country","Applicability Level","Authority Handling","Remark"];
+  this.excelData=[];
+  
+  if(this.summaryHtmlDataList.length>0){
+  this.summaryHtmlDataList.forEach(element => {
+    let obj = {
+      "Head Name":element.complianceHeadName,
+      "Type":element.shortName,
+      "Country": element.country,
+      "Applicability Level":element.aplicabilityLevel,
+      "Authority Handling":element.authorityHandling,
+      "Remark":element.remark,
+    
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+}
+ 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Company Registration Details','Company Registration Details',this.header);
+
+}
+
+//sort
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+
+}
+
 }

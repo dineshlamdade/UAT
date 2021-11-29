@@ -44,12 +44,12 @@
                     (onSelect)="enableProjectDate();validateProjectDatesSave();">
                 </p-autoComplete> -->
                 <select class="form-control" placeholder="Select"
-                    (completeMethod)="employeeTypeList(employee.value)"
+                    (completeMethod)="employeeTypeList(employee.masterCode)"
                     (change)="enableProjectDate();validateProjectDatesSave(employee);"
                     formControlName="projectNameControl" [(ngModel)]="projectDetailsModel.projectName">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of projectList" [value]="employee">
-                        {{employee}}
+                    <option *ngFor="let employee of projectList" [value]="employee.masterCode">
+                        {{employee.masterCode}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>

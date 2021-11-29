@@ -6,7 +6,6 @@ import { AnyCnameRecord } from 'node:dns';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { DatePipe } from '@angular/common';
 //import { AlertServiceService } from '../../../core/services/alert-service.service';
-import { ExcelserviceService } from '../../../excel_service/excelservice.service';
 
 @Component({
   selector: 'app-adhoc',
@@ -63,13 +62,11 @@ export class AdhocComponent implements OnInit {
   activeHeadListCopy: any;
   checkValids :boolean =false;
  // fromtDate: string;
- header: any[];
- excelData: any[];
+
   
 
   constructor(public adhocService : AdhocService,public toaster : ToastrService,
-    public alertService : AlertServiceService,public datepipe : DatePipe,
-    private excelservice: ExcelserviceService, private datePipe: DatePipe) {
+    public alertService : AlertServiceService,public datepipe : DatePipe) {
       
 
     this.adhocForm = new FormGroup({
@@ -137,7 +134,8 @@ export class AdhocComponent implements OnInit {
 
   onSubmit(){
     //debugger
-    
+    console.log('Adhoc cylece',this.adhocForm.value);
+    console.log('Adhoc cylece',this.targetProducts);
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
@@ -157,13 +155,11 @@ export class AdhocComponent implements OnInit {
     toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MMM-yyyy")
     //  toDate:this.adhocForm.value.toDate
     }]
-    
+    console.log('data is',data);
     this.adhocService.saveAdhocCycle(data).subscribe((res)=>{
-    
+    // console.log('result is adhoc',res);
     //this.toaster.success('',"Adhoc cycle saved successfully");
-    // this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Saved Successfully');
-
-    this.alertService.sweetalertMasterSuccess(res.status.message, "" );
+    this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Saved Successfully');
 
     this.getSummaryData();
   this.targetProducts = [];
@@ -182,13 +178,14 @@ export class AdhocComponent implements OnInit {
 
   
   onUpdate(){
-   
+    console.log('Adhoc cylece',this.adhocForm.value);
+    console.log('Adhoc cylece',this.targetProducts);
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
 
     const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.adhocForm.get('periodName').value);
-    
+    //console.log('period name list is',periodNameList[0].periodName)
     let period = this.cycleNameList.find(x=>x.periodId==this.adhocForm.get('periodName').value)
     const data = [{
       //businessCycleId:2790,
@@ -207,11 +204,10 @@ export class AdhocComponent implements OnInit {
      
      
     }]
-    
+    console.log('data is',data);
       this.adhocService.updateData(data).subscribe((res)=>{
       //this.toaster.success('',"Updated successfully");
-      // this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Updated Successfully');
-      this.alertService.sweetalertMasterSuccess(res.status.message, "" );
+      this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Updated Successfully');
       this.adhocForm.controls['copyFrom'].enable();
       this.getSummaryData();
       this.getAdhocCycle();
@@ -231,7 +227,7 @@ export class AdhocComponent implements OnInit {
   getAllCycleDefinition(){
       this.adhocService.getAllCycleDefinition().subscribe((res)=>{
       this.cycleDefifitionList = res.data.results;
-     
+      console.log(this.cycleDefifitionList);
     })
   }
 
@@ -246,9 +242,9 @@ export class AdhocComponent implements OnInit {
     })
      this.adhocService.getCycleNameById(id).subscribe((response)=>{
      this.cycleNameList = response.data.results;
-     
+     console.log('cycle name list is',this.cycleNameList);    
      });
-    
+    console.log("this.cycleNameList:" + this.cycleNameList);
     //this.getAllCycleDefinition();
    // this.adhocForm.reset();
    this.cycleNameList = []
@@ -262,7 +258,7 @@ export class AdhocComponent implements OnInit {
     this.adhocCycleListNew = [];
       this.adhocService.getAdhocCycle().subscribe((res)=>{
      this.adhocCycleList = res.data.results;
-    
+     console.log(this.adhocCycleList)
     // res.data.results[0].forEach(element => {
     //   this.adhocCycleList.push({
     //     label : element.periodId,
@@ -273,24 +269,24 @@ export class AdhocComponent implements OnInit {
      
 
       // this.adhocCycleList = res.data.results.businessYeardefinition;
-      
+      //  console.log(this.adhocCycleList);
     })
   }
 
   getActiveHead(){
       this.adhocService.getActiveHead().subscribe((res)=>{
       this.activeHeadList = res.data.results;
-      
+      console.log(this.activeHeadList);
       this.activeHeadListCopy = res.data.results;
     })
   }
 
   getSummaryData(){
       this.adhocService.getSummaryData().subscribe((res)=>{
-
+        console.log("result check",res);
       this.summarydata = res.data.results;
       
-     
+      console.log('adhoc summary list',this.summarydata);
     })
   }
 
@@ -309,7 +305,7 @@ export class AdhocComponent implements OnInit {
     })
   });
 
- 
+  console.log('value is',value);
   this.targetProducts=[];
   //this.activeHeadList = this.activeHeadListCopy;
   this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
@@ -353,13 +349,13 @@ export class AdhocComponent implements OnInit {
        const businessId= location.businessCycleDefinition.id;
       this.cycleNameList.forEach(ele =>{
         //debugger;
-       
+        //console.log(ele.businessCycleDefinition)
        
         if(ele.periodId == periodId){
           this.selectedPeriodName = ele.periodName
           // this.businessCycleDefinition = ele.businessCycleDefinition.businessYearDefinition
           this.businessCycleDefinition = ele
-
+          console.log('is',this.businessCycleDefinition)
          
         }
       })
@@ -376,7 +372,7 @@ export class AdhocComponent implements OnInit {
       //   'periodName': this.periodName,
       //   'periodId':0
       // });
-     
+      console.log(this.periodName)
       //this.adhocCycleList = [];
       //debugger
     // console.log("this.businessCycleDefinition: " + JSON.stringify(this.businessCycleDefinition))
@@ -649,7 +645,7 @@ viewAreaSet(data){
         headId :parseInt(element)
       })
     });
-   
+   console.log('value is',value);
     this.targetProducts=[];
     this.activeHeadList = this.activeHeadListCopy;
     this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
@@ -658,43 +654,13 @@ viewAreaSet(data){
 }  
 
 deleteData(id){
-  
+  console.log('deleted id id',id);
   this.adhocService.deleteData(id).subscribe((res)=>{
     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
     this.getAllCycleDefinition();
-  },
-  ( error: any ) => {
-    this.alertService.sweetalertError( error["error"]["status"]["message"] );
   })
 }
 
   setPolicyEndDate(){}
  
-
-  exportAsXLSX(): void {
-    this.excelData = [];
-    this.header = []
-    this.header =["Adhoc Cycle","From Date","To Date","Primary Cycle Definition","Primary Cycle Name","Arrears","Count of Heads","Remark"]
-    //this.excelData = this.attendanceData
-    this.summarydata.forEach(element => {
-  
-  
-      let obj = {
-        "Adhoc Cycle": element.periodName,
-        "From Date": this.datePipe.transform(new Date(element.fromDate),'dd-MM-yyyy'),
-        "To Date": this.datePipe.transform(new Date(element.toDate),'dd-MM-yyyy'),
-        "Primary Cycle Definition": element.businessCycleDefinition.cycleName,
-        "Primary Cycle Name": element.oldPeriodName,
-        "Arrears":element.arrear?'Yes':'No',
-        "Count of Heads":element.headCount,
-        "Remark": element.remark,
-       
-  
-  
-      }
-      this.excelData.push(obj)
-    });
-   
-    this.excelservice.exportAsExcelFile(this.excelData, '  Adhoc Cycle','  Adhoc Cycle',this.header);
-  }
 }

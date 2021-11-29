@@ -82,7 +82,7 @@ export class BusinessYearComponent implements OnInit {
       description: new FormControl( '', Validators.required ),
       fromDate: new FormControl( '', Validators.required ),
       toDate: new FormControl( '', Validators.required ),
-      businessYear: new FormControl( '', Validators.required ),
+      businessYear: new FormControl( this.currentYear, Validators.required ),
     } );
     this.getAllBusinessyear();
   }

@@ -5,6 +5,8 @@ import { EmployeeSummaryBean } from './employee-summary.model';
 import { EmployeeSummaryService } from './employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { AuthService } from './../../../auth/auth.service';
+import { DatePipe } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-summary',
@@ -15,15 +17,19 @@ export class EmployeeSummaryComponent implements OnInit {
 
   imageUrl: any = "./assets/images/profile_Img.png";
   employeeMasterId: number;
-  EmployeeSummary = new EmployeeSummaryBean();
+  EmployeeSummary = new EmployeeSummaryBean('','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
   Subscription: Subscription;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
   companyName: any;
+  payrollAreaId: any;
+  primaryMainData: any;
+  today:Date = new Date();
+  EmpData: any;
+  public sanitizer: DomSanitizer
 
-
-  constructor(private EmployeeSummaryService: EmployeeSummaryService,
+  constructor(private EmployeeSummaryService: EmployeeSummaryService,public datepipe: DatePipe,
     private PayrollAreaService: PayrollAreaInformationService,
     private EventEmitterService: EventEmitterService,
     private AuthService: AuthService) { }
@@ -48,17 +54,17 @@ export class EmployeeSummaryComponent implements OnInit {
 
     //get payroll area's
     this.getPayrollAreaInformation();
-    
+
     if (this.employeeMasterId) {
-      this.getSummaryForm();
+      //  this.getSummaryForm();
     }
   }
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
+
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
         // this.filteredPayrollAreaList.push(item.payrollAreaCode);
@@ -67,48 +73,64 @@ export class EmployeeSummaryComponent implements OnInit {
         this.filteredPayrollAreaList.push(item);
 
       });
+
+
+
       if (this.payrollAreaList.length == 1) {
         //set default payroll area
         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+        this.payrollAreaId = this.payrollAreaList[0].payrollAreaId;
         localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
 
         //set default company
         let result = res.data.results[0];
-        this.companyName = result[0].payrollAreaAndCompany;
+        this.companyName = result[0].companyname;
         //this.companyName = result[0].payrollAreaId.companyId.companyName;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
-        //get payroll area code from local storage
-        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-        this.payrollAreaCode = new String(payrollAreaCode);
+        //get primary  payroll area code 
 
-        //get company from local storage
-        const companyName = localStorage.getItem('jobInformationCompanyName')
-        if (companyName != null) {
-          this.companyName = new String(companyName);
+        this.primaryMainData = this.payrollAreaList.find(x => x.type == 'Primary Main');
+        if (this.primaryMainData) {
+          this.payrollAreaId = this.primaryMainData.payrollAreaId;
+          this.payrollAreaCode = this.primaryMainData.payrollAreaCode;
+          this.companyName = this.primaryMainData.companyname;
         }
+        //get payroll area code from local storage
+
+
+        // const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        // this.payrollAreaCode = new String(payrollAreaCode);
+
+        // //get company from local storage
+        // const companyName = localStorage.getItem('jobInformationCompanyName')
+        // if (companyName != null) {
+        //   this.companyName = new String(companyName);
+        // }
 
       }
+      this.getSummaryForm();
     })
 
   }
 
   getSummaryForm() {
-    
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
-      
+    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId).subscribe(res => {
+      console.log('summary DaTA', res.data.results[0])
       if (res.data.results[0]) {
-
-        this.EmployeeSummary.identitySummaryBean = res.data.results[0].employeeSummaryBean.identitySummaryBean;
-        if (res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage) {
-          this.imageUrl = 'data:' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.type + ';base64,' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.profilePicture;
-        }
-        this.EmployeeSummary.personalSummaryBean = res.data.results[0].employeeSummaryBean.personalSummaryBean;
-        this.EmployeeSummary.workSummaryBean = res.data.results[0].employeeSummaryBean.workSummaryBean;
-        this.EmployeeSummary.nominationSummaryBean = res.data.results[0].employeeSummaryBean.nominationSummaryBean;
+         this.EmployeeSummary = res.data.results[0];
+         this.EmployeeSummary.dateOfJoining = this.datepipe.transform(this.EmployeeSummary.dateOfJoining, "dd-MMM-yyyy");
+         this.EmployeeSummary.dateOfBirth = this.datepipe.transform(this.EmployeeSummary.dateOfBirth, "dd-MMM-yyyy");
+       
+         if (res.data.results[0].employeeProfileImage) {
+           this.imageUrl = 'data:' + res.data.results[0].type + ';base64,' +res.data.results[0].employeeProfileImage;
+         }
+        
+      
       }
 
     })
@@ -130,13 +152,13 @@ export class EmployeeSummaryComponent implements OnInit {
   //set PayrollArea and company name in local storage when dropdown chanegs
   selectPayrollArea(event) {
     localStorage.setItem('jobInformationPayrollAreaCode', event);
-    this.payrollAreaCode = event;
+    this.payrollAreaId = Number(event);
 
     const toSelect = this.filteredPayrollAreaList.find(
-      (c) => c.payrollAreaCode === this.payrollAreaCode
+      (c) => c.payrollAreaId === this.payrollAreaId
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.getSummaryForm();

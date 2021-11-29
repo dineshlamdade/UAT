@@ -49,8 +49,8 @@
         <label class="form-label">Business Year</label>
         <select [ngClass]="{'is-invalid' : BusinessYearform.get('businessYear').status == 'INVALID'}"
           name="businessYear" id="businessYear" class="form-control  " formControlName="businessYear">
-          <option selected value=''>Select </option>
-          <option *ngFor="let businessYear of getBusinessYears" [value]="businessYear.value" [selected]="currentYear">
+          <option value=''>Select </option>
+          <option *ngFor="let businessYear of getBusinessYears" [value]="businessYear.value" [selected]="currentYear == businessYear.value">
             
             {{businessYear.label}}
           </option>
@@ -218,10 +218,13 @@
                 <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td> -->
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullFromDate | date: 'dd-MMM'}} To {{user1.fullToDate | date: 'dd-MMM'}}</label></td>
                 <td class="wd-10 text-center">
-                  <button *ngIf="!user1.used; " type="button"
+
+                   <!-- commented edit -suggested by rakesh sir -18th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.used; " type="button"
                     (click)="GetBussinessyearById(user1.businessYearDefinitionId, true)" class="btn btn-icon text-dark-green"
                     tooltip="Edit"><i class="fa fa-edit"></i>
-                  </button>
+                  </button> -->
 
                   <button type="button" class="btn btn-icon text-blue" tooltip="View"
                   (click)="GetBussinessyearById(user1.businessYearDefinitionId, false)"
@@ -229,9 +232,11 @@
                   <i class="fa fa-eye"></i></button>
                   <!-- (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessCycleDefinition.businessYearDefinitionId)" -->
 
-                  <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
+                  <!-- commented delete -suggested by rakesh sir -18th Nov 2021 -->
+
+                  <!-- <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
                     data-target="#UploadModal" class="btn btn-icon js-sweetalert text-red" tooltip="Delete"
-                    data-type="confirm"><i class="fa fa-trash"></i></button>
+                    data-type="confirm"><i class="fa fa-trash"></i></button> -->
                 </td>
                 <ng-template #template12>
                   <div class="modal-header">
