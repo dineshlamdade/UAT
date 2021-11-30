@@ -120,7 +120,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
   public viewDocumentList: Array<any> = [];
-  
+
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
@@ -228,8 +228,8 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
 
     this.purposeList = [
-      { label: 'Scientific Research', value: 'Scientificresearch' },
-      { label: 'Rural Development', value: 'Ruraldevelopment' }
+      { label: 'Political Party', value: 'Political Party', },
+      { label: 'Electoral Trust', value: 'Electoral Trust' }
     ];
     this.getTransactionFilterData();
   }
@@ -1240,7 +1240,7 @@ export class GgcDeclarationActualComponent implements OnInit {
             element.actualAmount = this.numberFormat.transform(
               element.actualAmount
             );
-          }); 
+          });
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1801,7 +1801,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-           
+
             console.log('documentArrayTest',this.documentArray);
 
             this.initialArrayIndex = [];
