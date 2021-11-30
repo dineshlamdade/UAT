@@ -1,5 +1,4 @@
 #Create image based on the official Node 10 image from dockerhub
-
 FROM centos as web
 
 
