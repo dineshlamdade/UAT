@@ -174,11 +174,10 @@ export class NpsSummaryComponent implements OnInit {
   onChangeLimit() {
     this.deductionEDeclared = Math.min(this.minimumOfDeclaredAndLimit, this.limitD);
    // console.log("minimumOfDeclaredAndLimit",this.minimumOfDeclaredAndLimit)
-    this.eligibleForDeductionFDeclared =
-      this.grandTotalDeclaredAmount - this.deductionEDeclared;
+    this.eligibleForDeductionFDeclared =this.minimumOfDeclaredAndLimit- this.deductionEDeclared;
 
     this.deductionEActual = Math.min(this.minimumOfActualAndLimit, this.limitD);
     this.eligibleForDeductionFActual =
-      this.grandTotalActualAmount - this.deductionEActual;
+      this.minimumOfActualAndLimit - this.deductionEActual;
   }
 }
