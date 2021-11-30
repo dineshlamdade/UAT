@@ -16,11 +16,14 @@ export class NpsSummaryComponent implements OnInit {
   @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
-  public nps80CCSummaryGridData: Array<any> = [];
+  public nps80CCSummaryGridData:any = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public grandTotalDeclaredAmount: number;
+  public minimumOfDeclaredAndLimit: number;
+  public minimumOfActualAndLimit : number;
+  
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -38,10 +41,10 @@ export class NpsSummaryComponent implements OnInit {
   public minAmt: number;
   public minAmtActual: number;
   limit80CCD1: any;
-  
+
   public eligibleForDeductionFDeclared: number;
   public minAmtEligibleForDeductionFDeclared: number;
-  
+
   public deductionEActual: number;
   public eligibleForDeductionFActual: number;
   minAmtEligibleForDeductionFActual: number;
@@ -50,11 +53,11 @@ export class NpsSummaryComponent implements OnInit {
     private npsService: NpsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.summaryPage();
-    this.nps80CCSummaryGetPage();
+    
   }
   redirectToDeclarationActual(
     institution: string,
@@ -86,25 +89,29 @@ export class NpsSummaryComponent implements OnInit {
   nps80CCSummaryGetPage() {
     this.npsService.getEmployeeNPSCCD1().subscribe((res) => {
       this.nps80CCSummaryGridData = res.data.results[0];
-      console.log("this.nps80CCSummaryGridData", this.nps80CCSummaryGridData );
+      console.log("this.nps80CCSummaryGridData: "+ JSON.stringify( res.data.results[0]))
+      this.minimumOfDeclaredAndLimit =   res.data.results[0].minimumOfDeclaredAndLimit;
+      this.minimumOfActualAndLimit = res.data.results[0].minimumOfActualAndLimit;
+      
+      console.log("minimumOfDeclaredAndLimit", this.minimumOfDeclaredAndLimit);
+      this.onChangeLimit();
     });
   }
 
   // Summary get Call
   summaryPage() {
     this.npsService.getNpsSummary().subscribe((res) => {
-      if(res.data.results.length > 0){
-      this.summaryGridData = res.data.results[0].transactionDetailList;
-      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-      this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-      this.grandTotalDeclaredAmount =
-        res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      this.onChangeLimit();
-      this.minOfCandG();
-    }
+      if (res.data.results.length > 0) {
+        this.summaryGridData = res.data.results[0].transactionDetailList;
+        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+        this.totalActualAmount = res.data.results[0].totalActualAmount;
+        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.grandTotalDeclaredAmount =
+          res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+        this.nps80CCSummaryGetPage();
+      }
     });
   }
 
@@ -125,7 +132,6 @@ export class NpsSummaryComponent implements OnInit {
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.onChangeLimit();
-      this.minOfCandG();
       this.alertService.sweetalertMasterSuccess('Future Amount was saved.', '');
     });
   }
@@ -134,10 +140,10 @@ export class NpsSummaryComponent implements OnInit {
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
     if (this.futureNewPolicyDeclaredAmount > 0) {
-    this.addFuturePolicy();
-  }else if(this.futureNewPolicyDeclaredAmount <0) {
-    this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
-  }
+      this.addFuturePolicy();
+    } else if (this.futureNewPolicyDeclaredAmount < 0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
   }
 
   keyPressedSpaceNotAllow(event: any) {
@@ -155,25 +161,23 @@ export class NpsSummaryComponent implements OnInit {
     }
   }
 
+  // onChangeLimit() {
+  //   this.deductionEDeclared = Math.min(this.grandTotalDeclaredAmount, this.limitD);
+  //   this.eligibleForDeductionFDeclared =
+  //     this.grandTotalDeclaredAmount - this.deductionEDeclared;
+
+  //     this.deductionEActual = Math.min(this.grandTotalActualAmount, this.limitD);
+  //     this.eligibleForDeductionFActual =
+  //       this.grandTotalDeclaredAmount - this.deductionEActual;
+
+  // }
   onChangeLimit() {
-    this.deductionEDeclared = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionFDeclared =
-      this.grandTotalDeclaredAmount - this.deductionEDeclared;
+    this.deductionEDeclared = Math.min(this.minimumOfDeclaredAndLimit, this.limitD);
+   // console.log("minimumOfDeclaredAndLimit",this.minimumOfDeclaredAndLimit)
+    this.eligibleForDeductionFDeclared =this.minimumOfDeclaredAndLimit- this.deductionEDeclared;
 
-      this.deductionEActual = Math.min(this.grandTotalActualAmount, this.limitD);
-      this.eligibleForDeductionFActual =
-        this.grandTotalDeclaredAmount - this.deductionEActual;
-    
-  }
-
-  minOfCandG() {
-    this.minAmt = Math.min(this.grandTotalDeclaredAmount, this.nps80CCSummaryGridData[0].limit80CCD1);
-    this.minAmtEligibleForDeductionFDeclared = this.grandTotalDeclaredAmount, this.minAmt;
-
-      this.minAmtActual = Math.min(this.grandTotalActualAmount, this.nps80CCSummaryGridData[0].limit80CCD1);
-      this.minAmtEligibleForDeductionFActual =this.minAmtActual;
-    console.log("limit80CCD1",this.limit80CCD1);
-    console.log("minAmt",this.minAmt);
-      console.log("minAmtEligibleForDeductionFDeclared", this.minAmtEligibleForDeductionFDeclared)
+    this.deductionEActual = Math.min(this.minimumOfActualAndLimit, this.limitD);
+    this.eligibleForDeductionFActual =
+      this.minimumOfActualAndLimit - this.deductionEActual;
   }
 }

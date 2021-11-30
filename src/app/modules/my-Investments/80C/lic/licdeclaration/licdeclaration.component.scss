@@ -10,3 +10,23 @@
     color: white;
     background:grey;
 }
+
+// .badge-reOpen{
+//     color:blue !important;
+//     }
+//     .badge-approved{
+//     color:orange !important;
+//     }
+//     .badge-sendBack{
+//     color: chocolate !important;
+//     }
+//     .badge-submitted{
+//         color: green !important;
+//     }
+//     .badge-pending{
+//         color: red !important;
+//     }
+    .changeColor span:hover {
+        cursor: pointer;
+    background-color: blue !important;
+      }

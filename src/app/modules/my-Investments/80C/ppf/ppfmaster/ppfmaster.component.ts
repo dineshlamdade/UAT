@@ -798,7 +798,7 @@ export class PPFMasterComponent implements OnInit {
 
   // // On Master Edit functionality
   editMaster(accountNumber, frequency?) {
-    debugger
+    
     this.isEdit = true;
     if (frequency == 'As & When') {
 this.showDeatil = true;
