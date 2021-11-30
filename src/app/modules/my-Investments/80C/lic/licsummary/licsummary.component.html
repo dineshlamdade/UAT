@@ -19,7 +19,7 @@
                     <td class="text-link wd-20 align-left" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" (click)="jumpToMasterPage(summary.licMasterId)">
                        <span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
                     </td>
-                    <td class="wd-6 align-right"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
+                    <td class="wd-6 align-left"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
                     </td>
                     <td class="wd-6 align-left">
                        <span tooltip="{{summary.policyholdername}}">
@@ -52,12 +52,12 @@
                  <tr class="table-light-color">
                     <td colspan="3" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
+                       <span class="padding-right-9" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
                        <b>{{totalDeclaredAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
+                       <span class="padding-right-9" tooltip="{{totalActualAmount | number:'1.2-2'}}">
                        <b>{{totalActualAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>
@@ -67,7 +67,7 @@
                     <td colspan="3" class="align-right font700">Future New Policies &nbsp;
                        <span class="Letterbadge">B</span>
                     </td>
-                    <td>
+                    <td class="align-right">
                       <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount"
                       (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
                       (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" maxlength="33"
@@ -82,12 +82,12 @@
                        </span>
                     </td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
+                       <span class="padding-right-9" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
                         <b>{{grandTotalDeclaredAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
+                       <span class="padding-right-9" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
                        <b>{{grandTotalActualAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>

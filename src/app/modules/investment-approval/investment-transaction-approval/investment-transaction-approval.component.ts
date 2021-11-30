@@ -275,8 +275,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.documentList.indexOf(docDetail);
     console.log('index::', index);
+    debugger
 
     this.transactionInfo.documentList[index].statusRemark = event.target.value;
+    this.documentList[index].statusRemark = event.target.value;
+
+
+    
   }
 
   // -------------- Doc Remark Modal ---------------------------
@@ -343,14 +348,21 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       // if(status == 'Approved')
       this.alertService.sweetalertWarning('Please Select Atleast One Document');
       return;
-    }
+    } 
+    debugger
     if(status=='Discarded'){
       this.documentList.forEach((doc) => {
         if(doc.statusRemark=='' || doc.statusRemark==undefined){
-          this.alertService.sweetalertWarning('Please give Remark for Rejected Document');
-          return;
+          this.documentRemarkValidation = true;
+        
         }
       });
+    }
+    if(this.documentRemarkValidation){
+    this.alertService.sweetalertWarning
+    ('Please give Remark for Discarded Document');
+    this.documentRemarkValidation = false;
+    return;
     }
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;

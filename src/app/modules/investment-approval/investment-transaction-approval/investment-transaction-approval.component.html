@@ -212,8 +212,8 @@
                           <div class="row">
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Institution:</strong
-                                >{{ transactionDetail. institutionName }}
+                                <strong>Institution : </strong
+                                >{{ transactionDetail.institutionName }}
                               </h6>
                             </div>
                             <div class="col-md-3 col-xs-12">
@@ -224,7 +224,7 @@
                             </div>
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Policy Holder Name : </strong
+                                <strong>Name : </strong
                                 >{{ transactionDetail.policyholdername }}
                               </h6>
                             </div>
@@ -232,6 +232,12 @@
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Frequency : </strong
                                 >{{ transactionDetail.frequency }}
+                              </h6>
+                            </div>
+                            <div class="col-md-3 col-xs-12">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>ECS : </strong
+                                >{{ transactionDetail.ecs=='1'?'Yes':'No' }}
                               </h6>
                             </div>
                           </div>
@@ -255,9 +261,10 @@
                                         </p-tableHeaderCheckbox>
                                       </th>
 
-                                      <th class="wd-6">Previous Employer</th>
+                                      <!-- <th class="wd-6">Previous Employer</th> -->
                                       <th class="wd-10">Due Date</th>
                                       <th class="wd-10">Date of Payment</th>
+                                      <th class="wd-6">Previous Employer</th>
                                       <th class="wd-10">Actual</th>
                                       <th class="primeng-table-header-center wd-10">
                                         Rejected
@@ -304,9 +311,9 @@
                                         >
                                         </p-tableCheckbox>
                                       </td>
-                                      <td aria-disabled="true" class="disabled">
+                                      <!-- <td aria-disabled="true" class="disabled">
                                         {{ transaction.previousEmployer }}
-                                      </td>
+                                      </td> -->
                                       <td class="disabled">
                                         {{
                                           transaction.dueDate
@@ -318,6 +325,9 @@
                                           transaction.dateOfPayment
                                             | date: "dd-MMM-yyyy"
                                         }}
+                                      </td>
+                                      <td aria-disabled="true" class="disabled">
+                                        {{ transaction.previousEmployer }}
                                       </td>
                                       <td class="disabled align-right">
                                         {{ transaction.actualAmount | number: "1.2-2"}}
