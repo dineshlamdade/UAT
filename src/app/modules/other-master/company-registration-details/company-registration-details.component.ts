@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { CompanyGroupMasterService } from '../company-group-master/company-group-master.service';
 import { CompanyRegistrationDetailsService } from './company-registration-details.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
 
 @Component( {
   selector: 'app-company-registration-details',
@@ -31,20 +33,34 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
   invalidPAN: boolean = false;
   public today = new Date();
 
+  header: any[];
+  excelData: any[];
+
 
   constructor( private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private companyMasterService: CompanyMasterService,
     private companyRegistrationDetailsService: CompanyRegistrationDetailsService, private datePipe: DatePipe,
-    private alertService: AlertServiceService ) {
+    private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       companyRegistrationId: new FormControl( '', Validators.required ),
-      registrationNumber: new FormControl( null ),
+       registrationNumber: new FormControl(null,Validators.required),
+      //changes
+    //   registrationNumber: new FormControl( null, [
+    //     Validators.required,
+    //     Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
+    // ]),
       companyName: new FormControl( { value: null, disabled: true } ),
       companyGroupName: new FormControl( { value: null, disabled: true } ),
       dateOfIncorporation: new FormControl( null, Validators.required ),
       issuedBy: new FormControl( '', Validators.required ),
-      msmeNumber: new FormControl( null ),
-      pan: new FormControl( '', [Validators.pattern( "^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$" )] ),
-      udyogAadhaarNumber: new FormControl( null ),
+      
+      msmeNumber: new FormControl(null,Validators.required),
+      // pan: new FormControl( '', [Validators.pattern( "^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$" )] ),
+      pan: new FormControl( '', [Validators.pattern('^[A-Z]{5}[0-9]{4}[A-Z]{1}$'),Validators.required] ),
+     
+       udyogAadhaarNumber: new FormControl(null,Validators.required),
+     
+      // udyogAadhaarNumber: new FormControl( '',[Validators.required,Validators.pattern('^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$'),Validators.maxLength(12)] ),
+  
       companyRegistrationId1: new FormControl( null ),
     } );
 
@@ -326,4 +342,54 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
     }
 
   }
+//excel
+exportAsXLSX(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["Code","Company Name","Group Name","Registration No","PAN"];
+  this.excelData=[];
+  
+  if(this.summaryHtmlDataList.length>0){
+  this.summaryHtmlDataList.forEach(element => {
+    let obj = {
+      "Code":element.code,
+      "Company Name":element.companyName,
+      "Group Name": element.companyGroupName,
+      "Registration No":element.registrationNumber,
+      "PAN":element.pan,
+    
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+}
+ 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Company Registration Details','Company Registration Details',this.header);
+
+}
+//Sort
+
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+
+}
+
+
 }

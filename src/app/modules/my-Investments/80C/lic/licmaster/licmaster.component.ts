@@ -72,6 +72,9 @@ export class LicmasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
+  documentRemarkList: any;
+  public remarkCount : any;
+
   public documentRemark: any;
   public document2Password: any;
   public documentPassword = [];
@@ -327,8 +330,8 @@ export class LicmasterComponent implements OnInit {
 
     // -------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
-      this.financialYearEnd = res.data.results[0].toDate; 
+      // this.financialYearStart = res.data.results[0].fromDate;
+      // this.financialYearEnd = res.data.results[0].toDate; 
    
 
       
@@ -536,9 +539,33 @@ export class LicmasterComponent implements OnInit {
       });
     });
   }
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId
+  ) {
+    
+    this.Service.getLicMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
 
   // -------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    
     this.submitted = true;
 
     if (this.form.invalid) {
@@ -653,7 +680,7 @@ export class LicmasterComponent implements OnInit {
               }
 
               
-
+          
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
@@ -677,13 +704,16 @@ export class LicmasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.PremiumFileArray = [];
+      this.familyMemberName = [];
       this.remarkList = [];
       this.documentPassword = [];
       this.urlArray = [];
       this.PremiumurlArray = [];
       this.submitted = false;
+      setTimeout(()=>{  
       this.getInitialData();
       this.getDetails();
+    }, 3000);
     }
   }
 

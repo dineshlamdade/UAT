@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { GarnishmentService } from './garnishment.service';
-
+import { ExcelserviceService } from '../../../core/services/excelservice.service';
 
 @Component({
   selector: 'app-garnishment-master',
@@ -30,7 +31,7 @@ export class GarnishmentMasterComponent implements OnInit {
   defaultTransactionType: any = 0;
   garnishmentMasterInputTypeList: any = [];
   defaultInputType: any = 0;
-  docMandetory: any = 1;
+  docMandetory: any = 0;
   documentName: any;
   garnishmentMasterDocumentList: any = [];
   inputTypeData: any = [];
@@ -40,9 +41,15 @@ export class GarnishmentMasterComponent implements OnInit {
   frequenciesData: any = []
   dropdownSettings: any;
   editFrequencyData: any[];
+  mandatoryFlag: boolean = false;
+  selectedindex: any = -1;
+  public modalRef: BsModalRef;
+  selectedInputTypeName: any;
+  excelData: any[];
 
-  constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService,
-    private alertService: ToastrService) {
+  constructor(private garnishmentService: GarnishmentService,
+    private excelservice: ExcelserviceService,
+    private alertService: AlertServiceService,private modalService: BsModalService) {
 
       // true = 1 and false = 0
 
@@ -71,7 +78,7 @@ export class GarnishmentMasterComponent implements OnInit {
       "incomeTaxSection": new FormControl(''),
       "isActive": new FormControl(1),
       "nameOfInstitution": new FormControl(''),
-      "nature": new FormControl(''),
+      "nature": new FormControl('Third Party'),
       "pan": new FormControl(''),
       "phoneNumber": new FormControl(''),
       "pinCode": new FormControl(''),
@@ -79,6 +86,7 @@ export class GarnishmentMasterComponent implements OnInit {
       "standardName": new FormControl(''),
       "state": new FormControl(''),
       "villege": new FormControl(''),
+      "familyMemberInfoId": new FormControl(1)
     });
 
 
@@ -86,59 +94,7 @@ export class GarnishmentMasterComponent implements OnInit {
       'srNo': 1,
       'documentName': 'abc'
     }]
-
-    // this.headData = [
-    //   { displayName: 'Incentive', headMasterId: 27 },
-    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
-    // ]
-
-    this.frequenciesData = [
-      {
-        "item_id": 1,
-        "displayName": "Monthly",
-        "item_text": "Month"
-      },
-      {
-        "item_id": 2,
-        "displayName": "Quarterly",
-        "item_text": "Quarter"
-      },
-      {
-        "item_id": 3,
-        "displayName": "HalfYearly",
-        "item_text": "HalfYear"
-      },
-      {
-        "item_id": 4,
-        "displayName": "Yearly",
-        "item_text": "Year"
-      },
-      {
-        "item_id": 5,
-        "displayName": "SemiMonthly",
-        "item_text": "SemiMonth"
-      },
-      {
-        "item_id": 6,
-        "displayName": "Weekly",
-        "item_text": "Week"
-      },
-      {
-        "item_id": 7,
-        "displayName": "BiWeekly",
-        "item_text": "BiWeek"
-      }
-    ];
-
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
+ 
   }
 
 
@@ -147,16 +103,19 @@ export class GarnishmentMasterComponent implements OnInit {
     this.getAllMasterData()
     this.setTypeData()
     this.getComplianceHeadNane()
-    this.getInstitutionMaster()
+    // this.getInstitutionMaster()
     this.getLocationInformationOrCountryList()
     // this.getloanMasterAllDeductionHead()
-    // this.getALLFrequecyDetails()
+    this.getALLFrequecyDetails()
     this.getindianincometax()
   }
 
   /** e&d head */
   payrollheadmaster(){
-    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Garnishment');
+
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
       this.headData = res.data.results
     })
   }
@@ -231,6 +190,7 @@ export class GarnishmentMasterComponent implements OnInit {
   getAllMasterData() {
     this.garnishmentService.getAllGarnishmentMaster().subscribe(res => {
       this.garnishmentData = res.data.results;
+      this.getInstitutionMaster()
     })
   }
 
@@ -243,9 +203,19 @@ export class GarnishmentMasterComponent implements OnInit {
 
   /** Get Institution Master */
   getInstitutionMaster() {
+    this.institutionMasterData = []
     this.garnishmentService.getInstitutionMaster().subscribe(res => {
-      this.institutionMasterData = res.data.results;
+      this.garnishmentData.forEach(ele => {
+        res.data.results.forEach((element,index) => {
+          if(ele.nameOfInstitution == element.institutionName){
+            let ind = index;
+            res.data.results.splice(ind,1)
+          }    
+        });
+      });
+      this.institutionMasterData = res.data.results
     })
+
   }
 
   /** Get selected institution */
@@ -290,7 +260,7 @@ export class GarnishmentMasterComponent implements OnInit {
 
 
       }, (error: any) => {
-        this.alertService.error(error['error']['status']['messsage']);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
 
       });
     }
@@ -306,8 +276,16 @@ export class GarnishmentMasterComponent implements OnInit {
   /** get ALL Frequecy Details */
   getALLFrequecyDetails() {
     this.garnishmentService.getALLFrequecyDetails().subscribe(res => {
-      this.frequencyData = res.data.result;
-      console.log("frequenct: " + JSON.stringify(this.frequencyData))
+      this.frequencyData = res.data.results;
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
     })
   }
 
@@ -332,8 +310,8 @@ export class GarnishmentMasterComponent implements OnInit {
   /** get selected frequency  */
   onSelectDataValue(event) {
     this.garnishmentMasterFrequencyList.push({
-      "frequencyid": parseInt(event.item_id),
-      "frequencyName": event.item_text + 'ly'
+      "frequencyid": parseInt(event.id),
+      "frequencyName": event.name
     })
 
     this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
@@ -342,7 +320,7 @@ export class GarnishmentMasterComponent implements OnInit {
   /** de select frequency */
   deSelectValueListDataValue(event) {
     this.garnishmentMasterFrequencyList.forEach((element, index) => {
-      if (element.frequencyid == event.item_id) {
+      if (element.frequencyid == event.id) {
         let ind = index;
         this.garnishmentMasterFrequencyList.splice(ind, 1)
       }
@@ -354,8 +332,8 @@ export class GarnishmentMasterComponent implements OnInit {
   onSelectAllValueListDataValue(event) {
     event.forEach((element, index) => {
       this.garnishmentMasterFrequencyList.push({
-        "frequencyid": parseInt(element.item_id),
-        "frequencyName": element.item_text + 'ly'
+        "frequencyid": parseInt(element.id),
+        "frequencyName": element.name
       })
     })
     this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
@@ -436,6 +414,8 @@ export class GarnishmentMasterComponent implements OnInit {
 
   /** Get Input Type */
   getInputTypeCheck(event, type, id) {
+    this.selectedInputTypeName = ''
+    this.selectedInputTypeName = type
     if (event.checked) {
       this.garnishmentMasterInputTypeList.push({
         "defaultInput": this.defaultInputType,
@@ -508,13 +488,16 @@ export class GarnishmentMasterComponent implements OnInit {
 
   getDocMandatory(event) {
     if (event.checked) {
+      this.mandatoryFlag = true
       this.docMandetory = 1
     } else {
+      this.mandatoryFlag = false
       this.docMandetory = 0
     }
   }
 
   addDocumentList() {
+    this.mandatoryFlag = false
     this.garnishmentMasterDocumentList.push({
       "documentName": this.documentName,
       "mandetory": this.docMandetory
@@ -522,9 +505,18 @@ export class GarnishmentMasterComponent implements OnInit {
     this.documentName = ''
   }
 
-  removeDocumentList(index) {
-    this.garnishmentMasterDocumentList.splice(index, 1)
+  /** Confirmation popup */
+  openDeletePopup(index,deleteTemp: TemplateRef<any>){
+    this.selectedindex = index;
+    this.modalRef = this.modalService.show(deleteTemp,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
   }
+
+  removeDocumentList() {
+    this.garnishmentMasterDocumentList.splice(this.selectedindex, 1)
+  }
+  
 
   /** Save Master Data */
   saveMasterData() {
@@ -537,7 +529,7 @@ export class GarnishmentMasterComponent implements OnInit {
 
     // console.log("Save data is: "+ JSON.stringify(this.garnishmentForm.value))
     this.garnishmentService.savemasterdata(this.garnishmentForm.value).subscribe(res => {
-      this.alertService.success("", "Garnishment master data saved successfully")
+      this.alertService.sweetalertMasterSuccess("Garnishment Master Saved Successfully","")
       this.garnishmentForm.addControl('garnishmentMasterId', new FormControl(''))
       this.editFlag = false;
       this.viewFlag = false;
@@ -633,7 +625,7 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentForm.controls['garnishmentMasterDocumentList'].setValue(this.garnishmentMasterDocumentList)
 
     this.garnishmentService.updatemasterdata(this.garnishmentForm.value).subscribe(res => {
-      this.alertService.success("", "Garnishment master data updated successfully")
+      this.alertService.sweetalertMasterSuccess("Garnishment Master Updated Successfully","")
       this.editFlag = false;
       this.viewFlag = false;
       this.garnishmentMasterDocumentList = []
@@ -720,5 +712,25 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentForm.controls['city'].disable()
     this.garnishmentForm.controls['villege'].disable()
   }
+
+  
+  /** Excel donload summary and Schedule page */
+
+	SummaryexportAsXLSX(): void {
+		this.excelData = [];
+		this.garnishmentData.forEach(element => {
+			let obj = {
+				"Institution": element.nameOfInstitution,
+				"City / Village": element.city + ' / ' + element.villege,
+				"Nature": element.nature,
+				"Head": element.headMasterId,
+				"Employee Application Process": element.empApplicationProcess,
+				"Goal": element.goal,
+				"Remark": element.remark
+			}
+			this.excelData.push(obj)
+		});
+		this.excelservice.exportAsExcelFile1(this.excelData, 'Garnishment-Master');
+	}
 
 }

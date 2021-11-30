@@ -48,6 +48,25 @@ export class ElectricVehicleService {
     ));
   }
 
+ getElectricVehicleNoList(lenderName:any, id) {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/'+ lenderName + '/' + id )
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+
+
+  // getElectricVehicleNoList(lenderName:String, no:any) {
+  //   return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/loanAccNo/' + lenderName + '/' + no)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }
+  //   ));
+  // }
+
+
 
   // getElectricVehicleDeclarationLenderName() {
   //   return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/BOI')
@@ -63,6 +82,22 @@ export class ElectricVehicleService {
       return res;
     }));
   }
+
+
+  getAccountNo(lenderName:String) {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/loanAccNo/' + lenderName)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  getTransactionFilterAccountNo(lenderName:String, accountNo:any) {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/' + lenderName +'/'+ accountNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/psid/' + proofSubmissionId)

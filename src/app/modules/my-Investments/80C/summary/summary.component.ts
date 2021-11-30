@@ -1,3 +1,4 @@
+import { Console } from 'console';
 
 import { Component, OnInit } from '@angular/core';
 import { NumberFormatPipe } from '../../../../core/utility/pipes/NumberFormatPipe';
@@ -18,7 +19,7 @@ export class SummaryComponent implements OnInit {
   public benefitAvailableDeclared :number;
   public benefitAvailableActual : number;
 
-  constructor( 
+  constructor(
     private summaryService: SummaryService,
     private numberFormat: NumberFormatPipe,
     ) { }
@@ -37,6 +38,7 @@ export class SummaryComponent implements OnInit {
       this.benefitAvailableActual = res.data.results[0].benefitAvailableActual;
       this.benefitAvailableDeclared = res.data.results[0].benefitAvailableDeclared;
     });
+    console.log("summaryGridData",this.summaryGridData);
   }
 
 }

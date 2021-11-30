@@ -514,8 +514,7 @@
                                     _ngcontent-ykc-c443=""
                                     class="Label_badge"
                                     >{{
-                                      masterInfo.masterDetail
-                                        .masterRemarkDetailList.length
+                                      masterInfo?.masterDetail?.masterRemarkDetailList?.length
                                     }}</span
                                   >
                                 </div>
@@ -542,7 +541,7 @@
                             <div class="float-right">
                               <button
                                 *ngIf="
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                   'Approved'
                                 "
                                 type="button"
@@ -553,7 +552,7 @@
                                   ripple
                                   mr-2
                                 "
-                                (click)="changeStatus(masterInfo, 'Re-Open')"
+                                (click)="changeStatus(masterInfo, 'Re-Open', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 Edit Approval
                               </button>
@@ -567,20 +566,20 @@
                                   mr-2
                                 "
                                 [class.disableredbutton]="
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
-                                (click)="changeStatus(masterInfo, 'SendBack')"
+                                (click)="changeStatus(masterInfo, 'SendBack', masterInfo.masterDetail.loanAccountNumber)"
                               >
                                 <b><i class="fa fa-reply-all"></i></b>
                                 SendBack
@@ -595,17 +594,17 @@
                                   mr-2
                                 "
                                 [disabled]="
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [class.disablegreenbutton]="
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                               >
@@ -620,14 +619,14 @@
                                   mr-2
                                 "
                                 [class.disablegreenbutton]=" approved1Disabled ||
-                                  masterInfo.masterDetail.masterStatus == '' 
+                                  masterInfo?.masterDetail?.masterStatus == '' 
                                 
                                 "
                                 [disabled]= " approved1Disabled ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 
                                 "
-                                (click)="changeStatus(masterInfo, 'Approved')"
+                                (click)="changeStatus(masterInfo, 'Approved', masterInfo.masterDetail.loanAccountNumber)"
                                 tooltip="Approve"
                               >
                                 <b> <i class="fa fa-floppy-o"></i></b> Approve
@@ -667,15 +666,15 @@
                                 "
                                 [class.disablegraybutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo.masterDetail?.masterStatus == ''
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
@@ -694,22 +693,22 @@
                                 "
                                 [class.disableredbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
                                     localStorageProofSubmissionIdList.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 (click)="
@@ -736,22 +735,22 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                               >
@@ -769,13 +768,13 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   approved1Disabled
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   approved1Disabled
                                 "
@@ -815,8 +814,7 @@
                                       <p-table
                                         #dt2
                                         [value]="
-                                          masterInfo.masterDetail
-                                            .documentDetailList
+                                          masterInfo?.masterDetail?.documentDetailList
                                         "
                                         [selection]="documentList"
                                         [paginator]="true"
@@ -1074,26 +1072,26 @@
                                                 [value]="documentDetail"
                                                 (click)="
                                                   selectDocumentForApprovalOrDiscard(
-                                                    e.checked,
+                                                    e?.checked,
                                                     documentDetail,
                                                     masterInfo
                                                   )
                                                 "
                                                 #e
                                                 [class.disableCheckbox]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 [disabled]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                               >
@@ -1101,7 +1099,7 @@
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.dateOfSubmission
+                                                documentDetail?.dateOfSubmission
                                                   | date: "dd-MMM-yyyy"
                                               }}
                                             </td>
@@ -1120,14 +1118,14 @@
                                                   "
                                                 ></i>
                                                 &nbsp;
-                                                {{ documentDetail.fileName }}
+                                                {{ documentDetail?.fileName }}
                                               </a>
                                             </td>
                                             <td>
-                                              {{ documentDetail.documentType }}
+                                              {{ documentDetail?.documentType }}
                                             </td>
                                             <td>
-                                              {{ documentDetail.password }}
+                                              {{ documentDetail?.password }}
                                             </td>
                                             <td>
                                               <div class="d-flex">
@@ -1141,11 +1139,11 @@
                                                     )
                                                   "
                                                   [disabled]="
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Approved' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discarded' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discard'
                                                   "
                                                 />
@@ -1179,9 +1177,7 @@
                                                     _ngcontent-ykc-c443=""
                                                     class="Label_badge"
                                                     >{{
-                                                      documentDetail
-                                                        .documentRemarkDetailList
-                                                        .length
+                                                      documentDetail?.documentRemarkDetailList?.length
                                                     }}</span
                                                   >
                                                 </div>
@@ -1189,28 +1185,28 @@
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.documentStatus
+                                                documentDetail?.documentStatus
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedBy
+                                                documentDetail?.lastModifiedBy
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedDateTime
+                                                documentDetail?.lastModifiedDateTime
                                                   | date: "dd-MMM-yyyy HH:mm"
                                               }}
                                             </td>
                                             <td>
                                               <i
                                                 *ngIf="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 class="
@@ -1251,9 +1247,9 @@
                                           "
                                           tooltip="Approve"
                                           [class.disablegreenbutton]="
-                                            documentList.length == 0
+                                            documentList?.length == 0
                                           "
-                                          [disabled]="documentList.length == 0"
+                                          [disabled]="documentList?.length == 0"
                                         >
                                           <b> <i class="fa fa-floppy-o"></i></b>
                                           Approve
@@ -1272,9 +1268,9 @@
                                             changeDocumentStatus('Discarded')
                                           "
                                           [class.disableredbutton]="
-                                            documentList.length == 0
+                                            documentList?.length == 0
                                           "
-                                          [disabled]="documentList.length == 0"
+                                          [disabled]="documentList?.length == 0"
                                         >
                                           <b><i class="fa fa-times"></i></b>
                                           Discard
@@ -1318,7 +1314,7 @@
                 <h5 class="modal-title" id="jasdjgh">View Remark</h5>
                 <button
                   type="button"
-                  (click)="modalRef.hide()"
+                  (click)="modalRef?.hide()"
                   class="close"
                   data-dismiss="modal"
                   aria-label="Close"

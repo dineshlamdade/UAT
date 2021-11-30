@@ -20,6 +20,7 @@
     background: #a7adaf !important;
 }
 
+
 .disabled-btn{
     background: #a7adaf !important;
 }
@@ -31,11 +32,50 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
+.p-input-icon-left>i:first-of-type {
+    top: 25px;
+    z-index: 1;
+    right: 36px;
+    color: #6c757d;
+    position: absolute;
+}
 
+.pointerdis{
+    cursor:not-allowed !important;
+}
+.text-orange{
+    color: #ff6600 !important;
+}
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield !important;
 }
+
+.arrow{
+    font-size: 19px !important;
+    padding: 5px;
+   border: 3px solid #f1f1f1;
+    }
+    .arrow:active
+    {
+        border: 3px solid #ded8de;
+       
+        padding: 5px;
+       border-radius: 50%;
+        font-size: 19px !important;
+        font-weight: 800;
+    }
+    .arrow:hover
+    {
+        border: 3px solid #ded8de;
+       
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 19px !important;
+        font-weight: 800;
+    }
+
+    
 
 
 .p-datatable-wrapper .ng-star-inserted{

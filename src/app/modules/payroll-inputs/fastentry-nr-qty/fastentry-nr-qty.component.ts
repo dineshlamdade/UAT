@@ -90,7 +90,10 @@ export class FastentryNrQtyComponent implements OnInit {
     // ]
 
     this.headData = []
-    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Quantity');
+    
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
       res.data.results.forEach(element => {
         this.headData.push({
           'headMasterId':element.headMasterId,
@@ -99,18 +102,28 @@ export class FastentryNrQtyComponent implements OnInit {
       });
     })
 
+    if (localStorage.getItem('payrollListEmpData') != null) {
+			this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+      this.selectedEmployeeData = this.payrollEmployeeData
+			this.selectedPayrollArea = 'PA-Staff'
+			// this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
+		
+		}
 
-    this.parollArea = [
-      { name: 'PA-Staff', code: '1' },
-      { name: 'PA-Worker', code: '2' },
-      { name: 'PA_Apprentic', code: '3' },
-      { name: 'PA_Expat', code: '4' },
-    ];
+
+
+    // this.parollArea = [
+    //   { name: 'PA-Staff', code: '1' },
+    //   { name: 'PA-Worker', code: '2' },
+    //   { name: 'PA_Apprentic', code: '3' },
+    //   { name: 'PA_Expat', code: '4' },
+    // ];
   }
 
   ngOnInit(): void {
     this.getEmployeeList();
     this.getMasterSummaryData()
+    this.getPayrollAreaList()
   }
 
   getMasterSummaryData() {
@@ -129,6 +142,13 @@ export class FastentryNrQtyComponent implements OnInit {
     });
   }
 
+  getPayrollAreaList(){
+    this.payrollEmployeeData = []
+    this.payrollservice.getEmployeeList().subscribe((res) => {
+      this.employeeData = res.data.results[0];
+    });
+  }
+
 
   /** Common selection Data  */
   onPayrollSelect(event) {
@@ -138,7 +158,7 @@ export class FastentryNrQtyComponent implements OnInit {
   
     this.parollArea.forEach(ele =>{
       if(ele.name == event){
-        this.selectedPayrollAreaId = ele.code
+        this.selectedPayrollAreaId = ele.payrollAreaId
         this.PayrollAreaByPayrollAreaCode(event)
       }
     })
@@ -162,12 +182,12 @@ export class FastentryNrQtyComponent implements OnInit {
       }
     )
 
-    this.payrollEmployeeData = []
-    this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
-      res => {
-        this.payrollEmployeeData = res.data.results[0]
-      }
-    )
+    // this.payrollEmployeeData = []
+    // this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
+    //   res => {
+    //     this.payrollEmployeeData = res.data.results[0]
+    //   }
+    // )
   }
 
   getSelectedFrequency(frequency) {
@@ -252,8 +272,8 @@ export class FastentryNrQtyComponent implements OnInit {
       this.tableData.push({
         'employeeMasterId': element.employeeMasterId,
         "employeeCode": element.employeeCode,
-        "employeeName": element.employeeName,
-        'payrollArea': this.selectedPayrollArea,
+        "employeeName": element.fullName,
+        'payrollArea': element.payrollAreaId,
         'fromDate': this.selectedFromDate,
         'transactionsType': this.selectedTransactionType,
         'numberOfTransactions': this.selectedNoOfTransaction,

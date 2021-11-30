@@ -14,7 +14,6 @@
                   <form class="card" [formGroup]="employeesetForm" role="form">
 
                     <div class="row">
-
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                         <label class="form-label">Emp. Set Name</label>
                         <input type="text" class="form-control" formControlName = "employeeSetName"
@@ -37,9 +36,9 @@
 
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
-                        <p-multiSelect [options]="serviceListData" class="multiselect-custom"
-                           [(ngModel)] = "employeeList" resetFilterOnHide=true
-                           optionLabel="" 
+                        <p-multiSelect [options]="serviceListData" class="multiple-select"
+                           [(ngModel)] = "employeeList" resetFilterOnHide="true" 
+                           (onChange) = "onSelectArea($event)"
                           [placeholder]="'Select Emp.code'" formControlName = "empList"
                           (onChange)="getArea(employeeList,$event)" class="font-12 text-ellipsis mt-1"
 
@@ -64,18 +63,13 @@
                             <div class="custom-controls-stacked">
                               <label class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="example- radios" value="radioStatus"
+                                formControlName = "empListRadio" (change) = "onSelectArea1($event.target.value)"
                                 [checked]="radioStatus" (change)="example($event)" (click)="Arealistpop(arealistpop)">
                                 <div class="custom-control-label form-label"> Emp. List </div>
                               </label>
                             </div>
-                      
-                          
-                      
-                      
-                        </div>
-                      
-                      
-                      </div>
+                           </div>
+                           </div>
 
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
                         <div class="form-group mt-20 p-d-inline-flex ml-10">
@@ -83,7 +77,7 @@
                           <!-- <a  class="text-link text-bold ">Field
                             Level</a> -->
 
-                            <label class="form-label text-link text-bold mr-2" (click)="largepopup (template);exportApprovalSummaryAsExcel1()"> Selected Employee List
+                            <label class="form-label text-link text-bold mr-2" (click)="largepopup(template);exportApprovalSummaryAsExcel1()"> Selected Employee List
                             </label>&nbsp;
                             <div>
                             <i class="fa fa-file-excel-o text-dark-green font-20" 
@@ -107,23 +101,23 @@
                     <div class="row mt-20">
                       <div class="col-md-3 form-group">
                         <label class="custom-control custom-checkbox custom-control-inline pl-45">
-                          <input autocomplete="off" type="checkbox" class="custom-control-input" name="example-inline-checkbox1" [checked] = '!hideRemarkDiv2'
-                            (change)="changeEvent2($event)" readonly />
+                          <input autocomplete="off" type="checkbox" class="custom-control-input" name="example-inline-checkbox1" 
+                          (change)="deactivateRemark($event.target)" formControlName = "isActive"/>
                           <span class="custom-control-label">Active </span>
                         </label>
+                        <!-- [checked] = '!hideRemarkDiv2' -->
                       </div>
                       <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
                         <label class="form-label">Remark</label>
-                        <textarea autocomplete="off" class="form-control" rows="2" 
+                        <textarea autocomplete="off" class="form-control" 
+                        name="example-textarea-input" rows="2"
                         placeholder="Enter Remark" formControlName = "remark"
-                        [ngClass]="{'is-invalid' : employeesetForm.get('remark').status == 'INVALID'}"
-                        [required]="hideRemarkDiv2">
+                        [ngClass]="{'is-invalid' : employeesetForm.get('remark').status == 'INVALID'}">
                         </textarea>
                       </div>
                     </div>
                   </ng-container>
                  
-
          
                   <div class="row mt-15">
                     <div class="col-12">
@@ -137,7 +131,7 @@
 
                         <button type="submit"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                          tooltip="Update" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
+                          tooltip="Update" tooltip="Update" *ngIf="editFormFlag"
                           (click)="onUpdate()"  [disabled] = "employeesetForm.invalid"
                           [ngClass]="{'disabled-btn-bg-green' : employeesetForm.invalid, 'btn-bg-green': !employeesetForm.invalid }"><b>
                             <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
@@ -220,10 +214,10 @@
                               (click) = "editEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
-                              (click) = "viewEmployeeSet(data)"
+                              (click) = "viewEmployeeSet(data)" 
                                 aria-hidden="true"></i>&nbsp;
                                 <i class="fa fa-trash font-18 text-red cursor-pointer" 
-                                (click) = "deleteData(data.employeeSetMasterId)" aria-hidden="true" 
+                                (click) = "smallpopup4(deleteTemp,data)" aria-hidden="true" 
                                tooltip = "Delete"></i>&nbsp;
 
                             </td>
@@ -303,13 +297,14 @@
         </div>
     </div>
     <div class="modal-footer">
+      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        (click)="modalRef.hide()"
+            tooltip="Proceed"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
       <button type="button" 
       class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left" tooltip="Close" (click)="modalRef.hide()"><b>
       <i class="fa fa-times"></i></b> Close</button>
         <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
-        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-        (click)="modalRef.hide()"
-            tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        
 </div>
 </ng-template>
 
@@ -491,6 +486,30 @@
     <button type="button" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left " tooltip="Close"
       (click)="modalRef.hide()"><b>
         <i class="fa fa-times"></i></b> Close</button>
+  </div>
+</ng-template>
+<ng-template #deleteTemp>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body mb-0 pb-0 pt-0">
+      <div class="card mb-0">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+                      <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;Are
+                    you sure want to
+                    delete 
+                   </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary"  (click)="deleteData();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
   </div>
 </ng-template>
 

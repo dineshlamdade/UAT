@@ -47,6 +47,13 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalS
         )
       );
   }
+  getMasterData(psid: any) {
+    // const investmentApprovalEmployeeMasterInfo = of(MasterInfo);
+    // return investmentApprovalEmployeeMasterInfo;
+    return this.httpClient
+      .get<APIResponse>(this.apiUrl + 'master-approval/psid/' + psid);
+    
+  }
 
   changeMasterStatus(formData: any) {
     return this.httpClient.post<APIResponse>(

@@ -42,6 +42,7 @@ export class LicdeclarationComponent implements OnInit {
   public testPolicy = '';
   public selectPolicyName = '';
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -64,6 +65,7 @@ export class LicdeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
   documentDataArray = [];
   editdDocumentDataArray = [];
+  public remarkCount : any;
 
 
   viewDocumentName: any;
@@ -71,7 +73,11 @@ export class LicdeclarationComponent implements OnInit {
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
+  public EditGrandTotalAmount:any;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -187,6 +193,8 @@ export class LicdeclarationComponent implements OnInit {
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
 
+  public ispreviousEmploy = true;
+
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
@@ -267,7 +275,7 @@ export class LicdeclarationComponent implements OnInit {
       }
       console.log(res.data.results[0].joiningDate);
 
-      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      this.dateOfJoining = new Date(res.data.results[0].dateOfJoining);
       console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
 
@@ -693,12 +701,17 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     i: number,
     j: number,
   ) {
+    
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
       summary.declaredAmount,
     );
-
+  
+  this.editTransactionUpload[j].lictransactionList[
+    i
+    ].actualAmount = this.declarationService.declaredAmount;
+console.log( this.editTransactionUpload);
     this.editTransactionUpload[j].lictransactionList[
       i
       ].declaredAmount = this.declarationService.declaredAmount;
@@ -725,6 +738,9 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
+
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
     );
@@ -779,6 +795,8 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
+
+  
 
     this.transactionDetail[j].lictransactionList[
       i
@@ -1233,6 +1251,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.shownewRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 
@@ -1398,7 +1417,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
@@ -1407,12 +1426,16 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
       (res) => {
         
         console.log('edit Data:: ', res);
+        this.EditGrandTotalAmount = res.data.results;
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
           this.disableRemark = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editTransactionUpload = res.data.results[0].licTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1518,7 +1541,7 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1579,17 +1602,40 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    lictransactionID
   ) {
-    
+  
     this.Service.getLicRemarkList(
-      transactionID,
-      psId
+      lictransactionID,
     ).subscribe((res) => {
       console.log('docremark', res);
       
     
     this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+  public docRemarkModal1(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    lictransactionID
+  ) {
+    
+    this.Service.getLicRemarkList(
+      lictransactionID,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1806,6 +1852,12 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.transactionDetail[j].lictransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].lictransactionList[i].dateOfPayment);
+    
+    if (new Date(summary.dateOfPayment) > this.dateOfJoining) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 
   // ---- Set Date of Payment On Edit Modal----
@@ -1867,6 +1919,8 @@ if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI,
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,

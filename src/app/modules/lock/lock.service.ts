@@ -9,7 +9,7 @@ import { environment } from './../../../environments/environment';
 export class LockService {
 
 
-  constructor(private _HTTP: HttpClient) { }
+  constructor(private _HTTP: HttpClient, private http: HttpClient) { }
 
   //Get APIs Lock Area
   getAllCycleData() {
@@ -314,6 +314,72 @@ getEmpListUsingCycleName(cycleName) {
       return res;
     } ) );
 }
+
+
+/**get Area Summary data */
+getAreaSetData() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'Areamaster/getAllAreaMasters')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+// Emp set
+
+getEmpSet() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'EmployeeMaster/getAllEmployeeSet')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+
+// getImages() {
+//   return this._HTTP.get<any>('assets/showcase/data/photos.json')
+//     .toPromise()
+//     .then(res => <Image[]>res.data)
+//     .then(data => { return data; });
+//   }
+
+//Summary Tab All Get API
+
+getAreaSummary(){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'payrollArea-lock/getAllCycleLockSummary/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+getEmployeeSummary(){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'employee-lock/getAllEmployeeLockSummary/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+getAsAndWhenSummary(){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/getAllAsAndWhenCycleLockSummary/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+
 
 }
 

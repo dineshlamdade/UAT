@@ -29,6 +29,12 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
 import { PrimeNGModule } from 'src/app/app.primeNG.module';
 import { JobMasterComponent } from './job-master/job-master.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
+import { TableModule } from 'primeng/table';
+import { FlexiBasketAllocationComponent } from './flexi-basket-allocation/flexi-basket-allocation.component';
+import { FlexiInputComponent } from './flexi-input/flexi-input.component';
+import { SectionComponent } from './flexi-input/section/section.component';
+import { HeadComponent } from './flexi-input/head/head.component';
+
 
 
 @NgModule( {
@@ -43,10 +49,15 @@ import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapp
     BankMasterAtGroupComponent,
     BankMasterAtCompanyComponent,
     JobMasterComponent,
-    ComplianceMappingComponent
+    ComplianceMappingComponent,
+    FlexiBasketAllocationComponent,
+    FlexiInputComponent,
+    SectionComponent,
+    HeadComponent
 
   ],
   imports: [
+    TableModule,
     BsDatepickerModule,
     BsDatepickerModule.forRoot(),
     CommonModule,

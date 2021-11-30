@@ -71,7 +71,9 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
-
+  public isShowUpdate = false;
+  public isShow :boolean;
+  public isShowSave = true;
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
@@ -176,6 +178,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+    this.form.enable();
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
@@ -336,7 +339,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -351,7 +354,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
         })
       });
-     
+
     });
   }
 
@@ -365,15 +368,15 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
 
 console.log('this.isEdit', this.isEdit);
-   
-  if(!this.isEdit){
+
+  if(!this.isEdit){ 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
       );
       return;
-    } 
-  } 
+    }
+  }
   // else {
       const from = this.datePipe.transform(
         this.form.get('loanStartDate').value,
@@ -383,8 +386,8 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.documentPassword.length; i++) {
-        if(this.documentPassword[i] != undefined){
+      for (let i = 0; i < this.remarkList.length; i++) {
+        if(this.remarkList[i] == undefined || this.remarkList[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
@@ -413,18 +416,18 @@ console.log('this.isEdit', this.isEdit);
             this.validVehicleNumbers = true;
           }
         });
-        if (this.validVehicleNumbers) {
+   /*      if (this.validVehicleNumbers) {
           this.validVehicleNumbers = false;
           this.alertService.sweetalertError(
             'Vehicle number is already present.'
           );
           return;
-        }
+        } */
       }
 
 
       console.log('loan Account Number ::', data);
-      if (data.loanAccountNumber) {
+  /*     if (data.loanAccountNumber) {
 
         this.loanAccountNumbers.results.forEach(results => {
           if (results.loanAccountNumber == data.loanAccountNumber) {
@@ -438,7 +441,7 @@ console.log('this.isEdit', this.isEdit);
           );
           return;
         }
-      }
+      } */
 
 
       // if (this.validVehicleNumbers) {
@@ -455,6 +458,7 @@ console.log('this.isEdit', this.isEdit);
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.documentDataArray = [];
               this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
@@ -466,11 +470,11 @@ console.log('this.isEdit', this.isEdit);
               });
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
@@ -481,31 +485,30 @@ console.log('this.isEdit', this.isEdit);
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
                       'documentPassword':element.documentInformationList[1].documentPassword,
                       'documentRemark':element.documentInformationList[1].documentRemark,
+                     // 'remark':element.documentInformationList[1].remark,
                       'status' : element.documentInformationList[1].status,
                       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
               }
               this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
+                'Record saved Successfully.', '');
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);
             }
@@ -514,10 +517,19 @@ console.log('this.isEdit', this.isEdit);
               'Something went wrong. Please try again.'
             );
           }
-        });
-
+        }
+        ,error => {
+          if(error.error.status.code == '400'){
+            // this.alertService.sweetalertWarning("Vehicle Number already Present !");
+            this.alertService.sweetalertError( error["error"]["status"]["messsage"] );
+          }
+        }
+        );
+        this.isShowUpdate = false;
+        this.isShowSave = true;
         this.Index = -1;
         formDirective.resetForm();
+        this.documentDataArray = [];
         this.form.reset();
         this.showUpdateButton = false;
         this.paymentDetailGridData = [];
@@ -573,14 +585,19 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('remark').reset();
       }
     }
-  
+
 
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
+    this.isShowUpdate = true;
+    this.isShowSave = false;
+    this.isShow=false
     this.isEdit = true;
+    this.form.enable();
     this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
+      this.isVisibleTable = true;
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -589,7 +606,7 @@ console.log('this.isEdit', this.isEdit);
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
-      
+
       console.log(vehicleNumber)
       const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
 
@@ -607,7 +624,7 @@ console.log('this.isEdit', this.isEdit);
       this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
       this.documentArray = [];
-        
+
       obj.documentInformationList.forEach(element => {
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,
@@ -620,7 +637,66 @@ console.log('this.isEdit', this.isEdit);
           'lastModifiedTime' : element.lastModifiedTime,
 
         })
-        
+
+      });
+      console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
+
+      }
+    });
+
+  }
+
+  // On Master view functionality
+  viewMaster(vehicleNumber) {
+    this.isShowUpdate = false;
+    this.isShowSave = false;
+    this.isShow=true
+    this.isEdit = true;
+    this.form.disable();
+    this.scrollToTop();
+    this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
+      this.isVisibleTable = true;
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.loanStartDate = new Date(element.loanStartDate);
+        element.loanEndDate = new Date(element.loanEndDate);
+      });
+
+      console.log(vehicleNumber)
+      const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.vehicleNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      // this.urlArray = obj.rcBook;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
+      this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+
+      obj.documentInformationList.forEach(element => {
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+
       });
       console.log("documentArray::",this.documentArray);
       this.isVisibleTable = true;
@@ -656,24 +732,14 @@ console.log('this.isEdit', this.isEdit);
     this.isClear = false;
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
-
-  //---------- On View Cancel -------------------
+  //---------- On reset Cancel -------------------
   resetView() {
+    this.isShowUpdate = false;
+    this.isShowSave =  true;
+    this.isShow=false;
+    this.form.enable();
+    this.documentArray = [];
+    this.isVisibleTable = false
     this.form.reset();
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];

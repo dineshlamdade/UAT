@@ -116,13 +116,18 @@ public showdocument = true;
   // public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
+
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate: boolean;
+
   public isClear: boolean;
   public isCancel: boolean;
   public financialYear: any;
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-  
+
   codeInvalid: boolean = false;
 
   public transactionStatustList: any;
@@ -170,6 +175,9 @@ public showdocument = true;
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
@@ -238,6 +246,7 @@ public showdocument = true;
             branchName: res.data.results[0].branchName,
             bankAddress: res.data.results[0].address,
             bankName: res.data.results[0].bankName,
+            state: res.data.results[0].state,
           });
 
         });
@@ -254,6 +263,7 @@ public showdocument = true;
             branchName: res.data.results[0].branchName,
             bankAddress: res.data.results[0].address,
             bankName: res.data.results[0].bankName,
+            state: res.data.results[0].state,
           });
         });
       }
@@ -272,11 +282,11 @@ public showdocument = true;
     }
 
     searchIFSC(searchTerm, bankIFSC) {
-      this.form.patchValue({
-        branchName:'',
-        bankAddress: '',
-        bankName:'',
-      });
+      // this.form.patchValue({
+      //   branchName:'',
+      //   bankAddress: '',
+      //   bankName:'',
+      // });
 
       if (searchTerm.query.length < 11) {
         this.ifscCodeList = []
@@ -369,7 +379,7 @@ public showdocument = true;
             'status' : element.status,
             'lastModifiedBy' : element.lastModifiedBy,
             'lastModifiedTime' : element.lastModifiedTime,
-  
+
           })
         });
         this.documentArray.push({
@@ -392,22 +402,26 @@ public showdocument = true;
   public addMaster(formData: any, formDirective: FormGroupDirective,): void {
     this.submitted = true;
 
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
+
     if (this.form.invalid) {
       return;
     }
     console.log('this.isEdit', this.isEdit);
-   
+
     if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Deposit in Saving Account 80TTA Document needed to Create Master.'
+        'Deposit in Saving Account 80TTBDocument needed to Create Master.'
       );
       return;
-    } 
+    }
   }
-  for (let i = 0; i <= this.documentPassword.length; i++) {
-    if(this.documentPassword[i] != undefined){
+  for (let i = 0; i < this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
@@ -425,21 +439,21 @@ public showdocument = true;
       data.proofSubmissionId = this.proofSubmissionId;
       data.remarkPasswordList = this.documentDataArray;
 
-      console.log('Interest On 80TTA ::', data);
-      if (data.accountNumber) {
-        this.masterGridData.forEach(results => {
-          if (results.accountNumber == data.accountNumber) {
-            this.codeInvalid = true;
-          }
-        });
-        if (this.codeInvalid) {
-          this.codeInvalid = false;
-          this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable'
-          );
-          return;
-        }
-      }
+      // console.log('Interest On 80TTB::', data);
+      // if (data.accountNumber) {
+      //   this.masterGridData.forEach(results => {
+      //     if (results.accountNumber == data.accountNumber) {
+      //       this.codeInvalid = true;
+      //     }
+      //   });
+      //   if (this.codeInvalid) {
+      //     this.codeInvalid = false;
+      //     this.alertService.sweetalertError(
+      //       'Duplicate Account should Not be Acceptable.'
+      //     );
+      //     return;
+      //   }
+      // }
      /*  this.masterGridData.forEach((element) => {
         if (data.accountNumber == element.accountNumber) {
           this.alertService.sweetalertWarning(
@@ -448,7 +462,7 @@ public showdocument = true;
           return 0;
           this.form.reset();
         }
-      });  */     
+      });  */
 
       this.interestOnTtbService
         .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
@@ -459,30 +473,34 @@ public showdocument = true;
               this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
-
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Declaration & Actual" Page to see Schedule.'
+              );
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
-                
-            
+
+
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
                       'documentName': element.documentInformationList[0].fileName,
                       'documentPassword':element.documentInformationList[0].documentPassword,
                       'documentRemark':element.documentInformationList[0].documentRemark,
                       'status' : element.documentInformationList[0].status,
+                      'remark':element.documentInformationList[0].remark,
                       'approverName' : element.documentInformationList[0].lastModifiedBy,
                       'Time' : element.documentInformationList[0].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
 
                   if(element.documentInformationList[1]) {
                   this.documentArray.push({
-                  
+
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[1].documentType,
                       'documentName': element.documentInformationList[1].fileName,
@@ -493,21 +511,18 @@ public showdocument = true;
                       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
                       // 'documentStatus' : this.premiumFileStatus,
-              
+
                   });
                 }
                 });
               }
               // this.masterGridData = res.data.results[0].documentInformationList;
               console.log("masterGridData",this.masterGridData);
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
+
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
+                'This Policy Holder Already Added.'
               );
             }
           } else {
@@ -521,6 +536,7 @@ public showdocument = true;
       formDirective.resetForm();
       this.form.reset();
       this.paymentDetailGridData = [];
+      this.documentDataArray  = [];
       this.masterfilesArray = [];
       this.urlArray = [];
       this.showUpdateButton = false;
@@ -543,7 +559,7 @@ public showdocument = true;
       this.accountNumberlistedit = element.accountNumber;
       if (event == element.accountNumber) {
         this.alertService.sweetalertWarning(
-          'Duplicate Account should Not be Acceptable'
+          'Duplicate Account should Not be Acceptable.'
         );
       }
       console.log(element.accountNumber);
@@ -551,7 +567,7 @@ public showdocument = true;
     return 0;
   }
 
-  
+
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -573,6 +589,67 @@ public showdocument = true;
 
     //------------- On Master Edit functionality --------------------
     editMaster(accountNumber) {
+
+      this.isShowCancel=false ;
+      this.isShowSave = false;
+      this.isShowUpdate=true ;
+      this.isEdit = true;
+      this.form.enable();
+      this.form.get("bankName").disable();
+      this.form.get("branchName").disable();
+      this.form.get("bankAddress").disable();
+      this.form.get("state").disable();
+
+      this.scrollToTop();
+      this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+
+        console.log(accountNumber)
+        const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log("Edit Master",obj);
+        if (obj!= 'undefined'){
+
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
+
+        }
+      });
+
+    }
+    //------------- On master View Functionality ----------------------
+    ViewMaster(accountNumber) {
+
+      this.isShowCancel=true ;
+      this.isShowSave = false;
+      this.isShowUpdate=false ;
+      this.form.disable();
       this.isEdit = true;
       this.scrollToTop();
       this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
@@ -608,7 +685,7 @@ public showdocument = true;
             'lastModifiedTime' : element.lastModifiedTime,
 
           })
-          
+
         });
         console.log("documentArray::",this.documentArray);
         this.isVisibleTable = true;
@@ -617,6 +694,8 @@ public showdocument = true;
       });
 
     }
+
+
 
     findByaccountNumber(accountNumber,masterGridData){
       return masterGridData.find(x => x.accountNumber === accountNumber)
@@ -652,7 +731,17 @@ public showdocument = true;
 
   //---------- On View Cancel -------------------
   resetView() {
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
     this.form.reset();
+    this.form.enable();
+    this.form.get("bankName").disable();
+    this.form.get("branchName").disable();
+    this.form.get("bankAddress").disable();
+    this.form.get("state").disable();
+
+
     this.urlArray = [];
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
@@ -684,7 +773,7 @@ public showdocument = true;
     if(currWidth == 2500) return false;
      else{
         myImg.style.width = (currWidth + 100) + "px";
-    } 
+    }
 }
  zoomout(){
     var myImg = document.getElementById("map");

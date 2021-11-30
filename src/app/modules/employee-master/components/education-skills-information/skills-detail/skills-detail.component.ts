@@ -60,6 +60,10 @@ export class SkillsDetailComponent implements OnInit {
       proficiency: [''],
     });
 
+    
+    console.log('employee Master Id as adEmp',JSON.parse(localStorage.getItem("adEmp")).employeeMasterId);
+
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 

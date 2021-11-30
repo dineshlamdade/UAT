@@ -45,7 +45,8 @@
                     <div class="col-sm-3">
                       <label class="form-label"> Registration No.</label>
                       <input type="text" formControlName="registrationNumber" class="form-control" autocomplete="off"
-                        name="registrationNumber" placeholder="Enter Registration No." minlength="1" maxlength="21"
+                        name="registrationNumber" placeholder="Enter Registration No." pattern="^[0-9_]*$" minlength="1" maxlength="21"
+                        onkeypress="return /[0-9']/i.test(event.key)"
                         [ngClass]="{'is-invalid' : form.get('registrationNumber').status == 'INVALID'}">
                     </div>
 
@@ -85,11 +86,13 @@
                         [ngClass]="{'is-invalid' : form.get('pan').status == 'INVALID'|| invalidPAN == true}"
                         autocomplete="off" maxlength="10" placeholder="Enter PAN">
                     </div>
+                   
 
                     <div class="col-sm-3">
                       <label class="form-label">MSME No.</label>
                       <input type="text" formControlName="msmeNumber" class="form-control " name="msmeNumber"
-                        autocomplete="off" minlength="12" maxlength="12" placeholder="Enter MSME No.">
+                        autocomplete="off" minlength="12" maxlength="12" placeholder="Enter MSME No." onkeypress="return /[0-9']/i.test(event.key)"
+                        [ngClass]="{'is-invalid' : form.get('msmeNumber').status == 'INVALID'}"/>
                     </div>
 
                   </div>
@@ -97,12 +100,30 @@
 
                   <div class="row mt-20">
 
+                    <!-- <div class="col-sm-3">
+                      <label class="form-label">Udyog Aadhaar No.</label>
+                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control"
+                        name="udyogAadhaarNumber"  placeholder="Enter Udyog Aadhaar No." minlength="12" maxlength="12"
+                       
+                        [ngClass]="{'is-invalid' : form.get('udyogAadhaarNumber').status == 'INVALID'}"/>
+                      
+                    </div> -->
                     <div class="col-sm-3">
                       <label class="form-label">Udyog Aadhaar No.</label>
-                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control" autocomplete="off"
-                        name="udyogAadhaarNumber" minlength="12" maxlength="12" placeholder="Enter Udyog Aadhaar No."
-                        [ngClass]="{'is-invalid' : form.get('udyogAadhaarNumber').status == 'INVALID'}">
+                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control"
+                        name="udyogAadhaarNumber"  placeholder="Enter Udyog Aadhaar No." minlength="12" maxlength="12"
+                        onkeypress="return /[0-9']/i.test(event.key)"
+                        [ngClass]="{'is-invalid' : form.get('udyogAadhaarNumber').status == 'INVALID'}" />
+                        <div *ngIf="form.get('udyogAadhaarNumber').touched && form.get('udyogAadhaarNumber').errors" class="invalid-feedback">
+                            <div *ngIf="form.get('udyogAadhaarNumber').errors.required">Udyog Aadhaar No is required</div>
+                        </div>
+                      
                     </div>
+                    <!-- <div class="col-sm-3">
+                      <label class="form-label">Udyog Aadhaar No.</label>
+                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control" autocomplete="off"
+                        name="udyogAadhaarNumber" pattern="^[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}$"  minlength="12" maxlength="12" placeholder="Enter Udyog Aadhaar No.">
+                    </div> -->
 
                   </div>
                   <!-- end of row -->
@@ -159,18 +180,166 @@
               </div>
             </div>
           </div>
+          <!-- </div> -->
+
+          <br>
+          <div class="row mb-0">
+            <div class="col-md-12">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search" style="top: 9px !important"></i>
+                    <input pInputText type="text"
+                      (input)="
+                      dt.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+
+                &nbsp;
+                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
+                  tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+
+              </div>
+            </div>
+           </div>
+
+          <div class="row">
+            <div class="col-12 ">
+              <div class="card">
+                  <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
+                  [showCurrentPageReport]="true"
+                  (sortFunction)="customSort($event)"
+                   [customSort]="true"
+                    [pageLinks]="5" 
+                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                   totalRecords={{summaryHtmlDataList.length}} 
+                   [rowsPerPageOptions]="[10,25,50,100,200]"
+                   
+                   [globalFilterFields]="['code', 'companyName',  'companyGroupName','registrationNumber','pan']">
+
+                     <ng-template pTemplate="header">
+                       <tr>
+                         <th class=" text-center">
+                          Sr. No.
+                           
+                         </th>
+                        
+
+                       <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Code
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                              <p-columnFilter field="code" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Company Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="companyName" pSortableColumn="companyName"></p-sortIcon>
+                              <p-columnFilter field="companyName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                         <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Group Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                              <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">Registration No.
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="registrationNumber" pSortableColumn="registrationNumber"></p-sortIcon>
+                              <p-columnFilter field="registrationNumber" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          <div class="p-d-flex  justify-content-center p-ai-center">PAN
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="pan" pSortableColumn="pan"></p-sortIcon>
+                              <p-columnFilter field="pan" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th class="text-center">
+                          Action
+                        </th>        
+                       </tr>
+                     </ng-template>
+                     <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
+                      <tr class="p-selectable-row">
+                          <td class="text-center">{{rowIndex + 1}}</td>
+                          <td>
+                              <label
+                                  class="form-lable mb-0">
+                                  {{summary.code}}</label>
+                          </td>
+                          <td>
+                              <label
+                                  class="form-lable mb-0 ">{{summary.companyName}}</label>
+                          </td>
+
+                          <td> <label
+                                  class="form-lable mb-0 ">{{summary.companyGroupName}}</label>
+                                  </td>
+                                  <td> <label
+                                    class="form-lable mb-0 ">{{summary.registrationNumber}}</label>
+                                    </td>
+                                    <td> <label
+                                      class="form-lable mb-0 ">{{summary.pan}}</label>
+                                      </td>
+                                      <td class="text-center">
+                                        <span >
+                                            <i  class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editMaster(rowIndex)" ></i>
+                                            <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewMaster(rowIndex)"></i>
+                                              
+                                              </span>
+                                      </td>
+                      </tr>
+                  </ng-template>
+
+                     <ng-template pTemplate="emptymessage">
+                       <tr>
+                         <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                             Available</span>
+                         </td>
+                       </tr>
+                     </ng-template>
+                   </p-table>
+</div>
+</div>
+</div>
 
 
-
-
-
+<!-- 
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="mb-0">
                   <h3 class="font-14 text-purple font-bold">Summary</h3>
                 </div>
-                <!-- <div class=""> -->
                 <div class="table-responsive Custom_Table">
                   <table class="table table-striped table-hover table-bordered m-b-0">
                     <thead class="thead-dark">
@@ -226,7 +395,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

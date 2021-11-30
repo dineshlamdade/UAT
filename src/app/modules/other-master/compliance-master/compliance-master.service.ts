@@ -147,7 +147,7 @@ export class ComplianceMasterService {
       .set( 'content-type', 'application/json' )
       .set( 'Access-Control-Allow-Origin', '*' )
       .set( 'X-TenantId', 'PaysquareDefault' );
-    return this._HTTP.get( environment.baseUrl8083 + 'compliance-master/', { headers: headers } )
+    return this._HTTP.get( environment.baseUrl8083 + 'compliance-master/',{ headers: headers } )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

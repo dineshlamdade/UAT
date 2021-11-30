@@ -78,40 +78,56 @@ export class FastentryNRAmtComponent implements OnInit {
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
     private toaster: ToastrService) {
-    this.headData = [
-      { displayName: 'Incentive', headMasterId: 27 },
-      { displayName: 'Performance_Incentive', headMasterId: 29 },
-    ]
+    // this.headData = [
+    //   { displayName: 'Incentive', headMasterId: 27 },
+    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
+    // ]
 
-    // this.headData = []
-    // this.garnishmentService.payrollheadmaster().subscribe(res =>{
-    //   res.data.results.forEach(element => {
-    //     this.headData.push({
-    //       'headMasterId':element.headMasterId,
-    //       'displayName': element.displayName
-    //     })
-    //   });
-    // })
+    
+    this.headData = []
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Amount');
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+      res.data.results.forEach(element => {
+        this.headData.push({
+          'headMasterId':element.headMasterId,
+          'displayName': element.displayName
+        })
+      });
+    })
 
-    this.parollArea = [
-      { name: 'PA-Staff', code: '1' },
-      { name: 'PA-Worker', code: '2' },
-      { name: 'PA_Apprentic', code: '3' },
-      { name: 'PA_Expat', code: '4' },
-    ];
+    if (localStorage.getItem('payrollListEmpData') != null) {
+			this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+      this.selectedEmployeeData = this.payrollEmployeeData
+			this.selectedPayrollArea = 'PA-Staff'
+			// this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
+		
+		}
+
+    // this.parollArea = [
+    //   { name: 'PA-Staff', code: '1' },
+    //   { name: 'PA-Worker', code: '2' },
+    //   { name: 'PA_Apprentic', code: '3' },
+    //   { name: 'PA_Expat', code: '4' },
+    // ];
   }
 
   ngOnInit(): void {
     this.getEmployeeList()
+    this.getPayrollAreaList()
   }
 
   getEmployeeList() {
+    this.parollArea = []
+    this.payrollservice.getPayrollList().subscribe((res) => {
+      this.parollArea = res.data.results;
+    });
+  }
+
+  getPayrollAreaList(){
     this.payrollEmployeeData = []
-    this.payrollservice.getAllEmployeeDetails().subscribe((res) => {
+    this.payrollservice.getEmployeeList().subscribe((res) => {
       this.employeeData = res.data.results[0];
-      // for(let i=0; i <= 5; i++){
-      //   this.payrollEmployeeData.push(this.employeeData[i])
-      // }
     });
   }
 
@@ -124,7 +140,7 @@ export class FastentryNRAmtComponent implements OnInit {
     
     this.parollArea.forEach(ele =>{
       if(ele.name == event){
-        this.selectedPayrollAreaId = ele.code
+        this.selectedPayrollAreaId = ele.payrollAreaId
         this.PayrollAreaByPayrollAreaCode(event)
       }
     })
@@ -148,12 +164,12 @@ export class FastentryNRAmtComponent implements OnInit {
         // )
       }
     )
-    this.payrollEmployeeData = []
-    this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
-      res => {
-        this.payrollEmployeeData = res.data.results[0]
-      }
-    )
+    // this.payrollEmployeeData = []
+    // this.payrollservice.getPayrollWiseEmployeeList(this.selectedPayrollAreaId).subscribe(
+    //   res => {
+    //     this.payrollEmployeeData = res.data.results[0]
+    //   }
+    // )
   }
 
   getSelectedFrequency(frequency) {
@@ -224,8 +240,8 @@ export class FastentryNRAmtComponent implements OnInit {
       this.tableData.push({
         'employeeMasterId': element.employeeMasterId,
         "employeeCode": element.employeeCode,
-        "employeeName": element.employeeName,
-        'payrollArea': this.selectedPayrollArea,
+        "employeeName": element.fullName,
+        'payrollArea': element.payrollAreaId,
         'fromDate': this.selectedFromDate,
         'transactionsType': this.selectedTransactionType,
         'numberOfTransactions': this.selectedNoOfTransaction,
