@@ -155,11 +155,12 @@ export class JobMasterComponent implements OnInit {
     this.tableDataList = [];
     this.refreshHtmlTable ();
     this.getCompanyName ();
-    this.getCopyCompany();
+   //copy from functionality code not available
+   //this.getCopyCompany();
     this.companyDataInDetails();
     console.log("getAllMappingDetailListNew", this.getAllMappingDetailListNew[0]);
 
-  }
+  }   
 
   companyDataInDetails(){
     this.bankMasterAtCompanyService.getGroupCompanyDetails().subscribe( ( res ) => {
@@ -205,13 +206,15 @@ export class JobMasterComponent implements OnInit {
     } );
   }
 
-  getCopyCompany(){
-    this.jobMasterService.getAllCopyFrom().subscribe((res) => {
-      this.companyCopyDataList = res.data.results;
-      console.log("companyCopyDataList", this.companyCopyDataList);
-  })
+  // commented for copy from functionality is not working testing 
 
-  }
+//   getCopyCompany(){
+//     this.jobMasterService.getAllCopyFrom().subscribe((res) => {
+//       this.companyCopyDataList = res.data.results;
+//       console.log("companyCopyDataList", this.companyCopyDataList);
+//   })
+
+//  }
   getJobMasterDropDownListAssign(){
     this.jobMasterService.get('all-othermasters-mapping/details').subscribe((res) => {
       this.getAllJobMappingsList = res.data.results;
@@ -519,12 +522,13 @@ export class JobMasterComponent implements OnInit {
 
   // Save Comp Master Assign
   saveJobMasterMapping() {
-
+    console.log('Dummy data',this.companyAssignTableListDummy);
       if ( this.mappedJobMastersToCompany.length > 0 ) {
         this.jobMasterService.postMapping(this.mappedJobMastersToCompany).subscribe(
           (res: any) => {
           if ( res.data.results.length !== 0 ) {
             this.alertService.sweetalertMasterSuccess( res.status.messsage, '' );
+            this.mappedJobMastersToCompany=[];
             // this.onCompanySelect(data.groupCompanyId);
             this.isJobMasterTableVisible = false;
             this.getAllOtheMappingDetails();
@@ -536,6 +540,7 @@ export class JobMasterComponent implements OnInit {
           this.alertService.sweetalertError( error['error']['status']['messsage'] );
         } );
         this.companyAssignTableList = [];
+        this.mappedJobMastersToCompany = [];
         this.companyAssignTableListDummy = [];
 
         this.formAssignment.reset();
@@ -547,7 +552,8 @@ export class JobMasterComponent implements OnInit {
     }
 
       // Save Assign Master in Job Master Table
-  saveJobMasterMappingInMaster() {
+  saveJobMasterMappingInMaster() { 
+  
       if ( this.mappedJobMastersToCompanyInMaster.length > 0 ) {
         this.jobMasterService.postMapping(this.mappedJobMastersToCompanyInMaster).subscribe(
           (res: any) => {
@@ -1667,7 +1673,7 @@ export class JobMasterComponent implements OnInit {
     this.companyAssignTableListDummy.forEach(element => {
       if (element.jobMasterValueId == jobMasterId) {
         element.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
-
+        this.mappedJobMastersToCompany.find(a=>a.jobMasterValueId==jobMasterId).fromDate=element.fromDate;
       }
     });
   }
