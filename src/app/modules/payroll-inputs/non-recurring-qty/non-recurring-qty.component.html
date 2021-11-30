@@ -482,126 +482,194 @@
                                                                             {{payrollListEmpData.length}}</strong>
                                                                     </div>
 
-                                                                    <!-- Employee Selection Dropdown-->
-                                                                    <div class="row mt-10"
-                                                                        *ngIf="showEmployeeSelectionFlag">
-                                                                        <div class="col-md-2">
-                                                                            <label class="form-label mb-0">Employee Code
-                                                                            </label>
-                                                                            <select name="EmployeeCode"
-                                                                                class="form-control custom-select"
-                                                                                [(ngModel)]="selectedEmployeeMasterId"
-                                                                                [disabled]="showDropdownDisabled"
-                                                                                (change)="getSelectedEmployeeCode($event.target.value)">
-                                                                                <option value="">Select</option>
-                                                                                <!-- <option value="1"> 1111 </option> -->
-                                                                                <option value="{{emp.employeeMasterId}}"
-                                                                                    *ngFor="let emp of employeeData"
-                                                                                    [selected]="selectedEmployeeMasterId == emp.employeeMasterId">
-                                                                                    {{emp.employeeCode}}
-                                                                                </option>
-                                                                            </select>
+                                                                   <!-- Employee Selection Dropdown-->
+                                                                   <div class="row mt-10"
+                                                                   *ngIf="showEmployeeSelectionFlag">
+                                                                   <div class="col-md-2">
+                                                                       <label class="form-label mb-0">Employee Code
+                                                                       </label>
+                                                                       <select name="EmployeeCode"
+                                                                           class="form-control custom-select"
+                                                                           [(ngModel)]="selectedEmployeeMasterId"
+                                                                           [disabled]="showDropdownDisabled"
+                                                                           (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                           <option value="">Select</option>
+                                                                           <!-- <option value="1"> 1111 </option> -->
+                                                                           <option value="{{emp.employeeMasterId}}"
+                                                                               *ngFor="let emp of employeeData">
+                                                                               {{emp.employeeCode}}
+                                                                           </option>
+                                                                       </select>
 
-                                                                        </div>
-                                                                        <div class="col-md-2">
-                                                                            <label class="form-label mb-0">Payroll
-                                                                                Area</label>
-                                                                            <select name="PayrollArea"
-                                                                                class="form-control custom-select"
-                                                                                [(ngModel)]="selectedPayrollArea"
-                                                                                (change)="getSelectedPayrollArea($event.target.value)"
-                                                                                [disabled]="showDropdownDisabled">
-                                                                                <option value="">Select</option>
-                                                                                <option> PA-Staff </option>
-                                                                                <!-- <option> PA_Worker</option> -->
-                                                                                <option
-                                                                                    *ngFor="let payroll of payrollListData"
-                                                                                    [selected]="selectedPayrollArea == payroll.payrollAreaCode">
-                                                                                    {{payroll.payrollAreaCode}}</option>
-                                                                            </select>
-                                                                        </div>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                       <label class="form-label mb-0">First Name
+                                                                       </label>
+                                                                       <select name="EmployeeCode"
+                                                                           class="form-control custom-select"
+                                                                           [(ngModel)]="selectedEmployeeMasterId"
+                                                                           [disabled]="showDropdownDisabled"
+                                                                           (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                           <option value="">Select</option>
+                                                                           <!-- <option value="1"> 1111 </option> -->
+                                                                           <option value="{{emp.employeeMasterId}}"
+                                                                               *ngFor="let emp of employeeData">
+                                                                               {{emp.firstName}}
+                                                                           </option>
+                                                                       </select>
 
-                                                                    </div>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                       <label class="form-label mb-0">Last Name
+                                                                       </label>
+                                                                       <select name="EmployeeCode"
+                                                                           class="form-control custom-select"
+                                                                           [(ngModel)]="selectedEmployeeMasterId"
+                                                                           [disabled]="showDropdownDisabled"
+                                                                           (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                           <option value="">Select</option>
+                                                                           <!-- <option value="1"> 1111 </option> -->
+                                                                           <option value="{{emp.employeeMasterId}}"
+                                                                               *ngFor="let emp of employeeData">
+                                                                               {{emp.lastName}}
+                                                                           </option>
+                                                                       </select>
 
-                                                                    <!-- Selected Employee basic infrmation-->
-                                                                    <div class="row mt-10">
-                                                                        <div class="col-md-12 pl-0 pr-0">
-                                                                            <div class="box-line-border radius-10 p-2 mt-3"
-                                                                                *ngIf="employeeFinDetailsData">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Employee
-                                                                                            No. & Name</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.employeeCode}}
-                                                                                            -
-                                                                                            {{employeeFinDetailsData.fullName}}</label>
-                                                                                    </div>
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Date
-                                                                                            of Joining</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.joiningDate
-                                                                                            | date: 'dd-MMM-yyyy'}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Establishment</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.establishment}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Department</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Employee
-                                                                                            Type</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.employeeType}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-1">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Grade</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.grade}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-2">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Designation</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            {{employeeFinDetailsData.designation}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-1">
-                                                                                        <label
-                                                                                            class="form-label mt-1 mb-0">Status</label>
-                                                                                        <label
-                                                                                            class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                            Probation
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                       <label class="form-label mb-0">Payroll
+                                                                           Area</label>
+                                                                       <select name="PayrollArea"
+                                                                           class="form-control custom-select"
+                                                                           [(ngModel)]="selectedPayrollArea"
+                                                                           (change)="getSelectedPayrollArea($event.target.value)"
+                                                                           [disabled]="showDropdownDisabled">
+                                                                           <option value="">Select</option>
+                                                                           <!-- <option> PA-Staff </option> -->
+                                                                           <!-- <option> PA_Worker</option> -->
+                                                                           <option
+                                                                               *ngFor="let payroll of payrollListData"
+                                                                               [selected]="selectedPayrollArea == payroll.payrollAreaCode">
+                                                                               {{payroll.payrollAreaCode}}</option>
+                                                                       </select>
+                                                                   </div>
+                                                                   <div class="col-md-4">
+                                                                       <div class="float-right">
+                                                                           <button type="submit"
+                                                                               class="custom_button custom_btn btn-bg-green mt-2 btn-labeled btn-labeled-left"
+                                                                               tooltip="Save"
+                                                                               (click)="graysearch(grays)"><b><i
+                                                                                       class="fas fa-search"></i></b>
+                                                                               Search</button>
+                                                                       </div>
+                                                                   </div>
+
+                                                               </div>
+
+
+                                                               <!-- selected Employee basic information-->
+                                                               <div class="col-md-12 pl-0 pr-0">
+                                                                   <div class="box-line-border radius-10 p-2 mt-3"
+                                                                       *ngIf="employeeFinDetailsData">
+                                                                       <div class="row">
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Emp.
+                                                                                   No.</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.employeeCode}}
+                                                                               </label>
+                                                                           </div>
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Emp.
+                                                                                   Name</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.fullName}}
+                                                                               </label>
+                                                                           </div>
+
+
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Establishment</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.establishment}}
+                                                                               </label>
+                                                                           </div>
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Department</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+
+                                                                               </label>
+                                                                           </div>
+                                                                           <div class="col-md-1">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Grade</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.grade}}
+                                                                               </label>
+                                                                           </div>
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Designation</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.designation}}
+                                                                               </label>
+                                                                           </div>
+
+                                                                           <div class="col-md-1">
+                                                                               <i class="fas fa-chevron-up arrow font-16 mt-2 text-purple float-right mr-2"
+                                                                                   (click)="hideempdetails()"
+                                                                                   *ngIf="isvisible"></i>
+                                                                               <i class="fas fa-chevron-down arrow font-16 mt-2 text-purple float-right mr-2"
+                                                                                   (click)="visibleempdetails()"
+                                                                                   *ngIf="!isvisible"></i>
+                                                                           </div>
+
+                                                                       </div>
+                                                                       <div class="row mt-10" *ngIf="isvisible">
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Payroll
+                                                                                   Area</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+
+                                                                               </label>
+                                                                           </div>
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Date
+                                                                                   of Joining</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   {{employeeFinDetailsData.joiningDate
+                                                                                   | date: 'dd-MMM-yyyy'}}
+                                                                               </label>
+                                                                           </div>
+
+                                                                           <div class="col-md-2">
+                                                                               <label
+                                                                                   class="form-label mt-1 mb-0">Status</label>
+                                                                               <label
+                                                                                   class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                   Probation
+                                                                               </label>
+                                                                           </div>
+
+
+
+                                                                       </div>
+                                                                   </div>
+                                                               </div>
 
 
 

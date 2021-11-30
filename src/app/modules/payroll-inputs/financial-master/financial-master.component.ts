@@ -61,6 +61,7 @@ export class FinancialMasterComponent implements OnInit {
   employeeFinDetailsData: any[];
   selectedEmployeeMasterId: number;
   headType: any;
+  summaryData: any;
 
   constructor(private service: FinancialMasterService,
     private datePipe: DatePipe,
@@ -103,17 +104,23 @@ export class FinancialMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    // this.employeeListsArray = this.commonService.getEmployeeListArray();
-    // if (this.employeeListsArray === []) {
-    //   this.router.navigate(['/payrollInputs/payroll-List']);
-    // }
+   
+    this.getAllSummarydata();
+
     this.getCurrencyDetails();
     this.getEmployeeDetails(1);
     this.getAllEmployeeDetails()
     this.summaryPage();
     this.changeValueFlag = true;
-      this.changePercentageFlag = true;
-      this.closingAmountFlag = false;
+    this.changePercentageFlag = true;
+    this.closingAmountFlag = false;
+  }
+
+  /** get all sumary data for all employess */
+  getAllSummarydata(){
+    this.service.getAllSummarydata().subscribe(res =>{
+      this.summaryData = res.data.results;
+    })
   }
 
   /** Get Selected Employee master Id */

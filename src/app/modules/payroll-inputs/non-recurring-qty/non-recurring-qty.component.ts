@@ -126,6 +126,7 @@ export class NonRecurringQtyComponent implements OnInit {
 	svaeDisabledFlag: boolean = true;
 	selectedOption: string = 'single';
 	payrollAreaId: any;
+	isvisible: boolean = false;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private nonRecQtyService: NonRecurringQtyService,
@@ -2364,5 +2365,14 @@ export class NonRecurringQtyComponent implements OnInit {
 		//this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Quantity-Schedules');
 		this.excelservice.exportAsExcelFilewithHeaders(this.excelData, 'NonRecurring-Quantity-Schedules','NonRecurring-Quantity-Schedules',headers);
 
+	}
+
+
+	/** Selected Employee basic information expand and colapse */
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
 	}
 }
