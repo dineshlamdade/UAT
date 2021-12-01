@@ -4,15 +4,16 @@
   <app-header></app-header>
   <div class="section-body mt-3">
     <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
-      <div class="tabview-contents">
+      
         <!-- <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate> -->
-        <div class="row">
+        <div class="row mt-25">
           <div class="col-12">
             <div class="card">
               <div class="card-body p-0">
                 <div class="tabview tabview_upload_excel">
                   <input name="nav" type="radio" class="about-radio" id="Tab1" checked />
                   <div class="tabs about-page">
+                    <div class="tabview-contents">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="card">
@@ -33,7 +34,7 @@
                                 </div>
                                 <div class="col-sm-3" *ngIf="hideFormControl">
                                   <label class="form-label">Code</label>
-                                  <input type="text" formControlName="masterCode" class="form-control" name="masterCode"
+                                  <input type="text" formControlName="masterCode" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" class="form-control" name="masterCode"
                                     [ngClass]="{'is-invalid' : form.get('masterCode').status == 'INVALID'} "
                                     autocomplete="off" placeholder="Enter Code">
                                 </div>
@@ -41,14 +42,14 @@
                                   <label class="form-label">Description</label>
 
                                   <input type="text" formControlName="masterDescription" class="form-control"
-                                    name="masterDescription"
+                                    name="masterDescription" 
                                     [ngClass]="{'is-invalid' : form.get('masterDescription').status == 'INVALID'} "
-                                    autocomplete="off" placeholder="Enter Remark">
+                                    autocomplete="off" placeholder="Enter Description">
                                 </div>
                                 <div class="col-md-3 mt-3" *ngIf="hideFormControl">
                                   <label class="custom-control custom-checkbox custom-control-inline pl-45">
                                     <input formControlName="isActive" type="checkbox" class="custom-control-input"
-                                      name="example-inline-checkbox1" value="option1"
+                                      name="example-inline-checkbox1" value="option1" [disabled]="form.get('masterCode').status=='Disabled'?true:false"
                                       (change)="deactiveActiveCheckBox()" readonly>
                                     <span class="custom-control-label">Active </span>
                                   </label>
@@ -92,31 +93,16 @@
                             <div row class="row">
                               <div class="col-md-12 ">
                                 <span class="font-14 text-purple font-bold">Summary</span>
-                                <div class="justify-content-end p-d-inline-flex float-right">
-                                  <div class="input-icon mb-3">
-                                    <span class="p-input-icon-left p-ml-auto">
-                                      <i class="pi pi-search" style="top: 9px !important"></i>
-                                      <input pInputText type="text" (input)="
-                                          dt1.filterGlobal(
-                                            $event.target.value,
-                                            'contains'
-                                          )
-                                        " placeholder="Search keyword" />
-                                    </span>
-                                  </div>
-                                  &nbsp;
-                                  <i class="fa fa-file-excel-o font-28 text-dark-green cursor-pointer"
-                                    (click)="exportApprovalSummaryAsExcel()"></i>
-                                </div>
+                              
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-md-12">
+                              <div class="col-md-8">
 
-
+                            <div class="table-responsive Custom_Table">
                                 <p-table #dt1 [value]="tableDataList" [paginator]="true" [rows]="10"
-                                  [showCurrentPageReport]="true" (sortFunction)="customSort3($event)"
-                                  [customSort3]="true" [pageLinks]="5"
+                                  [showCurrentPageReport]="true" (sortFunction)="customSort($event)"
+                                  [customSort]="true" [pageLinks]="5"
                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                   totalRecords={{tableDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
                                   [globalFilterFields]="[
@@ -125,13 +111,103 @@
                                     'masterDescription'
                                   ]">
 
+                                  <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">
+                                                  
+                                                    <span class="p-input-icon-left p-ml-auto">
+                                                        <i class="pi pi-search"
+                                                            style="top: 9px !important;right:43px"></i>
+                                                        <input pInputText type="text"
+                                                            (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                            placeholder="Search " />
 
-                                  <ng-template pTemplate="header">
+  
+                                                    </span>
+                                                    
+                                                    <i class="fa fa-file-excel-o ml-2 font-28 text-dark-green cursor-pointer"
+                                  tooltip="Export To Excel"  (click)="exportApprovalSummaryAsExcel()"></i>
+                                                </div>
+                                            </div>
+  
+                                        </div>
+                                    </div>
+                                </ng-template>
+
+
+
+
+
+                                <ng-template pTemplate="header">
+                                 
+                                  <tr>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">Sr. No.
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="empcode"
+                                                pSortableColumn="empcode"></p-sortIcon>
+                                            <p-columnFilter field="empcode" display="menu"
+                                                class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+
+                                    </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">Job Master Type
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="empcode"
+                                                      pSortableColumn="empcode"></p-sortIcon>
+                                                  <p-columnFilter field="empcode" display="menu"
+                                                      class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+
+                                      </th>
+
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">Code
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="Group" pSortableColumn="Group">
+                                                  </p-sortIcon>
+                                                  <p-columnFilter type="text" field="Group"
+                                                      display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                        <div class="p-d-flex p-jc-between p-ai-center">Description
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="Group" pSortableColumn="Group">
+                                              </p-sortIcon>
+                                              <p-columnFilter type="text" field="Group"
+                                                  display="menu" class="p-ml-auto">
+                                              </p-columnFilter>
+                                          </div>
+                                      </div>
+                                      </th>
+                                     
+                                      <th>
+                                        Action
+                                      </th>
+
+
+                                  </tr>
+                              </ng-template>
+
+
+
+
+                                  <!-- <ng-template pTemplate="header">
                                     <tr>
-                                      <th rowspan="1" class="wd-10 text-center">
+                                      <th  class=" text-center">
                                         Sr. No.
                                       </th>
-                                      <th rowspan="1" class="wd-27 text-center">
+                                      <th  class=" text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                           Job Master Type
                                           <div class="Sort_Filter_Position">
@@ -142,7 +218,7 @@
                                           </div>
                                         </div>
                                       </th>
-                                      <th rowspan="1" class="wd-25 text-center">
+                                      <th  class=" text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                           Code
                                           <div class="Sort_Filter_Position">
@@ -153,7 +229,7 @@
                                         </div>
                                       </th>
 
-                                      <th rowspan="1" class="wd-16 text-center">
+                                      <th  class=" text-center">
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                           Description
                                           <div class="Sort_Filter_Position">
@@ -164,13 +240,13 @@
                                           </div>
                                         </div>
                                       </th>
-                                      <th rowspan="1" class="wd-14 text-center">
+                                      <th  class=" text-center">
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                           Action
                                         </div>
                                       </th>
                                     </tr>
-                                  </ng-template>
+                                  </ng-template> -->
                                   <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                     <tr class="p-selectable-row">
                                       <td class="bg-color-light_gray text-center"><label
@@ -183,22 +259,25 @@
                                       <td class="bg-color-light_gray"><label class="form-lable mb-0"
                                           tooltip="{{user1.masterDescription}}">{{user1.masterDescription}}</label>
                                       </td>
-                                      <td class="wd-8 align-left">
-                                        <button type="button" class="btn btn-icon" tooltip="View"
-                                          (click)="viewJobMaster(user1)">
-                                          <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button>
-                                        <button type="button" class="btn btn-icon" tooltip="Edit"
-                                          (click)="editUpdateDataJobMaster(user1)">
-                                          <i class="fa fa-edit font-18 text-dark-green cursor-pointer"></i></button>
-                                        <button type="button" class="btn btn-icon" tooltip="Assign to company"
-                                          (click)="UploadModal4(template1, user1)">
-                                          <i class="fa fa-adn font-18 text-dark-green cursor-pointer"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-icon" tooltip="Delete"
+                                      <td class=" align-left">
+                                        <div class="float-right">
+                                        <div class="d-flex">
+                                        
+                                      
+                                          <i class="fa fa-eye font-16  mr-2 text-blue cursor-pointer"  tooltip="View" (click)="viewJobMaster(user1)"></i>
+                                      
+                                          <i class="fa fa-edit font-16 mr-2 text-dark-green cursor-pointer"  tooltip="Edit"
+                                          (click)="editUpdateDataJobMaster(user1)"></i>
+                                      
+                                          <i class="fa fa-adn font-16 mr-2 text-dark-green cursor-pointer" tooltip="Assign to company"
+                                          (click)="UploadModal4(template1, user1)"></i>
+                                       
+                                      
+                                          <i class="fa fa-trash font-16 text-red cursor-pointer"  tooltip="Delete"
                                           *ngIf="!user1.isCheckedTruefalse"
-                                          (click)="UploadModal1(template22,user1.jobMasterValueId)">
-                                          <i class="fa fa-trash font-18 text-red cursor-pointer"></i> </button>
-
+                                          (click)="UploadModal1(template22,user1.jobMasterValueId)"></i>
+                                        </div>
+                                      </div>
                                       </td>
 
                                       <!-- *ngIf="user1.attributeNatureLongForm == 'List'" -->
@@ -211,6 +290,7 @@
                                     </tr>
                                   </ng-template>
                                 </p-table>
+                              </div>
 
                               </div>
                             </div>
@@ -219,9 +299,11 @@
                       </div>
                     </div>
                   </div>
+                  </div>
                   <label class="nav" for="Tab1"><span> Job Master </span></label>
                   <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
                   <div class="tabs about-page">
+                  <div class="tabview-contents">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="card">
@@ -275,9 +357,9 @@
 
                                     </span>
                                   </div>
-                                  &nbsp;
-                                  <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
-                                    tooltip="Export To Excel" (click)="exportApprovalSummaryAsExcelCompanyTable()"></i>
+                                 
+                                  <i class="fa fa-file-excel-o  ml-2 font-28 text-dark-green cursor-pointer"
+                                    tooltip="Export To Excel"    placement="center" (click)="exportApprovalSummaryAsExcelCompanyTable()"></i>
                                 </div>
                               </div>
 
@@ -298,9 +380,32 @@
                                   'masterDescription'
                                 ]">
 
+                                <ng-template pTemplate="caption">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="float-right">
+                                              <div class="d-flex">
+                                                  <i  class="fa fa-eye text-blue font-16 mr-2 mt-10"></i>
+                                                  <span class="p-input-icon-left p-ml-auto">
+                                                      <i class="pi pi-search"
+                                                          style="top: 9px !important;"></i>
+                                                      <input pInputText type="text"
+                                                          (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                                          placeholder="Search " />
+
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </ng-template>
+
+
                                     <!-- user1.jobMasterType
                                 user1.masterCode
                                 user1.masterDescription -->
+
                                     <ng-template pTemplate="header">
                                       <tr>
 
@@ -688,6 +793,7 @@
                       </div>
                     </div>
                   </div>
+                  </div>
                   <label class="nav" for="Tab2"><span> Company Assignment </span></label>
                 </div>
 
@@ -697,7 +803,7 @@
         </div>
         <!-- </form> -->
 
-      </div>
+     
     </div>
   </div>
   <app-footer></app-footer>
@@ -1001,7 +1107,7 @@
       [ngClass]="{'disabled-btn-bg-green' : getAllMappingDetailListNew.length == 0, 'btn-bg-green': !getAllMappingDetailListNew.length == 0}">
       <b><i class="fa fa-floppy-o"></i></b> Update</button>
     &nbsp;
-    <button type="button" tooltip="Reset" (click)="modalRef.hide()"
+    <button type="button" tooltip="Close" (click)="modalRef.hide()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
       <b><i class="fa  fa-times"></i></b> Close</button>
   </div>
