@@ -78,23 +78,23 @@ export class FastentryNRAmtComponent implements OnInit {
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
     private toaster: ToastrService) {
-    // this.headData = [
-    //   { displayName: 'Incentive', headMasterId: 27 },
-    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
-    // ]
+     this.headData = [
+       { displayName: 'Incentive', headMasterId: 27 },
+       { displayName: 'Performance_Incentive', headMasterId: 29 },
+     ]
 
     
-    this.headData = []
-    const formdata = new FormData();
-    formdata.append('categoryName', 'Non-Recurring-Amount');
-    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
-      res.data.results.forEach(element => {
-        this.headData.push({
-          'headMasterId':element.headMasterId,
-          'displayName': element.displayName
-        })
-      });
-    })
+   // this.headData = []
+   // const formdata = new FormData();
+  //  formdata.append('categoryName', 'Non-Recurring-Amount');
+  //  this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+  //    res.data.results.forEach(element => {
+   //     this.headData.push({
+    //      'headMasterId':element.headMasterId,
+    //      'displayName': element.displayName
+    //    })
+    //  });
+   // })
 
     if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
