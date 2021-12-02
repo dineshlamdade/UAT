@@ -53,8 +53,6 @@ export class SupplementaryComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCycleDefinition();
     this.getSummaryData();
-
-    
    //this.getAdhocCycle()
 
     

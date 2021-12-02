@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../../query/query.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
@@ -36,24 +35,17 @@ export class PayrollListComponent implements OnInit {
   sameContentValue: any ='';
   sameContentViewFlag:boolean = false;
 
-  constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService,
-    private alertService : AlertServiceService
-    ,public queryService :QueryService) { 
-      localStorage.clear()
-    }
+  constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
+    ,public queryService :QueryService) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
   }
 
   public getAllEmployeeDetails(): void {
-    // this.service.getAllEmployeeDetails().subscribe((res) => {
-    //   this.users = res.data.results[0];
-    // });
-
-    this.service.getEmployeeList().subscribe(res =>{
+    this.service.getAllEmployeeDetails().subscribe((res) => {
       this.users = res.data.results[0];
-    })
+    });
   }
 
   public updateEmployeeSelectedLists(event: any, id: any): void {
@@ -89,55 +81,27 @@ export class PayrollListComponent implements OnInit {
   }
 
   navigateToNRAmt() {
-    if(this.selectedEmployeeData.length > 0){
-      localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
-      this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
-    }else{
-      this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
-    }
-    
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
 
   navigateToNRQty() {
-    if(this.selectedEmployeeData.length > 0){
-      localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
-      this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
-    }else{
-      this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
-    }
-    
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
   }
 
   navigateToGarnishmentApplication(){
-    if(this.selectedEmployeeData.length > 0){
-      localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
-      this.router.navigate(['/PayrollInputs/Garnishment-Transaction'])
-    }else{
-      this.router.navigate(['/PayrollInputs/Garnishment-Transaction']) 
-    }
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Garnishment-Transaction'])
   }
 
-
-  navigateToFinancialMaster(){
-    if(this.selectedEmployeeData.length > 0){
-      localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
-      this.router.navigate(['/PayrollInputs/Financial-Master'])
-    }else{
-      this.alertService.sweetalertWarning('Please select employee first')
-    }
-  }
 
 
   // ............................................Add Query....................................................
   navigateToQuery() {
-    if(this.selectedEmployeeData.length > 0){
-      localStorage.setItem('queryListEmpData', JSON.stringify(this.selectedEmployeeData))
-      this.router.navigate(['/admin-query-generation'])
-    }else{
-      this.alertService.sweetalertWarning('Please select employee first')
-    }
+    localStorage.setItem('queryListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/admin-query-generation'])
   }
-  
   smallpopup(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,

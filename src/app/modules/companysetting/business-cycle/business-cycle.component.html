@@ -26,7 +26,7 @@
 
                 </div>
                 <label class="nav" for="Tab1"><span> Business Year Definition </span></label>
-                <input (click)="businessCycleDefinationTabClick()" name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
                 <div class="apprtabs  about-page">
                   <div class="row">
                     <div class="col-md-12">
@@ -34,7 +34,7 @@
                             <div class="card-body">
                               <!-- <app-cycle-definition *ngIf="tabIndex == 1"
                               [accountNo]="accountNo" > </app-cycle-definition> -->
-                              <app-cycle-definition *ngIf="BusinessyearList" [BusinessyearList]="BusinessyearList"></app-cycle-definition>
+                              <app-cycle-definition></app-cycle-definition>
                             </div>
                         </div>
                     </div>
@@ -42,14 +42,14 @@
 
                 </div>
                 <label class="nav" for="Tab2"><span> Business Cycle Definition </span></label>
-                <input (click)="BusinessCycleTabClick()"  name="nav" type="radio" class="about-radio" id="Tab3" />
+                <input name="nav" type="radio" class="about-radio" id="Tab3" />
                 <div class="apprtabs about-page">
                   <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                               <!-- <app-cycle-creation [data]="data" *ngIf="tabIndex == 2"></app-cycle-creation> -->
-                              <app-cycle-creation *ngIf="CycleDefinitionList" [CycleDefinitionList]="CycleDefinitionList"></app-cycle-creation>
+                              <app-cycle-creation></app-cycle-creation>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
 
                 </div>
                 <label class="nav" for="Tab3"><span> Business Cycle</span></label>
-                <input  name="nav" type="radio" class="about-radio" id="Tab4" />
+                <input name="nav" type="radio" class="about-radio" id="Tab4" />
                 <div class="apprtabs about-page">
                   <div class="row">
                     <div class="col-md-12">

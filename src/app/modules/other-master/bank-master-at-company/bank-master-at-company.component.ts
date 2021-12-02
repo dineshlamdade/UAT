@@ -1,11 +1,15 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { debug } from 'console';
+import { $ } from 'protractor';
+import { bindCallback, observable } from 'rxjs';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from '../bank-master-at-group/bank-master-at-group.service';
 import { CompanyMasterService } from '../company-master/company-master.service';
 import { BankMasterAtCompanyService } from './bank-master-at-company.service';
 import { MustMatch } from './password-match.validator';
+// import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 
@@ -34,9 +38,22 @@ export class BankMasterAtCompanyComponent implements OnInit {
   reEnterAccountNumber: boolean = false;
   accountNumber: boolean = false;
   header: any[];
-  excelData: any[]
+  excelData: any[];
+
+    //for confirm account Number
+  //  timeout: any = null;
+    //end
+// //change lll
+//    public contactPersonName: string;
+//    public designation: string;
+//    public emailId: string;
+//    public contactNumber: number;
+   //end
+  // public isActive:boolean;
   public groupCompanyDetailsList = [];
   public companyGroupId: number = 0;
+  //for temporary add new row
+  //  tempdata=new FormArray([]);
   public tempdata=[];
   contactPersonName: any;
   pfArray: any;
@@ -60,6 +77,11 @@ export class BankMasterAtCompanyComponent implements OnInit {
       reEnterAccountNumber: ['', Validators.required],
       pfFormArray: ( [] ),
       companyGroup: ['', Validators.required],
+//new
+      // ontactPersonName: ['',Validators.required],
+      // designation: ['',Validators.required],
+       emailId: ["", Validators.required],
+
     },
       {
         validator: MustMatch( 'accountNumber', 'reEnterAccountNumber' ),
@@ -114,9 +136,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
 hideConfirmAccountNo( accountNumber ) {
 
-  if ( accountNumber == true ) {
+  if ( accountNumber == false ) {
     setTimeout( () => {
-      this.accountNumber = false;
+      this.accountNumber = true;
     }, 2000 )
   }
 }
@@ -125,12 +147,12 @@ hideConfirmAccountNo( accountNumber ) {
  
   
   
-    // setTimeout( () => {
-    //   // this.accountNumber = true;
-    //   // document.getElementsByTagName('input')[0].type="password"
-    //  this.accountNumber = false;
-    // // this.accountNumber=true;
-    // }, 100 );
+    setTimeout( () => {
+      // this.accountNumber = true;
+      // document.getElementsByTagName('input')[0].type="password"
+     this.accountNumber = false;
+    // this.accountNumber=true;
+    }, 100 );
   
   
  }
@@ -562,7 +584,7 @@ hideConfirmAccountNo( accountNumber ) {
   }
 
   addRow() {
-
+   if(this.editIndex==-1){
     this.tempdata.push({
         "accountNumber": this.form.get('accountNumber').value,
         "accountType": this.form.get('accountType').value,
@@ -573,6 +595,8 @@ hideConfirmAccountNo( accountNumber ) {
         "emailId": this.emailId,
         "groupCompanyId": this.form.get('companyGroup').value
     })
+ 
+ 
     
 
     this.form.controls['pfFormArray'].setValue(this.tempdata)
@@ -583,7 +607,13 @@ hideConfirmAccountNo( accountNumber ) {
     this.contactNumber = ''
     this.isdCode = ''
     //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
-  
+
+  }
+  else
+  {
+    alert("add Data")
+  }
+   
   }
 
 
@@ -705,6 +735,7 @@ hideConfirmAccountNo( accountNumber ) {
 }
 
 edittable(data,index1){
+  
   this.editIndex = index1;
   this.contactPersonName = data.contactPersonName
   this.designation = data.designation
@@ -712,6 +743,8 @@ edittable(data,index1){
   this.contactNumber = data.contactNumber
   this.isdCode = data.isdCode
   this.companyBankMappingId = data.companyBankMappingId
+
+
 }
 
 updateRow(){
@@ -728,7 +761,7 @@ updateRow(){
     "emailId": this.emailId,
     "groupCompanyId": this.form.get('companyGroup').value
   })
-// this.form.reset();
+
   this.form.controls['pfFormArray'].setValue(this.tempdata)
 
     this.contactPersonName = ''

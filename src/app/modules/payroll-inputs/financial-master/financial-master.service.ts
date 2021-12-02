@@ -51,20 +51,20 @@ public getCurrencyDetails(data): Observable<any>  {
     }));
 }
 
-public getFrequencyMaster(id)  {
-  // return this._HTTP.get(this.apiUrlBusinessCycle + 'frequency-master/get/' + id)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
+public getFrequencyMaster(id): Observable<any>  {
+  return this._HTTP.get(this.apiUrlBusinessCycle + 'frequency-master/get/' + id)
+    .pipe(map((res: any) => {
+      return res;
+    }));
 }
 
 
-public getfinancialmasterHeadHistory(data): Observable<any>   {
-  // let params = new HttpParams();
-  // params = params.append('employeeMasterId', empId);
-  // params = params.append('HeadId', id);
-  // params = params.append('payrollArea', 'PA-Staff');
-  return this._HTTP.post(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', data)
+public getfinancialmasterHeadHistory(empId, id): Observable<any>   {
+  let params = new HttpParams();
+  params = params.append('employeeMasterId', empId);
+  params = params.append('HeadId', id);
+  params = params.append('payrollArea', 'PA-Staff');
+  return this._HTTP.get(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', {params})
   .pipe(map((res: any) => {
     return res;
   },

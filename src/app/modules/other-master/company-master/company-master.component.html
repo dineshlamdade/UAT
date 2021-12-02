@@ -360,25 +360,79 @@
                       <div class="row mt-20 mb-10">
 
                         <div class="col-md-3">
-                          <label class="form-label">Company Logo 1</label>
-                          <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
-                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo1" style="font-size: x-small;" />
+                          <label class="form-label">Company Logo 1
+                            <!-- <i class="fa fa-upload font-16 text-dark-green cursor-pointer"
+                                                        
+                                                        tooltip="upload"></i> -->
+                          </label>
+                           <!-- <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
+                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)" 
+                            />  -->
+                            <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
+                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)" 
+                            [(ngModel)]="employeeMasterRequestDTO.logo1" style="display: none"/>
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput1.click()"></button>
+                            <!-- <span *ngIf="editlogo1"><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
+                            <!-- <span><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
+                            
+                            <!-- <span *ngIf="true">{{editlogo1}}</span> -->
+                            <!-- <span [innerHTML]="employeeMasterRequestDTO.logo1"></span> -->
+                            <span>{{employeeMasterRequestDTO.logo1}}</span>
+
+                           
+                            <!-- <span>{{employeeMasterRequestDTO.logo1}}</span> 
+                            style="display: none"
+                            -->
+                            
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" name="logo1" 
+                            class="form-control-file" (change)="logo1($event, fileInput1)" value="logo1">
+                          value="{{employeeMasterRequestDTO.logo1}}"
+                             onchange="{{logo1}}"
+                            
+                             <input type="file" #UploadFileInput id="fileUpload" (change)="fileChangeEvent($event)" name="fileUpload"
+        multiple="multiple" accept="image/*" />
+                            [value]="employeeMasterRequestDTO.logo1ImageName"
+                          [(ngModel)]="employeeMasterRequestDTO.logo1" style="font-size: x-small;"-->
+                          
+                           
+
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" name="logo1" 
+                            class="form-control-file" id=" " aria-describedby="fileHelp" (change)="logo1($event, fileInput1)"> -->
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" (change)="logo1($event)"/> -->
+
+                            <!-- <input #theFile type="file" (change)="onFileChange($event)" accept=".png" class="form-control" 
+                            formControlName="logo1" /> -->
+
                         </div>
                         
 
                         <div class="col-md-3">
                           <label class="form-label">Company Logo 2</label>
-                          <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                          <!-- <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
                             #fileInput2 formControlName="logo2" (change)="logo2($event, fileInput2)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" />
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" /> -->
+
+                            <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                            #fileInput2 formControlName="logo2" (change)="logo2($event, fileInput2)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" style="display: none"/>
+
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput2.click()"></button>
+                            <span>{{employeeMasterRequestDTO.logo2}}</span>
                         </div>
 
                         <div class="col-md-3">
                           <label class="form-label">Company Logo 3</label>
-                          <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
+
+                          <!-- <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
                             #fileInput3 formControlName="logo3" (change)="logo3($event, fileInput3)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" />
+                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" /> -->
+
+                            <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
+                            #fileInput3 formControlName="logo3" (change)="logo3($event, fileInput3)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" style="display: none" />
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput3.click()"></button>
+                            <span>{{employeeMasterRequestDTO.logo3}}</span>
+
                         </div>
 
                       </div>
@@ -819,7 +873,7 @@
                                               
                                                     <span>
                                                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                        (click)="editMaster(rowIndex,summary.globalCompanyMasterId)"
+                                                        (click)="editMaster(rowIndex,summary.globalCompanyMasterId,summary)"
                                                         tooltip="Edit"></i> </span>
                     
                                                     <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"

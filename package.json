@@ -61,7 +61,6 @@
     "tslint-angular": "^3.0.3",
     "xlsx": "^0.14.5",
     "zone.js": "^0.10.3"
-
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1102.5",
