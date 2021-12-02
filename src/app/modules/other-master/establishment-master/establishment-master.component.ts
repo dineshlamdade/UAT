@@ -239,7 +239,7 @@ export class EstablishmentMasterComponent implements OnInit {
   viewMaster( i: number ) {
     window.scrollTo( 0, 0 );
     this.isSaveAndReset = false;
-    this.showButtonSaveAndReset = true;
+    this.showButtonSaveAndReset = false;
     this.form.enable();
     this.form.reset();
     this.form.patchValue( this.masterGridDataList[i] );

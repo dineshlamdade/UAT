@@ -12,6 +12,7 @@ import { MustMatch } from './password-match.validator';
 // import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
+import { el } from 'date-fns/locale';
 
 @Component( {
   selector: 'app-bank-master-at-company',
@@ -480,6 +481,22 @@ this.viewFlag = false;
      
       })
 
+      // let requestData :any
+      // this.tempdata.forEach(ele =>{
+      //   console.log(JSON.stringify(ele))
+        
+      //    requestData = {
+      //     "companyBankMappingId": ele.companyBankMappingId,
+      //     "contactNumber": ele.contactNumber,
+      //     "contactPersonName": ele.contactPersonName,
+      //     "designation": ele.designation,
+      //     "emailId": ele.emailId,
+      //     "isActive": 1,
+      //     "isdCode": ele.isdCode,
+      // }
+     
+      // })
+
       this.bankMasterAtGroupService.putBankMasterMapping( requestData).subscribe( ( res ) => {
         console.log( res );
 
@@ -636,7 +653,9 @@ this.viewFlag = false;
         "accountNumber": this.form.get('accountNumber').value,
         "accountType": this.form.get('accountType').value,
         "companyBankMasterId": this.companyBankMasterId,
-        "contactNumber": this.isdCode + ' ' +this.contactNumber,
+        // "contactNumber": this.isdCode + ' ' +this.contactNumber,
+        "contactNumber":this.contactNumber,
+        "isdCode":this.isdCode,
         "contactPersonName": this.contactPersonName,
         "designation": this.designation,
         "emailId": this.emailId,
@@ -793,9 +812,9 @@ updateRow(){
     "accountNumber": this.form.get('accountNumber').value,
     "accountType": this.form.get('accountType').value,
     "companyBankMasterId": this.companyBankMasterId,
-    "contactNumber": this.isdCode + ' ' +this.contactNumber,
-    // "contactNumber": this.contactNumber,
-    // "isdCode":this.isdCode,
+    // "contactNumber": this.isdCode + ' ' +this.contactNumber,
+    "contactNumber": this.contactNumber,
+    "isdCode":this.isdCode,
     "companyBankMappingId": this.companyBankMappingId,
     "contactPersonName": this.contactPersonName,
     "designation": this.designation,
