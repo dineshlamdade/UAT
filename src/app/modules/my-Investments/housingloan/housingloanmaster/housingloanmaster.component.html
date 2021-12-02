@@ -200,7 +200,7 @@
                 <div class="custom-controls-stacked ml-15 mt-10">
                   <div class="custom-control custom-radio custom-control-inline">
                     <label class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer" 
+                      <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer"
                         [value]="true" checked [disabled]="isRadioButtonDisabled">
                       <span class="custom-control-label">Yes</span>
                     </label>
@@ -215,7 +215,7 @@
                 </div>
               </div>
 
-              <div class="custom-controls-stacked ml-15 mt-20">
+              <div class="custom-controls-stacked ml-15 mt-20" *ngIf="isSaveShowInOwner">
                 <!-- <div class="float-right mb-15"> -->
                 <button type="button"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
@@ -228,8 +228,24 @@
                 </button>
                 <!-- </div> -->
               </div>
+
+              <div class="custom-controls-stacked ml-15 mt-20" *ngIf="isUpdateShowInOwner">
+                <!-- <div class="float-right mb-15"> -->
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
+                  (click)="addOwnerType()"><b>
+                    <i class="fa fa-plus"></i></b> Update
+                </button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  tooltip="Cancel " (click)="cancelOwnerType()"><b>
+                    <i class="fa fa-plus"></i></b> Cancel
+                </button>
+                <!-- </div> -->
+              </div>
+
             </div>
           </div>
+          <!-- <pre>{{houseLoanOwnerTypeList | json}}</pre> -->
           <div class="row mt-30">
             <div class="col-12 col-md-12 col-sm-12">
               <div class="table-responsive Custom_Table ">
@@ -263,7 +279,7 @@
                         </span>
                       </td>
                       <td>
-                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanOwnerDetail(i)"
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanOwnerDetail(loanDetail)"
                           tooltip="Edit"></i>&nbsp;&nbsp;
                       </td>
                     </tr>
@@ -350,12 +366,26 @@
                 </div>
               </div>
 
-              <div class="custom-controls-stacked ml-15 mt-20">
+              <div class="custom-controls-stacked ml-15 mt-20" *ngIf="isShowUsageInSave">
                 <!-- <div class="float-right mb-15"> -->
                 <button type="button"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
                   (click)="addUsageType()"><b>
                     <i class="fa fa-plus"></i></b> Add
+                </button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  tooltip="Cancel " (click)="cancelUsageType()"><b>
+                    <i class="fa fa-plus"></i></b> Cancel
+                </button>
+                <!-- </div> -->
+              </div>
+
+              <div class="custom-controls-stacked ml-15 mt-20" *ngIf="isShowUsageInUpdate">
+                <!-- <div class="float-right mb-15"> -->
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
+                  (click)="addUsageType()"><b>
+                    <i class="fa fa-plus"></i></b> Update
                 </button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
                   tooltip="Cancel " (click)="cancelUsageType()"><b>
@@ -611,14 +641,33 @@
               </div>
             </div>
           </div>
-          <div class="row mt-15">
-
+          <div class="row mt-15" *ngIf="isSaveLoan">
             <div class="col-12">
               <div class="float-right mb-15">
                 <button type="button"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add"
                   (click)="addLoanDetails()"><b>
                     <i class="fa fa-plus"></i></b> Add New Loan</button>&nbsp;&nbsp;&nbsp;
+                <!-- <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"  tooltip="Cancel " (click)="cancelLoanDetails()"><b>
+                  <i class="fa fa-plus"></i></b> Cancel
+                </button> -->
+                <button type="button" tooltip="Cancel"
+                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  (click)="cancelLoanDetails()"><b><i class="fa fa-times"></i></b> Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-15" *ngIf="isUpdateLoan">
+            <div class="col-12">
+              <div class="float-right mb-15">
+                <button type="button"
+                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add"><b>
+                  <i class="fa fa-plus"></i></b> loan transfer </button>&nbsp;
+
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add"
+                  (click)="addLoanDetails()"><b>
+                    <i class="fa fa-plus"></i></b> Update Loan</button>&nbsp;&nbsp;&nbsp;
                 <!-- <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"  tooltip="Cancel " (click)="cancelLoanDetails()"><b>
                   <i class="fa fa-plus"></i></b> Cancel
                 </button> -->
@@ -674,7 +723,7 @@
                     </td>
                     <td>
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                        (click)="editLoanDetails(loanDetails)" tooltip="Edit"></i> &nbsp;&nbsp;
+                        (click)="editLoanDetails(loanDetails,i)" tooltip="Edit"></i> &nbsp;&nbsp;
 
                     </td>
 
