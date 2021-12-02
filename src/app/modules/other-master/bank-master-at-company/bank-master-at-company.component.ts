@@ -1,11 +1,15 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { debug } from 'console';
+import { $ } from 'protractor';
+import { bindCallback, observable } from 'rxjs';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from '../bank-master-at-group/bank-master-at-group.service';
 import { CompanyMasterService } from '../company-master/company-master.service';
 import { BankMasterAtCompanyService } from './bank-master-at-company.service';
 import { MustMatch } from './password-match.validator';
+// import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 
@@ -34,18 +38,33 @@ export class BankMasterAtCompanyComponent implements OnInit {
   reEnterAccountNumber: boolean = false;
   accountNumber: boolean = false;
   header: any[];
-  excelData: any[]
+  excelData: any[];
+
+    //for confirm account Number
+  //  timeout: any = null;
+    //end
+// //change lll
+//    public contactPersonName: string;
+//    public designation: string;
+//    public emailId: string;
+//    public contactNumber: number;
+   //end
+  // public isActive:boolean;
   public groupCompanyDetailsList = [];
   public companyGroupId: number = 0;
+  //for temporary add new row
+  //  tempdata=new FormArray([]);
   public tempdata=[];
   contactPersonName: any;
   pfArray: any;
   designation: any;
-  emailId: any;
+  emailId: any='';
   contactNumber: any;
   isdCode: any;
   editIndex: any = -1;
   companyBankMappingId: any;
+  viewFlag: boolean = false;
+  //addrowflag:boolean=false;
 
 
   constructor( private formBuilder: FormBuilder, private alertService: AlertServiceService, private bankMasterAtGroupService: BankMasterAtGroupService,
@@ -60,6 +79,11 @@ export class BankMasterAtCompanyComponent implements OnInit {
       reEnterAccountNumber: ['', Validators.required],
       pfFormArray: ( [] ),
       companyGroup: ['', Validators.required],
+//new
+      // ontactPersonName: ['',Validators.required],
+      // designation: ['',Validators.required],
+      // emailId: ['', Validators.required],
+
     },
       {
         validator: MustMatch( 'accountNumber', 'reEnterAccountNumber' ),
@@ -114,26 +138,25 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
 hideConfirmAccountNo( accountNumber ) {
 
-  if ( accountNumber == true ) {
+ // if ( accountNumber == false ) {
     setTimeout( () => {
       this.accountNumber = false;
     }, 2000 )
-  }
+ // }
 }
 
- account(event){
- 
+  account(event){
+  }
   
   
-    // setTimeout( () => {
-    //   // this.accountNumber = true;
-    //   // document.getElementsByTagName('input')[0].type="password"
-    //  this.accountNumber = false;
-    // // this.accountNumber=true;
-    // }, 100 );
+//     setTimeout( () => {
+      
+//      this.accountNumber = false;
+    
+//     }, 100 );
   
   
- }
+//  }
 
 // account( event: any ) {
 //   const pattern = /[0-9]/;
@@ -201,6 +224,9 @@ hideConfirmAccountNo( accountNumber ) {
     this.isSaveAndReset = false;
     this.isEditMode = true;
    // this.isEditMode = false;
+
+   // Flag for view 
+   this.viewFlag = false;
 
 
     this.bankMasterAtCompanyService.getCompanyBanMasterMappingDetails().subscribe( ( res ) => {
@@ -318,6 +344,9 @@ hideConfirmAccountNo( accountNumber ) {
     this.isSaveAndReset = false;
     this.isEditMode = true;
 
+    // Flag for view 
+    this.viewFlag = true;
+    
 
     this.bankMasterAtCompanyService.getCompanyBanMasterMappingDetails().subscribe( ( res ) => {
       console.log( res );
@@ -342,14 +371,34 @@ hideConfirmAccountNo( accountNumber ) {
 
             }
             flag = false;
-            this.pfArray.push( this.formBuilder.group( {
-              contactPersonName: [{ value: element.mappingDetails[j].contactPersonName, disabled: true }],
-              designation: [{ value: element.mappingDetails[j].designation, disabled: true }],
-              emailId: [{ value: element.mappingDetails[j].emailId, disabled: true }],
-              isActive: [{ value: element.mappingDetails[j].isActive, disabled: true }],
-              contactNumber: [{ value: element.mappingDetails[j].contactNumber, disabled: true }],
-              companyBankMappingId: [element.mappingDetails[j].companyBankMappingId],
-            } ) );
+            // this.pfArray.push( this.formBuilder.group( {
+            //   contactPersonName: [{ value: element.mappingDetails[j].contactPersonName, disabled: true }],
+            //   designation: [{ value: element.mappingDetails[j].designation, disabled: true }],
+            //   emailId: [{ value: element.mappingDetails[j].emailId, disabled: true }],
+            //   isActive: [{ value: element.mappingDetails[j].isActive, disabled: true }],
+            //   contactNumber: [{ value: element.mappingDetails[j].contactNumber, disabled: true }],
+            //   companyBankMappingId: [element.mappingDetails[j].companyBankMappingId],
+            // } ) );
+         
+        //   this.tempdata.push({
+            
+        //     "contactNumber": element.mappingDetails[j].contactNumber,
+        //     "contactPersonName": element.mappingDetails[j].contactPersonName,
+        //     "designation": element.mappingDetails[j].designation,
+        //     "emailId": element.mappingDetails[j].emailId,
+            
+        // });
+// this.form.edittable().disable();
+// this.f.addRow().disable();
+
+ 
+  this.contactPersonName = element.mappingDetails[j].contactPersonName,
+  this.designation = element.mappingDetails[j].designation,
+  this.emailId = element.mappingDetails[j].emailId,
+  this.contactNumber = element.mappingDetails[j].contactNumber,
+  this.isdCode = element.mappingDetails[j].isdCode
+  //this.companyBankMappingId = element.companyBankMappingId
+ 
           }
         }
       } );
@@ -364,7 +413,12 @@ hideConfirmAccountNo( accountNumber ) {
     this.form.get( 'accountNumber' ).disable();
     this.form.get( 'reEnterAccountNumber' ).disable();
     this.form.get( 'companyGroup' ).disable();
+    
+   // this.form.controls['contactPersonName'].disable();
     this.form.disable();
+  //  this.isEditMode=false;
+ // this.form.addRow().disable();
+    
 
   }
   cancelView() {
@@ -372,6 +426,8 @@ hideConfirmAccountNo( accountNumber ) {
     this.isEditMode = false;
     this.isActive = false;
     this.isSaveAndReset = true;
+// Flag for view 
+this.viewFlag = false;
 
     this.showButtonSaveAndReset = true;
 
@@ -391,6 +447,15 @@ hideConfirmAccountNo( accountNumber ) {
     this.form.get( 'bankName' ).disable();
     this.form.get( 'branchName' ).disable();
     this.tempdata = []
+//for new code 
+    this.form.controls['pfFormArray'].setValue(this.tempdata)
+
+    this.contactPersonName = ''
+    this.designation = ''
+    this.emailId = ''
+    this.contactNumber = ''
+    this.isdCode = ''
+
   }
 
 
@@ -505,6 +570,7 @@ hideConfirmAccountNo( accountNumber ) {
     //   contactNumber: [''],
     //   companyBankMappingId: [''],
     // }));
+
   }
 
   UpdateDetails( i: number ) {
@@ -537,6 +603,8 @@ hideConfirmAccountNo( accountNumber ) {
         this.form.reset();
         this.isSaveAndReset = true;
         this.showButtonSaveAndReset = true;
+// Flag for view 
+this.viewFlag = false;
 
       } else {
         this.alertService.sweetalertWarning( res.status.messsage );
@@ -562,7 +630,8 @@ hideConfirmAccountNo( accountNumber ) {
   }
 
   addRow() {
-
+   
+    if(this.emailId!=''){
     this.tempdata.push({
         "accountNumber": this.form.get('accountNumber').value,
         "accountType": this.form.get('accountType').value,
@@ -583,7 +652,12 @@ hideConfirmAccountNo( accountNumber ) {
     this.contactNumber = ''
     this.isdCode = ''
     //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
-  
+    }
+    else
+    {
+      this.alertService.sweetalertWarning('Filled Contact Person  Details');
+    }
+    //this.viewFlag = false;
   }
 
 
@@ -728,7 +802,7 @@ updateRow(){
     "emailId": this.emailId,
     "groupCompanyId": this.form.get('companyGroup').value
   })
-// this.form.reset();
+
   this.form.controls['pfFormArray'].setValue(this.tempdata)
 
     this.contactPersonName = ''

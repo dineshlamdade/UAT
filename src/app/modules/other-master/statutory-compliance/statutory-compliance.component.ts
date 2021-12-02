@@ -230,18 +230,22 @@ export class StatutoryComplianceComponent implements OnInit {
   }
 
   reset() {
-
+  //  this.complianceHeadId = -1;
     this.showButtonSaveAndReset = true;
+    //this.complianceHeadId = -0;
     this.form.get( 'companyGroupActive' ).setValue( true );
     this.saveFormValidation();
+    
   }
 
   cancelView() {
 
     this.form.enable();
+  //  this.complianceHeadId = -1;
     this.isEditMode = false;
     this.isSaveAndReset = true;
     this.showButtonSaveAndReset = true;
+   // this.complianceHeadId = -1;
     this.form.reset();
 
 
