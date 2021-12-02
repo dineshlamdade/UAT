@@ -97,7 +97,7 @@
       <div class="col-12">
         <div class="table-responsive Custom_Table">
           <table class="table table-striped table-hover table-bordered m-b-0">
-            <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
+            <!-- <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
             <tr>
 
               <th rowspan="2" class="wd-2">
@@ -111,10 +111,7 @@
 
               </th>
 
-              <!-- <th rowspan="2" class="wd-14 font700"><span tooltip="Previous Employer Name">Previous Employer Name</span></th> -->
-              <!-- <th rowspan="2" class="wd-4 font700">
-                <span tooltip="Electronic Clearing Service">ECS</span>
-              </th> -->
+             
               <th rowspan="2" class="wd-6 font700" tooltip="Due Date">Due Date</th>
               <th rowspan="2" class="wd-6 font700"><span tooltip="Declared">Declared Amount</span></th>
               <th rowspan="2" class="wd-6 font700"><span tooltip="Declared">Date of Payment</span></th>
@@ -130,8 +127,68 @@
               <th>Rejected</th>
               <th>Approved</th>
             </tr>
-            </thead>
-            <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+            </thead> -->
+            <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
+              <tr>
+  
+                <th rowspan="2" class="wd-2">
+  
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false" tooltip="Select All">
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                           [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
+                           (change)="checkUncheckAll(item,$event , j)"  />
+                    <span class="custom-control-label"></span>
+                  </label>
+  
+                </th>
+  
+                <!-- <th rowspan="2" class="wd-14 font700"><span tooltip="Previous Employer Name">Previous Employer Name</span></th> -->
+                <!-- <th rowspan="2" class="wd-4 font700">
+                  <span tooltip="Electronic Clearing Service">ECS</span>
+                </th> -->
+                <th rowspan="2" class="font700" tooltip="Due Date">Due Date</th>
+                <th rowspan="2" class=" font700"><span tooltip="Declared Amount">Declared Amount</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Date of Payment">Date of Payment</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Previous Employer Name">Previous Employer Name</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Actual Amount">Actual Amount</span></th>
+                <th colspan="2" class=" font700"><span tooltip="Approval Amount">Approval Amount</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Remark">Remark</span></th>
+                <th rowspan="2" class=""><span tooltip="PS. ID.">PS. ID.</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Status">Status</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Action">Action</span></th>
+              </tr>
+              <tr>
+                <th>Rejected</th>
+                <th>Approved</th>
+              </tr>
+              </thead>
+              <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                <tr>
+                  <th rowspan="2" class="wd-6" >
+                    <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false" tooltip="Select All">
+                      <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                             [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
+                             (change)="checkUncheckAll(item, j)"  />
+                      <span class="custom-control-label"></span>
+                    </label>
+                  </th>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
+                  <th rowspan="2" class="font700">Due Date</th>
+                  <th rowspan="2" class=" font700">Declared</th>
+                  <th rowspan="2" class=" font700">Date of Payment</th>
+                  <th rowspan="2" class=" font700">Actual</th>
+                  <th colspan="2" class=" font700">Receipt Amount</th>
+                  <th rowspan="2" class=" font700">Remark</th>
+                  <th rowspan="2" class="">PS. ID.</th>
+                  <th rowspan="2" class=" font700">Status</th>
+                  <th rowspan="2" class=" font700">Action</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
+                </thead>
+            <!-- <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
             <tr>
               <th rowspan="2" class="wd-2" >
                 <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false" tooltip="Select All">
@@ -141,7 +198,7 @@
                   <span class="custom-control-label"></span>
                 </label>
               </th>
-              <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
+             
               <th rowspan="2" class="wd-6 font700">Due Date</th>
               <th rowspan="2" class="wd-6 font700">Declared</th>
               <th rowspan="2" class="wd-6 font700">Date of Payment</th>
@@ -156,7 +213,7 @@
               <th>Rejected</th>
               <th>Approved</th>
             </tr>
-            </thead>
+            </thead> -->
             <tbody>
             <tr *ngFor="
                 let summary of item.lictransactionList;
@@ -338,7 +395,8 @@
                           docRemarkModal(
                             template8,
                             documentDetailIndex,
-                            summary?.licTransactionId
+                            summary?.licTransactionId,
+                            summary, i
                           )
                         "
                         class="
@@ -376,8 +434,15 @@
                     {{ summary.transactionStatus }}
                   </span>
               </td>
-              <td class="wd-6">
-                <i *ngIf="canEdit && (summary.transactionStatus=='Submitted' || summary.transactionStatus=='SendBack' || summary.transactionStatus=='Re-Open')" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+              <td class="wd-6 align-left">
+                <i  *ngIf="summary.transactionStatus!=='Pending'" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
+                editViewTransaction(
+                    template2,
+                    summary.proofSubmissionId
+                  );
+                  viewTransactionDetail = false
+                " tooltip="view"></i> &nbsp;&nbsp;
+                <i *ngIf="canEdit && (summary.transactionStatus=='Submitted' || summary.transactionStatus=='SendBack')" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
                   editViewTransaction(
                       template2,
                       summary.proofSubmissionId
@@ -441,7 +506,7 @@
               
               
             </tr> -->
-            <tr>
+            <!-- <tr>
               <td  class="bg-lightgray font-18 font700 wd-11">Total</td>
               <td *ngIf="previousEmployeeList?.length" class="bg-lightgray wd-10 font-18 font700 align-right"></td>
               <td class="bg-lightgray font-18 wd-10 font700 align-right">
@@ -474,6 +539,41 @@
               <td class="bg-lightgray font-18 font700 wd-10"></td>
               <td class="bg-lightgray font-18 font700 wd-10"></td>
               <td class="bg-lightgray font-18 font700 wd-10"></td>
+              <td class="bg-lightgray font-18 font700 wd-10"></td>
+              
+            </tr> -->
+            <tr>
+              <td  class="bg-lightgray font-18 font700 wd-8">Total</td>
+              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray wd-10 font-18 font700 align-right"></td>
+               
+              <td class="bg-lightgray font-18 wd-10 font700 align-right">
+                  <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.declarationTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray wd-10 font-18 font700 align-right"></td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-10"></td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-8">
+                  <span
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
+                    class="padding-right-12" >
+
+                    {{ item.actualTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-8">
+                  <span tooltip=" {{ item.totalRejectedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalRejectedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-8">
+                  <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalApprovedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
               <td class="bg-lightgray font-18 font700 wd-10"></td>
               
             </tr>
@@ -518,7 +618,7 @@
     <hr />
   </div>
 
-  <div class="row mt-15" *ngIf="transactionDetail?.length">
+  <!-- <div class="row mt-15" *ngIf="transactionDetail?.length">
     <div class="col-12">
       <div class="table-responsive Custom_Table">
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
@@ -526,7 +626,7 @@
           <tr>
             <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
             <td class="bg-gray font-18 font700 align-right wd-10"></td>
-            <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
+           
             <td class="bg-lightgray font-18 font700 align-right wd-10">
                 <span class="padding-right-9" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
@@ -554,7 +654,7 @@
             <td class="bg-gray font-18 font700 wd-15"></td>
             <td class="bg-gray font-18 font700 wd-9"></td>
             <td class="bg-gray font-18 font700 wd-10"></td>
-            <!-- placement="left" -->
+          
           </tr>
           </tbody>
         </table>
@@ -562,7 +662,7 @@
           <tbody>
           <tr>
             <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
-            <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
+         
             <td class="bg-gray font-18 font700 align-right wd-10"></td>
             <td class="bg-gray font-18 font700 align-right wd-10">
                 <span class="padding-right-9" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
@@ -588,6 +688,80 @@
             <td class="bg-gray font-18 font700 wd-15"></td>
             <td class="bg-gray font-18 font700 wd-9"></td>
             <td class="bg-gray font-18 font700 wd-10"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+  <div class="row mt-15" *ngIf="transactionDetail?.length">
+    <div class="col-12">
+      <div class="table-responsive Custom_Table">
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
+          <tbody>
+          <tr>
+            <td class="bg-gray font-18 font700 wd-10">Grand Total5</td>
+            <td class="bg-gray font-18 font700 align-right wd-10"></td>
+            <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
+            <td class="bg-lightgray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10"></td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12"   tooltip="{{ grandActualTotal | number: '1.2-2' }}" >
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-gray font-18 font700 wd-15"></td>
+            <td class="bg-gray font-18 font700 wd-9"></td>
+            <td class="bg-gray font-18 font700 wd-10"></td>
+            <!-- placement="left" -->
+          </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+          <tbody>
+          <tr>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">Grand Total</td>
+           <td *ngIf="previousEmployeeList?.length" class="bg-lightgray  font-18 font700 align-right wd-10 "></td> 
+           <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+            <td class="bg-gray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+           <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
           </tr>
           </tbody>
         </table>
@@ -1193,7 +1367,7 @@
       <div class="card">
         <div class="mb-0">
 
-          <h3 class="font-14 text-purple font-bold">Summary - PS.ID.</h3>
+          <h3 class="font-14 text-purple font-bold">Summary - PS. ID.</h3>
 
         </div>
         <div class="">
@@ -1201,7 +1375,7 @@
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark">
               <tr>
-                <th scope="col" class="font700 wd-15">PS.ID.</th>
+                <th scope="col" class="font700 wd-15">PS. ID.</th>
                 <th scope="col" class="font700 wd-15">Date of Submission</th>
                 <th scope="col" class="font700 wd-20">Institution</th>
                 <th scope="col" class="font700 wd-15">Policy No.</th>
@@ -1214,7 +1388,7 @@
                 <th scope="col" class="font700 wd-10">Approved Amount</th>
                 <th scope="col" class="font700 wd-10">Rejected Amount</th>
                 <th scope="col" class="font700 wd-15"> No. of Document</th>
-                <th scope="col" class="font700 wd-15">PS.ID. Status</th>
+                <th scope="col" class="font700 wd-15">PS. ID. Status</th>
                 <th scope="col" class="font700 wd-10">Action</th>
               </tr>
               </thead>
@@ -1234,10 +1408,10 @@
                 </td>
                 <td class="align-left">
                   <span tooltip="{{
-                    documentSummary.dateOfSubmission | date: 'dd-MMM-yy'
+                    documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
                   }}">
                     {{
-                    documentSummary.dateOfSubmission | date: "dd-MMM-yy"
+                    documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
                     }}</span>
               </td>
                 <td class="align-left">
@@ -1286,8 +1460,10 @@
 
                 </td> -->
                 <td class="align-right">
-                  <span tooltip="{{documentSummary.actualAmount}}">
-                    {{documentSummary.actualAmount}}
+                  <span tooltip="{{
+                    documentSummary.actualAmount | number: '1.2-2'
+                  }}">
+                    {{ documentSummary.actualAmount | number: "1.2-2" }}
                     </span>
                   <!-- <span
                     tooltip="{{ documentSummary.actualAmount}}">{{documentSummary.actualAmount}}
@@ -1338,7 +1514,7 @@
                     </span>
               </td>
   
-                <td>
+                <td class="align-left">
                   <i  class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
                   editViewTransaction(
                       template2,
@@ -1491,7 +1667,7 @@
                 <th rowspan="2" class="wd-9 font700"><span tooltip="Actual Amount">Actual Amount</span></th>
                 <th colspan="2" class="wd-17 font700"><span tooltip="Approval Amount">Approval Amount</span></th>
                 <th rowspan="2" class="wd-7 font700"><span tooltip="Remark">Remark</span></th>
-                <th rowspan="2" class="wd-8"><span tooltip="PS ID">PS.ID.</span></th>
+                <th rowspan="2" class="wd-8"><span tooltip="PS. ID.">PS. ID.</span></th>
                 <th rowspan="2" class="wd-10 font700"><span tooltip="Status">Status</span></th>
               </tr>
               <tr>
@@ -1580,7 +1756,7 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                           (change)="updatePreviousEmpIdInEditCase($event, i, j)"
-                          [disabled]="summary.transactionStatus === 'Submitted'">
+                          [disabled]="summary.transactionStatus === 'Submitted' || summary.transactionStatus === 'Approved' || !viewTransactionDetail">
                     <option [ngValue]="0">Select</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList"
                             [value]="previousEmployee.value"
@@ -3268,8 +3444,139 @@
   </div>
 </ng-template>
 
+
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-12">
+        <input type="text" class="form-control"   (change)="
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        " placeholder="Remark">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span
+          >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-12">
+      <div class="col-md-12">
+        <input type="text"  (change)="
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        "  class="form-control" placeholder="Remark">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>
   <!-- Remark Modal started -->
-  <ng-template #template8>
+  <!-- <ng-template #template8>
     <div class="modal-header">
       <h5 class="modal-title" id="jasdjgh">View Remark</h5>
       <button
@@ -3323,8 +3630,8 @@
         Ok
       </button>
     </div>
-  </ng-template>
-  <ng-template #template8>
+  </ng-template> -->
+  <!-- <ng-template #template8>
     <div class="modal-header">
       <h5 class="modal-title" id="jasdjgh">View Remark</h5>
       <button
@@ -3378,4 +3685,135 @@
         Ok
       </button>
     </div>
-  </ng-template>
+  </ng-template> -->
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-12">
+      <div class="col-md-12">
+        <input type="text"  (change)="
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        "  class="form-control" placeholder="Remark">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span
+          >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-12">
+      <div class="col-md-12">
+        <input type="text" 
+        (change)= "
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        "  class="form-control" placeholder="Remark">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>
