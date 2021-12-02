@@ -59,16 +59,19 @@ public getFrequencyMaster(id): Observable<any>  {
 }
 
 
-public getfinancialmasterHeadHistory(empId, id): Observable<any>   {
-  let params = new HttpParams();
-  params = params.append('employeeMasterId', empId);
-  params = params.append('HeadId', id);
-  params = params.append('payrollArea', 'PA-Staff');
-  return this._HTTP.get(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', {params})
-  .pipe(map((res: any) => {
-    return res;
-  },
-  ));
+public getfinancialmasterHeadHistory(data): Observable<any>   {
+  // let params = new HttpParams();
+  // params = params.append('employeeMasterId', empId);
+  // params = params.append('HeadId', id);
+  // params = params.append('payrollArea', 'PA-Staff');
+  return this._HTTP.post<any>(this.apiUrl + 'financial-master/financialMasterHistoryAPIRecordsUI', data)
+}
+
+
+
+/** Get all summary data */
+getAllSummarydata():Observable<any>{
+  return this._HTTP.get(this.apiUrl + 'financial-master/financialMasterAllRecordRecords')
 }
 
 }

@@ -73,6 +73,81 @@ export class GarnishmentMasterComponent implements OnInit {
     this.getindianincometax()
   }
 
+  /** e&d head */
+  payrollheadmaster(){
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Garnishment');
+
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+      this.headData = res.data.results
+    })
+  }
+
+  /**set Array of input type and transaction type */
+  setTypeData() {
+    this.transactionTypeData = [
+      {
+        'transactionTypeName': 'Defined Date',
+        'defaultTransactionType': true,
+        "transactionTypeId": 1,
+        "checked": true,
+        "default": true
+      },
+      {
+        'transactionTypeName': 'NoOfTransaction',
+        'defaultTransactionType': false,
+        "transactionTypeId": 2,
+        "checked": false,
+        "default": false
+      },
+      {
+        'transactionTypeName': 'Perpetual',
+        'defaultTransactionType': false,
+        "transactionTypeId": 3,
+        "checked": false,
+        "default": false
+      }
+    ]
+
+    this.garnishmentMasterTransactionTypeList.push({
+      "defaultTransactionType": 1,
+      "transactionTypeId": 1,
+      "transactionTypeName": 'Defined Date'
+    })
+
+
+    this.inputTypeData = [
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "Percentage",
+        "defaultInput": false,
+        "checked": false,
+        "default": false
+      },
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "SDM",
+        "defaultInput": false,
+        "checked": false,
+        "default": false
+      },
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "Amount",
+        "defaultInput": true,
+        "checked": true,
+        "default": true
+      }
+    ]
+
+
+    this.garnishmentMasterInputTypeList.push({
+      "defaultInput": 1,
+      "inputTypeId": 1,
+      "inputTypeName": "Amount"
+    })
+  }
+
 
   /** Get All summary data */
   getAllMasterData() {

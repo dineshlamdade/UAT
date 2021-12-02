@@ -13,7 +13,6 @@ import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
-import { ReleaseComponent } from './release/release/release.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 
 

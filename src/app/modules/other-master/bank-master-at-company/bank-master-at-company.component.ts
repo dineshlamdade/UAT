@@ -1,15 +1,11 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { debug } from 'console';
-import { $ } from 'protractor';
-import { bindCallback, observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from '../bank-master-at-group/bank-master-at-group.service';
 import { CompanyMasterService } from '../company-master/company-master.service';
 import { BankMasterAtCompanyService } from './bank-master-at-company.service';
 import { MustMatch } from './password-match.validator';
-// import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 
@@ -38,22 +34,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
   reEnterAccountNumber: boolean = false;
   accountNumber: boolean = false;
   header: any[];
-  excelData: any[];
-
-    //for confirm account Number
-  //  timeout: any = null;
-    //end
-// //change lll
-//    public contactPersonName: string;
-//    public designation: string;
-//    public emailId: string;
-//    public contactNumber: number;
-   //end
-  // public isActive:boolean;
+  excelData: any[]
   public groupCompanyDetailsList = [];
   public companyGroupId: number = 0;
-  //for temporary add new row
-  //  tempdata=new FormArray([]);
   public tempdata=[];
   contactPersonName: any;
   pfArray: any;
@@ -77,11 +60,6 @@ export class BankMasterAtCompanyComponent implements OnInit {
       reEnterAccountNumber: ['', Validators.required],
       pfFormArray: ( [] ),
       companyGroup: ['', Validators.required],
-//new
-      // ontactPersonName: ['',Validators.required],
-      // designation: ['',Validators.required],
-       emailId: ["", Validators.required],
-
     },
       {
         validator: MustMatch( 'accountNumber', 'reEnterAccountNumber' ),
@@ -136,9 +114,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
 hideConfirmAccountNo( accountNumber ) {
 
-  if ( accountNumber == false ) {
+  if ( accountNumber == true ) {
     setTimeout( () => {
-      this.accountNumber = true;
+      this.accountNumber = false;
     }, 2000 )
   }
 }
@@ -147,12 +125,12 @@ hideConfirmAccountNo( accountNumber ) {
  
   
   
-    setTimeout( () => {
-      // this.accountNumber = true;
-      // document.getElementsByTagName('input')[0].type="password"
-     this.accountNumber = false;
-    // this.accountNumber=true;
-    }, 100 );
+    // setTimeout( () => {
+    //   // this.accountNumber = true;
+    //   // document.getElementsByTagName('input')[0].type="password"
+    //  this.accountNumber = false;
+    // // this.accountNumber=true;
+    // }, 100 );
   
   
  }
@@ -584,7 +562,6 @@ hideConfirmAccountNo( accountNumber ) {
   }
 
   addRow() {
-   if(this.editIndex==-1){
     this.tempdata.push({
         "accountNumber": this.form.get('accountNumber').value,
         "accountType": this.form.get('accountType').value,
@@ -595,8 +572,6 @@ hideConfirmAccountNo( accountNumber ) {
         "emailId": this.emailId,
         "groupCompanyId": this.form.get('companyGroup').value
     })
- 
- 
     
 
     this.form.controls['pfFormArray'].setValue(this.tempdata)
@@ -607,13 +582,7 @@ hideConfirmAccountNo( accountNumber ) {
     this.contactNumber = ''
     this.isdCode = ''
     //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
-
-  }
-  else
-  {
-    alert("add Data")
-  }
-   
+  
   }
 
 
@@ -710,6 +679,64 @@ hideConfirmAccountNo( accountNumber ) {
     this.excelservice.exportAsExcelFile(this.excelData, 'Company Bank Summary','Company Bank Summary',this.header);
   
   }
+
+  //sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
+
+edittable(data,index1){
+  this.editIndex = index1;
+  this.contactPersonName = data.contactPersonName
+  this.designation = data.designation
+  this.emailId = data.emailId
+  this.contactNumber = data.contactNumber
+  this.isdCode = data.isdCode
+  this.companyBankMappingId = data.companyBankMappingId
+}
+
+updateRow(){
+  this.tempdata.splice(this.editIndex,1,{
+    "accountNumber": this.form.get('accountNumber').value,
+    "accountType": this.form.get('accountType').value,
+    "companyBankMasterId": this.companyBankMasterId,
+    "contactNumber": this.isdCode + ' ' +this.contactNumber,
+    // "contactNumber": this.contactNumber,
+    // "isdCode":this.isdCode,
+    "companyBankMappingId": this.companyBankMappingId,
+    "contactPersonName": this.contactPersonName,
+    "designation": this.designation,
+    "emailId": this.emailId,
+    "groupCompanyId": this.form.get('companyGroup').value
+  })
+// this.form.reset();
+  this.form.controls['pfFormArray'].setValue(this.tempdata)
+
+    this.contactPersonName = ''
+    this.designation = ''
+    this.emailId = ''
+    this.contactNumber = ''
+    this.isdCode = ''
+    this.editIndex = -1
+}
 
   //sort
   customSort(event: SortEvent) {

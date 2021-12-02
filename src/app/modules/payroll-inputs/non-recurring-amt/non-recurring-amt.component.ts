@@ -113,6 +113,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	devationRemarkText: any = '';
 	selectedDeviationdata: any;
 	repeatRemarkText: any;
+	isRefererBonus: boolean;
+	selectedEmployeeLength: any = 0;
+	svaeDisabledFlag: boolean = true;
+	selectedOption: string = 'single';
+	payrollAreaId: any;
+	isvisible: boolean = false;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -131,10 +137,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
 			this.getAllEmployeeDetails();
-			this.selectedPayrollArea = 'PA-Staff'
-			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
+			
+			this.PayrollAreaByPayrollAreaCode(this.payrollListEmpData[0].payrollAreaCode)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
-
+			
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 		}
 	}
 
@@ -162,6 +170,9 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.showEmployeeSelectionFlag = false;
 		this.employeeFinDetailsData = null;
 		this.NonRecurringTransactionGroupAPIEmpwiseData = null;
+		this.selectedEmployeeLength = 0
+		this.showDropdownDisabled = false
+		this.selectedOption = 'single'
 	}
 
 	/** When clicked on checkedbox summary page*/
@@ -338,6 +349,25 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/******************* Transaction when click on Edit Transaction *******************/
+
+	/** search popup */
+	graysearch(grays: TemplateRef<any>){
+		this.modalRef = this.modalService.show(
+			grays,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
+	}
+
+	/** on Click on toggle Button */
+	getSelectedOption(event){
+      if(event.checked){
+		  this.selectedOption = 'fastEntry'
+	  }else{
+		this.selectedOption = 'single'
+	  }
+	}
 
 	/** On Click edit Transaction button - summary */
 	editTransaction() {
@@ -717,12 +747,12 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.effectiveFromDate = new Date(res.data.results[0].effectiveFromDate)
 				this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
 				this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
-				//alert(this.effectiveFromDate)
-				this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
-					res => {
-						this.frequencyDataByPayroll = res.data.results
-					}
-				)
+				// alert(this.effectiveFromDate)
+				// this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
+				// 	res => {
+				// 		this.frequencyDataByPayroll = res.data.results
+				// 	}
+				// )
 			}
 		)
 	}
@@ -753,6 +783,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	getSelectedEmployeeCode(value) {
 		this.payrollListData = ''
 		this.selectedEmployeeMasterId = parseInt(value)
+		// this.selectedPayrollArea = ''
+		// if(this.payrollListEmpData != ''){
+		// 	this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+		// }
+		// console.log(this.selectedPayrollArea)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
 
@@ -2989,5 +3024,10 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
-
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
+	}
 }

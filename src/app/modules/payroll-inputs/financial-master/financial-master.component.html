@@ -1,574 +1,1340 @@
 <app-leftmenu></app-leftmenu>
-<!-- Main body part  -->
-<!-- <form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="addMaster(form,formDirective)"> -->
-  <div>
-    <div class="page">
-      <app-header></app-header>
-      <div class="tabview-contents">
-        <div class="section-body bg-color-white">
-          <div class="row pb-0">
-            <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
-              <label class="text-purple form-label mt-15">Payroll Area</label>
-             </div>
-            <div class="col-4 pr-0 pl-0">
-              <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-bg-green">Staff</button>
-                <button type="button" class="btn bg-color-lightgray"> Workman </button>
-                <button type="button" class="btn bg-color-lightgray"> Apprentice </button>
-              </div>
-            </div>
-            <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
-              <label class="text-purple form-label mt-15">Job Field</label>
-            </div>
-            <div class="col-4 pr-0 pl-0">
-              <div class="mt-25 ml-4">
-                <div class="custom-controls-stacked ml-12">
-                  <label class="custom-control custom-radio custom-control-inline" >
-                    <input type="radio" class="custom-control-input" name="" value="0" disabled  />
-                    <span class="custom-control-label"><b>Cleaner</b></span>
-                  </label>
-                  <label class="custom-control custom-radio custom-control-inline" >
-                    <input type="radio" class="custom-control-input" name="" value="1" checked />
-                    <span class="custom-control-label"><b>Sweeper</b></span></label>
-                  <label class="custom-control custom-radio custom-control-inline" >
-                    <input type="radio" class="custom-control-input" name="" value="0" disabled />
-                    <span class="custom-control-label"><b>Gardner</b></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="mt-20 col-2 pr-0 pl-0">
-              <div class="float-right"> <button type="button" tooltip="Compension and Benefit Summary"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" >
-                  <b> <i class="fa fa-file"></i></b>C&B Summary</button>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="box-line-border radius-10 p-2 mt-3">
-            
-                <div class="row">
-                  <div class="col-md-2">
-                    <label class="form-label mt-1 mb-0">Emp No. & Name</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0"> 1002 - Rahul Chavan</label>
-                  </div>
-                  <div class="col-md-2">
-                    <label class="form-label mt-1 mb-0">Date of Joining</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0">  21-jan-2016 </label>
-                  </div>
 
-                  <div class="col-md-2">
-                    <label class="form-label mt-1 mb-0">Establishment</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0">  Pune </label>
-                  </div>
-                  <div class="col-md-2">
-                    <label class="form-label mt-1 mb-0">Employee Type</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0"> Worker</label>
-                  </div>
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tabview">
+                                <input name="nav" type="radio" class="about-radio" id="Tab1" checked />
+                                <div class="tabs about-page">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row ">
+                                                        <!-- Summary top buttons -->
+                                                        <div class="col-md-12">
+                                                            <div class="float-right">
+                                                                <button type="button" tooltip="Approve"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b>
+                                                                        <i class="fa fa-check-square-o"></i></b>Approve
+                                                                </button>
+                                                                <button type="button" tooltip="Edit Transaction"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2">
+                                                                    <b><i class="fa fa-pencil"></i></b> Edit Transaction
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-25">
+                                                        <div class="col-md-12">
+                                                            <p-table [value]="summaryData" [paginator]="true" [rows]="10"
+                                                                [showCurrentPageReport]="true"
+                                                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                                [rowsPerPageOptions]="[10,25,50,100,200]" #dt1
+                                                                [globalFilterFields]="['employeeMasterEntity.employeeCode','employeeMasterEntity.fullName',
+                                                                'headMaster.standardName','headMaster.headNature','fromDate','toDate',
+                                                                'uom','value','remark']">
 
-                  <div class="col-md-1">
-                    <label class="form-label mt-1 mb-0">Grade</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0"> G1 </label>
-                  </div>
-                  <div class="col-md-2">
-                    <label class="form-label mt-1 mb-0">Designation</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0"> Developer</label>
-                  </div>
-                  <div class="col-md-1">
-                    <label class="form-label mt-1 mb-0">Status</label>
-                    <label class="font-12 text-ellipsis mt-1 mb-0"> Probation </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                                                                <ng-template pTemplate="caption">
+                                                                    <div class="row">
+                                                                        <div class="col-md-2"> <label   class="form-label mb-0 mr-2  float-left">Total
+                                                                                Records <span  class="text-dark-green font-14 font-bold">(0)</span></label>
+                                                                        </div>
 
-          <div class="row mt-20">
-            <div class="col-md-12 pr-0 pl-0">
-              <div class="border-card p-2 mt_2">
-                <div class="row">
-                  <div class="col-md-3">
-                    <label class="form-label mb-2">Heads</label>
-                    <label class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
-                       (change)="selectedInputHeads()" [value]="1" />
-                      <span class="custom-control-label" >Input</span>
-                    </label>
-                    <label
-                      class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" [(ngModel)]="headField" class="custom-control-input"  name="isPEIRecord"
-                       (change)="selectedInputHeads()"  [value]="2"/>
-                      <span class="custom-control-label">All</span>
-                    </label>
-                    <label
-                      class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
-                      (change)="selectedInputHeads()" [value]="3"/>
-                      <span class="custom-control-label">Auto</span>
-                    </label>
-                  </div>
-                  <div class="col-md-1">
-                    <label class="form-label mb-2">Currency</label>
-                    <input type="text" class="form-control" disabled />
-                  </div>
-                  <div class="col-md-1">
-                    <label class="form-label mb-2"> Frequency</label>
-                    <input type="text" class="form-control" disabled />
-                  </div>
-                  <div class="col-md-2 pl-0">
-                    <label class="form-label mb-2">Updation Field</label>
-                    <select name="Gender"  class="form-control custom-select" [(ngModel)]="updationField" (change)="getUpdationField($event.target.options.selectedIndex)" >
-                      <option selected value=null>select</option>
-                      <option value="1">Change Amount</option>
-                      <option value="2">Change %</option>
-                      <option value="3">Closing Amount</option>
-                    </select>
-                  </div>
-                  <div class="col-md-1"></div>
-                  <div class="col-md-3 ml-30">
-                    <div class="row">
-                      <div class="col-md-12 pl-0">
-                        <label class="form-label mb-2">Update Master - From & To date</label>
-                        <div class="d-flex">
-                          <div class="form-group mr-2 mb-0">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                              </div>
-                              <input data-provide="datepicker"data-date-autoclose="true" class="form-control" placeholder="Date"
-                                bsDatepicker/>
-                            </div>
-                          </div>
-                          <div class="form-group mb-0">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                              </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
-                                bsDatepicker/>
-                            </div>
-                          </div>
-                          <span class="ml-10 mt-7"
-                            ><i
-                              class="fa fa-file-excel-o font-18 text-dark-green"
-                              tooltip="Export to Excel"
-                            ></i
-                          ></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                                                                        <div class="col-md-10">
+                                                                            <div class="float-right">
+                                                                                <div class="d-flex">
+                                                                                    <div>
+                                                                                        <div class="form-group mr-2 ">
+                                                                                            <div class="input-group">
+                                                                                                <div class="input-group-prepend">
+                                                                                                    <span class="input-group-text">
+                                                                                                        <i class="fa fa-calendar"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <input
+                                                                                                    data-provide="datepicker"
+                                                                                                    data-date-autoclose="true"
+                                                                                                    class="form-control"
+                                                                                                    placeholder="From Date"
+                                                                                                    bsDatepicker>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <div class="form-group mr-2">
+                                                                                            <div class="input-group">
+                                                                                                <div  class="input-group-prepend">
+                                                                                                    <span class="input-group-text">
+                                                                                                        <i  class="fa fa-calendar"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <input data-provide="datepicker"  data-date-autoclose="true"  class="form-control"
+                                                                                                    placeholder="To Date"  bsDatepicker>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <span  class="p-input-icon-left p-ml-auto">
+                                                                                        <i class="pi pi-search" style="top: 9px !important;right:44px !important"></i>
+                                                                                        <input pInputText type="text"  (input)="dt1.filterGlobal($event.target.value, 'contains')"  placeholder="Search " />
+                                                                                    </span>
 
-          <div class="row">
-            <div class="col-md-12 p-0">
-              <p-table [value]="masterGridData" >
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th rowspan="2">Sr. No.</th>
-                    <th rowspan="2">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Head Type
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="headtype"></p-sortIcon>
-                          <p-columnFilter
-                            type="text"
-                            field="headtype"
-                            display="menu"
-                            class="p-ml-auto" 
-                          ></p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                   
-                    <th rowspan="2">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Head Description
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="headdesc.headtype"></p-sortIcon>
-                          <p-columnFilter
-                            field="headdesc"
-                            matchMode="in"
-                            display="menu"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            class="p-ml-auto"
-                          >
-                            <ng-template pTemplate="header">
-                              <div class="p-px-3 p-pt-3 p-pb-0">
-                                <span class="p-text-bold">Agent Picker</span>
-                              </div>
-                            </ng-template>
-                            <ng-template
-                              pTemplate="filter"
-                              let-value
-                              let-filter="filterCallback"
-                            >
-                              <p-multiSelect
-                                [ngModel]="value"
-                                [options]=""
-                                placeholder="Any"
-                                (onChange)="filter($event.value)"
-                                optionLabel="name"
-                              >
-                                <ng-template let-option pTemplate="item">
-                                  <div
-                                    class="p-multiselect-representative-option"
-                                  >
-                                  
-                                    <span class="p-ml-1">{{
-                                      option.headtype
-                                    }}</span>
-                                  </div>
-                                </ng-template>
-                              </p-multiSelect>
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th rowspan="2" class="wd-8">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Opening Amount
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="date"></p-sortIcon>
-                          <p-columnFilter
-                            type="date"
-                            field="date"
-                            display="menu"
-                            class="p-ml-auto"
-                          ></p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                   
-                    <th rowspan="2" class="wd-8">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Change Amount
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="status"></p-sortIcon>
-                          <p-columnFilter
-                            field="status"
-                            matchMode="equals"
-                            display="menu"
-                            class="p-ml-auto"
-                          >
-                            <ng-template
-                              pTemplate="filter"
-                              let-value
-                              let-filter="filterCallback"
-                            >
-                              <p-dropdown
-                                [ngModel]="value"
-                                [options]="statuses"
-                                (onChange)="filter($event.value)"
-                                placeholder="Any"
-                              >
-                                <ng-template let-option pTemplate="item">
-                                  <span
-                                    [class]="
-                                      'customer-badge status-' + option.value
-                                    "
-                                    >{{ option.label }}</span
-                                  >
-                                </ng-template>
-                              </p-dropdown>
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th rowspan="2" class="wd-8 text-center">
-                      <div class="p-d-flex justify-content-center p-ai-center">
-                        Change %
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="activity"></p-sortIcon>
-                          <p-columnFilter
-                            field="activity"
-                            matchMode="between"
-                            display="menu"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            class="p-ml-auto"
-                          >
-                            <ng-template
-                              pTemplate="filter"
-                              let-filter="filterCallback"
-                            >
-                              <p-slider
-                                [ngModel]="activityValues"
-                                [range]="true"
-                                (onSlideEnd)="filter($event.values)"
-                                styleClass="p-m-3"
-                              ></p-slider>
-                              <div
-                                class="p-d-flex p-ai-center p-jc-between p-px-2"
-                              >
-                                <span>{{ activityValues[0] }}</span>
-                                <span>{{ activityValues[1] }}</span>
-                              </div>
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th rowspan="2" class="wd-8">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Closing Amount
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="activity"></p-sortIcon>
-                          <p-columnFilter
-                            field="activity"
-                            matchMode="between"
-                            display="menu"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            class="p-ml-auto"
-                          >
-                            <ng-template
-                              pTemplate="filter"
-                              let-filter="filterCallback"
-                            >
-                              <p-slider
-                                [ngModel]="activityValues"
-                                [range]="true"
-                                (onSlideEnd)="filter($event.values)"
-                                styleClass="p-m-3"
-                              ></p-slider>
-                              <div
-                                class="p-d-flex p-ai-center p-jc-between p-px-2"
-                              >
-                                <span>{{ activityValues[0] }}</span>
-                                <span>{{ activityValues[1] }}</span>
-                              </div>
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th rowspan="2">
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        <span tooltip="Unit of Measure">UOM</span>
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="activity"></p-sortIcon>
-                          <p-columnFilter
-                            field="activity"
-                            matchMode="between"
-                            display="menu"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            class="p-ml-auto"
-                          >
-                            <ng-template
-                              pTemplate="filter"
-                              let-filter="filterCallback"
-                            >
-                              <p-slider
-                                [ngModel]="activityValues"
-                                [range]="true"
-                                (onSlideEnd)="filter($event.values)"
-                                styleClass="p-m-3"
-                              ></p-slider>
-                              <div
-                                class="p-d-flex p-ai-center p-jc-between p-px-2"
-                              >
-                                <span>{{ activityValues[0] }}</span>
-                                <span>{{ activityValues[1] }}</span>
-                              </div>
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                    <th rowspan="2">
-                      <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
-                      Schedule
-                      <!-- <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="balance"></p-sortIcon>
-                                                    <p-columnFilter type="numeric" field="balance" display="menu" currency="USD" class="p-ml-auto"></p-columnFilter>
+                                                                                    <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-template>
+
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th>
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Emp. Code
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="employeeMasterEntity.employeeCode"
+                                                                                    pSortableColumn="employeeMasterEntity.employeeCode">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="text"
+                                                                                        field="employeeMasterEntity.employeeCode" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Emp. Name
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="employeeMasterEntity.fullName"
+                                                                                        pSortableColumn="employeeMasterEntity.fullName">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="text"
+                                                                                        field="Desc" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th class="wd-8">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Head Name
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="headMaster.standardName"
+                                                                                    pSortableColumn="headMaster.standardName">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="text"
+                                                                                        field="headMaster.standardName" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th class="wd-8">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Head Type
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="headMaster.headNature"
+                                                                                    pSortableColumn="headMaster.headNature">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="headMaster.headNature"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th class="wd-8 text-center">
+                                                                            <div
+                                                                                class="p-d-flex justify-content-center p-ai-center">
+                                                                                From Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="fromDate" pSortableColumn="fromDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="date" field="fromDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th class="wd-8">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                To Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="toDate" pSortableColumn="toDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="date" field="toDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                <span
+                                                                                    tooltip="Unit of Measure">UOM</span>
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="uom" pSortableColumn="uom">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="uom"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                <span tooltip="Unit of Measure">Closing
+                                                                                    Amount</span>
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="value" pSortableColumn="value">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="number" field="value"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th class="text-center wd-23">
+                                                                            <div
+                                                                                class="p-d-flex p-ai-center justify-content-center">
+                                                                                Remark
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="remark" pSortableColumn="remark">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="remark"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th> Status </th>
+                                                                        <th>Action</th>
+
+                                                                    </tr>
+                                                                    <tr>
+
+                                                                    </tr>
+                                                                </ng-template>
+
+                                                                <ng-template pTemplate="body" let-summary>
+                                                                    <tr class="p-selectable-row">
+                                                                        <td class="text-center">{{summary.employeeMasterEntity.employeeCode}}</td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.employeeMasterEntity.fullName}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.headMaster.standardName}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.headMaster.headNature}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.fromDate | date : 'dd-MMM-yyyy'}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.toDate | date: 'dd-MMM-yyyy'}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.uom}}</label>
+                                                                        </td>
+
+                                                                        <td class="bg-color-light_gray text-center">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.value}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray text-center">
+                                                                            <label
+                                                                                class="form-lable mb-0">{{summary.remark}}</label>
+                                                                        </td>
+                                                                        <td>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <i class="fa fa-eye text-blue font-16 mr-2"></i>
+                                                                            <i class="fa fa-deviantart text-blue font-16" (click)="deviation(editdeviationPopup)"></i>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </ng-template>
+
+                                                                <ng-template pTemplate="emptymessage">
+                                                                    <tr>
+                                                                        <td colspan="15"
+                                                                            class="font-14 font500 text-center text-red">
+                                                                            <span>No Data Available</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+
+                                                            </p-table>
+
+
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div> -->
-                    </th>
-                    <th colspan="2" class="text-center wd-23">
-                      <div class="p-d-flex p-ai-center justify-content-center">
-                        Updated Master
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="activity"></p-sortIcon>
-                          <p-columnFilter
-                            field="activity"
-                            matchMode="between"
-                            display="menu"
-                            [showMatchModes]="false"
-                            [showOperator]="false"
-                            [showAddButton]="false"
-                            class="p-ml-auto"
-                          >
-                            <ng-template
-                              pTemplate="filter"
-                              let-filter="filterCallback"
-                            >
-                              <p-slider
-                                [ngModel]="activityValues"
-                                [range]="true"
-                                (onSlideEnd)="filter($event.values)"
-                                styleClass="p-m-3"
-                              ></p-slider>
-                              <div
-                                class="p-d-flex p-ai-center p-jc-between p-px-2"
-                              >
-                                <span>{{ activityValues[0] }}</span>
-                                <span>{{ activityValues[1] }}</span>
-                              </div>
-                            </ng-template>
-                          </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Tab1">
+                                    <span> Summary </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                                <div class="tabs about-page">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                  <div>
+                                                    <!-- margin-top: 17px !important; -->
+                                                    <label style="float:right;font-size: 22px;margin-top: 7px !important;" class="custom-switch mt_5" *ngIf="payrollListEmpData">
+                                                      <span class="form-label">Single Entry</span>&nbsp;&nbsp;
+                                                      <input type="checkbox" (click)="getSelectedOption($event.target)" name="custom-switch-checkbox"
+                                                        class="custom-switch-input">
+                                                      <span class="custom-switch-indicator" style="width: 40px; height: 21px;"></span>&nbsp;&nbsp;
+                                                      <span class="form-label">Fast Entry</span>
+                                                    </label>
+                                                  </div>
+                                                  <br>
+                                              
+                                                  <div class="tabview-contents" *ngIf="selectedOption == 'single' ">
+                                                    <div class="section-body bg-color-white">
+                                                      <div class="row pb-0">
+                                              
+                                                        <!-- <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
+                                                          <label class="text-purple form-label mt-15">Payroll Area</label>
+                                                        </div> -->
+                                                        <!-- <div class="col-4 pr-0 pl-0">
+                                                          <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
+                                                            <button type="button" class="btn btn-bg-green">Staff</button>
+                                                            <button type="button" class="btn bg-color-lightgray"> Workman </button>
+                                                            <button type="button" class="btn bg-color-lightgray"> Apprentice </button>
+                                                          </div>
+                                                        </div> -->
+                                              
+                                                         <!-- Employee Selection Dropdown-->
+                                                         <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
+                                                          <label class="text-purple form-label mt-15">Employee Code</label>
+                                                        </div>
+                                                         <div class="col-3 pr-0 pl-0">
+                                                          <div class="mt-25 ml-4">
+                                                             <select name="EmployeeCode"
+                                                                 class="form-control"
+                                                                 [(ngModel)]="selectedEmployeeMasterId"
+                                                                 [disabled]="showDropdownDisabled"
+                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                 <option value="">Select</option>
+                                                                 <!-- <option value="1"> 1111 </option> -->
+                                                                 <option value="{{emp.employeeMasterId}}"
+                                                                     *ngFor="let emp of employeeData"
+                                                                     >
+                                                                     {{emp.employeeCode}}
+                                                                 </option>
+                                                             </select>
+                                                           </div>
+                                                         </div>
+                                                         <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1 ml-15">
+                                                          <label class="text-purple form-label mt-15">Payroll Area</label>
+                                                        </div>
+                                                         <div class="col-3 pr-0 pl-0">
+                                                          <div class="mt-25 ml-4">
+                                                            <div class="custom-controls-stacked ml-12">
+                                                             <select name="PayrollArea"
+                                                                 class="form-control"
+                                                                 [(ngModel)]="selectedPayrollArea"
+                                                                 (change)="getSelectedPayrollArea($event.target.value)"
+                                                                 [disabled]="showDropdownDisabled">
+                                                                 <option value="">Select</option>
+                                                                 <!-- <option> PA-Staff </option> -->
+                                                                 <!-- <option> PA_Worker</option> -->
+                                                                 <option
+                                                                     *ngFor="let payroll of payrollListData"
+                                                                     [selected]="selectedPayrollArea == payroll.payrollAreaCode">
+                                                                     {{payroll.payrollAreaCode}}</option>
+                                                             </select>
+                                                           </div>  
+                                                          </div>   
+                                                         </div>
+                                              
+                                                        <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1 ml-15">
+                                                          <label class="text-purple form-label mt-15">Job Field</label>
+                                                        </div>
+                                                        <div class="col-2 pr-0 pl-0">
+                                                          <div class="mt-25 ml-4">
+                                                            <div class="custom-controls-stacked ml-12">
+                                                              <select class="form-control">
+                                                                 <option value="1">Sweeper</option>
+                                                                 <option value="0">Cleaner</option>
+                                                                 <option value="0">Gardner</option>
+                                                              </select>
+                                                              <!-- <label class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" name="" value="0" disabled />
+                                                                <span class="custom-control-label"><b>Cleaner</b></span>
+                                                              </label>
+                                                              <label class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" name="" value="1" checked />
+                                                                <span class="custom-control-label"><b>Sweeper</b></span></label>
+                                                              <label class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" name="" value="0" disabled />
+                                                                <span class="custom-control-label"><b>Gardner</b></span>
+                                                              </label> -->
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="row">
+                                                        <div class="col-md-12">
+                                                          <div class="box-line-border radius-10 p-2 mt-3">
+                                              
+                                                            <div class="row">
+                                                              <div class="col-md-2">
+                                                                <label class="form-label mt-1 mb-0">Emp No. & Name</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> 1002 - Rahul Chavan</label>
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                <label class="form-label mt-1 mb-0">Date of Joining</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> 21-jan-2016 </label>
+                                                              </div>
+                                              
+                                                              <div class="col-md-2">
+                                                                <label class="form-label mt-1 mb-0">Establishment</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> Pune </label>
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                <label class="form-label mt-1 mb-0">Employee Type</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> Worker</label>
+                                                              </div>
+                                              
+                                                              <div class="col-md-1">
+                                                                <label class="form-label mt-1 mb-0">Grade</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> G1 </label>
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                <label class="form-label mt-1 mb-0">Designation</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> Developer</label>
+                                                              </div>
+                                                              <div class="col-md-1">
+                                                                <label class="form-label mt-1 mb-0">Status</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"> Probation </label>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                              
+                                                      <div class="row mt-20">
+                                                        <div class="col-md-12 pr-0 pl-0">
+                                                          <div class="border-card p-2 mt_2">
+                                                            <div class="row">
+                                                              <div class="col-md-3">
+                                                                <label class="form-label mb-2">Updation Type</label>
+                                                                <label class="custom-control custom-radio custom-control-inline mr-4">
+                                                                  <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
+                                                                    (change)="selectedInputHeads()" [value]="1" />
+                                                                  <span class="custom-control-label">Input</span>
+                                                                </label>
+                                                                <label class="custom-control custom-radio custom-control-inline mr-4">
+                                                                  <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
+                                                                    (change)="selectedInputHeads()" [value]="2" />
+                                                                  <span class="custom-control-label">All</span>
+                                                                </label>
+                                                                <!-- <label class="custom-control custom-radio custom-control-inline mr-4">
+                                                                  <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
+                                                                    (change)="selectedInputHeads()" [value]="3" />
+                                                                  <span class="custom-control-label">Auto</span>
+                                                                </label> -->
+                                                              </div>
+                                                              <!-- <div class="col-md-1">
+                                                                <label class="form-label mb-2">Currency</label>
+                                                                <input type="text" class="form-control" disabled />
+                                                              </div> -->
+                                                              <!-- <div class="col-md-1">
+                                                                <label class="form-label mb-2"> Frequency</label>
+                                                                <input type="text" class="form-control" disabled />
+                                                              </div> -->
+                                                              <div class="col-md-3 ml-30">
+                                                                <div class="row">
+                                                                  <div class="col-md-12 pl-0">
+                                                                    <label class="form-label mb-2">From & To date</label>
+                                                                    <div class="d-flex">
+                                                                      <div class="form-group mr-2 mb-0">
+                                                                        <div class="input-group">
+                                                                          <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                                          </div>
+                                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                            placeholder="Date" bsDatepicker />
+                                                                        </div>
+                                                                      </div>
+                                                                      <div class="form-group mb-0">
+                                                                        <div class="input-group">
+                                                                          <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                                          </div>
+                                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                            placeholder="Date" bsDatepicker />
+                                                                        </div>
+                                                                      </div>
+                                                                     </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div class="col-md-2 pl-0">
+                                                                <label class="form-label mb-2">Updation Field</label>
+                                                                <select name="Gender" class="form-control custom-select" [(ngModel)]="updationField"
+                                                                  (change)="getUpdationField($event.target.options.selectedIndex)">
+                                                                  <!-- <option selected value=null>select</option> -->
+                                                                  <option value="1">Change Amount</option>
+                                                                  <option value="2">Change %</option>
+                                                                  <option value="3">Closing Amount</option>
+                                                                </select>
+                                                              </div>
+                                                              <div class="col-md-1"></div>
+                                                              <span class="ml-10 mt-7"><i class="fa fa-file-excel-o font-18 text-dark-green"
+                                                                tooltip="Export to Excel"></i></span>
+                                                          
+                                                                <div class="mt-20 col-2 pr-0 pl-0">
+                                                                  <div class="float-right"> <button type="button" tooltip="Compension and Benefit Summary"
+                                                                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+                                                                      <b> <i class="fa fa-file"></i></b>C&B Summary</button>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                              
+                                                      <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                          <p-table [value]="masterGridData">
+                                                            <ng-template pTemplate="header">
+                                                              <tr>
+                                                                <th rowspan="2">Sr. No.</th>
+                                                                
+                                                                <th rowspan="2">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Head Description
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="headdesc.headtype"></p-sortIcon>
+                                                                      <p-columnFilter field="headdesc" matchMode="in" display="menu" [showMatchModes]="false"
+                                                                        [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                                                                        <ng-template pTemplate="header">
+                                                                          <div class="p-px-3 p-pt-3 p-pb-0">
+                                                                            <span class="p-text-bold">Agent Picker</span>
+                                                                          </div>
+                                                                        </ng-template>
+                                                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                                          <p-multiSelect [ngModel]="value" [options]="" placeholder="Any"
+                                                                            (onChange)="filter($event.value)" optionLabel="name">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                              <div class="p-multiselect-representative-option">
+                                              
+                                                                                <span class="p-ml-1">{{
+                                                                                  option.headtype
+                                                                                  }}</span>
+                                                                              </div>
+                                                                            </ng-template>
+                                                                          </p-multiSelect>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                <th rowspan="2">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Head Type
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="headtype"></p-sortIcon>
+                                                                      <p-columnFilter type="text" field="headtype" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                              
+                                                                <th colspan="2" class="text-center wd-23">
+                                                                  <div class="p-d-flex p-ai-center justify-content-center">
+                                                                    Validity Dates
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="activity"></p-sortIcon>
+                                                                      <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false"
+                                                                        [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                                                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                                          <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
+                                                                            styleClass="p-m-3"></p-slider>
+                                                                          <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+                                                                            <span>{{ activityValues[0] }}</span>
+                                                                            <span>{{ activityValues[1] }}</span>
+                                                                          </div>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                <th rowspan="2" class="wd-8">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Opening Amount
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="date"></p-sortIcon>
+                                                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                              
+                                                                <th rowspan="2" class="wd-8">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Change Amount
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="status"></p-sortIcon>
+                                                                      <p-columnFilter field="status" matchMode="equals" display="menu" class="p-ml-auto">
+                                                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                                          <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                                                            placeholder="Any">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                              <span [class]="
+                                                                                    'customer-badge status-' + option.value
+                                                                                  ">{{ option.label }}</span>
+                                                                            </ng-template>
+                                                                          </p-dropdown>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                <th rowspan="2" class="wd-8 text-center">
+                                                                  <div class="p-d-flex justify-content-center p-ai-center">
+                                                                    Change %
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="activity"></p-sortIcon>
+                                                                      <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false"
+                                                                        [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                                                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                                          <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
+                                                                            styleClass="p-m-3"></p-slider>
+                                                                          <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+                                                                            <span>{{ activityValues[0] }}</span>
+                                                                            <span>{{ activityValues[1] }}</span>
+                                                                          </div>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                <th rowspan="2" class="wd-8">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Closing Amount
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="activity"></p-sortIcon>
+                                                                      <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false"
+                                                                        [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                                                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                                          <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
+                                                                            styleClass="p-m-3"></p-slider>
+                                                                          <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+                                                                            <span>{{ activityValues[0] }}</span>
+                                                                            <span>{{ activityValues[1] }}</span>
+                                                                          </div>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                <th rowspan="2">
+                                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    <span tooltip="Unit of Measure">UOM</span>
+                                                                    <div class="Sort_Filter_Position">
+                                                                      <p-sortIcon field="activity"></p-sortIcon>
+                                                                      <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false"
+                                                                        [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                                                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                                                          <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
+                                                                            styleClass="p-m-3"></p-slider>
+                                                                          <div class="p-d-flex p-ai-center p-jc-between p-px-2">
+                                                                            <span>{{ activityValues[0] }}</span>
+                                                                            <span>{{ activityValues[1] }}</span>
+                                                                          </div>
+                                                                        </ng-template>
+                                                                      </p-columnFilter>
+                                                                    </div>
+                                                                  </div>
+                                                                </th>
+                                                                
+                                                                <th rowspan="2">Remark</th>
+                                                                <th rowspan="2"></th>
+                                                                <!-- <th style="width: 8rem"></th> -->
+                                                              </tr>
+                                                              <tr>
+                                                                <th class="text-center">From Date - To Date</th>
+                                                              </tr>
+                                                            </ng-template>
+                                              
+                                                            <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
+                                                              <tr class="p-selectable-row" *ngIf="headsFlag[rowIndex]">
+                                                                <td><span>{{summary.srNo}} </span></td>
+                                                                <td class="bg-color-light_gray">
+                                                                  <span class="text-link" (click)="ViewHistory(template,summary.id,summary)">{{summary.headDescription}}</span>
+                                                                </td>
+                                                               
+                                                                <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}">{{ summary.headType }} </span>
+                                                                </td>
+                                                                <!-- <td class="text-center">
+                                                                  <i tooltip="Schedule" (click)="Schedule(template2)" *ngIf="summary.isPEIRecord ==='Yes'"
+                                                                    class="fa fa-clock-o font-18 text-blue cursor-pointer"
+                                                                    [(ngModel)]="summary.isSchedulable"></i>&nbsp;&nbsp;
+                                                                  <i tooltip="Schedule" (click)="Schedule(template2)"
+                                                                    class="fa fa-eye font-18 text-blue cursor-pointer"></i>
+                                                                </td> -->
+                                                                <td colspan="2">
+                                                                  <div class="d-flex">
+                                                                    <span class="ml-2 mr-2 mt-2" (click)="copyDateFromUpdteMaster(rowIndex)"><i
+                                                                        class="fa fa-clone text-blue font-16"></i></span>
+                                                                    <!-- <input data-provide="datepicker"  data-date-autoclose="true"
+                                                                        class="form-control mr-2" [(ngModel)]="summary.fromdate" bsDatepicker />
+                                                                    
+                                                                      <input data-provide="datepicker" data-date-autoclose="true"
+                                                                        class="form-control"  [(ngModel)]="summary.todate" bsDatepicker/> -->
+                                              
+                                                                    <input type="text" class="form-control" [ngModel]="summary.fromdate | date: 'dd-MMM-yyyy'"
+                                                                      (ngModelChange)="summary.fromdate = $event.toLocaleDateString()"
+                                                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                                                                    <input type="text" class="form-control" [ngModel]="summary.todate | date: 'dd-MMM-yyyy'"
+                                                                      (ngModelChange)="summary.todate = $event.toLocaleDateString()"
+                                                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                                                                  </div>
+                                                                </td>
+                                                                <td><input type="number" [(ngModel)]="summary.openingAmount" class="form-control align-right"
+                                                                  disabled /> </td>
+                                                              <td>
+                                                                <input type="number" (change)="onChangeValueCalculation(rowIndex)" [(ngModel)]="summary.changeValue"
+                                                                  class="form-control" [disabled]="((changeValueFlag) || (summary.isPEIRecord !='Yes'))" />
+                                                              </td>
+                                                              <td>
+                                                                <input type="number" (change)="onChangePercentageCalculation(rowIndex)"
+                                                                  [(ngModel)]="summary.changePercenatge" class="form-control"
+                                                                  [disabled]="((changePercentageFlag) || (summary.isPEIRecord !='Yes'))" />
+                                                              </td>
+                                                              <td>
+                                                                <input type="number" (change)="onChangeClosingAmountCalculation(rowIndex)"
+                                                                  [(ngModel)]="summary.closingAmount" class="form-control"
+                                                                  [disabled]="((closingAmountFlag) || (summary.isPEIRecord !='Yes'))" />
+                                                              </td>
+                                                              <td class="bg-color-light_gray text-center"> <label class="form-lable mb-0">{{summary.uom}}</label>
+                                                              </td>
+                                                              
+                                                                <td>
+                                                                  <input type="text" [(ngModel)]="summary.remark" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                  <span class="ml-1 mt-2"><i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                      aria-hidden="true"></i></span>
+                                                                </td>
+                                                              </tr>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="emptymessage">
+                                                              <tr>
+                                                                <td colspan="15" class="font-14 font500 text-center text-red">
+                                                                  <!-- <span>No Data Available</span> -->
+                                                                </td>
+                                                              </tr>
+                                                            </ng-template>
+                                                          </p-table>
+                                                        </div>
+                                                      </div>
+                                              
+                                              
+                                                      <div class="row mt-15">
+                                                        <div class="col-12">
+                                                          <div class="float-right mb-15">
+                                                            <button type="submit" tooltip="Save & Next Employee"
+                                                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+                                                              <b> <i class="fa fa-floppy-o"></i></b> Save & Next Employee
+                                                            </button>
+                                                            <!-- <button type="button" tooltip="Previous" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                  class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>Save & Next Employee</button> -->
+                                                            <button type="button" tooltip="Save"
+                                                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" (click)="submit()">
+                                                              <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save
+                                                            </button>
+                                                            <button type="button" tooltip="Next"
+                                                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                              <b><i class="fa fa-angle-double-left" aria-hidden="true"></i></b>Previous
+                                                            </button>
+                                                            <button type="button" tooltip="Next"
+                                                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                              <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>Next
+                                                            </button>
+                                                            <button type="button" tooltip="Next"
+                                                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                              <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset
+                                                            </button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                              
+                                                  <div *ngIf="selectedOption != 'single' ">
+                                                    <div class="tabview-contents">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                          <div class="card">
+                                                            <div class="card-body p-0">
+                                              
+                                                              <div class="col-12 mt-10">
+                                              
+                                              
+                                                                <div class="row">
+                                                                  <div class="col-sm-3">
+                                                                    <label class="form-label"> Head</label>
+                                                                    <select name="payrollarea" class="form-control input-icon " (change)="getFastEntryHeader($event.target.value)">
+                                              
+                                              
+                                                                      <option value=""> Select
+                                                                        <span class="input-icon-addon"><i class="fa fa-search"></i></span>
+                                                                      </option>
+                                                                     <option *ngFor="let head of headData" value="{{head.headMasterId}}"> {{head.displayName}}</option>
+                                                                    </select>
+                                              
+                                                                  </div>
+                                              
+                                              
+                                                                  <!-- <div class="col-sm-3">
+                                                                    <label class="form-label">Payroll Area</label>
+                                                                    <select name="payrollarea" class="form-control">
+                                                                      <option value=""> Select</option>
+                                                                      <option value=""> </option>
+                                                                      
+                                                                    </select>
+                                              
+                                                                  </div> -->
+                                              
+                                              
+                                                                </div>
+                                                                <!-- end of row -->
+                                                                <br>
+                                                                <div class="row">
+                                                                  <div class="col-md-12">
+                                              
+                                                                    <div class="card bg-color-white box-line-border">
+                                                                      <!-- box-line-border -->
+                                                                      <div class="card-body">
+                                              
+                                                                        <div class="col-lg-12 col-md-6 col-sm-12">
+                                                                          <div class="card">
+                                              
+                                                                            <div class="card-status"></div>
+                                              
+                                                                            <div class="card-body">
+                                                                              <div class="row mt-20">
+                                                                                <div class="col-sm-3">
+                                                                                  <div class="custom-controls-stacked">
+                                                                                    <label class="custom-control custom-radio">
+                                                                                      <input type="radio" class="custom-control-input" name="example- radios"
+                                                                                        value="option1" checked>
+                                                                                      <div class="custom-control-label">Emp.
+                                                                                        List</div>
+                                                                                    </label>
+                                                                                  </div>
+                                              
+                                                                                </div>
+                                              
+                                              
+                                              
+                                                                                <div class="col-sm-3">
+                                                                                  <label class="form-label">Updation Field</label>
+                                              
+                                              
+                                                                                  <select name="updationfield" class="form-control" (change)="getSelectedUpdationField($event.target.value)">
+                                                                                    <option value=""> Select</option>
+                                                                                    <option>Change Amount</option>
+                                                                                    <option>Change Percentage</option>
+                                                                                    <option>Closing Amount</option>
+                                                                                  </select>
+                                              
+                                                                                </div>
+                                                                                <div class="col-sm-3" *ngIf="selectedUpdationField == 'Change Amount'">
+                                                                                  <label class="form-label">Change Amount</label>
+                                                                                  <input type="text" class="form-control" [(ngModel)]="changeAmountVal">
+                                              
+                                                                                </div>
+                                              
+                                                                                <div class="col-sm-3" *ngIf="selectedUpdationField == 'Change Percentage'">
+                                                                                  <label class="form-label">Change Percentage</label>
+                                                                                  <input type="text" class="form-control" [(ngModel)]="changePercenatgeVal">
+                                              
+                                                                                </div>
+                                                                                <div class="col-sm-3" *ngIf="selectedUpdationField == 'Closing Amount'">
+                                                                                  <label class="form-label">Closing Amount</label>
+                                                                                  <input type="text" class="form-control" [(ngModel)]="closingAmtVal">
+                                              
+                                                                                </div>
+                                              
+                                              
+                                                                              </div>
+                                              
+                                                                              <div class="row mt-20">
+                                                                                <div class="col-sm-3">
+                                                                                  <label class="form-label">From Date</label>
+                                                                                  <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                                      <span class="input-group-text">
+                                                                                        <i class="fa fa-calendar"></i>
+                                                                                      </span>
+                                                                                    </div>
+                                                                                    <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                    (bsValueChange)="getFromDate($event)"
+                                                                                      placeholder="Date" bsDatepicker >
+                                                                                  </div>
+                                              
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                  <label class="form-label">To Date</label>
+                                              
+                                                                                  <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                                      <span class="input-group-text">
+                                                                                        <i class="fa fa-calendar"></i>
+                                                                                      </span>
+                                                                                    </div>
+                                                                                    <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                    (bsValueChange)="getFromDate($event)"
+                                                                                      placeholder="Date" bsDatepicker>
+                                                                                  </div>
+                                              
+                                                                                </div>
+                                                                                <!-- <div class="col-sm-3">
+                                                                                  <label class="form-label">Remark</label>
+                                                                                  <input type="text" class="form-control" [(ngModel)]="fastEntryRemark">
+                                              
+                                                                                </div> -->
+                                              
+                                              
+                                                                                <div class="col-sm-3">
+                                                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                  <button type="submit"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
+                                                                                    (click)="getAllFastEntryData()"
+                                                                                    tooltip="Go"><b>
+                                                                                      <i class="fa fa-arrow-right"></i></b>
+                                                                                    Go</button>&nbsp;
+                                                                                  <button type="button"
+                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mt-3"
+                                                                                    tooltip="Reset"><b>
+                                                                                      <i class="fa fa-refresh"></i></b>
+                                                                                    Reset</button>
+                                                                                </div>
+                                              
+                                              
+                                              
+                                                                              </div>
+                                                                              <!-- end of row -->
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                              
+                                              
+                                                                  </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="mb-0">
+                                                                  <h3 class="font-14 text-purple font-bold">Summary</h3>
+                                                                </div>
+                                                                <div class="row">
+                                                                  <div class="col-md-12">
+                                                                    <p-table [value]="tabledata">
+                                                                      <ng-template pTemplate="header">
+                                                                        <tr>
+                                                                          <th rowspan="2" class=" text-center">Sr. No.</th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="PayrollArea" pSortableColumn="PayrollArea"></p-sortIcon>
+                                                                                <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
+                                                                                <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;"> Payroll Area
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Type" pSortableColumn="Type">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                              
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex justify-content-center p-ai-center">
+                                                                              From Date
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
+                                                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex justify-content-center p-ai-center">
+                                                                              To Date
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
+                                                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Updation Type
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                                                          <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">Change Amount
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th>
+                                              
+                                              
+                                                                          <!-- <th rowspan="2" class=" text-center">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center"> Remark
+                                              
+                                                                              <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea"></p-sortIcon>
+                                                                                <p-columnFilter field="status" matchMode="equals" display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                              </div>
+                                                                            </div>
+                                                                          </th> -->
+                                              
+                                                                          <th rowspan="2" class="wd-3 text-center"> Action </th>
+                                              
+                                                                        </tr>
+                                              
+                                                                      </ng-template>
+                                                                      <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
+                                                                        <tr class="p-selectable-row">
+                                                                          <td class="text-center">{{rowIndex + 1}}</td>
+                                                                          <td>
+                                                                            {{data.employeeCode}}
+                                                                          </td>
+                                                                          <td>
+                                                                            {{data.employeeName}}
+                                                                          </td>
+                                                                          <td>
+                                                                            {{data.PayrollAreaName}}
+                                                                          </td>
+                                                                          <td>
+                                                                            <div class="p-d-inline-flex">
+                                                                              <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                                <div class="input-group">
+                                                                                  <div class="input-group-prepend">
+                                                                                    <span class="input-group-text">
+                                                                                      <i class="fa fa-calendar"></i>
+                                                                                    </span>
+                                                                                  </div>
+                                                                                  <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                                  [value]="data.fromDate"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </td>
+                                                                          <td>
+                                                                            <div class="p-d-inline-flex">
+                                                                              <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                                <div class="input-group">
+                                                                                  <div class="input-group-prepend">
+                                                                                    <span class="input-group-text">
+                                                                                      <i class="fa fa-calendar"></i>
+                                                                                    </span>
+                                                                                  </div>
+                                                                                  <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                                                  [value]="data.toDate"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </td>
+                                              
+                                                                          
+                                                                          <td>
+                                                                            {{data.updationField}}
+                                                                          </td>
+                                                                          <td>
+                                                                            <input type="text" class="form-control" [value]="data.value">
+                                                                          </td>
+                                                                          <!-- <td>
+                                                                            {{data.remark}}
+                                                                          </td> -->
+                                                                          <td>
+                                                                           <!-- <i class="fa fa-times"></i> -->
+                                                                          </td>
+                                              
+                                                                         
+                                                                        </tr>
+                                              
+                                                                      </ng-template>
+                                                                      <ng-template pTemplate="emptymessage">
+                                                                        <tr>
+                                                                          <td colspan="15" class="font-14 font500 text-center text-red">
+                                                                            <span>No Data
+                                                                              Available</span>
+                                                                          </td>
+                                                                        </tr>
+                                                                      </ng-template>
+                                                                    </p-table>
+                                                                  </div>
+                                                                </div>
+                                                                <div class="row mt-15">
+                                                                  <div class="col-12">
+                                                                    <div class="float-right mb-15">
+                                                                      <button type="submit"
+                                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                        tooltip="Save" (click)="saveFastEntry()"><b>
+                                                                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                                                                      <!-- <button type="submit"
+                                                                        class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                        tooltip="Save"><b>
+                                                                          <i class="fa fa-floppy-o"></i></b>Save & Clear</button>&nbsp; -->
+                                                                      <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
+                                                                        tooltip="Reset"><b>
+                                                                          <i class="fa fa-refresh"></i></b> Reset</button>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                              
+                                                            </div> <!-- card body -->
+                                                          </div>
+                                                        </div>
+                                              
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Tab2">
+                                    <span> Transaction </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="Tab3" />
+                                <div class="tabs about-page">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4>Tab3 Content here</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label class="nav" for="Tab3">
+                                    <span> Minimum Wages Schedule </span>
+                                </label>
+                            </div>
+
                         </div>
-                      </div>
-                    </th>
-                    <th rowspan="2">Remark</th>
-                    <th rowspan="2"></th>
-                    <!-- <th style="width: 8rem"></th> -->
-                  </tr>
-                  <tr>
-                    <th class="text-center">From Date - To Date</th>
-                  </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
-                  <tr  class="p-selectable-row" *ngIf="headsFlag[rowIndex]">
-                   <td><span>{{summary.srNo}} </span></td>
-                    <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}" >{{ summary.headType }} </span></td>
-                    <td class="bg-color-light_gray">
-                      <span class="text-link" (click)="ViewHistory(template)">{{summary.headDescription}}</span>
-                    </td>
-                    <td><input type="number"  [(ngModel)]="summary.openingAmount" class="form-control align-right" disabled /> </td>
-                   <td>
-                      <input type="number" (change)="onChangeValueCalculation(rowIndex)" [(ngModel)]="summary.changeValue"
-                        class="form-control" [disabled]="((changeValueFlag) || (summary.isPEIRecord !='Yes'))"/>
-                    </td>
-                    <td>
-                      <input type="number" (change)="onChangePercentageCalculation(rowIndex)" [(ngModel)]="summary.changePercenatge"
-                        class="form-control" [disabled]="((changePercentageFlag) || (summary.isPEIRecord !='Yes'))" />
-                    </td>
-                    <td>
-                      <input type="number" (change)="onChangeClosingAmountCalculation(rowIndex)" [(ngModel)]="summary.closingAmount"
-                        class="form-control" [disabled]="((closingAmountFlag) || (summary.isPEIRecord !='Yes'))" />
-                    </td>
-                    <td class="bg-color-light_gray text-center"> <label class="form-lable mb-0">{{summary.uom}}</label>
-                     </td>
-                    <td class="text-center">
-                      <i tooltip="Schedule" (click)="Schedule(template2)" *ngIf="summary.isPEIRecord ==='Yes'"
-                        class="fa fa-clock-o font-18 text-blue cursor-pointer"
-                          [(ngModel)]="summary.isSchedulable"></i>&nbsp;&nbsp;
-                      <i tooltip="Schedule"  (click)="Schedule(template2)" class="fa fa-eye font-18 text-blue cursor-pointer"></i>
-                    </td>
-                    <td colspan="2">
-                      <div class="d-flex">
-                        <span class="ml-2 mr-2 mt-2" (click)="copyDateFromUpdteMaster(rowIndex)" ><i class="fa fa-clone text-blue font-16"></i ></span>
-                          <!-- <input data-provide="datepicker"  data-date-autoclose="true"
-                          class="form-control mr-2" [(ngModel)]="summary.fromdate" bsDatepicker />
-                      
-                        <input data-provide="datepicker" data-date-autoclose="true"
-                          class="form-control"  [(ngModel)]="summary.todate" bsDatepicker/> -->
-
-                          <input type="text" class="form-control" [ngModel]="summary.fromdate | date: 'dd-MMM-yyyy'"
-                                (ngModelChange)="summary.fromdate = $event.toLocaleDateString()"
-                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker/>
-                          <input type="text" class="form-control" [ngModel]="summary.todate | date: 'dd-MMM-yyyy'"
-                                (ngModelChange)="summary.todate = $event.toLocaleDateString()"
-                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker/>
-                      </div>
-                      </td>
-                    <td>
-                      <input type="text" [(ngModel)]="summary.remark" class="form-control"
-                       />
-                    </td>
-                    <td>
-                      <span class="ml-1 mt-2"><i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true"></i></span>
-                    </td>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td
-                      colspan="15"
-                      class="font-14 font500 text-center text-red"
-                    >
-                      <!-- <span>No Data Available</span> -->
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
+                    </div>
+                </div>
             </div>
-          </div>
-          
-
-          <div class="row mt-15">
-            <div class="col-12">
-              <div class="float-right mb-15">
-                <button
-                  type="submit"
-                  tooltip="Save & Next Employee"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                >
-                  <b> <i class="fa fa-floppy-o"></i></b> Save & Next Employee
-                </button>
-                <!-- <button type="button" tooltip="Previous" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                    class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>Save & Next Employee</button> -->
-                <button
-                  type="button"
-                  tooltip="Save"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"
-                  (click)="submit()"
-                >
-                  <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save
-                </button>
-                <button
-                  type="button"
-                  tooltip="Next"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
- >
-                  <b
-                    ><i
-                      class="fa fa-angle-double-left"
-                      aria-hidden="true"
-                    ></i></b
-                  >Previous
-                </button>
-                <button
-                  type="button"
-                  tooltip="Next"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                >
-                  <b
-                    ><i
-                      class="fa fa-angle-double-right"
-                      aria-hidden="true"
-                    ></i></b
-                  >Next
-                </button>
-                <button
-                  type="button"
-                  tooltip="Next"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                >
-                  <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-<!-- </form> -->
+</div>
+
+
+<ng-template #editdeviationPopup>
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Deviation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row ">
+                    <div class="col-md-3">
+                        <label for="" class="form-label">Emp. Code</label>
+                        <input type="text " class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="form-label">Emp. Name</label>
+                        <input type="text " class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="form-label">Head</label>
+                        <input type="text " class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="" class="form-label">Type</label>
+                        <input type="text " class="form-control">
+                    </div>
+                </div>
+                <div class="row mt-25">
+                    <div class="col-md-12">
+                        <div class="table  table-responsive ">
+                            <p-table [value]="users1">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Attribute
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="name"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="name" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="representative.name"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Desc" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">Group ID
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="date"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="date" display="menu"
+                                                        class="p-ml-auto"> </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">Once Every
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="status"></p-sortIcon>
+                                                    <p-columnFilter field="status" matchMode="equals" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8 text-center">
+                                            <div class="p-d-flex justify-content-center p-ai-center">Frequency
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="activity"></p-sortIcon>
+                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">Type
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="activity"></p-sortIcon>
+                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                <span tooltip="Unit of Measure">Amount Entered</span>
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="activity"></p-sortIcon>
+                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>Limit</th>
+                                        <th  class="text-center wd-23">
+                                            <div class="p-d-flex p-ai-center justify-content-center">Amount
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="activity"></p-sortIcon>
+                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th> %</th>
+                                        <th>Remark</th>
+                                        <th>Status</th>
+                                    </tr>
+                                  
+                                </ng-template>
+                                <ng-template pTemplate="body" let-user1>
+                                  
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                Available</span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
 
 <ng-template #template>
   <div class="modal-header">

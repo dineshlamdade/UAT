@@ -408,23 +408,4 @@ export class BankMasterAtGroupComponent implements OnInit {
     });
   
 }
-onChangeIFSC( evt: any ) {
-  console.log( evt );
-  if ( evt.length == 11 ) {
-    console.log( this.form.get( 'bankIFSC' ).value );
-    console.log( this. tempObjForbankMasterDetails );
-    let index1 = this. tempObjForbankMasterDetails.findIndex( o => o.code == this.form.get( 'bankIFSC' ).value );
-    console.log( evt[3].toUpperCase() );
-    console.log( this. tempObjForbankMasterDetails[index1].fourthCharacterOfPan );
-
-
-    if ( evt[3] == this. tempObjForbankMasterDetails[index1].fourthCharacterOfPan ) {
-      this.invalidPAN = false;
-    } else {
-      this.invalidPAN = true;
-    }
-    // invalidPAN
-  }
-
-}
 }

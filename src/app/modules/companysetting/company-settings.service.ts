@@ -20,6 +20,32 @@ export class CompanySettingsService {
   }
 
 
+
+  previewCycleDefination(data) {
+    return this._HTTP.post<any>(this.url + `business-cycle/getPreviewCycles/`, data);
+  }
+
+
+  updateBusinessCycle(businessCycleDefinitionId, businessYear, data) {
+    return this._HTTP.put<any>(this.url + `business-cycle/update/` + businessCycleDefinitionId + `/` + businessYear, data);
+  }
+
+
+  forceEnd(businessCycleDefinitionId, businessYear, data) {
+    return this._HTTP.put<any>(this.url + `business-cycle/force-end/` + businessCycleDefinitionId + `/` + businessYear, data);
+  }
+
+
+
+  addextendedYear(data) {
+    return this._HTTP.post<any>(this.url + `business-cycle/addextendedYear/`, data);
+  }
+
+
+  addBusinessCycle(data) {
+    return this._HTTP.post<any>(this.url + `business-cycle/add/`, data);
+  }
+
   // getAllGlobalAttributeMastter() {
 
   //   return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
@@ -280,7 +306,7 @@ export class CompanySettingsService {
   //get all cycle-definition
 
   // http://localhost:8086/hrms/v1/business-cycle-definition/getAllActiveNonActive
-  getAllCycleDefinition() {
+  CycleDefinitionList() {
 
     return this._HTTP.get( environment.baseUrl8086 + 'business-cycle-definition/getAllActive' )
       .pipe( map( ( res: any ) => {
@@ -289,7 +315,15 @@ export class CompanySettingsService {
   }
 
 
-  addBusiness_cycle_cycle_definition( data: any ) {
+  getAllCycleDefinition() {
+
+    return this._HTTP.get(environment.baseUrl8086 + 'business-cycle-definition/getAllActiveNonActive')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+  addBusiness_cycle_cycle_definition(data: any) {
 
     return this._HTTP.post( environment.baseUrl8086 + 'business-cycle/cycle-definition', data )
       .pipe( map( ( res: any ) => {

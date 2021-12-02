@@ -38,7 +38,17 @@ export class CycleDefinitionComponent implements OnInit {
 
      }
 
-  ngOnInit(): void {
+    this.cycleDefinitionForm = this.formBuilder.group({
+      id: new FormControl(null,),
+      cycleName: new FormControl('', Validators.required), // ['', [Validators.required, Validators.maxLength(10)]],
+      businessYearDefinitionId: new FormControl('', Validators.required),
+      frequencyMasterId: new FormControl('', Validators.required),
+      addDays: new FormControl(''),
+      incompleteDaysFalls: new FormControl('', Validators.required),
+      lastCycleCrossByYear: new FormControl(''),
+      yearDefinition: new FormControl({ value: '', disabled: true }), // this. is from date to date autopopulated field..
+
+    });
 
     this.cycleDefinitionForm = this.formBuilder.group( {
       id: new FormControl( null, ),
@@ -190,6 +200,21 @@ export class CycleDefinitionComponent implements OnInit {
     }
     else {
       addCycleDefinition.businessCycleDefinitionId = addCycleDefinition.id;
+    this.cycleDefinitionForm.controls['cycleName'].enable();
+    this.cycleDefinitionForm.controls['addDays'].enable();
+    this.cycleDefinitionForm.controls['businessYearDefinitionId'].enable();
+    this.cycleDefinitionForm.controls['frequencyMasterId'].enable();
+    this.cycleDefinitionForm.controls['incompleteDaysFalls'].enable();
+      console.log("addCycleDefinition: "+ JSON.stringify(addCycleDefinition))
+      let data={
+        "businessCycleDefinitionId": addCycleDefinition.businessCycleDefinitionId ,
+        "frequencyMasterId": this.frequencyMasterId,
+        
+        "businessYearDefinitionId":addCycleDefinition.businessYearDefinitionId,
+        "cycleName":  this.cycleName,
+        "incompleteDaysFalls": this.cycleDefinitionForm.controls["incompleteDaysFalls"].value
+
+      }
 
       // this.serviceName = [];
       //  this.serviceName.push(addCycleDefinition.services)
@@ -214,8 +239,12 @@ export class CycleDefinitionComponent implements OnInit {
         } );
     }
   }
-  onChangeFrequencyFromCycleDefinition( event: any ): void {
-    console.log( event );
+
+  onChangeFrequencyFromCycleDefinition(event) {
+    //alert(event);
+   this.frequencyId = event
+   this.frequencyMasterId = event
+  //alert(this.frequencyName)
     // console.log(this.selectedFrequency);
     const findIndex = this.activeFrequencyList.findIndex( o => o.id == event );
     console.log( 's', findIndex );
@@ -274,12 +303,15 @@ export class CycleDefinitionComponent implements OnInit {
         this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
         this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
         // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
-        this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
+        this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
+        this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls });
+        this.cycleDefinitionForm.patchValue({ lastCycleCrossByYear: response.data.results[0].lastCycleCrossByYear });
+        const index = this.BusinessyearList.findIndex(o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId);
+        this.cycleDefinitionForm.patchValue({
+          yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate), 'dd-MMM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate), 'dd-MMM-yyyy'),
+        });
 
-        const index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId );
-        this.cycleDefinitionForm.patchValue( {
-          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
-        } );
+
         // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
         // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
         this.cycleDefinitionForm.disable();
@@ -299,19 +331,31 @@ export class CycleDefinitionComponent implements OnInit {
 
     this.CycleupdateFlag = true;
     this.CycleupdateFlag1 = true;
-    this.companySettings.GetCycleDefinitionById( id )
-      .subscribe( response => { // : saveBusinessYear[]
-        console.log( 'xx', );
+    this.cycleDefinitionForm.controls['cycleName'].disable();
+    this.cycleDefinitionForm.controls['addDays'].disable();
+    // this.cycleDefinitionForm.controls['frequencyMasterId'].disable();
+    // this.cycleDefinitionForm.controls['incompleteDaysFalls'].disable();
 
-        this.cycleDefinitionForm.patchValue( { id: response.data.results[0].id } );
-        this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName.split( '_' )[0] } );
-        this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
-        this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
-        // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
-        this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
-        this.cycleDefinitionForm.patchValue( {
-          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
-        } );
+    this.companySettings.GetCycleDefinitionById(id)
+      .subscribe(response => { // : saveBusinessYear[]
+        //console.log( 'xx', );
+
+        this.frequencyMasterId = response.data.results[0].frequency.id
+        this.cycleName = response.data.results[0].cycleName.split('_')[0]
+
+        this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
+        this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
+        this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
+        this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
+        this.cycleDefinitionForm.patchValue({ incompleteDaysFalls: response.data.results[0].incompleteDaysFalls});
+        this.cycleDefinitionForm.patchValue({ lastCycleCrossByYear: response.data.results[0].lastCycleCrossByYear});
+        
+        this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
+        this.cycleDefinitionForm.patchValue({
+          //yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' To ' + response.data.results[0].businessYearDefinition.fullToDate,
+
+          yearDefinition: this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullFromDate), 'dd-MMM-yyyy') + ' To ' + this.datePipe.transform(new Date(response.data.results[0].businessYearDefinition.fullToDate), 'dd-MMM-yyyy'),
+        });
         // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
         // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
 
@@ -397,5 +441,32 @@ export class CycleDefinitionComponent implements OnInit {
   }
   getCycleName( name ): void {
     // this.CycleName = name;
+  }
+
+  exportAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header = ["S.No.","Cycle Name","Cycle spanning two months-Treat as part of which month","Last Cycle Crossing financial Year", "Description", "From Date", "To Date"]
+    //this.excelData = this.attendanceData
+    
+    this.CycleDefinitionList.forEach((element,index) => {
+
+
+      let obj = {
+        "S.No.":index+1,
+        "Cycle Name": element.cycleName,
+        "Cycle spanning two months-Treat as part of which month":element.incompleteDaysFalls,
+        "Last Cycle Crossing financial Year":element.lastCycleCrossByYear,
+        "Description": element.description,
+        "From Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullFromDate), 'dd-MMM-yyyy'),
+        "To Date": this.datePipe.transform(new Date(element.businessYearDefinition.fullToDate), 'dd-MMM-yyyy')
+
+
+
+      }
+      this.excelData.push(obj)
+    });
+    // console.log(this.excelData)
+    this.excelservice.exportAsExcelFile(this.excelData, 'Business Cycle Defination', 'Business Cycle Defination', this.header);
   }
 }

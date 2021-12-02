@@ -318,32 +318,6 @@
             </div>
           </div> -->
 <!--Prime Ng  -->
-<div class="tabset mt-25">
-  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked="">
-  <label for="tab1">Returns</label>
-  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
-  <label for="tab2">Due Payment</label>
-  <input type="radio" name="tabset" id="tab3" aria-controls="acrossyear">
-  <label for="tab3">Renewals</label>
-  <input type="radio" name="tabset" id="tab4" aria-controls="applicability">
-  <label for="tab4">Applicability</label>
-  <div class="tab-panels">
-      <section id="marzen" class="tab-panel">
-
-       </section>
-       <section id="rauchbier" class="tab-panel">
-
-      </section>
-      <section id="acrossyear" class="tab-panel">
-
-      </section>
-      <section id="applicability" class="tab-panel">
-
-      </section>
-   </div>
-  </div>
-
-
           <br>
           <div class="row mb-0">
             <div class="col-md-12">
@@ -386,7 +360,7 @@
                    totalRecords={{summaryHtmlDataList.length}} 
                    [rowsPerPageOptions]="[10,25,50,100,200]"
                    
-                   [globalFilterFields]="['complianceHeadName', 'country','aplicabilityLevel','authorityHandling','remark']">
+                   [globalFilterFields]="['complianceHeadName', 'shortName',  'country','aplicabilityLevel','authorityHandling','remark']">
 
                      <ng-template pTemplate="header">
                        <tr>
@@ -397,7 +371,7 @@
                         
 
                        <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Compliance Name
+                          <div class="p-d-flex  justify-content-center p-ai-center">Head Name
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
                               <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
@@ -406,7 +380,7 @@
                           </div>
                         </th>
 
-                        <!-- <th class="text-center">
+                        <th class="text-center">
                           <div class="p-d-flex  justify-content-center p-ai-center">Type
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
@@ -414,7 +388,7 @@
                               </p-columnFilter>
                             </div>
                           </div>
-                        </th> -->
+                        </th>
                          <th class="text-center">
                           <div class="p-d-flex  justify-content-center p-ai-center">Country
                             <div class="Sort_Filter_Position">
@@ -467,10 +441,10 @@
                                   class="form-lable mb-0">
                                   {{summary.complianceHeadName}}</label>
                           </td>
-                          <!-- <td>
+                          <td>
                               <label
                                   class="form-lable mb-0 ">{{summary.shortName}}</label>
-                          </td> -->
+                          </td>
 
                           <td> <label
                                   class="form-lable mb-0 ">{{summary.country}}</label>

@@ -8,17 +8,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 
-interface City {
-  name: string,
-  code: string
-}
-
-export interface User1 {
-  state;
-  Applicable;
-  
-}
-
 
 @Component( {
   selector: 'app-compliance-head',
@@ -46,16 +35,6 @@ isshowAP:boolean= true;
 
   header: any[];
   excelData: any[];
-  statutoryFrq:Array<any>=[];
-  officeTypeList:Array<any>=['Area Office', 'Regional Office','Zonal Office'];
-  RelatedTo:Array<any>=['Employee Related','Organization Related' ];
-
-  users1: User1[];
-  
-  dropdownSettings = {};
-  frequencyData: any;
-
-  State:any;
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
@@ -396,7 +375,7 @@ exportAsXLSX(): void {
   this.summaryHtmlDataList.forEach(element => {
     let obj = {
       "Head Name":element.complianceHeadName,
-    //  "Type":element.shortName,
+      "Type":element.shortName,
       "Country": element.country,
       "Applicability Level":element.aplicabilityLevel,
       "Authority Handling":element.authorityHandling,
@@ -434,21 +413,5 @@ customSort(event: SortEvent) {
   });
 
 }
-
-largepopup(template: TemplateRef<any>) {
-  this.modalRef = this.modalService.show(
-    template,
-    Object.assign({}, { class: 'gray modal-lg' })
-  );
-}
-
-showAP(){
-  this.isshowAP=true;
-}
-hideAP(){
- this.isshowAP=false;
-}
-
-
 
 }

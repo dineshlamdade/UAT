@@ -9,7 +9,6 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
-import { th } from 'date-fns/locale';
 // import { Table } from 'primeng/table';
 
 @Component( {
@@ -69,10 +68,6 @@ export class CompanyMasterComponent implements OnInit {
 
   header: any[];
   excelData: any[];
-  logo1Path: any;
-  editlogo1: any = '';
-  result: any;
-  logo1ImageName: any;
 
   constructor( private shortenString: ShortenStringPipe, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private datePipe: DatePipe, private companyMasterService: CompanyMasterService,
     private companyGroupMasterService: CompanyGroupMasterService, private alertService: AlertServiceService, private excelservice: ExcelserviceService ) {
@@ -1013,11 +1008,6 @@ export class CompanyMasterComponent implements OnInit {
       coClassification: '',
       reason: '',
       isContractor: '',
-      // logo1ImageName:'',
-      // logo1Type:'',
-      // logo2ImageName:'',
-      // logo2Type:'',
-      // logo1:'',
       
     } );
 

@@ -23,38 +23,147 @@ export class FinancialMasterComponent implements OnInit {
   public employeeId: any;
   public employeeDetails: EmployeeMasterDetails;
 
-// public masterGridData1 :any;
-public changeValueFlag = true;
-public changePercentageFlag = true;
-public closingAmountFlag = true;
-public headsFlag: Array<boolean> = [];
-public headField = 2;
-public updationField: number = null;
-public currency = '';
-public frequency = '';
-public updateMasterFromDate: any;
-public updateMasterToDate: any;
-public employeeListsArray = [];
-public employeeListIndex = 0;
-public modalRef: BsModalRef;
-public headDescriptionName: string;
+  // public masterGridData1 :any;
+  public changeValueFlag = true;
+  public changePercentageFlag = true;
+  public closingAmountFlag = true;
+  public headsFlag: Array<boolean> = [];
+  public headField = 1;
+  public updationField: number = 3;
+  public currency = '';
+  public frequency = '';
+  public updateMasterFromDate: any;
+  public updateMasterToDate: any;
+  public employeeListsArray = [];
+  public employeeListIndex = 0;
+  public modalRef: BsModalRef;
+  public headDescriptionName: string;
+  selectedOption: string = 'single';
+  payrollListEmpData: any;
+  selectedPayrollArea: any;
+  payrollAreaId: any;
+  headData: { displayName: string; headMasterId: number; }[];
+  selectedUpdationField: any;
+  slectedFromDate: any;
+  slectedToDate: any = '31-12-9999';
+  saveFastEntrydata: any = [];
+  headMasterId: any;
+  changeAmountVal: any = 0;
+  changePercenatgeVal: any = 0;
+  closingAmtVal: any = 0;
+  tabledata: any = [];
+  index: number;
+  employeeData: any;
+  payrollListData: string;
+  employeeFinDetailsData: any[];
+  selectedEmployeeMasterId: number;
+  headType: any;
+  summaryData: any;
 
   constructor(private service: FinancialMasterService,
-              private datePipe: DatePipe,
-              private modalService: BsModalService,
-              private commonService: PayrollInputsService,
-              private router: Router
-    ) {}
+    private datePipe: DatePipe,
+    private modalService: BsModalService,
+    private commonService: PayrollInputsService,
+    private garnishmentService: GarnishmentService,
+    private alerService : AlertServiceService,
+    private nonRecService: NonRecurringAmtService,
+    private router: Router
+  ) {
+
+    if (localStorage.getItem('payrollListEmpData') != null) {
+      this.index = 0
+      this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+      // localStorage.removeItem('payrollListEmpData')
+      this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+      this.selectedPayrollArea = this.payrollListEmpData[this.index].payrollAreaCode
+      this.payrollAreaId = this.payrollListEmpData[this.index].payrollAreaId
+
+    }
+
+    this.headData = [
+      { displayName: 'Incentive', headMasterId: 27 },
+      { displayName: 'Performance_Incentive', headMasterId: 29 },
+    ]
+
+    this.headData = []
+
+    const formdata = new FormData();
+    formdata.append('categoryName', 'FinancialMaster');
+
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+      res.data.results.forEach(element => {
+        this.headData.push({
+          'headMasterId':element.headMasterId,
+          'displayName': element.displayName
+        })
+      });
+    })
+  }
 
   public ngOnInit(): void {
-    // this.employeeListsArray = this.commonService.getEmployeeListArray();
-    // if (this.employeeListsArray === []) {
-    //   this.router.navigate(['/payrollInputs/payroll-List']);
-    // }
+   
+    this.getAllSummarydata();
+
     this.getCurrencyDetails();
     this.getEmployeeDetails(0);
     this.summaryPage();
- }
+    this.changeValueFlag = true;
+    this.changePercentageFlag = true;
+    this.closingAmountFlag = false;
+  }
+
+  /** get all sumary data for all employess */
+  getAllSummarydata(){
+    this.service.getAllSummarydata().subscribe(res =>{
+      this.summaryData = res.data.results;
+    })
+  }
+
+  /** Get Selected Employee master Id */
+	getSelectedEmployeeCode(value) {
+		this.payrollListData = ''
+		this.employeeFinDetailsData = []
+		this.selectedEmployeeMasterId = parseInt(value)
+		console.log(this.selectedPayrollArea)
+		if (this.selectedPayrollArea != '') {
+			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
+				res => {
+					this.employeeFinDetailsData = res.data.results[0][0];
+				}
+			)
+		}
+		// this.payrollAssigned()
+	}
+
+
+  /** Get all  Employee data */
+	getAllEmployeeDetails(): void {
+		this.commonService.getAllEmployeeDetails().subscribe((res) => {
+			this.employeeData = res.data.results[0];
+		});
+	}
+
+
+  /** get Selected Payroll Area from Dropdown */
+	getSelectedPayrollArea(value) {
+		// this.employeeFinDetailsData = []
+		// this.selectedPayrollArea = value;
+		// this.payrollListData.forEach(element => {
+		// 	if(element.payrollAreaCode == value){
+		// 		this.payrollAreaId = element.payrollAreaId
+		// 	}
+		// });
+		// if (this.selectedEmployeeMasterId != '') {
+
+		// 	this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
+		// 		res => {
+		// 			this.employeeFinDetailsData = res.data.results[0][0];
+		// 		}
+		// 	)
+		// }
+	}
+
+
   // ---------------------Summary ----------------------
     // Summary get Call
     public summaryPage(): void {

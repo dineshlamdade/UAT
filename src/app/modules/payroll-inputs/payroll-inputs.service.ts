@@ -49,7 +49,7 @@ postLeavePage(data) {
 }
 
 public getAllEmployeeDetails() {
-  return this.http.get(this.apiUrlEmployeeDetails + '/employee-master')
+  return this.http.get(this.apiUrlEmployeeDetails + 'employee-master')
     .pipe(map((res: any) => {
       return res;
     }));

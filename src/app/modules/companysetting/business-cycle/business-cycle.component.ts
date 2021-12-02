@@ -182,6 +182,107 @@ export class BusinessCycleComponent implements OnInit {
     })();
   }
 
+  BusinessCycleTabClick(){
+    this.getAllCycleDefinition();
+    this.getAllCycleCreationList();
+  }
+
+  businessCycleDefinationTabClick(){
+
+    this.getActiveFrequency();
+    this.getAllCycleDefinition();
+    this.getAllBusinessyear();
+  }
+
+    //get all Businessyear
+    getAllBusinessyear(): void {
+      this.BusinessyearList = [];
+      this.companySettings.getAllBusinessYear().subscribe( res => {
+        this.BusinessyearList = res.data.results;
+        this.BusinessyearList.forEach(element => {
+          console.log("this.businessYearList" + JSON.stringify(element.description))
+        });
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
+    }
+
+  
+  getAllCycleCreationList() {
+    this.CycleCreationList1 = [];
+    this.companySettings.getAllCycleCreation().subscribe( res => {
+
+      this.CycleCreationList1 = res.data.results;
+    } );
+
+  }
+
+getActiveFrequency() {
+  this.activeFrequencyList = [];
+  this.companySettings.getActiveFrequency().subscribe( res => {
+
+    this.activeFrequencyList = res.data.results;
+  }, ( error ) => {
+
+  }, () => {
+    // for ( let i = 0; i < this.activeFrequencyList.length; i++ ){
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'daily' ) !== -1 ) {
+      //console.log( 'in daily' );
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'daily' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    } if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'weekly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'weekly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    }
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'biweekly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'biweekly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    }
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'semi-monthly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'semi-monthly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    }
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'monthly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'monthly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    }
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'quarterly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'quarterly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    }
+    if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'half-yearly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'half-yearly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    } if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'yearly' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'yearly' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+
+    } if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() === 'adhoc' ) !== -1 ) {
+      const index = this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'adhoc' );
+      this.sortedFrequencyList.push( this.activeFrequencyList[index] );
+    }
+    //console.log( ' this.sortedFrequencyList', this.sortedFrequencyList );
+  } );
+}
+
+  getAllCycleDefinition() {
+    this.CycleDefinitionList = [];
+    this.companySettings.CycleDefinitionList().subscribe( res => {
+      this.CycleDefinitionList = res.data.results;
+     
+
+    } );
+
+  }
+
 
 
   // @HostListener( "window:scroll", [] )

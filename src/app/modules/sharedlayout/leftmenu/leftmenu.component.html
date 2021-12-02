@@ -455,6 +455,16 @@
             class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' |
             transloco }}</span></a>
         <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
+          <!-- [class.disabled]="!checkEmpId()" -->
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+            <a class="submenu" [routerLink]="['/employee-master/employee-dashboard']"><span>Employee Dashboard</span></a>
+          </li>
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
+            <a class="submenu" [routerLink]="['/employee-master/emp-master-landing-page']"><span>Admin Landing Page</span></a>
+          </li>
+
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" [class.disabled]="!checkEmpId()">
             <a class="submenu" [routerLink]="['/employee-master/employee-summary']"><span>Employee Summary</span></a>
           </li>
@@ -481,7 +491,7 @@
           </li>
 
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" [class.disabled]="!checkEmpId()">
-            <a class="submenu" [routerLink]="['/employee-master/payroll-area-information']"><span>{{
+            <a class="submenu" [routerLink]="['/employee-master/payroll-area-information/payrollArea-details']"><span>{{
                 'EmployeeMaster.payrollInformation' | transloco }}</span></a>
           </li>
 
@@ -757,8 +767,8 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/otherMaster/companyRegistrationDetails']"><span>Company Registration
                 Details</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/complianceHead']"><span>Compliance Head</span></a></li>
+          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/otherMaster/complianceHead']"><span>Compliance Head</span></a></li> -->
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/otherMaster/statutoryComplianceOffice']"><span>Statutory Compliance Office</span></a>
           </li>

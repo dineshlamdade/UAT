@@ -611,6 +611,13 @@
         </div>
       </div>
     </div>
+    <div class="col-12" *ngIf="isCancelShow">
+      <div class="float-right mb-15">
+        <button type="button" (click)="cancelView()"
+        class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Reset"><b>
+            <i class=" fa fa-refresh"></i></b> Cancel</button>
+      </div>
+    </div>
     <div class="row mt-20" *ngIf="isshowHideFlag">
       <div class="col-12">
         <div class="card">
@@ -659,6 +666,8 @@
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.loanAccountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                        <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                        (click)="viewMaster(summary.loanAccountNumber)" tooltip="View"></i>
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">

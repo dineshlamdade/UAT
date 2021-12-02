@@ -73,17 +73,38 @@ export class FastentryNRAmtComponent implements OnInit {
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
     private toaster: ToastrService) {
-    this.headData = [
-      { displayName: 'Incentive', headMasterId: 33 },
-      { displayName: 'Performance_Incentive', headMasterId: 49 },
-    ]
+    // this.headData = [
+    //   { displayName: 'Incentive', headMasterId: 27 },
+    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
+    // ]
 
-    this.parollArea = [
-      { name: 'PA-Staff', code: 'RM' },
-      { name: 'PA-Worker', code: 'NY' },
-      { name: 'PA_Apprentic', code: 'LDN' },
-      { name: 'PA_Expat', code: 'IST' },
-    ];
+    
+    this.headData = []
+    const formdata = new FormData();
+    formdata.append('categoryName', 'Non-Recurring-Amount');
+    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+      res.data.results.forEach(element => {
+        this.headData.push({
+          'headMasterId':element.headMasterId,
+          'displayName': element.displayName
+        })
+      });
+    })
+
+    if (localStorage.getItem('payrollListEmpData') != null) {
+			this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+      this.selectedEmployeeData = this.payrollEmployeeData
+			this.selectedPayrollArea = 'PA-Staff'
+			// this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
+		
+		}
+
+    // this.parollArea = [
+    //   { name: 'PA-Staff', code: '1' },
+    //   { name: 'PA-Worker', code: '2' },
+    //   { name: 'PA_Apprentic', code: '3' },
+    //   { name: 'PA_Expat', code: '4' },
+    // ];
   }
 
   ngOnInit(): void {

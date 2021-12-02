@@ -84,4 +84,44 @@ export class GarnishmentService {
     return this._HTTP.get<any>(this.apiUrl1 + `employee-fin-details/`+ employeeMasterId); 
   }
 
+
+  /************************************** Garnishment Schedule **************************/
+
+  /** Get Temp Schedule data */
+  getTempSchedule(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMaster/TempSchedule`, data); 
+  }
+
+  /** Get All Application Schedule data */
+  getApplicationScheduleData():Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule`); 
+  }
+
+  /** Get scheduleHistory by Id */
+  getScheduleHistoryById(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule/GarnishmentApplicationMasterSchedule_AppIdwise`, data); 
+  }
+
+  /** Update Schedule */
+  updateSchedule(data):Observable<any>{
+    return this._HTTP.put<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule/updateById`, data); 
+  }
+
+  GarnishmentApplicationMasterScheduleRemarkHistory(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMasterScheduleRemarkHistory/GarnishmentApplicationMasterScheduleRemarkHistory`, data);  
+  }
+
+
+  /** E D Head  */
+  payrollheadmaster(data):Observable<any>{
+    //return this._HTTP.get<any>(this.apiUrl + `payrollhead-master/global-getAll`)
+    return this._HTTP.post<any>(this.apiUrl + `payrollhead-master/headCategorywise`, data)
+  }
+
+  /** Get Family Information */
+  getFamilyInformation(empid):Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl4 + `family-details/summary/employeeMasterId/`+empid)
+  }
+
+
 }
