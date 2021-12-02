@@ -35,7 +35,6 @@ export class PayrollListComponent implements OnInit {
   onBehalfValue:any = '';
   sameContentValue: any ='';
   sameContentViewFlag:boolean = false;
-  selectedEmpLength = 0
 
   constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService,
     private alertService : AlertServiceService
@@ -85,21 +84,8 @@ export class PayrollListComponent implements OnInit {
 
 
   /** get selected employee data */
-  getSelectedEmployee(user,event) {
-    if(event.checked){
+  getSelectedEmployee(user) {
     this.selectedEmployeeData.push(user)
-    this.selectedEmpLength = this.selectedEmpLength + 1
-    }else{
-      if(this.selectedEmployeeData.length > 0){
-        this.selectedEmployeeData.forEach((element,index) => {
-          if(element.employeeMasterId == user.employeeMasterId){
-            let ind = index;
-            this.selectedEmployeeData.splice(ind,1)
-          }
-        });
-      }
-      this.selectedEmpLength = this.selectedEmpLength - 1
-    }
   }
 
   navigateToNRAmt() {

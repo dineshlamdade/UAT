@@ -6,6 +6,9 @@ import { EstablishmentMasterService } from './establishment-master.service';
 import { CompanyMasterService } from '../company-master/company-master.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+
 @Component( {
   selector: 'app-establishment-master',
   templateUrl: './establishment-master.component.html',
@@ -32,9 +35,13 @@ export class EstablishmentMasterComponent implements OnInit {
   selectedRegionMasterCode: number;
   public typeOfEstablishmentList = [];
   public today = new Date();
+
+  header: any[];
+  excelData: any[];
+
   constructor( private formBuilder: FormBuilder, private statuatoryComplianceService: StatuatoryComplianceService,
     private establishmentMasterService: EstablishmentMasterService, private companyMasterService: CompanyMasterService,
-    private alertService: AlertServiceService, private datePipe: DatePipe ) {
+    private alertService: AlertServiceService, private datePipe: DatePipe, private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       establishmentCode: new FormControl( '', Validators.required ),
       description: new FormControl( '', Validators.required ),
@@ -312,4 +319,55 @@ export class EstablishmentMasterComponent implements OnInit {
       event.preventDefault();
     }
   }
+//excel
+exportAsXLSX(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["Establishment Code","Description","Type Of Establishment","GST No.","City","Village"];
+  this.excelData=[];
+
+  
+  if(this.summaryHtmlDataList.length>0){
+  this.summaryHtmlDataList.forEach(element => {
+    let obj = {
+      "Establishment Code":element.establishmentCode,
+      "Description":element.description,
+      "Type Of Establishment": element.typeOfEstablishment,
+      "GST No.":element.gstNumber,
+      "City":element.city,
+      "Village":element.village,
+ 
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+}
+ 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Establishment Master ','Establishment Master',this.header);
+
+}
+
+//Sort
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+
+}
+
 }

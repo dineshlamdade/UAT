@@ -56,7 +56,6 @@ import { GarnishmentTransactionComponent } from './garnishment-transaction/garni
 import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
 import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
-import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry-garnishment.component';
 
 @NgModule({
   declarations: [
@@ -79,8 +78,7 @@ import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry
      GarnishmentTransactionComponent,
      FastentryNrQtyComponent,
      FastentryNRAmtComponent,
-     NonRecurringQtyMasterComponent,
-     FastentryGarnishmentComponent
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,

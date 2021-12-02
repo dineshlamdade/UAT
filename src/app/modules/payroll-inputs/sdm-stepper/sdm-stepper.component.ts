@@ -1626,6 +1626,9 @@ export class SdmStepperComponent implements OnInit {
         })
       }
     }
+
+    console.log("this.saveMatrixData torange: " + JSON.stringify(this.saveMatrixData))
+
   }
 
   getEditedSourceRangeFrom(value,srcCombData){

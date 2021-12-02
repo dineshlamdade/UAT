@@ -1278,6 +1278,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
+
 console.log('this.transactionDetail', this.transactionDetail);
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {

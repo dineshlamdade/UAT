@@ -522,42 +522,13 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="mb-10 text-purple font-bold">
-                     
-        <h3 class="font-14 text-purple font-bold">Summary</h3>
-        
-
-        <div class="cycle-table">
-        <div class="cycle-value pt-10 pb-40 bg-color-light_gray">
-           <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
-          <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
-              <div class="float-right d-flex  justify-content">
-                
-                 <div class="rup mt-2">
-                    <div class="input-icon mb-3">
-                       <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
-                       type="text" pInputText class="form-control" placeholder="Search...">
-                       <span class="input-icon-addon"><i class="fe fe-search"></i></span>
-                    </div>
-                 </div>
-                 &nbsp;&nbsp;
-                 <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3" aria-hidden="true"></i>
-              </div>
-           </div>
-        </div>
-        </div>
+                      <!-- <h3 class="card-title  font-bold"></h3> -->
+                      Summary
                     </div>
                     <div class="">
-                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
-                        [rowsPerPageOptions]="[10,25,50,100,200]" 
-                        #dt [globalFilterFields]="['periodName','fromDate','toDate','businessCycleDefinition.cycleName','oldPeriodName'
-                       ,'headCount','remark']"
+                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100,200]"
                         >
                             <ng-template pTemplate="header">
-
-                             
-              
-              
                                 <tr>
                                     <th rowspan="2" >
                                         Sr. No.
@@ -597,11 +568,11 @@
                                     <th colspan="2" class="wd-8">
                                       <div class="p-d-flex p-jc-between p-ai-center ml-50">
                                         Primary Cycle
-                                          <!-- <div class="Sort_Filter_Position">
+                                          <div class="Sort_Filter_Position">
                                               <p-sortIcon field="date"></p-sortIcon>
                                               <p-columnFilter type="date" field="date" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
-                                          </div> -->
+                                          </div>
                                       </div>
                                   </th>
                                     <th rowspan="2">

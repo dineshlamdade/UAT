@@ -385,19 +385,22 @@
             [routerLink]="['/PayrollInputs/Payroll-List']" href="javascript:void(0)">
             <span>Payroll</span></a>
           </li>
-          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
             [routerLink]="['/PayrollInputs/FastEntry-Non-Recurring-Amount']" href="javascript:void(0)">
             <span>Fast Entries - Non Recurring Amount</span></a>
-          </li> -->
-          
-          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+            [routerLink]="['/PayrollInputs/Non-Recurring-qty-master']" href="javascript:void(0)">
+            <span>Non Recurring Quantity Master</span></a>
+          </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
             [routerLink]="['/PayrollInputs/FastEntry-Non-Recurring-Quantity']" href="javascript:void(0)">
             <span>Fast Entries - Non Recurring Quantity</span></a>
-          </li> -->
-          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
             [routerLink]="['/PayrollInputs/attendance']" href="javascript:void(0)">
             <span>Attendance</span></a>
-          </li> -->
+          </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/sdm-creation']" href="javascript:void(0)">
             <span>SDM Creation</span></a>
@@ -426,11 +429,6 @@
             <a href="javascript:void(0)" [routerLink]="['/PayrollInputs/component2']" (click)="isCollapsedKeywordinput = !isCollapsedKeywordinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true">
               <span>Component</span>
             </a>
-          </li> -->
-
-          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
-            [routerLink]="['/PayrollInputs/FastEntry-Garnishment']" href="javascript:void(0)">
-            <span>Fast Entries - Garnishment</span></a>
           </li> -->
         </ul>
     </li>
@@ -715,10 +713,10 @@
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-OtherIncome']"><span>OtherIncome</span></a></li>
-              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-EmployeeNationalPensionScheme80CCD']"><span>EmployeeNationalPensionScheme80CCD</span></a>
-              </li> -->
+              </li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-Child-Hostel-Allowance']"><span>Child-Hostel-Allowance</span></a>
@@ -762,7 +760,7 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/otherMaster/complianceHead']"><span>Compliance Head</span></a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/statutoryCompliance']"><span>Statutory Compliance</span></a>
+              [routerLink]="['/otherMaster/statutoryComplianceOffice']"><span>Statutory Compliance Office</span></a>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/otherMaster/establishmentMaster']"><span>Establishment Master</span></a>
@@ -782,14 +780,6 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/uploadexcel/uploadexcelhome']"><span>Upload Excel</span></a></li>
 
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
-                [routerLink]="['/PayrollInputs/Non-Recurring-qty-master']" href="javascript:void(0)">
-                <span>Non Recurring Quantity Master</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
-                [routerLink]="['/PayrollInputs/Garnishment-Master']" href="javascript:void(0)">
-                <span>Garnishment Master</span></a>
-              </li>
 
         </ul>
       </li>
