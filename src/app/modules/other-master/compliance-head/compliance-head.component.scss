@@ -15,3 +15,28 @@
 .disabled-btn-bg-lightgrey{
   background-color: lightgrey!important;
 }
+.tabset>input:checked+label {
+  border: 2px solid #33ad36 !important;
+  border-top: 7px solid #33ad36 !important;
+  border-bottom: 2px solid #ffffff !important;
+  margin-bottom: -1px;
+  color: #713f93 !important;}
+  .text-right{
+    text-align: end;
+  }
+
+  .isactivelabel{
+    background: #38b449;
+    padding: 2px;
+    color: white;
+  }
+  .bg-primary{
+   
+    text-align: center;
+    font-weight: 700;
+    height: 60px;
+    vertical-align: middle;
+    background: #38b449 !important;
+    border: 3px #116306 !important;
+}
+

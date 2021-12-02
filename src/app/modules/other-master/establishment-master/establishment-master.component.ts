@@ -32,7 +32,8 @@ export class EstablishmentMasterComponent implements OnInit {
   countries = [];
   establishmentMasterId: number = 0;
   regionMasterDetails = [];
-  selectedRegionMasterCode: number;
+  //selectedRegionMasterCode: number;
+  selectedRegionMasterCode:any;
   public typeOfEstablishmentList = [];
   public today = new Date();
 
@@ -197,6 +198,7 @@ export class EstablishmentMasterComponent implements OnInit {
 
 
       delete data.officialCountryCode;
+    //  this.form.controls['regionMasterId'].setValue(parseInt( this.form.controls['regionMasterId'].value))
       this.establishmentMasterService.postEstablishmentMaster( data ).subscribe( res => {
         console.log( res );
         if ( res.data.results.length > 0 ) {
