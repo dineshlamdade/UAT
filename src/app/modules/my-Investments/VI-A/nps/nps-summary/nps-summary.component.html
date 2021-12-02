@@ -15,18 +15,15 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td
-                class="text-link wd-20 align-left"
-                (click)="jumpToMasterPage(summary.accountNumber)"
-              >
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.accountNumber)">
                 <span tooltip="{{ summary.institution }}">{{
                   summary.institution
-                }}</span>
+                  }}</span>
               </td>
               <td class="wd-20">
                 <span tooltip="{{ summary.accountNumber }}">{{
                   summary.accountNumber
-                }}</span>
+                  }}</span>
               </td>
               <td class="wd-20">
                 <span tooltip="{{ summary.accountHolderName }}">
@@ -34,33 +31,27 @@
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ summary.declaredAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
                   {{ summary.declaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ summary.actualAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
                   {{ summary.actualAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="wd-10">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                  (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'edit')"
+                  tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'view')" tooltip="View"></i>
+                  (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'view')"
+                  tooltip="View"></i>
               </td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="6">
-                <span class="font-14 font500 align-center text-red"
-                  >No Data Available</span
-                >
+                <span class="font-14 font500 align-center text-red">No Data Available</span>
               </td>
             </tr>
             <tr class="table-light-color">
@@ -68,24 +59,17 @@
                 Total &nbsp; <span class="Letterbadge">A</span>
               </td>
               <td class="align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
                   {{ totalDeclaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ totalActualAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
                   {{ totalActualAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td></td>
             </tr>
-
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 Future Investments &nbsp;
@@ -93,10 +77,9 @@
               </td>
               <td>
                 <!-- <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber> -->
-                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
-                (onBlur)="keyPressedSpaceNotAllow()"
-                mode="decimal" locale="en-IN" maxlength="33"
-                [minFractionDigits]="2" ></p-inputNumber>
+                <p-inputNumber class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                  (focusout)="onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()"
+                  mode="decimal" locale="en-IN" maxlength="33" [minFractionDigits]="2"></p-inputNumber>
               </td>
 
 
@@ -106,25 +89,16 @@
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
-                <span class="Letterbadge">A</span> + &nbsp;<span
-                  class="Letterbadge"
-                >
-                  B</span
-                >
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge">
+                  B</span>
               </td>
               <td class="align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
                   {{ grandTotalDeclaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
-                <span
-                  class="padding-right-12"
-                  tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}"
-                >
+                <span class="padding-right-12" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
                   {{ grandTotalActualAmount | number: "1.2-2" }}
                 </span>
               </td>
@@ -132,9 +106,99 @@
               <td class="align-right">
               </td>
             </tr>
+            <tr class="table-light-color">
+              <td rowspan="3" class="font700">
+                Basic Salary for Financial Year
+              </td>
+              <td class="align-right font700" colspan="2">Year To Date &nbsp;
+                <span class="Letterbadge">D</span>
+              </td>
+              <td class="wd-15 align-right" colspan="1">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="wd-15 align-right" colspan="1">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td class="align-right font700" colspan="2">Projection &nbsp;
+                <span class="Letterbadge">E</span>
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td class="align-right font700" colspan="2">Total Basic Salary &nbsp;<span class="Letterbadge">F</span> =
+                &nbsp;
+                <span class="Letterbadge">D</span> + &nbsp;<span class="Letterbadge"> E
+                </span>
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">G</span> = &nbsp; 10% of
+                <span class="Letterbadge">F</span></td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
 
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">D</span></td>
+              <td colspan="3" class="align-right font700"><span class="Letterbadge">H</span> &nbsp;= &nbsp;Minimum of
+                <span class="Letterbadge">C</span> & &nbsp;<span class="Letterbadge">G</span></td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.minimumOfDeclaredAndLimit| number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.minimumOfDeclaredAndLimit | number:'1.2-2'}}
+                </span> 
+              </td>
+              <td class="wd-15 align-right">
+                <span class="padding-right-12"
+                  tooltip="{{this.nps80CCSummaryGridData?.minimumOfActualAndLimit | number:'1.2-2'}}">
+                  {{this.nps80CCSummaryGridData?.minimumOfActualAndLimit | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
+
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Limit for 80CCD (1B) <span class="Letterbadge">I</span></td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{limitD | number:'1.2-2'}}">
                   {{limitD | number:'1.2-2'}}
@@ -149,13 +213,10 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
-                Deduction [Sec.80-CCD(1B)] &nbsp;
-                <span class="Letterbadge">E </span> : Mininum of &nbsp;<span
-                  class="Letterbadge"
-                >
-                  C</span
-                >
-                or &nbsp;<span class="Letterbadge"> D </span>
+                Eligible for Deduction [Sec.80-CCD(1B)] &nbsp;
+                <span class="Letterbadge">J </span> : Mininum of &nbsp;<span class="Letterbadge">
+                  H</span>
+                or &nbsp;<span class="Letterbadge"> I </span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{deductionEDeclared | number:'1.2-2'}}">
@@ -172,12 +233,8 @@
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
-                <span class="Letterbadge">F </span> = &nbsp;<span
-                  class="Letterbadge"
-                >
-                  C
-                </span>
-                - &nbsp;<span class="Letterbadge"> E </span>
+                <span class="Letterbadge">K </span> = &nbsp;<span class="Letterbadge">
+                  H</span> - &nbsp;<span class="Letterbadge"> J </span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{eligibleForDeductionFDeclared | number:'1.2-2'}}">
@@ -197,4 +254,3 @@
     </div>
   </div>
 </div>
-

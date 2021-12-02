@@ -192,7 +192,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     documentRemarkList,
     psid
   ) {
-    debugger
+    
     this.investmentMasterApprovalService.getMasterDocumentApprovalRemarkList(
       psid,
     ).subscribe((res) => {
@@ -215,7 +215,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     documentRemarkList,
     masterId
   ) {
-    debugger
+    
     this.investmentMasterApprovalService.getMasterApprovalRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -560,7 +560,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
     console.log("status::", status);
     console.log("status::", status == 'Discarded');
-    debugger
+    
     if (status == 'Discarded') {
       this.documentList.forEach((doc) => {
         console.log("doc.statusRemark::", doc.statusRemark);
@@ -660,7 +660,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   //----------- On change Document Remark --------------------------
   public onChangeDocumentRemark(docDetail, event) {
-    debugger
+    
     console.log('event.target.value::', event.target.value);
     if(this.documentList.length>0){
       const index =

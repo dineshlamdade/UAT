@@ -1,4 +1,4 @@
-<form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(minumumWagesDetailsModel)">
+<form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(organizationDetailsModel)">
     <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
@@ -18,35 +18,57 @@
         <select class="form-control" placeholder="Select"
         (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
         (change)="selectPayrollArea(payrollAreaCode)"
-            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            [(ngModel)]="payrollAreaId" [ngModelOptions]="{standalone: true}">
             <option value="" selected disabled>Select</option>
-            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaId">
                 {{option.payrollAreaCode}}
             </option>
         </select>
     </div>
-
+    <div class="col-sm-6 col-md-3">
+        <label class="form-label">Type</label>
+        <input type="text" class="form-control" [(ngModel)]="payrollType" [ngModelOptions]="{standalone: true}"
+       disabled>
+    </div>
     <div class="col-sm-6 col-md-3" >
         <label class="form-label">Company Name</label>
         <input type="text" class="form-control" [(ngModel)]="companyName"
             [ngModelOptions]="{standalone: true}" disabled>
     </div>
+    <div class="col-sm-6 col-md-3" *ngIf="filteredPayrollAreaList?.length>1">
+
+        <label class="form-label">Copy From </label>
+        <select class="form-control" placeholder="Select" formControlName="copyFromControl"
+            (change)="selectCopyFrom()" [(ngModel)]="copyFromCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let copy of copyFromFilteredList" [value]="copy.payrollAreaId">
+                {{copy.payrollAreaCode}}
+            </option>
+        </select>
     </div>
+    </div>
+    
     <br>
+    <hr class="line">
 <div class="row row-cards">
-    <div class="col-sm-6 col-lg-3">
-        <div class="card p-3 row-card-color">
-            <label class="form-label">Minimum Wages - Skill</label>
+    <div *ngIf="filteredSkillList?.length" class="col-sm-6 col-lg-3">
+        <!-- Minimum Wages -  -->
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox"> Skill</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right  modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.skillList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+         
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
             <select class="form-control" placeholder="Select"
-            (completeMethod)="searchSkill(minumumWagesDetailsModel.skill)"
-            (change)="enableSkillDate();validateSkillDates();"
-            formControlName="skillControl" [(ngModel)]="minumumWagesDetailsModel.skill">
+            (completeMethod)="searchSkill(skill.masterCode)"
+            (change)="enableSkillDate();skillObject()"
+            formControlName="skillControl" [(ngModel)]="organizationDetailsModel.skillList.masterCode">
               <option value="" selected disabled>Select</option>
-              <option *ngFor="let skill of skillList" [value]="skill">
-                {{skill}}
+              <option *ngFor="let skill of filteredSkillList" [value]="skill.masterCode">
+                {{skill.masterCode}}
             </option>
           </select>
 
@@ -59,8 +81,8 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillStartDateControl" 
-                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.skillStartDate"
-                    (bsValueChange)="validateSkillDate()"
+                    [minDate]="joiningDate" [(ngModel)]="organizationDetailsModel.skillList.fromDate"
+                    (ngModelChange)="validateSkillDate($event)"
                     [ngClass]="{'is-invalid' : minimumWagesForm.get('skillStartDateControl').status == 'INVALID'}">
                    
                 </div>
@@ -75,28 +97,34 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillEndDateControl" 
-                    [minDate]="minumumWagesDetailsModel.skillStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.skillEndDate"
+                    [minDate]="organizationDetailsModel.skillList.fromDate"
+                    
+                            [(ngModel)]="organizationDetailsModel.skillList.toDate"
                             [ngClass]="{'is-invalid' : minimumWagesForm.get('skillEndDateControl').status == 'INVALID'}">
                    
                      </div>
             </div>
-        </div>
+            </fieldset>
     </div>
 
     <div class="col-sm-6 col-lg-3">
-        <div class="card p-3 row-card-color">
-            <label class="form-label">Minimum Wages - Type Of Work</label>
+        <!-- Minimum Wages -  -->
+            <fieldset class=" card p-3 row-card-color">
+                <legend class="cardBox">Type Of Work</legend>
+                <label class="form-label">Code
+                    <i class="fa fa-eye float-right modelView" (click)="ViewModal(template1);showHistory(organizationDetailsModel.workList)" data-toggle="modal" data-target="#ViewModal" tooltip="History"></i> 
+                </label>
+         
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
             <select class="form-control" placeholder="Select"
-            (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
-            (change)="enableWorkDate();"
-            formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
+            (completeMethod)="searchWork(work.masterCode)"
+            (change)="enableWorkDate();workObject()"
+            formControlName="workTypeControl" [(ngModel)]="organizationDetailsModel.workList.masterCode">
               <option value="" selected disabled>Select</option>
-              <option *ngFor="let work of filteredWorkList" [value]="work">
-                {{work}}
+              <option *ngFor="let work of filteredWorkList" [value]="work.masterCode">
+                {{work.masterCode}}
             </option>
           </select>
             <label class="form-label mt-10">From Date</label>
@@ -108,8 +136,9 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workStartDateControl" 
-                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.workStartDate"
-                    (bsValueChange)="validateWorkDate()"
+                    (ngModelChange)="validateWorkDate($event)"
+                    [minDate]="joiningDate" [(ngModel)]="organizationDetailsModel.workList.fromDate"
+                   
                     [ngClass]="{'is-invalid' : minimumWagesForm.get('workStartDateControl').status == 'INVALID'}">
                 </div>
             </div>
@@ -123,12 +152,12 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workEndDateControl" 
-                    [minDate]="minumumWagesDetailsModel.workStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.workEndDate"
+                    [minDate]="organizationDetailsModel.workList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.workList.toDate"
                             [ngClass]="{'is-invalid' : minimumWagesForm.get('workEndDateControl').status == 'INVALID'}">
                     </div>
             </div>
-        </div>
+            </fieldset>
     </div>
 </div>
 <div class="row mt-15">
@@ -149,3 +178,160 @@
     </div>
 </div>
 </form>
+
+<ng-template class="modal-lg" #template1>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">History</h5>
+  
+  
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+  
+    <div class="modal-body">
+      <div class="card">
+        <div class="row mb-3 mt-1">
+          <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Detail : </span> <span class="text-black">   {{historyData[0].jobDetail}}</span></h3>
+        </div>
+            <div class="col-md-6">
+            <h3 class="font-14"><span class="text-purple">Job Field : </span>  <span class="text-black">   {{historyData[0].jobField}}</span></h3>
+          </div>
+        </div>
+  
+  
+        <div class="card-bodys">
+          <div class=" ">
+  
+            <p-table [value]="historyData" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+              [customSort]="true" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10,25,50,100,200]">
+  
+  
+  
+              <ng-template pTemplate="header">
+  
+                <tr>
+                  <th rowspan="1" class="  text-center ">
+                    Sr. No.
+                  </th>
+                  <!-- <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Job Detail
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="jobDetail" pSortableColumn="jobDetail"></p-sortIcon>
+                        <p-columnFilter field="jobDetail" display="menu" class="p-ml-auto"></p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+  
+                  <th rowspan="1" class="  text-center">
+                    <div class="p-d-flex p-jc-between text-center p-ai-center">
+                      Job Field
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="jobField" pSortableColumn="jobField"></p-sortIcon>
+                        <p-columnFilter field="jobField" display="menu" class="p-ml-auto"></p-columnFilter>
+                      </div>
+                    </div>
+                  </th> -->
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Code
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="value" pSortableColumn="value">
+                        </p-sortIcon>
+                        <p-columnFilter field="value" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th rowspan="1" class="wd-21 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Description
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="masterDescription" pSortableColumn="masterDescription">
+                        </p-sortIcon>
+                        <p-columnFilter field="masterDescription" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+  
+                 
+  
+                  <th rowspan="1" class=" text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      From Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="fromDate" pSortableColumn="fromDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="fromDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+  
+                  <th rowspan="1" class="wd-13 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      To Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="toDate" pSortableColumn="toDate">
+                        </p-sortIcon>
+                        <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+  
+                    </div>
+                  </th>
+                </tr>
+  
+              </ng-template>
+              <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+  
+                <tr class="p-selectable-row">
+  
+                  <td class="bg-color-light_gray text-center"><label
+                      class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+  
+                  <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.jobDetail}}">{{user1.jobDetail}}</label></td>
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.jobField}}">{{user1.jobField}}</label>
+                  </td> -->
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.value}}">{{user1.value}}</label>
+                  </td>
+  
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                    tooltip="{{user1.masterDescription}}">{{user1.masterDescription}}</label>
+                 </td>
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.fromDate}}">{{user1.fromDate}}</label>
+                  </td>
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                      tooltip="{{user1.toDate}}">{{user1.toDate}}</label>
+                  </td>
+  
+  
+  
+                </tr>
+              </ng-template>
+            </p-table>
+  
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+  </ng-template>

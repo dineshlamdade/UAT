@@ -13,7 +13,14 @@ export class NpsService {
   apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
-
+  
+   //Summary services
+   getEmployeeNPSCCD1() {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail/nps80CCD1Summary')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
   getNpsSummary() {
     return this._HTTP.get(this.apiUrl + 'npsMaster-detail/npsMasterSummary')

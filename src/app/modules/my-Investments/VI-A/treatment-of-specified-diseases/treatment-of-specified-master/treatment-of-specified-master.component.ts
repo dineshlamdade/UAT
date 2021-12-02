@@ -33,7 +33,7 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-master.component.scss'],
 })
 export class TreatmentOfSpecifiedMasterComponent implements OnInit {
-  @Input() public patientNames: any;
+  @Input() public specifiedDiseaseMasterId: any;
   public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
@@ -68,6 +68,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public form: FormGroup;
   public Index: number;
   public showUpdateButton: boolean;
+  public isShowNurological: boolean;
+  
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
@@ -152,7 +154,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       neurologicalDiseaseName: new FormControl(null, Validators.required),
       specifiedDiseaseName: new FormControl(null, Validators.required),
       proofSubmissionId: new FormControl(''),
-      specifiedDiseaseMasterId: new FormControl(0),
+      specifiedDiseaseMasterId: new FormControl(''),
       remark: new FormControl(null),
     });
 
@@ -192,7 +194,6 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         { label: 'Parkinson', value: 'Parkinson' },
       ]);
 
-    this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
     this.hideRemoveRow = false;
@@ -204,6 +205,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+
+    this.masterPage();
     this.isShowSave = true;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
@@ -215,6 +218,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     //-------------- Family Member List API call ---------------------------
     this.Service.getFamilyInfo().subscribe((res) => {
       this.familyMemberGroup = res.data.results;
+      console.log("familyMemberGroup", this.familyMemberGroup)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
@@ -244,13 +248,13 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       }
     });
 
-    if (this.patientNames != undefined || this.patientNames != null) {
-      const input = this.patientNames;
+    if (this.specifiedDiseaseMasterId != undefined || this.specifiedDiseaseMasterId != null) {
+      const input = this.specifiedDiseaseMasterId;
       // console.log("edit", input)
       // this.editMaster(input);
       // console.log('editMaster patientName', input);
-      this.editMaster(input.patientName);
-      console.log('editMaster patientName', input.patientName);
+      this.editMaster(input.specifiedDiseaseMasterId);
+      console.log('editMaster patientName', input.specifiedDiseaseMasterId);
     }
 
   }
@@ -307,14 +311,13 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isShowUpdate = false;
     this.isShowSave = true;
 
-    if (this.form.invalid) {
+    if (this.masterForm.invalid) {
       return;
     }
     console.log('this.isEdit', this.isEdit);
 
     if (!this.isEdit) {
-
-      if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
+      if (this.masterfilesArray.length == 0 && this.documentArray.length == 0) {
         this.alertService.sweetalertWarning(
           'Treatment Of Specified Document needed to Create Master.'
         );
@@ -322,8 +325,17 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       }
     }
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
-      if (this.documentPassword[i] != undefined || this.documentPassword[i] == undefined) {
+    // if (this.isEdit) {
+    //   if (this.masterfilesArray.length == 0 && this.urlArray.length == 0) {
+    //     this.alertService.sweetalertWarning(
+    //       'Treatment Of Specified Document needed to Create Master.'
+    //     );
+    //     return;
+    //   }
+    // }
+
+    for (let i = 0; i < this.remarkList.length; i++) {
+      if (this.remarkList[i] != undefined || this.remarkList[i] == undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -341,9 +353,9 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     // neurologicalDiseaseName: new FormControl(null),
     // specifiedDiseaseName:
     let data: any = {};
-    if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
+    if (this.form.controls.specifiedDiseaseName.value !== 'Neurological diseases with disability level >=40% per cent and above') {
       data = {
-        specifiedDiseaseMasterId: 0,
+        specifiedDiseaseMasterId: this.masterForm.specifiedDiseaseMasterId.value,
         familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
         patientName: this.masterForm.patientName.value,
         relationship: this.masterForm.relationship.value,
@@ -351,9 +363,11 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
       },
         data.proofSubmissionId = this.proofSubmissionId;
+        data.remark = this.masterForm.remark.value;
+        data.remarkPasswordList = this.documentDataArray;
     } else {
       data = {
-        specifiedDiseaseMasterId: 0,
+        specifiedDiseaseMasterId: this.masterForm.specifiedDiseaseMasterId.value,
         familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
         patientName: this.masterForm.patientName.value,
         relationship: this.masterForm.relationship.value,
@@ -361,13 +375,13 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
       }
       data.proofSubmissionId = this.proofSubmissionId;
+      data.remark = this.masterForm.remark.value;
       data.remarkPasswordList = this.documentDataArray;
     }
 
     console.log('Treatment Of Specified Disease::', data);
 
-    this.treatmentOfSpecifiedService
-      .uploadMultipleMasterFiles(this.masterfilesArray, data)
+    this.treatmentOfSpecifiedService.uploadMultipleMasterFiles(this.masterfilesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res) {
@@ -378,7 +392,10 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
 
-
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Transaction" Page to see Schedule.'
+              );
               this.masterGridData.forEach((element, index) => {
                 this.documentArray.push({
 
@@ -504,7 +521,8 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
 
   // ------------- On Master Edit functionality --------------------
-  public editMaster(patientName) {
+  public editMaster(specifiedDiseaseMasterId) {
+    this.isVisibleTable = true
     this.isEdit = true;
     this.isShowUpdate = true;
     this.isShowSave = false;
@@ -515,24 +533,51 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-      console.log(patientName);
-      const obj = this.findByPolicyNo(patientName, this.masterGridData);
+      console.log(specifiedDiseaseMasterId);
+      const obj = this.findByPolicyNo(specifiedDiseaseMasterId, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
-      if (obj != 'undefined') {
-        this.paymentDetailGridData = obj.paymentDetails;
+      if (obj != 'undefined' && obj.neurologicalDiseaseName == "") {
+      
         this.form.patchValue(obj);
-        this.visibilityFlag = true;
-        this.Index = obj.patientName;
+        this.visibilityFlag = false;
+        this.Index = obj.specifiedDiseaseMasterId;
         this.showUpdateButton = true;
         this.isClear = true;
         // this.urlArray = obj.doctorCertificate;
-        this.filesUrlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.doctorCertificate;
         this.proofSubmissionId = obj.proofSubmissionId;
         this.showdocument = false;
         this.documentArray = [];
-        obj.documentInformationList.forEach(element => {
+        obj.doctorCertificate.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
+            'documentName': element.fileName,
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::", this.documentArray);
+        this.isVisibleTable = true;
+      }else if(obj != 'undefined'){
+                this.form.patchValue(obj);
+        this.visibilityFlag = true;
+        this.Index = obj.specifiedDiseaseMasterId;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.doctorCertificate;
+        this.filesUrlArray = obj.doctorCertificate;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.doctorCertificate.forEach(element => {
           this.documentArray.push({
             'dateofsubmission': element.creatonTime,
             'documentType': element.documentType,
@@ -553,35 +598,64 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
   //View Master Functionality
 
-  public viewMaster(patientName) {
-    this.isEdit = true;
-    this.isShowUpdate = false;
-    this.isShowSave = false;
-    this.isShowCancel = true;
+  public viewMaster(specifiedDiseaseMasterId) {
     this.form.disable();
+    this.isVisibleTable = true
+    this.isEdit = true;
+    this.isShowUpdate = true;
+    this.isShowSave = false;
+    this.isShowCancel = false;
+    this.form.enable();
     this.form.get('relationship').disable();
     this.scrollToTop();
     this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-      console.log(patientName);
-      const obj = this.findByPolicyNo(patientName, this.masterGridData);
+      console.log(specifiedDiseaseMasterId);
+      const obj = this.findByPolicyNo(specifiedDiseaseMasterId, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
-      if (obj != 'undefined') {
-        this.paymentDetailGridData = obj.paymentDetails;
+      if (obj != 'undefined' && obj.neurologicalDiseaseName == "") {
+      
         this.form.patchValue(obj);
-        this.visibilityFlag = true;
-        this.Index = obj.patientName;
+        this.visibilityFlag = false;
+        this.Index = obj.specifiedDiseaseMasterId;
         this.showUpdateButton = true;
         this.isClear = true;
         // this.urlArray = obj.doctorCertificate;
-        this.filesUrlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.doctorCertificate;
         this.proofSubmissionId = obj.proofSubmissionId;
         this.showdocument = false;
         this.documentArray = [];
-        obj.documentInformationList.forEach(element => {
+        obj.doctorCertificate.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission': element.creatonTime,
+            'documentType': element.documentType,
+            'documentName': element.fileName,
+            'documentPassword': element.documentPassword,
+            'documentRemark': element.documentRemark,
+            'status': element.status,
+            'lastModifiedBy': element.lastModifiedBy,
+            'lastModifiedTime': element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::", this.documentArray);
+        this.isVisibleTable = true;
+      }else if(obj != 'undefined'){
+                this.form.patchValue(obj);
+        this.visibilityFlag = true;
+        this.Index = obj.specifiedDiseaseMasterId;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.doctorCertificate;
+        this.filesUrlArray = obj.doctorCertificate;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.doctorCertificate.forEach(element => {
           this.documentArray.push({
             'dateofsubmission': element.creatonTime,
             'documentType': element.documentType,
@@ -601,57 +675,57 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     });
   }
 
-  // -------------On Master view functionality not working
-  public viewMasters(patientName) {
-    this.form.disable();
-    this.isShowSave = false;
-    this.isShowCancel = true;
-    this.isShowUpdate = false;
-    this.isEdit = true;
-    this.scrollToTop();
-    this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
-      console.log('masterGridData::', res);
-      this.masterGridData = res.data.results;
-      console.log(patientName);
-      const obj = this.findByPolicyNo(patientName, this.masterGridData);
+  // // -------------On Master view functionality not working
+  // public viewMasters(specifiedDiseaseMasterId) {
+  //   this.form.disable();
+  //   this.isShowSave = false;
+  //   this.isShowCancel = true;
+  //   this.isShowUpdate = false;
+  //   this.isEdit = true;
+  //   this.scrollToTop();
+  //   this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+  //     console.log('masterGridData::', res);
+  //     this.masterGridData = res.data.results;
+  //     console.log(specifiedDiseaseMasterId);
+  //     const obj = this.findByPolicyNo(this.specifiedDiseaseMasterId, this.masterGridData);
 
-      // Object.assign({}, { class: 'gray modal-md' }),
-      console.log('Edit Master', obj);
-      if (obj != 'undefined') {
-        this.paymentDetailGridData = obj.paymentDetails;
-        this.form.patchValue(obj);
-        this.visibilityFlag = true;
-        this.Index = obj.patientName;
-        this.showUpdateButton = true;
-        this.isClear = true;
-        // this.urlArray = obj.doctorCertificate;
-        this.filesUrlArray = obj.documentInformationList;
-        this.proofSubmissionId = obj.proofSubmissionId;
-        this.showdocument = false;
-        this.documentArray = [];
-        obj.documentInformationList.forEach(element => {
-          this.documentArray.push({
-            'dateofsubmission': element.creatonTime,
-            'documentType': element.documentType,
-            'documentName': element.fileName,
-            'documentPassword': element.documentPassword,
-            'documentRemark': element.documentRemark,
-            'status': element.status,
-            'lastModifiedBy': element.lastModifiedBy,
-            'lastModifiedTime': element.lastModifiedTime,
+  //     // Object.assign({}, { class: 'gray modal-md' }),
+  //     console.log('Edit Master', obj);
+  //     if (obj != 'undefined') {
+  //       // this.paymentDetailGridData = obj.paymentDetails;
+  //       this.form.patchValue(obj);
+  //       this.visibilityFlag = true;
+  //       this.Index = obj.specifiedDiseaseMasterId;
+  //       this.showUpdateButton = true;
+  //       this.isClear = true;
+  //       // this.urlArray = obj.doctorCertificate;
+  //       this.filesUrlArray = obj.documentInformationList;
+  //       this.proofSubmissionId = obj.proofSubmissionId;
+  //       this.showdocument = false;
+  //       this.documentArray = [];
+  //       obj.documentInformationList.forEach(element => {
+  //         this.documentArray.push({
+  //           'dateofsubmission': element.creatonTime,
+  //           'documentType': element.documentType,
+  //           'documentName': element.fileName,
+  //           'documentPassword': element.documentPassword,
+  //           'documentRemark': element.documentRemark,
+  //           'status': element.status,
+  //           'lastModifiedBy': element.lastModifiedBy,
+  //           'lastModifiedTime': element.lastModifiedTime,
 
-          })
+  //         })
 
-        });
-        console.log("documentArray::", this.documentArray);
-        this.isVisibleTable = true;
-      }
-    });
-  }
+  //       });
+  //       console.log("documentArray::", this.documentArray);
+  //       this.isVisibleTable = true;
+  //     }
+  //   });
+  // }
 
   // Find patientName
-  public findByPolicyNo(patientName, masterGridData) {
-    return masterGridData.find((x) => x.patientName === patientName);
+  public findByPolicyNo(specifiedDiseaseMasterId, masterGridData) {
+    return masterGridData.find((x) => x.specifiedDiseaseMasterId === specifiedDiseaseMasterId);
   }
 
 

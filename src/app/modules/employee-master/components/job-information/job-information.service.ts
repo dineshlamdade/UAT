@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, JsonpClientBackend } from '@angular/common/http';
 import { environment } from './../../../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, distinctUntilChanged } from 'rxjs/operators';
+import { RSA_NO_PADDING } from 'node:constants';
 
 
 @Injectable({
@@ -14,28 +15,80 @@ export class JobInformationService {
   constructor(private httpClient: HttpClient) { }
 
   //GET summary API call
-  getSummaryDetails(employeeMasterId,payrollAreaCode){
-    const params = new HttpParams()
-    .set('payrollAreaCode', payrollAreaCode);
+  getSummaryDetails(payrollAreaId,employeeMasterId,summaryType,jobId,jobDetail){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/job-information/summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+   let formData: any = new FormData();
+    formData.append('payrollAreaId',JSON.stringify(payrollAreaId));
+    formData.append('employeeMasterId',JSON.stringify(employeeMasterId));
+    formData.append('summaryType',Number(summaryType));
+    formData.append('jobId',jobId);
+    formData.append('jobDetail',jobDetail);
+    // formData.append('type','summary')
+ 
+    return this.httpClient.post(environment.baseUrl8082 + 'employee-job-information/summary/',formData,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
-  getOtherMasterDetails(){
-    return this.httpClient.get(environment.baseUrl8083 + '/all-other-masters/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  // getOtherMasterDetails(){
+  //   return this.httpClient.get(environment.baseUrl8083 + '/all-other-masters/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
+
+
+  
+  getOtherMasterDetails(copmanyId){
+    return this.httpClient.get(environment.baseUrl8083 + 'job-master-mapping/company/'+copmanyId ,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
+  getJobMasterDetails(){
+    return this.httpClient.get(environment.baseUrl8083 + 'job-master/' , {headers:{'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+  // get job Details  by job masster type
+  getJobMasterByType(type){
+    return this.httpClient.get(environment.baseUrl8083+ 'job-master/'+type,{headers:{'X-Tenantid':'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
 
+
+  // get job Details  by job masster id
+  getJobMasterByJobMasterId(jobMasterId){
+    return this.httpClient.get(environment.baseUrl8083+ 'job-master-mapping/master/'+jobMasterId,{headers:{'X-Tenantid':'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+
+//check mapping available or not for copy from option
+
+getAvailableJobMappingId(employeeMasterId){
+  return this.httpClient.get(environment.baseUrl8082+'employee-job-information/isAvailable/'+employeeMasterId,{headers:{'X-TenantId':'PaysquareDefault'}})
+  .pipe(map((res:any)=>{
+    return res;
+  }))
+}
+
+getAvailablePositionMappingId(employeeMasterId){
+  return this.httpClient.get(environment.baseUrl8082+'employee-job-information/isAvailable/'+employeeMasterId,{headers:{'X-TenantId':'PaysquareDefault'}})
+  .pipe(map((res:any)=>{
+    return res;
+  }))
+}
   //Get position dropdown values API call
   getPositionDD(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/drop-down/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8083 + 'drop-down/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -43,26 +96,56 @@ export class JobInformationService {
    //organization details API Calls
    postOrganizationDetails(organizationFormModel: any) {
      
-    return this.httpClient.post(environment.baseUrl8082 + '/employee-organization', organizationFormModel, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //   return this.httpClient.post(environment.baseUrl8082 + '/employee-organization', organizationFormModel, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
+
+  return this.httpClient.post(environment.baseUrl8082 + 'employee-job-information/', organizationFormModel, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  .pipe(map((res: any) =>{
+    return res;
+  }))
+}
+
+  // getOrganizationDetails(employeeMasterId,payrollAreaCode){
+
+  //   const params = new HttpParams()
+  //   .set('payrollAreaCode', payrollAreaCode);
+
+  //   return this.httpClient.get(environment.baseUrl8082 + '/employee-organization/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
+
+  getOrganizationDetails(employeeMasterId,payrollAreaId){
+let payId = Number(payrollAreaId);
+const formData:FormData = new FormData();
+formData.append('payrollAreaId',JSON.stringify(payId));
+formData.append('employeeMasterId',JSON.stringify(employeeMasterId));
+// formData.append('type','latest');
+    //return this.httpClient.post(environment.baseUrl8082 + 'employee-organization/employeeMasterId/', formData,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.post(environment.baseUrl8082 + 'employee-job-information/latest/', formData,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
-  getOrganizationDetails(employeeMasterId,payrollAreaCode){
+  // getOrganizationDetails(employeeMasterId,payrollAreaId){
 
-    const params = new HttpParams()
-    .set('payrollAreaCode', payrollAreaCode);
+  //   const params = new HttpParams()
+  //   .set('payrollAreaCode', payrollAreaId);
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-organization/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
-    .pipe(map((res: any) =>{
-      return res;
-    }))
-  }
+  //   return this.httpClient.get(environment.baseUrl8082 + '/employee-organization/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
 //Establishment service
   getEstaDetails(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/establishment-master/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8083 + 'establishment-master/details/' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -78,10 +161,11 @@ export class JobInformationService {
 
   getPositionDetails(employeeMasterId,payrollAreaCode){
 
-    const params = new HttpParams()
-    .set('payrollAreaCode', payrollAreaCode);
+    const params = new HttpParams();
+    params.set('payrollAreaCode', payrollAreaCode);
+ 
 
-    return this.httpClient.get(environment.baseUrl8082 + '/position-details/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+    return this.httpClient.get(environment.baseUrl8082 + 'position-details/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -107,7 +191,7 @@ export class JobInformationService {
   //Minimum wages drop down GET API call
   getMinimumDropdown(){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/minimumwages-dropdown/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + 'minimumwages-dropdown/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -133,9 +217,9 @@ export class JobInformationService {
   }
 
   //get All Employees From database
-  getAllEmployees() {
+  getAllEmployees(companyId) {
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/all/active', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/approver/'+companyId , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

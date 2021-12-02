@@ -7,30 +7,30 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
+                        <!-- <div class="card-body">
                             <div class="row">
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6 mt-10">
-                                        <label class="form-label">Payroll Area</label>
+                                        <label class="font600 font-11 font-11">Payroll Area</label>
                                         <select class="form-control" placeholder="Select"
                                             (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
-                                            (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode">
+                                            (change)="selectPayrollArea(payrollAreaId)" [(ngModel)]="payrollAreaId">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let option of filteredPayrollAreaList"
-                                                [value]="option.payrollAreaCode">
+                                                [value]="option.payrollAreaId">
                                                 {{option.payrollAreaCode}}
                                             </option>
                                         </select>
                                     </div>
 
                                     <div class="col-sm-6 col-md-6 mt-10">
-                                        <label class="form-label">Company Name</label>
+                                        <label class="font600 font-11">Company Name</label>
                                         <input type="text" class="form-control" [(ngModel)]="companyName"
                                             [ngModelOptions]="{standalone: true}" disabled>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row mt-10">
                             <div class="col-md-2 mt-15">
                                 <div class="ProfileCard">
@@ -39,7 +39,7 @@
                                             [(ngModel)]="selectedImg">
                                         <img class="ProfileCard_Img" alt="" [src]="imageUrl">
                                     </div>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <label class="text-purple mt-2 font-14 text-bold">Profile Completed</label>
                                         <div>
                                         </div>
@@ -48,23 +48,24 @@
                                         <div role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
                                             class="progress-bar progress-bar-success progress-bar-striped progress_Bar_Thick">
                                             40% Complete (success) </div>
-                                    </div>
-                                    <div class="font-12 ProfileCard_Name">
-                                        <label class="mb-0"
-                                            tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">{{
-                                            (EmployeeSummary.identitySummaryBean.fullName?.length>15)?
-                                            (EmployeeSummary.identitySummaryBean.fullName
-                                            | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.fullName)
+                                    </div> -->
+                                    <div class="font-11 ProfileCard_Name">
+                                        <label class="mb-0 text-center"
+                                            tooltip="{{EmployeeSummary.firstNameAndLastName}}">{{
+                                            (EmployeeSummary.firstNameAndLastName?.length>95)?
+                                            (EmployeeSummary.firstNameAndLastName
+                                            | slice:0:95)+'...':(EmployeeSummary.firstNameAndLastName)
                                             }}</label>
                                     </div>
-                                    <div>
+                                    <!-- <div>
                                         <label class="mb-0 ProfileCard_Designation"
-                                            tooltip="{{EmployeeSummary.identitySummaryBean.designation}}"> {{
-                                            (EmployeeSummary.identitySummaryBean.designation?.length>15)?
-                                            (EmployeeSummary.identitySummaryBean.designation |
-                                            slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.designation)
+                                            tooltip="{{EmployeeSummary.designation}}"> {{
+                                            (EmployeeSummary.designation?.length>15)?
+                                            (EmployeeSummary.designation |
+                                            slice:0:15)+'...':(EmployeeSummary.designation)
                                             }}</label>
-                                    </div>
+                                    </div> -->
+                                    
                                 </div>
                             </div>
                             <div class="col-md-10">
@@ -73,58 +74,66 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.name' | transloco }}</label></div>
                                                 <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
-                                                    <label class="mb-0 font-12 text-bold text-orange"> {{
-                                                        (EmployeeSummary.identitySummaryBean.fullName?.length>25)?
-                                                        (EmployeeSummary.identitySummaryBean.fullName |
-                                                        slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.fullName)
+                                                    tooltip="{{EmployeeSummary.fullName}}">
+                                                    <label class="mb-0 font-11 text-bold text-orange"> {{
+                                                        (EmployeeSummary.fullName?.length>95)?
+                                                        (EmployeeSummary.fullName |
+                                                        slice:0:95)+'...':(EmployeeSummary.fullName)
                                                         }}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.companyName' | transloco }}</label>
                                                 </div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.identitySummaryBean.companyName}}</label>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.companyName}}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.workPhone' | transloco }}</label></div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.identitySummaryBean.officialMobileNumber}}</label>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.officialMobileNumber}}</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.designation' | transloco }}</label>
                                                 </div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.identitySummaryBean.designation}}</label>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                    {{EmployeeSummary.designation1}}</label>
+                                                </div>
+                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.Designation1' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.designation}}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.mobileNo' | transloco }}</label></div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.identitySummaryBean.personalMobileNumber}}</label>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.personalMobileNumber}}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label">{{
+                                                <div class="col-md-4"> <label class="font600 font-11">{{
                                                         'EmployoymentSummary.workEmail' | transloco }}</label></div>
                                                 <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.identitySummaryBean.officialEmailId}}">
-                                                    <label class="mb-0 font-12 font500 text-link">{{
-                                                        (EmployeeSummary.identitySummaryBean.officialEmailId?.length>25)?
-                                                        (EmployeeSummary.identitySummaryBean.officialEmailId |
-                                                        slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.officialEmailId)
+                                                    tooltip="{{EmployeeSummary.officialEmailId}}">
+                                                    <label class="mb-0 font-11 font400 text-link">{{
+                                                        (EmployeeSummary.officialEmailId?.length>25)?
+                                                        (EmployeeSummary.officialEmailId |
+                                                        slice:0:25)+'...':(EmployeeSummary.officialEmailId)
                                                         }}
                                                     </label>
                                                 </div>
@@ -139,153 +148,273 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.age' | transloco }}</label></div>
                                                 <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}} ">
-                                                    <label class="mb-0 font-12 font500">
+                                                    tooltip="{{EmployeeSummary.dateOfBirth}} ">
+                                                    <label class="mb-0 font-11 font400">
                                                         {{
-                                                        (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)?
-                                                        (EmployeeSummary.personalSummaryBean.dateOfBirth |
-                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth)
+                                                        (EmployeeSummary.dateOfBirth?.length>95)?
+                                                        (EmployeeSummary.dateOfBirth |
+                                                        slice:0:95)+'...':(EmployeeSummary.dateOfBirth)
                                                         }}</label>
                                                 </div>
                                             </div>
+                                         
+                                         
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.bloodGroup' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.bloodGroup}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.maritalStatus' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.maritalStatus}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.nationality' | transloco }}</label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.nationality}}
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.nationality}}
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.maritalStatus' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.maritalStatus}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"><label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.language' | transloco }}</label></div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.language}} ">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{
+                                                        (EmployeeSummary.languagesSpoken?.length>25)?
+                                                        (EmployeeSummary.languagesSpoken |
+                                                        slice:0:25)+'...':(EmployeeSummary.languagesSpoken)
+                                                        }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.uan' | transloco }}</label></div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.uan}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.pan' | transloco }}</label></div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.pan}}</label>
+                                                </div>
+                                            </div>
+                                         
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.bloodGroup' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.bloodGroup}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.physicallyChallenged' |
+                                                        transloco }}</label></div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.isPhysicallyChallenged}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.emergencyContactNo' | transloco
                                                         }}</label></div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.emergencyContactNo}}
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.emergencyContact}}
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.highestQualification' | transloco
+                                                        }}</label></div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.highestQualification}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.aadhar' | transloco }}</label></div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.aadhar}}</label>
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.aadhaar}}</label>
+                                                </div>
+                                            </div>
+                                          
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.communicationAddress' | transloco
+                                                        }}</label></div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.communicationAddress}} ">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{
+                                                        (EmployeeSummary.communicationAddress?.length>30)?
+                                                        (EmployeeSummary.communicationAddress |
+                                                        slice:0:30)+'...':(EmployeeSummary.communicationAddress)
+                                                        }}
+                                                    </label>
+                                                </div>
+                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.passportNo' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.passportNo}}</label>
+                                                </div>
+                                            </div>
+                                      
+                                         
+                                            
+                                        </div>
+                                   
+                                        <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2"> <label class="font600 font-11 ">{{
+                                                    'EmployoymentSummary.localAddress' | transloco }}</label></div>
+                                            <div class="col-md-10"
+                                                tooltip="{{EmployeeSummary.localAddress}} ">
+                                                <label class="mb-0 font-11 font400">
+                                                    {{(EmployeeSummary.localAddress?.length>95)?
+                                                    (EmployeeSummary.localAddress |
+                                                    slice:0:95)+'...':(EmployeeSummary.localAddress)
+                                                    }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2"> <label class="font600 font-11 ">{{
+                                                    'EmployoymentSummary.permanentAddress' | transloco }}</label></div>
+                                            <div class="col-md-10"
+                                                tooltip="{{EmployeeSummary.permanantAddress}} ">
+                                                <label class="mb-0 font-11 font400">
+                                                    {{(EmployeeSummary.permanantAddress?.length>95)?
+                                                    (EmployeeSummary.permanantAddress |
+                                                    slice:0:95)+'...':(EmployeeSummary.permanantAddress)
+                                                    }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2"> <label class="font600 font-11 ">{{
+                                                    'EmployoymentSummary.skills' | transloco }}</label></div>
+                                            <div class="col-md-10"
+                                                tooltip="{{EmployeeSummary.skills}} ">
+                                                <label class="mb-0 font-11 font400">
+                                                    {{(EmployeeSummary.skills?.length>95)?
+                                                    (EmployeeSummary.skills |
+                                                    slice:0:95)+'...':(EmployeeSummary.skills)
+                                                    }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row mt-15">
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <legend class="mb-0 pb-0 empLegand">
+                                        {{ 'EmployoymentSummary.nominationDetails' | transloco }}
+                                    </legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.providentFund' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.providentFund}} ">
+                                                    <label class="mb-0 font-11 font400"> {{
+                                                        (EmployeeSummary.providentFund?.length>95)?
+                                                        (EmployeeSummary.providentFund |
+                                                        slice:0:95)+'...':(EmployeeSummary.providentFund)
+                                                        }}
+                                                    </label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.pan' | transloco }}</label></div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.pan}}</label>
+                                                <div class="col-md-4"><label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.employeePensionScheme' | transloco
+                                                        }}</label></div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.eps}} ">
+                                                    <label class="mb-0 font-11 font400"> {{
+                                                        (EmployeeSummary.eps?.length>95)?
+                                                        (EmployeeSummary.eps |
+                                                        slice:0:95)+'...':(EmployeeSummary.eps)
+                                                        }}</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.uan' | transloco }}</label></div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.uan}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.passportNo' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.passportNo}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.physicallyChallenged' |
-                                                        transloco }}</label></div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.physicallyChallenge}}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.communicationAddress' | transloco
-                                                        }}</label></div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.personalSummaryBean.communicationAddress}} ">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{
-                                                        (EmployeeSummary.personalSummaryBean.communicationAddress?.length>30)?
-                                                        (EmployeeSummary.personalSummaryBean.communicationAddress |
-                                                        slice:0:30)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress)
-                                                        }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.highestQualification' | transloco
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.superAnnuationFund' | transloco
                                                         }}</label></div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.personalSummaryBean.highestQualification}}
-                                                    </label>
+                                                    <label class="mb-0 font-11 font400">  {{
+                                                        (EmployeeSummary.sa?.length>95)?
+                                                        (EmployeeSummary.sa |
+                                                        slice:0:95)+'...':(EmployeeSummary.sa)
+                                                        }} </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.gratuity' | transloco }}</label></div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.gratuity}} ">
+                                                    <label class="mb-0 font-11 font400"> {{
+                                                        (EmployeeSummary.gratuity?.length>95)?
+                                                        (EmployeeSummary.gratuity |
+                                                        slice:0:95)+'...':(EmployeeSummary.gratuity)
+                                                        }}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"><label class="form-label ">{{
-                                                        'EmployoymentSummary.language' | transloco }}</label></div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.personalSummaryBean.language}} ">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{
-                                                        (EmployeeSummary.personalSummaryBean.language?.length>25)?
-                                                        (EmployeeSummary.personalSummaryBean.language |
-                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.language)
-                                                        }}
-                                                    </label>
-                                                </div>
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.salary' | transloco }}</label></div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">{{
+                                                        (EmployeeSummary.salary?.length>95)?
+                                                        (EmployeeSummary.salary |
+                                                        slice:0:95)+'...':(EmployeeSummary.salary)
+                                                        }}</label></div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.skills' | transloco }}</label></div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.personalSummaryBean.skills}} ">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{(EmployeeSummary.personalSummaryBean.skills?.length>25)?
-                                                        (EmployeeSummary.personalSummaryBean.skills |
-                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.skills)
-                                                        }}
-                                                    </label>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </div>
 
@@ -301,241 +430,203 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.dateOfJoining' | transloco }}</label>
                                                 </div>
                                                 <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}} ">
-                                                    <label class="mb-0 font-12 font500">
+                                                    tooltip="{{EmployeeSummary.dateOfJoining}} ">
+                                                    <label class="mb-0 font-11 font400">
                                                         {{
-                                                        (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)?
-                                                        (EmployeeSummary.workSummaryBean.dateOfJoining |
-                                                        slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining)
+                                                        (EmployeeSummary.dateOfJoining?.length>95)?
+                                                        (EmployeeSummary.dateOfJoining |
+                                                        slice:0:95)+'...':(EmployeeSummary.dateOfJoining)
                                                         }}
                                                     </label>
                                                 </div>
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.payrollArea' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.payrollAreaCode}}</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.businessArea' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.businessAreaMaster}}</label>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.workLocation' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.workLocation}}</label>
+                                                </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.department' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.department}}</label></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.taxCatagory' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.taxCategory}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.Designation2' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.designation2}}</label>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.dateOfJoining' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"
+                                                    tooltip="{{EmployeeSummary.dateOfJoining}} ">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{
+                                                        (EmployeeSummary.dateOfJoining?.length>25)?
+                                                        (EmployeeSummary.dateOfJoining |
+                                                        slice:0:25)+'...':(EmployeeSummary.dateOfJoining)
+                                                        }}
+                                                    </label>
+                                                </div>
+                                            </div> -->
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.originalHiringDate' | transloco
                                                         }}</label></div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.originalHiringDate}}
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.originalHiringDate}}
                                                     </label>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                            </div> -->
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.status' | transloco }}</label></div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.status}}</label>
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.status}}</label>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                         -->
+                                           
+                                          
+                                      
+                                            <!-- *ngIf="EmployoymentSummary.lastWorkingDate != null" -->
+                                            <div class="row" *ngIf="EmployeeSummary.lastWorkingDate != null">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.lastWorkingDate' | transloco }}</label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.lastWorkingDate}}</label>
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.lastWorkingDate}}</label>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.status' | transloco }}</label></div>
+                                                <div class="col-md-8">
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.status}}</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.strategicBusinessUnit' | transloco
+                                                        }}</label></div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.strategicBusinessUnit}}</label>
+                                                </div>
+                                            </div>
+                                              
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.EstablishmentId' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.establishment}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.costCenter' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.costCentre}}</label></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.employmentType' | transloco }}</label>
+                                                </div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.employmentType}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.grade' | transloco }}</label></div>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.grade}}</label></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
+                                                        'EmployoymentSummary.reportingManager' | transloco
+                                                        }}</label></div>
+                                                <div class="col-md-8"><label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.reportingManager}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="EmployeeSummary.lastWorkingDate != null">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.reasonOfLeaving' | transloco }}</label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.reasonOfLeaving}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.EstablishmentId' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">India
-                                                        {{EmployeeSummary.workSummaryBean.establishment}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.workLocation' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.workLocation}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.Designation1' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.designation1}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.Designation2' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.designation2}}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.reportingManager' | transloco
-                                                        }}</label></div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.reportingManager}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.employmentType' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.employmentType}}</label>
+                                                    <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.reasonOfLeaving}}</label>
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.taxCatagory' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.taxCategory}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.strategicBusinessUnit' | transloco
-                                                        }}</label></div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.strategicBusinessUnit}}</label>
-                                                </div>
-                                            </div>
+                                          
+                                         
 
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
+                                            <!-- <div class="row">
+                                                <div class="col-md-4"> <label class="font600 font-11 ">{{
                                                         'EmployoymentSummary.project' | transloco }}</label></div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.project}}</label></div>
+                                                <div class="col-md-8"> <label class="mb-0 font-11 font400">
+                                                        {{EmployeeSummary.project}}</label></div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.costCenter' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.costCenter}}</label></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.payrollArea' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.payrollArea}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.grade' | transloco }}</label></div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.grade}}</label></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.department' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"> <label class="mb-0 font-12 font500">
-                                                        {{EmployeeSummary.workSummaryBean.department}}</label></div>
-                                            </div>
+                                           -->
+                                           
+                                          
+                                         
                                         </div>
                                     </div>
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="row mt-15">
-                            <div class="col-md-12">
-                                <fieldset>
-                                    <legend class="mb-0 pb-0 empLegand">
-                                        {{ 'EmployoymentSummary.nominationDetails' | transloco }}
-                                    </legend>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.providentFund' | transloco }}</label>
-                                                </div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.nominationSummaryBean.providentFund}} ">
-                                                    <label class="mb-0 font-12 font500"> {{
-                                                        (EmployeeSummary.nominationSummaryBean.providentFund?.length>25)?
-                                                        (EmployeeSummary.nominationSummaryBean.providentFund |
-                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.providentFund)
-                                                        }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"><label class="form-label ">{{
-                                                        'EmployoymentSummary.employeePensionScheme' | transloco
-                                                        }}</label></div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.nominationSummaryBean.eps}} ">
-                                                    <label class="mb-0 font-12 font500"> {{
-                                                        (EmployeeSummary.nominationSummaryBean.eps?.length>25)?
-                                                        (EmployeeSummary.nominationSummaryBean.eps |
-                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.eps)
-                                                        }}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.superAnnuationFund' | transloco
-                                                        }}</label></div>
-                                                <div class="col-md-8">
-                                                    <label class="mb-0 font-12 font500"> - {{
-                                                        (EmployeeSummary.nominationSummaryBean.sa?.length>25)?
-                                                        (EmployeeSummary.nominationSummaryBean.sa |
-                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.sa)
-                                                        }} </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.gratuity' | transloco }}</label></div>
-                                                <div class="col-md-8"
-                                                    tooltip="{{EmployeeSummary.nominationSummaryBean.gratuity}} ">
-                                                    <label class="mb-0 font-12 font500"> {{
-                                                        (EmployeeSummary.nominationSummaryBean.gratuity?.length>25)?
-                                                        (EmployeeSummary.nominationSummaryBean.gratuity |
-                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.gratuity)
-                                                        }}</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4"> <label class="form-label ">{{
-                                                        'EmployoymentSummary.salary' | transloco }}</label></div>
-                                                <div class="col-md-8"><label class="mb-0 font-12 font500">{{
-                                                        (EmployeeSummary.nominationSummaryBean.salary?.length>25)?
-                                                        (EmployeeSummary.nominationSummaryBean.salary |
-                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.salary)
-                                                        }}</label></div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </fieldset>
-                            </div>
-                        </div>
+                     
                         <div class="row mt-20">
                             <div class="col-md-12">
                                 <div class="float-right mb-15 ">

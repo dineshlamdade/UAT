@@ -60,7 +60,7 @@
                     <input type="text" class="form-control" placeholder="Branch" formControlName="branchName"
                       [(ngModel)]="BankInformationModel.branchName" tooltip="{{BankInformationModel.branchName}}"
                       (keyup)="formTouch(bankInfoForm)">
-                  </div>
+                  </div> 
                   <div class="col-sm-6 col-md-3 mt-15">
                     <label class="form-label">{{ 'BankInfoForm.branchAddress' | transloco }}</label>
                     <input type="text" class="form-control" placeholder="Branch Address" formControlName="branchAddress"
@@ -129,11 +129,11 @@
                         class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
                             class="fa fa-angle-double-left" aria-hidden="true"></i></b>Previous</button>
 
-                      <button type="button" tooltip="Next" [routerLink]="['/employee-master/payroll-area-information']"
+                      <button type="button" tooltip="Next" [routerLink]="['/employee-master/payroll-area-information/payrollArea-details']"
                         class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
                             class="fa fa-angle-double-right" aria-hidden="true"></i></b>Next</button>
 
-                      <button type="button" (click)="BankSaveNextSubmit(BankInformationModel)"
+                      <button type="button" (click)="BankSaveNextSubmit(BankInformationModel)" [routerLink]="['/employee-master/payroll-area-information/payrollArea-details']"
                         [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
                         [disabled]="addButton == false || accountNoMatched ==false || bankInfoForm.untouched"
                         [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false || bankInfoForm.untouched,

@@ -116,6 +116,11 @@ public showdocument = true;
   // public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
+
+  public isShowCancel: boolean;
+  public isShowSave: boolean;
+  public isShowUpdate: boolean;
+
   public isClear: boolean;
   public isCancel: boolean;
   public financialYear: any;
@@ -170,6 +175,9 @@ public showdocument = true;
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
@@ -238,6 +246,7 @@ public showdocument = true;
             branchName: res.data.results[0].branchName,
             bankAddress: res.data.results[0].address,
             bankName: res.data.results[0].bankName,
+            state: res.data.results[0].state,
           });
 
         });
@@ -254,6 +263,7 @@ public showdocument = true;
             branchName: res.data.results[0].branchName,
             bankAddress: res.data.results[0].address,
             bankName: res.data.results[0].bankName,
+            state: res.data.results[0].state,
           });
         });
       }
@@ -392,6 +402,10 @@ public showdocument = true;
   public addMaster(formData: any, formDirective: FormGroupDirective,): void {
     this.submitted = true;
 
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
+
     if (this.form.invalid) {
       return;
     }
@@ -425,21 +439,21 @@ public showdocument = true;
       data.proofSubmissionId = this.proofSubmissionId;
       data.remarkPasswordList = this.documentDataArray;
 
-      console.log('Interest On 80TTB::', data);
-      if (data.accountNumber) {
-        this.masterGridData.forEach(results => {
-          if (results.accountNumber == data.accountNumber) {
-            this.codeInvalid = true;
-          }
-        });
-        if (this.codeInvalid) {
-          this.codeInvalid = false;
-          this.alertService.sweetalertError(
-            'Duplicate Account should Not be Acceptable.'
-          );
-          return;
-        }
-      }
+      // console.log('Interest On 80TTB::', data);
+      // if (data.accountNumber) {
+      //   this.masterGridData.forEach(results => {
+      //     if (results.accountNumber == data.accountNumber) {
+      //       this.codeInvalid = true;
+      //     }
+      //   });
+      //   if (this.codeInvalid) {
+      //     this.codeInvalid = false;
+      //     this.alertService.sweetalertError(
+      //       'Duplicate Account should Not be Acceptable.'
+      //     );
+      //     return;
+      //   }
+      // }
      /*  this.masterGridData.forEach((element) => {
         if (data.accountNumber == element.accountNumber) {
           this.alertService.sweetalertWarning(
@@ -575,6 +589,67 @@ public showdocument = true;
 
     //------------- On Master Edit functionality --------------------
     editMaster(accountNumber) {
+
+      this.isShowCancel=false ;
+      this.isShowSave = false;
+      this.isShowUpdate=true ;
+      this.isEdit = true;
+      this.form.enable();
+      this.form.get("bankName").disable();
+      this.form.get("branchName").disable();
+      this.form.get("bankAddress").disable();
+      this.form.get("state").disable();
+
+      this.scrollToTop();
+      this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+
+        console.log(accountNumber)
+        const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log("Edit Master",obj);
+        if (obj!= 'undefined'){
+
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+        this.showdocument = false;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
+
+        }
+      });
+
+    }
+    //------------- On master View Functionality ----------------------
+    ViewMaster(accountNumber) {
+
+      this.isShowCancel=true ;
+      this.isShowSave = false;
+      this.isShowUpdate=false ;
+      this.form.disable();
       this.isEdit = true;
       this.scrollToTop();
       this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
@@ -620,6 +695,8 @@ public showdocument = true;
 
     }
 
+
+
     findByaccountNumber(accountNumber,masterGridData){
       return masterGridData.find(x => x.accountNumber === accountNumber)
     }
@@ -654,7 +731,17 @@ public showdocument = true;
 
   //---------- On View Cancel -------------------
   resetView() {
+    this.isShowCancel=false ;
+    this.isShowSave = true;
+    this.isShowUpdate=false ;
     this.form.reset();
+    this.form.enable();
+    this.form.get("bankName").disable();
+    this.form.get("branchName").disable();
+    this.form.get("bankAddress").disable();
+    this.form.get("state").disable();
+
+
     this.urlArray = [];
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
