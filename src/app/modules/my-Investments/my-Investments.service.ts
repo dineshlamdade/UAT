@@ -293,6 +293,19 @@ public apiUrl = environment.baseUrl8085;
     }));
   }
 
+  // postLicTransactionRemark(data) {
+  //   return this._HTTP.post(this.apiUrl + 'lic-transaction/addRemark', data)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+  postLicMasterRemark(data) {
+    return this._HTTP.post(this.apiUrl + 'licmaster-detail/addRemark', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getpreviousEmployeName() {
 
     return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
