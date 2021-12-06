@@ -161,7 +161,7 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted' && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -170,7 +170,7 @@
                       " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted' && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j, item.frequency);
@@ -380,7 +380,7 @@
                   </div>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted' || summary.transactionStatus === 'Approved' || summary.transactionStatus === 'Re-Open' || summary.transactionStatus === 'SendBack'">
                     <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                     <!-- {{ summary.proofSubmissionId }} -->
                   </span>
