@@ -134,13 +134,13 @@ export class AdhocComponent implements OnInit {
 
   onSubmit(){
     //debugger
-    console.log('Adhoc cylece',this.adhocForm.value);
-    console.log('Adhoc cylece',this.targetProducts);
+    // console.log('Adhoc cylece',this.adhocForm.value);
+    // console.log('Adhoc cylece',this.targetProducts);
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
     const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.adhocForm.value.periodName)
-    console.log('period name list is',periodNameList[0].periodName)
+    // console.log('period name list is',periodNameList[0].periodName)
     let period = this.cycleNameList.find(x=>x.periodId==this.adhocForm.get('periodName').value)
     const data = [{
       businessCycleId:period.id,
@@ -155,7 +155,7 @@ export class AdhocComponent implements OnInit {
     toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MMM-yyyy")
     //  toDate:this.adhocForm.value.toDate
     }]
-    console.log('data is',data);
+    // console.log('data is',data);
     this.adhocService.saveAdhocCycle(data).subscribe((res)=>{
     // console.log('result is adhoc',res);
     //this.toaster.success('',"Adhoc cycle saved successfully");
@@ -178,8 +178,8 @@ export class AdhocComponent implements OnInit {
 
   
   onUpdate(){
-    console.log('Adhoc cylece',this.adhocForm.value);
-    console.log('Adhoc cylece',this.targetProducts);
+    // console.log('Adhoc cylece',this.adhocForm.value);
+    // console.log('Adhoc cylece',this.targetProducts);
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
@@ -204,7 +204,7 @@ export class AdhocComponent implements OnInit {
      
      
     }]
-    console.log('data is',data);
+    // console.log('data is',data);
       this.adhocService.updateData(data).subscribe((res)=>{
       //this.toaster.success('',"Updated successfully");
       this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Updated Successfully');
@@ -227,7 +227,7 @@ export class AdhocComponent implements OnInit {
   getAllCycleDefinition(){
       this.adhocService.getAllCycleDefinition().subscribe((res)=>{
       this.cycleDefifitionList = res.data.results;
-      console.log(this.cycleDefifitionList);
+      // console.log(this.cycleDefifitionList);
     })
   }
 
@@ -242,9 +242,9 @@ export class AdhocComponent implements OnInit {
     })
      this.adhocService.getCycleNameById(id).subscribe((response)=>{
      this.cycleNameList = response.data.results;
-     console.log('cycle name list is',this.cycleNameList);    
+    //  console.log('cycle name list is',this.cycleNameList);    
      });
-    console.log("this.cycleNameList:" + this.cycleNameList);
+    // console.log("this.cycleNameList:" + this.cycleNameList);
     //this.getAllCycleDefinition();
    // this.adhocForm.reset();
    this.cycleNameList = []
@@ -258,7 +258,7 @@ export class AdhocComponent implements OnInit {
     this.adhocCycleListNew = [];
       this.adhocService.getAdhocCycle().subscribe((res)=>{
      this.adhocCycleList = res.data.results;
-     console.log(this.adhocCycleList)
+    //  console.log(this.adhocCycleList)
     // res.data.results[0].forEach(element => {
     //   this.adhocCycleList.push({
     //     label : element.periodId,
@@ -276,17 +276,17 @@ export class AdhocComponent implements OnInit {
   getActiveHead(){
       this.adhocService.getActiveHead().subscribe((res)=>{
       this.activeHeadList = res.data.results;
-      console.log(this.activeHeadList);
+      // console.log(this.activeHeadList);
       this.activeHeadListCopy = res.data.results;
     })
   }
 
   getSummaryData(){
       this.adhocService.getSummaryData().subscribe((res)=>{
-        console.log("result check",res);
+        // console.log("result check",res);
       this.summarydata = res.data.results;
       
-      console.log('adhoc summary list',this.summarydata);
+      // console.log('adhoc summary list',this.summarydata);
     })
   }
 
@@ -305,7 +305,7 @@ export class AdhocComponent implements OnInit {
     })
   });
 
-  console.log('value is',value);
+  // console.log('value is',value);
   this.targetProducts=[];
   //this.activeHeadList = this.activeHeadListCopy;
   this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
@@ -355,7 +355,7 @@ export class AdhocComponent implements OnInit {
           this.selectedPeriodName = ele.periodName
           // this.businessCycleDefinition = ele.businessCycleDefinition.businessYearDefinition
           this.businessCycleDefinition = ele
-          console.log('is',this.businessCycleDefinition)
+          // console.log('is',this.businessCycleDefinition)
          
         }
       })
@@ -372,7 +372,7 @@ export class AdhocComponent implements OnInit {
       //   'periodName': this.periodName,
       //   'periodId':0
       // });
-      console.log(this.periodName)
+      // console.log(this.periodName)
       //this.adhocCycleList = [];
       //debugger
     // console.log("this.businessCycleDefinition: " + JSON.stringify(this.businessCycleDefinition))
@@ -393,11 +393,11 @@ export class AdhocComponent implements OnInit {
   }
 
   RowSelected( u: any, ind ) {
-    console.log( u );
+    // console.log( u );
     let ind1 = this.activeHeadList.findIndex( o => o.headMasterId == u.headMasterId );
     let index = this.selectedUser.findIndex( o => o.headMasterId == u.headMasterId );
     let isContain = this.selectedUser.some( o => o.headMasterId == u.headMasterId );
-    console.log( isContain, index );
+    // console.log( isContain, index );
     if ( isContain == true ) {
       this.activeHeadList[ind1].isHighlight = false;
       this.selectedUser.splice( index, 1 );
@@ -405,13 +405,13 @@ export class AdhocComponent implements OnInit {
       this.activeHeadList[ind1].isHighlight = true;
       this.selectedUser.push( u );
     }
-    console.log( 'selected row is', u );
-    console.log( 'selected user', this.selectedUser );
+    // console.log( 'selected row is', u );
+    // console.log( 'selected user', this.selectedUser );
   }
 
 
   RowSelectedtargetProducts( u: any, i ): void {
-    console.log( u );
+    // console.log( u );
     if ( u.disabled == true ) {
 
     } else {
@@ -421,7 +421,7 @@ export class AdhocComponent implements OnInit {
       this.targetProducts = new Array();
       let index = this.selectedUser2.findIndex( o => o.headMasterId == u.headMasterId );
       let isContain = this.selectedUser2.some( o => o.headMasterId == u.headMasterId );
-      console.log( isContain, index );
+      // console.log( isContain, index );
       if ( isContain == true ) {
         this.selectedUser2.splice( index, 1 );
       } else {
@@ -465,7 +465,7 @@ export class AdhocComponent implements OnInit {
       this.adhocForm.setErrors( { 'invalid': true } );
 
     } else {
-      console.log( 'in else block' );
+      // console.log( 'in else block' );
       this.adhocForm.setErrors( null );
 
     }
@@ -474,9 +474,9 @@ export class AdhocComponent implements OnInit {
   righttablePusg( u: any ): void {
     this.selectedUser2.forEach( element => {
       if ( element.headMasterId == null ) {
-        console.log( 'head master id is not found' );
+        // console.log( 'head master id is not found' );
       } else {
-        console.log( 'headMasterId', element.headMasterId );
+        // console.log( 'headMasterId', element.headMasterId );
       }
     } );
 
@@ -498,7 +498,7 @@ export class AdhocComponent implements OnInit {
       this.adhocForm.setErrors( { 'invalid': true } );
 
     } else {
-      console.log( 'in else block 123' );
+      // console.log( 'in else block 123' );
       this.adhocForm.setErrors( null );
     }
   }
@@ -521,7 +521,7 @@ export class AdhocComponent implements OnInit {
 
 
   editAreaSet(data){
-    console.log('result is',data);
+    // console.log('result is',data);
     // this.activeHeadList = this.activeHeadListCopy;
    // this.editData= data;
     this.getCycleNameById(data.businessCycleDefinition.id);
@@ -569,7 +569,7 @@ export class AdhocComponent implements OnInit {
       })
     });
   
-    console.log('value is',value);
+    // console.log('value is',value);
     this.targetProducts=[];
     this.activeHeadList = this.activeHeadListCopy;
     this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
@@ -645,7 +645,7 @@ viewAreaSet(data){
         headId :parseInt(element)
       })
     });
-   console.log('value is',value);
+  //  console.log('value is',value);
     this.targetProducts=[];
     this.activeHeadList = this.activeHeadListCopy;
     this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
@@ -654,7 +654,7 @@ viewAreaSet(data){
 }  
 
 deleteData(id){
-  console.log('deleted id id',id);
+  // console.log('deleted id id',id);
   this.adhocService.deleteData(id).subscribe((res)=>{
     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
     this.getAllCycleDefinition();

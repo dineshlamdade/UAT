@@ -9,6 +9,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
+import { th } from 'date-fns/locale';
 // import { Table } from 'primeng/table';
 
 @Component( {
@@ -19,6 +20,7 @@ import { SortEvent } from 'primeng/api';
 } )
 export class CompanyMasterComponent implements OnInit {
   public companyMasterform: any = FormGroup;
+  
   selectedImageFileLogo1: any;
   selectedImageFileLogo2: any;
   selectedImageFileLogo3: any;
@@ -67,6 +69,11 @@ export class CompanyMasterComponent implements OnInit {
 
   header: any[];
   excelData: any[];
+  logo1Path: any;
+  editlogo1: any = '';
+  result: any;
+  logo1ImageName: any;
+  viewlogoflag:boolean=false;
 
   constructor( private shortenString: ShortenStringPipe, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private datePipe: DatePipe, private companyMasterService: CompanyMasterService,
     private companyGroupMasterService: CompanyGroupMasterService, private alertService: AlertServiceService, private excelservice: ExcelserviceService ) {
@@ -77,6 +84,7 @@ export class CompanyMasterComponent implements OnInit {
 
 
     this.companyMasterform = this.formBuilder.group( {
+      name: new FormControl(''),
       // code: new FormControl({ value: null, disabled: true }),
       code: new FormControl( { value: null, disabled: true } ),
       companyName: new FormControl( '', Validators.required ),
@@ -104,7 +112,8 @@ export class CompanyMasterComponent implements OnInit {
       isContractor: new FormControl( '' ),
       language: new FormControl( '' ),
       currency: new FormControl( '' ),
-      logo1: new FormControl( '' ),
+     logo1: new FormControl( '' ),
+   
       logo2: new FormControl( '' ),
       logo3: new FormControl( '' ),
       endDate: new FormControl( '' ),
@@ -198,7 +207,19 @@ export class CompanyMasterComponent implements OnInit {
     this.refreshHtmlTableData();
   }
 
-  editMaster( i: number, globalCompanyMasterId: number ) {
+// ngngAfterViewInit(){
+// console.log(this.el.nativeElement.innerHtml);
+// }
+
+
+  editMaster( i: number, globalCompanyMasterId: number ,summary) {
+    //view logo disable
+    this.viewlogoflag=false;
+
+    console.log("globalCompanyMasterId",globalCompanyMasterId)
+    console.log("i",i)
+    console.log("summary",summary)
+
     window.scrollTo( 0, 0 );
     this.companyMasterform.get( 'code' ).disable();
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
@@ -223,13 +244,30 @@ export class CompanyMasterComponent implements OnInit {
     //   this.companyMasterform.controls['reason'].updateValueAndValidity();
     // }
     this.index = 0;
-    console.log( this.masterGridDataList[i].isContractor );
+   // console.log( this.masterGridDataList[i].isContractor );
 
     this.companyMasterform.patchValue( this.masterGridDataList[i] );
-    console.log( this.masterGridDataList[i] );
+    //  this.employeeMasterRequestDTO.logo1 =this.masterGridDataList[i].logo1ImageName;
+    
+  // this.companyMasterform.get('logo1').set(this.masterGridDataList[i].logo1ImageName);
+  this.employeeMasterRequestDTO.logo1=this.masterGridDataList[i].logo1ImageName;
+  //  console.log(this.masterGridDataList[i])
+  //  this.logo1Path = this.masterGridDataList[i].companyLogo1
+   
+  
+  // this.companyMasterform.get('logo1').setValue(this.masterGridDataList[i].logo1ImageName)
+    // this.companyMasterform.controls['logo1'].setValue(this.masterGridDataList[i].logo1ImageName)
+    //this.companyMasterform.controls.setValue(this.masterGridDataList['logo1'].logo1ImageName);
+    //console.log( this.masterGridDataList[i] );
+    
+    this.employeeMasterRequestDTO.logo2=this.masterGridDataList[i].logo2ImageName;
+    this.employeeMasterRequestDTO.logo3=this.masterGridDataList[i].logo3ImageName;
 
+
+   // this.companyMasterform.get('logo1').setValue(this.masterGridDataList[i].logo1, {emitModelToViewChange: false});
+   
     this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find( o => o.companyGroupCode === this.masterGridDataList[i].companyGroupCode );
-    console.log( this.tempObjForgroupNameScaleStartDate );
+   // console.log( this.tempObjForgroupNameScaleStartDate );
     this.companyMasterform.patchValue( {
       companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
     } );
@@ -245,11 +283,14 @@ export class CompanyMasterComponent implements OnInit {
 
   }
 
+
   viewMaster( globalCompanyMasterId: number, i: number ) {
+
+    this.viewlogoflag=true;
     window.scrollTo( 0, 0 );
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
 
-    this.selectedImageFileLogo1 = undefined;
+     this.selectedImageFileLogo1 = undefined;
     this.selectedImageFileLogo2 = undefined;
     this.selectedImageFileLogo3 = undefined;
     this.globalCompanyMasterId = 0;
@@ -272,6 +313,12 @@ export class CompanyMasterComponent implements OnInit {
     //   // });
 
     // }
+//for logo in View Mode
+    //this.companyMasterform.patchValue( this.masterGridDataList[i] );
+    this.employeeMasterRequestDTO.logo1=this.masterGridDataList[i].logo1ImageName;
+    this.employeeMasterRequestDTO.logo2=this.masterGridDataList[i].logo2ImageName;
+    this.employeeMasterRequestDTO.logo3=this.masterGridDataList[i].logo3ImageName;
+
     this.companyMasterform.disable();
   }
 
@@ -309,7 +356,8 @@ export class CompanyMasterComponent implements OnInit {
           coClassification: element.coClassification,
           code: element.code,
           companyActive: element.companyActive,
-          companyLogo1: element.companyLogo1 ? null : '',
+         companyLogo1: element.companyLogo1 ? null : '',
+        //  companyLogo1: element.companyLogo1,
           companyLogo2: element.companyLogo2 ? null : '',
           companyLogo3: element.companyLogo3 ? null : '',
           companyName: element.companyName,
@@ -323,8 +371,10 @@ export class CompanyMasterComponent implements OnInit {
           industryType: element.industryType,
           shortenIndustryType: this.shortenString.transform( element.industryType ),
           language: element.language,
-          logo1ImageName: element.logo1ImageName ? null : '',
-          logo1Type: element.logo1Type ? null : '',
+         logo1ImageName: element.logo1ImageName ? null : '',
+        //  logo1ImageName: element.logo1ImageName,
+         logo1Type: element.logo1Type ? null : '',
+        //  logo1Type: element.logo1Type,
           logo2ImageName: element.logo2ImageName ? null : '',
           logo2Type: element.logo2Type ? null : '',
           logo3ImageName: element.logo3ImageName ? null : '',
@@ -367,6 +417,9 @@ export class CompanyMasterComponent implements OnInit {
     } );
   }
   cancelViewMasterForm() {
+    //view logo disable
+    this.viewlogoflag=false;
+
     this.showButtonSaveAndReset = true;
     this.isSaveAndReset = true;
 
@@ -500,6 +553,8 @@ export class CompanyMasterComponent implements OnInit {
 
 
   saveCompanyMaster( employeeMasterRequestDTO ) {
+//view logo disable
+    this.viewlogoflag=false;
 
     console.log( employeeMasterRequestDTO );
     if ( this.globalCompanyMasterId > 0 ) {
@@ -565,6 +620,11 @@ export class CompanyMasterComponent implements OnInit {
       if ( this.selectedImageFileLogo3 !== undefined ) {
         formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.shortName + ' 3.jpg' );
       }
+      // formData.append('file', this.companyMasterform.get('logo1').value);
+      // formData.append('file', this.companyMasterform.get('logo2').value);
+      // formData.append('file', this.companyMasterform.get('logo3').value);
+
+      console.log("formData",formData)
       this.companyMasterService.postCompanyMaster( formData ).subscribe( res => {
         console.log( res );
         if ( res.data.results.length > 0 ) {
@@ -642,7 +702,8 @@ export class CompanyMasterComponent implements OnInit {
       this.requestDTOString.companyMasterRequestDTOs.push( this.companyMasterRequestDTOs.companyMasterRequestDTOs[0] );
 
       var formData = new FormData();
-      console.log( JSON.stringify( this.requestDTOString ) );
+     formData.append('file', this.companyMasterform.get('logo1').value);
+      //console.log( JSON.stringify( this.requestDTOString ) );
       formData.append( 'requestDTOString', JSON.stringify( this.requestDTOString ) );
 
       if ( this.selectedImageFileLogo1 !== undefined ) {
@@ -654,6 +715,10 @@ export class CompanyMasterComponent implements OnInit {
       if ( this.selectedImageFileLogo3 !== undefined ) {
         formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.shortName + ' 3.jpg' );
       }
+
+      // formData.append('file', this.companyMasterform.get('logo1').value);
+      // formData.append('file', this.companyMasterform.get('logo2').value);
+      // formData.append('file', this.companyMasterform.get('logo3').value);
 
       this.companyMasterService.postCompanyMaster( formData ).subscribe( res => {
         console.log( res );
@@ -670,6 +735,7 @@ export class CompanyMasterComponent implements OnInit {
         // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       } );
+      
 
     }
 
@@ -763,6 +829,7 @@ export class CompanyMasterComponent implements OnInit {
     console.log( uploadFile.files[0] );
 
     //  this.selectedImageFile = uploadFile.files[0];
+
     this.uploadFiles = uploadFile.files[0];
     this.companyMasterform.markAsTouched();
 
@@ -787,24 +854,58 @@ export class CompanyMasterComponent implements OnInit {
       this.cd.markForCheck();
     }
   }
+  // onFileSelected(event) {
+  //   if(event.target.files.length > 0) 
+  //    {
+  //      this.myForm.patchValue({
+  //         fileName: event.target.files[0],
+  //      })
+  //    }
+  // }
   logo1( event, uploadFile ) {
-    console.log( 'in log1' );
+  //  console.log( 'in log1' );
 
     let file = ( event.target.files[0] as File );
-    let reader = new FileReader();
-    console.log( reader );
 
-    if ( event.target.files && event.target.files.length ) {
+    //console.log("file name logo1: "+ file.name)
+    
+    // this.companyMasterform.get('logo1').setValue(file,{emitModelToViewChange: false})
+    let reader = new FileReader();
+    //console.log( reader );
+
+    if ( event.target.files && event.target.files.length  ) {
 
 
       this.selectedImageFileLogo1 = event.target.files[0];
       const [file] = event.target.files;
+      
+     
+      
+     // this.companyMasterform.controls.get('logo1').setValue(file,{emitModelToViewChange: false})
       reader.readAsDataURL( file );
       // console.log(reader.result);
       // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
+
+      
     };
+    // var selectedImageFileLogo11 = event.target.files[0];
+    this.employeeMasterRequestDTO.logo1 = file.name;
+   //this.companyMasterform.controls.get('logo1').setValue(file,{emitModelToViewChange: false});
+
   }
+
+  // onFileChange($event)
+  // {
+  //   if ($event.target.files.length > 0)
+  //   {
+  //       let ftu: File = null;
+  //       ftu = $event.target.files[0];
+  //       this.companyMasterform.controls['logo1'].setValue(ftu);
+  //       this.employeeMasterRequestDTO.logo1 = $event.target.files[0];
+  //   }
+  // }
+
   logo2( event, uploadFile ) {
 
     const file = ( event.target.files[0] as File );
@@ -816,14 +917,29 @@ export class CompanyMasterComponent implements OnInit {
       // console.log(event.target.files);
       const [file] = event.target.files;
       reader.readAsDataURL( file );
-
-      // console.log(reader.result);
-
-
-      // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
     };
+    this.employeeMasterRequestDTO.logo2 = file.name;
   }
+
+  // onFileChange(event){
+  //   let reader = new FileReader();
+ 
+  // if(event.target.files && event.target.files.length) {
+  //   const [file] = event.target.files;
+  //   reader.readAsDataURL(file);
+  
+  //   reader.onload = () => {
+  //     this.companyMasterform.patchValue({
+  //      // file: reader.result
+  //      logo2: event.target.files[0],
+  //     });
+      
+  //     // need to run CD since file load runs outside of zone
+  //     this.cd.markForCheck();
+  //   };
+  // }
+  // }
 
 
   logo3( event, uploadFile ) {
@@ -838,6 +954,7 @@ export class CompanyMasterComponent implements OnInit {
       // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
     };
+    this.employeeMasterRequestDTO.logo3 = file.name;
   }
 
   onSelectGroupMaster( evt: any ) {
@@ -920,6 +1037,11 @@ export class CompanyMasterComponent implements OnInit {
       coClassification: '',
       reason: '',
       isContractor: '',
+      // logo1ImageName:'',
+      // logo1Type:'',
+      // logo2ImageName:'',
+      // logo2Type:'',
+      // logo1:'',
       
     } );
 

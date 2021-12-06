@@ -168,14 +168,14 @@
                     style="width:100px;"
                       type="text"
                       class="form-control"
-                      
+
                       (change)="
                       onChangeDocumentRemark(
                           summary, i,
                           $event
                         )
                       "
-                    
+
                     />
                     <div
                       _ngcontent-ykc-c443=""
@@ -1185,7 +1185,7 @@
     <div class="row" *ngIf="viewTransactionDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
-          Upload Documents 12
+          Upload Documents
         </h3>
       </div>
     </div>
@@ -1247,25 +1247,22 @@
     </div>
 
     <hr class="mt-20" />
-    <div class="row mt-20">
+    <!-- <div class="row mt-20">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Uploaded Documents
         </h3>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-md-12">
-        <div class="row clearfix mt-10">
+        <!-- <div class="row clearfix mt-10">
           <div class="col-md-12" *ngFor="let doc of urlArray">
             <div class="labelbox" placement="left" tooltip="{{ doc.fileName }}">
               <i class="fa fa-paperclip text-orange"></i> &nbsp; {{ doc.fileName }}
             </div>
           </div>
-          <!-- <div class="col-md-1">
-           <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
-           </div> -->
-        </div>
+        </div> -->
 
 
 
@@ -1658,10 +1655,10 @@
       </div>
       <div class="col-sm-6 col-md-6 align-right">
           <label class="form-label">Document Type</label>
-          
+
           {{this.viewDocumentType}}
       </div>
-    
+
       </div>
       <div class="align-right">
         <button type="button" (click)="zoomin()" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>

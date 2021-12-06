@@ -74,6 +74,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  documentRemarkList: any;
+  public remarkCount : any;
+
 
   viewDocumentName: any;
   viewDocumentType: any;
@@ -756,6 +759,29 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       // this.form.get('remark').disable();
       this.form.get('remark').reset();
     }
+  }
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId
+  ) {
+    
+    this.Service.getLicMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
   }
 
   // On Master Edit functionality

@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
@@ -77,7 +77,7 @@ export class FastentryNRAmtComponent implements OnInit {
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
-    private toaster: ToastrService) {
+    private toaster: AlertServiceService) {
     // this.headData = [
     //   { displayName: 'Incentive', headMasterId: 27 },
     //   { displayName: 'Performance_Incentive', headMasterId: 29 },
@@ -1917,7 +1917,7 @@ export class FastentryNRAmtComponent implements OnInit {
     console.log("this.saveTransactionData: " + JSON.stringify(this.saveTransactionData))
     this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
         this.tempTableData = []
         this.tableData = []
@@ -1928,7 +1928,7 @@ export class FastentryNRAmtComponent implements OnInit {
   saveAndClearFastEntries() {
     this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
         this.tempTableData = [];
         this.selectedOnceEvery = 1;

@@ -52,7 +52,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getAllBusinessYear();
-    console.log("after view init: "+ JSON.stringify(this.BusinessyearList))
+    // console.log("after view init: "+ JSON.stringify(this.BusinessyearList))
   }
 
   ngOnInit(): void {
@@ -63,7 +63,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
       businessYearDefinitionId: new FormControl('', Validators.required),
       frequencyMasterId: new FormControl('', Validators.required),
       addDays: new FormControl(''),
-      incompleteDaysFalls: new FormControl('', Validators.required),
+      incompleteDaysFalls: new FormControl(''),
       lastCycleCrossByYear: new FormControl(''),
       yearDefinition: new FormControl({ value: '', disabled: true }), // this. is from date to date autopopulated field..
 
@@ -76,7 +76,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     this.companySettings.getAllBusinessYear().subscribe(res => {
       this.BusinessyearList = res.data.results;
       this.BusinessyearList.forEach(element => {
-        console.log("in cycle def comp this.businessYearList" + JSON.stringify(element.description))
+        // console.log("in cycle def comp this.businessYearList" + JSON.stringify(element.description))
       });
     });
 
@@ -188,7 +188,8 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     this.cycleDefinitionForm.controls['businessYearDefinitionId'].enable();
     this.cycleDefinitionForm.controls['frequencyMasterId'].enable();
     this.cycleDefinitionForm.controls['incompleteDaysFalls'].enable();
-      console.log("addCycleDefinition: "+ JSON.stringify(addCycleDefinition))
+    this.cycleDefinitionForm.controls['lastCycleCrossByYear'].enable();
+      // console.log("addCycleDefinition: "+ JSON.stringify(addCycleDefinition))
       let data={
         "businessCycleDefinitionId": addCycleDefinition.businessCycleDefinitionId ,
         "frequencyMasterId": this.frequencyMasterId,
@@ -232,16 +233,16 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     const findIndex = this.activeFrequencyList.findIndex(o => o.id == event);
     
    
-    console.log('s', findIndex);
+    // console.log('s', findIndex);
 
 
     if (this.activeFrequencyList[findIndex].name.toLowerCase() == 'adhoc') {
-      console.log('i');
+      // console.log('i');
       this.isViewAddDays = true;
       // this.cycleDefinitionForm.controls['addDays'].setValidators([Validators.required]);
     }
     else {
-      console.log('i3');
+      // console.log('i3');
       this.isViewAddDays = false;
       //
       // this.cycleDefinitionForm.patchValue:[{' addDays': null, disabled: true }],
@@ -262,11 +263,14 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     this.CycleupdateFlag = false;
     this.CycleupdateFlag1 = false;
     this.isViewAddDays = false;
+    this.frequencyMasterId = ''
+    this.frequencyId = ''
     this.cycleDefinitionForm.controls['cycleName'].enable();
     this.cycleDefinitionForm.controls['addDays'].enable();
     this.cycleDefinitionForm.controls['businessYearDefinitionId'].enable();
     this.cycleDefinitionForm.controls['frequencyMasterId'].enable();
     this.cycleDefinitionForm.controls['incompleteDaysFalls'].enable();
+    this.cycleDefinitionForm.controls['lastCycleCrossByYear'].enable();
 
     this.cycleDefinitionForm.patchValue({
       id: null,
@@ -289,6 +293,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
       .subscribe(response => {
 
         this.frequencyMasterId = response.data.results[0].frequency.id
+        this.onChangeFrequencyFromCycleDefinition(this.frequencyMasterId)
         this.cycleName = response.data.results[0].cycleName.split('_')[0]
         this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
         this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
@@ -354,7 +359,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
       });
   }
   resetCycledefinition(): void {
-    console.log(this.cycleDefinitionForm);
+    // console.log(this.cycleDefinitionForm);
 
     //  this.cycleDefinitionForm.reset();
     // this.cycleDefinitionForm.patchValue({ serviceName: [null] });
@@ -395,7 +400,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
   // }
 
   DeleteCycleDefinitionById(id): void {
-    console.log('deleted id is', id);
+    // console.log('deleted id is', id);
     this.CycleupdateFlag = false;
     this.CycleupdateFlag1 = false;
     this.companySettings.DeleteCycleDefinitionById(id)
@@ -412,7 +417,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     }
   }
   onChangeBusinessYear(evt: any) {
-    console.log(evt);
+    // console.log(evt);
     if (evt == '') {
       this.cycleDefinitionForm.patchValue({
         yearDefinition: ''
@@ -420,7 +425,7 @@ export class CycleDefinitionComponent implements OnInit, AfterViewInit {
     } else {
       const index = this.BusinessyearList.findIndex(o => o.businessYearDefinitionId == evt);
       this.cycleDefinitionForm.patchValue({
-        yearDefinition: this.datePipe.transform(new Date(this.BusinessyearList[index].fullFromDate), 'dd-MMM-yyyy') + ' To ' + this.datePipe.transform(new Date(this.BusinessyearList[index].fullToDate), 'dd-MMM-yyyy'),
+        yearDefinition: this.datePipe.transform(new Date(this.BusinessyearList[index].fullFromDate), 'dd-MMM') + ' To ' + this.datePipe.transform(new Date(this.BusinessyearList[index].fullToDate), 'dd-MMM'),
 
       });
     }

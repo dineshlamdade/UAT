@@ -855,10 +855,10 @@
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Next"><b>
                                                         <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
-                                                <button type="button"
+                                                <!-- <button type="button"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Reset"><b>
-                                                        <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+                                                        <i class="fa fa-refresh"></i></b> Reset</button>&nbsp; -->
                                             </div>
                                         </div>
                                     </div>
@@ -998,9 +998,17 @@
                                                                     [ngModelOptions]="{standalone : true}"
                                                                     [ngClass]="{'is-invalid' : sdmFormStep3.get('sdmDerivedTableId').status == 'INVALID'}">
                                                                     <option value="Select">Select</option>
-                                                                    <option *ngFor="let field of fieldTypes"
+
+
+
+                                                                    <!-- <option *ngFor="let field of fieldTypes"
                                                                         value="{{field.derivedFieldName}}">
-                                                                        {{field.derivedFieldName}}</option>
+                                                                        {{field.derivedFieldName}}</option> -->
+
+                                                                    <!-- changed on 02 Dec by backend -->
+                                                                    <option *ngFor="let field of fieldTypes"
+                                                                        value="{{field.derivedObjectFieldName}}">
+                                                                        {{field.derivedObjectFieldName}}</option>
                                                                 </select>
 
                                                                 <select name="custom-select" class="form-control"
@@ -1573,7 +1581,7 @@
 
                                                                     <td *ngFor="let header of sourceFieldListData">
                                                                         <span
-                                                                            *ngIf="header == 'PayrollArea' && data.showElement == true">{{data.selectedCombData.payrollAreaId}}</span>
+                                                                            *ngIf="header == 'payrollArea' && data.showElement == true">{{data.selectedCombData.payrollAreaId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'Establishment' && data.showElement == true">{{data.selectedCombData.establishmentMasterId}}</span>
                                                                         <span
@@ -1710,7 +1718,7 @@
                                                                     *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
                                                                     <td *ngFor="let header of matrixTableData">
                                                                         <span
-                                                                            *ngIf="header == 'PayrollArea' && srcCombData.showElement == true">{{srcCombData.payrollAreaId}}</span>
+                                                                            *ngIf="header == 'payrollArea' && srcCombData.showElement == true">{{srcCombData.payrollAreaId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'Establishment' && srcCombData.showElement == true">{{srcCombData.establishmentMasterId}}</span>
                                                                         <span
@@ -1862,7 +1870,7 @@
                                                                     *ngFor="let data of tempMatrixData;let i = index;">
                                                                     <td *ngFor="let header of sourceFieldListData">
                                                                         <span
-                                                                            *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
+                                                                            *ngIf="header == 'payrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
                                                                         <span
@@ -1988,7 +1996,7 @@
             <tr></tr>
             <tr *ngFor="let srcCombData of sdmSourceCombinationListData">
                 <td class="text-center" style="border: 1px solid black;" *ngFor="let header of sourceFieldListData">
-                    <span *ngIf="header == 'PayrollArea'">{{srcCombData.payrollAreaId}}</span>
+                    <span *ngIf="header == 'payrollArea'">{{srcCombData.payrollAreaId}}</span>
                     <span *ngIf="header == 'Establishment'">{{srcCombData.establishmentMasterId}}</span>
                     <span *ngIf="header == 'SubLocation'">{{srcCombData.subLocationMasterId}}</span>
                     <span *ngIf="header == 'Location'">{{srcCombData.subLocationMasterId}}</span>
@@ -2053,7 +2061,7 @@
 
                 <td *ngFor="let header of sourceFieldListData" style="border: 1px solid black;">
                     <span
-                        *ngIf="header == 'PayrollArea' && data.showElement == true">{{data.selectedCombData.payrollAreaId}}</span>
+                        *ngIf="header == 'payrollArea' && data.showElement == true">{{data.selectedCombData.payrollAreaId}}</span>
                     <span
                         *ngIf="header == 'Establishment' && data.showElement == true">{{data.selectedCombData.establishmentMasterId}}</span>
                     <span
@@ -2110,7 +2118,7 @@
                 *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
                 <td *ngFor="let header of matrixTableData" style="border: 1px solid black;">
                     <span
-                        *ngIf="header == 'PayrollArea' && srcCombData.showElement == true">{{srcCombData.payrollAreaId}}</span>
+                        *ngIf="header == 'payrollArea' && srcCombData.showElement == true">{{srcCombData.payrollAreaId}}</span>
                     <span
                         *ngIf="header == 'Establishment' && srcCombData.showElement == true">{{srcCombData.establishmentMasterId}}</span>
                     <span
@@ -2230,7 +2238,7 @@
 
             <tr class="p-selectable-row text-center" *ngFor="let data of tempMatrixData;let i = index;">
                 <td *ngFor="let header of sourceFieldListData" style="border: 1px solid black;">
-                    <span *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
+                    <span *ngIf="header == 'payrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
                     <span *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
                     <span *ngIf="header == 'SubLocation'">{{data.selectedCombData.subLocationMasterId}}</span>
                     <span *ngIf="header == 'Location'">{{data.selectedCombData.subLocationMasterId}}</span>
@@ -2539,7 +2547,7 @@
                                         <!-- let data of tempEditMatrixData; -->
                                         <td *ngFor="let header of sourceFieldListData">
                                             <span
-                                                *ngIf="header == 'PayrollArea'">{{history.selectedCombData.payrollAreaId}}</span>
+                                                *ngIf="header == 'payrollArea'">{{history.selectedCombData.payrollAreaId}}</span>
                                             <span
                                                 *ngIf="header == 'Establishment'">{{history.selectedCombData.establishmentMasterId}}</span>
                                             <span
