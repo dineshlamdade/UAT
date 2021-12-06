@@ -36,7 +36,6 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { AttendanceComponent } from './attendance/attendance.component';
-import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
@@ -65,7 +64,6 @@ import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry
      NonRecurringAmtComponent,
      NonRecurringQtyComponent,
      AttendanceComponent,
-     GarnishmentComponent,
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
      SdmStepperComponent,

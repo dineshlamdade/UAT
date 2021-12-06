@@ -27,6 +27,7 @@
                                                                         Records &nbsp;<span
                                                                             class="text-dark-green font-14 font-bold">({{selectedEmployeeLength}})</span></label>
                                                                 </div>
+
                                                                 <!-- Summary top buttons -->
                                                                 <div class="col-md-6">
                                                                     <div class="float-right">
@@ -59,15 +60,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Excel Download-->
-                                                                <!-- <a tooltip="Download"
-                                                                    style="cursor: pointer;float:right; margin-left: 98%; margin-top: 7px;"
-                                                                    (click)="SummaryexportAsXLSX()">
-                                                                    <i class="fa fa-file-excel-o font-18 text-dark-green"
-                                                                        aria-hidden="true">
-                                                                    </i>
-                                                                </a> -->
-
                                                             </div>
 
                                                             <div class="table-responsive Custom_Table">
@@ -87,14 +79,12 @@
                                                                             <div class="col-md-12">
                                                                                 <div class="float-right">
                                                                                     <div class="d-flex">
-                                                                                        <span
-                                                                                            class="p-input-icon-left p-ml-auto">
-                                                                                            <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText
-                                                                                                type="text"
+                                                                                        <!-- <i class=" fas fa-filter text-purple mr-2 mt-1  font-24"></i> -->
+                                                                                        <span class="p-input-icon-left p-ml-auto">
+                                                                                            <i class="pi pi-search" style="top: 9px !important; margin-right: 20px; "></i>
+                                                                                            <input pInputText type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                                                                placeholder="Search " />
+                                                                                                placeholder="Search" />
                                                                                         </span>
                                                                                         <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
                                                                                             (click)="SummaryexportAsXLSX()"></i>
@@ -470,7 +460,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <br>
+                                                           
                                                             <div class="tabview-contents mt-25"
                                                                 *ngIf="selectedOption == 'single' ">
 
@@ -478,12 +468,12 @@
 
                                                                     <!-- Employee Selection Dropdown-->
                                                                     <div class="row mt-10"
-                                                                        *ngIf="showEmployeeSelectionFlag || !showDropdownDisabled">
+                                                                        *ngIf="showEmployeeSelectionFlag">
                                                                         <div class="col-md-2">
                                                                             <label class="form-label mb-0">Employee Code
                                                                             </label>
                                                                             <select name="EmployeeCode"
-                                                                                class="form-control "
+                                                                                class="form-control custom-select"
                                                                                 [(ngModel)]="selectedEmployeeMasterId"
                                                                                 [disabled]="showDropdownDisabled"
                                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
@@ -497,10 +487,44 @@
 
                                                                         </div>
                                                                         <div class="col-md-2">
+                                                                            <label class="form-label mb-0">First Name
+                                                                            </label>
+                                                                            <select name="EmployeeCode"
+                                                                                class="form-control custom-select"
+                                                                                [(ngModel)]="selectedEmployeeMasterId"
+                                                                                [disabled]="showDropdownDisabled"
+                                                                                (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                                <option value="">Select</option>
+                                                                                <!-- <option value="1"> 1111 </option> -->
+                                                                                <option value="{{emp.employeeMasterId}}"
+                                                                                    *ngFor="let emp of employeeData">
+                                                                                    {{emp.firstName}}
+                                                                                </option>
+                                                                            </select>
+
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <label class="form-label mb-0">Last Name
+                                                                            </label>
+                                                                            <select name="EmployeeCode"
+                                                                                class="form-control custom-select"
+                                                                                [(ngModel)]="selectedEmployeeMasterId"
+                                                                                [disabled]="showDropdownDisabled"
+                                                                                (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                                <option value="">Select</option>
+                                                                                <!-- <option value="1"> 1111 </option> -->
+                                                                                <option value="{{emp.employeeMasterId}}"
+                                                                                    *ngFor="let emp of employeeData">
+                                                                                    {{emp.lastName}}
+                                                                                </option>
+                                                                            </select>
+
+                                                                        </div>
+                                                                        <div class="col-md-2">
                                                                             <label class="form-label mb-0">Payroll
                                                                                 Area</label>
                                                                             <select name="PayrollArea"
-                                                                                class="form-control "
+                                                                                class="form-control custom-select"
                                                                                 [(ngModel)]="selectedPayrollArea"
                                                                                 (change)="getSelectedPayrollArea($event.target.value)"
                                                                                 [disabled]="showDropdownDisabled">
@@ -513,79 +537,21 @@
                                                                                     {{payroll.payrollAreaCode}}</option>
                                                                             </select>
                                                                         </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="float-right">
+                                                                                <button type="submit"
+                                                                                    class="custom_button custom_btn btn-bg-green mt-2 btn-labeled btn-labeled-left"
+                                                                                    tooltip="Save"
+                                                                                    (click)="graysearch(grays)"><b><i
+                                                                                            class="fas fa-search"></i></b>
+                                                                                    Search</button>
+                                                                            </div>
+                                                                        </div>
 
                                                                     </div>
 
-                                                                    <!-- Selected Employee basic infrmation-->
-                                                                    <!-- <div class="col-md-12 pl-0 pr-0">
-                                                                        <div class="box-line-border radius-10 p-2 mt-3"
-                                                                            *ngIf="employeeFinDetailsData">
-                                                                            <div class="row">
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Emp.
-                                                                                        No.</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.employeeCode}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Emp.
-                                                                                        Name</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.fullName}}
-                                                                                    </label>
-                                                                                </div>
 
-                                                                               
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Establishment</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.establishment}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Department</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-
-                                                                                    </label>
-                                                                                </div>
-                                                                               
-                                                                                <div class="col-md-1">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Grade</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.grade}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Designation</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.designation}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-1">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Status</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        Probation
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> -->
-
+                                                                    <!-- selected Employee basic information-->
                                                                     <div class="col-md-12 pl-0 pr-0">
                                                                         <div class="box-line-border radius-10 p-2 mt-3"
                                                                             *ngIf="employeeFinDetailsData">
@@ -689,7 +655,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    
+
                                                                     <div class="row mt-20">
                                                                         <div class="col-md-12 pr-0 pl-0">
                                                                             <div class="border-card p-2 mt_2">
@@ -754,7 +720,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -833,7 +799,7 @@
                                                                                                 </div>
                                                                                             </th>
                                                                                             <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                                >
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                                     Frequency
@@ -1027,7 +993,7 @@
                                                                                             class="form-lable mb-0">{{data.frequency}}
                                                                                         </label> -->
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1230,7 +1196,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -1286,7 +1252,8 @@
                                                                                                 </div>
                                                                                             </th>
                                                                                             <!--  -->
-                                                                                            <th rowspan="2" *ngIf="isRefererBonus"
+                                                                                            <th rowspan="2"
+                                                                                                *ngIf="isRefererBonus"
                                                                                                 class="wd-1">
                                                                                             </th>
                                                                                             <th rowspan="2"
@@ -1309,8 +1276,7 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
-                                                                                            <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                            <th rowspan="2">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                                     Frequency
@@ -1481,7 +1447,8 @@
 
                                                                                             </td>
                                                                                             <!-- *ngIf="isRefererBonus" -->
-                                                                                            <td *ngIf="data.headDescription == 'RefererBonus'" >
+                                                                                            <td
+                                                                                                *ngIf="data.headDescription == 'RefererBonus'">
                                                                                                 <i class="fa fa-users font-16 text-blue cursor-pointer"
                                                                                                     aria-hidden="true"
                                                                                                     (click)="openReferalPopup(referalPopup,data)">
@@ -1498,7 +1465,7 @@
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1891,15 +1858,9 @@
                                                             </div>
 
                                                             <!-- Edit schedule data-->
-                                                            <!-- <a tooltip="Download" style="cursor: pointer;float:right;"
-                                                                (click)="ScheduleExportAsXLSX()"
-                                                                *ngIf="editScheduleFlag">
-                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                                                                    aria-hidden="true">
-                                                                </i>
-                                                            </a> -->
                                                             <div class="table-responsive Custom_Table">
-                                                                <p-table [value]="NonRecurringTransactionScheduleEMPdData"
+                                                                <p-table
+                                                                    [value]="NonRecurringTransactionScheduleEMPdData"
                                                                     class="mt-10" [paginator]="true" [rows]="10"
                                                                     [showCurrentPageReport]="true"
                                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -1917,8 +1878,9 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText type="text"
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
+                                                                                            <input pInputText
+                                                                                                type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
                                                                                                 placeholder="Search " />
                                                                                         </span>
@@ -1944,7 +1906,8 @@
                                                                                         <p-sortIcon field="employeeCode"
                                                                                             pSortableColumn="employeeCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="employeeCode"
+                                                                                        <p-columnFilter
+                                                                                            field="employeeCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1972,7 +1935,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Payroll Area
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payrollAreaCode"
+                                                                                        <p-sortIcon
+                                                                                            field="payrollAreaCode"
                                                                                             pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -1992,7 +1956,8 @@
                                                                                         <p-sortIcon field="displayName"
                                                                                             pSortableColumn="displayName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="displayName"
+                                                                                        <p-columnFilter
+                                                                                            field="displayName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2022,18 +1987,6 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
                                                                                 </div>
                                                                             </th>
 
@@ -2078,7 +2031,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Processing Cycle
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="processedAmount"
+                                                                                        <p-sortIcon
+                                                                                            field="processedAmount"
                                                                                             pSortableColumn="processedAmount">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2098,7 +2052,8 @@
                                                                                         <p-sortIcon field="clawbackDate"
                                                                                             pSortableColumn="clawbackDate">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="clawbackDate"
+                                                                                        <p-columnFilter
+                                                                                            field="clawbackDate"
                                                                                             type="date" display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2113,7 +2068,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Reschedule Date
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="resheduleDate"
+                                                                                        <p-sortIcon
+                                                                                            field="resheduleDate"
                                                                                             pSortableColumn="resheduleDate">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter type="date"
@@ -2130,7 +2086,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Approval Status
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="approvalstatus"
+                                                                                        <p-sortIcon
+                                                                                            field="approvalstatus"
                                                                                             pSortableColumn="approvalstatus">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2150,12 +2107,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -2209,8 +2205,8 @@
                                                                                     data-provide="datepicker"
                                                                                     data-date-autoclose="true"
                                                                                     [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
-                                                                                    class="form-control wd-100" bsDatepicker
-                                                                                    disabled>
+                                                                                    class="form-control wd-100"
+                                                                                    bsDatepicker disabled>
                                                                                 <!-- date -->
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><label
@@ -2291,7 +2287,8 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><input
-                                                                                    type="text" class="form-control wd-100"
+                                                                                    type="text"
+                                                                                    class="form-control wd-100"
                                                                                     (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                     [value]="ScheduleData.remark">
                                                                             </td>
@@ -2308,8 +2305,9 @@
                                                                 </p-table>
 
                                                                 <!-- All schedule data-->
-                                                            
-                                                                <p-table [value]="AllNonRecurringTransactionScheduledData"
+
+                                                                <p-table
+                                                                    [value]="AllNonRecurringTransactionScheduledData"
                                                                     class="mt-10" [paginator]="true" [rows]="10"
                                                                     [showCurrentPageReport]="true"
                                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -2330,8 +2328,9 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText type="text"
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
+                                                                                            <input pInputText
+                                                                                                type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
                                                                                                 placeholder="Search " />
                                                                                         </span>
@@ -2357,7 +2356,8 @@
                                                                                         <p-sortIcon field="employeeCode"
                                                                                             pSortableColumn="employeeCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="employeeCode"
+                                                                                        <p-columnFilter
+                                                                                            field="employeeCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2385,7 +2385,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Payroll Area
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payrollAreaCode"
+                                                                                        <p-sortIcon
+                                                                                            field="payrollAreaCode"
                                                                                             pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2405,7 +2406,8 @@
                                                                                         <p-sortIcon field="displayName"
                                                                                             pSortableColumn="displayName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="displayName"
+                                                                                        <p-columnFilter
+                                                                                            field="displayName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2435,18 +2437,7 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
+                                                                                   
                                                                                 </div>
                                                                             </th>
 
@@ -2455,12 +2446,14 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Processed Amount
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="processedAmount"
+                                                                                        <p-sortIcon
+                                                                                            field="processedAmount"
                                                                                             pSortableColumn="processedAmount">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
                                                                                             field="processedAmount"
-                                                                                            type="numeric" display="menu"
+                                                                                            type="numeric"
+                                                                                            display="menu"
                                                                                             class="p-ml-auto">
 
                                                                                         </p-columnFilter>
@@ -2478,7 +2471,8 @@
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
                                                                                             field="transactionAmount"
-                                                                                            type="numeric" display="menu"
+                                                                                            type="numeric"
+                                                                                            display="menu"
                                                                                             class="p-ml-auto">
 
                                                                                         </p-columnFilter>
@@ -2493,7 +2487,8 @@
                                                                                         <p-sortIcon field="cycleName"
                                                                                             pSortableColumn="cycleName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="cycleName"
+                                                                                        <p-columnFilter
+                                                                                            field="cycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2509,7 +2504,8 @@
                                                                                         <p-sortIcon field="clawbackDate"
                                                                                             pSortableColumn="clawbackDate">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="clawbackDate"
+                                                                                        <p-columnFilter
+                                                                                            field="clawbackDate"
                                                                                             type="date" display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2524,7 +2520,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Reschedule Date
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="resheduleDate"
+                                                                                        <p-sortIcon
+                                                                                            field="resheduleDate"
                                                                                             pSortableColumn="resheduleDate">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter type="date"
@@ -2541,7 +2538,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Approval Status
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="approvalstatus"
+                                                                                        <p-sortIcon
+                                                                                            field="approvalstatus"
                                                                                             pSortableColumn="approvalstatus">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2561,12 +2559,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -2619,8 +2656,8 @@
                                                                                     data-provide="datepicker"
                                                                                     data-date-autoclose="true"
                                                                                     [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
-                                                                                    class="form-control wd-100" bsDatepicker
-                                                                                    disabled>
+                                                                                    class="form-control wd-100"
+                                                                                    bsDatepicker disabled>
                                                                                 <!-- date -->
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><label
@@ -2695,7 +2732,8 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><input
-                                                                                    type="text" class="form-control wd-100"
+                                                                                    type="text"
+                                                                                    class="form-control wd-100"
                                                                                     (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                     [value]="ScheduleData.remark">
 
@@ -2710,7 +2748,7 @@
                                                                     </ng-template>
                                                                 </p-table>
                                                             </div>
-                                                            
+
                                                             <!-- Buttons -->
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
@@ -3462,84 +3500,128 @@
         <div class="card">
             <div class="card-body p-0 m-0">
                 <div class="row">
-                    <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
+                    <div class="col-md-12 ">
+                        <div class="border-dark-card radius-10 p-2">
                             <div class="row">
-                                <div class="col-md-3">Applicable At</div>
                                 <div class="col-md-6">
-                                    <select class="form-control  wd-200"
-                                        (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
-                                        <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="col-md-3">Input Type</div>
-                                <div class="col-md-6">
-                                    <select class="form-control  wd-200"
-                                        (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Period'"> Specific
-                                            Period </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Date'"
-                                            *ngIf="selectedApplicableAt != 'Schedule'">
-                                            Specific Date
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Period'">
-                                    <div class="col-md-3">Period</div>
-                                    <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="clawbackperiod"
-                                            [ngModelOptions]="{standalone : true}"
-                                            (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
-                                            class="form-control wd-200">
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <br><br>
-                                    <div class="col-md-3">Frequency</div>
-                                    <div class="col-md-6">
-                                        <select class="form-control  wd-200"
-                                            (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
-                                            <option value="">Select</option>
-                                            <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
-                                            </option>
-                                            <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
-                                                Quarter </option>
-                                            <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
-                                                HalfYear </option>
-                                            <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
-                                            </option>
-                                            <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
-                                                SemiMonth </option>
-                                            <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
-                                            </option>
-                                            <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
-                                                BiWeek </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Date'">
-                                    <div class="col-md-3">Date</div>
-                                    <div class="col-md-6">
-                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                                            data-date-autoclose="true" placeholder="Date" bsDatepicker
-                                            [(ngModel)]="clawbackDate"
-                                            (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
-                                            class="form-control wd-200">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Applicable At</label>
+                                            <select class="form-control custom-select"
+                                                (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
+                                                <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Input Type</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Period'">
+                                                    Specific
+                                                    Period </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Date'"
+                                                    *ngIf="selectedApplicableAt != 'Schedule'">
+                                                    Specific Date
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Period</label>
+                                            <input type="text" [(ngModel)]="clawbackperiod"
+                                                [ngModelOptions]="{standalone : true}"
+                                                (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Frequency</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'">
+                                                    Month
+                                                </option>
+                                                <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                                    Quarter </option>
+                                                <option value="HalfYearly"
+                                                    [selected]="clawbackFrequency == 'HalfYearly'">
+                                                    HalfYear </option>
+                                                <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                                </option>
+                                                <option value="SemiMonthly"
+                                                    [selected]="clawbackFrequency == 'SemiMonthly'">
+                                                    SemiMonth </option>
+                                                <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                                </option>
+                                                <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                                    BiWeek </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 " *ngIf="selectedClawbackInputType == 'Specific Date'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                Date
+                                            </label>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true" placeholder="Date"
+                                                bsDatepicker [(ngModel)]="clawbackDate"
+                                                (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
+                                                class="form-control wd-200">
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
+
+                            <!-- <div class="row mt-25" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                  
+                                   <div class="col-md-3">
+                                    <label class="form-label">Period</label>
+                                    <input type="text" [(ngModel)]="clawbackperiod"
+                                    [ngModelOptions]="{standalone : true}"
+                                    (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                    class="form-control">
+                                   </div>
+                                   <div class="col-md-3">
+                                       <label class="form-label">Frequency</label>
+                                       <select class="form-control custom-select "
+                                       (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                       <option value="">Select</option>
+                                       <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
+                                       </option>
+                                       <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                           Quarter </option>
+                                       <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
+                                           HalfYear </option>
+                                       <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                       </option>
+                                       <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
+                                           SemiMonth </option>
+                                       <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                       </option>
+                                       <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                           BiWeek </option>
+                                   </select>
+                                   </div>
+
+
+                               </div> -->
+
+
+
 
                         </div>
                     </div>
@@ -3549,13 +3631,22 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="saveClawBack();modalRef.hide()">
-            &nbsp;save</button>
+
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+            (click)="saveClawBack();modalRef.hide()" tooltip="Save">
+            <b><i class="fa fa-floppy-o"></i></b> Save </button>
+        <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+        (click)="modalRef.hide()" tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+            Cancel</button>
+
+        <!-- <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+            tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+            Reset</button> -->
     </div>
 </ng-template>
 
 <!-- Refere Bonus-->
-<ng-template #referalPopup style="display : block;">
+<ng-template #referalPopup>
     <div class="modal-header">
         <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Employee Referral</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -3580,7 +3671,7 @@
                                         <div class="row mb-10">
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Emp. Code</label>
-                                                <select class="form-control "
+                                                <select class="form-control custom-select"
                                                     (change)="getEmployeeCode($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let emp of employeeData"
@@ -3595,7 +3686,7 @@
                                             </div>
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Payroll Area</label>
-                                                <select class="form-control "
+                                                <select class="form-control custom-select"
                                                     (change)="getEmployeePayrollArea($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let payroll of refralPayrollListData"
@@ -4886,6 +4977,161 @@
                                     </div>
                                 </section>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+<!-- Search gray strip popup-->
+<ng-template #grays>
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Search Criteria</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Criteria</legend>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Employee Code</label>
+                                    <select name="Gender" class="form-control custom-select">
+                                        <option>Select</option>
+                                        <option>111</option>
+                                        <option>111</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col-md-3"> <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Payroll Area</label>
+                                    <select name="Gender" class="form-control custom-select">
+                                        <option>Select</option>
+                                        <option>111</option>
+                                        <option>111</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-25">
+                                <div class="col-md-3">
+                                    <label class="form-label">Date of Joining</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <input data-provide="datepicker" disabled data-date-autoclose="true"
+                                                class="form-control" bsDatepicker />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Date of Leaving</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                <input data-provide="datepicker" disabled data-date-autoclose="true"
+                                                    class="form-control" bsDatepicker />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Establishment</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>111</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Department</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-25">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Emp Type</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Grade</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Designation</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Emp. Status</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-25">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <button type="button" tooltip="Reset"
+                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2">
+                                                    <b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                                                    Reset
+                                                </button>
+                                                <button type="button" tooltip="Next"
+                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                    <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>
+                                                    Go
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="row mt-25">
+                            <h3 class="font-14 text-purple font-bold">Search Result</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"></div>
                         </div>
                     </div>
                 </div>
