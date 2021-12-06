@@ -1945,20 +1945,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.documentInformationResponseList = res.data.results[0].documentInformationList;
 
 
-        res.documentDetailList.forEach(element => {
-          // if(element!=null)
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
-
-          })
-        });
+     
         console.log('documentArrayTest',this.documentArray);
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1995,8 +1982,22 @@ export class DeclarationAndActualComponent implements OnInit {
             this.familyMemberName.splice(index, 1);
           }
         });
+// On Click Edit button
+        // res.documentDetailList.forEach(element => {
+        //   // if(element!=null)
+        //   this.documentArray.push({
+        //     'dateofsubmission':element.creatonTime,
+        //     'documentType':element.documentType,
+        //     'documentName': element.fileName,
+        //     'documentPassword':element.documentPassword,
+        //     'documentRemark':element.documentRemark,
+        //     'status' : element.status,
+        //     'lastModifiedBy' : element.lastModifiedBy,
+        //     'lastModifiedTime' : element.lastModifiedTime,
 
-        // format actual amount in appropriate manner
+        //   })
+        // });
+        // // format actual amount in appropriate manner
         this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
           element.actualAmount = this.numberFormat.transform(
             element.actualAmount
