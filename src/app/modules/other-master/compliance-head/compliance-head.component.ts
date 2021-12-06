@@ -8,6 +8,17 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 
+interface City {
+  name: string,
+  code: string
+}
+
+export interface User1 {
+  state;
+  Applicable;
+  
+}
+
 
 @Component( {
   selector: 'app-compliance-head',
@@ -15,6 +26,9 @@ import { SortEvent } from 'primeng/api';
   styleUrls: ['./compliance-head.component.scss'],
 } )
 export class ComplianceHeadComponent implements OnInit {
+hideType=false;
+isshowAP:boolean= true;
+
   countries: Array<any> = [];
   summaryHtmlDataList: Array<any> = [];
   masterGridDataList: Array<any> = [];
@@ -32,12 +46,21 @@ export class ComplianceHeadComponent implements OnInit {
 
   header: any[];
   excelData: any[];
+  statutoryFrq:Array<any>=[];
+  officeTypeList:Array<any>=['Area Office', 'Regional Office','Zonal Office'];
+  RelatedTo:Array<any>=['Employee Related','Organization Related' ];
 
+  users1: User1[];
+  
+  dropdownSettings = {};
+  frequencyData: any;
+
+  State:any;
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
       complianceHeadName: new FormControl( null, Validators.required ),
-      shortName: new FormControl( '', Validators.required ),
+     // shortName: new FormControl(null),
       country: new FormControl( '', Validators.required ),
       aplicabilityLevel: new FormControl( '', Validators.required ),
       authorityHandling: new FormControl( null, Validators.required ),
@@ -46,16 +69,77 @@ export class ComplianceHeadComponent implements OnInit {
       // website: new FormControl('', [Validators.required, Validators.pattern('/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/')]),
       remark: new FormControl( { value: '', disabled: true } ),
       complianceActive: new FormControl( { value: true, disabled: true } ),
+      statutory: new FormControl(''),
+      officetype: new FormControl(''),
+      related: new FormControl(''),
+      monetary: new FormControl(''),
     } );
   }
 
   ngOnInit(): void {
+  this.getData(); //api call for Statotary Frequency
 
+  this.getState(); //Api call for State
+    
     this.complianceHeadService.getLocationInformationOrCountryList().subscribe( res => {
       this.countries = res.data.results;
     } );
+   
     this.refreshHtmlTableData();
+   // this.getStatutoryFreq1();
+
+    
   }
+
+getState(){
+this.complianceHeadService.getState().subscribe(res =>{
+  this.State=res.data.results;
+});
+}
+ 
+  getData(): void {
+    
+    this.complianceHeadService.getStatutoryFreq().subscribe(res => {
+      this.frequencyData = res.data.results
+
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
+    });
+  }
+
+  /** Select multiselect frequency */
+  onItemSelect(event){
+    //push(event.id)
+  }
+
+    /** Select all multiselect frequency */
+  onSelectAll(event){
+    this.frequencyData.forEach(element => {
+      //push(event.id)
+    });
+  }
+
+  /** Select multiselect frequency */
+  onDeItemSelect(event){
+    this.frequencyData.forEach((element,index) => {
+      if(element.id == event.id){
+        let ind = index;
+        //splice(ind,1)
+      }
+    });
+  }
+
+  monetaryOption(evt:any){
+
+  }
+
   save() {
     if ( this.editedComplianceHeadId > 0 ) {
       console.log( 'in edit mode' );
@@ -127,7 +211,21 @@ export class ComplianceHeadComponent implements OnInit {
     this.form.disable();
   }
   onSelectShortName( evt: any ) { }
-  onSelectApplicabilityLevel( evt: any ) { }
+  //for Select State in Applicability Level
+  onSelectApplicabilityLevel( evt: any,template : TemplateRef<any>) {
+    if(evt == 'State'){
+      this.modalRef = this.modalService.show(
+        template,
+        Object.assign({}, { class: 'gray modal-lg' })
+      );
+    }
+    //  else if(evt == 'City'){
+    //   this.modalRef = this.modalService.show(
+    //     template,
+    //     Object.assign({}, { class: 'gray modal-lg' })
+    //   );
+    //  }
+   }
 
   refreshHtmlTableData() {
     this.summaryHtmlDataList = [];
@@ -298,7 +396,7 @@ exportAsXLSX(): void {
   this.summaryHtmlDataList.forEach(element => {
     let obj = {
       "Head Name":element.complianceHeadName,
-      "Type":element.shortName,
+    //  "Type":element.shortName,
       "Country": element.country,
       "Applicability Level":element.aplicabilityLevel,
       "Authority Handling":element.authorityHandling,
@@ -336,5 +434,21 @@ customSort(event: SortEvent) {
   });
 
 }
+
+largepopup(template: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+    template,
+    Object.assign({}, { class: 'gray modal-lg' })
+  );
+}
+
+showAP(){
+  this.isshowAP=true;
+}
+hideAP(){
+ this.isshowAP=false;
+}
+
+
 
 }

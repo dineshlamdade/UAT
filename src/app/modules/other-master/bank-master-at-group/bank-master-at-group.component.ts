@@ -22,7 +22,8 @@ export class BankMasterAtGroupComponent implements OnInit {
   public ifscCodeList = [];
   public countryCode = [];
   public stateList = [];
-
+  tempObjForbankMasterDetails: any;
+  invalidPAN: boolean = false;
   public bankMasterDetailsResponse: any;
   public selectedState: string;
   public selectedBankName: string;
@@ -48,6 +49,10 @@ export class BankMasterAtGroupComponent implements OnInit {
       branchAddress: new FormControl({ value: '', disabled: true }),
       // state: new FormControl(''),branchAddress
       country: new FormControl({ value: '', disabled: true }),
+    
+          //ifscCode: new FormControl('', [Validators.required, Validators.pattern( /^[A-Za-z]{4}[a-zA-Z0-9]{7}$/ )]),
+         // ifscCode: new FormControl('', [Validators.required]),
+    
     });
 
   }
@@ -60,9 +65,7 @@ export class BankMasterAtGroupComponent implements OnInit {
     }, () => {
       this.form.get('country').setValue('India');
     });
-    // this.bankMasterAtGroupService.getStates().subscribe((res) => {
-    //   this.stateList = res.data.results;
-    // });
+
     this.refreshHtmlTable();
 
   }
@@ -93,12 +96,7 @@ export class BankMasterAtGroupComponent implements OnInit {
   getDataFromIFSC(bankIFSC) {
     this.isIfscCodeValid = false;
     if (bankIFSC.length < 11) {
-      // this.BankInformationModel.bankName = '';
-      // this.BankInformationModel.branchName = '';
-      // this.BankInformationModel.branchAddress = '';
-      // this.confirmAccountNumber = '';
-      // this.BankInformationModel.accountNo = '';
-      // this.BankInformationModel.nameAsPerBank = '';
+
       this.form.patchValue({
         bankName: '',
         branchName: '',
@@ -112,8 +110,7 @@ export class BankMasterAtGroupComponent implements OnInit {
       this.IFSCDetails(bankIFSC);
     }
     if (bankIFSC) {
-      // this.gridEditIFSC1 = bankIFSC
-      // this.IFSCGridDetails(bankIFSC);
+     
     }
   }
   IFSCDetails(bankIFSC) {
@@ -202,9 +199,7 @@ export class BankMasterAtGroupComponent implements OnInit {
       this.refreshHtmlTable();
 
 
-      //  else {
-      //     this.alertService.sweetalertError(error.error['status'].messsage);
-      // }
+    
 
     }, (error: any) => {
       this.alertService.sweetalertError(error.error['status'].messsage);
@@ -236,15 +231,13 @@ export class BankMasterAtGroupComponent implements OnInit {
 
         this.alertService.sweetalertWarning(res.status.messsage);
 
-        //  this.alertService.sweetalertError(error.error['status'].messsage);
-        // this.alertService.sweetalertError(error.error['status'].messsage);
-        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        
       }
     }, (error: any) => {
       console.log(error);
-      // this.alertService.sweetalertMasterSuccess('[error']['status']['messsage']);
+      
       this.alertService.sweetalertError(error.error['status'].messsage);
-      // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+      
 
     });
 
@@ -252,13 +245,7 @@ export class BankMasterAtGroupComponent implements OnInit {
   onSelectState(evt: any) {
     this.selectedState = evt;
     this.bankIFSC = '';
-    // this.ifscCodeList = [];
-    // this.bankMasterAtGroupService.getIfscCodeStateWise(evt).subscribe((res) => {
-    //  this.ifscCodeList = res.data.results;
-    // }   , (error: any) => {
-    //   this.alertService.sweetalertError(error.error['status'].messsage);
 
-    // });
 
   }
   editMaster(i: number, companyBankMasterId: number) {
@@ -282,10 +269,13 @@ export class BankMasterAtGroupComponent implements OnInit {
     window.scrollTo(0, 0);
     this.viewMode = true;
     this.isEditMode = true;
+    this.form.get('country').setValue('India');
     console.log(this.bankMasterDetailsResponse[i]);
+
     this.form.patchValue(this.bankMasterDetailsResponse[i]);
     this.ifscCodeList.push(this.bankMasterDetailsResponse[i].ifscCode);
     this.form.patchValue({
+     
       branchName: this.summaryHtmlDataList[i].branchName,
       branchAddress: this.summaryHtmlDataList[i].branchAddress,
       bankName: this.summaryHtmlDataList[i].bankName,
@@ -321,12 +311,7 @@ export class BankMasterAtGroupComponent implements OnInit {
 
     }
     if (bankIFSC.length < 11) {
-      // this.BankInformationModel.bankName = '';
-      // this.BankInformationModel.branchName = '';
-      // this.BankInformationModel.branchAddress = '';
-      // this.confirmAccountNumber = '';
-      // this.BankInformationModel.accountNo = '';
-      // this.BankInformationModel.nameAsPerBank = '';
+  
     }
     if (searchTerm.query.length == 2) {
       // setTimeout(() => {
@@ -337,11 +322,10 @@ export class BankMasterAtGroupComponent implements OnInit {
         if (this.ifscCodeList.length > 0) {
           this.filterIFSCCodes(searchTerm.query);
         } else {
-          // this.alertService.sweetalertError('Record Not Found');
-          // this.notifyService.showError ('Recordnot found', "Error..!!")
+     
         }
       });
-      // }, 1500)
+  
     }
     this.filterIFSCCodes(searchTerm.query);
 
@@ -363,8 +347,7 @@ export class BankMasterAtGroupComponent implements OnInit {
         return JSON.stringify(item).toLowerCase().includes(searchTerm);
       });
       this.ifscCodeList = ifsc;
-      // this.GridIFSCcodeList = ifsc;
-      // this.showOptios = true;
+
     }
   }
   ConfirmationDialog(confirmdialog: TemplateRef<any>, companyBankMasterId: number) {
@@ -424,5 +407,24 @@ export class BankMasterAtGroupComponent implements OnInit {
         return (event.order * result);
     });
   
+}
+onChangeIFSC( evt: any ) {
+  console.log( evt );
+  if ( evt.length == 11 ) {
+    console.log( this.form.get( 'bankIFSC' ).value );
+    console.log( this. tempObjForbankMasterDetails );
+    let index1 = this. tempObjForbankMasterDetails.findIndex( o => o.code == this.form.get( 'bankIFSC' ).value );
+    console.log( evt[3].toUpperCase() );
+    console.log( this. tempObjForbankMasterDetails[index1].fourthCharacterOfPan );
+
+
+    if ( evt[3] == this. tempObjForbankMasterDetails[index1].fourthCharacterOfPan ) {
+      this.invalidPAN = false;
+    } else {
+      this.invalidPAN = true;
+    }
+    // invalidPAN
+  }
+
 }
 }

@@ -22,6 +22,8 @@ export class StatutoryComplianceComponent implements OnInit {
   selectedIsdCode = [];
   countryCode: Array<any> = [];
   showButtonSaveAndReset: boolean = true;
+
+ 
   // isEditMode: boolean = false;
   masterGridDataList: Array<any> = [];
   index: number = 0;
@@ -119,7 +121,7 @@ export class StatutoryComplianceComponent implements OnInit {
       this.form.get( 'state' ).setValue( '' );
       this.form.get( 'city' ).setValue( '' );
     }
-    if ( this.form.get( 'pinCode' ).value.length == 6 && this.form.get( 'country' ).value == 'India' ) {
+    if ( this.form.get( 'pinCode' ).value.length == 6 ) {
       this.statuatoryComplianceService.getAddressFromPIN( this.form.get( 'pinCode' ).value ).subscribe( res => {
         console.log( res );
         this.form.get( 'state' ).setValue( res.data.results[0].state );
@@ -230,10 +232,14 @@ export class StatutoryComplianceComponent implements OnInit {
   }
 
   reset() {
-
+   
     this.showButtonSaveAndReset = true;
-    this.form.get( 'companyGroupActive' ).setValue( true );
+    this.isEditMode = false;
+
+    
     this.saveFormValidation();
+   
+    this.form.controls['institutionActive'].setValue(true);
   }
 
   cancelView() {
@@ -242,21 +248,22 @@ export class StatutoryComplianceComponent implements OnInit {
     this.isEditMode = false;
     this.isSaveAndReset = true;
     this.showButtonSaveAndReset = true;
-    this.form.reset();
-
-
+    
     this.saveFormValidation();
+    this.form.reset();
+    this.form.controls['institutionActive'].setValue(true);
+    this.form.get('institutionActive').disable();
 
-    this.form.get( 'remark' ).disable();
-    this.form.get( 'country1' ).disable();
-    this.form.get( 'applicabilityLevel' ).disable();
-    this.form.get( 'state' ).disable();
-    this.form.get( 'city' ).disable();
+    //this.form.get( 'remark' ).disable();
+    //this.form.get( 'country1' ).disable();
+    //this.form.get( 'applicabilityLevel' ).disable();
+    //this.form.get( 'state' ).disable();
+    //this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
-
+    // this.form.get('institutionActive').enable();
     //  this.form.get('complianceActive').setValue(true);
     // this.form.get('complianceActive').disable();
-    this.hideRemark = false;
+
 
   }
 
@@ -291,6 +298,7 @@ export class StatutoryComplianceComponent implements OnInit {
     this.form.get( 'state' ).disable();
     this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
+  
   }
   viewMaster( i: number ) {
     this.isEditMode = false;
@@ -444,13 +452,17 @@ export class StatutoryComplianceComponent implements OnInit {
 
     if ( this.form.get( 'institutionActive' ).value === false ) {
       this.form.get( 'remark' ).enable();
+    
+      this.form.controls['institutionActive'].setValue(false);
       this.hideRemark = true;
       this.form.controls['remark'].setValidators( Validators.required );
       this.form.controls['remark'].updateValueAndValidity();
+      
     } else {
       this.hideRemark = false;
       this.form.controls["remark"].clearValidators();
       this.form.controls["remark"].updateValueAndValidity();
+      
     }
   }
 
