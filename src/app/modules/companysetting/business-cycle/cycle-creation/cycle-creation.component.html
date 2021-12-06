@@ -346,29 +346,29 @@
 
               <div class="row">
                 <div class="col-sm-6 col-md-4">
-                  <label class="form-label">Cycle Definition:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      class="textcolor">{{Previewname}}</span></label>
+                  <label class="form-label spanLabelClsFirst">Cycle Definition:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="spanLabelCls">{{Previewname}}</span></label>
                 </div>
 
                 <div class="col-sm-6 col-md-4">
-                  <label class="form-label">Business Year:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      class="textcolor">{{Previewbusiness}}</span></label>
+                  <label class="form-label spanLabelClsFirst">Business Year:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="spanLabelCls">{{Previewbusiness}}</span></label>
                 </div>
 
                 <div class="col-sm-6 col-md-4">
-                  <label class="form-label">Frequency:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                      class="textcolor">{{PreviewFrequency}}</span></label>
+                  <label class="form-label spanLabelClsFirst">Frequency:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                      class="spanLabelCls">{{PreviewFrequency}}</span></label>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-sm-6 col-md-4">
-                  <label class="form-label">From Date:&nbsp;&nbsp;&nbsp;&nbsp;<span class="textcolor">{{PreviewfromDate
+                  <label class="form-label spanLabelClsFirst">From Date:&nbsp;&nbsp;&nbsp;&nbsp;<span class="spanLabelCls">{{PreviewfromDate
                       | date: 'dd-MMM-yyyy'}}</span></label>
                 </div>
 
                 <div class="col-sm-6 col-md-4">
-                  <label class="form-label">To Date:&nbsp;&nbsp;&nbsp;&nbsp;<span class="textcolor">{{PreviewtoDate |
+                  <label class="form-label spanLabelClsFirst">To Date:&nbsp;&nbsp;&nbsp;&nbsp;<span class="spanLabelCls">{{PreviewtoDate |
                       date: 'dd-MMM-yyyy'}}</span></label>
                 </div>
 
@@ -476,7 +476,7 @@
                               </th>
                               <th class="wd-4">
                                 <div class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
-                                  <span tooltip="Remarks" placement="bottom">Remarks</span> &nbsp;&nbsp;
+                                  <span tooltip="Remarks" placement="bottom">Remark</span> &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="remark" pSortableColumn="remark">
                                     </p-sortIcon>
@@ -610,7 +610,7 @@
 
 <ng-template #template3>
   <div class="modal-header">
-    <h5 class="modal-title" id="UploadModalLabel">Edit Cycle (Service Name : CycleDefinitionByid)</h5>
+    <h5 class="modal-title" id="UploadModalLabel">Edit Business Cycles</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
   </div>
@@ -627,26 +627,36 @@
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Cycle Definition: {{name}}</label>
+                    <label class="form-label spanLabelClsFirst">Cycle Definition: &nbsp;<span class="spanLabelCls">
+                      {{name}}
+                    </span></label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Business Year: {{BusinessYear}}</label>
+                    <label class="form-label spanLabelClsFirst">Business Year: &nbsp;<span class="spanLabelCls">
+                      {{BusinessYear}}
+                    </span></label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Frequency: {{Frequency}}</label>
+                    <label class="form-label spanLabelClsFirst">Frequency: &nbsp;<span class="spanLabelCls">
+                      {{Frequency}}
+                    </span></label>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">From Date: {{fromDate | date: 'dd-MMM-yyyy'}}</label>
+                    <label class="form-label spanLabelClsFirst">From Date: &nbsp;<span class="spanLabelCls">
+                      {{fromDate | date: 'dd-MMM-yyyy'}}
+                    </span></label>
 
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">To Date: {{toDate | date: 'dd-MMM-yyyy'}}</label>
+                    <label class="form-label spanLabelClsFirst">To Date: &nbsp;<span class="spanLabelCls">
+                      {{toDate | date: 'dd-MMM-yyyy'}}
+                    </span></label>
 
                   </div>
 
@@ -704,7 +714,7 @@
                                 </th>
                                 <th class="wd-20">
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    Display Cycle Name &nbsp;&nbsp;
+                                    Cycle Display Name &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="cycleDisplayName" pSortableColumn="cycleDisplayName">
                                       </p-sortIcon>
@@ -747,7 +757,7 @@
                                 </th>
                                 <th class="wd-5">
                                   <div class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
-                                    <span tooltip="Remarks" placement="bottom">Remarks</span> &nbsp;&nbsp;
+                                    <span tooltip="Remarks" placement="bottom">Remark</span> &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
                                       <p-columnFilter field="remark" display="menu" class="p-ml-auto"></p-columnFilter>
@@ -796,7 +806,7 @@
                                     <input type="text"
                                       (bsValueChange)="OntoDateChange($event,summary)" data-toggle="modal"
                                       data-target="#UploadModal" [value]="summary.toDate | date: 'dd-MMM-yyyy'"
-                                      [maxDate]="summary.maxDate"
+                                      [maxDate]="summary.maxDate" [minDate]="summary.minDate"
                                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" [disabled]="!todisabletodate"
                                       data-provide="datepicker" data-date-autoclose="true" class="form-control inputWidth"
                                       bsDatepicker 
@@ -906,25 +916,34 @@
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Cycle Definition: {{name}}</label>
+                    <label class="form-label spanLabelClsFirst">Cycle Definition: &nbsp;<span class="spanLabelCls">
+                      {{name}}
+                    </span></label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Business Year: {{business}}</label>
+                    <label class="form-label spanLabelClsFirst">Business Year: &nbsp;<span class="spanLabelCls">
+                      {{business}}</span></label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">Frequency: {{Frequency}}</label>
+                    <label class="form-label spanLabelClsFirst">Frequency: &nbsp;<span class="spanLabelCls">
+                      {{Frequency}}
+                    </span></label>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">From Date: {{fromDate | date: 'dd-MMM-yyyy'}}</label>
+                    <label class="form-label spanLabelClsFirst">From Date: &nbsp;<span class="spanLabelCls">
+                      {{fromDate | date: 'dd-MMM-yyyy'}}
+                    </span></label>
                   </div>
 
                   <div class="col-sm-6 col-md-4">
-                    <label class="form-label">To Date: {{toDate | date: 'dd-MMM-yyyy'}}</label>
+                    <label class="form-label spanLabelClsFirst">To Date: &nbsp;<span class="spanLabelCls">
+                      {{toDate | date: 'dd-MMM-yyyy'}}
+                    </span></label>
                   </div>
 
                 </div>
@@ -998,7 +1017,7 @@
                                 </th>
                                 <th class="wd-20">
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    Display Cycle Name &nbsp;&nbsp;
+                                    Cycle Display Name &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="cycleDisplayName" pSortableColumn="cycleDisplayName">
                                       </p-sortIcon>
@@ -1041,7 +1060,7 @@
                                 </th>
                                 <th class="wd-5">
                                   <div class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
-                                    <span tooltip="Remarks" placement="bottom">Remarks</span> &nbsp;&nbsp;
+                                    <span tooltip="Remarks" placement="bottom">Remark</span> &nbsp;&nbsp;
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
                                       <p-columnFilter field="remark" display="menu" class="p-ml-auto"></p-columnFilter>

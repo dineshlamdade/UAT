@@ -137,11 +137,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
 			this.getAllEmployeeDetails();
-			
-			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
-			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
 			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
 			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
+			this.PayrollAreaByPayrollAreaCode(this.payrollListEmpData[0].payrollAreaCode)
+			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+			
+			
 		}
 	}
 
@@ -172,7 +173,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.employeeFinDetailsData = null;
 		this.NonRecurringTransactionGroupAPIEmpwiseData = null;
 		this.selectedEmployeeLength = 0
-		this.showDropdownDisabled = true
+		this.showDropdownDisabled = false
 		this.selectedOption = 'single'
 	}
 
@@ -353,6 +354,16 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/******************* Transaction when click on Edit Transaction *******************/
+
+	/** search popup */
+	graysearch(grays: TemplateRef<any>){
+		this.modalRef = this.modalService.show(
+			grays,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
+	}
 
 	/** on Click on toggle Button */
 	getSelectedOption(event){
@@ -795,14 +806,14 @@ export class NonRecurringAmtComponent implements OnInit {
 		// if(this.payrollListEmpData != ''){
 		// 	this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
 		// }
-		console.log(this.selectedPayrollArea)
+		// console.log(this.selectedPayrollArea)
 		if (this.selectedPayrollArea != '') {
-			this.NonRecurringTransactionGroupAPIEmpwise()
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
 			)
+				this.NonRecurringTransactionGroupAPIEmpwise()
 		}
 		this.payrollAssigned()
 	}
@@ -3236,6 +3247,8 @@ this.saveTransactionData.forEach(element => {
 		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
+
+	/** Selected Employee basic information expand and colapse */
 	visibleempdetails(){
 		this.isvisible = true;
 	}
