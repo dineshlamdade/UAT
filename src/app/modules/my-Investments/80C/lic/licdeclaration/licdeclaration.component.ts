@@ -1763,7 +1763,8 @@ console.log( this.editTransactionUpload);
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+ 
+delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       licTransactionDetail: this.editTransactionUpload,
       licTransactionIDs: this.uploadGridData,
