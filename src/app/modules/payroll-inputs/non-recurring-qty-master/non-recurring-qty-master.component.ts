@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { SortEvent } from 'primeng/api';
+import { FormGroup, FormControl } from '@angular/forms';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
+import { ExcelserviceService } from '../../../core/services/excelservice.service';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 @Component({
   selector: 'app-non-recurring-qty-master',
@@ -24,8 +24,10 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   viewFlag: boolean = false;
   natureData: any[];
   getNatureValue: any;
+  excelData: any[];
 
-  constructor(private nonrecqtyservice: NonRecurringQtyService, private toaster: ToastrService) {
+  constructor(private nonrecqtyservice: NonRecurringQtyService, private toaster: AlertServiceService,
+    private excelservice: ExcelserviceService,) {
     this.masterForm = new FormGroup({
       "nonSalaryDetailId": new FormControl(''),
       "code": new FormControl(''),
@@ -125,7 +127,7 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     let data = [this.masterForm.value]
     this.nonrecqtyservice.nonsalary(data).subscribe(
       res => {
-        this.toaster.success("", "Master Data Saved Successfully.")
+        this.toaster.sweetalertMasterSuccess("", "Master Data Saved Successfully.")
         this.getMasterSummaryData()
         this.masterForm.reset()
         this.editFlag = false;
@@ -169,7 +171,7 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     let data = [this.masterForm.value]
     this.nonrecqtyservice.updatenonsalary(data).subscribe(
       res => {
-        this.toaster.success("", "Master Data Updated Successfully.")
+        this.toaster.sweetalertMasterSuccess("", "Master Data Updated Successfully.")
         this.getMasterSummaryData()
         this.masterForm.reset()
         this.editFlag = false;
@@ -186,4 +188,21 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.editFlag = false;
     this.viewFlag = true;
   }
+
+   /** Excel donload summary and Schedule page */
+
+	SummaryexportAsXLSX(): void {
+		this.excelData = [];
+		this.summaryData.forEach(element => {
+			let obj = {
+				"Code": element.code,
+				"Description": element.description,
+				"E/D Head": element.descriptionHeadOfPayment,
+				"Value Updation Through": element.valueUpdationThrough,
+				"No. Of NRQ Types": element.nonSalaryOptionList.length,
+			}
+			this.excelData.push(obj)
+		});
+		this.excelservice.exportAsExcelFile1(this.excelData, 'Garnishment-Master');
+	}
 }

@@ -161,7 +161,8 @@
                                 <div class="col-md-6"
                                   *ngIf="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1">
                                   <label class="form-label">Display Name</label>
-                                  <input type="text" class="form-control" [required]="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1"
+                                  <input type="text" class="form-control"
+                                    [required]="garnishmentForm.controls.empAccNoApplicable.value == true || garnishmentForm.controls.empAccNoApplicable.value == 1"
                                     formControlName="empAccNoInCoBooksDisplayName">
                                 </div>
                               </div>
@@ -445,7 +446,7 @@
                             </fieldset>
                           </div>
                         </div>
-                        
+
                         <div class="row mt-10">
                           <div class="col-md-3" *ngIf="selectedInputTypeName == 'SDM'">
                             <label class="form-label">SDM Name</label>
@@ -467,7 +468,7 @@
                               <option>Select</option>
                             </select>
                           </div>
-                       </div> 
+                        </div>
 
                         <div class="row mt-25">
                           <div class="col-md-6">
@@ -533,8 +534,8 @@
                                         [checked]="mandatoryFlag" [disabled]="viewFlag">
                                     </td>
                                     <td class=" align-center bg-color-light_gray">
-                                      <i class="fa fa-plus-circle font-16 cursor-pointer text-dark-green" *ngIf="!viewFlag"
-                                        (click)="addDocumentList()" [disabled]="viewFlag"></i>
+                                      <i class="fa fa-plus-circle font-16 cursor-pointer text-dark-green"
+                                        *ngIf="!viewFlag" (click)="addDocumentList()" [disabled]="viewFlag"></i>
                                     </td>
                                   </tr>
                                   <tr *ngFor="let doc of garnishmentMasterDocumentList; let index = index;">
@@ -546,8 +547,8 @@
                                       <spna *ngIf="doc.mandetory == 1"> Yes</spna>
                                     </td>
                                     <td class=" align-center bg-color-light_gray">
-                                      <i class="fa fa-times font-16 cursor-pointer text-dark-red" *ngIf="!editFlag && !viewFlag"
-                                        (click)="openDeletePopup(index,deleteTemp)"></i>
+                                      <i class="fa fa-times font-16 cursor-pointer text-dark-red"
+                                        *ngIf="!editFlag && !viewFlag" (click)="openDeletePopup(index,deleteTemp)"></i>
                                     </td>
                                   </tr>
                                 </ng-template>
@@ -596,142 +597,137 @@
                         <h3 class="font-14 text-purple font-bold">Summary</h3>
                       </div>
                       <div class="table-responsive Custom_Table">
-                        
 
-                        <div class="table-responsive Custom_Table">
-                          <p-table [value]="garnishmentData" class="mt-10"
-                              [paginator]="true" [rows]="10"
-                              [showCurrentPageReport]="true"
-                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,25,50,100,200]"
-                              [style]="{'width':'100%', overflow: auto}" #dt1
-                              [globalFilterFields]="['nameOfInstitution','city','villege','nature','headMasterId',
+
+                          <p-table [value]="garnishmentData" class="mt-10" [paginator]="true" [rows]="10"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [rowsPerPageOptions]="[10,25,50,100,200]" [style]="{'width':'100%', overflow: auto}" #dt1
+                            [globalFilterFields]="['nameOfInstitution','city','villege','nature','headMasterId',
                               'empApplicationProcess','goal','remark']">
 
-                              <ng-template pTemplate="caption">
-                                  <div class="row">
-                                      <div class="col-md-12">
-                                          <div class="float-right">
-                                              <div class="d-flex">
-                                                  <span
-                                                      class="p-input-icon-left p-ml-auto">
-                                                      <i class="pi pi-search"
-                                                          style="top: 9px !important;"></i>
-                                                      <input pInputText
-                                                          type="text"
-                                                          (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                          placeholder="Search " />
-                                                  </span>
-                                                  <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
-                                                      (click)="SummaryexportAsXLSX()"></i>
-                                              </div>
-                                          </div>
-                                      </div>
+                            <ng-template pTemplate="caption">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="float-right">
+                                    <div class="d-flex">
+                                      <span class="p-input-icon-left p-ml-auto">
+                                        <i class="pi pi-search" style="top: 9px !important;"></i>
+                                        <input pInputText type="text"
+                                          (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Search " />
+                                      </span>
+                                      <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
+                                        (click)="SummaryexportAsXLSX()"></i>
+                                    </div>
                                   </div>
-                              </ng-template>
+                                </div>
+                              </div>
+                            </ng-template>
 
-                              <ng-template pTemplate="header">
-                                <tr>
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Sr. No.
-                                    </div>
-                                  </th>
+                            <ng-template pTemplate="header">
+                              <tr>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Sr. No.
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Institution
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="nameOfInstitution" pSortableColumn="nameOfInstitution"></p-sortIcon>
-                                        <p-columnFilter field="nameOfInstitution" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Institution
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="nameOfInstitution" pSortableColumn="nameOfInstitution">
+                                      </p-sortIcon>
+                                      <p-columnFilter field="nameOfInstitution" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      City / Village
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="city" pSortableColumn="city"></p-sortIcon>
-                                        <p-columnFilter field="city" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    City / Village
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="city" pSortableColumn="city"></p-sortIcon>
+                                      <p-columnFilter field="city" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Nature
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="nature" pSortableColumn="nature"></p-sortIcon>
-                                        <p-columnFilter field="nature" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Nature
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="nature" pSortableColumn="nature"></p-sortIcon>
+                                      <p-columnFilter field="nature" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      E/D Head
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="headMasterId" pSortableColumn="headMasterId"></p-sortIcon>
-                                        <p-columnFilter field="headMasterId" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    E/D Head
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="headMasterId" pSortableColumn="headMasterId"></p-sortIcon>
+                                      <p-columnFilter field="headMasterId" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Emp. Application process
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="empApplicationProcess" pSortableColumn="empApplicationProcess"></p-sortIcon>
-                                        <p-columnFilter field="empApplicationProcess" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Emp. Application process
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="empApplicationProcess" pSortableColumn="empApplicationProcess">
+                                      </p-sortIcon>
+                                      <p-columnFilter field="empApplicationProcess" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Goal
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="goal" pSortableColumn="goal"></p-sortIcon>
-                                        <p-columnFilter field="goal" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Goal
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="goal" pSortableColumn="goal"></p-sortIcon>
+                                      <p-columnFilter field="goal" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
+                                  </div>
+                                </th>
 
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Remark
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
-                                        <p-columnFilter field="remark" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Remark
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
+                                      <p-columnFilter field="remark" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
                                     </div>
-                                  </th>
-                                  <th>
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Action
-                                    </div>
-                                  </th>
-                                </tr>
-                              </ng-template>
+                                  </div>
+                                </th>
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Action
+                                  </div>
+                                </th>
+                              </tr>
+                            </ng-template>
 
-                              <ng-template pTemplate="body" let-summary let-rowIndex = "rowIndex">
-                                <tr>
+                            <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
+                              <tr>
                                 <td><span tooltip="{{rowIndex+1}}">{{rowIndex+1}}</span></td>
                                 <td><span tooltip="{{summary.nameOfInstitution}}">{{summary.nameOfInstitution}}</span>
                                 </td>
                                 <td><span tooltip="{{summary.villege}}">{{summary.city}}/{{summary.villege}}</span></td>
                                 <td><span tooltip="{{summary.nature}}">{{summary.nature}}</span></td>
                                 <td><span tooltip="{{summary.headMasterId}}">{{summary.headMasterId}}</span></td>
-                                <td><span
-                                    *ngIf="summary.empApplicationProcess == true">Yes</span>
+                                <td><span *ngIf="summary.empApplicationProcess == true">Yes</span>
                                 </td>
                                 <td><span *ngIf="summary.goal == true">Yes</span></td>
                                 <td><span tooltip="{{summary.remark}}">{{summary.remark}}</span></td>
@@ -740,13 +736,12 @@
                                     (click)="editMasterData(summary)" tooltip="Edit"></i>
                                   <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
                                     (click)="viewMasterData(summary)" tooltip="View"></i>
-                                
+
                                 </td>
-                              </tr>  
-                              </ng-template>
+                              </tr>
+                            </ng-template>
                           </p-table>
 
-                      </div>
                       </div>
                     </div>
                   </div>
@@ -763,27 +758,28 @@
   </div>
 </div>
 
-
+<!-- Delete confirmation popup-->
 <ng-template #deleteTemp>
   <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
   </div>
   <div class="modal-body mb-0 pb-0 pt-0">
-      <div class="card mb-0">
-          <div class="card-body">
-              <div class="row clearfix">
-                  <div class="col-md-12">
-                      <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;
-                        Are you sure want to delete?
-                   </label>
-                  </div>
-              </div>
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;
+              Are you sure want to delete?
+            </label>
           </div>
+        </div>
       </div>
+    </div>
   </div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="removeDocumentList();modalRef.hide()">Yes</button>
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+    <button type="button" class="btn btn-primary" (click)="removeDocumentList();modalRef.hide()">Yes</button>
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
   </div>
 </ng-template>

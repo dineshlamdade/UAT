@@ -62,6 +62,7 @@ export class FinancialMasterComponent implements OnInit {
   selectedEmployeeMasterId: number;
   headType: any;
   summaryData: any;
+  employeeMasterId: any;
 
   constructor(private service: FinancialMasterService,
     private datePipe: DatePipe,
@@ -78,9 +79,11 @@ export class FinancialMasterComponent implements OnInit {
       this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
       // localStorage.removeItem('payrollListEmpData')
       this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+      this.employeeMasterId = this.payrollListEmpData[this.index].employeeMasterId;
       this.selectedPayrollArea = this.payrollListEmpData[this.index].payrollAreaCode
       this.payrollAreaId = this.payrollListEmpData[this.index].payrollAreaId
-
+      this.getCurrencyDetails();
+      this.getEmployeeDetails(1);  
     }
 
     this.headData = [
@@ -107,8 +110,6 @@ export class FinancialMasterComponent implements OnInit {
    
     this.getAllSummarydata();
 
-    this.getCurrencyDetails();
-    this.getEmployeeDetails(1);
     this.getAllEmployeeDetails()
     this.summaryPage();
     this.changeValueFlag = true;
@@ -174,7 +175,7 @@ export class FinancialMasterComponent implements OnInit {
     this.masterGridData = [];
     this.headsFlag = [];
     // const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
+    const empId = this.employeeMasterId;
     this.service.getAllRecords(empId).subscribe((res) => {
       // console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -191,7 +192,7 @@ export class FinancialMasterComponent implements OnInit {
 
   public getEmployeeDetails(index): void {
     // const id = this.employeeListsArray[index]
-    const id = this.payrollListEmpData[this.index].employeeMasterId; // this.employeeId
+    const id = this.employeeMasterId; // this.employeeId
     this.service.getEmployeeDetails(id).subscribe((res) => {
       // console.log('Employee Details::', res.data.results[0]);
       this.employeeDetails = res.data.results[0][0];
@@ -200,14 +201,17 @@ export class FinancialMasterComponent implements OnInit {
 
   public getCurrencyDetails(): void {
     // const id = this.employeeListsArray[ this.employeeListIndex]
-    const id = this.payrollListEmpData[this.index].employeeMasterId;
+    if(localStorage.getItem('payrollListEmpData') != null){
+      const id = this.employeeMasterId;
 
-    this.service.getCurrencyDetails(id).subscribe((res) => {
-      // console.log('Currency::', res.data.results);
-      this.currency = res.data.results[0].currency;
-      const frequencyId = res.data.results[0].businessCycleDefinitionId;
-      this.getFrequencyMaster(frequencyId);
-    });
+      this.service.getCurrencyDetails(id).subscribe((res) => {
+        // console.log('Currency::', res.data.results);
+        this.currency = res.data.results[0].currency;
+        const frequencyId = res.data.results[0].businessCycleDefinitionId;
+        this.getFrequencyMaster(frequencyId);
+      });
+   
+    }
   }
 
   public getFrequencyMaster(id): void {
@@ -324,7 +328,7 @@ export class FinancialMasterComponent implements OnInit {
     // console.log(' save2', this.recievedMasterGridData);
     const data = [];
     // const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
+    const empId = this.employeeMasterId;
     for (let i = 0; i < this.masterGridData.length; i++) {
       if (this.masterGridData[i].isPEIRecord === 'Yes') {
         this.masterGridData[i].fromdate = this.datePipe.transform(
@@ -448,7 +452,7 @@ export class FinancialMasterComponent implements OnInit {
     this.employeeListIndex = this.employeeListIndex + 1;
     this.index = this.index +1
     //const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
+    const empId = this.employeeMasterId;
     this.getEmployeeDetails(empId);
     this.summaryPage();
   }

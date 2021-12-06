@@ -27,6 +27,7 @@
                                                                         Records &nbsp;<span
                                                                             class="text-dark-green font-14 font-bold">({{selectedEmployeeLength}})</span></label>
                                                                 </div>
+
                                                                 <!-- Summary top buttons -->
                                                                 <div class="col-md-6">
                                                                     <div class="float-right">
@@ -59,15 +60,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Excel Download-->
-                                                                <!-- <a tooltip="Download"
-                                                                    style="cursor: pointer;float:right; margin-left: 98%; margin-top: 7px;"
-                                                                    (click)="SummaryexportAsXLSX()">
-                                                                    <i class="fa fa-file-excel-o font-18 text-dark-green"
-                                                                        aria-hidden="true">
-                                                                    </i>
-                                                                </a> -->
-
                                                             </div>
 
                                                             <div class="table-responsive Custom_Table">
@@ -87,14 +79,12 @@
                                                                             <div class="col-md-12">
                                                                                 <div class="float-right">
                                                                                     <div class="d-flex">
-                                                                                        <span
-                                                                                            class="p-input-icon-left p-ml-auto">
-                                                                                            <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText
-                                                                                                type="text"
+                                                                                        <!-- <i class=" fas fa-filter text-purple mr-2 mt-1  font-24"></i> -->
+                                                                                        <span class="p-input-icon-left p-ml-auto">
+                                                                                            <i class="pi pi-search" style="top: 9px !important; margin-right: 20px; "></i>
+                                                                                            <input pInputText type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                                                                placeholder="Search " />
+                                                                                                placeholder="Search" />
                                                                                         </span>
                                                                                         <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
                                                                                             (click)="SummaryexportAsXLSX()"></i>
@@ -470,7 +460,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <br>
+                                                           
                                                             <div class="tabview-contents mt-25"
                                                                 *ngIf="selectedOption == 'single' ">
 
@@ -730,7 +720,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -809,7 +799,7 @@
                                                                                                 </div>
                                                                                             </th>
                                                                                             <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                                >
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                                     Frequency
@@ -1003,7 +993,7 @@
                                                                                             class="form-lable mb-0">{{data.frequency}}
                                                                                         </label> -->
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1206,7 +1196,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -1286,8 +1276,7 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
-                                                                                            <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                            <th rowspan="2">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                                     Frequency
@@ -1476,7 +1465,7 @@
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1869,13 +1858,6 @@
                                                             </div>
 
                                                             <!-- Edit schedule data-->
-                                                            <!-- <a tooltip="Download" style="cursor: pointer;float:right;"
-                                                                (click)="ScheduleExportAsXLSX()"
-                                                                *ngIf="editScheduleFlag">
-                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                                                                    aria-hidden="true">
-                                                                </i>
-                                                            </a> -->
                                                             <div class="table-responsive Custom_Table">
                                                                 <p-table
                                                                     [value]="NonRecurringTransactionScheduleEMPdData"
@@ -1896,7 +1878,7 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                             <input pInputText
                                                                                                 type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
@@ -2005,18 +1987,6 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
                                                                                 </div>
                                                                             </th>
 
@@ -2137,12 +2107,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -2319,7 +2328,7 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                             <input pInputText
                                                                                                 type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
@@ -2428,18 +2437,7 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
+                                                                                   
                                                                                 </div>
                                                                             </th>
 
@@ -2561,12 +2559,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -3599,12 +3636,12 @@
             (click)="saveClawBack();modalRef.hide()" tooltip="Save">
             <b><i class="fa fa-floppy-o"></i></b> Save </button>
         <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-            tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+        (click)="modalRef.hide()" tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
             Cancel</button>
 
-        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+        <!-- <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
             tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
-            Reset</button>
+            Reset</button> -->
     </div>
 </ng-template>
 

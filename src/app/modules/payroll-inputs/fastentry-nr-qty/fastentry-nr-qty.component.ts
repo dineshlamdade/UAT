@@ -1,8 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
-import { familyAddressDetailRequestDTO } from '../../employee-master/components/family-information/family-information.model';
 import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
@@ -83,7 +82,8 @@ export class FastentryNrQtyComponent implements OnInit {
     private nonRecService:NonRecurringAmtService,
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
-    private toaster: ToastrService) {
+    private toaster: AlertServiceService
+    ) {
     // this.headData = [
     //   { displayName: 'Incentive', headMasterId: 33 },
     //   { displayName: 'Performance_Incentive', headMasterId: 49 },
@@ -1853,7 +1853,7 @@ export class FastentryNrQtyComponent implements OnInit {
     console.log("this.saveTransactionData: " + JSON.stringify(this.saveTransactionData))
     this.nonrecqtyservice.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
         this.tempTableData = []
         this.tableData = []
@@ -1866,7 +1866,7 @@ export class FastentryNrQtyComponent implements OnInit {
   saveAndClearFastEntries() {
     this.nonrecqtyservice.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.selectedEmployeeData = []
         this.saveTransactionData = [];
         this.tempTableData = [];
