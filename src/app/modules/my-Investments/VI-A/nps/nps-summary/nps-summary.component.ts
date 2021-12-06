@@ -16,11 +16,14 @@ export class NpsSummaryComponent implements OnInit {
   @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
-  public nps80CCSummaryGridData: Array<any> = [];
+  public nps80CCSummaryGridData:any = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public grandTotalDeclaredAmount: number;
+  public minimumOfDeclaredAndLimit: number;
+  public minimumOfActualAndLimit : number;
+  
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -54,7 +57,7 @@ export class NpsSummaryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.summaryPage();
-    this.nps80CCSummaryGetPage();
+    
   }
   redirectToDeclarationActual(
     institution: string,
@@ -86,7 +89,12 @@ export class NpsSummaryComponent implements OnInit {
   nps80CCSummaryGetPage() {
     this.npsService.getEmployeeNPSCCD1().subscribe((res) => {
       this.nps80CCSummaryGridData = res.data.results[0];
-      console.log("this.nps80CCSummaryGridData", this.nps80CCSummaryGridData);
+      console.log("this.nps80CCSummaryGridData: "+ JSON.stringify( res.data.results[0]))
+      this.minimumOfDeclaredAndLimit =   res.data.results[0].minimumOfDeclaredAndLimit;
+      this.minimumOfActualAndLimit = res.data.results[0].minimumOfActualAndLimit;
+      
+      console.log("minimumOfDeclaredAndLimit", this.minimumOfDeclaredAndLimit);
+      this.onChangeLimit();
     });
   }
 
@@ -102,7 +110,7 @@ export class NpsSummaryComponent implements OnInit {
         this.grandTotalDeclaredAmount =
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        this.onChangeLimit();
+        this.nps80CCSummaryGetPage();
       }
     });
   }
@@ -164,12 +172,12 @@ export class NpsSummaryComponent implements OnInit {
 
   // }
   onChangeLimit() {
-    this.deductionEDeclared = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionFDeclared =
-      this.grandTotalDeclaredAmount - this.deductionEDeclared;
+    this.deductionEDeclared = Math.min(this.minimumOfDeclaredAndLimit, this.limitD);
+   // console.log("minimumOfDeclaredAndLimit",this.minimumOfDeclaredAndLimit)
+    this.eligibleForDeductionFDeclared =this.minimumOfDeclaredAndLimit- this.deductionEDeclared;
 
-    this.deductionEActual = Math.min(this.grandTotalActualAmount, this.limitD);
+    this.deductionEActual = Math.min(this.minimumOfActualAndLimit, this.limitD);
     this.eligibleForDeductionFActual =
-      this.grandTotalActualAmount - this.deductionEActual;
+      this.minimumOfActualAndLimit - this.deductionEActual;
   }
 }

@@ -11,15 +11,7 @@
                 <div class="card-body p-0">
                   <div class="row">
 
-                    <div class="col-sm-3">
-                      <label class="form-label">Head Name</label>
-                      <input type="text" formControlName="complianceHeadName" class="form-control" autocomplete="off"
-                        name="complianceHeadName" placeholder="Enter Head Name"
-                        (change)="isShortNameContainsOnlySpecialCharacter()" maxlength="20"
-                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'   || invalidComplianceHeadName == true  }">
-                    </div>
-
-                    <div class="col-sm-3">
+                    <div class="col-sm-3" *ngIf="hideType">
                       <label class="form-label">Type</label>
                       <select name="shortName" id="shortName" class="form-control" formControlName="shortName"
                         [ngClass]="{'is-invalid' : form.get('shortName').status == 'INVALID'}"
@@ -42,7 +34,14 @@
                         </option>
                       </select>
                     </div>
-
+<!-- head Name Replace Compliance Name -->
+                    <div class="col-sm-3">
+                      <label class="form-label">Compliance Name</label>
+                      <input type="text" formControlName="complianceHeadName" class="form-control" autocomplete="off"
+                        name="complianceHeadName" placeholder="Enter Head Name"
+                        (change)="isShortNameContainsOnlySpecialCharacter()" maxlength="20"
+                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'   || invalidComplianceHeadName == true  }">
+                    </div>
 
 
                     <div class="col-sm-3">
@@ -50,7 +49,7 @@
                       <select name="aplicabilityLevel" id="aplicabilityLevel" class="form-control"
                         formControlName="aplicabilityLevel"
                         [ngClass]="{'is-invalid' : form.get('aplicabilityLevel').status == 'INVALID'}"
-                        (change)='onSelectApplicabilityLevel($event.target.value)'>
+                        (change)='onSelectApplicabilityLevel($event.target.value,template)'>
                         <option selected value=''>Select </option>
                         <option *ngFor="let applicabilityLevel of aplicabilityLevelList" [value]="applicabilityLevel">
                           {{applicabilityLevel}}
@@ -58,10 +57,40 @@
                       </select>
                     </div>
 
-                  </div>
+                    <!-- <div class="col-sm-3">
+                      <label class="form-label">Statutory Frequency</label>
+                      <select name="statutory" id="statutory" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('statutory').status == 'INVALID'}" formControlName="country">
+                        <option selected value=''>Select</option>
+                        <option *ngFor="let statutory of  statutoryFrq" >
+                          {{statutory.name}}
+                        </option>
+                      </select>
+            
+                    </div> -->
+
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Statutory Frequency</label>
+                    
+                      <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" 
+                      [ngModelOptions]="{standalone: true}"
+                      optionLabel="name"  placeholder="Select All"></p-multiSelect> -->
+
+                      <ng-multiselect-dropdown
+                      [placeholder]="'Select'"
+                      [settings]="dropdownSettings"
+                      [data]="frequencyData"
+                      
+                      (onSelect)="onItemSelect($event)"
+                      (onDeSelect)="onDeItemSelect($event)"
+                       (onSelectAll)="onSelectAll($event)"
+                                 >   
+                       </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
                   <div class="row mt-20">
-
-
 
                     <div class="col-sm-3">
                       <label class="form-label">Authority Handling</label>
@@ -78,6 +107,72 @@
                         placeholder="Enter Website Name">
                     </div>
 
+                    <div class="col-sm-3">
+                      <label class="form-label">Type Of Office</label>
+                      <select name="officetype" id="officeType" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('officetype').status == 'INVALID'}" formControlName="country">
+                        <option selected value=''>Select</option>
+                        <option *ngFor="let office of officeTypeList" [value]="office">
+                          {{office}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Related To</label>
+                      <select name="related" id="officeType" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('related').status == 'INVALID'}" formControlName="country">
+                        <option selected value=''>Select</option>
+                        <option *ngFor="let related of RelatedTo" [value]="related">
+                          {{related}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3" *ngIf="hideRemark">
+                      <label class="form-label">Remark</label>
+                      <textarea formControlName="remark" autocomplete="off" class="form-control" rows="2"
+                        [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"
+                        placeholder="Enter Remark"></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="row mt-20">
+                    <!-- <div class="col-sm-6 col-md-3">
+                      <label class="form-label ml-15" tooltip="" placement="left"> Is Monetary</label>
+                      <div class="custom-controls-stacked ml-15 mt-10">
+                        <label class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" class="custom-control-input" name="monetaryYes"
+                            formControlName="monetary" checked>
+                          <span class="custom-control-label">Yes</span>
+                        </label>
+                        <label class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" class="custom-control-input" name="monetaryNo"
+                            formControlName="monetary">
+                          <span class="custom-control-label">No</span>
+                        </label>
+                      </div>
+                    </div> -->
+
+                    <div class="col-sm-6 col-md-3">
+                      <label class="form-label ml-15" tooltip="" placement="left">Is Monetary </label>
+                      <div class="custom-controls-stacked ml-15 mt-10">
+                        <label class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" (change)="monetaryOption($event)"
+                            class="custom-control-input" name="monetary" formControlName="monetary"
+                            value=1 checked>
+                          <span class="custom-control-label">Yes</span>
+                        </label>
+                        <label class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" (change)="monetaryOption($event)"
+                            class="custom-control-input" name="monetary" formControlName="monetary"
+                            value=0>
+                          <span class="custom-control-label">No</span>
+                        </label>
+                      </div>
+                    </div>
+
                     <div class="col-md-3 mt-20">
                       <label class="custom-control custom-checkbox custom-control-inline pl-45">
                         <input formControlName="complianceActive" autocomplete="off" type="checkbox"
@@ -87,18 +182,7 @@
                       </label>
                     </div>
 
-
-                    <div class="col-md-3" *ngIf="hideRemark">
-                      <label class="form-label">Remark</label>
-                      <textarea formControlName="remark" autocomplete="off" class="form-control" rows="2"
-                        [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"
-                        placeholder="Enter Remark"></textarea>
                     </div>
-
-
-
-
-                  </div>
                   <!-- end of row -->
 
 
@@ -112,6 +196,7 @@
                           <button type="submit" [disabled]="form.invalid"
                             class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
                             (click)="save()"
+
                             [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i
                                 class="fa fa-floppy-o"></i></b> Save</button>
 
@@ -233,6 +318,32 @@
             </div>
           </div> -->
 <!--Prime Ng  -->
+<div class="tabset mt-25">
+  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked="">
+  <label for="tab1">Returns</label>
+  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+  <label for="tab2">Due Payment</label>
+  <input type="radio" name="tabset" id="tab3" aria-controls="acrossyear">
+  <label for="tab3">Renewals</label>
+  <input type="radio" name="tabset" id="tab4" aria-controls="applicability">
+  <label for="tab4">Applicability</label>
+  <div class="tab-panels">
+      <section id="marzen" class="tab-panel">
+
+       </section>
+       <section id="rauchbier" class="tab-panel">
+
+      </section>
+      <section id="acrossyear" class="tab-panel">
+
+      </section>
+      <section id="applicability" class="tab-panel">
+
+      </section>
+   </div>
+  </div>
+
+
           <br>
           <div class="row mb-0">
             <div class="col-md-12">
@@ -275,7 +386,7 @@
                    totalRecords={{summaryHtmlDataList.length}} 
                    [rowsPerPageOptions]="[10,25,50,100,200]"
                    
-                   [globalFilterFields]="['complianceHeadName', 'shortName',  'country','aplicabilityLevel','authorityHandling','remark']">
+                   [globalFilterFields]="['complianceHeadName', 'country','aplicabilityLevel','authorityHandling','remark']">
 
                      <ng-template pTemplate="header">
                        <tr>
@@ -286,7 +397,7 @@
                         
 
                        <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Head Name
+                          <div class="p-d-flex  justify-content-center p-ai-center">Compliance Name
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
                               <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
@@ -295,7 +406,7 @@
                           </div>
                         </th>
 
-                        <th class="text-center">
+                        <!-- <th class="text-center">
                           <div class="p-d-flex  justify-content-center p-ai-center">Type
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
@@ -303,7 +414,7 @@
                               </p-columnFilter>
                             </div>
                           </div>
-                        </th>
+                        </th> -->
                          <th class="text-center">
                           <div class="p-d-flex  justify-content-center p-ai-center">Country
                             <div class="Sort_Filter_Position">
@@ -356,10 +467,10 @@
                                   class="form-lable mb-0">
                                   {{summary.complianceHeadName}}</label>
                           </td>
-                          <td>
+                          <!-- <td>
                               <label
                                   class="form-lable mb-0 ">{{summary.shortName}}</label>
-                          </td>
+                          </td> -->
 
                           <td> <label
                                   class="form-lable mb-0 ">{{summary.country}}</label>
@@ -430,10 +541,439 @@
           </ng-template>
 
 
-
         </div>
       </div>
+
+<!-- new code -->
+ <ng-template #template>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">State List</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search" style="top: 9px !important"></i>
+                    <input pInputText type="text" class="form-control" (input)="
+                      dt1.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      " placeholder="Search keyword" />
+                  </span>
+                </div>
+                &nbsp;
+                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer" tooltip="Export To Excel"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row clearfix">
+
+            <div class="col-md-12">
+
+              <p-table #dt1 [value]="State" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                (sortFunction)="customSort($event)" [customSort]="true" [pageLinks]="5"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                totalRecords={{State.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+        'state',
+        'Applicable',
+      ]">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-center p-ai-center">State
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="State" pSortableColumn="State"></p-sortIcon>
+                          <p-columnFilter type="State" field="State" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+                    <th rowspan="2" class="text-center">
+                      <div class="p-d-flex p-jc-center p-ai-center">
+                        <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                          <input type="checkbox" class="custom-control-input" name="select" /> <span
+                            class="custom-control-label">Applicable</span>
+                        </label>
+
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+
+                </ng-template>
+                <ng-template pTemplate="body" let-State>
+                  <tr class="p-selectable-row text-center">
+                    <td class="text-center">{{State}}</td>
+
+                    <td class="text-center">
+                      <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                        <input type="checkbox" class="custom-control-input" name="select" /> <span
+                          class="custom-control-label"></span>
+                      </label>
+
+                    </td>
+                  </tr>
+
+                </ng-template>
+
+
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                        Available</span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="float-right">
+
+
+            <ng-container>
+
+              <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                tooltip="Save" (click)="largepopup (template)"><b><i class="fa fa-arrow-circle-right"></i></b>
+                Proceed</button>
+              <button type="button" tooltip="Reset"
+                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                    class="fa fa-refresh"></i></b> Reset</button>
+              <button type="button" tooltip="Reset" (click)="modalRef.hide()"
+                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                    class="fa fa-times-circle"></i></b> Close</button>
+
+            </ng-container>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template> 
+
+<!-- 
+  <ng-template #city>
+    <div class="modal-header">
+           <h5 class="modal-title" id="UploadModalLabel">State With CitycList</h5>
+           <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                   aria-hidden="true">×</span></button>
+       </div>
+       <div class="modal-body">
+        <div class="row">
+            <div class="col-md-4">
+                <table class=" table table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th colspan="2">State With Cities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                      
+                        <td>
+                            <div class="d-flex">
+                                <i class="fas fa-chevron-right font-16 text-dark-green mr-2 mt-1" (click)="showAP()" *ngIf="!isshowAP"></i>
+                               
+                                <i class="fas fa-chevron-down font-16 text-dark-green mr-2 mt-1" (click)="hideAP()" *ngIf="isshowAP"></i>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Andhra Pradesh</span>
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="float-right ml-13" *ngIf="isshowAP">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Vishakhapatanam</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Vijaywada</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Guntur</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                      
+                        <td>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" />
+                                    <span class="custom-control-label">Arunachal Pradesh</span>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Papum Pare</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Changlang</span>
+                                    </label>
+                                </div>
+                              
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                       
+                        <td>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" />
+                                    <span class="custom-control-label">Arunachal Pradesh</span>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                           
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Papum Pare</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" />
+                                        <span class="custom-control-label">Changlang</span>
+                                    </label>
+                                </div>
+                              
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    
+                        <td>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" />
+                                    <span class="custom-control-label">Bihar</span>
+                                </label>
+                            </div>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                      
+                        <td>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" />
+                                    <span class="custom-control-label">Delhi</span>
+                                </label>
+                            </div>
+                           
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+           <div class="modal-footer">
+            </div>
+           </ng-template> -->
+
+           <!-- <div class="row">
+            <div class="col-md-6">
+               <div class="table-responsive Custom_Table">
+                   <p-table  class="mt-10"
+                       [paginator]="true" [rows]="10"
+                       [showCurrentPageReport]="true"
+                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [rowsPerPageOptions]="[10,25,50,100,200]"
+                       [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']">
+                       <ng-template pTemplate="caption">
+                           <div class="row">
+                               <div class="col-md-12">
+    
+                                   <div class="float-right">
+                                       <div class="d-flex">
+                                           <span
+                                               class="p-input-icon-left p-ml-auto">
+                                               <i class="pi pi-search"
+                                                   style="top: 9px !important;"></i>
+                                               <input pInputText
+                                                   type="text"
+                                                   (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                   placeholder="Search " />
+                                           </span>
+    
+                                           <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
+                                               (click)="SummaryexportAsXLSX()"></i>
+                                       </div>
+                                   </div>
+    
+    
+                               </div>
+                           </div>
+                       </ng-template>
+    
+                       <ng-template pTemplate="header">
+                           <tr>
+                               <th colspan="2">State With Cities</th>
+                           </tr>
+                       </ng-template>
+    
+                       <ng-template pTemplate="body" >
+                           <tr >
+                               <td><i class="fas fa-chevron-right font-16 text-dark-green"></i></td>
+                               <td>
+                                   <div class="form-group">
+                                       <label class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input" />
+                                           <span class="custom-control-label">Andhra Pradesh</span>
+                                       </label>
+                                   </div>
+                                   <div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Vishakhapatanam</span>
+                                           </label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Vijaywada</span>
+                                           </label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Guntur</span>
+                                           </label>
+                                       </div>
+                                   </div>
+                               </td>
+                              
+                           </tr>
+                           <tr>
+                               <td></td>
+                               <td>
+                                   <div class="form-group">
+                                       <label class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input" />
+                                           <span class="custom-control-label">Arunachal Pradesh</span>
+                                       </label>
+                                   </div>
+                                   <div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Papum Pare</span>
+                                           </label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Changlang</span>
+                                           </label>
+                                       </div>
+                                     
+                                   </div>
+                               </td>
+                           </tr>
+                           <tr>
+                               <td></td>
+                               <td>
+                                   <div class="form-group">
+                                       <label class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input" />
+                                           <span class="custom-control-label">Arunachal Pradesh</span>
+                                       </label>
+                                   </div>
+                                   <div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                  
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Papum Pare</span>
+                                           </label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="custom-control custom-checkbox">
+                                               <input type="checkbox" class="custom-control-input" />
+                                               <span class="custom-control-label">Changlang</span>
+                                           </label>
+                                       </div>
+                                     
+                                   </div>
+                               </td>
+                           </tr>
+                           <tr>
+                               <td></td>
+                               <td>
+                                   <div class="form-group">
+                                       <label class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input" />
+                                           <span class="custom-control-label">Bihar</span>
+                                       </label>
+                                   </div>
+                                  
+                               </td>
+                           </tr>
+                           <tr>
+                               <td></td>
+                               <td>
+                                   <div class="form-group">
+                                       <label class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input" />
+                                           <span class="custom-control-label">Delhi</span>
+                                       </label>
+                                   </div>
+                                  
+                               </td>
+                           </tr>
+                       </ng-template>
+                   </p-table>
+               </div>
+            </div>
+        </div> -->
+
+
+      
       <app-footer></app-footer>
     </div>
   </div>
+
+  
+
 </form>

@@ -146,6 +146,10 @@ export class HousingloanmasterComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public visibilityFlagFamily : boolean  = false;
+  public isSaveLoan : boolean  = true;
+  public isUpdateLoan : boolean  = false;
+  public isSaveShowInOwner : boolean  = true;
+  public isUpdateShowInOwner : boolean  = false;
   public relationFlag : boolean = true;
   public visibilityFlag : boolean  = true;
   public visibilityFlagStamp : boolean = true;
@@ -161,6 +165,8 @@ export class HousingloanmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public testVariable: Array<any> = [];
+  public isShowUsageInSave : boolean = true;
+  public isShowUsageInUpdate : boolean = false;
 
   public proofSubmissionId;
 
@@ -176,6 +182,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   public abc: any[];
   myDate: string;
+  selectedLoanTypeIndex: any = -1;
   // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   // ServicesList: any;
   constructor(
@@ -229,8 +236,8 @@ export class HousingloanmasterComponent implements OnInit {
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
         familyMemberInfoId: new FormControl(0, Validators.required),
-        ownerName: new FormControl('', Validators.required),
-        firstTimeHomeBuyer: new FormControl('', Validators.required),
+        ownerName: new FormControl(null, Validators.required),
+        firstTimeHomeBuyer: new FormControl('true', Validators.required),
         relationship: new FormControl({ value:'', disabled: true }),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
@@ -477,40 +484,43 @@ export class HousingloanmasterComponent implements OnInit {
   }
   public cancelOwnerType() {
     this.HPOwnerDetailForm.reset();
+    this.isSaveShowInOwner = true,
+    this.isUpdateShowInOwner = false
   }
 
   public addOwnerType() {
-
-
+    this.isSaveShowInOwner = true,
+    this.isUpdateShowInOwner = false,
+    // houseLoanOwnerDetailSubmitted
     this.houseLoanOwnerDetailSubmitted = true;
     // housePropertyLoanDetailList  HPUsageDetailForm HPOwnerDetailForm
     if (this.HPOwnerDetailForm.invalid) {
-      console.log("HPOwnerDetailForm",this.HPOwnerDetailForm);
+     // console.log("HPOwnerDetailForm",this.HPOwnerDetailForm);
       return;
     }
 
     this.globalAddRowIndex1 -= 1;
     // this.alertService.sweetalertWarning('Please enter PAN details');
 
-    console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
-    console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
+   // console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
+   // console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
     if(this.houseLoanOwnerTypeList.find(
       (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
       {
     this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
-  
+
   if(  this.masterGridData.find((element) => {
     return element.housePropertyOwerDetailList.find((item) => {
-  
+
       return item.ownerName === this.HPOwnerDetailForm.value.ownerName;
     });
   })) {
     this.alertService.sweetalertWarning('Owner name is already exists.');
     return;
   }
-  
+
 
     // this.houseLoanOwnerTypeList.find(
     //   (owner) =>
@@ -523,14 +533,20 @@ export class HousingloanmasterComponent implements OnInit {
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === null
     ) {
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId = this.globalAddRowIndex1;
-      console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm.value)
+    //  console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm.value)
       this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
+     // console.log("houseLoanOwnerTypeList", this.houseLoanOwnerTypeList)
+
     } else {
       const index = this.houseLoanOwnerTypeList.findIndex(
         (land) =>
           land.housePropertyOwnerDetailId ===
           this.HPOwnerDetailForm.value.housePropertyOwnerDetailId
       );
+      this.houseLoanOwnerTypeList = []
+      console.log("this.HPOwnerDetailForm.value: "+ JSON.stringify(this.HPOwnerDetailForm.value))
+
+      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
 
       // this.houseLoanOwnerTypeList[index].rentAmount = this.housingLoanForm.get(
       //   'HPOwnerDetailForm'
@@ -540,17 +556,28 @@ export class HousingloanmasterComponent implements OnInit {
     }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
     console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
-
-    this.HPOwnerDetailForm.reset();
+  //  this.HPOwnerDetailForm.get('houseLoanOwnerTypeList').reset();
+  this.HPOwnerDetailForm.reset();
     this.houseLoanOwnerDetailSubmitted = false;
+    this.HPOwnerDetailForm.patchValue({
+      firstTimeHomeBuyer:'true',
+    });
+    this.HPOwnerDetailForm.reset();
+
   }
 
   public cancelUsageType() {
     this.HPUsageDetailForm.reset();
+    this.isShowUsageInSave = true;
+    this.isShowUsageInUpdate = false;
   }
 
   public addUsageType() {
-    /*    console.log('event::', this.HPUsageDetailForm); */
+    /*    console.log('event::', this
+    .HPUsageDetailForm); */
+
+    this.isShowUsageInSave = true;
+    this.isShowUsageInUpdate = false;
     this.houseLoanDetailSubmitted = true;
     if (this.HPUsageDetailForm.invalid) {
       return;
@@ -590,7 +617,10 @@ export class HousingloanmasterComponent implements OnInit {
           land.housePropertyUsageTypeId ===
           this.HPUsageDetailForm.value.housePropertyUsageTypeId
       );
+      this.houseLoanUsageTypeList = []
+      console.log("this.HPUsageDetailForm.value: "+ JSON.stringify(this.HPUsageDetailForm.value))
 
+      this.houseLoanUsageTypeList.push(this.HPUsageDetailForm.value);
       // this.houseLoanUsageTypeList[index].fromDate = this.housingLoanForm.get(
       //   'HPUsageDetailForm'
       // ).value.fromDate;
@@ -605,7 +635,7 @@ export class HousingloanmasterComponent implements OnInit {
 
       this.houseLoanUsageTypeList[
         index
-      ].toDate = this.housingLoanForm.value.toDate;
+      ].toDate = this.HPUsageDetailForm.value.toDate;
 
       // this.houseLoanUsageTypeList[index].rentAmount = this.housingLoanForm.get(
       //   'HPUsageDetailForm'
@@ -642,10 +672,14 @@ export class HousingloanmasterComponent implements OnInit {
 
   public cancelLoanDetails() {
     this.housePropertyLoanDetailList.reset();
+    this.isSaveLoan = true;
+    this.isUpdateLoan = false;
   }
 
   public addLoanDetails(formDirective: FormGroupDirective) {
     this.loansubmitted = true;
+    this.isSaveLoan = true;
+    this.isUpdateLoan = false;
 
 
     // if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
@@ -664,9 +698,11 @@ export class HousingloanmasterComponent implements OnInit {
     if (this.housePropertyLoanDetailList.invalid) {
       return;
     }
-    this.loanDetailGridData.push(
-      this.housePropertyLoanDetailList.getRawValue()
-    );
+
+    console.log(this.housePropertyLoanDetailList.getRawValue())
+    console.log(this.selectedLoanTypeIndex)
+    this.loanDetailGridData = [];
+    this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
     this.housePropertyLoanDetailList.reset();
     this.loansubmitted = false;
   }
@@ -904,7 +940,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-   
+
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
@@ -1363,7 +1399,10 @@ export class HousingloanmasterComponent implements OnInit {
 
 
   //Edit Loan Detail Table
-  editLoanDetails(loanDetails) {
+  editLoanDetails(loanDetails, index) {
+    this.isSaveLoan = false;
+    this.isUpdateLoan = true;
+    this.selectedLoanTypeIndex = index
     // this.housePropertyLoanDetailList.patchValue(this.loanDetailGridData[i]);
     this.housePropertyLoanDetailList.patchValue({
       housePropertyLoanDetailId: loanDetails.housePropertyLoanDetailId,
@@ -1381,6 +1420,8 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public editLoanUsageDetails(loanDetail) {
+   this.isShowUsageInSave = false;
+     this.isShowUsageInUpdate = true;
     // this.agreementDetailsTableList=[];
     console.log('HPUsageDetailForm', this.HPUsageDetailForm);
     this.HPUsageDetailForm.patchValue({
@@ -1391,9 +1432,24 @@ export class HousingloanmasterComponent implements OnInit {
     });
   }
 
-  // //edit houseLoanUsageTypeList
-  editLoanOwnerDetail(i: number) {
-    this.HPOwnerDetailForm.patchValue(this.houseLoanOwnerTypeList[i]);
+  // //edit houseLoanUsageTypeList Changes by Komal
+  editLoanOwnerDetail(evt) {
+    this.isSaveShowInOwner = false,
+    this.isUpdateShowInOwner = true,
+    console.log(evt)
+
+
+    this.HPOwnerDetailForm.patchValue({
+
+      housePropertyOwnerDetailId: evt.housePropertyOwnerDetailId,
+      // firstTimeHomeBuyer: evt.firstTimeHomeBuyer,
+      firstTimeHomeBuyer: evt.firstTimeHomeBuyer,
+      ownerName: evt.ownerName,
+      relationship: evt.relationship
+
+
+    })
+    this.HPOwnerDetailForm.patchValue(this.houseLoanOwnerTypeList[evt]);
   }
 
   // //edit houseLoanUsageTypeList

@@ -214,6 +214,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
             this.approved1Disabled = false;
           } else if (this.test.includes('Discarded')) {
             this.approved1Disabled = true;
+            this.approvedDisabled = true;
           }
             // if(doc.documentStatus =="Approved") {
             //   this.approvedDisabled = false;
@@ -252,7 +253,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   // ------------ Open Document in Next Window -------------------
   navigateToDocumentViewer(documentInformationId: any) {
-    debugger
+    
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['/investment-approval/documentview'])
     );
@@ -275,8 +276,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.documentList.indexOf(docDetail);
     console.log('index::', index);
+    
 
     this.transactionInfo.documentList[index].statusRemark = event.target.value;
+    this.documentList[index].statusRemark = event.target.value;
+
+
+    
   }
 
   // -------------- Doc Remark Modal ---------------------------
@@ -286,7 +292,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     documentRemarkList,
     psid
   ) {
-    debugger
+    
     this.investmentTransactionApprovalService.getTransactionDocumentApprovalRemarkList(
       psid,
     ).subscribe((res) => {
@@ -310,7 +316,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     data,
     transactionId
   ) {
-    debugger
+    
     this.investmentTransactionApprovalService.getTransactionApprovalRemarkList(
       transactionId,
     ).subscribe((res) => {
@@ -343,14 +349,21 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       // if(status == 'Approved')
       this.alertService.sweetalertWarning('Please Select Atleast One Document');
       return;
-    }
+    } 
+    
     if(status=='Discarded'){
       this.documentList.forEach((doc) => {
         if(doc.statusRemark=='' || doc.statusRemark==undefined){
-          this.alertService.sweetalertWarning('Please give Remark for Rejected Document');
-          return;
+          this.documentRemarkValidation = true;
+        
         }
       });
+    }
+    if(this.documentRemarkValidation){
+    this.alertService.sweetalertWarning
+    ('Please give Remark for Discarded Document');
+    this.documentRemarkValidation = false;
+    return;
     }
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
@@ -372,7 +385,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     this.investmentMasterApprovalService
       .changeMasterDocumentStatus(formData)
       .subscribe((res: any) => {
-        debugger
+        
         console.log('res Doc:', res);
         if (res != null || res != undefined) {
           if (this.documentList.length == 1) {
@@ -391,6 +404,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
           this.documentDetailList =
             res.data.results[0].documentList;
           this.getTransactionInfoByPSID(res.data.results[0].body.data.results[0].psidDetail.psid);
+          this.getEmployeeInfo(60);
+ this.getTransactionInfoByPSID(this.globalPSID);
           // this.getTransactionInfoByPSID(this.globalPSID);
         }
         this.documentList = [];
@@ -431,7 +446,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   // ------------ Change PSID Status of Transactionwith Each Line Item --------------------------------------
   changePSIDStatusOfTransaction(status: any) {
     console.log("status::",status)
-    debugger
+    
 
      if(status=='SendBack'){
 
@@ -625,7 +640,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeTransactionalRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    debugger
+    
     this.testRemark = event.target.value;
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
@@ -674,7 +689,8 @@ public postMethodCall(data):void{
               transaction.amountApproved = this.numberFormatPipe.transform(transaction.amountApproved)
               transaction.amountRejected = this.numberFormatPipe.transform(transaction.amountRejected)
            
-             
+              this.getEmployeeInfo(60);
+ this.getTransactionInfoByPSID(this.globalPSID);
             });
           });
         }

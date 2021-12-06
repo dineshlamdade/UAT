@@ -66,6 +66,8 @@ export class LicdeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public remarkCount : any;
+  summaryDetails: any;
+  indexCount: any;
 
 
   viewDocumentName: any;
@@ -1121,6 +1123,7 @@ console.log( this.editTransactionUpload);
   // }
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     debugger
     console.log('event.target.value::', event.target.value);
     
    console.log('this.transactionDetail', this.transactionDetail);
@@ -1600,11 +1603,16 @@ console.log( this.editTransactionUpload);
       });
   }
   public docRemarkModal(
+
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    lictransactionID
+    lictransactionID,
+    summary, count
   ) {
+    debugger
   
+    this.summaryDetails = summary;
+    this.indexCount = count;
     this.Service.getLicRemarkList(
       lictransactionID,
     ).subscribe((res) => {

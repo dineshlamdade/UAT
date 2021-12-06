@@ -1472,25 +1472,25 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
-        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
-        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
-         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
-        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
+        this.documentRemark =res?.data?.results[0]?.documentInformation[0]?.documentRemark;
+        this.urlArray = res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
+        this.disableRemark = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
+         this.editTransactionUpload = res?.data?.results[0]?.investmentGroupTransactionDetail;
+        this.editProofSubmissionId = res?.data?.results[0]?.proofSubmissionId;
+        this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
+        this.grandDeclarationTotalEditModal = res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
+        this.grandRejectedTotalEditModal = res?.data?.results[0]?.grandRejectedTotal;
+        this.grandApprovedTotalEditModal = res?.data?.results[0]?.grandApprovedTotal;
       
         //console.log('converted:: ', this.urlArray);
-        this.editTransactionUpload.forEach((element) => {
-          element.groupTransactionList.forEach((innerElement) => {
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount,
+        this.editTransactionUpload?.forEach((element) => {
+          element.groupTransactionList?.forEach((innerElement) => {
+            innerElement.declaredAmount = this.numberFormat?.transform(
+              innerElement?.declaredAmount,
             );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount,
+            innerElement.actualAmount = this.numberFormat?.transform(
+              innerElement?.actualAmount,
             );
           });
         });

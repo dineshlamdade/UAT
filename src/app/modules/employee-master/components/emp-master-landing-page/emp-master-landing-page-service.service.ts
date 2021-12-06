@@ -20,6 +20,15 @@ export class EmpMasterLandingPageServiceService {
     }))
   }
 
+  // getPaymentTrackingData(){
+  //   // const body = { EmployeePersonalRequestDTO: personalInformationModel }
+
+  //   return this.httpClient.get(environment.baseUrl8092 + 'Payment-Tracking/getSummary', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
+
 
   getEmployeeSummaryInformation(body){
     // const body = { EmployeePersonalRequestDTO: personalInformationModel }

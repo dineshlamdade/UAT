@@ -419,7 +419,7 @@
                                               </div>
                                               <input data-provide="datepicker" data-date-autoclose="true"
                                                 (ngModelChange)="updateToDate($event, user1.jobMasterValueId)"
-                                                (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                                               
                                                 [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate"
                                                 [(ngModel)]="user1.toDate"
                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" class="form-control"
@@ -428,6 +428,7 @@
                                           </div>
                                         </td>
                                         <!-- *ngIf="user1.attributeNatureLongForm == 'List'" -->
+                                        <!-- (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" -->
                                       </tr>
                                     </ng-template>
                                     <ng-template pTemplate="emptymessage">

@@ -19,6 +19,7 @@
                         <select name="ifscCode" id="ifscCode" class="form-control" formControlName="ifscCode"
                           [ngClass]="{'is-invalid' : form.get('ifscCode').status == 'INVALID'}"
                           (change)='onSelectIFSCCode($event.target.value)'>
+                          <option selected value=''>Select </option>
                           <option *ngFor="let ifscCode of ifscCodeList" [value]="ifscCode">
                             {{ifscCode}}
                           </option>
@@ -39,6 +40,7 @@
                         <select name="accountType" id="accountType" class="form-control" formControlName="accountType"
                           [ngClass]="{'is-invalid' : form.get('accountType').status == 'INVALID'}"
                           (change)='onSelectTypeOfAccount($event.target.value)'>
+                          <option selected value=''>Select </option>
                           <option *ngFor="let typeOfAccount of typeOfAccountList" [value]="typeOfAccount">
                             {{typeOfAccount}}
                           </option>
@@ -59,7 +61,7 @@
                           
                           <input [type]="accountNumber ? 'number' : 'password'" formControlName="accountNumber"
                           class="form-control" name="accountNumber" (keyup)="account($event)"
-                          [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}">
+                          [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}" placeholder="Enter Account Number">
                         <i class="field-icon" [ngClass]="accountNumber? 'fa fa-eye':'fa fa-eye-slash'"
                           style="position: relative;right: 3px;font-size: 16px;top: 2px;"
                           (click)="accountNumber = !accountNumber;hideConfirmAccountNo(accountNumber)"></i>
@@ -107,7 +109,7 @@
   <input [type]="reEnterAccountNumber ? 'number' : 'password'"
     formControlName="reEnterAccountNumber" class="form-control" 
     [ngClass]="{'is-invalid' : form.get('reEnterAccountNumber').status == 'INVALID'}"
-    name="reEnterAccountNumber">
+    name="reEnterAccountNumber" placeholder="Enter Confirm Account Number">
   <i class="field-icon" [ngClass]="reEnterAccountNumber? 'fa fa-eye':'fa fa-eye-slash'"
     style="position: relative;right: 3px;font-size: 16px;top: 2px;"
     (click)="reEnterAccountNumber = !reEnterAccountNumber"></i> 
@@ -135,6 +137,7 @@
                           formControlName="companyGroup"
                           [ngClass]="{'is-invalid' : form.get('companyGroup').status == 'INVALID'}"
                           (change)='onSelectCompanyGroup($event.target.value)'>
+                          <option selected value=''>Select </option>
                           <option *ngFor="let companyList of groupCompanyDetailsList" [value]="companyList.id">
                             {{companyList.itemName}}
                           </option>
@@ -174,51 +177,73 @@
                       </thead>
                    
                       <tbody>
-                        <!-- <tr *ngFor=" let summary of lictransactionList; let i = index; count as c"> -->
-                          <!-- *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i" -->
-                          <!-- [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleModel.errors }">
-              <div *ngIf="submitted && masterForm.vehicleModel.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.vehicleModel.errors.required">Vehicle Model Number Is Mandatory</div>
-              </div> -->
+                        
                           <tr >
                             <td scope="row">
                               <!-- change validation 162 to 169 -->
-                              <input type="text" [(ngModel)]="contactPersonName" [ngModelOptions]="{standalone: true}"class="form-control"/>
-                             
+                              <input type="text" [(ngModel)]="contactPersonName" [ngModelOptions]="{standalone: true}"
+                              class="form-control"  [disabled]="viewFlag"
+                               placeholder="Enter Contact Person Name" required/>
+                              
                            
                             </td>
                         
                             <td scope="row">
-                              <input type="text" [(ngModel)]="designation" [ngModelOptions]="{standalone: true}"class="form-control"/>
+                              <input type="text" [(ngModel)]="designation" [ngModelOptions]="{standalone: true}"
+                              class="form-control" placeholder="Enter Designation" [disabled]="viewFlag"/>
         
                             
                               
                             </td>
                         
                             <td scope="row">
-                              <input type="email" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}"class="form-control" />
-                           
+
+                             
+                            
+                               <!-- <input type="email" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}"
+                              class="form-control"  placeholder="Enter Email" 
+                             [disabled]="viewFlag"/>
+                              -->
+                         
+                              <!-- <div class="form-group"> ^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$ -->
+                               
+                                <input type="email" name="email" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}"
+                                       required
+                                       placeholder="Enter Email" 
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                        #emaiId="ngModel" [disabled]="viewFlag">
+                                 <div [hidden]="emaiId.valid || emaiId.pristine">
+                                   <div class="error" [hidden]="!emaiId.hasError('required')">
+                                        Email is required</div>
+                                        
+                                </div>
+                                
+                        
+                              <!-- </div> -->
+
                             </td>
                         
-                            <td scope="row">
+                            <td scope="row" *ngIf="!viewFlag">
                         
                         
                               <select class="form-control selectpicker custom-select" placeholder="Select ISD"
                                 [(ngModel)]="isdCode" [ngModelOptions]="{standalone: true}">
-                                <option value='' data-hidden="true">Select &nbsp; &nbsp; &nbsp; &nbsp; </option>
+                                <!-- <option value='' data-hidden="true">Select &nbsp; &nbsp; &nbsp; &nbsp; </option> -->
+                                <option selected value=''>Select </option>
                                 <option *ngFor="let code of countryCode" [value]="code">
                                   {{code}}
                                 </option>
                               </select>
                             </td>  
                             <td>
-                              <input type="text" [(ngModel)]="contactNumber" [ngModelOptions]="{standalone: true}"class="form-control" maxlength="10"
+                              <input type="text" [(ngModel)]="contactNumber" [ngModelOptions]="{standalone: true}"
+                              class="form-control" placeholder="Enter Contact Number" maxlength="10"
                                 minLength="10" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"
-                                 />
+                                [disabled]="viewFlag" />
                             </td>
                         
                             
-                            <td scope="row">
+                            <td scope="row" *ngIf="!viewFlag">
                               <i *ngIf="editIndex == -1" style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer" tooltip="Add Row"
                                 (click)="addRow()">
                               </i>
@@ -235,7 +260,7 @@
                           </td>
                           <td class="wd-10"><span tooltip="{{data.emailId}}">{{data.emailId}}</span>
                           </td>
-                          <!-- <td>
+                          <!-- <td *ngIf="false">
                             <span tooltip="{{data.isdCode}}">{{data.isdCode}}</span>     
                           </td> -->
                           <td class="wd-10" colspan="2">
@@ -243,7 +268,7 @@
                             <span tooltip="{{data.contactNumber}}">{{data.contactNumber}}</span>
                           </td>
                           <td scope="row" *ngIf="isEditMode==true">
-                            <input type="checkbox" name="isActive" [value]="data.isActive"  class="form-control" [checked]="data.isActive == 1"/>
+                            <!-- <input type="checkbox" name="isActive" [value]="data.isActive"  class="form-control" [checked]="data.isActive == 1"/> -->
                             <i  class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="edittable(data,index)" ></i>
                             
                           </td>
