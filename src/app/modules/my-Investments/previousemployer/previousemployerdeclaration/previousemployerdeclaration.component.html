@@ -91,7 +91,7 @@
                 <th rowspan="2" class="wd-9 font700">Income Head</th>
                 <th rowspan="2" class="wd-18 font700">Actual</th>
                 <th colspan="2" class="wd-24 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-16 font700">Remark</th>
+                <!-- <th rowspan="2" class="wd-16 font700">Remark</th> -->
                 <th rowspan="2" class="wd-14">PS.ID.</th>
                 <th rowspan="2" class="wd-16 font700">Transaction Status</th>
               </tr>
@@ -101,22 +101,25 @@
               </tr>
             </thead>
             <tbody>
+              <!-- <pre>{{item | json}}</pre> -->
               <tr *ngFor="
                    let summary of item.previousEmployerTransactionDetailList;
                    let i = index;
                    count as c ">    
 
-                   <td>
-                    <input type="text" id="actualAmount{{ summary.houseRentalTransactionDetailId }}"
-                      name="actualAmount{{ summary.houseRentalTransactionDetailId }}"
-                      [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
+                   <!-- <pre>{{summary | json}}</pre> -->
+                   <td style="text-align: left;">
+                    <!-- <input type="text" id="actualAmount{{ summary.incomeDetail }}"
+                      name="actualAmount{{ summary.incomeDetail }}"
+                      [(ngModel)]="summary.incomeDetail"
+                      (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" /> -->
+                      {{summary.incomeDetail}}
                   </td>  
                   
                    <td>
                     <input type="text" id="actualAmount{{ summary.houseRentalTransactionDetailId }}"
                       name="actualAmount{{ summary.houseRentalTransactionDetailId }}"
-                      [(ngModel)]="summary.actualAmount"
+                      [(ngModel)]="summary.actualAmount" 
                       (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
                   </td>           
              <!--    <td>
@@ -133,11 +136,11 @@
                   <input type="text" [ngModel]="summary.approvedAmount | number: '1.2-2'"
                     class="form-control align-right" disabled />
                 </td>
-                <td>
+                <!-- <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
-                </td>
+                </td> -->
                 <td>
                   <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
                     <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
@@ -150,15 +153,17 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled && canEdit">
-                <!--    <td *ngIf="previousEmployeeList?.length" colspan="12" -->
+
+              <!-- Add Row functionality is disabled -->
+              <!-- <tr *ngIf="!isDisabled && canEdit">
+                <!-    <td *ngIf="previousEmployeeList?.length" colspan="12" ->
                 <td colspan="12" class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td colspan="1" class="bg-lightgray font-18 font700">Total</td>
                   <td class="bg-lightgray font-18 font700 align-right">
@@ -274,8 +279,8 @@
                       <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i>
                     </td> -->
                     <td>
-                      <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"tooltip="File Download"(click)="openForm12BModal(template4)" ></i>&nbsp;&nbsp;&nbsp;
-                      <i class="fa fa-upload  font-16 text-dark-green cursor-pointer"tooltip="File Generate"(click)=" UploadModal(previousEmployerDetailsIndex)" ></i>&nbsp;&nbsp;&nbsp;
+                      <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"tooltip="File Download"(click)="openForm12BModal(template4)" *ngIf="tempDeclarationCount == 9" ></i>&nbsp;&nbsp;&nbsp;
+                      <i class="fa fa-upload  font-16 text-dark-green cursor-pointer"tooltip="File Generate"(click)=" UploadModal(previousEmployerDetailsIndex)" *ngIf="tempDeclarationCount == 9"></i>&nbsp;&nbsp;&nbsp;
                       
                       </td>
                   </tr>
@@ -290,7 +295,9 @@
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
-        <button type="button" (click)="
+        <button type="button" [disabled]="tempDeclarationCount != 9" 
+        [ngClass]="{'disabled-btn-bg-green' : tempDeclarationCount != 9}"
+        (click)="
              receiptAmount < globalSelectedAmount
                ? sweetalertError('Receipt Amount should be equal or greater than Actual Amount of Selected lines')
                : upload()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
@@ -325,32 +332,32 @@
                    ">
                   <td>
                     <span tooltip="{{ documentSummary.proofSubmissionId }}">
-                      {{ documentSummary.proofSubmissionId }}
+                      {{ documentSummary.previousEmployerTransactionDetailList[0].proofSubmissionId }}
                     </span>
                   </td>
                   <td>
 
-                    <span tooltip="{{ documentSummary.particular }}">
-                      {{ documentSummary.particular }}
+                    <span tooltip="{{ documentSummary.name }}">
+                      {{ documentSummary.name }}
                     </span>
                     <!--  {{ documentSummary.licMasterList[0].institution }} -->
                   </td>
                   <td>
                     <span tooltip="{{
-                         documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
+                         documentSummary.dateOfJoining | date: 'dd-MMM-yyyy'
                        }}">
                       {{
-                      documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
+                      documentSummary.dateOfJoining | date: "dd-MMM-yyyy"
                       }}</span>
                   </td>
                   <td>
                     <span tooltip="{{
-                         documentSummary.receiptAmount | number: '1.2-2'
+                         documentSummary.dateOfLeaving | date: 'dd-MMM-yyyy'
                        }}">
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                      {{ documentSummary.dateOfLeaving |  date: "dd-MMM-yyyy" }}
                     </span>
                   </td>                 
-                  <td>
+                  <!-- <td>
                     <div class="custom_Label_badge">
                       <button class="btn btn-bg-green text-white"
                         (click)="docViewer(template3, documentSummary.documentDetailList)">
@@ -360,10 +367,10 @@
                         documentSummary.documentDetailList.length
                         }}</span>
                     </div>
-                  </td>
+                  </td> -->
                   <td>
                     <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;&nbsp;
-                    <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"></i>
+                    <!-- <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"></i> -->
                     <div *ngFor="let doc of urlArray" hidden>
                       <iframe style="height: 100vh; width: 100%; display: block" [src]="doc.blobURI"
                         provider="google"></iframe>
@@ -782,7 +789,7 @@
                           </div>
                           <div class="row mt-10">
                               <div class="col-md-8">
-                                  <label class="mt-10 mb-0 form-label">Name and Address of the employee:.......................</label>
+                                  <label class="mt-10 mb-0 form-label">Name and Address of the employee: {{nameAndAddress}}</label>
                               </div>
                               <div class="col-md-9">
                                   <span class="font-14 font700 text-purple">
@@ -792,7 +799,7 @@
                           </div>
                           <div class="row mt-10">
                               <div class="col-md-8">
-                                  <label class="mt-10 mb-0 form-label">Permanent Account Number:........................</label>
+                                  <label class="mt-10 mb-0 form-label">Permanent Account Number: {{pan}}</label>
                               </div>
                               <div class="col-md-9">
                                   <span class="font-14 font700 text-purple">
@@ -802,7 +809,7 @@
                           </div>
                           <div class="row mt-10">
                               <div class="col-md-8">
-                                  <label class="mt-10 mb-0 form-label">Residential Status....................</label>
+                                  <label class="mt-10 mb-0 form-label">Residential Status: {{residentialStatus}}</label>
                               </div>
                               <div class="col-md-9">
                                   <span class="font-14 font700 text-purple"></span>
@@ -847,7 +854,7 @@
                                               </tr>
                                           </thead>
                                           <tbody>
-                                              <tr *ngFor="let summary of masterSummaryGridData; let i = index">
+                                              <tr *ngFor="let summary of transactionDetail; let i = index">
                                                   <td>
                                                       <span tooltip="{{i+1}}">
                                                        {{i+1}}
@@ -863,28 +870,42 @@
                                                       {{summary.pan}}
                                                   </td>
                                                   <td>
-                                                      {{summary.dateOfJoining | date :'dd-MMM-yyyy'}} <b>To</b> {{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}
+                                                      From &nbsp;{{summary.dateOfJoining | date :'dd-MMM-yyyy'}} <b> To </b> {{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}
                                                   </td>
                                                   <td>
-                                                      {{summary.fullyTaxableHeadsIncome}}
+                                                    <span *ngIf="summary.previousEmployerTransactionDetailList[0]">
+                                                      {{summary.previousEmployerTransactionDetailList[0].actualAmount | number: "1.2-2"}}
+                                                    </span>
                                                   </td>
                                                   <td>
-                                                      {{summary.headsWithExemptionIncome}}
+                                                      <span *ngIf="summary.previousEmployerTransactionDetailList[2]">
+                                                        {{totalAmtHouseRent(summary) | number: "1.2-2"}}
+                                                        <!-- {{summary.previousEmployerTransactionDetailList[1].actualAmount | number: "1.2-2" - summary.previousEmployerTransactionDetailList[2].actualAmount | number: "1.2-2"}} -->
+                                                      </span>
                                                   </td>
                                                   <td>
-                                                      {{summary.headsWithExemptionIncome}}
+                                                    <span *ngIf="summary.previousEmployerTransactionDetailList[3]"></span>
+                                                      {{summary.previousEmployerTransactionDetailList[3].actualAmount | number: "1.2-2"}}
                                                   </td>
                                                   <td>
-                                                      {{summary.taxableIncome}}
+                                                    <span *ngIf="summary.previousEmployerTransactionDetailList[3]"></span>
+                                                    <!-- {{ summary.previousEmployerTransactionDetailList[0].actualAmount   +
+                                                        summary.previousEmployerTransactionDetailList[2].actualAmount - summary.previousEmployerTransactionDetailList[1].actualAmount +
+                                                        summary.previousEmployerTransactionDetailList[3].actualAmount }} -->
+
+                                                        {{getTotalOfColms(summary) | number: "1.2-2"}}
+
+
                                                   </td>
                                                   <td>
                                                       {{summary.benefitGivenUnder80C}}
                                                   </td>
-                                                  <td>
-                                                      {{summary.taxDeductedAtSource}}
+                                                  <td><span *ngIf="summary.previousEmployerTransactionDetailList[8]"></span>
+                                                      {{summary.previousEmployerTransactionDetailList[8].actualAmount | number: "1.2-2"}}
+                                                      
                                                   </td>
                                                   <td>
-                                                      {{summary.typeOfRegime}}
+                                                      {{summary.previousEmployerTransactionDetailList[0].remark}}
                                                   </td>
                                               </tr>
                                               <tr>
@@ -892,7 +913,7 @@
                                               </tr>
                                               <tr>
                                                   <td colspan="12" class="align-left">
-                                                      I, <span class="text-bold">  .................</span>,do hereby declare that what is stated above is true to the best of my knowledge and belief.
+                                                      I, <span class="text-bold"> &nbsp; {{nameAndAddress}} &nbsp; </span>,do hereby declare that what is stated above is true to the best of my knowledge and belief.
                                                   </td>
                                               </tr>
                                               <tr>
