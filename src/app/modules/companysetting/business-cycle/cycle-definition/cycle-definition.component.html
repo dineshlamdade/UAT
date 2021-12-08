@@ -56,7 +56,7 @@
         <br>
         <div class="col-sm-6 col-md-3" *ngIf="frequencyId == 2 || frequencyId == 3 || frequencyId == 5">
           <label class="form-label">Last Cycle Crossing Business Year</label>
-          <select formControlName="lastCycleCrossByYear" class="form-control">
+          <select (change)="getLastCycleBusinessYear($event.target.value)" formControlName="lastCycleCrossByYear" class="form-control">
             <option selected value=''>Select</option>
             <option value="No Change">No Change</option>
             <option value="Force Stop Till Business Year End">Force Stop Till Business Year End</option>
@@ -70,7 +70,7 @@
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
           <label class="form-label">Days In a Cycle</label>
-          <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
+          <input type="number" formControlName="reoccuranceDays" class="form-control" placeholder="Enter Days">
         </div>
 
         <div class="col-sm-6 col-md-3"
@@ -85,7 +85,7 @@
           <select formControlName="incompleteDaysFalls" name="incompleteDaysFalls" id="" class="form-control">
             <option selected value=''>Select </option>
             <option value="Start">Start</option>
-            <option value="End">End</option>
+            <option [hidden]="isLstCycFlag" value="End">End</option>
           </select>
         </div>
 
