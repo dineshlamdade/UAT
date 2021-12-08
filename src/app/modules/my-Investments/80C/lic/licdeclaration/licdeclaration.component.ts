@@ -22,6 +22,7 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { debug } from 'console';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
@@ -68,6 +69,7 @@ export class LicdeclarationComponent implements OnInit {
   public remarkCount : any;
   summaryDetails: any;
   indexCount: any;
+  editRemarkData: any;
 
 
   viewDocumentName: any;
@@ -1123,8 +1125,10 @@ console.log( this.editTransactionUpload);
   // }
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-     debugger
+     
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
@@ -1238,6 +1242,7 @@ console.log( this.editTransactionUpload);
     // }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    
     const data = {
       licTransactionDetail: this.transactionDetail,
       licTransactionIDs: this.uploadGridData,
@@ -1340,6 +1345,39 @@ console.log( this.editTransactionUpload);
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
   }
+
+
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.licTransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"lic",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
 
   changeReceiptAmountFormat() {
     // tslint:disable-next-line: variable-name
@@ -1540,6 +1578,8 @@ console.log( this.editTransactionUpload);
         this.transactionDetail =
           res.data.results[0].licTransactionDetail;
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1609,7 +1649,7 @@ console.log( this.editTransactionUpload);
     lictransactionID,
     summary, count
   ) {
-    debugger
+    
   
     this.summaryDetails = summary;
     this.indexCount = count;
@@ -1723,13 +1763,19 @@ console.log( this.editTransactionUpload);
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+ 
+delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       licTransactionDetail: this.editTransactionUpload,
       licTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
+
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };

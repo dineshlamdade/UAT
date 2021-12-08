@@ -20,7 +20,6 @@
           {{ bankName.label }}
         </option>
       </select>
-
     </div>
     <div class="ml-2 pl-1 pr-0">
       <label class="form-label mt-2 pl-10">Loan Account No</label>
@@ -887,13 +886,13 @@
                     </span>
                   </td>
                <!--    //Sutej Backend need -->
-                 <!--  <td class="padding-0" *ngIf="documentSummary.interest80TTBankList.length == 1">
-                    {{ documentSummary.interest80TTBankList[0].bankName }} :
-                    {{ documentSummary.interest80TTBankList[0].accountNumber }}
-                  </td> -->
-                  <td>
-
+                  <td class="padding-0" >
+                    {{ documentSummary.bankName }} :
+                    {{ documentSummary.accountNumber }}
                   </td>
+                  <!-- <td>
+
+                  </td> -->
                   <td>
                     <span tooltip="{{
                         documentSummary.dateOfSubmission  | date: 'dd-MMM-yyyy'
@@ -1723,7 +1722,7 @@
                                 </p-tableCheckbox>
                               </td> -->
                               <td>
-                                {{ document.lastModifiedTime | date:'dd-MMM-yyyy'  }}
+                                {{ document.dateofsubmission | date:'dd-MMM-yyyy'  }}
                               </td>
                               <td>
                                 <a

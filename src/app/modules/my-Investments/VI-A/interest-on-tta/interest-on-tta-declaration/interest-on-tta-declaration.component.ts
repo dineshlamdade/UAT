@@ -450,16 +450,27 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     //   this.globalInstitution
     // );
     this.interestOnTtaService.getTTAAccontNoList(this.globalBank,policy).subscribe((res) => {
-      console.log('getTransactionFilterData', res);
-      console.log('getTransactionFilterData', res);
+      //console.log('this.transactionDetail', this.transactionDetail);
+      //console.log('this.documentDetailList', this.documentDetailList);
       this.transactionDetail =
         res.data.results[0].interestOnSavingDeposit80TTTransactionList;
       this.documentDetailList = res.data.results[0].documentInformation;
+      this.transactionDetail.forEach(ele =>{
+        this.documentDetailList.forEach(element =>{
+       //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+          if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+          //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+            element.bankName = ele.bankName;
+            element.accountNumber = ele.accountNumber
+          }
+        })
+      })
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      res.documentDetailList.forEach(element => {
+      console.log("this.documentDetailList: "+ this.documentDetailList)
+      this.documentDetailList.forEach(element => {
         // if(element!=null)
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,
@@ -1094,6 +1105,16 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           this.transactionDetail =
             res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
+          this.transactionDetail.forEach(ele =>{
+            this.documentDetailList.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber;
+              }
+            })
+          })
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1417,26 +1438,32 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
               );
             });
           });
-          this.masterGridData.forEach((element) => {
-            element.documentInformation.forEach(element => {
-          element.documentDetailList.forEach(element => {
+          this.documentArray = []
+          res.data.results.forEach(element => {
+           // console.log("this.element: ", JSON.stringify(element))
+            element.documentInformation.forEach(ele => {  
+          ele.documentDetailList.forEach(obj => {
             // if(element!=null)
+            console.log("this.obj: ", JSON.stringify(obj))
+
             this.documentArray.push({
-              'dateofsubmission': element.dateOfSubmission,
-              'documentType':element.documentType,
-              'documentName': element.fileName,
-              'documentPassword':element.documentPassword,
-              'documentRemark':element.documentRemark,
-              'status' : element.status,
-              'lastModifiedBy' : element.lastModifiedBy,
-              'lastModifiedTime' : element.lastModifiedTime,
+              'dateofsubmission': obj.creatonTime,
+              'documentType':obj.documentType,
+              'documentName': obj.fileName,
+              'documentPassword':obj.documentPassword,
+              'documentRemark':obj.documentRemark,
+              'status' : obj.status,
+              'lastModifiedBy' : obj.lastModifiedBy,
+              'lastModifiedTime' : obj.lastModifiedTime,
             })
             })
       });
     });
   }
 );
-this.documentArray = [];
+
+console.log("this.documentArray: ", JSON.stringify(this.documentArray))
+// this.documentArray = [];
   }
   public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
@@ -1474,10 +1501,23 @@ this.documentArray = [];
     this.interestOnTtaService
       .getTransactionFilterData(bankName)
       .subscribe((res) => {
-        console.log('getTransactionFilterData', res);
-        this.transactionDetail =
-          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+       // console.log('getTransactionFilterData', res);
+        this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.documentDetailList = res.data.results[0].documentInformation;
+      //  console.log('getTransactionFilterData: ',JSON.stringify(this.transactionDetail))
+       //   console.log(JSON.stringify(this.documentDetailList))
+
+          this.transactionDetail.forEach(ele =>{
+            this.documentDetailList.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber
+              }
+            })
+          })
+
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1508,7 +1548,7 @@ this.documentArray = [];
             );
           }
         });
-        res.documentDetailList.forEach(element => {
+        this.documentDetailList.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1681,6 +1721,16 @@ this.documentArray = [];
           });
           this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
+          this.transactionDetail.forEach(ele =>{
+            this.documentDetailList.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber
+              }
+            })
+          })
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;

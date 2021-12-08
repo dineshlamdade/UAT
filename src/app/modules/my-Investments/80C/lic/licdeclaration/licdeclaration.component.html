@@ -367,7 +367,7 @@
               </td> -->
               <td class="wd-6">
                 <div class="d-flex">
-                  <input
+                  <!-- <input
                   style="width:100px;"
                     type="text"
                     class="form-control"
@@ -380,7 +380,7 @@
                       )
                     "
                   
-                  />
+                  /> -->
                   <div
                     _ngcontent-ykc-c443=""
                     class="
@@ -413,7 +413,7 @@
                       class="Label_badge"
                       >{{
                       
-                        remarkCount
+                        summary?.bubbleRemarkCount
                       }}</span
                     >
                   </div>
@@ -425,7 +425,7 @@
                     <!-- {{ summary.proofSubmissionId }} -->
                   </span>
               </td>
-              <td class="wd-6" class="text-light-green font700" >
+              <!-- <td class="wd-6" class="text-light-green font700" >
                   <span [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
                   'badge-success': summary.transactionStatus=='Approved',
                   'badge-warning': summary.transactionStatus=='Pending',
@@ -433,7 +433,31 @@
                   'badge-info': summary.transactionStatus=='Submitted'}" tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
                   </span>
-              </td>
+              </td> -->
+              <!-- <td class="wd-6 text-light-green font700" [ngClass]="{'badge-reOpen': summary.transactionStatus=='Re-Open',
+              'badge-approved': summary.transactionStatus=='Approved',
+              'badge-sendBack': summary.transactionStatus=='SendBack',
+              'badge-submitted': summary.transactionStatus=='Submitted'}">
+                <span tooltip="{{ summary.transactionStatus }}">
+                  {{ summary.transactionStatus }}
+                </span>
+            </td> -->
+            <td class="wd-6" >
+                <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+                ' badge-success': summary.transactionStatus=='Approved',
+                'badge-danger': summary.transactionStatus=='SendBack',
+                'badge-info': summary.transactionStatus=='Submitted',
+                'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary.transactionStatus }}">
+                  {{ summary.transactionStatus }}
+                </span>
+            </td>
+            <!-- <td >
+              <span class="badge" [ngClass]="{' badge-primary': employee.status=='Re-Open',
+                        ' badge-success': employee.status=='Approved',
+                        ' badge-danger': employee.status=='SendBack',
+                        ' badge-info': employee.status=='Submitted'}">{{ employee.status }}</span>
+
+            </td> -->
               <td class="wd-6 align-left">
                 <i  *ngIf="summary.transactionStatus!=='Pending'" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
                 editViewTransaction(
@@ -542,7 +566,7 @@
               <td class="bg-lightgray font-18 font700 wd-10"></td>
               
             </tr> -->
-            <tr>
+            <!-- <tr>
               <td  class="bg-lightgray font-18 font700 wd-8">Total</td>
               <td *ngIf="previousEmployeeList?.length" class="bg-lightgray wd-10 font-18 font700 align-right"></td>
                
@@ -576,7 +600,43 @@
               <td class="bg-lightgray font-18 font700 wd-8"></td>
               <td class="bg-lightgray font-18 font700 wd-10"></td>
               
-            </tr>
+            </tr> -->
+            <tr>
+              <td  class="bg-lightgray font-18 font700 wd-8">Total</td>
+              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray wd-10 font-18 font700 align-right"></td>
+               <!-- <td class="bg-lightgray wd-10 font-18 font700 align-right"></td>  -->
+              <td class="bg-lightgray font-18 wd-10 font700 align-right">
+                  <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-9">
+                    {{ item.declarationTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray wd-10 font-18 font700 align-right"></td> 
+
+              <td class="bg-lightgray font-18 font700 align-right  wd-10"></td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-8">
+                  <span
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
+                    class="padding-right-9" >
+
+                    {{ item.actualTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right  wd-8">
+                  <span tooltip=" {{ item.totalRejectedAmount | number: '1.2-2' }}" class="padding-right-9">
+                    {{ item.totalRejectedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-8">
+                  <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-9">
+                    {{ item.totalApprovedAmount | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
+              <td class="bg-lightgray font-18 font700 wd-8"></td>
+              <td class="bg-lightgray font-18 font700 wd-10"></td>
+              
+            </tr>            
             <!-- <tr>
               <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
              
@@ -694,7 +754,7 @@
       </div>
     </div>
   </div> -->
-  <div class="row mt-15" *ngIf="transactionDetail?.length">
+  <!-- <div class="row mt-15" *ngIf="transactionDetail?.length">
     <div class="col-12">
       <div class="table-responsive Custom_Table">
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
@@ -702,7 +762,7 @@
           <tr>
             <td class="bg-gray font-18 font700 wd-10">Grand Total5</td>
             <td class="bg-gray font-18 font700 align-right wd-10"></td>
-            <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
+         
             <td class="bg-lightgray font-18 font700 align-right wd-10">
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
@@ -727,8 +787,85 @@
             <td class="bg-gray font-18 font700 wd-15"></td>
             <td class="bg-gray font-18 font700 wd-9"></td>
             <td class="bg-gray font-18 font700 wd-10"></td>
-            <!-- placement="left" -->
+           
           </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+          <tbody>
+          <tr>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">Grand Total</td>
+           <td *ngIf="previousEmployeeList?.length" class="bg-lightgray  font-18 font700 align-right wd-10 "></td> 
+           <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-10">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+            <td class="bg-gray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8">
+                <span class="padding-right-12" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+            </td>
+           <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+            <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+           <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+
+
+  <div class="row mt-15" *ngIf="transactionDetail?.length">
+    <div class="col-12">
+      <div class="table-responsive Custom_Table">
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
+          <tbody>
+            <tr>
+              <td class="bg-lightgray font-18 font700 align-right wd-8">Grand Total</td>
+             <td *ngIf="previousEmployeeList?.length" class="bg-lightgray  font-18 font700 align-right wd-10 "></td> 
+             <!-- <td class="bg-lightgray font-18 font700 align-right wd-10"></td> -->
+             <td class="bg-lightgray font-18 font700 align-right wd-10">
+                  <span class="padding-right-9" placement="left" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                    {{ grandDeclarationTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+              <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+              <td class="bg-gray font-18 font700 align-right wd-8">
+                  <span class="padding-right-9" placement="left" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                    {{ grandActualTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-8">
+                  <span class="padding-right-9" placement="left" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                    {{ grandRejectedTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right wd-8">
+                  <span class="padding-right-9" placement="left" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                    {{ grandApprovedTotal | number: "1.2-2" }}
+                  </span>
+              </td>
+             <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+             <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+              <td class="bg-lightgray font-18 font700 align-right wd-8"></td>
+             <td class="bg-lightgray font-18 font700 align-right wd-10"></td>
+            </tr>
           </tbody>
         </table>
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
@@ -1477,9 +1614,9 @@
               </td>
                 <td class="align-right">
                     <span tooltip="{{
-                      documentSummary.receiptAmount | number: '1.2-2'
+                      documentSummary.approvedAmount | number: '1.2-2'
                     }}">
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                      {{ documentSummary.approvedAmount | number: "1.2-2" }}
                     </span>
                 </td>
                 <td class="align-right">
@@ -1508,8 +1645,12 @@
                       }}</span> -->
                   </div>
                 </td>
-                <td class="align-right">
-                  <span tooltip="{{documentSummary.transactionStatus}}">
+                <td class="wd-6 align-right font-700" >
+                  <span class="badge" [ngClass]="{'badge-primary': documentSummary.transactionStatus=='Re-Open',
+                  ' badge-success': documentSummary.transactionStatus=='Approved',
+                  'badge-danger': documentSummary.transactionStatus=='SendBack',
+                  'badge-info': documentSummary.transactionStatus=='Submitted',
+                  'badge-warning': documentSummary.transactionStatus=='Pending'}" tooltip="{{documentSummary.transactionStatus}}">
                     {{documentSummary.transactionStatus}}
                     </span>
               </td>
@@ -1852,12 +1993,12 @@
                       <!-- {{ summary.proofSubmissionId }} -->
                     </span>
                 </td>
-                <td class="text-orange font700" >
-                    <span [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
-                    'badge-success': summary.transactionStatus=='Approved',
-                    'badge-pending': summary.transactionStatus=='Pending',
+                <td class="wd-6 text-orange font700">
+                    <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+                    ' badge-success': summary.transactionStatus=='Approved',
                     'badge-danger': summary.transactionStatus=='SendBack',
-                    'badge-info': summary.transactionStatus=='Submitted'}" tooltip="{{ summary.transactionStatus }}">
+                    'badge-info': summary.transactionStatus=='Submitted',
+                    'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span>
                 </td>
@@ -1914,7 +2055,7 @@
         <div class="table-responsive Custom_Table">
           <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
             <tbody>
-            <tr >
+            <tr  *ngFor="let item of editTransactionUpload; let j = index">
               <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
               <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
               <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
@@ -1924,28 +2065,29 @@
                   <span class="padding-right-12" placement="left" tooltip="{{
                     EditGrandTotalAmount?.grandDeclarationTotal | number: '1.2-2'
                   }}">
-                    {{EditGrandTotalAmount[0]?.grandDeclarationTotal | number: '1.2-2'}}
+                    <!-- {{EditGrandTotalAmount[0]?.grandDeclarationTotal}} -->
+                    {{ item.declarationTotal | number: "1.2-2" }}
                   </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-11"></td>
               <td class="bg-gray font-18 font700 align-right wd-11"></td>
               <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" tooltip="{{ EditGrandTotalAmount[0]?.grandActualTotal | number: '1.2-2' }}">
-                    {{ EditGrandTotalAmount[0]?.grandActualTotal | number: '1.2-2' }}
+                    {{ item.actualTotal | number: "1.2-2" }}
                   </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip=" {{
                     EditGrandTotalAmount?.grandRejectedTotal | number: '1.2-2'
                   }}">
-                    {{  EditGrandTotalAmount[0]?.grandRejectedTotal | number: '1.2-2' }}
+                  {{ item?.totalRejectedAmount | number: "1.2-2" }}
                   </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip="{{
                     EditGrandTotalAmount?.grandRejectedTotal | number: '1.2-2'
                   }}">
-                    {{  EditGrandTotalAmount[0]?.grandApprovedTotal | number: '1.2-2'  }}
+                  {{ item?.totalApprovedAmount | number: "1.2-2" }}
                   </span>
               </td>
               <td class="bg-gray font-18 font700 wd-7"></td>
@@ -2647,8 +2789,10 @@
               <label class="filelabel">
                 <i class="fa fa-upload"> </i>
                 <span class="title"> Choose file </span>
-                <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
-                       accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                <!-- <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
+                       accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple /> -->
+                       <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
+                       accept=".pdf" id="FileInput" type="file" multiple />
               </label>
             </div>
             <div *ngIf="filesArray.length > 0" class="fileuploadbox">
@@ -3354,8 +3498,11 @@
                 <span class="title">
                     Choose file
                   </span>
-                <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
-                       accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                <!-- <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                       accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple /> -->
+                       <input class="FileUpload1"  type="file"  (change)="onMasterUpload($event);"
+                       accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"  />
+
               </label>
             </div>
             <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
@@ -3446,7 +3593,7 @@
 
 
 <!-- Remark Modal started -->
-<ng-template #template8>
+<!-- <ng-template #template8>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">View Remark</h5>
     <button
@@ -3509,8 +3656,8 @@
       Ok
     </button>
   </div>
-</ng-template>
-<ng-template #template8>
+</ng-template> -->
+<!-- <ng-template #template8>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">View Remark</h5>
     <button
@@ -3574,7 +3721,7 @@
       Ok
     </button>
   </div>
-</ng-template>
+</ng-template> -->
   <!-- Remark Modal started -->
   <!-- <ng-template #template8>
     <div class="modal-header">
@@ -3687,7 +3834,7 @@
     </div>
   </ng-template> -->
 <!-- Remark Modal started -->
-<ng-template #template8>
+<!-- <ng-template #template8>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">View Remark</h5>
     <button
@@ -3750,7 +3897,7 @@
       Ok
     </button>
   </div>
-</ng-template>
+</ng-template> -->
 <ng-template #template8>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">View Remark</h5>
@@ -3794,7 +3941,7 @@
         </textarea>
       </div>
     </div>
-    <div class="row mt-12">
+    <div class="row mt-25">
       <div class="col-md-12">
         <input type="text" 
         (change)= "
@@ -3807,13 +3954,22 @@
     </div>
   </div>
 
-  <div class="modal-footer">
+  <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
       type="button"
       class="btn btn-secondary"
       (click)="modalRef.hide()"
     >
       Ok
+    </button>
+  </div>
+  <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails()"
+    >
+      Save
     </button>
   </div>
 </ng-template>

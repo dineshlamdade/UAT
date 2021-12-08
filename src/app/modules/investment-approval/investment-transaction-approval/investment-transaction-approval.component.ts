@@ -20,7 +20,7 @@ import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-
 export class InvestmentTransactionApprovalComponent implements OnInit {
   documentRemarkValidation = false;
   public documentList: Array<any> = [];
-
+  checkRemark = '';
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
     employeeMasterId: 0,
     fullName: '',
@@ -253,7 +253,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   // ------------ Open Document in Next Window -------------------
   navigateToDocumentViewer(documentInformationId: any) {
-    
+    debugger
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['/investment-approval/documentview'])
     );
@@ -601,9 +601,26 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   //----------- On change Rejected Amount --------------------------
   public onChangeRejectedAmount(transactionDetail, transIndex, event) {
+    debugger
+
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
+    // if(transactionDetail.transactionDetailList[index].remark == '') {
+    //   this.alertService.sweetalertWarning("Please enter remark for rejected amount");
+    // }
+    if (Number(event.target.value) > transactionDetail.actualTotal) {
+      this.alertService.sweetalertWarning("Rejected amount is greater than Actual amount");
+    this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected = "0.00";
+      return;
+     }
+    if (this.checkRemark == '') {
+      this.alertService.sweetalertWarning("First enter remark for rejected amount");
+      // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
+      // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = this.numberFormatPipe.transform(this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount - Number(
+      //   this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected.toString().replace(/,/g, '')));
+  return;
+      }
     if(Number(event.target.value)>this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount){
       this.alertService.sweetalertWarning("Rejected amount is greater than Actual amount");
       this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
@@ -623,6 +640,11 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
+    if (Number(event.target.value) > transactionDetail.actualTotal) {
+      this.alertService.sweetalertWarning("Aproved amount is greater than Actual amount");
+    this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = "0.00";
+      return;
+     }
     if(Number(event.target.value)>this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount){
       this.alertService.sweetalertWarning("Approved amount is greater than Actual amount");
       this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved =  this.numberFormatPipe.transform(0);
