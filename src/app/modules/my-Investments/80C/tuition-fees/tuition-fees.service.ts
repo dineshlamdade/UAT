@@ -28,6 +28,12 @@ export class TuitionFeesService {
       return res;
     }));
   }
+  public gettuitionFeesMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'tuitionFeesMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
 
    //Declaration services

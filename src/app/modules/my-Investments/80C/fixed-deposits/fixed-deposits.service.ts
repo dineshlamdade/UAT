@@ -28,6 +28,13 @@ export class FixedDepositsService {
     }));
   }
 
+  public getFdRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
    //Declaration services
 
   //service to be created

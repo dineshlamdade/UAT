@@ -11,3 +11,11 @@ table tr.highlight {
   color: white;
   background: blue;
 }
+.btn-bg-grey{
+  color: white;
+  background:grey;
+}
+.changeColor span:hover {
+  cursor: pointer;
+background-color: blue !important;
+}
