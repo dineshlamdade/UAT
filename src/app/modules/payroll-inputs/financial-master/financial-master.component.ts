@@ -63,6 +63,7 @@ export class FinancialMasterComponent implements OnInit {
   headType: any;
   summaryData: any;
   employeeMasterId: any;
+  isvisible: boolean = false
 
   constructor(private service: FinancialMasterService,
     private datePipe: DatePipe,
@@ -328,6 +329,7 @@ export class FinancialMasterComponent implements OnInit {
     // console.log(' save2', this.recievedMasterGridData);
     const data = [];
     // const empId = this.employeeListsArray[this.employeeListIndex];
+    this.employeeMasterId = 1;
     const empId = this.employeeMasterId;
     for (let i = 0; i < this.masterGridData.length; i++) {
       if (this.masterGridData[i].isPEIRecord === 'Yes') {
@@ -431,7 +433,8 @@ export class FinancialMasterComponent implements OnInit {
     );
     console.log(data)
 
-    const empId = this.employeeDetails.employeeMasterId.toString();
+    // this.employeeDetails.employeeMasterId.toString()
+    const empId = "1";
     this.headDescriptionName = data.headDescription;
     this.headType = data.headType;
    
@@ -524,6 +527,14 @@ export class FinancialMasterComponent implements OnInit {
       this.alerService.sweetalertMasterSuccess("","Financial Master saved succesfully")
     })
   }
+
+  /** Selected Employee basic information expand and colapse */
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
+	}
 
 }
 
