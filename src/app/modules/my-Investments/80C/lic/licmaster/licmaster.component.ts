@@ -749,7 +749,7 @@ export class LicmasterComponent implements OnInit {
       "masterId":this.summaryDetails.licMasterId,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"lic",
+      "subSection":"LIC",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",

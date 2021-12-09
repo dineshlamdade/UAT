@@ -55,6 +55,13 @@ export class TaxSavingNabardService {
     }));
   }
 
+  public getNabardRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'nabardBonds-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   postTSNabardTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'nabardBonds-transaction', data)
     .pipe(map((res: any) => {

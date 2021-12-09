@@ -1670,29 +1670,29 @@ console.log( this.editTransactionUpload);
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
-  public docRemarkModal1(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    lictransactionID
-  ) {
+  // public docRemarkModal1(
+  //   documentViewerTemplate: TemplateRef<any>,
+  //   index: any,
+  //   lictransactionID
+  // ) {
     
-    this.Service.getLicRemarkList(
-      lictransactionID,
-    ).subscribe((res) => {
-      console.log('docremark', res);
+  //   this.Service.getLicRemarkList(
+  //     lictransactionID,
+  //   ).subscribe((res) => {
+  //     console.log('docremark', res);
       
     
-    this.documentRemarkList  = res.data.results[0];
-    this.remarkCount = res.data.results[0].length;
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
+  //   this.documentRemarkList  = res.data.results[0];
+  //   this.remarkCount = res.data.results[0].length;
+  //   });
+  //   // console.log('documentDetail::', documentRemarkList);
+  //   // this.documentRemarkList = this.selectedRemarkList;
+  //   console.log('this.documentRemarkList', this.documentRemarkList);
+  //   this.modalRef = this.modalService.show(
+  //     documentViewerTemplate,
+  //     Object.assign({}, { class: 'gray modal-s' })
+  //   );
+  // }
 
 
   // Upload Document And save Edited Transaction
