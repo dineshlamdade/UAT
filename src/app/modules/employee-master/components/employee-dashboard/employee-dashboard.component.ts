@@ -39,34 +39,25 @@ export class EmployeeDashboardComponent implements OnInit {
        
        
 
-        this.photoService.getImages().then(images => this.images = images);
-
-        this.employeeDashboardService.getThoughtOfTheDay().subscribe(res => 
-            { this.thoughtOfTheDay = res.data.results;   
-            console.log('Thouht of the Day ',this.thoughtOfTheDay)         
-            })
-
-            this.employeeDashboardService.getNewJoineeData().subscribe(res => {
-                this.newJoineeData = res.data.results;   
-                console.log('new Joinee Data ',this.newJoineeData)         
-                })
-            
-                this.employeeDashboardService.getWorkAnniversaryData().subscribe(res => {
-                    this.workAnniversaryData = res.data.results;   
-                    console.log('work Anniversary Data ',this.workAnniversaryData)         
-                    })
-
-                    this.employeeDashboardService.getBirthdayData().subscribe(res => {
-                        this.birthdayData = res.data.results;   
-                        console.log('Birthday Data ',this.birthdayData)         
-                        })
-
-               //https://dev.deliziahr.com:8082/hrms/v1/thought-ofthe-day/message
-              //https://localhost:8082/hrms/v1/employee-offical/new-joinee
-             // https://localhost:8082/hrms/v1/employee-offical/work-anniversary
-            //  https://localhost:8082/hrms/v1/employee-offical/birthday
-
-   }
- 
-  
+        //this.photoService.getImages().then(images => this.images = images);
+//Thought Of the Day API
+        this.employeeDashboardService.getThoughtOfTheDay().subscribe(res =>   {
+        this.thoughtOfTheDay = res.data.results[0].quote;    
+        })
+// new joinee API 
+        this.employeeDashboardService.getNewJoineeData().subscribe(res => {
+        this.newJoineeData = res.data.results;      
+        console.log('newJoineeData Daata',this.newJoineeData);
+     })
+        //anniversary API     
+        this.employeeDashboardService.getWorkAnniversaryData().subscribe(res => {
+        this.workAnniversaryData = res.data.results;    
+        console.log('workAnniversaryData Daata',this.workAnniversaryData); 
+        })
+//birthday API
+        this.employeeDashboardService.getBirthdayData().subscribe(res => {
+        this.birthdayData = res.data.results;
+        console.log('birthday Daata',this.birthdayData);    
+        })
+   } 
 }

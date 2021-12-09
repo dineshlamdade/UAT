@@ -140,7 +140,7 @@ export class JobMasterComponent implements OnInit {
    //copy from functionality code not available
    //this.getCopyCompany();
     this.companyDataInDetails();
-    console.log("getAllMappingDetailListNew", this.getAllMappingDetailListNew[0]);
+   // console.log("getAllMappingDetailListNew", this.getAllMappingDetailListNew[0]);
 
   }   
 
@@ -391,7 +391,7 @@ export class JobMasterComponent implements OnInit {
           toDate: new Date( '31-Dec-9999' ),
           // toDate: new Date( element.toDate ),
           fromDate: null,
-          isCheckedTruefalse: this.getAllMappingDetailListNew.find(x=>x.jobMasterValueId == element.jobMasterValueId)!=null ?true:false,
+          isCheckedTruefalse:element.mapped !=null ?true:false,
         };
         this.summaryHtmlDataList.push( obj );
         this.tableDataList.push( obj );
@@ -1178,10 +1178,12 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
     });
   }
 
-  updateToDate(eventDate, jobMasterId) {
+  updateToDate(eventDate, jobMasterValueId) {
     this.companyAssignTableListDummy.forEach(element => {
-      if (element.jobMasterValueId == jobMasterId) {
+      if (element.jobMasterValueId == jobMasterValueId) {
         element.toDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+        /// after discussion below functionality will be removed
+        this.mappedJobMastersToCompany.find(a=>a.jobMasterValueId==jobMasterValueId).toDate=element.toDate;
       }
     });
   }
@@ -1222,8 +1224,8 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
             companyName: element.companyName,
             masterDescription: element.masterDescription,
             isActive: element.active,
-            toDate:  new Date(element.toDate),
-            fromDate: new Date(element.fromDate),
+            toDate:  element.toDate,
+            fromDate: element.fromDate,
 
           };
           this.summaryAllOtherMappingDetailsList.push( obj );
@@ -1231,6 +1233,7 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
           // this.tableDataList.push(obj);
         }
+       //console.log('this.getAllMappingDetailListNew',this.getAllMappingDetailListNew)
       } );
     } );
 
@@ -1417,7 +1420,7 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
     this.readOnlyMappedJobMaster = false;
     this.EditMappedJobMaster = element;
     // const newArray = this.getAllMappingDetailListNew.filter( e => e.jobMasterValueId == this.selectedJobMaster.jobMasterValueId );
-    console.log("EditMappedJobMaster",this.EditMappedJobMaster);
+   // console.log("EditMappedJobMaster",this.EditMappedJobMaster);
     this.modalRef = this.modalService.show(
       template,
       Object.assign( {}, { class:'gray modal-xl'} ),
@@ -1427,7 +1430,8 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
     //Template View
     viewJobMasterAssign( template: TemplateRef<any>, element  ) {
-      this.EditMappedJobMaster = element;
+      this.EditMappedJobMaster=[];
+      this.EditMappedJobMaster.push(element);
       this.readOnlyMappedJobMaster = true;
       this.UpdateModeMappedJobMaster = false;
 
@@ -1441,23 +1445,24 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
 
 
-  updateFromDateInEdit(eventDate) {
-    this.EditMappedJobMaster.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
-  }
+  // updateFromDateInEdit(eventDate) {
+  //   this.EditMappedJobMaster.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+  // }
 
-  updateToDateInEdit(eventDate) {
-    this.EditMappedJobMaster.toDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
-  }
+  // updateToDateInEdit(eventDate) {
+  //   this.EditMappedJobMaster.toDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+  // }
 
 
   //Updated Job Master Save
-  updateAssignSave(){
+  updateAssignSave(EditMapping){
+
     const data =   {
-      jobMasterMappingId : this.EditMappedJobMaster.jobMasterMappingId,
-      jobMasterValueId : this.EditMappedJobMaster.jobMasterValueId,
-      groupCompanyId  : this.EditMappedJobMaster.groupCompanyId,
-      fromDate  :  this.datePipe.transform(this.EditMappedJobMaster.fromDate, "dd-MMM-yyyy"),
-      toDate  :  this.datePipe.transform(this.EditMappedJobMaster.toDate, "dd-MMM-yyyy"),
+      jobMasterMappingId : EditMapping.jobMasterMappingId,
+      jobMasterValueId : EditMapping.jobMasterValueId,
+      groupCompanyId  : EditMapping.groupCompanyId,
+      fromDate  :  this.datePipe.transform(EditMapping.fromDate, "dd-MMM-yyyy"),
+      toDate  :  this.datePipe.transform(EditMapping.toDate, "dd-MMM-yyyy"),
       active  : this.EditMappedJobMaster.isActive,
   }
 
@@ -1467,7 +1472,7 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
         if ( res.data.results.length > 0 ) {
           console.log( 'data is updated' );
           // this.isEditMode = false;
-          this.alertService.sweetalertMasterSuccess( 'Recored Updated Successfully.', '' );
+          this.alertService.sweetalertMasterSuccess( 'Record Updated Successfully.', '' );
           this.modalRef.hide();
           this.getAllOtheMappingDetails();
           this.refreshHtmlTable();
@@ -1550,6 +1555,10 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
       );
       this.form.controls.toDate.reset();
     }
+  }
+
+  checkMappingHasFromDate(){
+    console.log('disable and enable check boxes',this.mappedJobMastersToCompanyInMaster)
   }
 
 

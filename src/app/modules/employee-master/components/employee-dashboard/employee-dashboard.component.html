@@ -140,13 +140,13 @@
                             </div>
                             <div class="row  alert-primary">
                                 <div class="col-md-10">
-                                    <div class="alert " role="alert">
-                                        "It's Never Late to mend...."!
+                                    <div class="alert " role="alert" >
+                                        {{thoughtOfTheDay}}
                                     </div>
                                 </div>
                                 <div  class="col-md-2 mt-2">    
                                                                                             
-                                    <i class="fa  p-button-icon pi pi-window-maximize"></i>
+                                    <i class="fa  p-button-icon pi pi-window-maximize  text-white"></i>
 
                             </div>
                             
@@ -381,7 +381,7 @@
                                                             <div class="col-md-12">
                                                                
                                                                     <div class="table-responsive Custom_Table ">
-                                                                        <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                        <table class="table table-striped table-hover table-bordered   " >
                                                                           <thead class="thead-dark">
                                                                       
                                                                             <tr>
@@ -445,7 +445,7 @@
                                                             <div class="col-md-12">
                                                                
                                                                     <div class="table-responsive Custom_Table ">
-                                                                        <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                        <table class="table table-striped table-hover table-bordered   " >
                                                                           <thead class="thead-dark">
                                                                       
                                                                             <tr>
@@ -534,25 +534,26 @@
                                                                 <div class="col-md-12">
                                                                    
                                                                         <div class="table-responsive Custom_Table">
-                                                                            <table  class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                            <table  class="table table-striped table-hover table-bordered   " >
                                                                               <thead class="thead-dark">
                                                                           
                                                                                 <tr >
                                                                                     <th>Emp. Name</th>
                                                                                     <th>Department</th>
-                                                                                    <th>Date</th> <th>Action</th>
+                                                                                   <th>Date</th> 
+                                                                                      <!--    <th>Action</th> -->
                                                                                   
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
                                                                                 <tr *ngFor="let element of birthdayData">
-                                                                                    <td>{{element.empName}}</td>
-                                                                                    <td>{{element.department}}</td>
-                                                                                    <td>{{element.dateOfBirth}}</td>
+                                                                                    <td tooltip=" {{element.empName}}">{{element.empName}}</td>
+                                                                                    <td  tooltip=" {{element.department}}">{{element.department}}</td>
+                                                                                    <td   tooltip="{{element.dateOfBirth}}">{{element.dateOfBirth}}</td>
                                                                                   
-                                                                                    <td><i class="fa fa-heart text-purple"></i></td>
+                                                                                    <!-- <td><i class="fa fa-heart text-purple"></i></td> -->
                                                                                 </tr> 
-                                                                              
+                                                                           
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
@@ -564,23 +565,24 @@
                                                                 <div class="col-md-12">
                                                                    
                                                                         <div class="table-responsive Custom_Table ">
-                                                                            <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                            <table class="table table-striped table-hover table-bordered   " >
                                                                                 <thead class="thead-dark">
                                                                           
                                                                                     <tr >
                                                                                         <th>Emp. Name</th>
                                                                                         <th>Department</th>
-                                                                                        <th>Date</th> <th>Action</th>
+                                                                                        <th>Date</th>
+                                                                                         <!--     <th>Action</th> -->
                                                                                       
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     <tr *ngFor="let element of workAnniversaryData">
-                                                                                        <td>{{element.empName}}</td>
-                                                                                        <td>{{element.department}}</td>
-                                                                                        <td>{{element.dateOfBirth}}</td>
+                                                                                        <td  tooltip=" {{element.empName}}" >{{element.empName}}</td>
+                                                                                        <td  tooltip=" {{element.department}}">{{element.department}}</td>
+                                                                                    <td tooltip="{{element.joiningDate }}  ({{element.anniversaryCount}} Years)">{{element.joiningDate}} ({{element.anniversaryCount}} Years)</td>
                                                                                       
-                                                                                        <td><i class="fa fa-heart text-purple"></i></td>
+                                                                                        <!-- <td><i class="fa fa-heart text-purple"></i></td> -->
                                                                                     </tr> 
                                                                                   
                                                                                 </tbody>
@@ -594,23 +596,24 @@
                                                                 <div class="col-md-12">
                                                                    
                                                                         <div class="table-responsive Custom_Table ">
-                                                                            <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                            <table class="table table-striped table-hover table-bordered   " >
                                                                                 <thead class="thead-dark">
                                                                           
                                                                                     <tr >
                                                                                         <th>Emp. Name</th>
                                                                                         <th>Department</th>
-                                                                                        <th>Date</th> <th>Action</th>
+                                                                                        <th>Date</th> 
+                                                                                        <!-- <th>Action</th> -->
                                                                                       
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     <tr *ngFor="let element of newJoineeData">
-                                                                                        <td>{{element.empName}}</td>
-                                                                                        <td>{{element.department}}</td>
-                                                                                        <td>{{element.dateOfBirth}}</td>
+                                                                                        <td  tooltip=" {{element.empName}}">{{element.empName}}</td>
+                                                                                        <td tooltip=" {{element.department}}">{{element.department}}</td>
+                                                                                        <td tooltip="{{element.joiningDate | date:'dd-MMM-yyyy'}}">{{element.joiningDate | date:"dd-MMM-yyyy" }}</td>
                                                                                       
-                                                                                        <td><i class="fa fa-heart text-purple"></i></td>
+                                                                                        <!-- <td><i class="fa fa-heart text-purple"></i></td> -->
                                                                                     </tr> 
                                                                                   
                                                                                 </tbody>
@@ -649,7 +652,7 @@
                                                                 <div class="col-md-12">
                                                                    
                                                                         <div class="table-responsive Custom_Table ">
-                                                                            <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                            <table class="table table-striped table-hover table-bordered   " >
                                                                               <thead class="thead-dark">
                                                                           
                                                                                 <tr>
@@ -715,7 +718,7 @@
                                                                 <div class="col-md-12">
                                                                    
                                                                         <div class="table-responsive Custom_Table ">
-                                                                            <table class="table table-striped table-hover table-bordered   my-registertable" >
+                                                                            <table class="table table-striped table-hover table-bordered   " >
                                                                               <thead class="thead-dark">
                                                                           
                                                                                 <tr>
