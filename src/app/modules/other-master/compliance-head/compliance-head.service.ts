@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from './../../../../environments/environment';
@@ -12,8 +13,12 @@ const headers = new Headers({
   providedIn: 'root'
 })
 export class ComplianceHeadService {
+  public apiUrl3 = environment.baseUrl8086;
+  public apistate=environment.baseUrl8082;
 
-  constructor(private _HTTP: HttpClient) { }
+  constructor(private _HTTP: HttpClient) { 
+    
+  }
 
   postComplianceHead(data) {
     return this._HTTP.post(environment.baseUrl8083 + 'compliance-head/add-head', data)
@@ -59,5 +64,30 @@ export class ComplianceHeadService {
       .pipe(map((res: any) => {
         return res;
       }));
+  }
+
+  //get all frequency lists
+  // getActiveFrequency() {
+
+  //   return this._HTTP.get( environment.baseUrl8086 + 'frequency-master/getAllActive' )
+  //     .pipe( map( ( res: any ) => {
+  //       return res;
+  //     } ) );
+  // }
+  //https://dev.deliziahr.com:8086/hrms/v1/frequency-master/getAllActive
+// /  getStatutoryFreq(){
+// return this._HTTP.get(environment.baseUrl8086 + 'frequency-master/getAllActive' )
+
+// .pipe(map((res:any)=>{
+//   return res;
+// }));
+//   }
+
+  public getStatutoryFreq(): Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl3 + 'frequency-master/getAllActive');
+  }
+
+  public getState():Observable<any>{
+    return this._HTTP.get<any>(this.apistate + '/location-information/state/');
   }
 }

@@ -74,6 +74,10 @@ export class LicmasterComponent implements OnInit {
 
   documentRemarkList: any;
   public remarkCount : any;
+  
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
 
   public documentRemark: any;
   public document2Password: any;
@@ -443,6 +447,23 @@ export class LicmasterComponent implements OnInit {
     this.setPaymentDetailToDate();
   }
 
+
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+   console.log('event.target.value::', event.target.value);
+   this.editRemarkData =  event.target.value;
+   
+  console.log('this.transactionDetail', this.transactionDetail);
+   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+   // console.log('index::', index);
+
+   this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+  
+
+ }
+
+
   //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
@@ -542,9 +563,13 @@ export class LicmasterComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    masterId
+    masterId,
+    summary, count
   ) {
-    
+
+
+     this.summaryDetails = summary;
+    this.indexCount = count;
     this.Service.getLicMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -716,6 +741,39 @@ export class LicmasterComponent implements OnInit {
     }, 3000);
     }
   }
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.licMasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"lic",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     // console.log('event::', event);
@@ -1012,3 +1070,7 @@ console.log('urlIndex::' , this.urlIndex);
     // }
   }
 }
+function hide(): any {
+  throw new Error('Function not implemented.');
+}
+

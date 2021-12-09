@@ -2817,6 +2817,8 @@ export class SdmStepperComponent implements OnInit {
       srcCombData.sdmCombinationId = 0
     }
 
+    // alert(this.isRangeApplicableFlag)
+
     if (this.isRangeApplicableFlag == false) {
 
       if(this.saveMatrixData.length > 0)
@@ -3216,8 +3218,8 @@ export class SdmStepperComponent implements OnInit {
         element.sdmDerivedMasterId = null
         element.showElement = true
       });
-      this.isRangeApplicableFlag = res.data.results[0].isRangeApplicable;
-
+      this.isRangeApplicableFlag = res.data.results[0].sdmSourceCombinationList[0].rangeApplicable;
+      //alert(this.isRangeApplicableFlag)
       // if(this.isRangeApplicableFlag == true){
         // this.selectedToDateForSave = '9999-12-31'
         // this.matrixsdmSourceCombinationList.forEach(element => {

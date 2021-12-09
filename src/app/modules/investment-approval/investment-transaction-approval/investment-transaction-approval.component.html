@@ -210,31 +210,31 @@
                           <!-- Master Popup Button End-->
                           <!-- Master Details Line -->
                           <div class="row">
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Institution : </strong
                                 >{{ transactionDetail.institutionName }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Policy No. : </strong
                                 >{{ transactionDetail.policyNo }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Name : </strong
                                 >{{ transactionDetail.policyholdername }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Frequency : </strong
                                 >{{ transactionDetail.frequency }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>ECS : </strong
                                 >{{ transactionDetail.ecs=='1'?'Yes':'No' }}
@@ -381,6 +381,7 @@
                                           <div class="d-flex">
                                           <input
                                             type="text"
+                                            [(ngModel)]="checkRemark"
                                             class="form-control"
                                             (change)="
                                               onChangeTransactionalRemark(

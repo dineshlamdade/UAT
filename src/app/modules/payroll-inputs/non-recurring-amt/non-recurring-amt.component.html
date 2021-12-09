@@ -9,7 +9,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="tabview">
+                                    <div class = "tabview">
 
                                         <!--------------- ------------- Summary ----------------------->
                                         <input name="nav" type="radio" class="about-radio" id="Summary"
@@ -23,10 +23,11 @@
                                                             <div class="row mb-10">
                                                                 <div class="col-md-6">
                                                                     <label
-                                                                        class="form-label mb-0  mt-2 float-left">Total
+                                                                        class="form-label mb-0  mt-2 float-left">Selected
                                                                         Records &nbsp;<span
                                                                             class="text-dark-green font-14 font-bold">({{selectedEmployeeLength}})</span></label>
                                                                 </div>
+
                                                                 <!-- Summary top buttons -->
                                                                 <div class="col-md-6">
                                                                     <div class="float-right">
@@ -59,15 +60,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Excel Download-->
-                                                                <!-- <a tooltip="Download"
-                                                                    style="cursor: pointer;float:right; margin-left: 98%; margin-top: 7px;"
-                                                                    (click)="SummaryexportAsXLSX()">
-                                                                    <i class="fa fa-file-excel-o font-18 text-dark-green"
-                                                                        aria-hidden="true">
-                                                                    </i>
-                                                                </a> -->
-
                                                             </div>
 
                                                             <div class="table-responsive Custom_Table">
@@ -87,14 +79,12 @@
                                                                             <div class="col-md-12">
                                                                                 <div class="float-right">
                                                                                     <div class="d-flex">
-                                                                                        <span
-                                                                                            class="p-input-icon-left p-ml-auto">
-                                                                                            <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText
-                                                                                                type="text"
+                                                                                        <!-- <i class=" fas fa-filter text-purple mr-2 mt-1  font-24"></i> -->
+                                                                                        <span class="p-input-icon-left p-ml-auto">
+                                                                                            <i class="pi pi-search" style="top: 9px !important; margin-right: 20px; "></i>
+                                                                                            <input pInputText type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                                                                placeholder="Search " />
+                                                                                                placeholder="Search" />
                                                                                         </span>
                                                                                         <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
                                                                                             (click)="SummaryexportAsXLSX()"></i>
@@ -349,12 +339,12 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><label
-                                                                                    class="form-lable mb-0">{{Summarydata.fromDate}}
+                                                                                    class="form-lable mb-0">{{Summarydata.fromDate | date : 'dd-MMM-yy'}}
                                                                                 </label>
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><label
-                                                                                    class="form-lable mb-0">{{Summarydata.toDate}}
+                                                                                    class="form-lable mb-0">{{Summarydata.toDate | date: 'dd-MMM-yy'}}
                                                                                 </label>
 
                                                                             </td>
@@ -365,7 +355,7 @@
                                                                                     *ngIf="Summarydata.clawbackApplicableAt != ''"
                                                                                     aria-disabled="true"></i>
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0">{{Summarydata.amount
                                                                                     | number: '1.2-2'}}
                                                                                 </label>
@@ -470,7 +460,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <br>
+                                                           
                                                             <div class="tabview-contents mt-25"
                                                                 *ngIf="selectedOption == 'single' ">
 
@@ -478,12 +468,12 @@
 
                                                                     <!-- Employee Selection Dropdown-->
                                                                     <div class="row mt-10"
-                                                                        *ngIf="showEmployeeSelectionFlag || !showDropdownDisabled">
+                                                                        *ngIf="showEmployeeSelectionFlag">
                                                                         <div class="col-md-2">
                                                                             <label class="form-label mb-0">Employee Code
                                                                             </label>
                                                                             <select name="EmployeeCode"
-                                                                                class="form-control "
+                                                                                class="form-control custom-select"
                                                                                 [(ngModel)]="selectedEmployeeMasterId"
                                                                                 [disabled]="showDropdownDisabled"
                                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
@@ -497,10 +487,44 @@
 
                                                                         </div>
                                                                         <div class="col-md-2">
+                                                                            <label class="form-label mb-0">First Name
+                                                                            </label>
+                                                                            <select name="EmployeeCode"
+                                                                                class="form-control custom-select"
+                                                                                [(ngModel)]="selectedEmployeeMasterId"
+                                                                                [disabled]="showDropdownDisabled"
+                                                                                (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                                <option value="">Select</option>
+                                                                                <!-- <option value="1"> 1111 </option> -->
+                                                                                <option value="{{emp.employeeMasterId}}"
+                                                                                    *ngFor="let emp of employeeData">
+                                                                                    {{emp.firstName}}
+                                                                                </option>
+                                                                            </select>
+
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <label class="form-label mb-0">Last Name
+                                                                            </label>
+                                                                            <select name="EmployeeCode"
+                                                                                class="form-control custom-select"
+                                                                                [(ngModel)]="selectedEmployeeMasterId"
+                                                                                [disabled]="showDropdownDisabled"
+                                                                                (change)="getSelectedEmployeeCode($event.target.value)">
+                                                                                <option value="">Select</option>
+                                                                                <!-- <option value="1"> 1111 </option> -->
+                                                                                <option value="{{emp.employeeMasterId}}"
+                                                                                    *ngFor="let emp of employeeData">
+                                                                                    {{emp.lastName}}
+                                                                                </option>
+                                                                            </select>
+
+                                                                        </div>
+                                                                        <div class="col-md-2">
                                                                             <label class="form-label mb-0">Payroll
                                                                                 Area</label>
                                                                             <select name="PayrollArea"
-                                                                                class="form-control "
+                                                                                class="form-control custom-select"
                                                                                 [(ngModel)]="selectedPayrollArea"
                                                                                 (change)="getSelectedPayrollArea($event.target.value)"
                                                                                 [disabled]="showDropdownDisabled">
@@ -513,79 +537,21 @@
                                                                                     {{payroll.payrollAreaCode}}</option>
                                                                             </select>
                                                                         </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="float-right">
+                                                                                <button type="submit"
+                                                                                    class="custom_button custom_btn btn-bg-green mt-2 btn-labeled btn-labeled-left"
+                                                                                    tooltip="Save"
+                                                                                    (click)="graysearch(grays)"><b><i
+                                                                                            class="fas fa-search"></i></b>
+                                                                                    Search</button>
+                                                                            </div>
+                                                                        </div>
 
                                                                     </div>
 
-                                                                    <!-- Selected Employee basic infrmation-->
-                                                                    <!-- <div class="col-md-12 pl-0 pr-0">
-                                                                        <div class="box-line-border radius-10 p-2 mt-3"
-                                                                            *ngIf="employeeFinDetailsData">
-                                                                            <div class="row">
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Emp.
-                                                                                        No.</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.employeeCode}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Emp.
-                                                                                        Name</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.fullName}}
-                                                                                    </label>
-                                                                                </div>
 
-                                                                               
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Establishment</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.establishment}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Department</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-
-                                                                                    </label>
-                                                                                </div>
-                                                                               
-                                                                                <div class="col-md-1">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Grade</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.grade}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-2">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Designation</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        {{employeeFinDetailsData.designation}}
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-1">
-                                                                                    <label
-                                                                                        class="form-label mt-1 mb-0">Status</label>
-                                                                                    <label
-                                                                                        class="font-12 text-ellipsis mt-1 mb-0">
-                                                                                        Probation
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> -->
-
+                                                                    <!-- selected Employee basic information-->
                                                                     <div class="col-md-12 pl-0 pr-0">
                                                                         <div class="box-line-border radius-10 p-2 mt-3"
                                                                             *ngIf="employeeFinDetailsData">
@@ -689,8 +655,8 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    
-                                                                    <div class="row mt-20">
+
+                                                                    <!-- <div class="row mt-20">
                                                                         <div class="col-md-12 pr-0 pl-0">
                                                                             <div class="border-card p-2 mt_2">
                                                                                 <div class="row">
@@ -726,7 +692,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> -->
 
                                                                     <div class="row">
                                                                         <div class="col-md-12 p-0">
@@ -754,7 +720,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -769,13 +735,13 @@
 
                                                                                     <ng-template pTemplate="header">
                                                                                         <tr>
-                                                                                            <th rowspan="2">
+                                                                                            <!-- <th rowspan="2">
                                                                                                 Sr. No.
-                                                                                            </th>
+                                                                                            </th> -->
                                                                                             <th rowspan="2">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    Head Type
+                                                                                                    <!-- Head Type -->
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -832,11 +798,10 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
-                                                                                            <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                            <th rowspan="2">
                                                                                                 <div
-                                                                                                    class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    Frequency
+                                                                                                    class="p-d-flex p-jc-between p-ai-center" tooltip="Frequency">
+                                                                                                    Freq.
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -856,7 +821,7 @@
                                                                                                 class="wd-10">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    From Date
+                                                                                                    From <br> Date
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -897,7 +862,7 @@
                                                                                                 class="wd-5">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    No. of Transaction
+                                                                                                    No. of Trans'n
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -918,7 +883,7 @@
                                                                                                 class="wd-10">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    To Date
+                                                                                                    To <br>Date
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -937,7 +902,7 @@
                                                                                             </th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-10">
-                                                                                                Clawback </th>
+                                                                                                Claw <br>back </th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-8">
                                                                                                 <div
@@ -980,31 +945,33 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
+                                                                                            <th rowspan="2"></th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-10">
                                                                                                 Remark </th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-8">
                                                                                                 Status </th>
-                                                                                            <th rowspan="2"></th>
+                                                                                            
                                                                                         </tr>
                                                                                     </ng-template>
 
                                                                                     <ng-template pTemplate="body"
                                                                                         let-data let-rowIndex=rowIndex>
                                                                                         <tr class="p-selectable-row">
-                                                                                            <td class="text-center">
-                                                                                                {{rowIndex + 1}}</td>
+                                                                                            <!-- <td class="text-center">
+                                                                                                {{rowIndex + 1}}</td> -->
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <label
-                                                                                                    class="form-lable mb-0 text-link"
-                                                                                                    (click)="viewTransaction(template1,data)">{{data.payrollHeadMaster.displayName}}</label>
+                                                                                                    class="form-lable mb-0" tooltip="{{data.payrollHeadMaster.displayName}}"
+                                                                                                    >{{data.payrollHeadMaster.displayName.charAt(0)}}</label>
                                                                                             </td>
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <label
-                                                                                                    class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
+                                                                                                    class="form-lable mb-0 text-link" (click)="ViewTransactionHistory(template1i,data)">
+                                                                                                    {{data.payrollHeadMaster.description}}</label>
                                                                                                 &nbsp;&nbsp;&nbsp;
                                                                                             </td>
                                                                                             <td>
@@ -1023,11 +990,8 @@
                                                                                             </td>
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
-                                                                                                <!-- <label
-                                                                                            class="form-lable mb-0">{{data.frequency}}
-                                                                                        </label> -->
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1074,7 +1038,8 @@
                                                                                                     bsDatepicker
                                                                                                     [minDate]="effectiveFromDate"
                                                                                                     [maxDate]="effectiveToDate"
-                                                                                                    value="{{data.fromDate}}"
+                                                                                                    tooltip="{{data.fromdate | date :'dd-MMM-yyyy'}}"
+                                                                                                    value="{{data.fromDate | date: 'dd-MMM-yy'}}"
                                                                                                     (bsValueChange)="getFromDate($event)"
                                                                                                     class="form-control wd-120">
                                                                                             </td>
@@ -1130,7 +1095,7 @@
                                                                                                     [minDate]="setMinToDate"
                                                                                                     [maxDate]="effectiveToDate"
                                                                                                     (bsValueChange)="getToDate($event)"
-                                                                                                    class="form-control wd-120"
+                                                                                                    class="form-control wd-100"
                                                                                                     [disabled]="selectedTransactionIndex == rowIndex && (selectedTransactionType == 'NoOfTransaction'
                                                                                             || selectedTransactionType == 'Perpetual') ">
                                                                                             </td>
@@ -1145,27 +1110,15 @@
                                                                                                     *ngIf="selectedApplicableAt != ''"></i>
                                                                                             </td>
                                                                                             <td
-                                                                                                class="bg-color-light_gray">
-                                                                                                <input
-                                                                                                    class="form-lable mb-0"
-                                                                                                    value="{{data.amount | number: '1.2-2'}}"
-                                                                                                    disabled>
+                                                                                                class="bg-color-light_gray" style="text-align: right;">
+                                                                                                {{data.amount | number: '1.2-2'}}
                                                                                             </td>
                                                                                             <td>
                                                                                                 <input type="number"
                                                                                                     value="{{data.amount | number: '1.2-2'}}"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control " style="text-align: right;" 
                                                                                                     [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
                                                                                                     (focusout)="getUpdateOpeningAmt($event.target.value,data)">
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <input type="text"
-                                                                                                    value={{data.remark}}
-                                                                                                    class="form-control wd-100"
-                                                                                                    (focusout)="getRemarkChange($event.target.value)">
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <label></label>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <div class="col-md-2"
@@ -1193,6 +1146,16 @@
                                                                                                     </i>
                                                                                                 </span>
                                                                                             </td>
+                                                                                            <td>
+                                                                                                <input type="text"
+                                                                                                    value={{data.remark}}
+                                                                                                    class="form-control wd-100"
+                                                                                                    (focusout)="getRemarkChange($event.target.value)">
+                                                                                            </td>
+                                                                                            <td>
+                                                                                               {{data.approveStatus}}
+                                                                                            </td>
+                                                                                            
                                                                                         </tr>
                                                                                     </ng-template>
 
@@ -1230,7 +1193,7 @@
                                                                                                         <span
                                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                                             <i class="pi pi-search"
-                                                                                                                style="top: 9px !important;"></i>
+                                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
                                                                                                             <input
                                                                                                                 pInputText
                                                                                                                 type="text"
@@ -1245,13 +1208,13 @@
 
                                                                                     <ng-template pTemplate="header">
                                                                                         <tr>
-                                                                                            <th rowspan="2">
+                                                                                            <!-- <th rowspan="2">
                                                                                                 Sr. No.
-                                                                                            </th>
+                                                                                            </th> -->
                                                                                             <th rowspan="2">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    Head Type
+                                                                                                    <!-- Head Type -->
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -1286,7 +1249,8 @@
                                                                                                 </div>
                                                                                             </th>
                                                                                             <!--  -->
-                                                                                            <th rowspan="2" *ngIf="isRefererBonus"
+                                                                                            <th rowspan="2"
+                                                                                                *ngIf="isRefererBonus"
                                                                                                 class="wd-1">
                                                                                             </th>
                                                                                             <th rowspan="2"
@@ -1309,11 +1273,10 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
-                                                                                            <th rowspan="2"
-                                                                                                class="wd-5">
+                                                                                            <th rowspan="2">
                                                                                                 <div
-                                                                                                    class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    Frequency
+                                                                                                    class="p-d-flex p-jc-between p-ai-center" tooltip="Frequency">
+                                                                                                    Freq.
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -1333,7 +1296,7 @@
                                                                                                 class="wd-10">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    From Date
+                                                                                                    From<br>Date
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -1373,7 +1336,7 @@
                                                                                                 class="wd-5">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    No. of Transaction
+                                                                                                    No. of Trans'n
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -1393,7 +1356,7 @@
                                                                                                 class="wd-10">
                                                                                                 <div
                                                                                                     class="p-d-flex p-jc-between p-ai-center">
-                                                                                                    To Date
+                                                                                                    To <br> Date
                                                                                                     <div
                                                                                                         class="Sort_Filter_Position">
                                                                                                         <p-sortIcon
@@ -1411,7 +1374,7 @@
                                                                                             </th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-10">
-                                                                                                Clawback </th>
+                                                                                                Claw <br>back </th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-8">
                                                                                                 <div
@@ -1452,39 +1415,42 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </th>
+                                                                                            <th rowspan="2"></th>
                                                                                             <th rowspan="2"
                                                                                                 class="wd-10">
                                                                                                 Remark </th>
 
-                                                                                            <th rowspan="2"></th>
+                                                                                            
                                                                                         </tr>
                                                                                     </ng-template>
 
                                                                                     <ng-template pTemplate="body"
                                                                                         let-data let-rowIndex=rowIndex>
                                                                                         <tr class="p-selectable-row">
-                                                                                            <td class="text-center">
-                                                                                                {{rowIndex + 1}}</td>
+                                                                                            <!-- <td class="text-center">
+                                                                                                {{rowIndex + 1}}</td> -->
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <label
-                                                                                                    class="form-lable mb-0">
+                                                                                                    class="form-lable mb-0" tooltip="{{data.headType}}">
                                                                                                     <!-- text-link (click)="ViewTransactionHistoryDataByEmployee(template1,data)" -->
-                                                                                                    {{data.headType}}
+                                                                                                    {{data.headType.charAt(0)}}
                                                                                                 </label>
                                                                                             </td>
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <label
-                                                                                                    class="form-lable mb-0">{{data.headDescription}}</label>
+                                                                                                    class="form-lable mb-0 text-link" (click)="ViewEditTransactionHistory(template1i,data)">
+                                                                                                    {{data.headDescription}}</label>
                                                                                                 &nbsp;&nbsp;&nbsp;
 
                                                                                             </td>
                                                                                             <!-- *ngIf="isRefererBonus" -->
-                                                                                            <td *ngIf="data.headDescription == 'RefererBonus'" >
+                                                                                            <td
+                                                                                                *ngIf="data.headDescription == 'Referral Bonus' || isRefererBonus">
                                                                                                 <i class="fa fa-users font-16 text-blue cursor-pointer"
                                                                                                     aria-hidden="true"
-                                                                                                    (click)="openReferalPopup(referalPopup,data)">
+                                                                                                    (click)="openReferalPopup(referalPopup,data)" *ngIf="data.showRef">
                                                                                                 </i>
                                                                                             </td>
 
@@ -1493,12 +1459,12 @@
                                                                                                     value="1"
                                                                                                     class="form-control"
                                                                                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                                                    (focusout)="getOnceEveryChangeForSave($event.target.value,data)">
+                                                                                                    (focusout)="getOnceEveryChangeForSave($event.target.value,data,rowIndex)">
                                                                                             </td>
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control  wd-200"
+                                                                                                    class="form-control"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1547,14 +1513,15 @@
                                                                                                         class="fa fa-clone text-blue font-16"></i>
                                                                                                 </span> &nbsp;&nbsp;
                                                                                                 <input
-                                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                                                     data-provide="datepicker"
                                                                                                     data-date-autoclose="true"
                                                                                                     placeholder="Date"
                                                                                                     bsDatepicker
                                                                                                     [minDate]="effectiveFromDate"
                                                                                                     [maxDate]="effectiveToDate"
-                                                                                                    value="{{data.fromdate | date :'dd-MMM-yyyy'}}"
+                                                                                                    tooltip = "{{data.fromdate | date :'dd-MMM-yyyy'}}"
+                                                                                                    value="{{data.fromdate | date :'dd-MMM-yy'}}"
                                                                                                     (bsValueChange)="getFromDateForSave($event,data,rowIndex)"
                                                                                                     class="form-control wd-100">
                                                                                             </td>
@@ -1609,10 +1576,10 @@
                                                                                                     placeholder="Date"
                                                                                                     bsDatepicker
                                                                                                     value="{{data.todate}}"
-                                                                                                    class="form-control wd-120"
+                                                                                                    class="form-control wd-100"
                                                                                                     [minDate]="setMinToDate"
                                                                                                     [maxDate]="effectiveToDate"
-                                                                                                    (bsValueChange)="getToDateForSave($event,data)"
+                                                                                                    (bsValueChange)="getToDateForSave($event,data,rowIndex)"
                                                                                                     [disabled]="data.transactionsType != 'Defined Date'">
                                                                                             </td>
                                                                                             <td>
@@ -1626,25 +1593,18 @@
                                                                                                     *ngIf="data.showClawback"></i>
                                                                                             </td>
                                                                                             <td
-                                                                                                class="bg-color-light_gray">
-                                                                                                <input
-                                                                                                    class="form-control"
-                                                                                                    value="{{data.openingAmount | number: '1.2-2'}}"
-                                                                                                    disabled>
+                                                                                                class="bg-color-light_gray" style="text-align: right;">
+                                                                                                {{data.openingAmount | number: '1.2-2'}}
                                                                                             </td>
                                                                                             <td>
                                                                                                 <!-- [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'" -->
+                                                                                                <!-- (keyup)="addCommaOpeningAmount($event.target.value,data,rowIndex)" -->
                                                                                                 <input type="number"
                                                                                                     value="{{data.closingAmount | number: '1.2-2'}}"
-                                                                                                    class="form-control"
+                                                                                                    class="form-control" style="text-align: right;" 
                                                                                                     [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
+                                                                                                    
                                                                                                     (focusout)="transactionOpeningAmount($event.target.value,data,rowIndex)">
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <input type="text"
-                                                                                                    value={{data.remark}}
-                                                                                                    class="form-control wd-100"
-                                                                                                    (focusout)="getRemarkChangeForSave($event.target.value,data)">
                                                                                             </td>
                                                                                             <td>
                                                                                                 <div class="col-md-2"
@@ -1666,6 +1626,13 @@
 
                                                                                                 <!-- <span class="Label_badge" style="text-align: center;">{{data.deviationCount}}</span> -->
                                                                                             </td>
+                                                                                            <td>
+                                                                                                <input type="text"
+                                                                                                    value={{data.remark}}
+                                                                                                    class="form-control wd-100"
+                                                                                                    (focusout)="getRemarkChangeForSave($event.target.value,data)">
+                                                                                            </td>
+                                                                                          
                                                                                         </tr>
 
 
@@ -1891,15 +1858,9 @@
                                                             </div>
 
                                                             <!-- Edit schedule data-->
-                                                            <!-- <a tooltip="Download" style="cursor: pointer;float:right;"
-                                                                (click)="ScheduleExportAsXLSX()"
-                                                                *ngIf="editScheduleFlag">
-                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                                                                    aria-hidden="true">
-                                                                </i>
-                                                            </a> -->
                                                             <div class="table-responsive Custom_Table">
-                                                                <p-table [value]="NonRecurringTransactionScheduleEMPdData"
+                                                                <p-table
+                                                                    [value]="NonRecurringTransactionScheduleEMPdData"
                                                                     class="mt-10" [paginator]="true" [rows]="10"
                                                                     [showCurrentPageReport]="true"
                                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -1917,8 +1878,9 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText type="text"
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
+                                                                                            <input pInputText
+                                                                                                type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
                                                                                                 placeholder="Search " />
                                                                                         </span>
@@ -1944,7 +1906,8 @@
                                                                                         <p-sortIcon field="employeeCode"
                                                                                             pSortableColumn="employeeCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="employeeCode"
+                                                                                        <p-columnFilter
+                                                                                            field="employeeCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1972,7 +1935,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Payroll Area
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payrollAreaCode"
+                                                                                        <p-sortIcon
+                                                                                            field="payrollAreaCode"
                                                                                             pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -1992,7 +1956,8 @@
                                                                                         <p-sortIcon field="displayName"
                                                                                             pSortableColumn="displayName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="displayName"
+                                                                                        <p-columnFilter
+                                                                                            field="displayName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2022,18 +1987,6 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
                                                                                 </div>
                                                                             </th>
 
@@ -2078,7 +2031,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Processing Cycle
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="processedAmount"
+                                                                                        <p-sortIcon
+                                                                                            field="processedAmount"
                                                                                             pSortableColumn="processedAmount">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2098,7 +2052,8 @@
                                                                                         <p-sortIcon field="clawbackDate"
                                                                                             pSortableColumn="clawbackDate">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="clawbackDate"
+                                                                                        <p-columnFilter
+                                                                                            field="clawbackDate"
                                                                                             type="date" display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2113,7 +2068,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Reschedule Date
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="resheduleDate"
+                                                                                        <p-sortIcon
+                                                                                            field="resheduleDate"
                                                                                             pSortableColumn="resheduleDate">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter type="date"
@@ -2130,7 +2086,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Approval Status
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="approvalstatus"
+                                                                                        <p-sortIcon
+                                                                                            field="approvalstatus"
                                                                                             pSortableColumn="approvalstatus">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2150,12 +2107,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -2185,8 +2181,9 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray">
-                                                                                <label class="form-lable mb-0 text-link"
-                                                                                    (click)="ViewTransactionHistory(template2)"
+                                                                                <!-- text-link"
+                                                                                    (click)="ViewTransactionHistory(template2) -->
+                                                                                <label class="form-lable mb-0 "
                                                                                     *ngIf="selectedEmpData[index]">
                                                                                     {{selectedEmpData[index].payrollHeadMaster.displayName}}
                                                                                 </label>
@@ -2209,26 +2206,26 @@
                                                                                     data-provide="datepicker"
                                                                                     data-date-autoclose="true"
                                                                                     [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
-                                                                                    class="form-control wd-100" bsDatepicker
-                                                                                    disabled>
+                                                                                    class="form-control wd-100"
+                                                                                    bsDatepicker disabled>
                                                                                 <!-- date -->
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0"><input
-                                                                                        type="text"
+                                                                                        type="text" style="text-align: right;" 
                                                                                         [value]="ScheduleData.transactionAmount | number: '1.2-2'"
                                                                                         class="form-control wd-100"
                                                                                         disabled>
                                                                                 </label>
                                                                                 <!-- amount -->
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0">{{ScheduleData.processedAmount
                                                                                     | number: '1.2-2'}}
                                                                                 </label>
 
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0">{{ScheduleData.transactionAmount
                                                                                     | number: '1.2-2'}}
                                                                                 </label>
@@ -2291,7 +2288,8 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><input
-                                                                                    type="text" class="form-control wd-100"
+                                                                                    type="text"
+                                                                                    class="form-control wd-100"
                                                                                     (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                     [value]="ScheduleData.remark">
                                                                             </td>
@@ -2308,8 +2306,9 @@
                                                                 </p-table>
 
                                                                 <!-- All schedule data-->
-                                                            
-                                                                <p-table [value]="AllNonRecurringTransactionScheduledData"
+
+                                                                <p-table
+                                                                    [value]="AllNonRecurringTransactionScheduledData"
                                                                     class="mt-10" [paginator]="true" [rows]="10"
                                                                     [showCurrentPageReport]="true"
                                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -2330,8 +2329,9 @@
                                                                                         <span
                                                                                             class="p-input-icon-left p-ml-auto">
                                                                                             <i class="pi pi-search"
-                                                                                                style="top: 9px !important;"></i>
-                                                                                            <input pInputText type="text"
+                                                                                                style="top: 9px !important; margin-right: 20px;"></i>
+                                                                                            <input pInputText
+                                                                                                type="text"
                                                                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
                                                                                                 placeholder="Search " />
                                                                                         </span>
@@ -2357,7 +2357,8 @@
                                                                                         <p-sortIcon field="employeeCode"
                                                                                             pSortableColumn="employeeCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="employeeCode"
+                                                                                        <p-columnFilter
+                                                                                            field="employeeCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2385,7 +2386,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Payroll Area
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payrollAreaCode"
+                                                                                        <p-sortIcon
+                                                                                            field="payrollAreaCode"
                                                                                             pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2405,7 +2407,8 @@
                                                                                         <p-sortIcon field="displayName"
                                                                                             pSortableColumn="displayName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="displayName"
+                                                                                        <p-columnFilter
+                                                                                            field="displayName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2435,18 +2438,7 @@
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Schedule
-                                                                                    <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            pSortableColumn="nonRecurringTransactionScheduleId">
-                                                                                        </p-sortIcon>
-                                                                                        <p-columnFilter
-                                                                                            field="nonRecurringTransactionScheduleId"
-                                                                                            display="menu"
-                                                                                            class="p-ml-auto">
-
-                                                                                        </p-columnFilter>
-                                                                                    </div>
+                                                                                   
                                                                                 </div>
                                                                             </th>
 
@@ -2455,12 +2447,14 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Processed Amount
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="processedAmount"
+                                                                                        <p-sortIcon
+                                                                                            field="processedAmount"
                                                                                             pSortableColumn="processedAmount">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
                                                                                             field="processedAmount"
-                                                                                            type="numeric" display="menu"
+                                                                                            type="numeric"
+                                                                                            display="menu"
                                                                                             class="p-ml-auto">
 
                                                                                         </p-columnFilter>
@@ -2478,7 +2472,8 @@
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
                                                                                             field="transactionAmount"
-                                                                                            type="numeric" display="menu"
+                                                                                            type="numeric"
+                                                                                            display="menu"
                                                                                             class="p-ml-auto">
 
                                                                                         </p-columnFilter>
@@ -2493,7 +2488,8 @@
                                                                                         <p-sortIcon field="cycleName"
                                                                                             pSortableColumn="cycleName">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="cycleName"
+                                                                                        <p-columnFilter
+                                                                                            field="cycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2509,7 +2505,8 @@
                                                                                         <p-sortIcon field="clawbackDate"
                                                                                             pSortableColumn="clawbackDate">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="clawbackDate"
+                                                                                        <p-columnFilter
+                                                                                            field="clawbackDate"
                                                                                             type="date" display="menu"
                                                                                             class="p-ml-auto">
 
@@ -2524,7 +2521,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Reschedule Date
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="resheduleDate"
+                                                                                        <p-sortIcon
+                                                                                            field="resheduleDate"
                                                                                             pSortableColumn="resheduleDate">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter type="date"
@@ -2541,7 +2539,8 @@
                                                                                     class="p-d-flex p-jc-between p-ai-center">
                                                                                     Approval Status
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="approvalstatus"
+                                                                                        <p-sortIcon
+                                                                                            field="approvalstatus"
                                                                                             pSortableColumn="approvalstatus">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
@@ -2561,12 +2560,51 @@
                                                                         <tr>
                                                                             <th class="wd-8">
                                                                                 No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        pSortableColumn="nonRecurringTransactionScheduleId">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="nonRecurringTransactionScheduleId"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionDate"
+                                                                                        pSortableColumn="transactionDate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="date"
+                                                                                        field="transactionDate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                             <th class="wd-8">
                                                                                 Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon
+                                                                                        field="transactionAmount"
+                                                                                        pSortableColumn="transactionAmount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                    type="numeric"
+                                                                                        field="transactionAmount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
                                                                             </th>
                                                                         </tr>
                                                                     </ng-template>
@@ -2596,8 +2634,9 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray">
-                                                                                <label class="form-lable mb-0 text-link"
-                                                                                    (click)="ViewTransactionHistory(template2)"
+                                                                                <!-- text-link"
+                                                                                    (click)="ViewTransactionHistory(template2) -->
+                                                                                <label class="form-lable mb-0 "
                                                                                     *ngIf="ScheduleData.payrollHeadMaster">
                                                                                     {{ScheduleData.payrollHeadMaster.displayName}}
                                                                                 </label>
@@ -2618,26 +2657,26 @@
                                                                             <td class="bg-color-light_gray"><input
                                                                                     data-provide="datepicker"
                                                                                     data-date-autoclose="true"
-                                                                                    [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
-                                                                                    class="form-control wd-100" bsDatepicker
-                                                                                    disabled>
+                                                                                    [value]="ScheduleData.transactionDate | date: 'dd-MMM-yy'"
+                                                                                    class="form-control wd-100"
+                                                                                    bsDatepicker disabled>
                                                                                 <!-- date -->
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0"><input
-                                                                                        type="text"
+                                                                                        type="text" style="text-align: right;" 
                                                                                         [value]="ScheduleData.transactionAmount | number: '1.2-2'"
                                                                                         class="form-control wd-100"
                                                                                         disabled>
                                                                                 </label>
                                                                                 <!-- amount -->
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
-                                                                                    class="form-lable mb-0">{{ScheduleData.processedAmount}}
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
+                                                                                    class="form-lable mb-0">{{ScheduleData.processedAmount | number: '1.2-2'}}
                                                                                 </label>
 
                                                                             </td>
-                                                                            <td class="bg-color-light_gray"><label
+                                                                            <td class="bg-color-light_gray" style="text-align: right;"><label
                                                                                     class="form-lable mb-0">{{ScheduleData.transactionAmount
                                                                                     | number: '1.2-2'}}
                                                                                 </label>
@@ -2650,7 +2689,7 @@
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><label
                                                                                     class="form-lable mb-0 wd-100">{{ScheduleData.clawbackDate
-                                                                                    | date: 'dd-MMM-yyyy'}}
+                                                                                    | date: 'dd-MMM-yy'}}
                                                                                 </label>
                                                                             </td>
                                                                             <td class="bg-color-light_gray">
@@ -2695,7 +2734,8 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray"><input
-                                                                                    type="text" class="form-control wd-100"
+                                                                                    type="text"
+                                                                                    class="form-control wd-100"
                                                                                     (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                     [value]="ScheduleData.remark">
 
@@ -2710,7 +2750,7 @@
                                                                     </ng-template>
                                                                 </p-table>
                                                             </div>
-                                                            
+
                                                             <!-- Buttons -->
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
@@ -2759,66 +2799,11 @@
 </form>
 
 
-<ng-template #template>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">History</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body p-0 m-0">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="form-label">Head Name</label>
-                        <input type="text" class="form-control" [value]="viewHeadHistory.payrollHeadMaster.displayName"
-                            disabled>
-                    </div>
-                </div>
-                <div class="row clearfix mt-10">
-                    <div class="col-md-12">
-                        <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-hover table-bordered m-b-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th class="wd-15 font700">From Date</th>
-                                        <th class="wd-15 font700">To Date</th>
-                                        <th class="wd-15 font700">Opening Value</th>
-                                        <th class="wd-15 font700">Change Value</th>
-                                        <th class="wd-10 font700">Change %</th>
-                                        <th class="wd-15 font700">Closing Value</th>
-                                        <th class="wd-15 font700">Unit of Measure</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of NonRecurringHeadwiseHistorydData; let index = index;">
-                                        <td>{{data.fromDate}}</td>
-                                        <td>{{data.toDate}}</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i>
-            &nbsp;Close</button>
-    </div>
-</ng-template>
-
 
 <!-- Transaction History / Header history-->
 <ng-template #template1>
     <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel"> Transaction History</h5>
+        <h5 class="modal-title" id="UploadModalLabel"> Group Transaction History</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                 aria-hidden="true">×</span></button>
     </div>
@@ -2859,6 +2844,7 @@
                                         {{viewHeadHistory.payrollArea.payrollAreaCode}}
                                     </label>
                                 </div>
+                               
 
                             </div>
                         </div>
@@ -2874,13 +2860,14 @@
                                         <!-- <th class="wd-10 font700">Payroll Area</th> -->
                                         <th class="wd-10 font700">Once Every</th>
                                         <th class="wd-10 font700">Frequency</th>
-                                        <th class="wd-10 font700">Amount</th>
                                         <th class="wd-10 font700">From Date</th>
                                         <th class="wd-8 font700">Type</th>
                                         <th class="wd-10 font700">No. of Transactions</th>
                                         <th class="wd-10 font700">To Date</th>
+                                        <th class="wd-10 font700">Amount</th>
                                         <th class="wd-10 font700">Remark</th>
-                                        <th class="wd-13 font700">Updated Date & Time</th>
+                                        <th class="wd-10 font700">Status</th>
+                                        <th class="wd-13 font700">Updated Date</th>
                                         <th class="wd-10 font700">Updated By</th>
                                     </tr>
                                 </thead>
@@ -2890,14 +2877,15 @@
                                         <!-- <td>{{data.nonRecurringTransactionGroupId}}</td> -->
                                         <!-- <td>{{data.payrollArea.payrollAreaCode}}</td> -->
                                         <td>{{data.onceEvery}}</td>
-                                        <td>{{data.frequency}}</td>
-                                        <td>{{data.amount | number : '1.00'}}</td>
-                                        <td>{{data.fromDate}}</td>
-                                        <td>{{data.transactionsType}}</td>
+                                        <td style="text-align: left;">{{data.frequency}}</td>
+                                        <td>{{data.fromDate | date: 'dd-MMM-yy'}}</td>
+                                        <td style="text-align: left;">{{data.transactionsType}}</td>
                                         <td>{{data.numberOfTransactions}}</td>
-                                        <td>{{data.toDate}}</td>
-                                        <td>{{data.remark}}</td>
-                                        <td>{{data.createDateTime | date: 'dd-MMM-yyyy'}}</td>
+                                        <td>{{data.toDate | date: 'dd-MMM-yy'}}</td>
+                                        <td style="text-align: right;">{{data.amount | number : '1.2-2'}}</td>
+                                        <td style="text-align: left;">{{data.remark}}</td>
+                                        <td>{{data.approveStatus}}</td>
+                                        <td>{{data.createDateTime | date: 'dd-MMM-yy'}}</td>
                                         <td>{{data.createdBy}}</td>
 
                                     </tr>
@@ -2931,6 +2919,7 @@
                     <div class="col-md-12 pl-0 pr-0">
                         <div class="border-dark-card radius-10 p-2 mt-3">
                             <div class="row" *ngIf="viewEmployeeData">
+                                <!-- <pre>{{viewEmployeeData | json}}</pre> -->
                                 <div class="col-md-2">
                                     <label class="form-label mt-1 mb-0">Emp. Code</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
@@ -2960,7 +2949,44 @@
                                         {{viewEmployeeData.payrollHeadMaster.displayName}}
                                     </label>
                                 </div>
-
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">Once Every</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.onceEvery}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">    
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">Frequency</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.frequency}}
+                                    </label>
+                                </div>
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">From Date</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.fromDate}}
+                                    </label>
+                                </div>
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">Type of Transaction</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.transactionsType}}
+                                    </label>
+                                </div>
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">No Of Transaction</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.numberOfTransactions}}
+                                    </label>
+                                </div>
+                                <div class="col-md-2" *ngIf="viewEmployeeData">
+                                    <label class="form-label mt-1 mb-0">To Date</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        {{viewEmployeeData.toDate}}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2995,17 +3021,17 @@
                                                 class="form-control" bsDatepicker disabled>  -->
                                             {{data.transactionDate | date : 'dd-MMM-yyyy'}}
                                         </td>
-                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
-                                        <td>{{data.processedAmount | number: '1.2-2'}}</td>
-                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.processedAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.transactionAmount | number: '1.2-2'}}</td>
                                         <td>{{data.cycleName}}</td>
-                                        <td><label class="custom-control  checkbox-center">
+                                        <td><label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled [checked]="data.hold == true" />
+                                                  disabled   [checked]="data.hold == true" />
                                                 <span class="custom-control-label"></span>
                                             </label>
                                         </td>
-                                        <td><label class="custom-control  checkbox-center">
+                                        <td><label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
                                                     disabled [checked]="data.discard == true" />
                                                 <span class="custom-control-label"></span>
@@ -3111,11 +3137,11 @@
                                         <td>
                                             <!-- <input data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" bsDatepicker disabled>  -->
-                                            {{data.transactionDate | date : 'dd-MMM-yyyy'}}
+                                            {{data.transactionDate | date : 'dd-MMM-yy'}}
                                         </td>
-                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
-                                        <td>{{data.processedAmount | number: '1.2-2'}}</td>
-                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.processedAmount | number: '1.2-2'}}</td>
+                                        <td style="text-align: right;">{{data.transactionAmount | number: '1.2-2'}}</td>
                                         <td>{{data.processedCycle}}</td>
                                         <td>{{data.pertainingCycle}}</td>
                                         <td><label class="custom-control custom-checkbox checkbox-center">
@@ -3126,7 +3152,7 @@
                                         </td>
                                         <td><label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled [checked]="data.discard == true" />
+                                                  disabled   [checked]="data.discard == true" />
                                                 <span class="custom-control-label"></span>
                                             </label></td>
                                         <td>
@@ -3187,7 +3213,7 @@
                                         {{viewScheduleData.nonRecurringTransactionGroupId}}
                                     </label>
                                 </div>
-
+                                
 
                             </div>
                             <div class="row mt-10">
@@ -3280,7 +3306,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule Amount</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" style="text-align: right;" *ngIf="viewScheduleData">
                                         {{viewScheduleData.transactionAmount | number: '1.2-2'}}
                                     </label>
                                 </div>
@@ -3352,7 +3378,7 @@
 <!-- Transaction Group History-->
 <ng-template #template1i>
     <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel"> Transactions </h5>
+        <h5 class="modal-title" id="UploadModalLabel"> Head Transaction History </h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                 aria-hidden="true">×</span></button>
     </div>
@@ -3363,7 +3389,6 @@
                     <div class="col-md-12 pl-0 pr-0">
                         <div class="border-dark-card radius-10 p-2 mt-3">
                             <div class="row" *ngIf="viewHeadHistory">
-
                                 <div class="col-md-2">
                                     <label class="form-label mt-1 mb-0">Emp. Code</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
@@ -3382,18 +3407,12 @@
                                     </label>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="form-label mt-1 mb-0">Group Id</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        {{viewHeadHistory.nonRecurringTransactionGroupId}}
-                                    </label>
-                                </div>
-                                <div class="col-md-2">
                                     <label class="form-label mt-1 mb-0">Payroll Area</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
                                         {{viewHeadHistory.payrollArea.payrollAreaCode}}
                                     </label>
                                 </div>
-
+                                
                             </div>
                         </div>
                     </div>
@@ -3404,34 +3423,36 @@
                             <table class="table table-striped table-hover table-bordered m-b-0">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <!-- <th class="wd-10 font700">Group Id</th> -->
+                                        <th class="wd-10 font700">Group Id</th>
                                         <!-- <th class="wd-10 font700">Payroll Area</th> -->
                                         <th class="wd-10 font700">Once Every</th>
                                         <th class="wd-10 font700">Frequency</th>
-                                        <th class="wd-10 font700">Amount</th>
                                         <th class="wd-10 font700">From Date</th>
                                         <th class="wd-8 font700">Type</th>
                                         <th class="wd-10 font700">No. of Transactions</th>
                                         <th class="wd-10 font700">To Date</th>
+                                        <th class="wd-10 font700">Amount</th>
                                         <th class="wd-10 font700">Remark</th>
-                                        <th class="wd-13 font700">Updated Date & Time</th>
+                                        <th class="wd-13 font700">Status</th>
+                                        <th class="wd-13 font700">Updated Date</th>
                                         <th class="wd-10 font700">Updated By</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let data of NonRecurringHeadwiseHistorydData; let index = index; ">
-                                        <!-- <td>{{data.nonRecurringTransactionGroupId}}</td> -->
+                                        <td>{{data.nonRecurringTransactionGroupId}}</td>
                                         <!-- <td>{{data.payrollArea.payrollAreaCode}}</td> -->
                                         <td>{{data.onceEvery}}</td>
-                                        <td>{{data.frequency}}</td>
-                                        <td>{{data.amount | number : '1.00'}}</td>
-                                        <td>{{data.fromDate}}</td>
-                                        <td>{{data.transactionsType}}</td>
+                                        <td style="text-align: left;">{{data.frequency}}</td>
+                                        <td>{{data.fromDate | date: 'dd-MMM-yy'}}</td>
+                                        <td style="text-align: left;">{{data.transactionsType}}</td>
                                         <td *ngIf="data.numberOfTransactions > 0">{{data.numberOfTransactions}}</td>
                                         <td *ngIf="data.numberOfTransactions == 0"></td>
-                                        <td>{{data.toDate}}</td>
-                                        <td>{{data.remark}}</td>
-                                        <td>{{data.createDateTime | date: 'dd-MMM-yyyy'}}</td>
+                                        <td>{{data.toDate | date: 'dd-MMM-yy'}}</td>
+                                        <td style="text-align: right;">{{data.amount | number : '1.2-2'}}</td>
+                                        <td style="text-align: left;">{{data.remark}}</td>
+                                        <td>{{data.approveStatus}}</td>
+                                        <td>{{data.createDateTime | date: 'dd-MMM-yy'}}</td>
                                         <td>{{data.createdBy}}</td>
 
                                     </tr>
@@ -3462,84 +3483,129 @@
         <div class="card">
             <div class="card-body p-0 m-0">
                 <div class="row">
-                    <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
+                    <div class="col-md-12 ">
+                        <div class="border-dark-card radius-10 p-2">
                             <div class="row">
-                                <div class="col-md-3">Applicable At</div>
                                 <div class="col-md-6">
-                                    <select class="form-control  wd-200"
-                                        (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
-                                        <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="col-md-3">Input Type</div>
-                                <div class="col-md-6">
-                                    <select class="form-control  wd-200"
-                                        (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Period'"> Specific
-                                            Period </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Date'"
-                                            *ngIf="selectedApplicableAt != 'Schedule'">
-                                            Specific Date
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Period'">
-                                    <div class="col-md-3">Period</div>
-                                    <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="clawbackperiod"
-                                            [ngModelOptions]="{standalone : true}"
-                                            (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
-                                            class="form-control wd-200">
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <br><br>
-                                    <div class="col-md-3">Frequency</div>
-                                    <div class="col-md-6">
-                                        <select class="form-control  wd-200"
-                                            (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
-                                            <option value="">Select</option>
-                                            <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
-                                            </option>
-                                            <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
-                                                Quarter </option>
-                                            <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
-                                                HalfYear </option>
-                                            <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
-                                            </option>
-                                            <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
-                                                SemiMonth </option>
-                                            <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
-                                            </option>
-                                            <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
-                                                BiWeek </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Date'">
-                                    <div class="col-md-3">Date</div>
-                                    <div class="col-md-6">
-                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                                            data-date-autoclose="true" placeholder="Date" bsDatepicker
-                                            [(ngModel)]="clawbackDate"
-                                            (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
-                                            class="form-control wd-200">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <!-- <pre>{{selectedTransactionClawback | json}}</pre> -->
+                                            <label class="form-label">Applicable At</label>
+                                            <select class="form-control custom-select"
+                                                (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedApplicableAt == 'Group' || showOnlyGroup"> Group </option>
+                                                <option [selected]="selectedApplicableAt == 'Schedule'" *ngIf="!showOnlyGroup"> Schedule
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Input Type</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Period'">
+                                                    Specific
+                                                    Period </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Date'"
+                                                    *ngIf="selectedApplicableAt != 'Schedule'">
+                                                    Specific Date
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Period</label>
+                                            <input type="text" [(ngModel)]="clawbackperiod"
+                                                [ngModelOptions]="{standalone : true}"
+                                                (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Frequency</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'">
+                                                    Month
+                                                </option>
+                                                <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                                    Quarter </option>
+                                                <option value="HalfYearly"
+                                                    [selected]="clawbackFrequency == 'HalfYearly'">
+                                                    HalfYear </option>
+                                                <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                                </option>
+                                                <option value="SemiMonthly"
+                                                    [selected]="clawbackFrequency == 'SemiMonthly'">
+                                                    SemiMonth </option>
+                                                <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                                </option>
+                                                <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                                    BiWeek </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 " *ngIf="selectedClawbackInputType == 'Specific Date'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                Date
+                                            </label>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true" placeholder="Date"
+                                                bsDatepicker [(ngModel)]="clawbackDate"
+                                                (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
+                                                class="form-control wd-200">
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
+
+                            <!-- <div class="row mt-25" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                  
+                                   <div class="col-md-3">
+                                    <label class="form-label">Period</label>
+                                    <input type="text" [(ngModel)]="clawbackperiod"
+                                    [ngModelOptions]="{standalone : true}"
+                                    (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                    class="form-control">
+                                   </div>
+                                   <div class="col-md-3">
+                                       <label class="form-label">Frequency</label>
+                                       <select class="form-control custom-select "
+                                       (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                       <option value="">Select</option>
+                                       <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
+                                       </option>
+                                       <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                           Quarter </option>
+                                       <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
+                                           HalfYear </option>
+                                       <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                       </option>
+                                       <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
+                                           SemiMonth </option>
+                                       <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                       </option>
+                                       <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                           BiWeek </option>
+                                   </select>
+                                   </div>
+
+
+                               </div> -->
+
+
+
 
                         </div>
                     </div>
@@ -3549,13 +3615,22 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="saveClawBack();modalRef.hide()">
-            &nbsp;save</button>
+
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+            (click)="saveClawBack();modalRef.hide()" tooltip="Save">
+            <b><i class="fa fa-floppy-o"></i></b> Save </button>
+        <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+        (click)="modalRef.hide()" tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+            Cancel</button>
+
+        <!-- <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+            tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+            Reset</button> -->
     </div>
 </ng-template>
 
 <!-- Refere Bonus-->
-<ng-template #referalPopup style="display : block;">
+<ng-template #referalPopup>
     <div class="modal-header">
         <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Employee Referral</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -3580,7 +3655,7 @@
                                         <div class="row mb-10">
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Emp. Code</label>
-                                                <select class="form-control "
+                                                <select class="form-control custom-select"
                                                     (change)="getEmployeeCode($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let emp of employeeData"
@@ -3595,7 +3670,7 @@
                                             </div>
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Payroll Area</label>
-                                                <select class="form-control "
+                                                <select class="form-control custom-select"
                                                     (change)="getEmployeePayrollArea($event.target.value)">
                                                     <option>Select</option>
                                                     <option *ngFor="let payroll of refralPayrollListData"
@@ -3699,6 +3774,58 @@
                                                 disabled />
                                         </div>
                                     </div>
+
+                                    <div class="row mb-10">
+                                        <div class="col-md-2" *ngIf="employeeFinDetailsData">
+                                            <label class="form-label mt-1 mb-0">Emp. Code</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{employeeFinDetailsData.employeeCode}} </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="employeeFinDetailsData">
+                                            <label class="form-label mt-1 mb-0">Emp. Name</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{employeeFinDetailsData.fullName}}
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="employeeFinDetailsData">
+                                            <label class="form-label mt-1 mb-0">Payroll Area</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{employeeFinDetailsData.payrollArea}}
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="selectedDevData">
+                                            <label class="form-label mt-1 mb-0">Head</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{selectedDevData.headDescription}}
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="selectedDevData">
+                                            <label class="form-label mt-1 mb-0">From Date</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{selectedDevData.fromDate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">    
+                                        <div class="col-md-2" *ngIf="selectedDevData">
+                                            <label class="form-label mt-1 mb-0">Type of Transaction</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{selectedDevData.transactionsType}}
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="selectedDevData">
+                                            <label class="form-label mt-1 mb-0">No Of Transaction</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{selectedDevData.numberOfTransactions}}
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="selectedDevData">
+                                            <label class="form-label mt-1 mb-0">To Date</label>
+                                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                {{selectedDevData.toDate}}
+                                            </label>
+                                        </div>
+                                    </div>
                                     <br>
 
                                     <p-table [value]="deviationModeData" [paginator]="true" [rows]="10"
@@ -3709,7 +3836,7 @@
                                         <ng-template pTemplate="header">
                                             <tr>
 
-                                                <th rowspan="2">
+                                                <!-- <th rowspan="2">
                                                     <div class="p-d-flex p-jc-between p-ai-center">
                                                         Attribute
 
@@ -3732,9 +3859,9 @@
                                                                 class="p-ml-auto"></p-columnFilter>
                                                         </div>
                                                     </div>
-                                                </th>
+                                                </th> -->
 
-                                                <th rowspan="2">
+                                                <!-- <th rowspan="2">
                                                     <div class="p-d-flex p-jc-between p-ai-center">
                                                         Group ID
 
@@ -3754,7 +3881,7 @@
                                                             </p-columnFilter>
                                                         </div>
                                                     </div>
-                                                </th>
+                                                </th> -->
                                                 <th colspan="3">
                                                     <div class="p-d-flex p-jc-between p-ai-center ml-60">
                                                         Deviation Nature
@@ -3874,36 +4001,38 @@
                                         <ng-template pTemplate="body" let-data>
                                             <tr class="p-selectable-row">
 
-                                                <td class="bg-color-light_gray">
+                                                <!-- <td class="bg-color-light_gray">
                                                     <label class="form-lable mb-0">{{data.attributeName}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
                                                     <label class="form-lable mb-0">{{data.attributeNature}}</label>
-                                                </td>
-                                                <td class="bg-color-light_gray">
+                                                </td> -->
+                                                <!-- <td class="bg-color-light_gray">
                                                     <label
                                                         class="form-lable mb-0">{{data.nonRecurringTransactionGroupId}}</label>
+                                                </td> -->
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0" *ngIf="selectedDevData">{{selectedDevData.onceEvery}}</label>
+                                                    <label class="form-lable mb-0" *ngIf="data.onceEvery">{{data.onceEvery}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
-                                                    <label class="form-lable mb-0">{{data.onceEvery}}</label>
-                                                </td>
-                                                <td class="bg-color-light_gray">
-                                                    <label class="form-lable mb-0">{{data.frequency}}</label>
+                                                    <label class="form-lable mb-0" *ngIf="selectedDevData">{{selectedDevData.frequency}}</label>
+                                                    <label class="form-lable mb-0" *ngIf="data.frequency">{{data.frequency}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
                                                     <label class="form-lable mb-0">{{data.deviationType}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.actualAmount | number:
                                                         '1.2-2'}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.deviationAmountLimit | number:
                                                         '1.2-2'}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.deviationAmount | number:
                                                         '1.2-2'}}</label>
@@ -4023,7 +4152,7 @@
 
                                                                     </th>
 
-                                                                    <th rowspan="2">
+                                                                    <!-- <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Group ID
 
@@ -4036,7 +4165,7 @@
                                                                                 </p-columnFilter>
                                                                             </div>
                                                                         </div>
-                                                                    </th>
+                                                                    </th> -->
 
                                                                     <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
@@ -4045,21 +4174,8 @@
                                                                                 <p-sortIcon field="Attribute"
                                                                                     pSortableColumn="Attribute">
                                                                                 </p-sortIcon>
-                                                                                <p-columnFilter field="representative"
-                                                                                    matchMode="in" display="menu"
-                                                                                    [showMatchModes]="false"
-                                                                                    [showOperator]="false"
-                                                                                    [showAddButton]="false"
-                                                                                    class="p-ml-auto">
-                                                                                    <ng-template pTemplate="header">
-                                                                                        <div
-                                                                                            class="p-px-3 p-pt-3 p-pb-0">
-                                                                                            <span
-                                                                                                class="p-text-bold">Agent
-                                                                                                Picker</span>
-                                                                                        </div>
-                                                                                    </ng-template>
-
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
                                                                                 </p-columnFilter>
                                                                             </div>
                                                                         </div>
@@ -4174,17 +4290,17 @@
                                                                     <td class="bg-color-light_gray">
                                                                         <label class="form-lable mb-0">Current</label>
                                                                     </td>
-                                                                    <td class="bg-color-light_gray">
+                                                                    <!-- <td class="bg-color-light_gray">
                                                                         <label
                                                                             class="form-lable mb-0">{{data.nonRecurringTransactionGroupId}}</label>
+                                                                    </td> -->
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0" *ngIf="data.onceEvery">{{data.onceEvery}}</label>
+                                                                        <label class="form-lable mb-0" *ngIf="selectedDevData">{{selectedDevData.onceEvery}}</label>
                                                                     </td>
                                                                     <td class="bg-color-light_gray">
-                                                                        <label
-                                                                            class="form-lable mb-0">{{data.onceEvery}}</label>
-                                                                    </td>
-                                                                    <td class="bg-color-light_gray">
-                                                                        <label
-                                                                            class="form-lable mb-0">{{data.frequency}}</label>
+                                                                        <label class="form-lable mb-0" *ngIf="data.frequency">{{data.frequency}}</label>
+                                                                        <label class="form-lable mb-0" *ngIf="selectedDevData">{{selectedDevData.frequency}}</label>
                                                                     </td>
                                                                     <td class="bg-color-light_gray">
                                                                         <label class="form-lable mb-0">{{data.fromDate |
@@ -4197,19 +4313,9 @@
                                                                         <label class="form-lable mb-0"></label>
                                                                     </td>
                                                                     <td class="bg-color-light_gray">
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text">
-                                                                                    <i class="fa fa-calendar"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input data-provide="datepicker"
-                                                                                data-date-autoclose="true"
-                                                                                class="form-control" placeholder="Date"
-                                                                                bsDatepicker>
-                                                                        </div>
+                                                                        {{dataa.toDate | date:'dd-MMM-yyyy'}}
                                                                     </td>
-                                                                    <td class="bg-color-light_gray">
+                                                                    <td class="bg-color-light_gray" style="text-align: right;">
                                                                         <label
                                                                             class="form-lable mb-0">{{data.actualAmount}}</label>
                                                                     </td>
@@ -4539,17 +4645,17 @@
                                                 <td class="bg-color-light_gray">
                                                     <label class="form-lable mb-0">{{data.deviationType}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.actualAmount | number:
                                                         '1.2-2'}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.deviationAmountLimit | number:
                                                         '1.2-2'}}</label>
                                                 </td>
-                                                <td class="bg-color-light_gray">
+                                                <td class="bg-color-light_gray" style="text-align: right;">
                                                     <label class="form-lable mb-0"
                                                         style="text-align: right;">{{data.deviationAmount | number:
                                                         '1.2-2'}}</label>
@@ -4831,7 +4937,7 @@
                                                                                 bsDatepicker>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="bg-color-light_gray">
+                                                                    <td class="bg-color-light_gray" style="text-align: right;">
                                                                         <label
                                                                             class="form-lable mb-0">{{data.actualAmount}}</label>
                                                                     </td>
@@ -4886,6 +4992,161 @@
                                     </div>
                                 </section>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+<!-- Search gray strip popup-->
+<ng-template #grays>
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Search Criteria</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Criteria</legend>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Employee Code</label>
+                                    <select name="Gender" class="form-control custom-select">
+                                        <option>Select</option>
+                                        <option>111</option>
+                                        <option>111</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col-md-3"> <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Payroll Area</label>
+                                    <select name="Gender" class="form-control custom-select">
+                                        <option>Select</option>
+                                        <option>111</option>
+                                        <option>111</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-25">
+                                <div class="col-md-3">
+                                    <label class="form-label">Date of Joining</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <input data-provide="datepicker" disabled data-date-autoclose="true"
+                                                class="form-control" bsDatepicker />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Date of Leaving</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                <input data-provide="datepicker" disabled data-date-autoclose="true"
+                                                    class="form-control" bsDatepicker />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Establishment</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>111</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Department</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-25">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Emp Type</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Grade</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Designation</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Emp. Status</label>
+                                            <select name="Gender" class="form-control custom-select">
+                                                <option>Select</option>
+                                                <option>HR</option>
+                                                <option>111</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-25">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <button type="button" tooltip="Reset"
+                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2">
+                                                    <b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                                                    Reset
+                                                </button>
+                                                <button type="button" tooltip="Next"
+                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                    <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>
+                                                    Go
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="row mt-25">
+                            <h3 class="font-14 text-purple font-bold">Search Result</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"></div>
                         </div>
                     </div>
                 </div>

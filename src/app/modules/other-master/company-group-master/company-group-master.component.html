@@ -60,12 +60,14 @@
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
                             [ngClass]="{'is-invalid' : form.get('startDate').status == 'INVALID'} "
                             data-provide="datepicker" class="form-control" placeholder="Enter Start Date" bsDatepicker
-                            [maxDate]="today" formControlName="startDate" placement="center">
+                            [maxDate]="today" formControlName="startDate" placement="center"
+                            >
                         </div>
                       </div>
 
                     </div>
-
+<!-- (bsValueChange)="onChangeEngagementstartDate($event)"
+                            (focusout)="onChangeStartDate($event)" -->
                     <div class="col-sm-3">
                       <label class="form-label">Engagement End Date</label>
                       <div class="input-group-prepend">
@@ -79,7 +81,7 @@
                           formControlName="endDate" placement="center"
                           [ngClass]="{'is-invalid' : form.get('endDate').status == 'INVALID'}" data-provide="datepicker"
                           (bsValueChange)="onChangeEngagementEndDate($event)" data-date-autoclose="true"
-                          (focusout)="onChangeEndDate($event)" class="form-control" placeholder="Enter End Date"
+                          (focusout)="onChangeEndDate($event)" class="form-control" [minDate]="today" placeholder="Enter End Date"
                           bsDatepicker>
                       </div>
                     </div>

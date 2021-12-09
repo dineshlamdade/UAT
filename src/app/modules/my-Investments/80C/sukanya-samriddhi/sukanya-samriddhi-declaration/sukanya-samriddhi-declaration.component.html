@@ -47,7 +47,7 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution :</label>
+        <label class="form-label mt-1" tooltip="Institution">Institution :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -55,8 +55,8 @@
           {{item.institutionName}}
         </label>
       </div>
-      <div class="ml-5 pl-3 pr-0">
-        <label class="form-label mt-1">Account No. :</label>
+      <div class="ml-3 pl-2 pr-1">
+        <label class="form-label mt-1" tooltip="Account No.">Account No. :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -64,8 +64,8 @@
           {{ item.policyNo }}
         </label>
       </div>
-      <div class="ml-5 pl-3 pr-0">
-        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1 pl-10" tooltip="Name">Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -73,13 +73,22 @@
           {{ item.policyholdername }}
         </label>
       </div>
-      <div class="ml-4 pl-3 pr-0">
-        <label class="form-label mt-1">Frequency :</label>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1" tooltip="Frequency">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="">
           {{ item.frequency }}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1" tooltip="ECS">ECS :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+               tooltip="{{ item?.groupTransactionList[0]?.isECS=='1'?'Yes':'No' }}">
+          {{ item?.groupTransactionList[0]?.isECS=='1' ? 'Yes':'No' }}
         </label>
       </div>
     </div>
@@ -97,21 +106,23 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-10 font700">
+                <!-- <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
-                </th>
+                </th> -->
                 <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
                 </th> -->
-                <th rowspan="2" class="wd-11 font700">Due Date</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-7 font700">Remark</th>
+                <th rowspan="2" class="wd-11 font700"><span tooltip="Due Date">Due Date</span></th>
+                <th rowspan="2" class="wd-9 font700"><span tooltip="Declared Amount">Declared Amount</span></th>
+                <th rowspan="2" class="wd-11 font700"><span tooltip="Date of Payment">Date of Payment</span></th>
+                <th rowspan="2" class="wd-10 font700"><span tooltip="Previous Employer Name">Previous Employer Name</span>
+                </th>
+                <th rowspan="2" class="wd-9 font700"><span tooltip="Actual Amount">Actual Amount</span></th>
+                <th colspan="2" class="wd-17 font700"><span tooltip="Approval Amount">Approval Amount</span></th>
+                <th rowspan="2" class="wd-7 font700"><span tooltip="Remark">Remark</span></th>
                 <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
-                <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-7"><span tooltip="PS. ID.">PS. ID.</span></th>
+                <th rowspan="2" class="wd-10 font700"><span tooltip="Status">Status</span></th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -129,14 +140,14 @@
                 </th>
                 <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
+                <th rowspan="2" class="wd-9 font700">Declared Amount</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-9 font700">Actual Amount</th>
+                <th colspan="2" class="wd-17 font700">Approval Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
                 <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
-                <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-7">PS. ID.</th>
+                <th rowspan="2" class="wd-15 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -150,7 +161,7 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted' && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -159,7 +170,7 @@
                       " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted' && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j, item.frequency);
@@ -168,7 +179,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </td>
-                <td *ngIf="previousEmployeeList?.length">
+                <!-- <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
@@ -182,7 +193,7 @@
                       {{ previousEmployee.label }}
                     </option>
                   </select>
-                </td>
+                </td> -->
                 <!-- <td>
                   <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
                 </td> -->
@@ -206,11 +217,11 @@
                       class="form-control"
                       [minDate]="financialYearStartDate"
                       [maxDate]="today"
-                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
+                      [ngModel]="summary.dueDate | date: 'dd-MMM-yy'"
                       [disabled]="initialArrayIndex[j] > i || summary.isECS === 1 "
                       (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)"
-                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                       data-provide="datepicker"
                       bsDatepicker
                     />
@@ -251,9 +262,9 @@
                   </div>
                 </td>
                 <td>
-                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yy'"
                   [maxDate]="today"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }" data-provide="datepicker" data-date-autoclose="true"
                     (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
@@ -261,7 +272,22 @@
                       isDisabled || summary.transactionStatus === 'Submitted'
                     " class="form-control" bsDatepicker />
                 </td>
-                <td>
+                <td *ngIf="previousEmployeeList?.length">
+                  <select name="Previous Employer Name" class="form-control custom-select"
+                    (change)="updatePreviousEmpId($event, i, j)" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
+                    ">
+                    <option [ngValue]="0">Select Previous Emp.</option>
+                    <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
+                      [selected]="
+                        previousEmployee.value == summary.previousEmployerId
+                      ">
+                      {{ previousEmployee.label }}
+                    </option>
+                  </select>
+                </td>
+                <!-- <td>
                   <input type="text" 
                   id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
@@ -271,15 +297,31 @@
                     [(ngModel)]="summary.actualAmount" 
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
-                </td>
-                <td>
+                </td> -->
+                <td class="wd-4 align-right">
+      
+                  <span  class="padding-right-5" tooltip="{{summary.actualAmount}}">
+                   {{summary.actualAmount}}
+                   </span>
+         </td>
+                <!-- <td>
                   <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                     class="form-control align-right" disabled />
-                </td>
-                <td>
+                </td> -->
+                <td class="wd-6 align-right">
+                  <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                  {{summary.amountRejected | number:'1.2-2'}}
+                  </span>
+               </td>
+                <!-- <td>
                   <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right" disabled />
-                </td>
+                </td> -->
+                <td class="wd-6 align-right">
+                  <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                  {{summary.amountApproved | number:'1.2-2'}}
+                  </span>
+               </td>
                 <!-- <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
@@ -338,7 +380,7 @@
                   </div>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted' || summary.transactionStatus === 'Approved' || summary.transactionStatus === 'Re-Open' || summary.transactionStatus === 'SendBack'">
                     <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                     <!-- {{ summary.proofSubmissionId }} -->
                   </span>

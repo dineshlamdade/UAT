@@ -1,7 +1,9 @@
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
+
   <app-header></app-header>
+
   <div class="section-body mt-3">
     <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
       <div class="tabview-contents">
@@ -101,7 +103,8 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'NRQ'">
+                              <th rowspan="2" class="wd-12 text-center"
+                                *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'NRQ'">
                                 <div class="p-d-flex p-jc-between p-ai-center">Rate
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
@@ -110,7 +113,8 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'SDM'">
+                              <th rowspan="2" class="wd-12 text-center"
+                                *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'SDM'">
                                 <div class="p-d-flex p-jc-between p-ai-center">Derived Rate
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
@@ -119,7 +123,8 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'NRQ'">
+                              <th rowspan="2" class="wd-12 text-center"
+                                *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'NRQ'">
                                 <div class="p-d-flex p-jc-between p-ai-center">Multiplier
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
@@ -128,7 +133,8 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'SDM'">
+                              <th rowspan="2" class="wd-12 text-center"
+                                *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'SDM'">
                                 <div class="p-d-flex p-jc-between p-ai-center">Derived Multiplier
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
@@ -165,7 +171,7 @@
                                   <option>1.5</option>
                                 </select> -->
                                 <input class="form-control" [(ngModel)]="nonSalaryRate"
-                                [ngModelOptions]="{standalone: true}">
+                                  [ngModelOptions]="{standalone: true}">
                               </td>
                               <td *ngIf="nonSalaryNature == 'multiplier'">
                                 <!-- <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryMultiplier"
@@ -175,7 +181,7 @@
                                   <option>1.5</option>
                                 </select> -->
                                 <input class="form-control" [(ngModel)]="nonSalaryMultiplier"
-                                [ngModelOptions]="{standalone: true}">
+                                  [ngModelOptions]="{standalone: true}">
                               </td>
                               <td>
                                 <span class="ml-1 mt-2">
@@ -192,10 +198,13 @@
                               <td>{{data.name}}</td>
                               <td>{{data.nature}}</td>
                               <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'NRQ'">{{data.rate}}</td>
-                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'NRQ'">{{data.multipier}}</td>
-                              <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'SDM'">{{data.derivedRate}}</td>
-                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'SDM'">{{data.derivedmultipier}}</td>
-                              <td >
+                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'NRQ'">
+                                {{data.multipier}}</td>
+                              <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'SDM'">{{data.derivedRate}}
+                              </td>
+                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'SDM'">
+                                {{data.derivedmultipier}}</td>
+                              <td>
                                 <span class="ml-1 mt-2" *ngIf="!editFlag">
                                   <span class="ml-1 mt-2">
                                     <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
@@ -217,6 +226,7 @@
                         </p-table>
                       </div>
                       <br>
+
                       <div class="row mt-15">
                         <div class="col-12">
                           <div class="float-right mb-15">
@@ -244,7 +254,30 @@
                   <div class="mb-0">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
                   </div>
-                  <p-table [value]="summaryData">
+                  <p-table [value]="summaryData" class="mt-10" [paginator]="true" [rows]="10"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10,25,50,100,200]" [style]="{'width':'100%', overflow: auto}" #dt1
+                    [globalFilterFields]="['code','description','descriptionHeadOfPayment','valueUpdationThrough',
+                    'headMasterId','nonSalaryOptionList.length']">
+
+                    <ng-template pTemplate="caption">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="float-right">
+                            <div class="d-flex">
+                              <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search" style="top: 9px !important;"></i>
+                                <input pInputText type="text"
+                                  (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search " />
+                              </span>
+                              <i class="fa fa-file-excel-o ml-2 font-24 mt-1 text-dark-green"
+                                (click)="SummaryexportAsXLSX()"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
 
                     <ng-template pTemplate="header">
                       <tr>
@@ -252,8 +285,8 @@
                         <th rowspan="2" class="wd-6 text-center">
                           <div class="p-d-flex p-jc-between p-ai-center"> Code
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="name"></p-sortIcon>
-                              <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                              <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                              <p-columnFilter type="text" field="code" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -261,8 +294,8 @@
                         <th rowspan="2" class="wd-6 text-center">
                           <div class="p-d-flex p-jc-between p-ai-center"> Description
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="representative.name"></p-sortIcon>
-                              <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                              <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                              <p-columnFilter type="text" field="description" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -271,8 +304,8 @@
                           <div class="p-d-flex p-jc-between p-ai-center"> E/D Head Desc
 
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="status"></p-sortIcon>
-                              <p-columnFilter field="status" matchMode="equals" display="menu" class="p-ml-auto">
+                              <p-sortIcon field="descriptionHeadOfPayment" pSortableColumn="descriptionHeadOfPayment"></p-sortIcon>
+                              <p-columnFilter field="descriptionHeadOfPayment"  display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -280,8 +313,8 @@
                         <th rowspan="2" class="wd-8 text-center">
                           <div class="p-d-flex justify-content-center p-ai-center">Value Updation Through
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="activity"></p-sortIcon>
-                              <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                              <p-sortIcon field="valueUpdationThrough" pSortableColumn="valueUpdationThrough"></p-sortIcon>
+                              <p-columnFilter field="valueUpdationThrough" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -289,8 +322,8 @@
                         <th rowspan="2" class="wd-8 text-center">
                           <div class="p-d-flex p-jc-between p-ai-center">No. Of NRQ Types
                             <div class="Sort_Filter_Position">
-                              <p-sortIcon field="activity"></p-sortIcon>
-                              <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                              <p-sortIcon field="nonSalaryOptionList.length" pSortableColumn="nonSalaryOptionList.length"></p-sortIcon>
+                              <p-columnFilter type="numeric" field="nonSalaryOptionList.length" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
