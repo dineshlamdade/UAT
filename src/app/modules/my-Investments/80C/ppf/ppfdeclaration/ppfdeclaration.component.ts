@@ -52,8 +52,12 @@ export class PPFDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   selectedRemarkList: any;
+  public groupTransactionList: Array<any> = [];
 
 
   viewDocumentName: any;
@@ -94,6 +98,10 @@ export class PPFDeclarationComponent implements OnInit {
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+
+
+
+  public ispreviousEmploy = true;
 
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -177,6 +185,11 @@ export class PPFDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
 
 
   constructor(
@@ -1171,6 +1184,7 @@ export class PPFDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
@@ -1389,6 +1403,39 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.globalSelectedAmount = '0.00';
   }
 
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup1TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"PPF",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
   changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_ : number;
@@ -1477,6 +1524,9 @@ console.log('this.transactionDetail', this.transactionDetail);
         this.disableRemark = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
          this.editTransactionUpload = res?.data?.results[0]?.investmentGroupTransactionDetail;
         this.editProofSubmissionId = res?.data?.results[0]?.proofSubmissionId;
+        this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
         this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
         this.grandDeclarationTotalEditModal = res?.data?.results[0]?.grandDeclarationTotal;
         this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
@@ -1619,6 +1669,8 @@ console.log('this.transactionDetail', this.transactionDetail);
       console.log('getTransactionFilterData',res);
       this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
+      this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1685,15 +1737,18 @@ console.log('this.transactionDetail', this.transactionDetail);
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    investmentGroup1TransactionId,
+    summary, count
   ) {
-    
-    this.Service.getRemarkList(
-      transactionID,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.Service.getPpfRemarkList(
+      investmentGroup1TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -2020,6 +2075,12 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+
+    if (new Date(summary.dateOfPayment) > this.dateOfJoining) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
  
 

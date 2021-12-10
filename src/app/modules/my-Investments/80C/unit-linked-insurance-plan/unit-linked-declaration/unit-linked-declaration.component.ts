@@ -67,6 +67,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   viewDocumentName: any;
@@ -99,6 +102,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
   documentArray: any[] =[];
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
 
   documentPassword =[];
   remarkList =[];
@@ -765,6 +773,38 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.alertService.sweetalertError(msg);
   }
 
+
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup2TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"ULIP",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
   // -------- Delete Row--------------
   deleteRow(j: number) {
     const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
@@ -898,13 +938,13 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
-    
+    this.editRemarkData =  event.target.value;
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].group2TransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -1158,7 +1198,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].group2TransactionList[i].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
     );
@@ -1177,6 +1217,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
@@ -1333,6 +1375,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+          this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].createDateTime;
+          this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].lastModifiedDateTime;
+          this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
           this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
 
           
@@ -1527,15 +1572,17 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    investmentGroup1TransactionId,
+    summary, count
   ) {
-    
-    this.unitLinkedInsurancePlanService.getULIPRemarkList(
-      transactionID,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.unitLinkedInsurancePlanService.getUlipRemarkList(
+      investmentGroup1TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
