@@ -19,6 +19,8 @@ export class DocumentviewerComponent implements OnInit {
   public masterInfo: any;
   public documentList: InvestmentApprovalMasterDocumentInfo [];
   public documentInformationId: any;
+  psid: any;
+  documentStatus: any;
 
   constructor(
     private router: Router,
@@ -35,30 +37,40 @@ export class DocumentviewerComponent implements OnInit {
 
     this.documentInformationId =localStorage.getItem("documentInformationId");
     console.log("documentInformationId::",this.documentInformationId);
-    localStorage.removeItem("documentInformationId");
+    // localStorage.removeItem("documentInformationId");
     console.log("documentInformationId after remove::",localStorage.getItem("documentInformationId"));
 
     this.openModal(this.documentInformationId);
+  
   }
 
   public openModal(documentInformationId:any) {
-    this.documentList = this.masterInfo.masterDetail.documentDetailList;
+    debugger
+    this.documentList = this.masterInfo.documentList
 
    this.documentURLIndex = this.documentList.findIndex(doc=> doc.documentInformationId ==documentInformationId);
 
    this.documentType =
-    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    this.masterInfo.documentList[this.documentURLIndex].documentType;
+  this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.masterInfo.documentList[this.documentURLIndex].blobURI
+  );
+  this.psid = this.masterInfo.documentList[this.documentURLIndex].proofSubmissionId;
+  this.documentStatus = this.masterInfo.documentList[this.documentURLIndex].documentStatus;
+ 
 
   }
   public docViewer(documentViewerTemplate: TemplateRef<any>, index: any) {
-
+debugger
     this.documentURLIndex = 0;
 
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.masterInfo.documentList[0].blobURI
     );
-    this.documentType =
-    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    // this.documentType =
+    // this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    this.psid = this.masterInfo.documentList[this.documentURLIndex].proofSubmissionId;
+    this.documentStatus = this.masterInfo.documentList[this.documentURLIndex].documentStatus;
 
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
@@ -67,20 +79,26 @@ export class DocumentviewerComponent implements OnInit {
   }
 
   public nextDocViewer() {
+    debugger
     this.documentURLIndex = this.documentURLIndex + 1;
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
+      this.masterInfo.documentList[this.documentURLIndex].blobURI
     );
     this.documentType =
-    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    this.masterInfo.documentList[this.documentURLIndex].documentType;
+    this.psid = this.masterInfo.documentList[this.documentURLIndex].proofSubmissionId;
+    this.documentStatus = this.masterInfo.documentList[this.documentURLIndex].documentStatus;
+  
   }
 
   public previousDocViewer() {
     this.documentURLIndex = this.documentURLIndex - 1;
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
+      this.masterInfo.documentList[this.documentURLIndex].blobURI
     );
     this.documentType =
-    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    this.masterInfo.documentList[this.documentURLIndex].documentType;
+    this.psid = this.masterInfo.documentList[this.documentURLIndex].proofSubmissionId;
+    this.documentStatus = this.masterInfo.documentList[this.documentURLIndex].documentStatus;
   }
 }

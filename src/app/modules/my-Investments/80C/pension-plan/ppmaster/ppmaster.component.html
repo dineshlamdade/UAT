@@ -217,13 +217,14 @@
             </div>
         </div>
         <div class="row mt-30">
-            <div class="col-md-6">
-              <h3 class="font-14 text-purple font-bold">Remark</h3>
-            </div>
-            <div class="col-md-7">
-              <textarea class="form-control" formControlName="remark" [(ngModel)]="remark" rows="1"></textarea>
-            </div>
+          <div class="col-md-6">
+            <h3 class="font-14 text-purple font-bold">Remark</h3>
           </div>
+          <div class="col-md-7">
+            <textarea class="form-control" formControlName="remark" [(ngModel)]="remark" rows="1" style="width:45%;"></textarea>
+          </div>
+          
+        </div>
         <div class="row mt-30">
             <div class="col-12">
                 <div class="card">
@@ -242,8 +243,8 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col" class="font700 wd-8">Sr No.</th>
-                                            <th scope="col" class="font700 wd-40">Document Name</th>
-                                            <th scope="col" class="font700 wd-40">Attachment</th>
+                                            <th scope="col" class="font700 wd-40">Document Type</th>
+                                            <th scope="col" class="font700 wd-40">Attachments</th>
                                             <th scope="col" class="font700 wd-12">Action</th>
                                         </tr>
                                     </thead>
@@ -642,45 +643,111 @@
                             <table class="table table-striped table-hover table-bordered m-b-0">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th scope="col" class="wd-15">Institution</th>
-                                        <th scope="col" class="wd-10">Account Number</th>
-                                        <th scope="col" class="wd-10">Account holder Name</th>
-                                        <th scope="col" class="wd-10">Relationship</th>
-                                        <th scope="col" class="wd-10">Policy Start Date</th>
-                                        <th scope="col" class="wd-10">Policy End Date</th>
-                                        <th scope="col" class="wd-10">Frequency</th>
-                                        <th scope="col" class="wd-10">Premium Amount</th>
-                                        <th scope="col" class="wd-10">Remark</th>
-                                        <th scope="col" class="wd-10">Status</th>
-                                        <th scope="col" class="wd-5">Action</th>
+                                      <th rowspan="2" scope="col" class="wd-10">PS. ID.</th>
+                                        <th rowspan="2" scope="col" class="wd-15">Institution</th>
+                                        <th rowspan="2" scope="col" class="wd-10">Account Number</th>
+                                        <th rowspan="2" scope="col" class="wd-10">Account holder Name</th>
+                                        <!-- <th scope="col" class="wd-10">Relationship</th>
+                                        <th scope="col" class="wd-10">Policy Start Date</th> -->
+                                        <th rowspan="2" scope="col" class="wd-10">Policy End Date</th>
+                                        <!-- <th scope="col" class="wd-10">Frequency</th>
+                                        <th scope="col" class="wd-10">Premium Amount</th> -->
+                                        <th colspan="2" class="wd-10">Premium</th>
+                                        <th rowspan="2" scope="col" class="wd-10">Remark</th>
+                                        <th rowspan="2" scope="col" class="wd-10">Status</th>
+                                        <th rowspan="2" scope="col" class="wd-5">Action</th>
+                                    </tr>
+                                    <tr>
+                                      <th>Frequency</th>
+                                      <th>Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let summary of masterGridData; let i = index">
+                                      <td class="align-left wd-8"><span tooltip={{summary.proofSubmissionId}}>{{summary.proofSubmissionId}}</span>
+                                      </td>
                                         <td class="align-left wd-15"><span tooltip="{{summary.institution}}">{{summary.institution}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+                                        <td class="wd-10 align-left"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
+                                        <td class="wd-10 align-left"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
+                                        <!-- <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.policyStartDate | date: 'dd-MMM-yyyy'}}">
                                             {{summary.policyStartDate | date: "dd-MMM-yyyy"}}</span>
-                                        </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate | date: 'dd-MMM-yyyy'}}">
+                                        </td> -->
+                                        <td class="wd-10 align-left"><span tooltip="{{summary.policyEndDate | date: 'dd-MMM-yyyy'}}">
                                             {{summary.policyEndDate  | date: "dd-MMM-yyyy"}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
+                                        <td class="wd-10 align-left"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
                                         </td>
                                         <td class="wd-10 align-right"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount
                         | number:'1.2-2'}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
+                                        <!-- <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
+                                        </td> -->
+                                        <td>
+                                          <div class="d-flex">
+                                            <!-- <input
+                                            style="width:100px;"
+                                              type="text"
+                                              class="form-control"
+                                              disabled
+                                              
+                                              (change)="
+                                              onChangeDocumentRemark(
+                                                  summary, i,
+                                                  $event
+                                                )
+                                              "
+                                            
+                                            /> -->
+                                            <div
+                                              _ngcontent-ykc-c443=""
+                                              class="
+                                                custom_Label_badge
+                                                mr-2
+                                                ml-2
+                                              "
+                                            >
+                                              <b>
+                                                <i
+                                                  (click)="
+                                                    docRemarkModal(
+                                                      template8,
+                                                      documentDetailIndex,
+                                                      summary?.investmentGroup1MasterId,
+                                                      summary
+                                                    )
+                                                  "
+                                                  class="
+                                                    fa fa-commenting
+                                                    text-dark-green
+                                                    fa-2x
+                                                    cursor-pointer
+                                                  "
+                                                >
+                                                </i
+                                              ></b>
+                                              <span
+                                                _ngcontent-ykc-c443=""
+                                                class="Label_badge"
+                                                >{{
+                                                
+                                                  summary?.bubbleRemarkCount
+                                                }}</span
+                                              >
+                                            </div>
+                                          </div>
                                         </td>
                                         <!-- <td class="wd-10"><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
                                         </td> -->
-                                        <td class="wd-10 text-light-green font700"><span tooltip="masterStatus">{{summary.masterStatus}}</span></td>
+                                        <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': summary.masterStatus=='Re-Open',
+                                          ' badge-success': summary.masterStatus=='Approved',
+                                          'badge-danger': summary.masterStatus=='SendBack',
+                                          'badge-info': summary.masterStatus=='Submitted',
+                                          'badge-warning': summary.masterStatus=='Pending'}" tooltip="masterStatus">{{summary.masterStatus}}</span></td>
                                         <td class="wd-5">
                                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                                         </td>
@@ -900,3 +967,80 @@
     </button>
     </div>
 </ng-template>
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-25">
+      <div class="col-md-12">
+        <input type="text" 
+        (change)= "
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        " class="form-control" placeholder="Remark">
+      </div>
+    </div>
+  </div>
+<!-- 
+  <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div> -->
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
+
+

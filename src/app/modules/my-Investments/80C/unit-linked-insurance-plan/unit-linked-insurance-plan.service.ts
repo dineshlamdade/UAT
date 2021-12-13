@@ -39,6 +39,20 @@ export class UnitLinkedInsurancePlanService {
       ));
     }
 
+    public getUlipMasterRemarkList(masterId: String,): Observable<any> {
+      return this._HTTP.get(this.apiUrl + 'ulipMaster-detail/GetRemarkMaster/' + masterId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+
+    public getUlipRemarkList(psId: String,): Observable<any> {
+      return this._HTTP.get(this.apiUrl + 'ulip-transaction/GetRemarkTransaction/' + psId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+
      //Declaration services
 
      getULIPInstitutionListWithPolicyNo() {
@@ -48,6 +62,8 @@ export class UnitLinkedInsurancePlanService {
       }
       ));
     }
+
+    
 
     getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
       return this._HTTP.get(this.apiUrl + 'ulip-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)

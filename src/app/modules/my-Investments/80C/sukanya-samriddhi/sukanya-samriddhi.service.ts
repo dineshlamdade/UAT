@@ -70,6 +70,20 @@ export class SukanyaSamriddhiService {
     }));
   }
 
+  public getsukanyaSamriddhiSchemeMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiSchemeMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getsukanyaSamriddhiSchemeRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiScheme-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiScheme-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {

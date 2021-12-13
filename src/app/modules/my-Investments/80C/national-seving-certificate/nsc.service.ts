@@ -57,6 +57,20 @@ export class NscService {
     }));
   }
 
+  public getNscMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'nscMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getNscRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'nsc-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'nsc-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {

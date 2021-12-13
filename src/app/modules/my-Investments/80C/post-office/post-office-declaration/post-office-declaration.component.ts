@@ -71,6 +71,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -182,6 +185,11 @@ export class PostOfficeDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
 
 
 
@@ -904,18 +912,44 @@ export class PostOfficeDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    investmentGroup1TransactionId,
+    summary, count
+  ) {
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.postOfficeService.getpostOfficeRecurringDepositRemarkList(
+      investmentGroup1TransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
     //----------- On change Transactional Line Item Remark --------------------------
-    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-      console.log('event.target.value::', event.target.value);
-      
-     console.log('this.transactionDetail', this.transactionDetail);
-      // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-      // console.log('index::', index);
-  
-      this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-     
-  
-    }
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+
+    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+   
+
+  }
 
   upload() {
 
@@ -1098,6 +1132,37 @@ export class PostOfficeDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+  }
+
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup1TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"PostOfficeRecurringDeposit",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
   }
 
   changeReceiptAmountFormat() {
@@ -1367,6 +1432,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1565,27 +1633,27 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
 
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, transactionID
-  ) {
+  // public docRemarkModal(
+  //   documentViewerTemplate: TemplateRef<any>,
+  //   index: any,
+  //   psId, transactionID
+  // ) {
     
-    this.postOfficeService.getPostOfficeTimeRemarkList(
-      transactionID,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
+  //   this.postOfficeService.getPostOfficeTimeRemarkList(
+  //     transactionID,
+  //     psId
+  //   ).subscribe((res) => {
+  //     console.log('docremark', res);
+  //   this.documentRemarkList  = res.data.results[0].remarkList
+  //   });
+  //   // console.log('documentDetail::', documentRemarkList);
+  //   // this.documentRemarkList = this.selectedRemarkList;
+  //   console.log('this.documentRemarkList', this.documentRemarkList);
+  //   this.modalRef = this.modalService.show(
+  //     documentViewerTemplate,
+  //     Object.assign({}, { class: 'gray modal-s' })
+  //   );
+  // }
 
   public uploadUpdateTransaction() {
 

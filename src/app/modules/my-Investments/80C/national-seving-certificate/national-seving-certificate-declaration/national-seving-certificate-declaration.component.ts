@@ -64,10 +64,18 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
 
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+
   public editTransactionUpload: Array<any> = [];
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   viewDocumentName: any;
@@ -903,6 +911,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
@@ -1174,6 +1183,39 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].group2TransactionList[i].dueDate);
   }
 
+
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup2TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"NSC",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
   // --------------- ON change of declared Amount Edit Modal-------------
   onDeclaredAmountChangeInEditCase(
     summary: {
@@ -1189,7 +1231,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].group2TransactionList[i].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
     );
@@ -1208,6 +1250,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
@@ -1366,12 +1410,15 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+          this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].createDateTime;
+          this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].lastModifiedDateTime;
+          this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
           this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
 
 
 
-     this.editTransactionUpload.forEach((element) => {
-          element.lictransactionList.forEach((innerElement) => {
+     this.editTransactionUpload?.forEach((element) => {
+          element.lictransactionList?.forEach((innerElement) => {
             innerElement.declaredAmount = this.numberFormat.transform(
               innerElement.declaredAmount,
             );
@@ -1382,7 +1429,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         });
         this.masterGridData = res.data.results;
 
-        this.masterGridData.forEach((element) => {
+        this.masterGridData?.forEach((element) => {
           // element.policyStartDate = new Date(element.policyStartDate);
           // element.policyEndDate = new Date(element.policyEndDate);
           // element.fromDate = new Date(element.fromDate);
@@ -1507,9 +1554,9 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res.documentDetailList?.forEach(element => {
           // if(element!=null)
-          this.documentArray.push({
+          this.documentArray?.push({
             'dateofsubmission':element.creatonTime,
             'documentType':element.documentType,
             'documentName': element.fileName,
@@ -1570,15 +1617,17 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    investmentGroup1TransactionId,
+    summary, count
   ) {
-    
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.nscService.getNscRemarkList(
+      investmentGroup1TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1588,7 +1637,6 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
-
 
   public uploadUpdateTransaction() {
 

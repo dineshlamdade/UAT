@@ -405,9 +405,19 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     // );
     this.interestOnTtbService.getAccountNoList(this.globalBank,policy).subscribe((res) => {
       console.log('getTransactionFilterData', res);
+
       this.transactionDetail =
       res.data.results[0].interestOnSavingDeposit80TTTransactionList;
     this.documentDetailList = res.data.results[0].documentInformation;
+
+    this.transactionDetail.forEach(ele =>{
+      this.documentDetailList.forEach(element =>{
+        if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+          element.bankName = ele.bankName;
+          element.accountNumber = ele.accountNumber
+        }
+      })
+    })
     this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
     this.grandActualTotal = res.data.results[0].grandActualTotal;
     this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1436,7 +1446,7 @@ selectedTransactionLenderName(lenderName: any) {
     });
   }
 );
-this.documentArray = [];
+// this.documentArray = [];
 
       // });
   }
@@ -1479,6 +1489,16 @@ this.documentArray = [];
         this.transactionDetail =
           res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.documentDetailList = res.data.results[0].documentInformation;
+
+        this.transactionDetail.forEach(ele =>{
+          this.documentDetailList.forEach(element =>{
+            if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              element.bankName = ele.bankName;
+              element.accountNumber = ele.accountNumber
+            }
+          })
+        })
+
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;

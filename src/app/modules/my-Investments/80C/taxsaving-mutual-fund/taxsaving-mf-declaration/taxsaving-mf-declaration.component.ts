@@ -69,7 +69,16 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -898,12 +907,13 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].group2TransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -1125,6 +1135,38 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
+
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup2TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"ELSS",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
      // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
@@ -1333,6 +1375,9 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+          this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].createDateTime;
+          this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].lastModifiedDateTime;
+          this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
           this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1535,15 +1580,17 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    investmentGroup2TransactionId,
+    summary, count
   ) {
-    
-    this.Service.getElssRemarkList(
-      transactionID,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.Service.getElssTransactionRemarkList(
+      investmentGroup2TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;

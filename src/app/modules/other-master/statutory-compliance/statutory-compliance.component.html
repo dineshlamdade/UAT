@@ -93,7 +93,7 @@
                         <label class="custom-control custom-checkbox custom-control-inline pl-45">
                           <input formControlName="institutionActive" autocomplete="off" type="checkbox"
                             class="custom-control-input" name="example-inline-checkbox1" value="option1" checked
-                            (change)="deactiveActiveCheckBox()">
+                            (change)="deactiveActiveCheckBox()" >
                           <span class="custom-control-label">Active </span>
                         </label>
                       </div>
@@ -192,35 +192,23 @@
                           </div>
 
                           <div class="row mt-20">
-                            <div class="col-3">
+                            <div class="col-6">
                               <div class="row">
                                 <div class="col-sm-3 col-md-5 country-code  pr-0">
 
-                                  <!-- <div class="col-sm-3"> -->
-                                    <!-- <label class="form-label">Establishment</label>
-
-                                      <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect
-                                        style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
-                                        (onSelect)="onSelectIsdCode($event)" (onDeSelectAll)="onDeselectAllIsdCode($event)"
-                                        (onSelectAll)="onSelectAllIsdCode($event)" (onDeSelect)="onDeselect($event)"
-                                        [(ngModel)]= "selectedIsdCode"
-                                        formControlName="officialCountryCode">
-                                      </ng-multiselect-dropdown> -->
-
-                                  <!-- </div> -->
                                   
                                   <label class="form-label">ISD Code</label>
                                   <select class="form-control selectpicker selectpicker"
                                     formControlName="officialCountryCode"
                                     [ngClass]="{'is-invalid' : form.get('officialCountryCode').status == 'INVALID'}">
                                     <!-- <option value='' data-hidden="true">Select</option> -->
-                                    <option selected value=''>Select </option>
+                                    <option selected value=''>Select</option>
                                     <option *ngFor="let code of countryCode" [value]="code">
                                       {{code}}
                                     </option>
                                   </select>
                                 
-                                </div> &nbsp;&nbsp;&nbsp;
+                                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="col-sm-3 col-md-6">
                                   <label class="form-label">Tel No.</label>
                                   <input type="text" class="form-control" placeholder="Enter Mobile No." maxlength="10"
@@ -333,7 +321,7 @@
                             [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
                             <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
-                          <button type="button" tooltip="Reset" (click)="cancelView()"
+                          <button type="button" tooltip="Reset" (click)="cancelView()"  
                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                             <b><i class="fa  fa-refresh"></i></b> Reset</button>
                         </ng-container>
