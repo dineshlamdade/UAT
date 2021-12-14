@@ -36,6 +36,7 @@ import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
 })
 
 export class SukanyaSamriddhiDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -72,6 +73,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public lastModifiedDateTime: any;
   public transactionStatus: any;
   public editReceiptAmount: string;
+
+  currentJoiningDate: Date;
 
   viewDocumentName: any;
   viewDocumentType: any;
@@ -192,7 +195,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
-
+  selectedremarkIndex : any;
+  public ispreviousEmploy = true;
 
 
   constructor(
@@ -283,6 +287,27 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+     // Get API call for All Current previous employee Names
+     this.sukanyaSamriddhiService.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
 
 
     // Get All Previous Employer
@@ -424,6 +449,12 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
 
     this.resetAll();
   }
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
   selectedPolicy(policy: any) {
@@ -796,8 +827,9 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -1119,14 +1151,14 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
   }
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup1TransactionId,
       "masterId":0,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"sukanyaSamriddhiScheme",
+      "subSection":"SUKANYASAMRIDDHISCHEME",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
@@ -1137,6 +1169,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1598,6 +1632,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.sukanyaSamriddhiService.getsukanyaSamriddhiSchemeRemarkList(
       investmentGroup1TransactionId,
     ).subscribe((res) => {
@@ -1816,8 +1851,14 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 }
+
 
 class DeclarationService {
   public investmentGroup1TransactionId = 0;

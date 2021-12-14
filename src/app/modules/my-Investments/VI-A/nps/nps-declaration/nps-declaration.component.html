@@ -47,38 +47,64 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution :</label>
+        <label class="form-label mt-1" tooltip="Institution">Institution :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
-        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}">
-          {{item.institutionName}}
+        <label
+          class="font-12 text-ellipsis mt-1"
+          placement="left"
+          [adaptivePosition]="false"
+          tooltip="{{item.institutionName}}"
+        >
+         {{item.institutionName}}
+        </label>
+      </div>
+      <div class="ml-3 pl-2 pr-1">
+        <label class="form-label mt-1" tooltip="Account No.">Account No. :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label
+          class="font-12 text-ellipsis mt-1"
+          placement="left"
+          [adaptivePosition]="false"
+          tooltip=" {{ item.policyNo }}"
+        >
+         {{ item.policyNo }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Account No. :</label>
+        <label class="form-label mt-1 pl-10" tooltip="Account Holder Name">Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
-        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{ item.policyNo }}">
-          {{ item.policyNo }}
-        </label>
-      </div>
-      <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
-      </div>
-      <div class="ml-2 pl-1 pr-0 col-md-1">
-        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.policyholdername }}">
+        <label
+          class="font-12 text-ellipsis mt-1"
+          placement="left"
+          [adaptivePosition]="false"
+          tooltip="{{ item.policyholdername }}"
+        >
           {{ item.policyholdername }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Frequency :</label>
+        <label class="form-label mt-1" tooltip="Frequency">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-1">
-        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false" tooltip="">
+        <label
+          class="font-12 text-ellipsis mt-1"
+          placement="left"
+          [adaptivePosition]="false"
+          tooltip=""
+        >
           {{ item.frequency }}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1" tooltip="ECS">ECS :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+               tooltip="{{ item?.groupTransactionList[0]?.isECS=='1'?'Yes':'No' }}">
+          {{ item?.groupTransactionList[0]?.isECS=='1' ? 'Yes':'No' }}
         </label>
       </div>
     </div>
@@ -96,21 +122,34 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-10 font700">
+                <!-- <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
-                </th>
+                </th> -->
                 <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
                 </th> -->
-                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <!-- <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+               
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-11 font700"><span tooltip="Due Date">Due Date</span></th>
+                <th rowspan="2" class="wd-9 font700"><span tooltip="Declared Amount">Declared Amount</span></th>
+                <th rowspan="2" class="wd-11 font700"><span tooltip="Date of Payment">Date of Payment</span></th>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Previous Employer Name">Previous Employer Name</span>
+                </th>
+                <th rowspan="2" class="wd-9 font700"><span tooltip="Actual Amount">Actual Amount</span></th>
+                <th colspan="2" class="wd-17 font700"><span tooltip="Approval Amount">Approval Amount</span></th>
+                <th rowspan="2" class="wd-7 font700"><span tooltip="Remark">Remark</span></th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7"><span tooltip=">PS. ID.">PS. ID.</span></th>
+                <th rowspan="2" class="wd-10 font700"><span tooltip="Status">Status</span></th>
+                <th rowspan="2" class=" font700"><span tooltip="Action">Action</span></th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -127,15 +166,25 @@
                   </label>
                 </th>
                 <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
-                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <!-- <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+               
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-15 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <th rowspan="2" class="wd-9 font700">Declared Amount</th>
+                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                <th rowspan="2" class="wd-9 font700">Actual Amount</th>
+                <th colspan="2" class="wd-17 font700">Approval Amount</th>
+                <th rowspan="2" class="wd-10 font700">Remark</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS. ID.</th>
+                <th rowspan="2" class="wd-15 font700">Status</th>
+                <th rowspan="2" class=" font700">Action</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -149,7 +198,7 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -158,7 +207,7 @@
                       " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j, item.frequency);
@@ -167,7 +216,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </td>
-                <td *ngIf="previousEmployeeList?.length">
+                <!-- <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
@@ -180,7 +229,7 @@
                       {{ previousEmployee.label }}
                     </option>
                   </select>
-                </td>
+                </td> -->
                 <!-- <td>
                   <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
                 </td> -->
@@ -226,6 +275,20 @@
                       (isDisabled && !canEdit) || summary.transactionStatus === 'Submitted'
                     " class="form-control" bsDatepicker />
                 </td>
+                <td *ngIf="previousEmployeeList?.length">
+                  <select name="Previous Employer Name" class="form-control custom-select"
+                    (change)="updatePreviousEmpId($event, i, j)" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                    ">
+                    <option [ngValue]="0">Select Previous Emp.</option>
+                    <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
+                      [selected]="
+                        previousEmployee.value == summary.previousEmployerId
+                      ">
+                      {{ previousEmployee.label }}
+                    </option>
+                  </select>
+                </td>
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
@@ -247,7 +310,7 @@
                     {{ summary.remark }}
                   </span>
                 </td> -->
-                <td>
+                <!-- <td>
                   <div class="d-flex">
                     <input style="width:100px;" type="text" class="form-control" (change)="
                       onChangeDocumentRemark(
@@ -279,6 +342,60 @@
                         }}</span>
                     </div>
                   </div>
+                </td> -->
+                <td>
+                  <div class="d-flex"
+                  class="align-center">
+                    <!-- <input
+                    style="width:100px;"
+                      type="text"
+                      class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      
+                      (change)="
+                      onChangeDocumentRemark(
+                          summary, i,
+                          $event
+                        )
+                      "
+                    
+                    /> -->
+                    <div
+                      _ngcontent-ykc-c443=""
+                      class="
+                        custom_Label_badge
+                        mr-2
+                        ml-2
+                      "
+                    >
+                      <b>
+                        <i
+                          (click)="
+                            docRemarkModal(
+                              template8,
+                              documentDetailIndex,
+                              summary?.investmentGroup1TransactionId,
+                              summary, i
+                            )
+                          "
+                          class="
+                            fa fa-commenting
+                            text-dark-green
+                            fa-2x
+                            cursor-pointer
+                          "
+                        >
+                        </i
+                      ></b>
+                      <span
+                        _ngcontent-ykc-c443=""
+                        class="Label_badge"
+                        >{{
+                          summary?.bubbleRemarkCount
+                        }}</span
+                      >
+                    </div>
+                  </div>
                 </td>
 
                 <td>
@@ -290,9 +407,30 @@
 
 
                 <td class="text-orange font700">
-                  <span tooltip="{{ summary.transactionStatus }}">
+                  <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+                  ' badge-success': summary.transactionStatus=='Approved',
+                  'badge-danger': summary.transactionStatus=='SendBack',
+                  'badge-info': summary.transactionStatus=='Submitted',
+                  'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
                   </span>
+                </td>
+                <td>
+
+                  <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
+                    editViewTransaction(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = true
+                    " tooltip="view"></i>
+                  &nbsp;&nbsp;
+                  <i *ngIf="canEdit" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                    editViewTransaction(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = true" tooltip="Edit"></i>
                 </td>
               </tr>
               <tr *ngIf="!isDisabled && canEdit">

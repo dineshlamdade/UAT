@@ -33,6 +33,7 @@ import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
   styleUrls: ['./sukanya-samriddhi-master.component.scss'],
 })
 export class SukanyaSamriddhiMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -76,6 +77,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public familyRelationSame: boolean;
   documentRemarkList: any;
   public remarkCount : any;
+  selectedremarkIndex : any;
+
 
 
   viewDocumentName: any;
@@ -705,7 +708,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       "masterId":this.summaryDetails.investmentGroup1MasterId,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"sukanyaSamriddhiScheme",
+      "subSection":"SUKANYASAMRIDDHISCHEME",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
@@ -716,6 +719,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -727,6 +732,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         this.alertService.sweetalertWarning("Something Went Wrong");
       }
     });
+  }
+  
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
 
@@ -820,6 +829,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.sukanyaSamriddhiService.getsukanyaSamriddhiSchemeMasterRemarkList(
       masterId,
     ).subscribe((res) => {

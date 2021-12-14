@@ -21,6 +21,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfdeclaration.component.scss']
 })
 export class PPFDeclarationComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() public institution: string;
   @Input() public policyNo: string;
@@ -190,6 +191,7 @@ export class PPFDeclarationComponent implements OnInit {
   editRemarkData: any;
   public remarkCount : any;
   selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
 
   constructor(
@@ -269,6 +271,36 @@ export class PPFDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+
+
+
+    
+     // Get API call for All Current previous employee Names
+     this.Service.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
+
+
+
+
+
 
     // this.Service.getpreviousEmployeName().subscribe((res) => {
     //   console.log('previousEmployeeList::', res);
@@ -1046,8 +1078,9 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -1436,6 +1469,10 @@ console.log('this.transactionDetail', this.transactionDetail);
     });
   }
 
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
   changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_ : number;
@@ -1524,9 +1561,9 @@ console.log('this.transactionDetail', this.transactionDetail);
         this.disableRemark = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
          this.editTransactionUpload = res?.data?.results[0]?.investmentGroupTransactionDetail;
         this.editProofSubmissionId = res?.data?.results[0]?.proofSubmissionId;
-        this.createDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].createDateTime;
-        this.lastModifiedDateTime = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].lastModifiedDateTime;
-        this.transactionStatus = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
+        this.createDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.createDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
         this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
         this.grandDeclarationTotalEditModal = res?.data?.results[0]?.grandDeclarationTotal;
         this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
@@ -2076,7 +2113,7 @@ console.log('this.transactionDetail', this.transactionDetail);
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
 
-    if (new Date(summary.dateOfPayment) > this.dateOfJoining) {
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
       this.ispreviousEmploy = false;
     } else {
       this.ispreviousEmploy = true;

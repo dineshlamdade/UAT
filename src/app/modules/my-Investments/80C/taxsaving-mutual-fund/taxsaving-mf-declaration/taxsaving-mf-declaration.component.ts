@@ -35,6 +35,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./taxsaving-mf-declaration.component.scss']
 })
 export class TaxsavingMfDeclarationComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() public institution: string;
   @Input() public accountNumber: string;
@@ -190,6 +191,10 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+  public ispreviousEmploy = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -266,6 +271,27 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+
+      // Get API call for All Current previous employee Names
+      this.Service.getcurrentpreviousEmployeName().subscribe((res) => {
+        console.log('previousEmployeeList::', res);
+        if (!res.data.results[0]) {
+          return;
+        }
+        console.log(res.data.results[0].joiningDate);
+  debugger
+        this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+        console.log(this.dateOfJoining)
+        res.data.results.forEach((element) => {
+  
+          const obj = {
+            label: element.name,
+            value: element.employeeMasterId,
+          };
+          this.previousEmployeeList.push(obj);
+        });
+      });
 
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -775,8 +801,9 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].group2TransactionList.length == 1) {
@@ -1136,7 +1163,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup2TransactionId,
@@ -1154,6 +1181,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].group2TransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1206,7 +1235,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].group2TransactionList[i].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
     );
@@ -1225,6 +1254,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
@@ -1243,6 +1274,12 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       summary.dateOfPayment;
     console.log(this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment);
   }
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
 
    // ------------Actual Amount change Edit Modal-----------
    onActualAmountChangeInEditCase(
@@ -1513,6 +1550,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.transactionDetail =
           res.data.results[0].investmentGroupTransactionDetail;
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1585,6 +1624,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.Service.getElssTransactionRemarkList(
       investmentGroup2TransactionId,
     ).subscribe((res) => {
@@ -1664,12 +1704,16 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
       documentRemark: this.documentRemark,
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
@@ -1831,6 +1875,11 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     this.transactionDetail[j].group2TransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].group2TransactionList[i].dateOfPayment);
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 }
 

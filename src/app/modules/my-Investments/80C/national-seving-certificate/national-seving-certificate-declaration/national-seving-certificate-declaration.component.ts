@@ -37,6 +37,7 @@ import { NscService } from '../nsc.service';
   styleUrls: ['./national-seving-certificate-declaration.component.scss']
 })
 export class NationalSevingCertificateDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public institution: string;
   @Input() public accountNumber: string;
   @Input() public data: any;
@@ -109,6 +110,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
   documentArray: any[] =[];
+
+  selectedremarkIndex : any;
 
   documentPassword =[];
   remarkList =[];
@@ -780,6 +783,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   // -------- Delete Row--------------
   deleteRow(j: number) {
     const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+    
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].group2TransactionList.length == 1) {
@@ -1184,7 +1188,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   }
 
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup2TransactionId,
@@ -1202,6 +1206,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].group2TransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1213,6 +1219,10 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.alertService.sweetalertWarning("Something Went Wrong");
       }
     });
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
 
@@ -1622,6 +1632,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.nscService.getNscRemarkList(
       investmentGroup1TransactionId,
     ).subscribe((res) => {

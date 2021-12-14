@@ -355,7 +355,7 @@
                             <div class="table-responsive Custom_Table">
                               <p-table
                                 [value]="
-                                  masterInfo.masterDetail.paymentDetailList
+                                  masterInfo?.masterDetail?.paymentDetailList
                                 "
                               >
                                 <ng-template pTemplate="header">
@@ -438,9 +438,9 @@
                                     class="form-control"
                                     [(ngModel)]="masterRemark"
                                     [disabled]="
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         '' ||
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         'Approved'
                                     "
                                   />
@@ -457,9 +457,8 @@
                                       (click)="
                                         masterRemarkModal(
                                           template3,
-                                          masterInfo.masterDetail
-                                            .masterRemarkDetailList,
-                                            masterInfo.masterDetail.masterId
+                                          masterInfo?.masterDetail?.masterRemarkDetailList,
+                                            masterInfo?.masterDetail?.masterId
                                         )
                                       "
                                       class="
@@ -475,8 +474,7 @@
                                     _ngcontent-ykc-c443=""
                                     class="Label_badge"
                                     >{{
-                                      masterInfo.masterDetail
-                                        .masterRemarkDetailList.length
+                                      masterInfo?.masterDetail?.masterRemarkDetailList?.length
                                     }}</span
                                   >
                                 </div>
@@ -628,15 +626,15 @@
                                 "
                                 [class.disablegraybutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
@@ -655,22 +653,22 @@
                                 "
                                 [class.disableredbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 (click)="
@@ -697,7 +695,7 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   masterInfo.masterDetail.masterStatus == '' ||
                                   masterInfo.masterDetail.masterStatus ==
@@ -1042,19 +1040,19 @@
                                                 "
                                                 #e
                                                 [class.disableCheckbox]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 [disabled]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                               >
@@ -1070,7 +1068,7 @@
                                               <a
                                                 (click)="
                                                   navigateAssociates(
-                                                    documentDetail.documentInformationId
+                                                    documentDetail?.documentInformationId
                                                   )
                                                 "
                                               >
@@ -1102,11 +1100,11 @@
                                                     )
                                                   "
                                                   [disabled]="
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Approved' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discarded' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discard'
                                                   "
                                                 />
@@ -1124,7 +1122,7 @@
                                                         docRemarkModal(
                                                           template3,
                                                           documentDetailIndex,
-                                                          documentDetail.documentRemarkDetailList,
+                                                          documentDetail?.documentRemarkDetailList,
                                                           documentDetail?.proofSubmissionId
 
                                                         )
@@ -1142,9 +1140,7 @@
                                                     _ngcontent-ykc-c443=""
                                                     class="Label_badge"
                                                     >{{
-                                                      documentDetail
-                                                        .documentRemarkDetailList
-                                                        .length
+                                                      documentDetail?.documentRemarkDetailList?.length
                                                     }}</span
                                                   >
                                                 </div>

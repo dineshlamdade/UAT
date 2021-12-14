@@ -36,6 +36,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./licdeclaration.component.scss'],
 })
 export class LicdeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public institution: string;
   @Input() public policyNo: string;
   @Input() public data: any;
@@ -70,6 +71,7 @@ export class LicdeclarationComponent implements OnInit {
   summaryDetails: any;
   indexCount: any;
   editRemarkData: any;
+ 
 
 
   viewDocumentName: any;
@@ -127,6 +129,7 @@ export class LicdeclarationComponent implements OnInit {
   public grandActualTotalEditModal: number;
   public grandRejectedTotalEditModal: number;
   public grandApprovedTotalEditModal: number;
+  currentJoiningDate: Date;
 
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
@@ -191,6 +194,7 @@ export class LicdeclarationComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  selectedremarkIndex : any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -206,12 +210,14 @@ export class LicdeclarationComponent implements OnInit {
   public testnumber2: number =5000;
   licDeclarationData: any;
   dateOfJoining: Date;
+  joiningDate: Date;
    masterGridsData: any;
    documentsArray: any;
    dateofsubmission: any;
    disableRemarkList = false
    disableRemark: any;
    Remark: any;
+  licTransactionDetail: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -290,6 +296,33 @@ export class LicdeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+
+
+     // Get API call for All Current previous employee Names
+     this.Service.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
+
+
+
+
 
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -765,6 +798,10 @@ console.log( this.editTransactionUpload);
     this.transactionDetail[j].lictransactionList[i].dueDate = summary.dueDate;
   }
 
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
   // ------------ ON change of DueDate in Edit Modal----------
   onDueDateChangeInEditCase(
     summary: {
@@ -977,8 +1014,10 @@ console.log( this.editTransactionUpload);
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
+  deleteRow(j: number, i) {
+    debugger
+    // const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
@@ -1135,7 +1174,9 @@ console.log( this.editTransactionUpload);
     // console.log('index::', index);
 
     this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
-   
+
+  // document.getElementById('template8').scrollIntoView()
+
 
   }
 
@@ -1242,6 +1283,7 @@ console.log( this.editTransactionUpload);
     // }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    debugger
     
     const data = {
       licTransactionDetail: this.transactionDetail,
@@ -1347,14 +1389,14 @@ console.log( this.editTransactionUpload);
   }
 
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.licTransactionId,
       "masterId":0,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"lic",
+      "subSection":"LIC",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
@@ -1364,12 +1406,18 @@ console.log( this.editTransactionUpload);
     this.Service
     .postLicMasterRemark(data)
     .subscribe((res) => {
-      if(res.data.results.length) {
+      debugger
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        // this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        // this.editTransactionUpload[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
         );
         this.modalRef.hide();
+    
 
 
       } else{
@@ -1472,7 +1520,9 @@ console.log( this.editTransactionUpload);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
           this.disableRemark = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
-        this.editTransactionUpload = res.data.results[0].licTransactionDetail;
+       debugger
+          this.editTransactionUpload = res.data.results[0].licTransactionDetail;
+        
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.createDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].createDateTime;
         this.lastModifiedDateTime = res.data.results[0].licTransactionDetail[0].lictransactionList[0].lastModifiedDateTime;
@@ -1646,15 +1696,16 @@ console.log( this.editTransactionUpload);
 
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    lictransactionID,
+    licTransactionId,
     summary, count
   ) {
-    
+    debugger
   
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.Service.getLicRemarkList(
-      lictransactionID,
+      licTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
       
@@ -1903,11 +1954,12 @@ grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
     i: number,
     j: number,
   ) {
+    debugger
     this.transactionDetail[j].lictransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].lictransactionList[i].dateOfPayment);
     
-    if (new Date(summary.dateOfPayment) > this.dateOfJoining) {
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
       this.ispreviousEmploy = false;
     } else {
       this.ispreviousEmploy = true;
