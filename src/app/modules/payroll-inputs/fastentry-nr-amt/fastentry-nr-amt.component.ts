@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
@@ -71,13 +71,14 @@ export class FastentryNRAmtComponent implements OnInit {
   deductionHeadList: any;
   selectedPayrollAreaId: any;
   saveDisabledBtn: boolean = true;
+  showOnlyGroup: boolean = true;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
     private garnishmentService: GarnishmentService,
-    private toaster: ToastrService) {
+    private toaster: AlertServiceService) {
     // this.headData = [
     //   { displayName: 'Incentive', headMasterId: 27 },
     //   { displayName: 'Performance_Incentive', headMasterId: 29 },
@@ -176,6 +177,14 @@ export class FastentryNRAmtComponent implements OnInit {
     this.selectedFrequency = frequency
   }
 
+  getSelectedOnceEvery(value){
+    if(parseInt(value) == 1 && this.selectedTransactionType == 'NoOfTransaction'){
+      this.showOnlyGroup = true
+    }else{
+      this.showOnlyGroup = false
+    }
+  }
+
   getTransactionType(transactiontype) {
     this.selectedTransactionType = transactiontype
     this.saveTransactionType = transactiontype
@@ -184,15 +193,27 @@ export class FastentryNRAmtComponent implements OnInit {
       this.saveToDate = ''
       this.selectedNoOfTransaction = 1
       this.saveNumberTransaction = 1
+      this.showOnlyGroup = false
+      if(parseInt(this.selectedOnceEvery) == 1){
+        this.showOnlyGroup = true
+      }
     } else if (this.selectedTransactionType == 'Perpetual') {
       this.selectedToDate = '9999-12-31 00:00:00'
       this.saveToDate = '9999-12-31 00:00:00'
       this.selectedNoOfTransaction = null
       this.saveNumberTransaction = null
+      this.showOnlyGroup = false
     } else {
+      this.selectedToDate = ''
+      this.saveToDate = ''
       this.selectedNoOfTransaction = null
       this.saveNumberTransaction = null
+      // if(){
+
+      // }
     }
+
+
   }
 
   getSelectedHead(headid) {
@@ -992,6 +1013,16 @@ export class FastentryNRAmtComponent implements OnInit {
         element.transactionsType = value
       }
     });
+
+
+    if(data.onceEvery == 1 && data.transactionsType == 'NoOfTransaction'){
+			this.showOnlyGroup = true;
+		}
+		if(data.fromDate != null){
+			if(data.transactionsType == 'Defined Date' && (this.datepipe.transform(data.fromDate, 'yyyy-MM-dd') === this.datepipe.transform(data.toDate, 'yyyy-MM-dd'))){
+				this.showOnlyGroup = true;
+			}
+		}
 
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1917,7 +1948,7 @@ export class FastentryNRAmtComponent implements OnInit {
     console.log("this.saveTransactionData: " + JSON.stringify(this.saveTransactionData))
     this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
         this.tempTableData = []
         this.tableData = []
@@ -1928,7 +1959,7 @@ export class FastentryNRAmtComponent implements OnInit {
   saveAndClearFastEntries() {
     this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
       res => {
-        this.toaster.success("", "Transaction Saved Successfully")
+        this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
         this.tempTableData = [];
         this.selectedOnceEvery = 1;

@@ -3,410 +3,261 @@
 <!-- <div class="page"> -->
 <!-- <app-header></app-header> -->
 <!-- <div class="section-body mt-3"> -->
-    <!-- <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;"> -->
+<!-- <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;"> -->
+
+<div class="card">
+    <div class="card-body">
         <div class="tabview-contents">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="col-12 mt-10">
-                                <br>
 
-                                <div class="row mt-10">
-                                    <div class="col-sm-3">
-                                        <label class="form-label"> Head</label>
-                                        <select name="payrollarea" class="form-control custom-select input-icon"
-                                            (change)="getSelectedHead($event.target.value)">
-                                            <option value="null"> Select </option>
-                                            <option *ngFor="let head of headData" value="{{head.headMasterId}}"
-                                                [selected]="headMasterId == head.headMasterId">
-                                                {{head.displayName}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label class="form-label"> Nature </label>
-                                        <input type="text" class="form-control" disabled>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label class="form-label"> SDM </label>
-                                        <input type="text" class="form-control" disabled>
-                                    </div>
-                                    <!-- <div class="col-sm-3">
-                                        <label class="form-label">Payroll Area</label>
-                                        <select name="payrollarea" class="form-control custom-select input-icon"
-                                            (change)="onPayrollSelect($event.target.value)">
-                                            <option value=""> Select </option>
-                                            <option *ngFor="let payroll of parollArea"
-                                                [selected]="selectedPayrollArea == payroll.payrollAreaCode">
-                                                {{payroll.payrollAreaCode}}
-                                            </option>
-                                        </select>
-                                    </div> -->
-                                </div>
+                <div class="col-12 mt-10">
 
-                                <br>
-                                <!-- Empoyee Table -->
-                                <!-- <div class="row">
-                                        <div class="col-md-12" *ngIf="selectedPayrollArea">
-                                            <p-table [value]="payrollEmployeeData" [rows]="10" [paginator]="true"
-                                            [globalFilterFields]="['employeeCode',
-                                                'employeeName',
-                                                'selectedPayrollArea',
-                                                ]" #dt
-                                                [rowsPerPageOptions]="[5,10,25,50,100,200]">
-                                                <ng-template pTemplate="caption">
-                                                    <div style="text-align: right">
-                                                      <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-                                                      <input type="text" pInputText size="50" placeholder="Search"
-                                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                                        style="width: 203px !important;margin-right: 37px;">
-                                                    </div>
-                                                  </ng-template>
+                    <div class="row ">
+                        <div class="col-sm-3">
+                            <label class="form-label"> Head</label>
+                            <select name="payrollarea" class="form-control custom-select input-icon"
+                                (change)="getSelectedHead($event.target.value)">
+                                <option value="null"> Select </option>
+                                <option *ngFor="let head of headData" value="{{head.headMasterId}}"
+                                    [selected]="headMasterId == head.headMasterId">
+                                    {{head.displayName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label"> Nature </label>
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label"> SDM </label>
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                    </div>
 
-                                                <ng-template pTemplate="header">
-                                                    <tr>
-                                                        <th rowspan="2"></th>
-                                                        <th rowspan="2">
-                                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                                Employee Code
-                                                                <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="name"></p-sortIcon>
-                                                                    <p-columnFilter type="text" field="name"
-                                                                        display="menu" class="p-ml-auto">
-                                                                    </p-columnFilter>
-                                                                </div>
-                                                            </div>
-                                                        </th>
-                                                        <th rowspan="2">
-                                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                                Employee Name
-                                                                <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="date"></p-sortIcon>
-                                                                    <p-columnFilter type="date" field="date"
-                                                                        display="menu" class="p-ml-auto">
-                                                                    </p-columnFilter>
-                                                                </div>
-                                                            </div>
-                                                        </th>
-                                                        <th rowspan="2">
-                                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                                Payroll Area
-                                                                <div class="Sort_Filter_Position">
-                                                                    <p-sortIcon field="date"></p-sortIcon>
-                                                                    <p-columnFilter type="date" field="date"
-                                                                        display="menu" class="p-ml-auto">
-                                                                    </p-columnFilter>
-                                                                </div>
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                </ng-template>
+                    <div class="row mt-25">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row mt-20">
 
-                                                <ng-template pTemplate="body" let-user1>
-                                                    <tr class="p-selectable-row">
-                                                        <td style="width: 3rem">
-                                                            <input type="checkbox"
-                                                                (change)="getSelectedEmployee(user1,$event.target)">
-                                                        </td>
-                                                        <td class="bg-color-light_gray">
-                                                            <label
-                                                                class="form-lable mb-0">{{user1.employeeCode}}</label>
-                                                        </td>
-                                                        <td class="bg-color-light_gray"><label
-                                                                class="form-lable mb-0">{{user1.employeeName}}</label>
-                                                        </td>
-                                                        <td class="bg-color-light_gray">
-                                                            <label class="form-lable mb-0">{{selectedPayrollArea}}
-                                                            </label>
-                                                        </td>
-                                                    </tr>
-                                                </ng-template>
-
-                                                <ng-template pTemplate="emptymessage">
-                                                    <tr>
-                                                        <td colspan="15" class="font-14 font500 text-center text-red">
-                                                            <span>No
-                                                                Data
-                                                                Available</span>
-                                                        </td>
-                                                    </tr>
-                                                </ng-template>
-
-                                            </p-table>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Once Every</label>
+                                            <input type="text" class="form-control"
+                                            (focusout)="getSelectedOnceEvery($event.target.value)"
+                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                [(ngModel)]="selectedOnceEvery">
                                         </div>
-                                    </div> -->
-                                <br>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                        <div class="card bg-color-white box-line-border">
-
-                                            <div class="card-body">
-                                                <div class="col-lg-12 col-md-6 col-sm-12">
-                                                    <div class="card">
-                                                        <div class="card-status"></div>
-                                                        <div class="card-body">
-                                                            <div class="row mt-20">
-                                                                <!-- <div class="col-sm-3">
-                                                                    <div class="custom-controls-stacked">
-                                                                        <label class="custom-control custom-radio">
-                                                                            <input type="radio"
-                                                                                class="custom-control-input"
-                                                                                name="example- radios" value="option1"
-                                                                                checked>
-                                                                            <div class="custom-control-label">
-                                                                                Employee List
-                                                                            </div>
-                                                                        </label>
-                                                                    </div>
-                                                                </div> -->
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Once Every</label>
-                                                                    <input type="text" class="form-control"
-                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                        [(ngModel)]="selectedOnceEvery">
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Frequency</label>
-                                                                    <select class="form-control custom-select wd-200"
-                                                                        [(ngModel)]="selectedFrequency"
-                                                                        (change)="getSelectedFrequency($event.target.value)">
-                                                                        <option value="">Select</option>
-                                                                        <option value="Monthly" selected>Month
-                                                                        </option>
-                                                                        <option value="Quarterly">Quarter </option>
-                                                                        <option value="HalfYearly">HalfYear</option>
-                                                                        <option value="Yearly">Year </option>
-                                                                        <option value="SemiMonthly">SemiMonth
-                                                                        </option>
-                                                                        <option value="Weekly">Week </option>
-                                                                        <option value="BiWeekly">BiWeek </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-20">
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">From Date</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                        <input data-provide="datepicker"
-                                                                            data-date-autoclose="true"
-                                                                            class="form-control" placeholder="From Date"
-                                                                            [minDate]="effectiveFromDate"
-                                                                            [maxDate]="effectiveToDate || selectedToDate"
-                                                                            [value]="selectedFromDate | date :'dd-MMM-yyyy'"
-                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                            (bsValueChange)="getFromDate($event)"
-                                                                            bsDatepicker>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Type</label>
-                                                                    <select name="revision type"
-                                                                        class="form-control custom-select"
-                                                                        [(ngModel)]="selectedTransactionType"
-                                                                        (change)="getTransactionType($event.target.value)">
-                                                                        <option value="">Select</option>
-                                                                        <option value="NoOfTransaction"
-                                                                            title="No. of Transaction">
-                                                                            No. of Transaction
-                                                                        </option>
-                                                                        <option value="Perpetual" title="Perpetual">
-                                                                            Perpetual
-                                                                        </option>
-                                                                        <option value="Defined Date"
-                                                                            title="Defined Date">
-                                                                            Def Date
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">No. of Transactions</label>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="selectedNoOfTransaction"
-                                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                        [disabled]="selectedTransactionType != 'NoOfTransaction'">
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">To Date</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                        <input data-provide="datepicker"
-                                                                            data-date-autoclose="true"
-                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                            class="form-control" placeholder="To Date"
-                                                                            [minDate]="setMinToDate"
-                                                                            [maxDate]="effectiveToDate"
-                                                                            [value]="selectedToDate | date:'dd-MMM-yyyy'"
-                                                                            bsDatepicker
-                                                                            (bsValueChange)="getToDate($event)"
-                                                                            [disabled]="selectedTransactionType != 'Defined Date'">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-20">
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Clawback Applicable
-                                                                        At</label>
-                                                                    <div class="input-group">
-                                                                        <select
-                                                                            class="form-control custom-select wd-200"
-                                                                            (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
-                                                                            <option value="">Select</option>
-                                                                            <option
-                                                                                [selected]="selectedApplicableAt == 'Group'">
-                                                                                Group </option>
-                                                                            <option
-                                                                                [selected]="selectedApplicableAt == 'Schedule'">
-                                                                                Schedule </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label class="form-label">Clawback Input
-                                                                        Type</label>
-                                                                    <div class="input-group">
-                                                                        <select
-                                                                            class="form-control custom-select wd-200"
-                                                                            (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
-                                                                            <option value="">Select</option>
-                                                                            <option
-                                                                                [selected]="selectedClawbackInputType == 'SDM'">
-                                                                                SDM </option>
-                                                                            <option
-                                                                                [selected]="selectedClawbackInputType == 'Specific Period'">
-                                                                                Specific
-                                                                                Period </option>
-                                                                            <option
-                                                                                [selected]="selectedClawbackInputType == 'Specific Date'"
-                                                                                *ngIf="selectedApplicableAt != 'Schedule'">
-                                                                                Specific Date 
-                                                                            </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3"
-                                                                    *ngIf="selectedClawbackInputType == 'Specific Period'">
-                                                                    <label class="form-label">Clawback
-                                                                        Period</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" [(ngModel)]="clawbackperiod"
-                                                                            [ngModelOptions]="{standalone : true}"
-                                                                            (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
-                                                                            class="form-control wd-200">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3"
-                                                                    *ngIf="selectedClawbackInputType == 'Specific Period'">
-                                                                    <label class="form-label">Clawback
-                                                                        Frequency</label>
-                                                                    <div class="input-group">
-                                                                        <select
-                                                                            class="form-control custom-select wd-200"
-                                                                            (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
-                                                                            <option value="">Select</option>
-                                                                            <option value="Monthly"
-                                                                                [selected]="clawbackFrequency == 'Monthly'">
-                                                                                Month
-                                                                            </option>
-                                                                            <option value="Quarterly"
-                                                                                [selected]="clawbackFrequency == 'Quarterly'">
-                                                                                Quarter </option>
-                                                                            <option value="HalfYearly"
-                                                                                [selected]="clawbackFrequency == 'HalfYearly'">
-                                                                                HalfYear </option>
-                                                                            <option value="Yearly"
-                                                                                [selected]="clawbackFrequency == 'Yearly'">
-                                                                                Year
-                                                                            </option>
-                                                                            <option value="SemiMonthly"
-                                                                                [selected]="clawbackFrequency == 'SemiMonthly'">
-                                                                                SemiMonth </option>
-                                                                            <option value="Weekly"
-                                                                                [selected]="clawbackFrequency == 'Weekly'">
-                                                                                Week
-                                                                            </option>
-                                                                            <option value="BiWeekly"
-                                                                                [selected]="clawbackFrequency == 'BiWeekly'">
-                                                                                BiWeek </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-20">
-                                                                <div class="col-md-3"
-                                                                    *ngIf="selectedClawbackInputType == 'Specific Date'">
-                                                                    <label class="form-label"> Clawback Date
-                                                                    </label>
-                                                                    <div class="input-group">
-                                                                        <input
-                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                            data-provide="datepicker"
-                                                                            data-date-autoclose="true"
-                                                                            placeholder="Date" bsDatepicker
-                                                                            [(ngModel)]="clawbackDate"
-                                                                            (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
-                                                                            class="form-control wd-200">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Amount</label>
-                                                                    <input type="number" class="form-control"
-                                                                        onkeypress="return event.charCode != 69"
-                                                                        [(ngModel)]="selectedAmount">
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <label class="form-label">Remark</label>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="selectedRemark">
-                                                                </div>
-                                                                <div class="col-sm-9"></div>
-                                                                <div class="col-sm-3">
-                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    <!-- selectedPayrollArea == '' -->
-                                                                    <!-- <pre>{{selectedEmployeeData.length}}</pre> -->
-                                                                    <button type="submit"
-                                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
-                                                                        tooltip="Go" (click)="getAllSelectedData()"
-                                                                        [ngClass]="{'disabled-btn-bg-green' : headMasterId == null || headMasterId == '' 
-                                                                            || selectedOnceEvery == '' || selectedFrequency == '' || selectedEmployeeData.length == 0}"
-                                                                        [disabled]="headMasterId == null || headMasterId == '' || selectedOnceEvery == ''
-                                                                            || selectedFrequency == '' || selectedEmployeeData.length == 0 ">
-                                                                        <b><i class="fa fa-arrow-right"></i></b> Go
-                                                                    </button>&nbsp;
-                                                                    <button type="button"
-                                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mt-3"
-                                                                        tooltip="Reset" (click)="reset()"><b>
-                                                                            <i class="fa fa-refresh"></i></b>
-                                                                        Reset</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Frequency</label>
+                                            <select class="form-control custom-select wd-200"
+                                                [(ngModel)]="selectedFrequency"
+                                                (change)="getSelectedFrequency($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option value="Monthly" selected>Month
+                                                </option>
+                                                <option value="Quarterly">Quarter </option>
+                                                <option value="HalfYearly">HalfYear</option>
+                                                <option value="Yearly">Year </option>
+                                                <option value="SemiMonthly">SemiMonth
+                                                </option>
+                                                <option value="Weekly">Week </option>
+                                                <option value="BiWeekly">BiWeek </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">From Date</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
                                                 </div>
+                                                <input data-provide="datepicker" data-date-autoclose="true"
+                                                    class="form-control" placeholder="From Date"
+                                                    [minDate]="effectiveFromDate"
+                                                    [maxDate]="effectiveToDate || selectedToDate"
+                                                    [value]="selectedFromDate | date :'dd-MMM-yyyy'"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    (bsValueChange)="getFromDate($event)" bsDatepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Type</label>
+                                            <select name="revision type" class="form-control custom-select"
+                                                [(ngModel)]="selectedTransactionType"
+                                                (change)="getTransactionType($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option value="NoOfTransaction" title="No. of Transaction">
+                                                    No. of Transaction
+                                                </option>
+                                                <option value="Perpetual" title="Perpetual">
+                                                    Perpetual
+                                                </option>
+                                                <option value="Defined Date" title="Defined Date">
+                                                    Def Date
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-20">
+
+
+                                        <div class="col-sm-3">
+                                            <label class="form-label">No. of Trans</label>
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="selectedNoOfTransaction"
+                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                [disabled]="selectedTransactionType != 'NoOfTransaction'">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">To Date</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                <input data-provide="datepicker" data-date-autoclose="true"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" class="form-control"
+                                                    placeholder="To Date" [minDate]="setMinToDate"
+                                                    [maxDate]="effectiveToDate"
+                                                    [value]="selectedToDate | date:'dd-MMM-yyyy'" bsDatepicker
+                                                    (bsValueChange)="getToDate($event)"
+                                                    [disabled]="selectedTransactionType != 'Defined Date'">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Amount</label>
+                                            <input type="number" class="form-control"
+                                                onkeypress="return event.charCode != 69" [(ngModel)]="selectedAmount">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Remark</label>
+                                            <input type="text" class="form-control" [(ngModel)]="selectedRemark">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-20">
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Clawback Applicable
+                                                At</label>
+                                            <div class="input-group">
+                                                <select class="form-control custom-select wd-200"
+                                                    (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
+                                                    <option value="">Select</option>
+                                                    <option [selected]="selectedApplicableAt == 'Group' || showOnlyGroup">
+                                                        Group </option>
+                                                    <option [selected]="selectedApplicableAt == 'Schedule'" *ngIf="!showOnlyGroup">
+                                                        Schedule </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Clawback Input
+                                                Type</label>
+                                            <div class="input-group">
+                                                <select class="form-control custom-select wd-200"
+                                                    (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
+                                                    <option value="">Select</option>
+                                                    <option [selected]="selectedClawbackInputType == 'SDM'">
+                                                        SDM </option>
+                                                    <option [selected]="selectedClawbackInputType == 'Specific Period'">
+                                                        Specific
+                                                        Period </option>
+                                                    <option [selected]="selectedClawbackInputType == 'Specific Date'"
+                                                        *ngIf="selectedApplicableAt != 'Schedule'">
+                                                        Specific Date {{selectedApplicableAt
+                                                        == 'Schedule'}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                            <label class="form-label">Clawback
+                                                Period</label>
+                                            <div class="input-group">
+                                                <input type="text" [(ngModel)]="clawbackperiod"
+                                                    [ngModelOptions]="{standalone : true}"
+                                                    (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                                    class="form-control wd-200">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                            <label class="form-label">Clawback
+                                                Frequency</label>
+                                            <div class="input-group">
+                                                <select class="form-control custom-select wd-200"
+                                                    (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                                    <option value="">Select</option>
+                                                    <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'">
+                                                        Month
+                                                    </option>
+                                                    <option value="Quarterly"
+                                                        [selected]="clawbackFrequency == 'Quarterly'">
+                                                        Quarter </option>
+                                                    <option value="HalfYearly"
+                                                        [selected]="clawbackFrequency == 'HalfYearly'">
+                                                        HalfYear </option>
+                                                    <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'">
+                                                        Year
+                                                    </option>
+                                                    <option value="SemiMonthly"
+                                                        [selected]="clawbackFrequency == 'SemiMonthly'">
+                                                        SemiMonth </option>
+                                                    <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'">
+                                                        Week
+                                                    </option>
+                                                    <option value="BiWeekly"
+                                                        [selected]="clawbackFrequency == 'BiWeekly'">
+                                                        BiWeek </option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="row mt-25">
+                                        <div class="col-md-3" *ngIf="selectedClawbackInputType == 'Specific Date'">
+                                            <label class="form-label"> Clawback Date
+                                            </label>
+                                            <div class="input-group">
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    placeholder="Date" bsDatepicker [(ngModel)]="clawbackDate"
+                                                    (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
+                                                    class="form-control wd-200">
+                                            </div>
+                                        </div>
 
+                                    </div>
+                                    <div class="row mt-25">
+
+                                        <div class="col-sm-12">
+                                            <div class="float-right">
+                                                <button type="submit"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                    tooltip="Go" (click)="getAllSelectedData()"
+                                                    [ngClass]="{'disabled-btn-bg-green' : headMasterId == null || headMasterId == '' 
+                                                                        || selectedOnceEvery == '' || selectedFrequency == '' || selectedEmployeeData.length == 0}"
+                                                    [disabled]="headMasterId == null || headMasterId == '' || selectedOnceEvery == ''
+                                                                        || selectedFrequency == '' || selectedEmployeeData.length == 0 ">
+                                                    <b><i class="fa fa-arrow-right"></i></b> Go
+                                                </button>
+                                                <button type="button"
+                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-2"
+                                                    tooltip="Reset" (click)="reset()"><b>
+                                                        <i class="fa fa-refresh"></i></b>
+                                                    Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
+
             </div>
-            <br>
+
 
             <div class="mb-0">
                 <h3 class="font-14 text-purple font-bold">Transactions</h3>
@@ -414,417 +265,266 @@
 
             <div class="row">
                 <div class="col-md-12">
+                    <div class="table-responsive Custom_Table">
+                        <p-table [value]="tableData" class="mt-10" [paginator]="true" [rows]="10"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [rowsPerPageOptions]="[10,25,50,100,200]"
+                            [style]="{'width':'100%', overflow: auto}" #dt1 
+                            [globalFilterFields]="['employeeCode','payrollArea',
+                            'employeeName', 'fromDate','toDate',
+                            'transactionsType','numberOfTransactions','amount','remark']">
 
-                    <p-table [value]="tableData">
-
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PayrollArea" pSortableColumn="PayrollArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="Description" pSortableColumn="Description">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">
-                                        Payroll Area
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="Type" pSortableColumn="Type">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-8 text-center">
-                                    <div class="p-d-flex justify-content-center p-ai-center">
-                                        From Date
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:58px;">Type
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">No. of
-                                        Trans.
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-8 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">To Date
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-6 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Clawback
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Amount
-
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="status" matchMode="equals" display="menu"
-                                                class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Remark
-
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="status" matchMode="equals" display="menu"
-                                                class="p-ml-auto">
-                                            </p-columnFilter>
-                                        </div>
-                                    </div>
-                                </th>
-                                <!-- <th rowspan="2" class="wd-2 text-center"></th> -->
-                                <th rowspan="2" class="wd-2 text-center"> Action </th>
-                                <th rowspan="2" class="wd-2 text-center"></th>
-                            </tr>
-
-                        </ng-template>
-
-                        <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
-                            <tr class="p-selectable-row">
-                                <td class="text-center">{{rowIndex+1}}</td>
-                                <td>
-                                    <input type="text" class="form-control" [value]="data.employeeCode"
-                                        (focusout)="getEmployeeName($event.target.value)" disabled>
-                                </td>
-                                <td>{{data.employeeName}}</td>
-                                <td>
-                                    <select name="payrollarea" class="form-control wd-100"
-                                        (change)="getSelectedSavePayroll($event.target.value,data)" disabled>
-                                        <option value=""> Select</option>
-                                        <option *ngFor="let payroll of parollArea"
-                                            [selected]="data.payrollArea == payroll.payrollAreaId">
-                                            {{payroll.payrollAreaCode}} </option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="p-d-inline-flex">
-                                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                            <div class="input-group">
-                                                <input data-provide="datepicker"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-date-autoclose="true" [minDate]="effectiveFromDate"
-                                                    [maxDate]="effectiveToDate || selectedToDate"
-                                                    value="{{data.fromDate | date:'dd-MMM-yyyy'}}"
-                                                    (bsValueChange)="getSaveFromDate($event,data)"
-                                                    class="form-control wd-120" placeholder="Date" bsDatepicker>
+                            <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="float-right">
+                                            <div class="d-flex">
+                                                <span class="p-input-icon-left p-ml-auto">
+                                                    <i class="pi pi-search"
+                                                        style="top: 9px !important; margin-right: 20px;"></i>
+                                                    <input pInputText type="text"
+                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                        placeholder="Search " />
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <select name="revision type" class="form-control custom-select wd-120"
-                                        (change)="getsaveTransactionType($event.target.value,rowIndex,data)">
-                                        <option value=""
-                                            [selected]="data.transactionsType == null || data.transactionsType == ''">
-                                            Select</option>
-                                        <option value="NoOfTransaction" title="No. of Transaction"
-                                            [selected]="data.transactionsType == 'NoOfTransaction'">
-                                            No. of Trans
-                                        </option>
-                                        <option value="Perpetual" title="Perpetual"
-                                            [selected]="data.transactionsType == 'Perpetual'">
-                                            Perpetual</option>
-                                        <option value="Defined Date" title="Defined Date"
-                                            [selected]="data.transactionsType == 'Defined Date'">
-                                            Def Date
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input class="form-control wd-100" value="{{data.numberOfTransactions}}"
-                                        (focusout)="getsaveNumberTransaction($event.target.value,data)"
-                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                        [disabled]="data.transactionsType != 'NoOfTransaction'">
-                                </td>
+                                </div>
+                            </ng-template>
 
-                                <td>
-                                    <div class="p-d-inline-flex">
-                                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                            <div class="input-group">
-                                                <input data-provide="datepicker" data-date-autoclose="true"
-                                                    [minDate]="setMinToDate" [maxDate]="effectiveToDate"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" placeholder="Date"
-                                                    bsDatepicker value="{{data.toDate | date : 'dd-MMM-yyyy'}}"
-                                                    (bsValueChange)="getSaveToDate($event,data)"
-                                                    class="form-control wd-120"
-                                                    [disabled]="data.transactionsType != 'Defined Date'">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
+                                    <th rowspan="2" class="wd-4 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="employeeCode" pSortableColumn="employeeCode">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="employeeCode" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <i class="fa fa-history font-16 text-blue cursor-pointer" aria-hidden="true"
-                                        (click)="ViewClawbackpopup(template4,data)"
-                                        *ngIf="selectedApplicableAt != ''"></i>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control wd-100" value="{{data.amount}}"
-                                        onkeypress="return event.charCode != 69"
-                                        (focusout)="saveAmounts($event.target.value,data)">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control wd-100" value="{{data.remark}}"
-                                        (focusout)="saveRemarks($event.target.value,data)">
-                                </td>
-                                <!-- <td>
-                                        <i class="fa fa-deviantart text-blue font-18 cursor-pointer"
-                                            aria-hidden="true"></i>
-                                    </td> -->
-                                <td>
-                                    <i class="fa fa-times  font-18 text-red cursor-pointer" aria-hidden="true"
-                                        (click)="removeDataFromSave(rowIndex)"></i>&nbsp;
-                                </td>
-                                <td>
-                                    <div class="col-md-2" *ngIf="data.deviationCount">
-                                        <div class="custom_Label_badge bagde1">
-                                            <button class="btn defaultbtn"
-                                                (click)="editdeviationPopupOpen(editdeviationPopup,data,rowIndex)">
-                                                <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
-                                                    aria-hidden="true">
-                                                </i></button>
-                                            <span class="Label_badge"
-                                                style="text-align: center;">{{data.deviationCount}}</span>
+                                    </th>
+                                    <th rowspan="2" class="wd-4 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="employeeName" pSortableColumn="employeeName">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="employeeName" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-template>
-
-                        <ng-template pTemplate="emptymessage">
-                            <tr>
-                                <td colspan="15" class="font-14 font500 text-center text-red">
-                                    <span>No Data
-                                        Available</span>
-                                </td>
-                            </tr>
-                        </ng-template>
-
-                    </p-table>
-
-                    <br>
-
-                    <p-table [value]="tempTableData" *ngIf="tempTableData.length > 0">
-
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PayrollArea" pSortableColumn="PayrollArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-10 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">
+                                            Payroll Area
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="payrollArea" pSortableColumn="payrollArea">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="text" field="payrollArea" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="Description" pSortableColumn="Description">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-8 text-center">
+                                        <div class="p-d-flex justify-content-center p-ai-center">
+                                            From Date
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="fromDate" pSortableColumn="fromDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="fromDate" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">
-                                        Payroll Area
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="Type" pSortableColumn="Type">
-                                            </p-sortIcon>
-                                            <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-10 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:58px;">Type
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="transactionsType" pSortableColumn="transactionsType">
+                                                </p-sortIcon>
+                                                <p-columnFilter field="transactionsType" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-8 text-center">
-                                    <div class="p-d-flex justify-content-center p-ai-center">
-                                        From Date
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-10 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">No. of
+                                            Trans.
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="numberOfTransactions" pSortableColumn="numberOfTransactions">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="numeric" field="numberOfTransactions" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:58px;">Type
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-8 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">To Date
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="toDate" pSortableColumn="toDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="toDate" display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-10 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:25px;">No. of
-                                        Trans.
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-6 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">Clawback
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-8 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">To Date
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-4 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Amount
+
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="amount" pSortableColumn="amount">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="numeric" field="amount"  display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-6 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Clawback
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                            </p-columnFilter>
+                                    </th>
+                                    <th rowspan="2" class="wd-4 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center"> Remark
+
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="remark" pSortableColumn="remark">
+                                                </p-sortIcon>
+                                                <p-columnFilter field="remark"  display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Amount
+                                    </th>
+                                    <!-- <th rowspan="2" class="wd-2 text-center"></th> -->
+                                    <th rowspan="2" class="wd-2 text-center"> Action </th>
 
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="status" matchMode="equals" display="menu"
-                                                class="p-ml-auto">
-                                            </p-columnFilter>
+                                </tr>
+
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                                <tr class="p-selectable-row">
+                                    <td class="text-center">{{rowIndex+1}}</td>
+                                    <td>
+                                        <input type="text" class="form-control" [value]="data.employeeCode"
+                                            (focusout)="getEmployeeName($event.target.value)" disabled>
+                                    </td>
+                                    <td>{{data.employeeName}}</td>
+                                    <td>
+                                        <select name="payrollarea" class="form-control wd-100"
+                                            (change)="getSelectedSavePayroll($event.target.value,data)" disabled>
+                                            <option value=""> Select</option>
+                                            <option *ngFor="let payroll of parollArea"
+                                                [selected]="data.payrollArea == payroll.payrollAreaId">
+                                                {{payroll.payrollAreaCode}} </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="p-d-inline-flex">
+                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                <div class="input-group">
+                                                    <input data-provide="datepicker"
+                                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                        data-date-autoclose="true" [minDate]="effectiveFromDate"
+                                                        [maxDate]="effectiveToDate || selectedToDate"
+                                                        value="{{data.fromDate | date:'dd-MMM-yyyy'}}"
+                                                        (bsValueChange)="getSaveFromDate($event,data)"
+                                                        class="form-control wd-120" placeholder="Date" bsDatepicker>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center"> Remark
+                                    </td>
+                                    <td>
+                                        <select name="revision type" class="form-control custom-select wd-120"
+                                            (change)="getsaveTransactionType($event.target.value,rowIndex,data)">
+                                            <option value=""
+                                                [selected]="data.transactionsType == null || data.transactionsType == ''">
+                                                Select</option>
+                                            <option value="NoOfTransaction" title="No. of Transaction"
+                                                [selected]="data.transactionsType == 'NoOfTransaction'">
+                                                No. of Trans
+                                            </option>
+                                            <option value="Perpetual" title="Perpetual"
+                                                [selected]="data.transactionsType == 'Perpetual'">
+                                                Perpetual</option>
+                                            <option value="Defined Date" title="Defined Date"
+                                                [selected]="data.transactionsType == 'Defined Date'">
+                                                Def Date
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input class="form-control wd-100" value="{{data.numberOfTransactions}}"
+                                            (focusout)="getsaveNumberTransaction($event.target.value,data)"
+                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                            [disabled]="data.transactionsType != 'NoOfTransaction'">
+                                    </td>
 
-                                        <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
-                                            </p-sortIcon>
-                                            <p-columnFilter field="status" matchMode="equals" display="menu"
-                                                class="p-ml-auto">
-                                            </p-columnFilter>
+                                    <td>
+                                        <div class="p-d-inline-flex">
+                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                <div class="input-group">
+                                                    <input data-provide="datepicker" data-date-autoclose="true"
+                                                        [minDate]="setMinToDate" [maxDate]="effectiveToDate"
+                                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                        placeholder="Date" bsDatepicker
+                                                        value="{{data.toDate | date : 'dd-MMM-yyyy'}}"
+                                                        (bsValueChange)="getSaveToDate($event,data)"
+                                                        class="form-control wd-120"
+                                                        [disabled]="data.transactionsType != 'Defined Date'">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <th rowspan="2" class="wd-2 text-center"></th>
-                                <th rowspan="2" class="wd-3 text-center"> Action </th>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-history font-16 text-blue cursor-pointer" aria-hidden="true"
+                                            (click)="ViewClawbackpopup(template4,data)"
+                                            *ngIf="selectedApplicableAt != ''"></i>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control wd-100" value="{{data.amount}}"
+                                            onkeypress="return event.charCode != 69"
+                                            (focusout)="saveAmounts($event.target.value,data)">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control wd-100" value="{{data.remark}}"
+                                            (focusout)="saveRemarks($event.target.value,data)">
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-times  font-18 text-red cursor-pointer" aria-hidden="true"
+                                            (click)="removeDataFromSave(rowIndex)"></i>&nbsp;
+                                    </td>
+                                    <td>
+                                        <div class="col-md-2" *ngIf="data.deviationCount">
+                                            <div class="custom_Label_badge bagde1">
+                                                <button class="btn defaultbtn"
+                                                    (click)="editdeviationPopupOpen(editdeviationPopup,data,rowIndex)">
+                                                    <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                        aria-hidden="true">
+                                                    </i></button>
+                                                <span class="Label_badge"
+                                                    style="text-align: center;">{{data.deviationCount}}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
 
-                        </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red">
+                                        <span>No Data
+                                            Available</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
 
-                        <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
-                            <tr class="p-selectable-row">
-                                <td class="text-center">{{rowIndex+1}}</td>
-                                <td>{{data.employeeCode}}</td>
-                                <td>{{data.employeeName}}</td>
-                                <td>
-                                    {{data.payrollAreaCode}}
-                                </td>
-                                <td>
-                                    {{data.fromDate}}
-                                </td>
-                                <td>
-                                    {{data.transactionsType}}
-                                </td>
-                                <td>
-                                    {{data.numberOfTransactions}}
-                                </td>
-
-                                <td>
-                                    {{data.toDate}}
-                                </td>
-                                <td>
-                                    {{data.clawbackApplicableAt}}
-                                </td>
-                                <td>
-                                    {{data.amount}}
-                                </td>
-                                <td>
-                                    {{data.remark}}
-                                </td>
-                                <td></td>
-                                <td>
-                                    <i class="fa fa-times  font-18 text-red cursor-pointer" aria-hidden="true"
-                                        (click)="removeTempDataFromSave(index)"></i>&nbsp;
-                                </td>
-                            </tr>
-                        </ng-template>
-
-                        <ng-template pTemplate="emptymessage">
-                            <tr>
-                                <td colspan="15" class="font-14 font500 text-center text-red">
-                                    <span>No Data
-                                        Available</span>
-                                </td>
-                            </tr>
-                        </ng-template>
-
-                    </p-table>
-
-
-
+                        </p-table>
+                    </div>
 
                 </div>
             </div>
@@ -845,7 +545,7 @@
                             tooltip="Save & Clear" (click)="saveAndClearFastEntries()"
                             [ngClass]="{'disabled-btn-bg-green' : saveTransactionData.length == 0 || saveDisabledBtn}"
                             [disabled]="saveTransactionData.length == 0 || saveDisabledBtn">
-                            <b><i class="fa fa-floppy-o"></i></b>Save & Clear
+                            <b><i class="fa fa-floppy-o"></i></b>Save & Next
                         </button>&nbsp;
                         <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
                             tooltip="Reset" (click)="resetTableData()">
@@ -853,9 +553,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
-    <!-- </div> -->
+    </div>
+</div>
+
+
+<!-- </div> -->
 <!-- </div> -->
 <!-- <app-footer></app-footer> -->
 
@@ -871,86 +574,128 @@
         <div class="card">
             <div class="card-body p-0 m-0">
                 <div class="row">
-                    <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
+                    <div class="col-md-12 ">
+                        <div class="border-dark-card radius-10 p-2">
                             <div class="row">
-                                <div class="col-md-3">Applicable At</div>
                                 <div class="col-md-6">
-                                    <select class="form-control custom-select wd-200"
-                                        (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
-                                        <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="col-md-3">Input Type</div>
-                                <div class="col-md-6">
-                                    <select class="form-control custom-select wd-200"
-                                        (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
-                                        <option value="">Select</option>
-                                        <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Period'">
-                                            Specific
-                                            Period </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Date'"
-                                            *ngIf="selectedApplicableAt != 'Schedule'">
-                                            Specific Date {{selectedApplicableAt == 'Schedule'}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Period'">
-                                    <div class="col-md-3">Period</div>
-                                    <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="clawbackperiod"
-                                            [ngModelOptions]="{standalone : true}"
-                                            (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
-                                            class="form-control wd-200">
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                    <br><br>
-                                    <div class="col-md-3">Frequency</div>
-                                    <div class="col-md-6">
-                                        <select class="form-control custom-select wd-200"
-                                            (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
-                                            <option value="">Select</option>
-                                            <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'">
-                                                Month
-                                            </option>
-                                            <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
-                                                Quarter </option>
-                                            <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
-                                                HalfYear </option>
-                                            <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
-                                            </option>
-                                            <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
-                                                SemiMonth </option>
-                                            <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
-                                            </option>
-                                            <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
-                                                BiWeek </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div>
-                                <br>
-                                <br>
-                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Date'">
-                                    <div class="col-md-3">Date</div>
-                                    <div class="col-md-6">
-                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                                            data-date-autoclose="true" placeholder="Date" bsDatepicker
-                                            [(ngModel)]="clawbackDate"
-                                            (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
-                                            class="form-control wd-200">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Applicable At</label>
+                                            <select class="form-control custom-select"
+                                                (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
+                                                <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Input Type</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getSelectedInputType($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Period'">
+                                                    Specific
+                                                    Period </option>
+                                                <option [selected]="selectedClawbackInputType == 'Specific Date'"
+                                                    *ngIf="selectedApplicableAt != 'Schedule'">
+                                                    Specific Date
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Period</label>
+                                            <input type="text" [(ngModel)]="clawbackperiod"
+                                                [ngModelOptions]="{standalone : true}"
+                                                (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Frequency</label>
+                                            <select class="form-control custom-select "
+                                                (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                                <option value="">Select</option>
+                                                <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'">
+                                                    Month
+                                                </option>
+                                                <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                                    Quarter </option>
+                                                <option value="HalfYearly"
+                                                    [selected]="clawbackFrequency == 'HalfYearly'">
+                                                    HalfYear </option>
+                                                <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                                </option>
+                                                <option value="SemiMonthly"
+                                                    [selected]="clawbackFrequency == 'SemiMonthly'">
+                                                    SemiMonth </option>
+                                                <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                                </option>
+                                                <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                                    BiWeek </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 " *ngIf="selectedClawbackInputType == 'Specific Date'">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                Date
+                                            </label>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true" placeholder="Date"
+                                                bsDatepicker [(ngModel)]="clawbackDate"
+                                                (bsValueChange)="getClawbackDate($event,selectedTransactionClawback)"
+                                                class="form-control wd-200">
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
+
+                            <!-- <div class="row mt-25" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                  
+                                   <div class="col-md-3">
+                                    <label class="form-label">Period</label>
+                                    <input type="text" [(ngModel)]="clawbackperiod"
+                                    [ngModelOptions]="{standalone : true}"
+                                    (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)"
+                                    class="form-control">
+                                   </div>
+                                   <div class="col-md-3">
+                                       <label class="form-label">Frequency</label>
+                                       <select class="form-control custom-select "
+                                       (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
+                                       <option value="">Select</option>
+                                       <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month
+                                       </option>
+                                       <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'">
+                                           Quarter </option>
+                                       <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'">
+                                           HalfYear </option>
+                                       <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year
+                                       </option>
+                                       <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'">
+                                           SemiMonth </option>
+                                       <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week
+                                       </option>
+                                       <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'">
+                                           BiWeek </option>
+                                   </select>
+                                   </div>
+
+
+                               </div> -->
+
+
+
 
                         </div>
                     </div>
@@ -960,8 +705,17 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-            &nbsp;save</button>
+
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+            (click)="saveClawBack();modalRef.hide()" tooltip="Save">
+            <b><i class="fa fa-floppy-o"></i></b> Save </button>
+        <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+            (click)="modalRef.hide()" tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+            Cancel</button>
+
+        <!-- <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+            tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+            Reset</button> -->
     </div>
 </ng-template>
 
@@ -979,16 +733,16 @@
             <div class="card-body">
                 <div class="row clearfix">
                     <div class="col-md-12">
-                        <br>
+
                         <div class="tabset">
                             <!-- Tab 1 -->
                             <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
                             <!-- <div class="col-md-2" >
-                                <div class="custom_Label_badge bagde1"> -->
+                            <div class="custom_Label_badge bagde1"> -->
                             <label for="tab1">Deviation</label>
                             <!-- <span class="Label_badge" style="text-align: center;">{{deviationCount}}</span>
-                                </div>
-                            </div> -->
+                            </div>
+                        </div> -->
 
                             <!-- Tab 2 -->
                             <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
@@ -1018,7 +772,7 @@
                                                 disabled />
                                         </div>
                                     </div>
-                                    <br>
+
 
                                     <p-table [value]="deviationModeData" [paginator]="true" [rows]="10"
                                         [showCurrentPageReport]="true"
@@ -1251,13 +1005,7 @@
 
                                     </p-table>
 
-                                    <br>
-                                    <!-- <div class="float-left d-flex justify-content">
-                                        <label class="form-label mt-2">Remark</label>&nbsp;
-                                        <textarea type="text"></textarea>
-                                    </div> -->
-                                    <br>
-                                    <br>
+
                                     <div class="row mt-15 float-right">
 
                                         <div class="float-right ">
@@ -1304,7 +1052,7 @@
                                                                     value="{{selectedDevData.headType}}" disabled />
                                                             </div>
                                                         </div>
-                                                        <br>
+
 
                                                         <p-table [value]="repeatModeData" [paginator]="true" [rows]="10"
                                                             [showCurrentPageReport]="true"
@@ -1531,7 +1279,7 @@
                                                             </ng-template>
 
                                                         </p-table>
-                                                        <br>
+
 
                                                         <div class="row mt-15 float-right">
 
