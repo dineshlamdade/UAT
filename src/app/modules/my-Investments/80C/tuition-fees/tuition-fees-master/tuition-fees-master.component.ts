@@ -34,6 +34,7 @@ import { TuitionFeesService } from '../tuition-fees.service';
   styleUrls: ['./tuition-fees-master.component.scss']
 })
 export class TuitionFeesMasterComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() public accountNo: any;
   public showdocument = true;
@@ -85,6 +86,8 @@ export class TuitionFeesMasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
+
+  selectedremarkIndex : any;
 
   public masterfilesArray: File[] = [];
   documentPassword =[];
@@ -544,6 +547,10 @@ export class TuitionFeesMasterComponent implements OnInit {
    
  
   }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
  
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
@@ -555,6 +562,7 @@ export class TuitionFeesMasterComponent implements OnInit {
 
      this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.tuitionFeesService.gettuitionFeesMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -806,7 +814,9 @@ export class TuitionFeesMasterComponent implements OnInit {
     this.Service
     .postLicMasterRemark(data)
     .subscribe((res) => {
-      if(res.data.results.length) {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',

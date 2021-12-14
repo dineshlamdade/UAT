@@ -35,6 +35,7 @@ import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.se
   styleUrls: ['./unit-linked-declaration.component.scss']
 })
 export class UnitLinkedDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public institution: string;
   @Input() public accountNumber: string;
   @Input() public data: any;
@@ -189,6 +190,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+  public ispreviousEmploy = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -266,6 +270,27 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+     // Get API call for All Current previous employee Names
+     this.unitLinkedInsurancePlanService.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
 
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -404,6 +429,12 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     }
 
     this.resetAll();
+  }
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
@@ -774,7 +805,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup2TransactionId,
@@ -792,6 +823,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].group2TransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -806,8 +839,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].group2TransactionList.length == 1) {
@@ -1505,6 +1539,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         this.transactionDetail =
           res.data.results[0].investmentGroupTransactionDetail;
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1577,6 +1613,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.unitLinkedInsurancePlanService.getUlipRemarkList(
       investmentGroup1TransactionId,
     ).subscribe((res) => {
@@ -1799,6 +1836,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.transactionDetail[j].group2TransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].group2TransactionList[i].dateOfPayment);
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 }
 

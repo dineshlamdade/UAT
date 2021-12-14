@@ -234,7 +234,7 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      isDisabled || summary.transactionStatus === 'Submitted' || summary.transactionStatus === 'Approved' || !ispreviousEmploy
                       ">
                   
                     <option [ngValue]="0">Select Previous Emp.</option>
@@ -366,6 +366,8 @@
                       );
                       viewDocumentDetail = true
                     " tooltip="Edit"></i>
+                    <i  *ngIf="summary.dueDate==null || summary.dueDate==undefined" class="fa fa-times font-16 text-red cursor-pointer"  tooltip="Cancel"
+                    (click)="deleteRow(j, i)"></i>
   
                 </td>
               </tr>
@@ -1242,7 +1244,12 @@
     </h6>
     <h6 class="modal-title" style="margin: auto;"><b>Status : </b>
       <label>
-        {{ transactionStatus }}</label>
+        <span class="badge" [ngClass]="{'badge-primary': transactionStatus=='Re-Open',
+          ' badge-success': transactionStatus=='Approved',
+          'badge-danger': transactionStatus=='SendBack',
+          'badge-info': transactionStatus=='Submitted',
+          'badge-warning': transactionStatus=='Pending'}" tooltip="{{transactionStatus}}">
+        {{ transactionStatus }}</span></label>
     </h6>
     <button
       type="button"
@@ -1411,7 +1418,7 @@
                         onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
-                        [disabled]="summary.transactionStatus === 'Approved' || !viewDocumentDetail"
+                        [disabled]="summary.transactionStatus === 'Approved' || !viewDocumentDetail || summary.lineItemFlag==='Schedule'"
                         class="form-control align-right"
                         (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
                         
@@ -1454,7 +1461,7 @@
                     </select>
                   </td>
                   <!-- [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail" -->
-                  <td>
+                  <!-- <td>
                     <input
                       type="text"
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
@@ -1466,9 +1473,15 @@
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
                     />
-                  </td>
+                  </td> -->
+                  <td class="wd-4 align-right">
+      
+                    <span  class="padding-right-5" tooltip="{{summary.actualAmount | number:'1.2-2'}}">
+                     {{summary.actualAmount | number:'1.2-2'}}
+                     </span>
+           </td>
                   <!-- [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail" -->
-                  <td>
+                  <!-- <td>
                     <input
                       type="text"
                       [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -1482,15 +1495,26 @@
                       [ngModel]="summary.amountApproved | number: '1.2-2'"
                       class="form-control align-right"
                       disabled
-                    />
-                  </td>
+                    /> -->
+                  <!-- </td> -->
+                  <td class="wd-6 align-right">
+                    <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                    {{summary.amountRejected | number:'1.2-2'}}
+                    </span>
+                 </td>
+                    <td class="wd-6 align-right">
+                      <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                      {{summary.amountApproved | number:'1.2-2'}}
+                      </span>
+                   </td>
                   <!-- <td>
                     <span tooltip="{{ summary.remark }}">
                       {{ summary.remark }}
                     </span>
                   </td> -->
                   <td>
-                    <div class="d-flex">
+                    <div class="d-flex"
+                    class="align-center">
                       <!-- <input
                       style="width:100px;"
                         type="text"
@@ -1568,7 +1592,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item?.declarationTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item?.declarationTotal | number: "1.2-2" }}
                     </span>
@@ -1578,7 +1602,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip="{{ item?.actualTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item?.actualTotal | number: "1.2-2" }}
                     </span>
@@ -1588,7 +1612,7 @@
                       tooltip=" {{
                         item?.totalRejectedAmount | number: '1.2-2'
                       }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item?.totalRejectedAmount | number: "1.2-2" }}
                     </span>
@@ -1596,7 +1620,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip="{{ item?.totalApprovedAmount | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item?.totalApprovedAmount | number: "1.2-2" }}
                     </span>
@@ -2190,7 +2214,11 @@
                                 </div> -->
                                 {{document.documentRemark}}
                               </td>
-                              <td>{{ document.status }}</td>
+                              <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                                ' badge-success': document.status=='Approved',
+                                'badge-danger': document.status=='SendBack',
+                                'badge-info': document.status=='Submitted',
+                                'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
                               <!-- <td>{{ document.lastModifiedBy }}</td> -->
                               <!-- <td>{{ document.lastModifiedTime| date:'h:mm a'  }}</td> -->
                               <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
@@ -2319,8 +2347,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
-        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"> -->
       </div>
       <div class="col-md-1">
         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -2541,7 +2569,7 @@
 </ng-template> -->
 <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2561,8 +2589,7 @@
             >{{ documentRemark.role }}:
             <b class="text-gray">{{
               documentRemark.remarkBy
-            }}</b></span
-          >
+            }}</b></span >
         </div>
         <div class="col-md-6">
           <div class="float-right">
@@ -2577,20 +2604,21 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <input type="text" 
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this.summaryDetails, this.indexCount,
             $event
           )
-        "  class="form-control" placeholder="Remark">
+        " class="form-control" placeholder="Remark"></textarea>
       </div>
     </div>
   </div>
@@ -2606,9 +2634,16 @@
   </div>
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
       type="button"
       class="btn btn-secondary"
-      (click)="onSaveRemarkDetails()"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
     >
       Save
     </button>

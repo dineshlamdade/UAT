@@ -269,7 +269,7 @@
                                   class="form-control custom-select"
                                   (change)="updatePreviousEmpId($event, i)"
                                   [disabled]="
-                                    isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                                    isDisabled || summary.transactionStatus === 'Submitted' ||  summary.transactionStatus === 'Approved' || !ispreviousEmploy
                                     ">
                                   <option [ngValue]="0">Select Previous Emp.</option>
                                   <option
@@ -364,7 +364,7 @@
                                       _ngcontent-ykc-c443=""
                                       class="Label_badge"
                                       >{{
-                                        documentDetail?.documentRemarkDetailList?.length
+                                        summary?.bubbleRemarkCount
                                       }}</span
                                     >
                                   </div>
@@ -510,7 +510,7 @@
                 <span class="custom-control-label"></span>
               </label>
             </td> -->
-                              <td *ngIf="previousEmployeeList?.length">
+                              <!-- <td *ngIf="previousEmployeeList?.length">
                                   <select name="Previous Employer Name" class="form-control custom-select" (change)="updatePreviousEmpId($event, i)" [disabled]="isDisabled || addRowSummary.transactionStatus === 'Submitted'">
                  <option [ngValue]="0">Select</option>
                  <option
@@ -521,7 +521,7 @@
                    {{ previousEmployee.label }}
                  </option>
                </select>
-                              </td>
+                              </td> -->
 
 
                               <!-- <select
@@ -558,18 +558,33 @@
                   onChangeDateOfPayment(addRowSummary, i)
                   " class="form-control" bsDatepicker  [ngClass]="{ 'is-invalid': this.requireddateOfPayment }" />
                               </td>
+                              <td *ngIf="previousEmployeeList?.length">
+                                <select name="Previous Employer Name" class="form-control custom-select" (change)="updatePreviousEmpId($event, i)" [disabled]="isDisabled || addRowSummary.transactionStatus === 'Submitted'">
+               <option [ngValue]="0">Select</option>
+               <option
+                 *ngFor="let previousEmployee of previousEmployeeList"
+                 [value]="previousEmployee.value"
+                 [selected]="
+                   previousEmployee.value == addRowSummary.previousEmployerId">
+                 {{ previousEmployee.label }}
+               </option>
+             </select>
+                            </td>
                               <td>
-                                <input type="text" [(ngModel)]="addRowSummary.actualAmount" onkeypress="return /[0-9 ]/i.test(event.key)" 
-                                maxlength="22" class="form-control align-right" (change)="onActualAmountChange(addRowSummary, i)" />
+                                <!-- <input type="text" [(ngModel)]="addRowSummary.actualAmount" onkeypress="return /[0-9 ]/i.test(event.key)" 
+                                maxlength="22" class="form-control align-right" (change)="onActualAmountChange(addRowSummary, i)" disabled /> -->
+                             {{addRowSummary.actualAmount | number: '1.2-2'}}
                               </td>
 
                               <td>
                                   <!-- <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                     class="form-control align-right" disabled /> -->
+                    {{addRowSummary.amountRejected | number: '1.2-2'}}
                               </td>
                               <td>
                                   <!-- <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right" disabled /> -->
+                    {{addRowSummary.amountApproved | number: '1.2-2'}}
                               </td>
                               <td>
                                   <!-- <span tooltip="{{ summary.remark }}">
@@ -1847,9 +1862,9 @@
                                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                                   <td>
                                       <input type="text" 
-                                      [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" 
+                                      [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yy'" 
                                       [maxDate]="today" 
-                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }" 
                                       data-provide="datepicker" data-date-autoclose="true" 
                                       (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
@@ -1878,7 +1893,7 @@
                                   <!-- [disabled]="
                                   isDisabled || summary.transactionStatus === 'Submitted'"  -->
 
-                                  <td>
+                                  <!-- <td>
                                       <input type="text" 
                                       id="actualAmount{{ summary.investmentGroup3TransactionId }}" 
                                       onkeypress="return /[0-9 ]/i.test(event.key)" 
@@ -1888,21 +1903,38 @@
                    disabled
                     [(ngModel)]="summary.actualAmount" 
                     class="form-control align-right" />
-                                      <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
-                                  </td>
-                                  <td>
+                                      
+                                  </td> -->
+                                  <td class="wd-4 align-right">
+      
+                                    <span  class="padding-right-5" tooltip="{{summary.actualAmount}}">
+                                     {{summary.actualAmount}}
+                                     </span>
+                           </td>
+                           <td class="wd-6 align-right">
+                            <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                            {{summary.amountRejected | number:'1.2-2'}}
+                            </span>
+                         </td>
+                            <td class="wd-6 align-right">
+                              <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                              {{summary.amountApproved | number:'1.2-2'}}
+                              </span>
+                           </td>
+                                  <!-- <td>
                                       <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'" class="form-control align-right" disabled />
                                   </td>
                                   <td>
                                       <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'" class="form-control align-right" disabled />
-                                  </td>
+                                  </td> -->
                                   <!-- <td>
                                       <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
                                   </td> -->
                                   <td>
-                                    <div class="d-flex">
+                                    <div class="d-flex"
+                                    class="align-center">
                                       <!-- <input
                                       style="width:100px;"
                                         type="text"
@@ -1947,7 +1979,7 @@
                                           _ngcontent-ykc-c443=""
                                           class="Label_badge"
                                           >{{
-                                            documentDetail?.documentRemarkDetailList?.length
+                                            summary?.bubbleRemarkCount
                                           }}</span
                                         >
                                       </div>
@@ -1985,8 +2017,8 @@
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
+                  <span tooltip=" {{ summary.declaredAmount }}" class="padding-right-9">
+                    {{ summary.declaredAmount }}
                   </span>
                                   </td>
                                   <td class="bg-lightgray font-18 font700 align-right"></td>
@@ -1994,17 +2026,17 @@
                                   
                                  
                                   <td class="bg-lightgray font-18 font700 align-right">
-                                      <span tooltip="{{ summary.actualAmount }}" class="padding-right-12">
+                                      <span tooltip="{{ summary.actualAmount }}" class="padding-right-9">
                     {{ summary.actualAmount }}
                   </span>
                                   </td>
                                   <td class="bg-lightgray font-18 font700 align-right">
-                                      <span tooltip=" {{ grandRejectedTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
+                                      <span tooltip=" {{ grandRejectedTotalEditModal | number: '1.2-2' }}" class="padding-right-9">
                     {{ grandRejectedTotalEditModal | number: "1.2-2" }}
                   </span>
                                   </td>
                                   <td class="bg-lightgray font-18 font700 align-right">
-                                      <span tooltip="{{ grandApprovedTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
+                                      <span tooltip="{{ grandApprovedTotalEditModal | number: '1.2-2' }}" class="padding-right-9">
                     {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                   </span>
                                   </td>
@@ -2580,8 +2612,8 @@
       </button>
           </div>
           <div class="col-md-10">
-              <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
-              <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
+              <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+              <!-- <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"> -->
           </div>
           <div class="col-md-1">
               <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()" [disabled]="urlIndex == urlArray.length - 1">
@@ -2814,7 +2846,7 @@
  -->
  <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2834,8 +2866,7 @@
             >{{ documentRemark.role }}:
             <b class="text-gray">{{
               documentRemark.remarkBy
-            }}</b></span
-          >
+            }}</b></span >
         </div>
         <div class="col-md-6">
           <div class="float-right">
@@ -2850,24 +2881,25 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <input type="text" 
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this.summaryDetails, this.indexCount,
             $event
           )
-        "  class="form-control" placeholder="Remark">
+        " class="form-control" placeholder="Remark"></textarea>
       </div>
     </div>
   </div>
-
+<!-- 
   <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
       type="button"
@@ -2876,14 +2908,22 @@
     >
       Ok
     </button>
-  </div>
+  </div> -->
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
     <button
       type="button"
       class="btn btn-secondary"
-      (click)="onSaveRemarkDetails()"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
     >
       Save
     </button>
   </div>
 </ng-template>
+

@@ -10,6 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class UnitLinkedInsurancePlanService {
 
     apiUrl = environment.baseUrl8085;
+    apiUrl1 = environment.baseUrl8082;
 
     constructor(private _HTTP: HttpClient) { }
 
@@ -52,6 +53,15 @@ export class UnitLinkedInsurancePlanService {
         return res;
       }));
     }
+
+    getcurrentpreviousEmployeName() {
+
+      return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+  
 
      //Declaration services
 

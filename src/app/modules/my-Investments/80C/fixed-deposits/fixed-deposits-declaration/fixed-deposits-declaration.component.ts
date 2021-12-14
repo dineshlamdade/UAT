@@ -34,6 +34,7 @@ import { FixedDepositsService } from '../fixed-deposits.service';
   styleUrls: ['./fixed-deposits-declaration.component.scss'],
 })
 export class FixedDepositsDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -201,6 +202,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+  public ispreviousEmploy = true;
 
   
   
@@ -765,6 +769,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     });
   }
 
+
+  
+
   // Get All Previous Employer
   getAllPreviousEmployer() {
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -775,6 +782,29 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       }
     });
   }
+
+
+//     // Get API call for All Current previous employee Names
+//     this.unitLinkedInsurancePlanService.getcurrentpreviousEmployeName().subscribe((res) => {
+//       console.log('previousEmployeeList::', res);
+//       if (!res.data.results[0]) {
+//         return;
+//       }
+//       console.log(res.data.results[0].joiningDate);
+// debugger
+//       this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+//       console.log(this.dateOfJoining)
+//       res.data.results.forEach((element) => {
+
+//         const obj = {
+//           label: element.name,
+//           value: element.employeeMasterId,
+//         };
+//         this.previousEmployeeList.push(obj);
+//       });
+//     });
+
+
 
   updatePreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
@@ -1422,7 +1452,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     this.declarationService.investmentGroup3TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = 0;
     this.declarationService.accountNumber = null;
-    this.declarationService.actualAmount = 0;
+    this.declarationService.actualAmount = 0.00;
     this.declarationService.institution = null;
     this.declarationService.dateOfPayment = null;
     this.declarationService.transactionStatus = 'Pending';
@@ -1802,7 +1832,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   }
 
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup3TransactionId,
@@ -1820,6 +1850,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].investmentGroup3TransactionDetailList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1845,6 +1877,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.fixedDepositsService.getFdRemarkList(
       investmentGroup3TransactionId,
     ).subscribe((res) => {
@@ -1933,11 +1966,14 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+
+    debugger
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
         summary.declaredAmount
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
 
     this.editTransactionUpload[j].group3TransactionList[
       i
@@ -1969,6 +2005,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
   }
   // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(
@@ -1987,6 +2024,10 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     console.log(
       this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment
     );
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // ------------Actual Amount change Edit Modal-----------
@@ -2162,6 +2203,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
         console.log('transactionDetail', this.transactionDetail);
 
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;

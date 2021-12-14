@@ -33,6 +33,7 @@ import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.se
   styleUrls: ['./unit-linked-master.component.scss'],
 })
 export class UnitLinkedMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
 
   public showdocument = true;
@@ -133,6 +134,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   financialYearEnd: any;
   ConvertedFinancialYearEndDate: Date;
   public proofSubmissionId;
+  selectedremarkIndex : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -462,6 +464,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.unitLinkedInsurancePlanService.getUlipMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -517,6 +520,10 @@ export class UnitLinkedMasterComponent implements OnInit {
     if (from > to) {
       this.form.controls.toDate.reset();
     }
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
@@ -732,6 +739,8 @@ export class UnitLinkedMasterComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',

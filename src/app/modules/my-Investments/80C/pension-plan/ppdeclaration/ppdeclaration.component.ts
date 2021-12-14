@@ -35,6 +35,7 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppdeclaration.component.scss'],
 })
 export class PpdeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public institution: string;
   @Input() public accountNumber: string;
   @Input() public data: any;
@@ -73,6 +74,8 @@ export class PpdeclarationComponent implements OnInit {
 
   viewDocumentName: any;
   viewDocumentType: any;
+  public ispreviousEmploy = true;
+  currentJoiningDate: Date;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -189,6 +192,7 @@ export class PpdeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
 
   public canEdit: boolean;
 
@@ -268,6 +272,24 @@ export class PpdeclarationComponent implements OnInit {
       });
     });
 
+      // Get API call for All previous employee Names
+      this.Service.getcurrentpreviousEmployeName().subscribe((res) => {
+        console.log('previousEmployeeList::', res);
+        if (!res.data.results[0]) {
+          return;
+        }
+        console.log(res.data.results[0].joiningDate);
+        this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+        console.log(this.dateOfJoining)
+        res.data.results.forEach((element) => {
+          const obj = {
+            label: element.name,
+            value: element.previousEmployerId,
+          };
+          this.previousEmployeeList.push(obj);
+        });
+      });
+
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
@@ -290,6 +312,13 @@ export class PpdeclarationComponent implements OnInit {
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
+
+  
+
+
+
+
+  
   //----------- On change Transactional Line Item Remark --------------------------
   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
@@ -312,6 +341,7 @@ export class PpdeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.Service.getPensionPlanRemarkList(
       investmentGroup1TransactionId,
     ).subscribe((res) => {
@@ -337,6 +367,11 @@ export class PpdeclarationComponent implements OnInit {
       'previous emp id::',
       this.transactionDetail[j].groupTransactionList[i].previousEmployerId
     );
+  }
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
     // Update Previous Employee in Edit Modal
@@ -828,8 +863,9 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -1174,7 +1210,7 @@ export class PpdeclarationComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
   }
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup1TransactionId,
@@ -1192,6 +1228,8 @@ export class PpdeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1881,6 +1919,13 @@ export class PpdeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+    
+    
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
 }
 

@@ -23,6 +23,7 @@ import { NpsService } from '../nps.service';
   styleUrls: ['./nps-master.component.scss'],
 })
 export class NpsMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -120,10 +121,18 @@ export class NpsMasterComponent implements OnInit {
   ConvertedFinancialYearEndDate: Date;
   viewDocumentName: any;
   viewDocumentType: any;
+  public showDeatil = false;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  documentRemarkList: any;
 
   constructor(
     private formBuilder: FormBuilder,
-    private myInvestmentsService: MyInvestmentsService,
+    private Service: MyInvestmentsService,
     private npsService: NpsService,
     private datePipe: DatePipe,
     private http: HttpClient,
@@ -272,7 +281,7 @@ export class NpsMasterComponent implements OnInit {
 
   // Business Financial Year API Call
   getFinacialYear() {
-    this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
+    this.Service.getBusinessFinancialYear().subscribe((res) => {
       // this.financialYearStart = res.data.results[0].fromDate;
       this.financialYearEnd = res.data.results[0].toDate;
 
@@ -302,7 +311,7 @@ export class NpsMasterComponent implements OnInit {
 
   // Family Member List API call
   getMasterFamilyInfo() {
-    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+    this.Service.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
@@ -334,7 +343,7 @@ export class NpsMasterComponent implements OnInit {
 
   // Get All Institutes From Global Table
   getInstitutesFromGlobal() {
-    this.myInvestmentsService.getAllInstitutesFromGlobal().subscribe((res) => {
+    this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
       res.data.results.forEach((element: { insurerName: any }) => {
         const obj = {
           label: element.insurerName,
@@ -347,7 +356,7 @@ export class NpsMasterComponent implements OnInit {
 
   // Get All Previous Employer
   getPreviousEmployer() {
-    this.myInvestmentsService.getAllPreviousEmployer().subscribe((res) => {
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
@@ -795,7 +804,13 @@ export class NpsMasterComponent implements OnInit {
   }
 
   //------------- On Master Edit functionality --------------------
-  editMaster(accountNumber) {
+  editMaster(accountNumber, frequency?) {
+    this.isEdit = true;
+    if (frequency == 'As & When') {
+this.showDeatil = true;
+    } else {
+      this.showDeatil = false;
+    }
     this.documentArray = [];
     this.isShowUpdate = true;
     this.isShowSave = false;
@@ -824,8 +839,21 @@ export class NpsMasterComponent implements OnInit {
 
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
-      if (obj != 'undefined') {
-        this.paymentDetailGridData = obj.paymentDetails;
+      // if (obj != 'undefined') {
+        console.log('inedit as and when', obj?.frequency);
+        if (obj.frequency === 'As & When') {
+          this?.form?.patchValue({
+            institution: obj.institution,
+            accountNumber: obj.accountNumber,
+            accountHolderName: obj.accountHolderName,
+            relationship: obj.relationship,
+            policyStartDate: obj.policyStartDate,
+            fromDate: obj.fromDate,
+            familyMemberInfoId: obj.familyMemberInfoId,
+            frequencyOfPayment: obj.frequencyOfPayment,
+          });
+        } else {
+this.paymentDetailGridData = obj.paymentDetails;
 
         console.log('.....................::', res.paymentDetails);
         this.form.patchValue(obj);
@@ -856,6 +884,94 @@ export class NpsMasterComponent implements OnInit {
       }
     });
   }
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId,
+    summary, count
+  ) {
+    
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.npsService.getNPSMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+   
+ 
+  }
+
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.investmentGroup1MasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"NPS",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+    
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
 
   //view master functionality
 
