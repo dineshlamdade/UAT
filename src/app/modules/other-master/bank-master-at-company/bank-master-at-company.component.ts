@@ -38,6 +38,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
   countryCode: Array<any> = [];
   reEnterAccountNumber: boolean = false;
   accountNumber: boolean = false;
+ // accountNumber1: boolean = false;
   header: any[];
   excelData: any[];
 
@@ -56,17 +57,19 @@ export class BankMasterAtCompanyComponent implements OnInit {
   //for temporary add new row
   //  tempdata=new FormArray([]);
   public tempdata=[];
-  contactPersonName: any;
+  contactPersonName: any='';
   pfArray: any;
   designation: any;
   emailId: any='';
-  contactNumber: any;
-  isdCode: any;
+  contactNumber: any='';
+  isdCode: any ='';
   editIndex: any = -1;
   companyBankMappingId: any;
   viewFlag: boolean = false;
   //addrowflag:boolean=false;
-
+ 
+  emailIdInvalid: boolean=false;
+  validatedEmailFlag: boolean = false;
 
   constructor( private formBuilder: FormBuilder, private alertService: AlertServiceService, private bankMasterAtGroupService: BankMasterAtGroupService,
     private bankMasterAtCompanyService: BankMasterAtCompanyService
@@ -84,12 +87,13 @@ export class BankMasterAtCompanyComponent implements OnInit {
       // ontactPersonName: ['',Validators.required],
       // designation: ['',Validators.required],
       // emailId: ['', Validators.required],
-
+      // emailId: new FormControl('',[Validators.required]),
+      // ontactPersonName:new FormControl('',[Validators.required]),
     },
       {
         validator: MustMatch( 'accountNumber', 'reEnterAccountNumber' ),
       } );
-
+      
     // this.pfArray.push( this.formBuilder.group( {
     //   //Change validation
     //   contactPersonName: ['',Validators.required],
@@ -104,7 +108,8 @@ export class BankMasterAtCompanyComponent implements OnInit {
     // } ) );
   }
   public ngOnInit(): void {
-
+// let bydefault='select';
+// this.form.controls['isdcode'].setValue(bydefault);
     this.ifscCodeList = [];
     this.bankMasterAtGroupService.getBankMasterDetails().subscribe( ( res ) => {
       console.log( 'bank master details', res );
@@ -127,13 +132,12 @@ export class BankMasterAtCompanyComponent implements OnInit {
     this.companyMasterService.getCountryCodes().subscribe( ( res ) => {
       console.log( 'country code', res );
       this.countryCode = res.data.results;
+
     } );
 
-
-
-
-
     this.refreshHtmlTableData();
+
+   // this.form.controls['isdCode'].setValue('Select')
   }
 //Time set for Confirm Account Number
 
@@ -146,34 +150,18 @@ hideConfirmAccountNo( accountNumber ) {
  // }
 }
 
+hideConfirmAccountNo1( reEnterAccountNumber ) {
+
+   //if ( reEnterAccountNumber == false ) {
+     setTimeout( () => {
+       this.reEnterAccountNumber = false;
+     }, 2000 )
+   //}
+ }
+
   account(event){
   }
   
-  
-//     setTimeout( () => {
-      
-//      this.accountNumber = false;
-    
-//     }, 100 );
-  
-  
-//  }
-
-// account( event: any ) {
-//   const pattern = /[0-9]/;
-//   let inputChar;
-//   if ( event.keyCode != 8 && !pattern.test( inputChar ) ) {
-//     event.preventDefault();
-//     this.accountNumber=true;
-
-//     setTimeout( () => {
-//             // this.accountNumber = true;
-//             // document.getElementsByTagName('input')[0].type="password"
-//           //  this.accountNumber = false;
-//           this.accountNumber=false;
-//           }, 100 );
-//   }
-// }
 //End
   refreshHtmlTableData() {
     this.summaryHtmlDataList = [];
@@ -204,6 +192,7 @@ hideConfirmAccountNo( accountNumber ) {
             designation: element.mappingDetails[i].designation,
             emailId: element.mappingDetails[i].emailId,
             contactNumber: element.mappingDetails[i].contactNumber,
+          //  isdCode:element.mappingDetails[i].isdCode,
           };
           this.summaryHtmlDataList.push( obj );
         }
@@ -256,9 +245,8 @@ hideConfirmAccountNo( accountNumber ) {
                 // contactNumber:element.contactNumber,
 
               } );
-
               
-                
+              
 
             }
             flag = false;
@@ -288,16 +276,24 @@ hideConfirmAccountNo( accountNumber ) {
               "accountType": element.mappingDetails[j].accountType,
               "companyBankMasterId": element.mappingDetails[j].companyBankMasterId,
               "companyBankMappingId": element.mappingDetails[j].companyBankMappingId,
-              "contactNumber": element.mappingDetails[j].contactNumber,
+               "contactNumber": element.mappingDetails[j].contactNumber,
+              // "isdcode":contactNumberSplit[0],
+              // "contactNumber":contactNumberSplit[1],
+             // "contactNumber": element.mappingDetails[j].contactNumber +''+element.mappingDetails[j].isdCode,
               "contactPersonName": element.mappingDetails[j].contactPersonName,
               "designation": element.mappingDetails[j].designation,
               "emailId": element.mappingDetails[j].emailId,
               "groupCompanyId": element.mappingDetails[j].groupCompanyId,
-              "isActive": element.mappingDetails[j].isActive
+              "isActive": element.mappingDetails[j].isActive,
+              "isdCode":element.mappingDetails[j].isdCode,
+             
           });
-
+          this.form.controls['pfFormArray'].setValue(this.tempdata);
           console.log("this.tempdata is: "+ JSON.stringify(this.tempdata))
+        
+         // this.form.controls['isdCode'].setValue();
 
+          // this.form.controls.isdCode.setValue('Select');
 
             // this.addContactPerson(j);
             // const contactPersonName = element.mappingDetails[j].contactPersonName.split(' ');
@@ -314,14 +310,18 @@ hideConfirmAccountNo( accountNumber ) {
             //   companyBankMappingId: [element.mappingDetails[j].companyBankMappingId],
             // }));
             // console.log(this.pfArray.value);
+
+            
           }
+     
         }
 
         console.log(JSON.stringify(this.tempdata))
         
       } );
-
-    }, ( error: any ) => {
+      
+    }
+     , ( error: any ) => {
       this.alertService.sweetalertError( error.error.status.messsage );
 
     } );
@@ -428,12 +428,13 @@ hideConfirmAccountNo( accountNumber ) {
     this.isActive = false;
     this.isSaveAndReset = true;
 // Flag for view 
-this.viewFlag = false;
-
+    this.viewFlag = false;
+    
     this.showButtonSaveAndReset = true;
-
-    this.form.reset();
+    
     this.form.enable();
+    this.form.reset();
+    
     // this.pfArray.push( this.formBuilder.group( {
     //   //change for validation
     //   contactPersonName: ['',Validators.required],
@@ -447,6 +448,15 @@ this.viewFlag = false;
     // } ) );
     this.form.get( 'bankName' ).disable();
     this.form.get( 'branchName' ).disable();
+  //   this.showButtonSaveAndReset = true;
+  //  this.companyGroupId=0;
+   
+this.form.patchValue({
+  ifscCode:'',
+  accountType:'',
+  companyGroup:'',
+})
+
     this.tempdata = []
 //for new code 
     this.form.controls['pfFormArray'].setValue(this.tempdata)
@@ -457,45 +467,59 @@ this.viewFlag = false;
     this.contactNumber = ''
     this.isdCode = ''
 
+   
   }
 
+  // reset() {
+  //   // this.isEditMode = false;
+  //   this.companyGroupId = -1;
+  //   this.showButtonSaveAndReset = true;
+  //   this.companyGroupId = 0;
+  //   //this.form.get( 'companyGroupActive' ).setValue( true );
+  //  // this.saveFormValidation();
+
+  // }
 
   save() {
+    
     if ( this.isEditMode ) {
       const s = [];
       const formData = this.form.getRawValue();
 //for new
-      let requestData :any
-      this.tempdata.forEach(ele =>{
-        console.log(JSON.stringify(ele))
-        let temp = ele.contactNumber.split(' ');
-         requestData = {
-          "companyBankMappingId": ele.companyBankMappingId,
-          "contactNumber": temp[1],
-          "contactPersonName": ele.contactPersonName,
-          "designation": ele.designation,
-          "emailId": ele.emailId,
-          "isActive": 1,
-          "isdCode": temp[0]
-      }
-     
-      })
 
       // let requestData :any
       // this.tempdata.forEach(ele =>{
       //   console.log(JSON.stringify(ele))
-        
+      //   let temp = ele.contactNumber.split(' ');
+
       //    requestData = {
       //     "companyBankMappingId": ele.companyBankMappingId,
-      //     "contactNumber": ele.contactNumber,
+      //     "contactNumber": temp[1],
       //     "contactPersonName": ele.contactPersonName,
       //     "designation": ele.designation,
       //     "emailId": ele.emailId,
       //     "isActive": 1,
-      //     "isdCode": ele.isdCode,
+      //     "isdCode": temp[0]
       // }
+    
      
       // })
+
+      let requestData :any
+      this.tempdata.forEach(ele =>{
+        console.log(JSON.stringify(ele))
+        
+         requestData = {
+          "companyBankMappingId": ele.companyBankMappingId,
+          "contactNumber": ele.contactNumber,
+          "contactPersonName": ele.contactPersonName,
+          "designation": ele.designation,
+          "emailId": ele.emailId,
+          "isActive": 1,
+          "isdCode": ele.isdCode,
+      }
+     
+      })
 
       this.bankMasterAtGroupService.putBankMasterMapping( requestData).subscribe( ( res ) => {
         console.log( res );
@@ -515,12 +539,17 @@ this.viewFlag = false;
 
       }, ( error: any ) => {
         this.alertService.sweetalertError( error.error.status.messsage );
-
-      } );
       
-        
+      } );
+      console.log(this.tempdata);
+      this.form.setValue(
+        {
+          isdCode:this.isdCode,
+        }
+      )
       
       this.refreshHtmlTableData();
+      
 
     } else {
       
@@ -536,7 +565,8 @@ this.viewFlag = false;
           this.cancelView();
           this.refreshHtmlTableData();
         } else {
-          this.alertService.sweetalertWarning( res.status.messsage );
+        //  this.alertService.sweetalertWarning( res.status.messsage );
+        this.alertService.sweetalertWarning('Filled Contact Person  Details');
         }
 
       }, ( error: any ) => {
@@ -544,7 +574,13 @@ this.viewFlag = false;
 
       } );
     }
-
+    
+    //new code for ISDCODE byDefault Select
+    this.form.setValue(
+      {
+        isdCode:this.isdCode,
+      }
+    )
   }
   onSelectIFSCCode( evt: any ) {
     const index = this.bankMasterDetailsResponse.findIndex( ( o ) => o.ifscCode == evt );
@@ -647,36 +683,40 @@ this.viewFlag = false;
   }
 
   addRow() {
-   
-    if(this.emailId!=''){
-    this.tempdata.push({
-        "accountNumber": this.form.get('accountNumber').value,
-        "accountType": this.form.get('accountType').value,
-        "companyBankMasterId": this.companyBankMasterId,
-        // "contactNumber": this.isdCode + ' ' +this.contactNumber,
-        "contactNumber":this.contactNumber,
-        "isdCode":this.isdCode,
-        "contactPersonName": this.contactPersonName,
-        "designation": this.designation,
-        "emailId": this.emailId,
-        "groupCompanyId": this.form.get('companyGroup').value
-    })
-    
-
-    this.form.controls['pfFormArray'].setValue(this.tempdata)
-
-    this.contactPersonName = ''
-    this.designation = ''
-    this.emailId = ''
-    this.contactNumber = ''
-    this.isdCode = ''
-    //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
-    }
+   // this.validemail=false;
+   if(this.validatedEmailFlag){
+    if(this.emailId!='' && this.contactPersonName!='' ){
+      this.tempdata.push({
+          "accountNumber": this.form.get('accountNumber').value,
+          "accountType": this.form.get('accountType').value,
+          "companyBankMasterId": this.companyBankMasterId,
+           "contactNumber": this.isdCode + ' ' +this.contactNumber,
+         // "contactNumber":this.contactNumber,
+         // "isdCode":this.isdCode,
+          "contactPersonName": this.contactPersonName,
+          "designation": this.designation,
+          "emailId": this.emailId,
+          "groupCompanyId": this.form.get('companyGroup').value
+      })
+      
+  
+      this.form.controls['pfFormArray'].setValue(this.tempdata)
+  
+      this.contactPersonName = ''
+      this.designation = ''
+      this.emailId = ''
+      this.contactNumber = ''
+      this.isdCode = ''
+      //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
+      }
+   }
     else
     {
-      this.alertService.sweetalertWarning('Filled Contact Person  Details');
-    }
+     // this.alertService.sweetalertWarning('Filled Contact Person  Details');
+     this.alertService.sweetalertWarning('Please Enter Mandetory Field.');
+    } 
     //this.viewFlag = false;
+    
   }
 
 
@@ -796,15 +836,39 @@ this.viewFlag = false;
     });
   
 }
+ // let requestData :any
+      // this.tempdata.forEach(ele =>{
+      //   console.log(JSON.stringify(ele))
+      //   let temp = ele.contactNumber.split(' ');
+
+      //    requestData = {
+      //     "companyBankMappingId": ele.companyBankMappingId,
+      //     "contactNumber": temp[1],
+      //     "contactPersonName": ele.contactPersonName,
+      //     "designation": ele.designation,
+      //     "emailId": ele.emailId,
+      //     "isActive": 1,
+      //     "isdCode": temp[0]
+      // }
+    
+     
+      // })
 
 edittable(data,index1){
+
+  let temp=data.contactNumber.split(' ');
+
   this.editIndex = index1;
   this.contactPersonName = data.contactPersonName
   this.designation = data.designation
   this.emailId = data.emailId
-  this.contactNumber = data.contactNumber
-  this.isdCode = data.isdCode
+  // this.contactNumber = data.contactNumber
+  // this.isdCode = data.isdCode
+  this.contactNumber = temp[1]
+  this.isdCode = temp[0]
   this.companyBankMappingId = data.companyBankMappingId
+  
+  // this.isdCode=''
 }
 
 updateRow(){
@@ -812,9 +876,9 @@ updateRow(){
     "accountNumber": this.form.get('accountNumber').value,
     "accountType": this.form.get('accountType').value,
     "companyBankMasterId": this.companyBankMasterId,
-    // "contactNumber": this.isdCode + ' ' +this.contactNumber,
-    "contactNumber": this.contactNumber,
-    "isdCode":this.isdCode,
+     "contactNumber": this.isdCode + ' ' +this.contactNumber,
+ // "contactNumber": this.contactNumber,
+// "isdCode":this.isdCode,
     "companyBankMappingId": this.companyBankMappingId,
     "contactPersonName": this.contactPersonName,
     "designation": this.designation,
@@ -832,4 +896,17 @@ updateRow(){
     this.editIndex = -1
 }
 
+
+
+// validateEmail(email) {
+//   const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//   return regularExpression.test(String(email).toLowerCase());
+//  }
+
+validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  console.log(re.test(email))
+  this.validatedEmailFlag  = re.test(email)
+  return re.test(email);
+}
 }
