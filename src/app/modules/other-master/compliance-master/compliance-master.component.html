@@ -1,9 +1,7 @@
 
-
-
 <!-- Existing Code -->
 
-<app-leftmenu></app-leftmenu>
+<!-- <app-leftmenu></app-leftmenu>
 
 <div class="page">
   <app-header></app-header>
@@ -94,22 +92,6 @@
                             </select>
                           </div>
 
-
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment</label>
-
-                            <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect
-                              style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
-                              (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
-                              (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
-                              [(ngModel)]="selectedEstablishmentMasterId"
-                              [ngClass]="{'is-invalid' : form.get('establishmentMasterId').status == 'INVALID'}"
-                              formControlName="establishmentMasterId" [disabled]=isEditableEstablismentMasterId>
-                            </ng-multiselect-dropdown>
-
-                          </div> -->
-
-
                           <div class="col-sm-3">
                             <label class="form-label">Establishment</label>
                             <select name="Establishment" id="Establishment" class="form-control"
@@ -168,57 +150,15 @@
 
                         </div>
 
-                        <!-- <div class="row mt-20 pull-right">
-                          <div class="col-sm-12 pull-right"> -->
-                        <!-- <div *ngIf="isActivateButton ==0">
-                              <button type="button"
-                                class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                tooltip="Delete" (click)="activateComplianceMaster()"><b><i
-                                    class="fa fa-times-circle"></i></b> Activate Record</button>
-                            </div> -->
-                        <!-- <div *ngIf="isGlobalView == false && isEditMode == true && isActivateButton!==0">
-                              <button type="button"
-                                class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
-                                    class="fa fa-times-circle"></i></b> Delete</button>
-
-                              <button type="submit"
-                                class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                                tooltip="Update" (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
-                                Update</button>
-                            </div> -->
-                        <!-- </div>
-                        </div> -->
-
                       </fieldset>
 
                     </div>
                   </div>
 
-                  <!-- <div class="row mt-10" *ngIf="isPf">
-                    <div class="col-md-12">
-                      <fieldset> -->
                   <div class="row" formArrayName="pfFormArray">
                     <div class="col-md-12" *ngFor="let item of pfArray.controls; index as i">
                       <fieldset [formGroupName]="i">
                         <div class="row">
-
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <input type="text" formControlName="establishmentName" class="form-control"
-                              name="establishmentName" [disabled]=true>
-                          </div> -->
-
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">Status</label>
@@ -293,8 +233,7 @@
                               </label>
                             </div>
                           </div>
-                          <!-- onChangeContributionMethodChoicePfArray  this functin was used above-->
-
+                          
                           <div class="col-sm-6 col-md-3">
                             <label class="form-label ml-15" tooltip="" placement="left">Contribution Method Is
                               Different</label>
@@ -420,36 +359,7 @@
                                 class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
-
-
-
                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         <div class="row mt-20">
                           <div class="col-sm-3">
@@ -492,13 +402,11 @@
 
                         </div>
 
-
                         <div class="row">
                           <div class="col-sm-3">
                             <label class="form-label">Industry Type</label>
                             <select class="form-control" formControlName="industryType"
                               (change)='onSelectPfStatus($event.target.value)'>
-                              <!-- <option selected value=''>Select </option> -->
                               <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
                                 {{issuedBy.itemName}}
                               </option>
@@ -535,11 +443,6 @@
                                 </select>
                               </div>
 
-
-
-
-
-
                             </div>
                             <div class="row pull-right" *ngIf="isGlobalView ==false  && isActivateButton!==0">
                               <div class="col-sm-12 pull-right">
@@ -564,44 +467,9 @@
                             </div>
                           </fieldset>
                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                       </fieldset>
-
-
-
                     </div>
-
-
-
-
-
-
-
                   </div>
-
-
                   <div class="row" *ngIf="isEpsNew">
                     <div class="col-md-12">
                       <fieldset>
@@ -641,8 +509,6 @@
                       </fieldset>
                     </div>
                   </div>
-
-
                   <div class="row" *ngIf="isEsi">
                     <div class="col-md-12">
                       <fieldset>
@@ -654,16 +520,7 @@
                               autocomplete="off" [ngClass]="{'is-invalid' : form.get('esic1').status == 'INVALID'}"
                               placeholder="Enter ESI">
                           </div>
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Company Contribution</label>
-                            <select name="esic1" id="esic1" class="form-control" formControlName="esic1"
-                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
-                              <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
-                                {{issuedBy}}
-                              </option>
-                            </select>
-                          </div> -->
-
+                          
                           <div class="col-sm-3">
                             <label class="form-label">From Date</label>
                             <div class="input-group-prepend">
@@ -690,7 +547,6 @@
                       </fieldset>
                     </div>
                   </div>
-
 
                   <div class="row" *ngIf="isPt">
                     <div class="col-md-12">
@@ -900,8 +756,6 @@
                             </div>
                           </div>
 
-
-
                         </div>
                         <div class="row mt-20">
 
@@ -1079,7 +933,7 @@
                             <label class="form-label">Industry Type</label>
                             <select class="form-control" formControlName="industryType"
                               (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
-                              <!-- <option selected value=''>Select </option> -->
+                              
                               <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
                                 {{issuedBy.itemName}}
                               </option>
@@ -1191,17 +1045,6 @@
                         <legend>EMPLOYEE PENSION SCHEME (EPS) {{isGlobalView}}</legend>
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
-
                           <div class="col-sm-3">
                             <label class="form-label">EPS</label>
                             <input type="text" formControlName="eps1" class="form-control" name="eps1"
@@ -1271,16 +1114,6 @@
 
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
                           <div class="col-sm-3">
                             <label class="form-label">ESI</label>
                             <input type="text" formControlName="esic1" class="form-control" name="esic1"
@@ -1288,16 +1121,7 @@
                               [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1').status == 'INVALID'}"
                               placeholder="Enter ESI">
                           </div>
-                          <!--
-                            <div class="col-sm-3">
-                              <label class="form-label">Company Contribution</label>
-                              <select name="esic1" id="esic1" class="form-control" formControlName="esic1"
-                                (change)='onSelectOfficePremisesOwnership($event.target.value)'>
-                                <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
-                                  {{issuedBy}}
-                                </option>
-                              </select>
-                            </div> -->
+                        
 
                           <div class="col-sm-3">
                             <label class="form-label">From Date</label>
@@ -1362,16 +1186,6 @@
                         <legend>PROFESSIONAL TAX(PT)</legend>
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
@@ -1433,17 +1247,6 @@
                         <legend>LABOUR WELFARE FUND (LWF)</legend>
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
-
 
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
@@ -1493,17 +1296,6 @@
                       <fieldset [formGroupName]="i">
                         <legend>TAX DEDUCTED AT SOURCE (TDS)</legend>
                         <div class="row">
-
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
@@ -1563,19 +1355,7 @@
                         <legend>Gratuity FORM ARRAY</legend>
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              [ngClass]="{'is-invalid' :form.get('gratuityArray')['controls'][i].establishmentName == 'INVALID'}"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
-
-
+         
                           <div class="col-sm-3">
                             <label class="form-label">Dividing Factor % </label>
                             <input type="number" formControlName="gratuityDividingFactor" class="form-control"
@@ -1637,18 +1417,6 @@
                         <legend>SUPER ANNUATION (SA)</legend>
                         <div class="row">
 
-                          <!-- <div class="col-sm-3">
-                            <label class="form-label">Establishment Name</label>
-                            <select class="form-control" formControlName="establishmentName"
-                              [ngClass]="{'is-invalid' :form.get('saArray')['controls'][i].establishmentName == 'INVALID'}"
-                              (change)='onSelectEstablishmentName($event.target.value,i)'>
-                              <option *ngFor="let issuedBy of savedEstablishmentList"
-                                [value]="issuedBy.establishmentMasterId">
-                                {{issuedBy.establishmentCode}}
-                              </option>
-                            </select>
-                          </div> -->
-
                           <div class="col-sm-3">
                             <label class="form-label">Max Percentage (%)</label>
                             <input type="number" formControlName="saMaxPercentage" class="form-control"
@@ -1676,7 +1444,7 @@
                           </div>
 
                         </div>
-                        <!-- end of row -->
+                       
                         <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonSa"
@@ -1714,8 +1482,7 @@
                       <ng-container *ngIf="showButtonSaveAndReset">
 
                         <ng-container *ngIf="isSaveAndReset; ">
-                          <!-- else newDeb -->
-
+                        
                           <button type="submit" [disabled]="form.invalid"
                             class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
                             (click)="save()"
@@ -1739,20 +1506,7 @@
 
 
                     <div class="float-right mb-15" *ngIf="isView == true ">
-                      <!-- <button type="submit" id="submitbuttonSa"
-                        onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
-                        [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
-                                                                            'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                        [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
-                        (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
-                        Update</button> -->
-                      <!-- <button type="button"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Delete"
-                        (click)="deleteAll()"><b><i class="fa fa-times-circle"></i></b>
-                        Delete</button> -->
-
-
+              
                       <span *ngIf="isActivateButton ==0">
                         <button type="button"
                           class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
@@ -1766,109 +1520,15 @@
                         (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
                         Cancel</button>
 
-
                     </div>
 
 
+                  </div> 
 
-
-                    <!-- <div class="float-right mb-15" *ngIf="isEditMode">
-                      <button type="button"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
-                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                        Cancel</button>
-                    </div> -->
-                  </div> <!-- <end of div col-6 -->
-
-
-
-
-
-                </div> <!-- card body -->
+                </div> 
               </div>
             </div>
           </div>
-
-          <!-- <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="mb-0">
-                  <h3 class="font-14 text-purple font-bold">Summary</h3>
-                </div>
-                
-                <div class="table-responsive Custom_Table">
-                  <table class="table table-striped table-hover table-bordered m-b-0">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col" class="wd-8">Sr. No.</th>
-                        <th scope="col" class="wd-15">Compliance Name</th>
-                        <th scope="col" class="wd-15">Statutory Institution Master</th>
-                        <th scope="col" class="wd-10">Compliance Head Name</th>
-                        <th scope="col" class="wd-10">Compliance Short Name</th>
-                        <th scope="col" class="wd-12">Account No</th>
-                        <th scope="col" class="wd-15">Registration No</th>
-                        <th scope="col" class="wd-15">Establishment Code</th>
-                        <th scope="col" class="wd-10">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
-                        <td class="wd-10"><span tooltip="{{summary.complianceMasterId}}">{{summary.SrNo}}</span>
-                        </td>
-                        <td class="wd-10"><span tooltip="{{summary.complianceName}}">{{summary.complianceName}}</span>
-                        </td>
-                        <td class="wd-10"><span
-                            tooltip="{{summary.statutoryInstituteName}}">{{summary.statutoryInstituteName}}</span>
-                        </td>
-                        <td class="wd-10"><span
-                            tooltip="{{summary.complianceHeadName}}">{{summary.complianceHeadName}}</span>
-                        </td>
-                        
-                        <td class="wd-10"><span
-                            tooltip="{{summary.complianceHeadShortName}}">{{summary.complianceHeadShortName}}</span>
-                        </td>
-
-                        <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
-                        </td>
-                        <td class="wd-10"><span
-                            tooltip="{{summary.registrationNumber}}">{{summary.registrationNumber}}</span>
-                        </td>
-
-                        <td class="wd-10"><span
-                            tooltip="{{summary.establishmentCode}}">{{summary.establishmentCode}}</span>
-                        </td>
-
-                        <td class="wd-10">
-                         
-
-                          <span *ngIf="summary.isActive ==0">
-                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
-                              (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
-                              tooltip="Edit"></i> </span>
-                          <span *ngIf="summary.isActive ==1">
-                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                              (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
-                              tooltip="Edit"></i> </span>
-
-                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3 ml-10"
-                            (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
-                            tooltip="View"></i>
-                        </td>
-
-                      </tr>
-                      <tr *ngIf="!summaryHtmlDataList?.length">
-                        <td colspan="10">
-                          <span class="font-14 font500 align-center text-red">No Data Available</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
           <br>
           <div class="row mb-0">
             <div class="col-md-12">
@@ -2051,13 +1711,7 @@
 </div>
 </div>
 </div>
-
-
         </form>
-
-
-
-
         <ng-template #confirmdialog>
           <div class="modal-header">
             <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
@@ -2083,9 +1737,1474 @@
                 aria-hidden="true"></i> &nbsp; No</button>
           </div>
         </ng-template>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div> -->
+
+<!-- New UI -->
+<app-leftmenu></app-leftmenu>
+
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+      <div class="tabview-contents">
+        <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Compliance Master Details</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" formControlName="complianceName" class="form-control" autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('complianceName').status == 'INVALID'}"
+                              name="complianceName" placeholder="Enter Compliance Name">
+                          </div>
+
+                          <div class="col-sm-3" *ngIf="!isEditMode">
+                            <label class="form-label">Statutory Institution Master</label>
+                            <select name="statutoryInstituteName" id="statutoryInstituteName" class="form-control"
+                              formControlName="statutoryInstituteName"
+                              [ngClass]="{'is-invalid' : form.get('statutoryInstituteName').status == 'INVALID'}"
+                              (change)='onSelectStatuatoryInstitutionMaster($event.target.value)'>
+
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of institutionNameList" [value]="issuedBy.value">
+                                {{issuedBy.label}}
+                              </option>
+                            </select>
+                          </div>
+                         
+
+                          <div class="col-sm-3" *ngIf="isEditMode">
+                            <label class="form-label">Statutory-Institution Master</label>
+                            <input type="text" formControlName="statutoryInstituteName" class="form-control"
+                              autocomplete="off" disabled=true name="statutoryInstituteName">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Address</label>
+                            <textarea formControlName="address" class="form-control"
+                            autocomplete="off" name="address" placeholder="Enter Address"></textarea>
+                            
+                            </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Compliance Head Name</label>
+                            <input type="text" formControlName="complianceHeadName" class="form-control"
+                              autocomplete="off" name="complianceHeadName">
+                          </div>
+
+
+                          <div class="col-sm-3" *ngIf="false">
+                            <label class="form-label">Compliance Short Name</label>
+                            <input type="text" formControlName="shortName" class="form-control" name="shortName"
+                              autocomplete="off">
+                          </div>
+                        </div>
+
+
+                        <div class="row mt-20">
+
+                          
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Name</label>
+                            <select name="groupCompanyId" id="groupCompanyId" class="form-control"
+                              formControlName="groupCompanyId">
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of companyIdList" [value]="issuedBy.id">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Registration No.</label>
+                            <input type="text" formControlName="registrationNumber" class="form-control"
+                              autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('registrationNumber').status == 'INVALID'}"
+                              name="registrationNumber" placeholder="Enter Registration Number">
+                          </div>
+
+                          <div class="col-sm-3">
+                          <label class="form-label">Issued Date</label>
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="issueDate"
+                              [ngClass]="{'is-invalid' : form.get('issueDate').status == 'INVALID'}"
+                              (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
+                              placement="center" data-date-autoclose="true" class="form-control"
+                              placeholder="Enter Issued Date" bsDatepicker>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Coverage Date</label>
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="coverageDate"
+                              [ngClass]="{'is-invalid' : form.get('coverageDate').status == 'INVALID'}"
+                              placement="center" data-provide="datepicker" data-date-autoclose="true"
+                              class="form-control" placeholder="Enter Coverage Date" bsDatepicker>
+                          </div>
+                        </div>
+                         
+                        </div>
+
+
+                        <div class="row mt-20">
+                         
+                           
+                            <div class="col-sm-3">
+                              <label class="form-label">Establishment</label>
+                              <select name="Establishment" id="Establishment" class="form-control"
+                                formControlName="establishmentMasterId" [(ngModel)]="selectedEstablishmentMasterId"
+                                [ngClass]="{'is-invalid' : form.get('establishmentMasterId').status == 'INVALID'}"
+                                (change)='onSelectEstablishment($event.target.value)'>
+                                <option selected value=''>Select </option>
+                                <option *ngFor="let issuedBy of dropdownList" [value]="issuedBy.establishmentMasterId"
+                                  [disabled]=isEditableEstablismentMasterId>
+                                  {{issuedBy.establishmentCode}}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                              <label class="form-label">Account No. / Section No.</label>
+                              <input type="text" formControlName="accountNumber" class="form-control" autocomplete="off"
+                                [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}"
+                                name="accountNumber" placeholder="Enter Account No.">
+                            </div>
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">User Name To Access Website </label>
+                            <input type="text" formControlName="userNameForWebsite" class="form-control"
+                              autocomplete="off" name="userNameForWebsite" placeholder="Enter User Name">
+                          </div>
+
+                          <div class="col-sm-3" *ngIf="false">
+                            <label class="form-label">administratedBy</label>
+                            <input type="text" formControlName="administratedBy" class="form-control" autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('administratedBy').status == 'INVALID'}"
+                              name="administratedBy" placeholder="administratedBy">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Password</label>
+                            
+                            <input type="password" formControlName="password" class="form-control" autocomplete="off"   
+                            name="password" placeholder="Enter Password">
+                            </div>
+
+                        </div>
+                        
+
+                      </fieldset>
+
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="isEpsNew">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Employee Pension Scheme (EPS)</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">EPS</label>
+                            <input type="text" formControlName="eps1" class="form-control" name="eps1"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('eps1').status == 'INVALID'}"
+                              placeholder="Enter EPS Status">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
+                                [ngClass]="{'is-invalid' :form.get('eps1FromDate').status  == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1ToDate"
+                                placement="center"
+                                [ngClass]="{'is-invalid' : form.get('eps1ToDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="isEsi">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Employee State Insurance (ESI)</legend>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label class="form-label">ESI</label>
+                            <input type="text" formControlName="esic1" class="form-control" name="esic1"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('esic1').status == 'INVALID'}"
+                              placeholder="Enter ESI">
+                          </div>
+                          
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
+                                [ngClass]="{'is-invalid' : form.get('esic1FromDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
+                                [ngClass]="{'is-invalid' : form.get('esic1ToDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="isPt">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>PROFESSIONAL TAX(PT)</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">State</label>
+                            <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
+                              [ngClass]="{'is-invalid' : form.get('ptState').status == 'INVALID'}"
+                              (change)='onSelectPtState($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">City</label>
+                            <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
+                              [ngClass]="{'is-invalid' : form.get('ptCity').status == 'INVALID'}"
+                              (change)='onSelectPtCity($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="isLw">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Labour Welfare</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">State</label>
+                            <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
+                              [ngClass]="{'is-invalid' : form.get('lwfState').status == 'INVALID'}"
+                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of states" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="isTaxDeductedAtSource">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Tax Deducted at Source</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">TAN</label>
+                            <input type="text" formControlName="tan" class="form-control" name="tan" autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('tan').status == 'INVALID'}" placeholder="Enter TAN">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">TDS Circle</label>
+                            <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
+                              placeholder="Enter TDS Circle">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Deductor Status</label>
+                            <input type="text" formControlName="deductorStatus" class="form-control" autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('deductorStatus').status == 'INVALID'}"
+                              name="deductorStatus" placeholder="Enter Deductor Status">
+                          </div>
+
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+                  <div class="row" *ngIf="isGratuity">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Gratuity</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Dividing Factor % </label>
+                            <input type="number" formControlName="gratuityDividingFactor" class="form-control"
+                              [ngClass]="{'is-invalid' : form.get('gratuityDividingFactor').status == 'INVALID'}"
+                              name="gratuityDividingFactor" placeholder="Enter Dividing Factor">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
+                                [ngClass]="{'is-invalid' : form.get('gratuityFromDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
+                                [ngClass]="{'is-invalid' : form.get('gratuityToDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+                  <div class="row" *ngIf="isPfNew">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Provident Fund (PF) Details</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" formControlName="pfStatus"
+                              [ngClass]="{'is-invalid' : form.get('pfStatus').status == 'INVALID'}"
+                              (change)='onSelectPfStatus($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of pfStatusList" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3">
+                            <label class="form-label ml-15" tooltip="" placement="left">EDLI Exemption</label>
+                            <div class="custom-controls-stacked ml-15 mt-10">
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" (change)="selectionChangedEdliExemptionOption($event)"
+                                  class="custom-control-input" name="edliExemption" formControlName="edliExemption"
+                                  id="edliExemption" value=1 checked>
+                                <span class="custom-control-label">Yes</span>
+                              </label>
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" (change)="selectionChangedEdliExemptionOption($event)"
+                                  class="custom-control-input" name="edliExemption" formControlName="edliExemption"
+                                  id="edliExemption" value=0>
+                                <span class="custom-control-label">No</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3">
+                            <label class="form-label ml-15" tooltip="" placement="left">Provident Fund Nil
+                              Option</label>
+                            <div class="custom-controls-stacked ml-15 mt-10">
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="pfNilOptionChoice"
+                                  (change)="selectionChangedProvidentFundNilOption($event,-1)"
+                                  formControlName="pfNilOptionChoice" class="custom-control-input"
+                                  name="pfNilOptionChoice" value=1 checked>
+                                <span class="custom-control-label">Yes</span>
+                              </label>
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="pfNilOptionChoice"
+                                  (change)="selectionChangedProvidentFundNilOption($event,-1)"
+                                  class="custom-control-input" name="pfNilOptionChoice"
+                                  formControlName="pfNilOptionChoice" value=0>
+                                <span class="custom-control-label">No</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3" *ngIf="false">
+                            <label class="form-label ml-15" tooltip="" placement="left">Contribution Method
+                              Choice</label>
+                            <div class="custom-controls-stacked ml-15 mt-10">
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" name="contributionMethodChoice"
+                                  formControlName="contributionMethodChoice" id="contributionMethodChoice" value=1
+                                  checked (change)="onChangeContributionMethodChoice($event,-1)">
+                                <span class="custom-control-label">Yes</span>
+                              </label>
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" name="contributionMethodChoice"
+                                  formControlName="contributionMethodChoice" id="contributionMethodChoice" value=0
+                                  (change)="onChangeContributionMethodChoice($event,-1)">
+                                <span class="custom-control-label">No</span>
+                              </label>
+                            </div>
+                          </div>
+
+<div class="col-sm-6 col-md-3">
+  <label class="form-label ml-15" tooltip="" placement="left">Different Contribution Method for Employeet</label>
+  <div class="custom-controls-stacked ml-15 mt-10">
+    <label class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+        (change)="selectionChangedContributionMethodIsDifferntOption($event,-1)"
+        class="custom-control-input" name="employeeCompanyContributionDiff"
+        formControlName="employeeCompanyContributionDiff" id="employeeCompanyContributionDiff"
+        value=1 checked>
+      <span class="custom-control-label">Yes</span>
+    </label>
+    <label class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+        (change)="selectionChangedContributionMethodIsDifferntOption($event,-1)"
+        class="custom-control-input" name="employeeCompanyContributionDiff"
+        formControlName="employeeCompanyContributionDiff" id="employeeCompanyContributionDiff"
+        value=0>
+      <span class="custom-control-label">No</span>
+    </label>
+  </div>
+</div>
+                        </div>
+                        
+
+                        <div class="row mt-20">
+                          <div class="col-sm-3" *ngIf="isDefaultContribution">
+                            <label class="form-label">Employee Contribution</label>
+                            <select class="form-control" formControlName="employeeContribution"
+                              (change)="onChaneEmployeeContribution($event,-1)">
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3" *ngIf="!isDefaultContribution">
+                            <label class="form-label">Employee Contribution Methods</label>
+
+                            <ng-multiselect-dropdown [placeholder]="'None Selected'" style="font-size: small;"
+                              [settings]="dropdownSettingsForPF" [data]="dropdownList1"
+                              (onSelect)="onItemSelectlDefaultEmpContribution($event,-1)"
+                              (onDeSelectAll)="onDeselectAllDefaultEmpContribution($event,-1)"
+                              (onSelectAll)="onSelectAllDefaultEmpContribution($event,-1)"
+                              (onDeSelect)="onItemDeSelectDefaultEmpContribution($event,-1)"
+                              formControlName="employeeContribtionMultiSelect"
+                              [(ngModel)]="SelectedemployeeContribtionMultiSelect"
+                              [disabled]="isRestrictedDisableMultiSelect">
+                            </ng-multiselect-dropdown>
+
+                          </div>
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeFromDate"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center"
+                                [ngClass]="{'is-invalid' : form.get('employeeFromDate').status == 'INVALID'}"
+                                (bsValueChange)="onChangeEmpFromDate($event, -1)" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeToDate"
+                                [ngClass]="{'is-invalid' : form.get('employeeToDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row mt-20">
+
+                          <div class="col-sm-3" *ngIf="isDefaultContribution">
+                            <label class="form-label">Company Contribution Methods</label>
+                            <select name="companyContribution" class="form-control"
+                              formControlName="companyContribution">
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3" *ngIf="!isDefaultContribution">
+                            <label class="form-label">Company Contribution</label>
+                            <ng-multiselect-dropdown [placeholder]="'None Selected'" style="font-size: small;"
+                              [settings]="dropdownSettingsForPF" [data]="dropdownList1"
+                              (onSelect)="onItemSelectlCompanyContribution($event)"
+                              (onDeSelectAll)="onDeselectAllCompanyContribution($event)"
+                              (onSelectAll)="onSelectAllCompanyContribution($event)"
+                              (onDeSelect)="onItemDeSelectCompanyContribution($event)"
+                              formControlName="companyContribtionMultiSelect"
+                              [(ngModel)]="selectedCompanyContribtionMultiSelect"
+                              [disabled]="isRestrictedDisableMultiSelect">
+                            </ng-multiselect-dropdown>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyFromDate"
+                                [ngClass]="{'is-invalid' : form.get('companyFromDate').status == 'INVALID'}"
+                                placement="center" class="form-control" data-provide="datepicker"
+                                data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyToDate"
+                                [ngClass]="{'is-invalid' : form.get('companyToDate').status == 'INVALID'}"
+                                placement="center" class="form-control" data-provide="datepicker"
+                                data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="row mt-20">
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Contribution Special Rate Applicability</label>
+                            <select class="form-control">
+                              <option selected value=''>Select </option>
+                              
+                            </select>
+                          </div>
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                             
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              
+                            </div>
+                          </div>
+                        </div>
 
 
 
+                        <div class="row mt-20" *ngIf="false">
+                        
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableEMPCount"
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of employeeSpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate</label>
+                            <input type="text" formControlName="specialRateEMPCountPercent" class="form-control"
+                              name="specialRateEMPCountPercent" autocomplete="off"
+                              placeholder="Enter Employee Special Rate">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableCompCount"
+                              (change)='onSelectCompanySpecialRateApplicable($event.target.value,0)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of companySpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate</label>
+                            <input type="text" formControlName="specialRateCompCountPercent" class="form-control"
+                              name="specialRateCompCountPercent" autocomplete="off"
+                              placeholder="Enter Company Special Rate">
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label class="form-label">Industry Type</label>
+                            <select class="form-control" formControlName="industryType"
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="isPfNew">
+                    <fieldset *ngIf="false">
+
+                      <legend>Wages Celling Details</legend>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label class="form-label">PF Basic Below Wage Celling</label>
+                          <select class="form-control" formControlName="basicDABelowWageCelling"
+                            (change)='onSelectPfStatus($event.target.value)'>
+                            <option selected value=''>Select </option>
+                            <option *ngFor="let issuedBy of basicDABelowWageCellingList" [value]="issuedBy.itemName">
+                              {{issuedBy.itemName}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">PF Basic Above Wage Celling</label>
+                          <select class="form-control" formControlName="basicDAAboveWageCelling"
+                            (change)='onSelectPfStatus($event.target.value)'>
+                            <option selected value=''>Select </option>
+                            <option *ngFor="let issuedBy of basicDAAboveWageCellingList" [value]="issuedBy.itemName">
+                              {{issuedBy.itemName}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </fieldset>
+                   
+                  </div>
+
+
+                  <div class="row" *ngIf="isSa">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Super Annuation</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Max Percentage</label>
+                            <input type="number" formControlName="saMaxPercentage" class="form-control"
+                              [ngClass]="{'is-invalid' : form.get('saMaxPercentage').status == 'INVALID'}"
+                              name="saMaxPercentage" placeholder="Enter Max Percentage">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saFromDate"
+                                [ngClass]="{'is-invalid' : form.get('saFromDate').status == 'INVALID'}"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saToDate"
+                                [ngClass]="{'is-invalid' : form.get('saToDate').status == 'INVALID'}" placement="center"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonSa"
+                              onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
+                                                      'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" formArrayName="epsArray">
+                    <div class="col-md-12" *ngFor="let item of epsArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>EMPLOYEE PENSION SCHEME (EPS) {{isGlobalView}}</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">EPS</label>
+                            <input type="text" formControlName="eps1" class="form-control" name="eps1"
+                              autocomplete="off"
+                              [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1').status == 'INVALID'}"
+                              placeholder="Enter EPS Status">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
+                                [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1FromDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1ToDate"
+                                placement="center"
+                                [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1ToDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonEps"
+                              onclick="document.getElementById('submitbuttonEps').disabled = true;document.getElementById('submitbuttonEps').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('epsArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('epsArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('epsArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteEps(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row" formArrayName="esiArray">
+                    <div class="col-md-12" *ngFor="let item of esiArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>EMPLOYEE STATE INSURANCE (ESI)</legend>
+
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">ESI</label>
+                            <input type="text" formControlName="esic1" class="form-control" name="esic1"
+                              autocomplete="off"
+                              [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1').status == 'INVALID'}"
+                              placeholder="Enter ESI">
+                          </div>
+                        
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
+                                [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1FromDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
+                                placement="center"
+                                [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1ToDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonEsi"
+                              onclick="document.getElementById('submitbuttonEsi').disabled = true;document.getElementById('submitbuttonEsi').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('esiArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('esiArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('esiArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteEsi(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
+
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="row" formArrayName="ptArray">
+                    <div class="col-md-12" *ngFor="let item of ptArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>PROFESSIONAL TAX(PT)</legend>
+                        <div class="row">
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">State</label>
+                            <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
+                              [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptState').status == 'INVALID'}"
+                              (change)='onSelectPtState($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">City</label>
+                            <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
+                              [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptCity').status == 'INVALID'}"
+                              (change)='onSelectPtCity($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonPt"
+                              onclick="document.getElementById('submitbuttonPt').disabled = true;document.getElementById('submitbuttonPt').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('ptArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('ptArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('ptArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeletePt(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+                  <div class="row" formArrayName="lwfArray">
+                    <div class="col-md-12" *ngFor="let item of lwfArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>LABOUR WELFARE FUND (LWF)</legend>
+                        <div class="row">
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">State</label>
+                            <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
+                              [ngClass]="{'is-invalid' :form.get('lwfArray')['controls'][i].get('lwfState').status == 'INVALID'}"
+                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of states" [value]="issuedBy">
+                                {{issuedBy}}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonLwf"
+                              onclick="document.getElementById('submitbuttonLwf').disabled = true;document.getElementById('submitbuttonLwf').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('lwfArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('lwfArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('lwfArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteLwf(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row" formArrayName="tdsArray">
+                    <div class="col-md-12" *ngFor="let item of tdsArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>TAX DEDUCTED AT SOURCE (TDS)</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">TAN</label>
+                            <input type="text" formControlName="tan" class="form-control" name="tan" autocomplete="off"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tan').status == 'INVALID'}"
+                              placeholder="Enter TAN">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">TDS Circle</label>
+                            <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
+                              autocomplete="off"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tdsCircle').status == 'INVALID'}"
+                              placeholder="Enter TDS Circle">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Deductor Status</label>
+                            <input type="text" formControlName="deductorStatus" class="form-control" autocomplete="off"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('deductorStatus').status == 'INVALID'}"
+                              name="deductorStatus" placeholder="Enter Deductor Status">
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonTds"
+                              onclick="document.getElementById('submitbuttonTds').disabled = true;document.getElementById('submitbuttonTds').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('tdsArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('tdsArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('tdsArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteTds(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+                  <div class="row" formArrayName="gratuityArray">
+                    <div class="col-md-12" *ngFor="let item of gratuityArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>Gratuity FORM ARRAY</legend>
+                        <div class="row">
+
+         
+                          <div class="col-sm-3">
+                            <label class="form-label">Dividing Factor % </label>
+                            <input type="number" formControlName="gratuityDividingFactor" class="form-control"
+                              name="gratuityDividingFactor" placeholder="Enter Dividing Factor">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonGratuity"
+                              onclick="document.getElementById('submitbuttonGratuity').disabled = true;document.getElementById('submitbuttonGratuity').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('gratuityArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('gratuityArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('gratuityArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteGratuity(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" formArrayName="saArray">
+                    <div class="col-md-12" *ngFor="let item of saArray.controls; index as i">
+                      <fieldset [formGroupName]="i">
+                        <legend>SUPER ANNUATION (SA)</legend>
+                        <div class="row">
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Max Percentage (%)</label>
+                            <input type="number" formControlName="saMaxPercentage" class="form-control"
+                              name="saMaxPercentage" placeholder="Enter Max Percentage">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saFromDate"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saToDate"
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placement="center" placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
+              
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonSa"
+                              onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
+                            'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-12 mt-20">
+
+                    <div class="float-right mb-15" *ngIf="!isEditMode">
+                      <ng-container *ngIf="showButtonSaveAndReset">
+
+                        <ng-container *ngIf="isSaveAndReset; ">
+                        
+                          <button type="submit" [disabled]="form.invalid"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="save()"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i
+                                class="fa fa-floppy-o"></i></b> Save</button>
+
+                          <button type="button" tooltip="Reset" (click)="cancelView()"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                class="fa  fa-refresh"></i></b> Reset</button>
+
+                        </ng-container>
+
+                      </ng-container>
+                      <ng-container *ngIf="!showButtonSaveAndReset">
+                        <button type="button"
+                          class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                          Cancel</button>
+                      </ng-container>
+                    </div>
+
+
+                    <div class="float-right mb-15" *ngIf="isView == true ">
+              
+                      <span *ngIf="isActivateButton ==0">
+                        <button type="button"
+                          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Delete" (click)="activateComplianceMaster()"><b><i
+                              class="fa fa-times-circle"></i></b>
+                          Activate Record</button>
+                      </span>
+
+                      <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
+                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                        Cancel</button>
+
+                    </div>
+
+
+                  </div> 
+
+                </div> 
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row mb-0">
+            <div class="col-md-12">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search" style="top: 9px !important"></i>
+                    <input pInputText type="text"
+                      (input)="
+                      dt.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+
+                &nbsp;
+                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
+                  tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+
+              </div>
+            </div>
+           </div>
+
+          <div class="row">
+            <div class="col-md-12 ">
+              <div class="card">
+                <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true"
+                (sortFunction)="customSort($event)"
+                 [customSort]="true"
+                  [pageLinks]="5" 
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 totalRecords={{summaryHtmlDataList.length}} 
+                 [rowsPerPageOptions]="[10,25,50,100,200]"
+                 
+                 [globalFilterFields]="['complianceName', 'statutoryInstituteName',  'complianceHeadName','complianceHeadShortName','accountNumber',
+                 'registrationNumber','establishmentCode']">
+
+                   <ng-template pTemplate="header">
+                     <tr>
+                       <th class=" text-center">
+                        Sr. No.
+                         
+                       </th>
+                      
+
+                     <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance Name
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceName" pSortableColumn="complianceName"></p-sortIcon>
+                            <p-columnFilter field="complianceName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Statutory Institution Master
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="statutoryInstituteName" pSortableColumn="statutoryInstituteName"></p-sortIcon>
+                            <p-columnFilter field="statutoryInstituteName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                       <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance Head Name
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
+                            <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Compliance Short Name
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="complianceHeadShortName" pSortableColumn="complianceHeadShortName"></p-sortIcon>
+                            <p-columnFilter field="complianceHeadShortName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Account No.
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="accountNumber" pSortableColumn="accountNumber"></p-sortIcon>
+                            <p-columnFilter field="accountNumber" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Registration No.
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="registrationNumber" pSortableColumn="registrationNumber"></p-sortIcon>
+                            <p-columnFilter field="registrationNumber" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                       <th class="text-center">
+                        <div class="p-d-flex  justify-content-center p-ai-center">Establishment Code
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="establishmentCode" pSortableColumn="establishmentCode"></p-sortIcon>
+                            <p-columnFilter field="establishmentCode" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </div>
+                      </th>
+                      <th class="text-center">
+                        Action 
+                      </th>        
+                     </tr>
+                   </ng-template>
+                   <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
+                    <tr class="p-selectable-row">
+                        <td class="text-center">{{rowIndex + 1}}</td>
+                        <td>
+                            <label
+                                class="form-lable mb-0">
+                                {{summary.complianceName}}</label>
+                        </td>
+                        <td>
+                            <label
+                                class="form-lable mb-0 ">{{summary.statutoryInstituteName}}</label>
+                        </td>
+
+                        <td> <label
+                                class="form-lable mb-0 ">{{summary.complianceHeadName}}</label>
+                                </td>
+                                <td> <label
+                                  class="form-lable mb-0 ">{{summary.complianceHeadShortName}}</label>
+                                  </td>
+                                  <td> <label
+                                    class="form-lable mb-0 ">{{summary.accountNumber}}</label>
+                                    </td>
+                                    <td> <label
+                                      class="form-lable mb-0 ">{{summary.registrationNumber}}</label>
+                                      </td>
+                                     <td> <label
+                                      class="form-lable mb-0 ">{{summary.establishmentCode}}</label>
+                                      </td>
+                                    <td class="text-center">
+                        <span *ngIf="summary.isActive ==0">
+                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
+                              (click)="editMaster(rowIndex,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
+                              tooltip="Edit"></i> </span>
+                          <span *ngIf="summary.isActive ==1">
+                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                              (click)="editMaster(rowIndex,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
+                              tooltip="Edit"></i> </span>
+
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3 ml-10"
+                            (click)="viewMaster(rowIndex,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
+                            tooltip="View"></i>
+                  </td>
+                                   
+                    </tr>
+                </ng-template>
+
+                   <ng-template pTemplate="emptymessage">
+                     <tr>
+                       <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                           Available</span>
+                       </td>
+                     </tr>
+                   </ng-template>
+                 </p-table>
+</div>
+</div>
+</div>
+        </form>
+        <ng-template #confirmdialog>
+          <div class="modal-header">
+            <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
+            <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="card mb-0">
+              <div class="card-body p-0 m-0">
+                <div class="row clearfix">
+                  <div class="col-md-12">
+                    <i class="fa fa-question-circle font-18 font700" aria-hidden="true"></i> &nbsp; &nbsp; <label
+                      class="font-14 mb-0 font700">Are You Sure do you want to delete Record.</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn bg-color-green" (click)="modalRef.hide()" (click)="clickedOnYes()"> <i
+                class="fa fa-check" aria-hidden="true"></i> &nbsp; Yes</button>
+            <button type="button" class="btn bg-btn-red" (click)="modalRef.hide()"> <i class="fa fa-times"
+                aria-hidden="true"></i> &nbsp; No</button>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

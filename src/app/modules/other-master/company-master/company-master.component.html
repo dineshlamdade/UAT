@@ -374,6 +374,7 @@
                             <button class="fa fa-upload" tooltip="upload" (click)="fileInput1.click()" [disabled]="viewlogoflag"></button>
                             
                             <span>{{employeeMasterRequestDTO.logo1}}</span>
+                            <i (click)="deletelogo1()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
 
                            <!-- <span *ngIf="editlogo1"><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
                             <!-- <span><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
@@ -402,7 +403,7 @@
 
                             <!-- <input #theFile type="file" (change)="onFileChange($event)" accept=".png" class="form-control" 
                             formControlName="logo1" /> -->
-
+                            <!-- <i (click)="deletelogo1()" class="fa fa-times"></i> -->
                         </div>
                         
 
@@ -417,7 +418,26 @@
                             [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" style="display: none"/>
 
                             <button class="fa fa-upload" tooltip="upload" (click)="fileInput2.click()" [disabled]="viewlogoflag"></button>
+                            
                             <span>{{employeeMasterRequestDTO.logo2}}</span>
+                            
+                            
+                            <i (click)="deletelogo2()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
+
+
+                            <!-- <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                            #attachment formControlName="logo2" (change)="logo2($event, fileInput2)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" style="display: none"/>
+
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput2.click()" [disabled]="viewlogoflag"></button>
+                            
+                            <div *ngFor="let selected of selectedImageFileLogo2;let index = index">
+                              <h3>{{selected}}</h3>
+                              
+                              <i (click)="deletelogo2(index)" class="fa fa-times"></i>
+                            </div> -->
+                            
+                            
                         </div>
 
                         <div class="col-md-3">
@@ -432,7 +452,7 @@
                             [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" style="display: none" />
                             <button class="fa fa-upload" tooltip="upload" (click)="fileInput3.click()" [disabled]="viewlogoflag"></button>
                             <span>{{employeeMasterRequestDTO.logo3}}</span>
-
+                            <i (click)="deletelogo3()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
                         </div>
 
                       </div>
