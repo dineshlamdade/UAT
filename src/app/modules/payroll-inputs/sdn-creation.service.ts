@@ -88,6 +88,11 @@ export class SdnCreationService {
     return this.HttpClient.get<any>(this.url1 + `formula-master`);
   }
 
+  // 3rd tab api (Derived)
+  deleteSourceDerive(sdmDerivedMasterId):Observable<any>{
+    return this.HttpClient.delete<any>(this.url + `source-derived-matrix/derived-master/`+ sdmDerivedMasterId);
+  }
+
   // 4th tab api (Matrix)
   derivedMaster(sdmMasterId):Observable<any>{
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived-master/`+ sdmMasterId);
@@ -118,6 +123,11 @@ export class SdnCreationService {
   getHistory(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/History`,data);  
   }
+
+   // 4th tab api (Matrix) table
+   activeSource(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/source-combination/activeSource/`+ sdmMasterId);
+  } 
 
 
   filter(sdmMasterId):Observable<any>{

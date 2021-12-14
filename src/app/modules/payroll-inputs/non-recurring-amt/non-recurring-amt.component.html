@@ -366,14 +366,9 @@
 
                                                                             </td>
                                                                             <td class="bg-color-light_gray">
-                                                                                <label
-                                                                                    class="form-lable mb-0">{{Summarydata.approveStatus}}</label>
-                                                                                <!-- <label class="form-lable mb-0"
-                                                                                *ngIf="Summarydata.approveStatus == null || Summarydata.approveStatus == 'pending'">Pending</label>
-                                                                            <label class="form-lable mb-0"
-                                                                                *ngIf="Summarydata.approveStatus != null && Summarydata.approveStatus != 'pending'">Approved</label> -->
+                                                                                <label class="badge badge-warning" *ngIf="Summarydata.approveStatus == 'Pending'">{{Summarydata.approveStatus}}</label>
+                                                                                <label class="badge badge-success" *ngIf="Summarydata.approveStatus == 'Approved'">{{Summarydata.approveStatus}}</label>
                                                                             </td>
-                                                                            <!-- <td><span class="ml-1 mt-2"></span></td> -->
                                                                             <td>
                                                                                 <div class="d-flex">
                                                                                     <i tooltip="View Transaction History"
@@ -1153,7 +1148,8 @@
                                                                                                     (focusout)="getRemarkChange($event.target.value)">
                                                                                             </td>
                                                                                             <td>
-                                                                                               {{data.approveStatus}}
+                                                                                                <label class="badge badge-warning" *ngIf="data.approveStatus == 'Pending'">{{data.approveStatus}}</label>
+                                                                                                <label class="badge badge-success" *ngIf="data.approveStatus == 'Approved'">{{data.approveStatus}}</label>
                                                                                             </td>
                                                                                             
                                                                                         </tr>
@@ -2884,7 +2880,11 @@
                                         <td>{{data.toDate | date: 'dd-MMM-yy'}}</td>
                                         <td style="text-align: right;">{{data.amount | number : '1.2-2'}}</td>
                                         <td style="text-align: left;">{{data.remark}}</td>
-                                        <td>{{data.approveStatus}}</td>
+                                        <td>
+                                            <label class="badge badge-warning" *ngIf="data.approveStatus == 'Pending'">{{data.approveStatus}}</label>
+                                            <label class="badge badge-success" *ngIf="data.approveStatus == 'Approved'">{{data.approveStatus}}</label>
+                                            <!-- {{data.approveStatus}} -->
+                                        </td>
                                         <td>{{data.createDateTime | date: 'dd-MMM-yy'}}</td>
                                         <td>{{data.createdBy}}</td>
 
@@ -3451,7 +3451,9 @@
                                         <td>{{data.toDate | date: 'dd-MMM-yy'}}</td>
                                         <td style="text-align: right;">{{data.amount | number : '1.2-2'}}</td>
                                         <td style="text-align: left;">{{data.remark}}</td>
-                                        <td>{{data.approveStatus}}</td>
+                                        <td><label class="badge badge-warning" *ngIf="data.approveStatus == 'Pending'">{{data.approveStatus}}</label>
+                                            <label class="badge badge-success" *ngIf="data.approveStatus == 'Approved'">{{data.approveStatus}}</label>
+                                        </td>
                                         <td>{{data.createDateTime | date: 'dd-MMM-yy'}}</td>
                                         <td>{{data.createdBy}}</td>
 
