@@ -56,6 +56,10 @@ isshowAP:boolean= true;
   frequencyData: any;
 
   State:any;
+  stateName: any;
+  cityName: any;
+  locationId: any;
+ 
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
@@ -79,8 +83,10 @@ isshowAP:boolean= true;
   ngOnInit(): void {
   this.getData(); //api call for Statotary Frequency
 
-  this.getState(); //Api call for State
+  this.getState(); //Api call for State 
     
+  this.getCity(); //API call for stae with city
+  
     this.complianceHeadService.getLocationInformationOrCountryList().subscribe( res => {
       this.countries = res.data.results;
     } );
@@ -138,6 +144,17 @@ this.complianceHeadService.getState().subscribe(res =>{
 
   monetaryOption(evt:any){
 
+  }
+
+  getCity(){
+    this.complianceHeadService.getCitywithState().subscribe(res=>{
+      //this.StaeWithcity=res.
+     // this.locationId=res.data.results;
+      this.stateName=res.data.results;
+      this.cityName=res.data.results;
+     console.log(res);
+      
+    })
   }
 
   save() {
@@ -449,6 +466,12 @@ hideAP(){
  this.isshowAP=false;
 }
 
+CityModal(template3: TemplateRef<any>){
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-md'})
+  );
+}
 
 
 }

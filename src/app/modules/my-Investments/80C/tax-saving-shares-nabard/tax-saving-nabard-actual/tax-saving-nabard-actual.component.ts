@@ -72,6 +72,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -547,6 +550,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.masterGridData = res.data.results;
 
@@ -1723,6 +1729,53 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
+  // onDeclaredAmountChangeInEditCase(
+  //   summary: {
+  //     previousEmployerName: any;
+  //     declaredAmount: number;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     dueDate: Date;
+  //   },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   this.declarationService = new DeclarationService(summary);
+  //   console.log(
+  //     'onDeclaredAmountChangeInEditCase Amount change::' +
+  //       summary.declaredAmount
+  //   );
+
+  //   this.editTransactionUpload[
+  //     j
+  //   ].declaredAmount = this.declarationService.declaredAmount;
+  //   const formatedDeclaredAmount = this.numberFormat.transform(
+  //     this.editTransactionUpload[j].declaredAmount
+  //   );
+  //   console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
+
+  //   this.editTransactionUpload[j].declaredAmount = formatedDeclaredAmount;
+
+  //   this.declarationTotal = 0;
+
+  //   this.editTransactionUpload[j].forEach((element) => {
+  //     console.log(
+  //       'declaredAmount::',
+  //       element.declaredAmount.toString().replace(/,/g, '')
+  //     );
+  //     this.declarationTotal += Number(
+  //       element.declaredAmount.toString().replace(/,/g, '')
+  //     );
+  //   });
+
+  //   this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+  //   console.log(
+  //     'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
+  //   );
+  // }
+
+
+
   onDeclaredAmountChangeInEditCase(
     summary: {
       previousEmployerName: any;
@@ -1734,25 +1787,30 @@ export class TaxSavingNabardActualComponent implements OnInit {
     i: number,
     j: number
   ) {
+
+    debugger
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
         summary.declaredAmount
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
 
-    this.editTransactionUpload[
-      j
-    ].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].group3TransactionList[
+      i
+    ].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].declaredAmount
+      this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].declaredAmount = formatedDeclaredAmount;
+    this.editTransactionUpload[j].group2TransactionList[
+      i
+    ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
-    this.editTransactionUpload[j].forEach((element) => {
+    this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
         element.declaredAmount.toString().replace(/,/g, '')
@@ -1763,11 +1821,13 @@ export class TaxSavingNabardActualComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
   }
-
   // ---- Set Date of Payment On Edit Modal----
   onChangeDateOfPaymentEditCase(
     summary: {
@@ -1922,6 +1982,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
         console.log('transactionDetail', this.transactionDetail);
 
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;

@@ -722,7 +722,7 @@
                                                       template8,
                                                       documentDetailIndex,
                                                       summary?.investmentGroup2MasterId,
-                                                      summary
+                                                      summary,i
                                                     )
                                                   "
                                                   class="
@@ -979,7 +979,7 @@
 <!-- Remark Modal started -->
 <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -1014,20 +1014,21 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <input type="text" 
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this.summaryDetails, this.indexCount,
             $event
           )
-        " class="form-control" placeholder="Remark">
+        " class="form-control" placeholder="Remark"></textarea>
       </div>
     </div>
   </div>
@@ -1041,7 +1042,14 @@
       Ok
     </button>
   </div> -->
-  <div class="modal-footer">
+  <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
     <button
       type="button"
       class="btn btn-secondary"
@@ -1051,4 +1059,5 @@
     </button>
   </div>
 </ng-template>
+
 

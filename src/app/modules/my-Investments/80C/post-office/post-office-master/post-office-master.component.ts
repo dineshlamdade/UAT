@@ -33,6 +33,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-master.component.scss'],
 })
 export class PostOfficeMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public modalRef: BsModalRef;
   public showdocument = true;
@@ -72,6 +73,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  selectedremarkIndex : any;
 
   viewDocumentName: any;
   viewDocumentType: any;
@@ -412,6 +414,11 @@ export class PostOfficeMasterComponent implements OnInit {
   }
 
 
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
   //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
@@ -457,6 +464,7 @@ export class PostOfficeMasterComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.postOfficeService.getpostOfficeMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -727,7 +735,7 @@ export class PostOfficeMasterComponent implements OnInit {
       "masterId":this.summaryDetails.investmentGroup1MasterId,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"PostOfficeRecurringDeposit",
+      "subSection":"POSTOFFICERECURRINGDEPOSIT",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
@@ -738,6 +746,9 @@ export class PostOfficeMasterComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+    
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',

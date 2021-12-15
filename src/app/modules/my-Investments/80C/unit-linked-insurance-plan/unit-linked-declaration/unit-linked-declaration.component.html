@@ -296,7 +296,7 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      isDisabled || summary.transactionStatus === 'Submitted' ||  summary.transactionStatus === 'Approved' || !ispreviousEmploy
                       ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
@@ -428,16 +428,17 @@
                       );
                       viewTransactionDetail = true
                     " tooltip="Edit"></i>
+                    <i  *ngIf="summary.dueDate==null || summary.dueDate==undefined" class="fa fa-times font-16 text-red cursor-pointer"  tooltip="Cancel"
+                    (click)="deleteRow(j, i)"></i>
   
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled && canEdit">
+              <!-- <tr *ngIf="!isDisabled && canEdit">
                 <td *ngIf="previousEmployeeList?.length" colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                    (click)="deleteRow(j)"></i>
+                  
                 </td>
                 <td *ngIf="!previousEmployeeList?.length" colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
@@ -445,6 +446,22 @@
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
+                </td>
+              </tr> -->
+              <tr *ngIf="!isDisabled && canEdit && item.frequency!='SinglePremium'">
+
+                <td *ngIf="previousEmployeeList?.length" colspan="12"
+                    class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+            
+                </td>
+                <td *ngIf="!previousEmployeeList?.length" colspan="11"
+                    class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add {{ summary?.frequency}}</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                     (click)="deleteRow(j)"></i>
                 </td>
               </tr>
               <tr>
@@ -1265,7 +1282,12 @@
     </h6>
     <h6 class="modal-title" style="margin: auto;"><b>Status : </b>
       <label>
-        {{ transactionStatus }}</label>
+        <span class="badge" [ngClass]="{'badge-primary': transactionStatus=='Re-Open',
+          ' badge-success': transactionStatus=='Approved',
+          'badge-danger': transactionStatus=='SendBack',
+          'badge-info': transactionStatus=='Submitted',
+          'badge-warning': transactionStatus=='Pending'}" tooltip="{{transactionStatus}}">
+        {{ transactionStatus }}</span></label>
     </h6>
     <button type="button" (click)="modalRef1.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
@@ -1389,9 +1411,9 @@
                   <td>
                     <div class="custom_icon_badge">
                       <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                        [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
+                        [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yy'"
                         disabled (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
-                          onDueDateChangeInEditCase(summary, i, j)" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                          onDueDateChangeInEditCase(summary, i, j)" [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                         data-provide="datepicker" bsDatepicker />
                     </div>
                   </td>
@@ -1403,15 +1425,15 @@
                         name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                         [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                         (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
-                        [disabled]="summary.transactionStatus === 'Approved' || !viewDocumentDetail"
+                        [disabled]="summary.transactionStatus === 'Approved' || !viewDocumentDetail || summary.lineItemFlag==='Schedule'"
                          />
                     </div>
                   </td>
                   <!-- [disabled]="!summary.additionalPayment" -->
                   <td>
-                    <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                    <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yy'"
                     [maxDate]="today"
-                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }" data-provide="datepicker"
                       data-date-autoclose="true" (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)" 
                         [disabled]="(summary.transactionStatus === 'Approved') || (!viewDocumentDetail)"
@@ -1428,25 +1450,42 @@
                       </option>
                     </select>
                   </td>
-                  <td>
+                  <!-- <td>
                     <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup2TransactionId }}"
                       disabled 
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
-                  </td>
+                  </td> -->
+                  <td class="wd-4 align-right">
+      
+                    <span  class="padding-right-5" tooltip="{{summary.actualAmount | number: '1.2-2'}}">
+                     {{summary.actualAmount | number: '1.2-2'}}
+                     </span>
+           </td>
                   <!-- [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"  -->
-                  <td>
+                  <!-- <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                       class="form-control align-right" disabled />
                   </td>
                   <td>
                     <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
                       class="form-control align-right" disabled />
-                  </td>
+                  </td> -->
+                  <td class="wd-6 align-right">
+                    <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                    {{summary.amountRejected | number:'1.2-2'}}
+                    </span>
+                 </td>
+                    <td class="wd-6 align-right">
+                      <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                      {{summary.amountApproved | number:'1.2-2'}}
+                      </span>
+                   </td>
                   <td>
-                    <div class="d-flex">
+                    <div class="d-flex"
+                    class="align-center">
                       <!-- <input
                       style="width:100px;"
                         type="text"
@@ -1522,26 +1561,26 @@
                   <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td> -->
                   <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                    <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-9">
                       {{ item.declarationTotal | number: "1.2-2" }}
                     </span>
                   </td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
+                    <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-9">
                       {{ item.actualTotal | number: "1.2-2" }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{
                         item.totalRejectedAmount | number: '1.2-2'
-                      }}" class="padding-right-12">
+                      }}" class="padding-right-9">
                       {{ item.totalRejectedAmount | number: "1.2-2" }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-9">
                       {{ item.totalApprovedAmount | number: "1.2-2" }}
                     </span>
                   </td>
@@ -1567,7 +1606,7 @@
                 <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
                 <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span class="padding-right-12" placement="left" tooltip="{{
+                  <span class="padding-right-9" placement="left" tooltip="{{
                     item.declarationTotal | number: '1.2-2'
                     }}">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -1576,20 +1615,20 @@
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span class="padding-right-12" placement="left"
+                  <span class="padding-right-9" placement="left"
                     tooltip="{{ item.actualTotal | number: '1.2-2' }}">
                     {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span class="padding-right-12" placement="left" tooltip=" {{
+                  <span class="padding-right-9" placement="left" tooltip=" {{
                       grandRejectedTotalEditModal | number: '1.2-2'
                     }}">
                     {{ grandRejectedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span class="padding-right-12" placement="left" tooltip="{{
+                  <span class="padding-right-9" placement="left" tooltip="{{
                       grandApprovedTotalEditModal | number: '1.2-2'
                     }}">
                     {{ grandApprovedTotalEditModal | number: "1.2-2" }}
@@ -2082,7 +2121,11 @@
                                 </div> -->
                                 {{document.documentRemark}}
                               </td>
-                              <td>{{ document.status }}</td>
+                              <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                                ' badge-success': document.status=='Approved',
+                                'badge-danger': document.status=='SendBack',
+                                'badge-info': document.status=='Submitted',
+                                'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
                               <!-- <td>{{ document.lastModifiedBy }}</td> -->
                               <!-- <td>{{ document.lastModifiedTime| date:'h:mm a'  }}</td> -->
                               <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
@@ -2195,8 +2238,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <!-- <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe> -->
-        <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img id = 'map' style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"> -->
       </div>
       <div class="col-md-1">
         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -2420,7 +2463,7 @@
  -->
  <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2440,8 +2483,7 @@
             >{{ documentRemark.role }}:
             <b class="text-gray">{{
               documentRemark.remarkBy
-            }}</b></span
-          >
+            }}</b></span >
         </div>
         <div class="col-md-6">
           <div class="float-right">
@@ -2456,20 +2498,21 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <input type="text" 
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this.summaryDetails, this.indexCount,
             $event
           )
-        "  class="form-control" placeholder="Remark">
+        " class="form-control" placeholder="Remark"></textarea>
       </div>
     </div>
   </div>
@@ -2485,9 +2528,16 @@
   </div>
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
       type="button"
       class="btn btn-secondary"
-      (click)="onSaveRemarkDetails()"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
     >
       Save
     </button>

@@ -33,6 +33,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfmaster.component.scss'],
 })
 export class PPFMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -749,7 +750,7 @@ export class PPFMasterComponent implements OnInit {
     this.Service
     .postLicMasterRemark(data)
     .subscribe((res) => {
-      debugger
+      
       if(res.status.code == "200") {
         console.log(this.masterGridData);
         this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
@@ -784,6 +785,10 @@ export class PPFMasterComponent implements OnInit {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // Calculate annual amount on basis of premium and frquency
@@ -943,7 +948,7 @@ this.showDeatil = true;
     masterId,
     summary, count
   ) {
-    debugger
+    
     this.summaryDetails = summary;
     this.indexCount = count;
     this.selectedremarkIndex = count;

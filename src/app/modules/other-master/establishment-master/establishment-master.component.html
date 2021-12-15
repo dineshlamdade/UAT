@@ -19,7 +19,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Code</label>
                             <input type="text" formControlName="establishmentCode" class="form-control"
-                              autocomplete="off" onkeypress="return /[a-zA-Z0-9']/i.test(event.key)"
+                              autocomplete="off" onkeypress="return /[-a-zA-Z.0-9@_']/i.test(event.key)"
                               [ngClass]="{'is-invalid' : form.get('establishmentCode').status == 'INVALID'}"
                               name="establishmentCode" placeholder="Enter Code">
                           </div>
@@ -114,12 +114,15 @@
                         <div class="row">
 
                           <div class="col-sm-3">
+                            
                             <label class="form-label">GST No.</label>
-                            <input type="text" formControlName="gstNumber" class="form-control" name="gstNumber"
-                              autocomplete="off" placeholder="Enter GST No.">
+                            <input type="text" style="text-transform:uppercase" formControlName="gstNumber" class="form-control" name="gstNumber" maxlength="15"
+                              autocomplete="off" 
+                              onkeypress="return /[a-zA-Z0-9']/i.test(event.key)"
+                              placeholder="Enter GST No.">
                           </div>
-
-
+<!-- 
+                          onkeypress="return /[a-zA-Z0-9']/i.test(event.key)" -->
 
 
                           <div class="col-sm-3">
@@ -129,6 +132,8 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gstIssueDate"
                                 (bsValueChange)="onBsValueChangeDateOfGstIssueDate()" data-provide="datepicker"
                                 data-date-autoclose="true" class="form-control" placement="center"
+                                onkeypress="return /[]/i.test(event.key)"
+                                [maxDate]="today" 
                                 [ngClass]="{'is-invalid' : form.get('gstIssueDate').status == 'INVALID'}"
                                 placeholder="GST Issued Date" bsDatepicker>
                             </div>
@@ -136,8 +141,8 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">LIN No.</label>
-                            <input type="text" formControlName="linNumber" class="form-control" name="linNumber"
-                              placeholder="Enter LIN No." autocomplete="off"
+                            <input type="text" formControlName="linNumber" class="form-control" name="linNumber" maxlength="10"
+                              placeholder="Enter LIN No." autocomplete="off" onkeypress="return /[0-9']/i.test(event.key)"
                               [ngClass]="{'is-invalid' : form.get('linNumber').status == 'INVALID'}">
                           </div>
 
@@ -148,6 +153,8 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="linIssueDate"
                                 (bsValueChange)="onBsValueChangeLinIssueDate()" data-provide="datepicker"
                                 data-date-autoclose="true" class="form-control" placement="center"
+                                onkeypress="return /[]/i.test(event.key)"
+                                [maxDate]="today" 
                                 [ngClass]="{'is-invalid' : form.get('linIssueDate').status == 'INVALID'}"
                                 placeholder="LIN Issued Date" bsDatepicker>
                             </div>
@@ -164,8 +171,8 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">STPI No.</label>
-                            <input type="text" formControlName="stpi" class="form-control" name="stpi"
-                              autocomplete="off" placeholder="Enter STPI No."
+                            <input type="text" formControlName="stpi" class="form-control" name="stpi" maxlength="10"
+                              autocomplete="off" placeholder="Enter STPI No." onkeypress="return /[0-9']/i.test(event.key)"
                               [ngClass]="{'is-invalid' : form.get('stpi').status == 'INVALID'}">
                           </div>
 
@@ -176,6 +183,8 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stpiIssueDate"
                                 (bsValueChange)="onBsValueChangeStpiIssueDate()" data-provide="datepicker"
                                 data-date-autoclose="true" class="form-control" placement="center"
+                                onkeypress="return /[]/i.test(event.key)"
+                                [maxDate]="today" 
                                 [ngClass]="{'is-invalid' : form.get('stpiIssueDate').status == 'INVALID'}"
                                 placeholder="STPI Issued Date" bsDatepicker>
                             </div>
