@@ -910,13 +910,6 @@
                                                 </div>
 
                                               </div>
-                                              <!-- <div class="col-sm-3">
-                                                                                      <label class="form-label">Remark</label>
-                                                                                      <input type="text" class="form-control" [(ngModel)]="fastEntryRemark">
-                                                  
-                                                                                    </div> -->
-
-
                                               <div class="col-sm-3">
 
                                                 <button type="submit"
@@ -1050,7 +1043,66 @@
 
                                               </ng-template>
                                               <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
-
+                                                <tr class="p-selectable-row">
+                                                  <td class="text-center">{{rowIndex + 1}}</td>
+                                                  <td>
+                                                    {{data.employeeCode}}
+                                                  </td>
+                                                  <td>
+                                                    {{data.employeeName}}
+                                                  </td>
+                                                  <td>
+                                                    {{data.PayrollAreaName}}
+                                                  </td>
+                                                  <td>
+                                                    <div class="p-d-inline-flex">
+                                                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                        <div class="input-group">
+                                                          <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                              <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                          </div>
+                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                          [value]="data.fromDate"
+                                                            placeholder="Date" bsDatepicker>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td>
+                                                    <div class="p-d-inline-flex">
+                                                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                        <div class="input-group">
+                                                          <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                              <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                          </div>
+                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                                          [value]="data.toDate"
+                                                            placeholder="Date" bsDatepicker>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                      
+                                                  
+                                                  <td>
+                                                    {{data.updationField}}
+                                                  </td>
+                                                  <td>
+                                                    <input type="text" class="form-control" [value]="data.value">
+                                                  </td>
+                                                  <!-- <td>
+                                                    {{data.remark}}
+                                                  </td> -->
+                                                  <td>
+                                                   <!-- <i class="fa fa-times"></i> -->
+                                                  </td>
+                      
+                                                 
+                                                </tr>
 
                                               </ng-template>
                                               <ng-template pTemplate="emptymessage">
