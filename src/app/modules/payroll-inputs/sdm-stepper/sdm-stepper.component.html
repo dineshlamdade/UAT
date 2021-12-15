@@ -727,13 +727,15 @@
 
                                                             <ng-template pTemplate="header">
                                                                 <tr>
+                                                                   
                                                                     <th rowspan="3" class="wd-2 text-center">
                                                                         Select
                                                                     </th>
-                                                                    <th colspan="5" class="wd-6 text-center">
+                                                                    <!-- [colspan]="10" -->
+                                                                    <th [attr.colspan]="sourceFieldListData.length" class="wd-6 text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left: 330px;">Source
-                                                                            Fields
+                                                                            Fields 
                                                                         </div>
                                                                     </th>
                                                                 </tr>
@@ -889,8 +891,9 @@
                                                                         <input
                                                                             (click)="derivedApplicable($event.target.value)"
                                                                             type="radio" class="custom-control-input"
-                                                                            name="example-inline-radios" value="Yes"
+                                                                            name="example-inline-radios" value="Yes" 
                                                                             [checked]="derivedApplicableFlag == 1 || derivedApplicableFlag == '1'">
+                                                                            <!--  -->
                                                                         <span class="custom-control-label">Yes</span>
                                                                     </label>
                                                                     <label
@@ -899,7 +902,8 @@
                                                                             (click)="derivedApplicable($event.target.value)"
                                                                             type="radio" class="custom-control-input"
                                                                             name="example-inline-radios" value="No"
-                                                                            [checked]="derivedApplicableFlag == 0">
+                                                                           >
+                                                                           <!-- [checked]="derivedApplicableFlag == 0" -->
                                                                         <span class="custom-control-label">No</span>
                                                                     </label>
 
@@ -974,8 +978,8 @@
                                                                 <datalist id="dist2" style="border: 1px solid #ced4da !important;
                                                                      padding: 0 0.5rem !important;">
                                                                     <option *ngFor="let key of keywordData"
-                                                                        value="{{key.originalFormula}}">
-                                                                        {{key.originalFormula}}
+                                                                        value="{{key.formulaName}}">
+                                                                        {{key.formulaName}}
                                                                     </option>
                                                                 </datalist>
                                                             </div>
@@ -1044,7 +1048,9 @@
                                                                 </select>
                                                             </div>
 
-                                                            <div class="col-sm-3"
+                                                            <!-- //Asked to remove in 9th Dec 2021 by rakesh sir -->
+
+                                                            <!-- <div class="col-sm-3"
                                                                 *ngIf="sourceMasterName == 'SPAndFunctionMaster' || enableSourcePeriod">
                                                                 <label class="form-label">UOM of Range </label>
                                                                 <select name="custom-select" class="form-control"
@@ -1052,7 +1058,7 @@
                                                                     <option value="Select">Select</option>
                                                                     <option>MM</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <br>
                                                         <br>
@@ -1259,6 +1265,7 @@
                                                                                             Action
                                                                                         </div>
                                                                                     </th>
+                                                                                    <!-- //Asked to remove in 9th Dec 2021 by rakesh sir -->
                                                                                     <!-- <th rowspan="2"
                                                                                         class="wd-12 text-center"
                                                                                         *ngIf="isUomFlag">
@@ -1464,141 +1471,87 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="card">
-                                                    <div class="table-responsive Custom_Table">
-                                                        <p-table [value]="users1" [paginator]="true" [rows]="10"
-                                                            (sortFunction)="customSort($event)" [customSort]="true"
-                                                            [showCurrentPageReport]="true"
-                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                            [rowsPerPageOptions]="[10,25,50,100,200]">
-                                                            <ng-template pTemplate="header">
+                                                    <div class="table-responsive Custom_Table" >
+                                                        <table class="table table-bordered" style="border: 1px solid #dee2e6;">
+                                                            <thead>
                                                                 <tr>
                                                                     <th [attr.colspan]="sourceFieldListData.length"
-                                                                        class="wd-16 text-center">
+                                                                        class="wd-16 text-center thClassDataTable">
                                                                         <div class="p-d-flex p-jc-between p-ai-center text-center"
                                                                             style="margin-left: 120px;">Source
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="2" class="wd-16 text-center"
+                                                                    <th colspan="2" class="wd-16 text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left:100px;">Source Range
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="1" class="wd-6 text-center"
+                                                                    <th colspan="1" class="wd-6 text-center thClassDataTable"
                                                                         *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Derived
 
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="2" class="wd-8 text-center" *ngIf="!noDerivedFlag">
+                                                                    <th colspan="2" class="wd-8 text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left:140px;">Date Range
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Payroll"
-                                                                                    pSortableColumn="Payroll">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="3" class="wd-4 text-center" *ngIf="!noDerivedFlag">
+                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Action
                                                                         </div>
                                                                     </th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th rowspan="2" class=" text-center"
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
                                                                         *ngFor="let header of matrixTableData">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             {{header}}
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Payroll"
-                                                                                    pSortableColumn="Payroll">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class="text-center"
+                                                                    <th rowspan="2" class="text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             From
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="DateRange"
-                                                                                    pSortableColumn="DateRange">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center "
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left: 70px;"> To
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="DateRange"
-                                                                                    pSortableColumn="DateRange">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center"
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
                                                                         *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             {{derivedFieldName}}
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Value"
-                                                                                    pSortableColumn="Value">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                     <!-- rowspan="2" -->
-                                                                    <th class="text-center" *ngIf="!noDerivedFlag"> 
+                                                                    <th class="text-center thClassDataTable" *ngIf="!noDerivedFlag"> 
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             From Date
-                                                                            <div class="Sort_Filter_Position">
-
-                                                                                <p-sortIcon field="FromDate"
-                                                                                    pSortableColumn="FromDate">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                     <!-- rowspan="2" -->
-                                                                    <th class=" text-center" *ngIf="!noDerivedFlag">
+                                                                    <th class=" text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             To Date
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="ToDate"
-                                                                                    pSortableColumn="ToDate">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                 </tr>
-                                                            </ng-template>
-                                                            <ng-template pTemplate="body">
+                                                            </thead>
+                                                            <tbody>
                                                                 <!-- <pre>HERE {{tempEditMatrixData | json}}</pre> -->
                                                                 <tr class="p-selectable-row text-center"
                                                                     [class.trhidden]="data.showElement == false"
@@ -1667,7 +1620,10 @@
                                                                     </td>
                                                                     <td
                                                                         *ngIf="data.showElement == true && !noDerivedFlag">
-                                                                        <!-- {{data.sdmSourceCombinationId}} -->
+                                                                        <!-- {{showSearchLeans}}
+                                                                        {{selectedIndex}}
+                                                                        {{rowIndex}}
+                                                                        {{showEditTextBox}} -->
                                                                         <div class="input-group">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
                                                                             <input type="text" class="form-control"
@@ -1692,7 +1648,7 @@
                                                                                 <button class="btn btn-primary"
                                                                                     type="button">
                                                                                     <span class="fe fe-search"
-                                                                                        (click)="largepopup (template1,rowIndex,data)"><i></i>
+                                                                                        (click)="largepopup (template1,rowIndex,data,'tempEditMatrixData')"><i></i>
                                                                                     </span>
                                                                                 </button>
                                                                             </span>
@@ -1747,10 +1703,10 @@
                                                                         </i>
                                                                     </td>
                                                                 </tr>
-<!-- <pre>{{matrixsdmSourceCombinationList | json}}</pre> -->
+
                                                                 <tr class="p-selectable-row"
                                                                     [class.trhidden]="srcCombData.showElement == false || srcCombData.active == false"
-                                                                    *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
+                                                                    *ngFor="let srcCombData of matrixsdmSourceCombinationList | paginate: { itemsPerPage: 10, currentPage: p }; let rowIndex = index;">
                                                                     <td *ngFor="let header of sourceFieldListData">
                                                                         <span
                                                                             *ngIf="header == 'payrollArea' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.payrollAreaId}}</span>
@@ -1834,7 +1790,7 @@
                                                                                 <button class="btn btn-primary"
                                                                                     type="button">
                                                                                     <span class="fe fe-search"
-                                                                                        (click)="largepopup (template1,rowIndex,srcCombData)"><i></i>
+                                                                                        (click)="largepopup (template1,rowIndex,srcCombData,'matrixsdmSourceCombinationList')"><i></i>
                                                                                     </span>
                                                                                 </button>
                                                                             </span>
@@ -1969,8 +1925,8 @@
                                                                     <td></td>
                                                                 </tr>
 
-                                                            </ng-template>
-                                                            <ng-template pTemplate="emptymessage">
+                                                            </tbody>
+                                                            <!-- <ng-template pTemplate="emptymessage">
                                                                 <tr>
                                                                     <td colspan="15"
                                                                         class="font-14 font500 text-center text-red">
@@ -1978,9 +1934,14 @@
                                                                             Available</span>
                                                                     </td>
                                                                 </tr>
-                                                            </ng-template>
-                                                        </p-table>
+                                                            </ng-template> -->
+                                                        </table>
                                                         <br>
+                                                       
+                                                        <span> Showing {{p}} of {{sdmSourceCombinationListData.length}} entries</span>
+                                                        <pagination-controls (pageChange)="p = $event">
+                                                            
+                                                        </pagination-controls>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2039,9 +2000,9 @@
 <div id="tblData" style="display: none;">
     <table>
         <thead>
-            <tr>
-                <th colspan="5" style="border: 1px solid black; background-color: yellow;">Source Fields</th>
-            </tr>
+            <!-- <tr>
+                <th colspan="10" style="border: 1px solid black; background-color: yellow;">Source Fields</th>
+            </tr> -->
             <tr>
                 <th rowspan="2" style="border: 1px solid black;background-color: yellow;"
                     *ngFor="let header of sourceFieldListData">
@@ -2263,7 +2224,7 @@
 
                         <span class="input-group-append" *ngIf="showSearchLeans">
                             <button class="btn btn-primary" type="button">
-                                <span class="fe fe-search" (click)="largepopup (template1,rowIndex,srcCombData)"><i></i>
+                                <span class="fe fe-search" (click)="largepopup (template1,rowIndex,srcCombData,'matrixsdmSourceCombinationList')"><i></i>
                                 </span>
                             </button>
                         </span>
