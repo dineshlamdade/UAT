@@ -47,7 +47,7 @@ export class FinancialMasterComponent implements OnInit {
   payrollAreaId: any;
   headData: { displayName: string; headMasterId: number; }[];
   selectedUpdationField: any;
-  slectedFromDate: any;
+  slectedFromDate: any = '';
   slectedToDate: any = '31-12-9999';
   saveFastEntrydata: any = [];
   headMasterId: any;

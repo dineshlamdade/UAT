@@ -56,6 +56,7 @@ import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.com
 import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry-garnishment.component';
+import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -119,9 +120,9 @@ import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry
     PayrollInputsRoutingModule,
     ChartsModule,
     CheckboxModule,
-
+    NgxPaginationModule
   ],
-  providers: [ DatePipe],
+  providers: [ DatePipe, PaginatePipe],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
