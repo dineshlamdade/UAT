@@ -1,4 +1,7 @@
 <app-leftmenu></app-leftmenu>
+
+
+
 <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
   <div class="page">
     <app-header></app-header>
@@ -10,8 +13,336 @@
               <div class="card">
                 <div class="card-body p-0">
                   <div class="row">
+                    <div class="col-md-12">
+                      <div class="tabview tabview_upload_excel">
+                        <input name="nav" type="radio" class="about-radio" id="Tab1" checked />
+                        <div class="tabs about-page">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-sm-3">
+                                      <label class="form-label">Country</label>
+                                      <select name="country" id="country" class="form-control"
+                                        [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}"
+                                        formControlName="country">
+                                        <option selected value=''>Select</option>
+                                        <option *ngFor="let country of countries" [value]="country">
+                                          {{country}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <!-- head Name Replace Compliance Name -->
+                                    <div class="col-sm-3">
+                                      <label class="form-label">Compliance Name</label>
+                                      <input type="text" formControlName="complianceHeadName" class="form-control"
+                                        autocomplete="off" name="complianceHeadName" placeholder="Enter Head Name"
+                                        (change)="isShortNameContainsOnlySpecialCharacter()" maxlength="20"
+                                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'   || invalidComplianceHeadName == true  }">
+                                    </div>
 
-                    <div class="col-sm-3" *ngIf="hideType">
+                                    <div class="col-sm-3">
+                                      <label class="form-label">Short Name</label>
+                                      <input type="text" formControlName="" class="form-control" autocomplete="off"
+                                        name="complianceHeadName" placeholder="Enter Short Name" maxlength="20">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                      <label class="form-label">Applicability Level</label>
+                                      <select name="aplicabilityLevel" id="aplicabilityLevel" class="form-control"
+                                        formControlName="aplicabilityLevel"
+                                        [ngClass]="{'is-invalid' : form.get('aplicabilityLevel').status == 'INVALID'}"
+                                        (change)='onSelectApplicabilityLevel($event.target.value,template,template3)'>
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let applicabilityLevel of aplicabilityLevelList"
+                                          [value]="applicabilityLevel">
+                                          {{applicabilityLevel}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="row mt-20">
+                                    <div class="col-md-3 mt-20">
+                                      <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                                        <input formControlName="complianceActive" autocomplete="off" type="checkbox"
+                                          class="custom-control-input" name="example-inline-checkbox1" value="option1" checked
+                                          (change)="deactivateRemark()">
+                                        <span class="custom-control-label">Active </span>
+                                      </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label class="form-label">Remark</label>
+                                      <textarea formControlName="remark" autocomplete="off" class="form-control" rows="2"
+                                        [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"
+                                        placeholder="Enter Remark"></textarea>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                      <button class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                        tooltip="Save" (click)="CityModal(template3)"><b><i class="fa fa-arrow-circle-right"></i></b>
+                                        Button</button>
+                                    </div>
+                
+                                  </div>
+                
+                                  <div class="col-12 mt-20">
+
+                                    <div class="float-right mb-15">
+                                      <ng-container *ngIf="showButtonSaveAndReset">
+                
+                                        <ng-container *ngIf="isSaveAndReset; else newDeb">
+                
+                                          <button type="submit" [disabled]="form.invalid"
+                                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                                            (click)="save()"
+                                            [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i
+                                                class="fa fa-floppy-o"></i></b> Save</button>
+                
+                                          <button type="button" tooltip="Reset" (click)="cancelView()"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="fa  fa-refresh"></i></b> Reset</button>
+                
+                                        </ng-container>
+                
+                                        <ng-template #newDeb>
+                
+                                          <button type="submit"
+                                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
+                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                                            (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
+                                            Update</button>
+                
+                
+                                          <button type="button"
+                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                                            Cancel</button>
+                
+                                        </ng-template>
+                
+                                      </ng-container>
+                                      <ng-container *ngIf="!showButtonSaveAndReset">
+                                        <button type="button"
+                                          class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                          tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                                          Cancel</button>
+                                      </ng-container>
+                                    </div>
+                                  </div> <!-- <end of div col-6 -->
+                                   
+                                  
+                                </div>
+                                <div class="row mt-25">
+                                  <div class="col-md-12">
+                      
+                                    <span class="font-14 text-purple font-bold">Summary</span>
+                      
+                                    <div class="justify-content-end p-d-inline-flex float-right">
+                                      <div class="input-icon mb-3">
+                                        <span class="p-input-icon-left p-ml-auto">
+                                          <i class="pi pi-search" style="top: 9px !important"></i>
+                                          <input pInputText type="text" (input)="
+                                            dt.filterGlobal(
+                                                $event.target.value,
+                                                'contains'
+                                              )
+                                            " placeholder="Search keyword" />
+                                        </span>
+                                      </div>
+                      
+                                      &nbsp;
+                                      <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer" tooltip="Export To Excel"
+                                        (click)="exportAsXLSX()"></i>
+                      
+                                    </div>
+                                  </div>
+                      
+                                  <div class="col-md-12 ">
+                                    <div class="card">
+                                      <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                                        (sortFunction)="customSort($event)" [customSort]="true" [pageLinks]="5"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        totalRecords={{summaryHtmlDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                                        [globalFilterFields]="['complianceHeadName', 'country','aplicabilityLevel','authorityHandling','remark']">
+                      
+                                        <ng-template pTemplate="header">
+                                          <tr>
+                                            <th class=" text-center">
+                                              Sr. No.
+                      
+                                            </th>
+                      
+                      
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">Compliance Name
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
+                                                  <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                      
+                                            <!-- <th class="text-center">
+                                                <div class="p-d-flex  justify-content-center p-ai-center">Type
+                                                  <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
+                                                    <p-columnFilter field="shortName" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                  </div>
+                                                </div>
+                                              </th> -->
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">Short Name
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="" pSortableColumn=""></p-sortIcon>
+                                                  <p-columnFilter field="" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">Country
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="country" pSortableColumn="country"></p-sortIcon>
+                                                  <p-columnFilter field="country" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                      
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">Applicability Level
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="aplicabilityLevel" pSortableColumn="aplicabilityLevel"></p-sortIcon>
+                                                  <p-columnFilter field="aplicabilityLevel" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                      
+                                            <!-- <th class="text-center">
+                                                <div class="p-d-flex  justify-content-center p-ai-center">Authority Handling
+                                                  <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="authorityHandling" pSortableColumn="authorityHandling"></p-sortIcon>
+                                                    <p-columnFilter field="authorityHandling" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                  </div>
+                                                </div>
+                                              </th>
+                      
+                                              <th class="text-center">
+                                                <div class="p-d-flex  justify-content-center p-ai-center">Remark
+                                                  <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
+                                                    <p-columnFilter field="remark" display="menu" class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                  </div>
+                                                </div>
+                                              </th> -->
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">No. Of States
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="" pSortableColumn=""></p-sortIcon>
+                                                  <p-columnFilter field="country" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                                            <th class="text-center">
+                                              <div class="p-d-flex  justify-content-center p-ai-center">No. Of Cities
+                                                <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="" pSortableColumn=""></p-sortIcon>
+                                                  <p-columnFilter field="" display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                                </div>
+                                              </div>
+                                            </th>
+                                            <th class="text-center wd-12">
+                                              Action
+                                            </th>
+                                          </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
+                                          <tr class="p-selectable-row">
+                                            <td class="text-center">{{rowIndex + 1}}</td>
+                                            <td>
+                                              <label class="form-lable mb-0">
+                                                {{summary.complianceHeadName}}</label>
+                                            </td>
+                                            <!-- <td>
+                                                    <label
+                                                        class="form-lable mb-0 ">{{summary.shortName}}</label>
+                                                </td> -->
+                      
+                                            <td> <label class="form-lable mb-0 "> </label>
+                                            </td>
+                      
+                                            <td> <label class="form-lable mb-0 ">{{summary.country}}</label>
+                                            </td>
+                                            <td> <label class="form-lable mb-0 ">{{summary.aplicabilityLevel}}</label>
+                                            </td>
+                                            <!-- <td> <label
+                                                            class="form-lable mb-0 ">{{summary.authorityHandling}}</label>
+                                                            </td>
+                                                              <td> <label
+                                                              class="form-lable mb-0 ">{{summary.remark}}</label>
+                                                              </td> -->
+                                            <td> <label class="form-lable mb-0 "> </label>
+                                            </td>
+                                            <td> <label class="form-lable mb-0 "> </label>
+                                            </td>
+                                            <td class="text-center">
+                      
+                                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                                (click)="editMaster(rowIndex,summary.complianceHeadId)" tooltip="Edit"></i>
+                      
+                                              <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(rowIndex)"
+                                                tooltip="View"></i> &nbsp;&nbsp;
+                                              &nbsp;
+                                              <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                                                (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)" tooltip="Delete"></i>
+                                            </td>
+                      
+                                          </tr>
+                                        </ng-template>
+                      
+                                        <ng-template pTemplate="emptymessage">
+                                          <tr>
+                                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                Available</span>
+                                            </td>
+                                          </tr>
+                                        </ng-template>
+                                      </p-table>
+                                    </div>
+                                  </div>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <label class="nav" for="Tab1"><span> Compliance Head </span></label>
+                        <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                        <div class="tabs about-page">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <h4>xyz</h4>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <label class="nav" for="Tab2"><span> Compliance Head Mapping </span></label>
+                      </div>
+                    </div>
+                    <!-- <div class="col-sm-3" *ngIf="false">
                       <label class="form-label">Type</label>
                       <select name="shortName" id="shortName" class="form-control" formControlName="shortName"
                         [ngClass]="{'is-invalid' : form.get('shortName').status == 'INVALID'}"
@@ -21,61 +352,15 @@
                           {{shortName}}
                         </option>
                       </select>
-                    </div>
-
-
-                    <div class="col-sm-3">
-                      <label class="form-label">Country</label>
-                      <select name="country" id="country" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}" formControlName="country">
-                        <option selected value=''>Select</option>
-                        <option *ngFor="let country of countries" [value]="country">
-                          {{country}}
-                        </option>
-                      </select>
-                    </div>
-<!-- head Name Replace Compliance Name -->
-                    <div class="col-sm-3">
-                      <label class="form-label">Compliance Name</label>
-                      <input type="text" formControlName="complianceHeadName" class="form-control" autocomplete="off"
-                        name="complianceHeadName" placeholder="Enter Head Name"
-                        (change)="isShortNameContainsOnlySpecialCharacter()" maxlength="20"
-                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'   || invalidComplianceHeadName == true  }">
-                    </div>
-
-
-                    <div class="col-sm-3">
-                      <label class="form-label">Applicability Level</label>
-                      <select name="aplicabilityLevel" id="aplicabilityLevel" class="form-control"
-                        formControlName="aplicabilityLevel"
-                        [ngClass]="{'is-invalid' : form.get('aplicabilityLevel').status == 'INVALID'}"
-                        (change)='onSelectApplicabilityLevel($event.target.value,template)'>
-                        <option selected value=''>Select </option>
-                        <option *ngFor="let applicabilityLevel of aplicabilityLevelList" [value]="applicabilityLevel">
-                          {{applicabilityLevel}}
-                        </option>
-                      </select>
-                    </div>
-
-                    <!-- <div class="col-sm-3">
-                      <label class="form-label">Statutory Frequency</label>
-                      <select name="statutory" id="statutory" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('statutory').status == 'INVALID'}" formControlName="country">
-                        <option selected value=''>Select</option>
-                        <option *ngFor="let statutory of  statutoryFrq" >
-                          {{statutory.name}}
-                        </option>
-                      </select>
-            
                     </div> -->
 
 
-                    <div class="col-sm-3">
+
+
+
+
+                    <!-- <div class="col-sm-3">
                       <label class="form-label">Statutory Frequency</label>
-                    
-                      <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" 
-                      [ngModelOptions]="{standalone: true}"
-                      optionLabel="name"  placeholder="Select All"></p-multiSelect> -->
 
                       <ng-multiselect-dropdown
                       [placeholder]="'Select'"
@@ -87,27 +372,25 @@
                        (onSelectAll)="onSelectAll($event)"
                                  >   
                        </ng-multiselect-dropdown>
-                        </div>
-                    </div>
+                        </div> -->
+                 
 
-                  <div class="row mt-20">
-
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3" *ngIf="false">
                       <label class="form-label">Authority Handling</label>
                       <input type="text" formControlName="authorityHandling" class="form-control" autocomplete="off"
                         [ngClass]="{'is-invalid' : form.get('authorityHandling').status == 'INVALID'}"
                         name="authorityHandling" placeholder="Enter Authority Handling">
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-3" *ngIf="false">
                       <label class="form-label">Website</label>
                       <input type="text" formControlName="website" class="form-control" autocomplete="off"
                         (focusout)="onChangeWebsiteName($event.target.value)"
                         [ngClass]="{'is-invalid' :   invalidWebsite == true}" name="website"
                         placeholder="Enter Website Name">
-                    </div>
+                    </div> -->
 
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3" *ngIf="false">
                       <label class="form-label">Type Of Office</label>
                       <select name="officetype" id="officeType" class="form-control"
                         [ngClass]="{'is-invalid' : form.get('officetype').status == 'INVALID'}" formControlName="country">
@@ -116,9 +399,9 @@
                           {{office}}
                         </option>
                       </select>
-                    </div>
+                    </div> -->
 
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3" *ngIf="false">
                       <label class="form-label">Related To</label>
                       <select name="related" id="officeType" class="form-control"
                         [ngClass]="{'is-invalid' : form.get('related').status == 'INVALID'}" formControlName="country">
@@ -127,18 +410,8 @@
                           {{related}}
                         </option>
                       </select>
-                    </div>
-
-                    <div class="col-md-3" *ngIf="hideRemark">
-                      <label class="form-label">Remark</label>
-                      <textarea formControlName="remark" autocomplete="off" class="form-control" rows="2"
-                        [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"
-                        placeholder="Enter Remark"></textarea>
-                    </div>
-
-                  </div>
-
-                  <div class="row mt-20">
+                    </div> -->
+                    
                     <!-- <div class="col-sm-6 col-md-3">
                       <label class="form-label ml-15" tooltip="" placement="left"> Is Monetary</label>
                       <div class="custom-controls-stacked ml-15 mt-10">
@@ -155,7 +428,7 @@
                       </div>
                     </div> -->
 
-                    <div class="col-sm-6 col-md-3">
+                    <!-- <div class="col-sm-6 col-md-3" *ngIf="false">
                       <label class="form-label ml-15" tooltip="" placement="left">Is Monetary </label>
                       <div class="custom-controls-stacked ml-15 mt-10">
                         <label class="custom-control custom-radio custom-control-inline">
@@ -171,72 +444,24 @@
                           <span class="custom-control-label">No</span>
                         </label>
                       </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-3 mt-20">
+                    <!-- <div class="col-md-3 mt-20">
                       <label class="custom-control custom-checkbox custom-control-inline pl-45">
                         <input formControlName="complianceActive" autocomplete="off" type="checkbox"
                           class="custom-control-input" name="example-inline-checkbox1" value="option1" checked
                           (change)="deactivateRemark()">
                         <span class="custom-control-label">Active </span>
                       </label>
-                    </div>
-                    <div class="col-md-3">
-                      <button  class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                      tooltip="Save" (click)="CityModal(template3)"><b><i class="fa fa-arrow-circle-right"></i></b>
-                      Button</button>
-                    </div>
-                    
+                    </div> -->
+                   
 
-                    </div>
+
+                  </div>
                   <!-- end of row -->
 
 
-                  <div class="col-12 mt-20">
-
-                    <div class="float-right mb-15">
-                      <ng-container *ngIf="showButtonSaveAndReset">
-
-                        <ng-container *ngIf="isSaveAndReset; else newDeb">
-
-                          <button type="submit" [disabled]="form.invalid"
-                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                            (click)="save()"
-
-                            [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i
-                                class="fa fa-floppy-o"></i></b> Save</button>
-
-                          <button type="button" tooltip="Reset" (click)="cancelView()"
-                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                class="fa  fa-refresh"></i></b> Reset</button>
-
-                        </ng-container>
-
-                        <ng-template #newDeb>
-
-                          <button type="submit"
-                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
-                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                            (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                            Update</button>
-
-
-                          <button type="button"
-                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                            tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                            Cancel</button>
-
-                        </ng-template>
-
-                      </ng-container>
-                      <ng-container *ngIf="!showButtonSaveAndReset">
-                        <button type="button"
-                          class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                          tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                          Cancel</button>
-                      </ng-container>
-                    </div>
-                  </div> <!-- <end of div col-6 -->
+                 
 
 
 
@@ -323,8 +548,8 @@
               </div>
             </div>
           </div> -->
-<!--Prime Ng  -->
-<div class="tabset mt-25">
+          <!--Prime Ng  -->
+          <!-- <div class="tabset mt-25">
   <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked="">
   <label for="tab1">Returns</label>
   <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
@@ -347,176 +572,10 @@
 
       </section>
    </div>
-  </div>
+  </div> -->
 
 
-          <br>
-          <div class="row mb-0">
-            <div class="col-md-12">
-
-              <span class="font-14 text-purple font-bold">Summary</span>
-
-              <div class="justify-content-end p-d-inline-flex float-right">
-                <div class="input-icon mb-3">
-                  <span class="p-input-icon-left p-ml-auto">
-                    <i class="pi pi-search" style="top: 9px !important"></i>
-                    <input pInputText type="text"
-                      (input)="
-                      dt.filterGlobal(
-                          $event.target.value,
-                          'contains'
-                        )
-                      "
-                      placeholder="Search keyword"
-                    />
-                  </span>
-                </div>
-
-                &nbsp;
-                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
-                  tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
-
-              </div>
-            </div>
-           </div>
-
-          <div class="row">
-            <div class="col-12 ">
-              <div class="card">
-                  <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
-                  [showCurrentPageReport]="true"
-                  (sortFunction)="customSort($event)"
-                   [customSort]="true"
-                    [pageLinks]="5" 
-                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                   totalRecords={{summaryHtmlDataList.length}} 
-                   [rowsPerPageOptions]="[10,25,50,100,200]"
-                   
-                   [globalFilterFields]="['complianceHeadName', 'country','aplicabilityLevel','authorityHandling','remark']">
-
-                     <ng-template pTemplate="header">
-                       <tr>
-                         <th class=" text-center">
-                          Sr. No.
-                           
-                         </th>
-                        
-
-                       <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Compliance Name
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="complianceHeadName" pSortableColumn="complianceHeadName"></p-sortIcon>
-                              <p-columnFilter field="complianceHeadName" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th>
-
-                        <!-- <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Type
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
-                              <p-columnFilter field="shortName" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th> -->
-                         <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Country
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="country" pSortableColumn="country"></p-sortIcon>
-                              <p-columnFilter field="country" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th>
-
-                        <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Applicability Level
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="aplicabilityLevel" pSortableColumn="aplicabilityLevel"></p-sortIcon>
-                              <p-columnFilter field="aplicabilityLevel" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th>
-
-                        <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Authority Handling
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="authorityHandling" pSortableColumn="authorityHandling"></p-sortIcon>
-                              <p-columnFilter field="authorityHandling" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th>
-
-                        <th class="text-center">
-                          <div class="p-d-flex  justify-content-center p-ai-center">Remark
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
-                              <p-columnFilter field="remark" display="menu" class="p-ml-auto">
-                              </p-columnFilter>
-                            </div>
-                          </div>
-                        </th>
-                        <th class="text-center wd-12">
-                          Action
-                        </th>        
-                       </tr>
-                     </ng-template>
-                     <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
-                      <tr class="p-selectable-row">
-                          <td class="text-center">{{rowIndex + 1}}</td>
-                          <td>
-                              <label
-                                  class="form-lable mb-0">
-                                  {{summary.complianceHeadName}}</label>
-                          </td>
-                          <!-- <td>
-                              <label
-                                  class="form-lable mb-0 ">{{summary.shortName}}</label>
-                          </td> -->
-
-                          <td> <label
-                                  class="form-lable mb-0 ">{{summary.country}}</label>
-                                  </td>
-                                  <td> <label
-                                    class="form-lable mb-0 ">{{summary.aplicabilityLevel}}</label>
-                                    </td>
-                                    <td> <label
-                                      class="form-lable mb-0 ">{{summary.authorityHandling}}</label>
-                                      </td>
-                                        <td> <label
-                                        class="form-lable mb-0 ">{{summary.remark}}</label>
-                                        </td>
-
-                                        <td class="text-center">
-
-                                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                            (click)="editMaster(rowIndex,summary.complianceHeadId)" tooltip="Edit"></i>
-                
-                                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(rowIndex)"
-                                            tooltip="View"></i> &nbsp;&nbsp;
-                                          &nbsp;
-                                          <i class="fa fa-trash-o font-16 text-red cursor-pointer"
-                                            (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)" tooltip="Delete"></i>
-                                        </td>
-
-                      </tr>
-                  </ng-template>
-
-                     <ng-template pTemplate="emptymessage">
-                       <tr>
-                         <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                             Available</span>
-                         </td>
-                       </tr>
-                     </ng-template>
-                   </p-table>
-</div>
-</div>
-</div>
+         
 
 
 
@@ -550,172 +609,173 @@
         </div>
       </div>
 
-<!-- new code -->
- <ng-template #template>
-    <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">State List</h5>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="justify-content-end p-d-inline-flex float-right">
-                <div class="input-icon mb-3">
-                  <span class="p-input-icon-left p-ml-auto">
-                    <i class="pi pi-search" style="top: 9px !important"></i>
-                    <input pInputText type="text" class="form-control" (input)="
+      <!-- new code -->
+      <ng-template #template>
+        <div class="modal-header">
+          <h5 class="modal-title" id="UploadModalLabel">State List</h5>
+          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="justify-content-end p-d-inline-flex float-right">
+                    <div class="input-icon mb-3">
+                      <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search" style="top: 9px !important"></i>
+                        <input pInputText type="text" class="form-control" (input)="
                       dt1.filterGlobal(
                           $event.target.value,
                           'contains'
                         )
                       " placeholder="Search keyword" />
-                  </span>
+                      </span>
+                    </div>
+                    &nbsp;
+                    <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer" tooltip="Export To Excel"></i>
+                  </div>
                 </div>
-                &nbsp;
-                <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer" tooltip="Export To Excel"></i>
               </div>
-            </div>
-          </div>
-          <div class="row clearfix">
+              <div class="row clearfix">
 
-            <div class="col-md-12">
+                <div class="col-md-12">
 
-              <p-table #dt1 [value]="State" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                (sortFunction)="customSort($event)" [customSort]="true" [pageLinks]="5"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                totalRecords={{State.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+                  <p-table #dt1 [value]="State" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    (sortFunction)="customSort($event)" [customSort]="true" [pageLinks]="5"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    totalRecords={{State.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
         'state',
         'Applicable',
       ]">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th rowspan="2" class=" text-center">
-                      <div class="p-d-flex p-jc-center p-ai-center">State
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="State" pSortableColumn="State"></p-sortIcon>
-                          <p-columnFilter type="State" field="State" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th rowspan="2" class=" text-center">
+                          <div class="p-d-flex p-jc-center p-ai-center">State
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="State" pSortableColumn="State"></p-sortIcon>
+                              <p-columnFilter type="State" field="State" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
 
-                    <th rowspan="2" class="text-center">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                          <input type="checkbox" class="custom-control-input" name="select" /> <span
-                            class="custom-control-label">Applicable</span>
-                        </label>
+                        <th rowspan="2" class="text-center">
+                          <div class="p-d-flex p-jc-center p-ai-center">
+                            <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                              <input type="checkbox" class="custom-control-input" name="select" /> <span
+                                class="custom-control-label">Applicable</span>
+                            </label>
 
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
-                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
-                        </div>
-                      </div>
-                    </th>
-                  </tr>
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
+                              <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
 
-                </ng-template>
-                <ng-template pTemplate="body" let-State>
-                  <tr class="p-selectable-row text-center">
-                    <td class="text-center">{{State}}</td>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-State>
+                      <tr class="p-selectable-row text-center">
+                        <td class="text-center">{{State}}</td>
 
-                    <td class="text-center">
-                      <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                        <input type="checkbox" class="custom-control-input" name="select" /> <span
-                          class="custom-control-label"></span>
-                      </label>
+                        <td class="text-center">
+                          <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input" name="select" /> <span
+                              class="custom-control-label"></span>
+                          </label>
 
-                    </td>
-                  </tr>
+                        </td>
+                      </tr>
 
-                </ng-template>
+                    </ng-template>
 
 
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                        Available</span>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                            Available</span>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <div class="row">
-        <div class="col-12">
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-12">
 
-          <div class="float-right">
+              <div class="float-right">
 
 
-            <ng-container>
+                <ng-container>
 
-              <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                tooltip="Save" (click)="largepopup (template)"><b><i class="fa fa-arrow-circle-right"></i></b>
-                Proceed</button>
-              <button type="button" tooltip="Reset"
-                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                    class="fa fa-refresh"></i></b> Reset</button>
-              <button type="button" tooltip="Reset" (click)="modalRef.hide()"
-                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                    class="fa fa-times-circle"></i></b> Close</button>
+                  <button type="submit"
+                    class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10" tooltip="Save"
+                    (click)="largepopup (template)"><b><i class="fa fa-arrow-circle-right"></i></b>
+                    Proceed</button>
+                  <button type="button" tooltip="Reset"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                        class="fa fa-refresh"></i></b> Reset</button>
+                  <button type="button" tooltip="Reset" (click)="modalRef.hide()"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                        class="fa fa-times-circle"></i></b> Close</button>
 
-            </ng-container>
+                </ng-container>
 
 
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </ng-template> 
+      </ng-template>
 
 
-  <ng-template #template3>
-    <div class="modal-header">
-           <h5 class="modal-title" id="UploadModalLabel">State With CitycList</h5>
-           <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-                   aria-hidden="true">×</span></button>
-       </div>
-       <div class="modal-body">
-        <div class="row">
+      <ng-template #template3>
+        <div class="modal-header">
+          <h5 class="modal-title" id="UploadModalLabel">State With CitycList</h5>
+          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
             <div class="col-md-12">
-                <table class=" table table-bordered table-striped">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th colspan="2">State With Cities</th>
-                    </tr>
+              <table class=" table table-bordered table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th colspan="2">State With Cities</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                      
-                        <td>
-                            <div class="d-flex">
-                                <i class="fas fa-chevron-right font-16 text-dark-green mr-2 mt-1" (click)="showAP()" *ngIf="!isshowAP"></i>
+                  <tr *ngFor="let a of stateName;">
+
+                    <td>
+                      <div class="d-flex">
+                        <!-- <i class="fas fa-chevron-right font-16 text-dark-green mr-2 mt-1" (click)="showAP()" *ngIf="!isshowAP"></i>
                                
-                                <i class="fas fa-chevron-down font-16 text-dark-green mr-2 mt-1" (click)="hideAP()" *ngIf="isshowAP"></i>
-                                <div class="form-group">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" />
-                                        <span class="custom-control-label">Andhra Pradesh</span>
-                                    </label>
-                                </div>
-                            </div>
-                           
-                            <div class="float-right ml-13" *ngIf="isshowAP">
-                                <div class="form-group">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" />
-                                        <span class="custom-control-label">Vishakhapatanam</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
+                                <i class="fas fa-chevron-down font-16 text-dark-green mr-2 mt-1" (click)="hideAP()" *ngIf="isshowAP"></i> -->
+                        <div class="form-group">
+                          <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" />
+                            <span class="custom-control-label">{{a.stateName}}</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="float-right ml-13" *ngIf="isshowAP">
+                        <div class="form-group">
+                          <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" />
+                            <span class="custom-control-label">{{a.cityName}}</span>
+                          </label>
+                        </div>
+                        <!-- <div class="form-group">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" />
                                         <span class="custom-control-label">Vijaywada</span>
@@ -726,12 +786,12 @@
                                         <input type="checkbox" class="custom-control-input" />
                                         <span class="custom-control-label">Guntur</span>
                                     </label>
-                                </div>
-                            </div>
-                        </td>
-                       
-                    </tr>
-                    <tr>
+                                </div> -->
+                      </div>
+                    </td>
+
+                  </tr>
+                  <!-- <tr>
                       
                         <td>
                             <div class="form-group">
@@ -807,14 +867,14 @@
                             </div>
                            
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
-                </table>
+              </table>
             </div>
+          </div>
         </div>
-        </div>
-           <div class="modal-footer">
-            <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+        <div class="modal-footer">
+          <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
             tooltip="Save" (click)="largepopup (template)"><b><i class="fa fa-arrow-circle-right"></i></b>
             Proceed</button>
           <button type="button" tooltip="Reset"
@@ -824,10 +884,10 @@
             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                 class="fa fa-times-circle"></i></b> Close</button>
 
-            </div>
-           </ng-template>
+        </div>
+      </ng-template>
 
-           <!-- <div class="row">
+      <!-- <div class="row">
             <div class="col-md-6">
                <div class="table-responsive Custom_Table">
                    <p-table  class="mt-10"
@@ -985,11 +1045,11 @@
         </div> -->
 
 
-      
+
       <app-footer></app-footer>
     </div>
   </div>
 
-  
+
 
 </form>

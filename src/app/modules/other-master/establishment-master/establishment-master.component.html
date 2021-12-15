@@ -68,7 +68,7 @@
                             <label class="form-label">Date of Setup</label>
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar" ></i></span>
-                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="date Of Setup"
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfSetup"
                                 (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
                                 placement="center" [maxDate]="today" data-date-autoclose="true" class="form-control"
                                 placeholder="Select" bsDatepicker
@@ -117,9 +117,9 @@
                             
                             <label class="form-label">GST No.</label>
                             <input type="text" style="text-transform:uppercase" formControlName="gstNumber" class="form-control" name="gstNumber" maxlength="15"
-                              autocomplete="off" 
+                              autocomplete="off" placeholder="Enter GST No."
                               onkeypress="return /[a-zA-Z0-9']/i.test(event.key)"
-                              placeholder="Enter GST No.">
+                              >
                           </div>
 <!-- 
                           onkeypress="return /[a-zA-Z0-9']/i.test(event.key)" -->
