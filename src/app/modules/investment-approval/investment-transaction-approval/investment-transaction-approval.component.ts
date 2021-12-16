@@ -20,6 +20,7 @@ import { MyInvestmentsService } from '../../my-Investments/my-Investments.servic
 })
 export class InvestmentTransactionApprovalComponent implements OnInit {
   public enteredRemark = '';
+  public isEnteredRemark = false;
 
   documentRemarkValidation = false;
   public documentList: Array<any> = [];
@@ -46,50 +47,52 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   public modalRef: BsModalRef;
 
   public windowScrolled: boolean;
-  public transactionInfo: InvestmentApprovalTransactionInfo = {
-    psidDetail: {
-      groupName: '',
-      section: '',
-      type: '',
-      psid: '',
-      dateOfSubmission: null,
-      proofSubmissionStatus: '',
-      lastModifiedDateTime: null,
-    },
-    transactionDetail: [
-      {
-        institutionName: '',
-        policyNo: '',
-        policyholdername: '',
-        frequency: '',
-        masterPSID: '',
-        declarationTotal: 0,
-        actualTotal: 0,
-        totalApprovedAmount: 0,
-        totalRejectedAmount: 0,
-        transactionDetailList: [
-          {
-            transactionId: 0,
-            previousEmployer: '',
-            declaredAmount: 0,
-            dateOfPayment: null,
-            dueDate: null,
-            actualAmount: 0,
-            amountRejected: '0',
-            amountApproved: '0',
-            remark: '',
-            remarkList: [],
-            transactionStatus: '',
-            proofSubmissionId: '',
-          },
-        ],
-      },
-    ],
-    documentList: [],
-    grandTotalActual: 0,
-    grantTotalApproved: 0,
-    grandTotalRejected: 0,
-  };
+  public transactionInfo: any;
+  // public transactionInfo = {
+  //   psidDetail: {
+  //     groupName: '',
+  //     section: '',
+  //     type: '',
+  //     psid: '',
+  //     dateOfSubmission: null,
+  //     proofSubmissionStatus: '',
+  //     lastModifiedDateTime: null,
+  //   },
+  //   transactionDetail: [
+  //     {
+  //       institutionName: '',
+  //       policyNo: '',
+  //       policyholdername: '',
+  //       frequency: '',
+  //       masterPSID: '',
+  //       declarationTotal: 0,
+  //       actualTotal: 0,
+  //       totalApprovedAmount: 0,
+  //       totalRejectedAmount: 0,
+  //       transactionDetailList: [
+  //         {
+  //           transactionId: 0,
+  //           previousEmployer: '',
+  //           declaredAmount: 0,
+  //           dateOfPayment: null,
+  //           dueDate: null,
+  //           actualAmount: 0,
+  //           amountRejected: '0',
+  //           amountApproved: '0',
+  //           remark: '',
+  //           bubbleRemarkCount: '',
+  //           remarkList: [],
+  //           transactionStatus: '',
+  //           proofSubmissionId: '',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   documentList: [],
+  //   grandTotalActual: 0,
+  //   grantTotalApproved: 0,
+  //   grandTotalRejected: 0,
+  // };
   public localStorageProofSubmissionIdList: Array<any> = [];
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[] = [];
@@ -205,7 +208,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   getTransactionInfoByPSID(psid: any): void {
     this.investmentTransactionApprovalService
       .getTransactionInfoByPSID(psid)
-      .subscribe((res: InvestmentApprovalTransactionInfo) => {
+      .subscribe((res) => {
         console.log('res transactionInfo::', res);
         
         if (res != null || res != undefined) {
@@ -240,7 +243,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   selectDocumentForApprovalOrDiscard(
     checkValue,
     documentDetail,
-    transaction: InvestmentApprovalTransactionInfo
+    transaction
   ) {
     console.log('checkValue::', checkValue);
     console.log('documentDetail::', documentDetail);
@@ -446,7 +449,7 @@ debugger
     console.log('trnsactionLineItem::', trnsactionLineItem);
     debugger
     // console.log("documentCheckBox::",this.documentCheckBox);
-    if (this.checkRemark == '' && trnsactionLineItem.amountRejected!= "0.00") {
+    if (this.isEnteredRemark == false && trnsactionLineItem.amountRejected!= "0.00") {
           this.alertService.sweetalertWarning("First enter remark for rejected amount");
           event.checked = false;
           // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
@@ -728,8 +731,13 @@ debugger
     .subscribe((res) => {
       if(res.status.code == "200") {
         this.enteredRemark = '';
-        // console.log(this.transactionDetail);
+        console.log(this.transactionDetail);
+        debugger
+        this.isEnteredRemark = true;
+        // this.transactionInfo.transactionDetail[0].transactionDetailList.bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionInfo.transactionDetail[0].transactionDetailList[0].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         // this.transactionDetail[0].groupTransactionList[this.indexCount].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -763,7 +771,7 @@ public postMethodCall(data):void{
 
      this.investmentTransactionApprovalService
        .changeTransactionStatus(formData)
-       .subscribe((res: InvestmentApprovalTransactionInfo) => {
+       .subscribe((res) => {
          console.log('res transaction Status::', res);
          console.log('this.transactionList.length::', this.transactionList.length);
         

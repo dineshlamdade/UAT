@@ -2424,6 +2424,13 @@
   </div>
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
       type="button"
       class="btn btn-secondary"
       (click)="onSaveRemarkDetails()"

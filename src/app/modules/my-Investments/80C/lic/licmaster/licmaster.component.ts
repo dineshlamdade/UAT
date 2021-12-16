@@ -773,6 +773,7 @@ export class LicmasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

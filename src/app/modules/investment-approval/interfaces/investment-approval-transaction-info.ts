@@ -32,6 +32,7 @@ export interface InvestmentApprovalTransactionInfo {
           actualAmount: number;
           amountRejected: string;
           amountApproved: string;
+        
           remark: string;
           remarkList: InvestmentApprovalTransactionRemarkInfo[];
           transactionStatus: string;
