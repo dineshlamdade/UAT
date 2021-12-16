@@ -184,6 +184,10 @@ export class HousingloanmasterComponent implements OnInit {
   public abc: any[];
   myDate: string;
   selectedLoanTypeIndex: any = -1;
+  summaryDetails: any;
+  documentRemarkList: any;
+  public remarkCount : any;
+  editRemarkData: any;
   // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   // ServicesList: any;
   constructor(
@@ -241,6 +245,7 @@ export class HousingloanmasterComponent implements OnInit {
         ownerName: new FormControl(null, Validators.required),
         firstTimeHomeBuyer: new FormControl('true', Validators.required),
         relationship: new FormControl({ value:'', disabled: true }),
+        //otherOwnerName: new FormControl(null),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
       //   housePropertyUsageTypeId : [0],
@@ -482,6 +487,7 @@ export class HousingloanmasterComponent implements OnInit {
         Validators.pattern('^[0-9]*$'),
       ]),
       proofSubmissionId: new FormControl(''),
+      remark: new FormControl(null),
     });
   }
   public cancelOwnerType() {
@@ -1041,15 +1047,15 @@ export class HousingloanmasterComponent implements OnInit {
         this.alertService.sweetalertWarning('Please enter loan taken details.');
       }
     }
-
+    
     // return the control if any on of the form is invalid
     if (invalidSubmission) {
       return;
     }
 
     if(
-      (this.propertyIndex.length === 0 ||
-        this.stampDutyRegistration.length === 0) &&
+      (this.propertyIndex.length === 0 || 
+        this.visibilityFlagStamp? this.stampDutyRegistration.length === 0 : false ) &&
       (this.loanSanctionLetter.length === 0 ||
         this.possessionLetter.length === 0) &&
       (this.urlArray.length === 0 ||
@@ -1094,6 +1100,7 @@ export class HousingloanmasterComponent implements OnInit {
         stampDutyRegistrationRemarkPasswordList: this.stampDutydocumentDataArray,
         loanSanctionLetterRemarkPasswordList: this.loandocumentDataArray,
         possessionLetterRemarkPasswordList: this.possessiondocumentDataArray,
+        remark: this.houseLoanF.remark.value,
       };
 
       // data.housePropertyLoanDetailList = this.loanDetailGridData;
@@ -1883,4 +1890,59 @@ export class HousingloanmasterComponent implements OnInit {
       this.isActionForTransfer = false;
     
   }
+  public remarkModal(
+    templateViewer: TemplateRef<any>,    
+    masterId,
+    summary
+  ) {
+    this.summaryDetails = summary;
+    this.Service.getHouseLoanMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+  
+    this.modalRef = this.modalService.show(
+      templateViewer,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  public onChangeDocumentRemark(transIndex, event) { 
+    this.editRemarkData =  event.target.value;
+   this.transactionDetail[0].housePropertyTransactionList[transIndex].remark =  event.target.value;
+  
+  }
+  
+  onSaveRemarkDetails(transIndex){
+   
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.housePropertyMasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:2432,
+      "section":"House",
+      "subSection":"Loan",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.masterGridData[transIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        //this.transactionDetail[0].housePropertyTransactionList[transIndex].bubbleRemarkCount =  res.data.results[0].bubbleRemarkCount;
+        this.modalRef.hide();
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+}
 }

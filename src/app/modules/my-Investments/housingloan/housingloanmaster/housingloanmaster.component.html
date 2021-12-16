@@ -814,6 +814,15 @@
       </div>
     </div>
   </div>
+  <div class="row mt-30">
+    <div class="col-md-6">
+      <h3 class="font-14 text-purple font-bold">Remark</h3>
+    </div>
+    <div class="col-md-7">
+      <textarea class="form-control" formControlName="remark" rows="1" style="width:45%;"></textarea>
+    </div>
+    
+  </div>
 
   <div class="row mt-30">
     <div class="col-12">
@@ -883,7 +892,7 @@
                     </td>
                   </tr> -->
 
-                  <tr>
+                  <tr *ngIf="visibilityFlagStamp">
                     <th scope="row"><span tooltip="2">2</span></th>
                     <td><span tooltip="Receipt for Stamp Duty & Registration Charges"></span>Receipt for Stamp Duty & Registration Charges
                     </td>
@@ -916,7 +925,7 @@
                   </tr> -->
 
                   <tr>
-                    <th scope="row"><span tooltip="3">3</span></th>
+                    <th scope="row"><span tooltip="{{visibilityFlagStamp==true?3:3-1}}">{{visibilityFlagStamp==true?3:3-1}}</span></th>
                     <td><span tooltip="Loan Sanction Letter"></span>Loan Sanction Letter
                     </td>
                     <td><span *ngFor="let item of loanSanctionLetter" class="text-orange" tooltip="{{item.name}},"><i
@@ -948,7 +957,7 @@
                   </tr> -->
 
                   <tr>
-                    <th scope="row"><span tooltip="4">4</span></th>
+                    <th scope="row"><span tooltip="{{visibilityFlagStamp==true?4:4-1}}">{{visibilityFlagStamp==true?4:4-1}}</span></th>
                     <td><span tooltip="Possession Letter"></span>Possession Letter
                     </td>
                     <td><span *ngFor="let item of possessionLetter" class="text-orange" tooltip="{{item.name}},"><i
@@ -1016,9 +1025,9 @@
                   <th scope="col" class="font700 wd-8">Sr. No</th>
                   <th scope="col" class="wd-15">Property Name</th>
                   <th scope="col" class="wd-10">Possession Date</th>
+                  <th scope="col" class="wd-6">Remark</th>
+                  <th scope="col" class="wd-12">PS. ID.</th>
                   <th scope="col" class="wd-10">Action</th>
-
-
                 </tr>
               </thead>
               <tbody>
@@ -1034,6 +1043,67 @@
                   <td class="wd-10"><span
                       tooltip="{{summary.possessionDate | date : 'dd-MMM-yyyy'}}">{{summary.possessionDate | date :
                       'dd-MMM-yyyy'}}</span>
+                  </td>
+                  <td class="wd-6">
+                    <div class="d-flex">
+                      <!-- <input
+                      style="width:100px;"
+                        type="text"
+                        class="form-control"
+                        [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                        
+                        (change)="
+                        onChangeDocumentRemark(
+                            summary, i,
+                            $event
+                          )
+                        "
+                      
+                      /> -->
+                      <div
+                        _ngcontent-ykc-c443=""
+                        class="
+                          custom_Label_badge
+                          mr-2
+                          ml-2
+                        "
+                      >
+                        <b>
+                          <i
+                            (click)="
+                              remarkModal(
+                                template8,
+                                summary.housePropertyMasterId,
+                              summary
+                              )
+                            "
+                            class="
+                              fa fa-commenting
+                              text-dark-green
+                              fa-2x
+                              cursor-pointer
+                            "
+                          >
+                          </i
+                        ></b>
+                        <span
+                          _ngcontent-ykc-c443=""
+                          class="Label_badge"
+                          >{{
+                          
+                            summary?.bubbleRemarkCount
+                          }}</span
+                        >
+                      </div>
+                    </div>
+                    <!-- <span tooltip="{{ summary.remark }}">
+                      {{ summary.remark }}
+                    </span> -->
+                  </td>
+                  <td>
+                    <span tooltip="{{ summary.proofSubmissionId }}">
+                      <i class="fa fa-clipboard"></i>
+                    </span>
                   </td>
 
                   <td class="wd-5">
@@ -1571,5 +1641,79 @@
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled>
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-25">
+      <div class="col-md-12">
+        <input type="text" 
+        (change)= "
+        onChangeDocumentRemark(
+           this.indexCount,
+            $event
+          )
+        "  class="form-control" placeholder="Remark">
+      </div>
+    </div>
+  </div>
+
+<!--   <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div> -->
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails(this.indexCount)"
+    >
+      Save
+    </button>
   </div>
 </ng-template>
