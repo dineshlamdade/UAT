@@ -5,12 +5,18 @@
         <table class="table table-striped table-hover table-bordered m-b-0">
           <thead class="thead-dark">
             <tr>
-              <th scope="col" class="wd-20">Institution</th>
+              <!-- <th scope="col" class="wd-20">Institution</th>
               <th scope="col" class="wd-20">Account no.</th>
               <th scope="col" class="wd-20">Account Holder Name</th>
               <th scope="col" class="wd-15">Declared</th>
               <th scope="col" class="wd-15">Actual</th>
-              <th scope="col" class="wd-10">Action</th>
+              <th scope="col" class="wd-10">Action</th> -->
+              <th scope="col" class="wd-6"><span tooltip="Institution">Institution</span></th>
+              <th scope="col" class="wd-6"><span tooltip="Account no.">Account no.</span></th>
+              <th scope="col" class="wd-6"><span tooltip="Account Holder Name">Account Holder Name</span></th>
+              <th scope="col" class="wd-6"><span tooltip="Declared Amount">Declared Amount</span></th>
+              <th scope="col" class="wd-6"><span tooltip="Actual Amount">Actual Amount</span></th>
+              <th scope="col" class="wd-6"><span tooltip="Action">Action</span></th>
             </tr>
           </thead>
           <tbody>
@@ -20,27 +26,27 @@
                   summary.institution
                   }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-6 align-left">
                 <span tooltip="{{ summary.accountNumber }}">{{
                   summary.accountNumber
                   }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-6 align-left">
                 <span tooltip="{{ summary.accountHolderName }}">
                   {{ summary.accountHolderName }}
                 </span>
               </td>
-              <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
+              <td class="wd-6 align-right">
+                <span class="padding-right-9" tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
                   {{ summary.declaredAmount | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
+              <td class="wd-6 align-right">
+                <span class="padding-right-9" tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
                   {{ summary.actualAmount | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="wd-10">
+              <td class="wd-6">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'edit')"
                   tooltip="Edit"></i>&nbsp;&nbsp;
@@ -59,13 +65,13 @@
                 Total &nbsp; <span class="Letterbadge">A</span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
-                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
-                  {{ totalActualAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
+                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td></td>
@@ -93,13 +99,13 @@
                   B</span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
-                  {{ grandTotalDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
-                  {{ grandTotalActualAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
 
@@ -114,13 +120,13 @@
                 <span class="Letterbadge">D</span>
               </td>
               <td class="wd-15 align-right" colspan="1">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}
                 </span>
               </td>
               <td class="wd-15 align-right" colspan="1">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.basicYTDTotal | number:'1.2-2'}}
                 </span>
@@ -132,13 +138,13 @@
                 <span class="Letterbadge">E</span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.basicProjectionTotal | number:'1.2-2'}}
                 </span>
@@ -152,12 +158,12 @@
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.total | number:'1.2-2'}}
                 </span>
               </td>
@@ -167,12 +173,12 @@
               <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">G</span> = &nbsp; 10% of
                 <span class="Letterbadge">F</span></td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.limit80CCD1 | number:'1.2-2'}}
                 </span>
               </td>
@@ -183,13 +189,13 @@
               <td colspan="3" class="align-right font700"><span class="Letterbadge">H</span> &nbsp;= &nbsp;Minimum of
                 <span class="Letterbadge">C</span> & &nbsp;<span class="Letterbadge">G</span></td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.minimumOfDeclaredAndLimit| number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.minimumOfDeclaredAndLimit | number:'1.2-2'}}
                 </span> 
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12"
+                <span class="padding-right-9"
                   tooltip="{{this.nps80CCSummaryGridData?.minimumOfActualAndLimit | number:'1.2-2'}}">
                   {{this.nps80CCSummaryGridData?.minimumOfActualAndLimit | number:'1.2-2'}}
                 </span>
@@ -200,12 +206,12 @@
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Limit for 80CCD (1B) <span class="Letterbadge">I</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limitD | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limitD | number:'1.2-2'}}">
                   {{limitD | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limitD | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limitD | number:'1.2-2'}}">
                   {{limitD | number:'1.2-2'}}
                 </span>
               </td>
@@ -219,12 +225,12 @@
                 or &nbsp;<span class="Letterbadge"> I </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{deductionEDeclared | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{deductionEDeclared | number:'1.2-2'}}">
                   {{deductionEDeclared | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{deductionEActual | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{deductionEActual | number:'1.2-2'}}">
                   {{deductionEActual | number:'1.2-2'}}
                 </span>
               </td>
@@ -237,12 +243,12 @@
                   H</span> - &nbsp;<span class="Letterbadge"> J </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{eligibleForDeductionFDeclared | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{eligibleForDeductionFDeclared | number:'1.2-2'}}">
                   {{eligibleForDeductionFDeclared | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{eligibleForDeductionFActual | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{eligibleForDeductionFActual | number:'1.2-2'}}">
                   {{eligibleForDeductionFActual | number:'1.2-2'}}
                 </span>
               </td>

@@ -13,6 +13,7 @@ export class InvestmentTransactionApprovalService {
 
   public apiUrl = environment.baseUrl8085;
   public apiUrlEmployee = environment.baseUrl8082;
+  _HTTP: any;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -55,4 +56,13 @@ export class InvestmentTransactionApprovalService {
       return res;
     }));
   }
+
+
+  // postTransactionApprovalRemark(data) {
+  //   return this._HTTP.post(this.apiUrl + 'licmaster-detail/addRemark', data)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
 }

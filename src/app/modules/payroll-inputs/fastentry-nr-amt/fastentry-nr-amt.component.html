@@ -43,6 +43,7 @@
                                         <div class="col-sm-3">
                                             <label class="form-label">Once Every</label>
                                             <input type="text" class="form-control"
+                                            (focusout)="getSelectedOnceEvery($event.target.value)"
                                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                 [(ngModel)]="selectedOnceEvery">
                                         </div>
@@ -143,9 +144,9 @@
                                                 <select class="form-control custom-select wd-200"
                                                     (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
                                                     <option value="">Select</option>
-                                                    <option [selected]="selectedApplicableAt == 'Group'">
+                                                    <option [selected]="selectedApplicableAt == 'Group' || showOnlyGroup">
                                                         Group </option>
-                                                    <option [selected]="selectedApplicableAt == 'Schedule'">
+                                                    <option [selected]="selectedApplicableAt == 'Schedule'" *ngIf="!showOnlyGroup">
                                                         Schedule </option>
                                                 </select>
                                             </div>

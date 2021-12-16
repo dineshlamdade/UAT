@@ -435,7 +435,7 @@
                                                                                 <p-sortIcon field="tableName">
                                                                                 </p-sortIcon>
                                                                                 <p-columnFilter type="text"
-                                                                                    field="tempSourceTable"
+                                                                                    field="tableName"
                                                                                     display="menu" class="p-ml-auto">
                                                                                 </p-columnFilter>
                                                                             </div>
@@ -658,6 +658,9 @@
 
                                                 <div class="row mt-15 float-right">
                                                     <div class="float-right ">
+
+
+
                                                         <button
                                                             *ngIf="!editTempFlag && !editTempFlag1 && !updateBtnFlag"
                                                             type="submit"
@@ -724,13 +727,15 @@
 
                                                             <ng-template pTemplate="header">
                                                                 <tr>
+                                                                   
                                                                     <th rowspan="3" class="wd-2 text-center">
                                                                         Select
                                                                     </th>
-                                                                    <th colspan="5" class="wd-6 text-center">
+                                                                    <!-- [colspan]="10" -->
+                                                                    <th [attr.colspan]="sourceFieldListData.length" class="wd-6 text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left: 330px;">Source
-                                                                            Fields
+                                                                            Fields 
                                                                         </div>
                                                                     </th>
                                                                 </tr>
@@ -835,26 +840,29 @@
 
                                         <div class="row mt-15 float-right" style="margin-top: -25px;">
                                             <div class="float-right ">
-                                                <button type="button"
+                                                
+
+                                                <button type="submit" (click)="step2Submit()" *ngIf="editFlag"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                    tooltip="Update"><b>
+                                                        <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                                                <button type="submit" (click)="step2Submit()" *ngIf="!editFlag"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                    tooltip="Save"><b>
+                                                        <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                                                        <button type="button"
                                                     (click)="getStepper(2);previous();sourceCombination();"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Previous"><b>
                                                         <i class="fa fa-angle-double-left"></i></b>
                                                     Previous</button>&nbsp;
-                                                <button type="submit" (click)="step2Submit()" *ngIf="!editFlag"
-                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                    tooltip="Save"><b>
-                                                        <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                                                <button type="submit" (click)="step2Submit()" *ngIf="editFlag"
-                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                    tooltip="Update"><b>
-                                                        <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
-                                                <!-- derivedTablesFields(); -->
                                                 <button type="button"
                                                     (click)="getStepper(2);next();derivedType();KeywordMasterDetails();"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Next"><b>
                                                         <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
+                                                <!-- derivedTablesFields(); -->
+
                                                 <!-- <button type="button"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Reset"><b>
@@ -883,8 +891,9 @@
                                                                         <input
                                                                             (click)="derivedApplicable($event.target.value)"
                                                                             type="radio" class="custom-control-input"
-                                                                            name="example-inline-radios" value="Yes"
+                                                                            name="example-inline-radios" value="Yes" 
                                                                             [checked]="derivedApplicableFlag == 1 || derivedApplicableFlag == '1'">
+                                                                            <!--  -->
                                                                         <span class="custom-control-label">Yes</span>
                                                                     </label>
                                                                     <label
@@ -893,7 +902,8 @@
                                                                             (click)="derivedApplicable($event.target.value)"
                                                                             type="radio" class="custom-control-input"
                                                                             name="example-inline-radios" value="No"
-                                                                            [checked]="derivedApplicableFlag == 0">
+                                                                           >
+                                                                           <!-- [checked]="derivedApplicableFlag == 0" -->
                                                                         <span class="custom-control-label">No</span>
                                                                     </label>
 
@@ -968,8 +978,8 @@
                                                                 <datalist id="dist2" style="border: 1px solid #ced4da !important;
                                                                      padding: 0 0.5rem !important;">
                                                                     <option *ngFor="let key of keywordData"
-                                                                        value="{{key.originalFormula}}">
-                                                                        {{key.originalFormula}}
+                                                                        value="{{key.formulaName}}">
+                                                                        {{key.formulaName}}
                                                                     </option>
                                                                 </datalist>
                                                             </div>
@@ -1007,8 +1017,8 @@
 
                                                                     <!-- changed on 02 Dec by backend -->
                                                                     <option *ngFor="let field of fieldTypes"
-                                                                        value="{{field.derivedObjectFieldName}}">
-                                                                        {{field.derivedObjectFieldName}}</option>
+                                                                        value="{{field.derivedFieldName}}">
+                                                                        {{field.derivedFieldName}}</option>
                                                                 </select>
 
                                                                 <select name="custom-select" class="form-control"
@@ -1038,7 +1048,9 @@
                                                                 </select>
                                                             </div>
 
-                                                            <div class="col-sm-3"
+                                                            <!-- //Asked to remove in 9th Dec 2021 by rakesh sir -->
+
+                                                            <!-- <div class="col-sm-3"
                                                                 *ngIf="sourceMasterName == 'SPAndFunctionMaster' || enableSourcePeriod">
                                                                 <label class="form-label">UOM of Range </label>
                                                                 <select name="custom-select" class="form-control"
@@ -1046,7 +1058,7 @@
                                                                     <option value="Select">Select</option>
                                                                     <option>MM</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <br>
                                                         <br>
@@ -1253,18 +1265,24 @@
                                                                                             Action
                                                                                         </div>
                                                                                     </th>
-                                                                                    <th rowspan="2"
+                                                                                    <!-- //Asked to remove in 9th Dec 2021 by rakesh sir -->
+                                                                                    <!-- <th rowspan="2"
                                                                                         class="wd-12 text-center"
                                                                                         *ngIf="isUomFlag">
                                                                                         UOM
-                                                                                    </th>
+                                                                                    </th> -->
                                                                                 </tr>
                                                                             </ng-template>
                                                                             <ng-template pTemplate="body" let-data
                                                                                 let-rowIndex=rowIndex>
-                                                                                <tr class="p-selectable-row">
-                                                                                    <td class="text-center">{{rowIndex +
-                                                                                        1}} </td>
+                                                                                <tr class="p-selectable-row"
+                                                                                    *ngIf="data.sdmDerivedMasterId != 0">
+                                                                                    <td class="text-center">
+                                                                                        {{rowIndex + 1}}
+                                                                                        <!-- <br>
+                                                                                        {{data.sdmDerivedMasterId == 0
+                                                                                        ? rowIndex + 1 : rowIndex}}  -->
+                                                                                    </td>
                                                                                     <td class="text-center">
                                                                                         {{data.derivedName}}
                                                                                     </td>
@@ -1293,12 +1311,19 @@
                                                                                         {{data.sourceObjectName}}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        <i *ngIf="data.sdmDerivedMasterId"
+                                                                                        <!-- commented on 09/12/2021 -->
+                                                                                        <!-- <i *ngIf="data.sdmDerivedMasterId"
                                                                                             class="fa fa-edit font-16 text-dark-green cursor-pointer"
                                                                                             (click)="edittempDerivedData(data,rowIndex)"
-                                                                                            tooltip="Edit"></i>&nbsp;
-                                                                                        <i *ngIf="!data.sdmDerivedMasterId"
+                                                                                            tooltip="Edit"></i>&nbsp; -->
+
+                                                                                        <i *ngIf="!data.sdmDerivedMasterId || !editFlag"
                                                                                             (click)="deletetempDerivedData(data,rowIndex)"
+                                                                                            class="fa fa-times font-16 text-red cursor-pointer"
+                                                                                            tooltip="DeleteTemp"></i>
+
+                                                                                        <i *ngIf="data.sdmDerivedMasterId && editFlag"
+                                                                                            (click)="deleteSourceDerive(data)"
                                                                                             class="fa fa-times font-16 text-red cursor-pointer"
                                                                                             tooltip="Delete"></i>
                                                                                         <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer"
@@ -1306,10 +1331,10 @@
                                                                                         <i class="fa fa-trash font-16 text-red cursor-pointer"
                                                                                             tooltip="Delete"></i> -->
                                                                                     </td>
-                                                                                    <td class="text-center"
+                                                                                    <!-- <td class="text-center"
                                                                                         *ngIf="isUomFlag">
                                                                                         {{data.uom}}
-                                                                                    </td>
+                                                                                    </td> -->
                                                                                 </tr>
                                                                             </ng-template>
                                                                             <ng-template pTemplate="emptymessage">
@@ -1330,36 +1355,41 @@
                                                         <div class="row mt-15 float-right">
                                                             <div class="float-right ">
                                                                 <!-- derivedTablesFields(); -->
-
-                                                                <button type="button"
-                                                                    [hidden]="derivedApplicableFlag == 0"
-                                                                    (click)="getStepper(3);previous();derivedType();KeywordMasterDetails();sourceCombination();"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                                    tooltip="Previous"><b>
-                                                                        <i class="fa fa-angle-double-left"></i></b>
-                                                                    Previous</button>&nbsp;
+                                                                <!-- [hidden]="derivedApplicableFlag == 0" -->
+                                                                
                                                                 <!-- next(); -->
-                                                                <button type="submit" (click)="saveDerived();"
-                                                                    [disabled]="saveDerivedData.length == 0"
-                                                                    [ngClass]="{'disabled-btn-bg-green' : saveDerivedData.length == 0,'btn-bg-green': saveDerivedData.length > 0}"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                                    tooltip="Save"><b>
-                                                                        <i class="fa fa-floppy-o"></i></b>
-                                                                    Save</button>&nbsp;
+
                                                                 <!-- filter() -->
-                                                                <button type="button"
-                                                                    [hidden]="derivedApplicableFlag == 0"
-                                                                    (click)="getStepper(3);next();getMatrixTableData();derivedMaster();combinationMatrix();"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                                    tooltip="Next"><b>
-                                                                        <i
-                                                                            class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
+
+                                                                <!-- [hidden]="derivedApplicableFlag == 0" -->
+
                                                                 <button type="submit" (click)=resetsdmForm3();
                                                                     [hidden]="derivedApplicableFlag == 0"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                                     tooltip="Reset"><b>
                                                                         <i class="fa fa-refresh"></i></b>
                                                                     Reset</button>&nbsp;
+                                                                <button type="submit" (click)="saveDerived();"
+                                                                    [style.cursor]="saveDerivedData.length == 'not-allowed' ? null : 'pointer'"
+                                                                    [disabled]="saveDerivedData.length == 0"
+                                                                    [ngClass]="{'disabled-btn-bg-green' : saveDerivedData.length == 0,'btn-bg-green': saveDerivedData.length > 0}"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Save"><b>
+                                                                        <i class="fa fa-floppy-o"></i></b>
+                                                                    Save</button>&nbsp;
+                                                                    <button type="button"
+                                                                    (click)="getStepper(3);previous();derivedType();KeywordMasterDetails();sourceCombination();"
+                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Previous"><b>
+                                                                        <i class="fa fa-angle-double-left"></i></b>
+                                                                    Previous</button>&nbsp;
+
+                                                                <button type="button"
+                                                                    (click)="getStepper(3);next();getMatrixTableData();derivedMaster();sourceCombination();"
+                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Next"><b>
+                                                                        <i
+                                                                            class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
                                                             </div>
                                                         </div>
                                                         <!-- end of row -->
@@ -1441,140 +1471,88 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="card">
-                                                    <div class="table-responsive Custom_Table">
-                                                        <p-table [value]="users1" [paginator]="true" [rows]="10"
-                                                            (sortFunction)="customSort($event)" [customSort]="true"
-                                                            [showCurrentPageReport]="true"
-                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                            [rowsPerPageOptions]="[10,25,50,100,200]">
-                                                            <ng-template pTemplate="header">
+                                                    <div class="table-responsive Custom_Table" >
+                                                        <table class="table table-bordered" style="border: 1px solid #dee2e6;">
+                                                            <thead>
                                                                 <tr>
                                                                     <th [attr.colspan]="sourceFieldListData.length"
-                                                                        class="wd-16 text-center">
+                                                                        class="wd-16 text-center thClassDataTable">
                                                                         <div class="p-d-flex p-jc-between p-ai-center text-center"
                                                                             style="margin-left: 120px;">Source
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="2" class="wd-16 text-center"
+                                                                    <th colspan="2" class="wd-16 text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left:100px;">Source Range
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="1" class="wd-6 text-center">
+                                                                    <th colspan="1" class="wd-6 text-center thClassDataTable"
+                                                                        *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Derived
 
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="2" class="wd-8 text-center">
+                                                                    <th colspan="2" class="wd-8 text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left:140px;">Date Range
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Payroll"
-                                                                                    pSortableColumn="Payroll">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="3" class="wd-4 text-center">
+                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Action
                                                                         </div>
                                                                     </th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th rowspan="2" class=" text-center"
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
                                                                         *ngFor="let header of matrixTableData">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             {{header}}
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Payroll"
-                                                                                    pSortableColumn="Payroll">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class="text-center"
+                                                                    <th rowspan="2" class="text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             From
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="DateRange"
-                                                                                    pSortableColumn="DateRange">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center "
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
                                                                         *ngIf="isRangeApplicableFlag == true">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
                                                                             style="margin-left: 70px;"> To
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="DateRange"
-                                                                                    pSortableColumn="DateRange">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center">
+                                                                    <th rowspan="2" class=" text-center thClassDataTable"
+                                                                        *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             {{derivedFieldName}}
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Value"
-                                                                                    pSortableColumn="Value">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                     <!-- rowspan="2" -->
-                                                                    <th class="text-center">
+                                                                    <th class="text-center thClassDataTable" *ngIf="!noDerivedFlag"> 
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             From Date
-                                                                            <div class="Sort_Filter_Position">
-
-                                                                                <p-sortIcon field="FromDate"
-                                                                                    pSortableColumn="FromDate">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                     <!-- rowspan="2" -->
-                                                                    <th class=" text-center ">
+                                                                    <th class=" text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             To Date
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="ToDate"
-                                                                                    pSortableColumn="ToDate">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="text"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </th>
                                                                 </tr>
-                                                            </ng-template>
-                                                            <ng-template pTemplate="body">
-
+                                                            </thead>
+                                                            <tbody>
+                                                                <!-- <pre>HERE {{tempEditMatrixData | json}}</pre> -->
                                                                 <tr class="p-selectable-row text-center"
                                                                     [class.trhidden]="data.showElement == false"
                                                                     *ngFor="let data of tempEditMatrixData;let rowIndex = index;">
@@ -1614,6 +1592,16 @@
                                                                             *ngIf="header == 'Designation1' && data.showElement == true">{{data.selectedCombData.designation1MasterId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'Designation2' && data.showElement == true">{{data.selectedCombData.designation2MasterId}}</span>
+
+                                                                        <span
+                                                                            *ngIf="header == 'functionName' && data.showElement == true">{{data.selectedCombData.spAndFunctionMasterId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'genderType' && data.showElement == true">{{data.selectedCombData.genderId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTaxCategoryId' && data.showElement == true">{{data.selectedCombData.employeeTaxCategoryId}}</span>
+
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTypeId' && data.showElement == true">{{data.selectedCombData.employeeTypeId}}</span>
                                                                     </td>
                                                                     <td
                                                                         *ngIf="isRangeApplicableFlag == true && data.showElement == true">
@@ -1630,8 +1618,12 @@
                                                                             value="{{data.sourceRangeTo}}">
                                                                         <!-- [disabled]="data.disableFlag == true" -->
                                                                     </td>
-                                                                    <td *ngIf="data.showElement == true">
-                                                                        <!-- {{data.sdmSourceCombinationId}} -->
+                                                                    <td
+                                                                        *ngIf="data.showElement == true && !noDerivedFlag">
+                                                                        <!-- {{showSearchLeans}}
+                                                                        {{selectedIndex}}
+                                                                        {{rowIndex}}
+                                                                        {{showEditTextBox}} -->
                                                                         <div class="input-group">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
                                                                             <input type="text" class="form-control"
@@ -1656,7 +1648,7 @@
                                                                                 <button class="btn btn-primary"
                                                                                     type="button">
                                                                                     <span class="fe fe-search"
-                                                                                        (click)="largepopup (template1,rowIndex,data)"><i></i>
+                                                                                        (click)="largepopup (template1,rowIndex,data,'tempEditMatrixData')"><i></i>
                                                                                     </span>
                                                                                 </button>
                                                                             </span>
@@ -1671,12 +1663,11 @@
                                                                                 [selected]="data.applicableValue == d">
                                                                                 {{d}}</option>
                                                                         </select>
-
                                                                         <!-- <input type="text" class="form-control"
                                                                              (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                             value="{{data.applicableValue}}" [disabled]="data.disableFlag == true"> -->
                                                                     </td>
-                                                                    <td *ngIf="data.showElement == true">
+                                                                    <td *ngIf="data.showElement == true && !noDerivedFlag" >
 
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
@@ -1690,7 +1681,7 @@
                                                                             
                                                                             value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
-                                                                    <td *ngIf="data.showElement == true">
+                                                                    <td *ngIf="data.showElement == true && !noDerivedFlag">
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
@@ -1705,7 +1696,7 @@
                                                                             value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
                                                                     <td
-                                                                        *ngIf="data.showElement == true || data.disableFlag == true">
+                                                                        *ngIf="data.showElement == true || data.disableFlag == true && !noDerivedFlag">
                                                                         <i class="fa fa-eye font-18 text-dark-blue"
                                                                             tooltip="View History"
                                                                             (click)="viewMatrixDataHistory(data);extralargepopup(template4)">
@@ -1714,43 +1705,52 @@
                                                                 </tr>
 
                                                                 <tr class="p-selectable-row"
-                                                                    [class.trhidden]="srcCombData.showElement == false"
-                                                                    *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
-                                                                    <td *ngFor="let header of matrixTableData">
+                                                                    [class.trhidden]="srcCombData.showElement == false || srcCombData.active == false"
+                                                                    *ngFor="let srcCombData of matrixsdmSourceCombinationList | paginate: { itemsPerPage: 10, currentPage: p }; let rowIndex = index;">
+                                                                    <td *ngFor="let header of sourceFieldListData">
                                                                         <span
-                                                                            *ngIf="header == 'payrollArea' && srcCombData.showElement == true">{{srcCombData.payrollAreaId}}</span>
+                                                                            *ngIf="header == 'payrollArea' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.payrollAreaId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Establishment' && srcCombData.showElement == true">{{srcCombData.establishmentMasterId}}</span>
+                                                                            *ngIf="header == 'Establishment' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.establishmentMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'SubLocation' && srcCombData.showElement == true">{{srcCombData.subLocationMasterId}}</span>
+                                                                            *ngIf="header == 'SubLocation' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.subLocationMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Location' && srcCombData.showElement == true">{{srcCombData.subLocationMasterId}}</span>
+                                                                            *ngIf="header == 'Location' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.subLocationMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'WorkLocation' && srcCombData.showElement == true">{{srcCombData.workLocationMasterId}}</span>
+                                                                            *ngIf="header == 'WorkLocation' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.workLocationMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'BusinessArea' && srcCombData.showElement == true">{{srcCombData.businessAreaMasterId}}</span>
+                                                                            *ngIf="header == 'BusinessArea' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.businessAreaMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'SubArea' && srcCombData.showElement == true">{{srcCombData.subAreaId}}</span>
+                                                                            *ngIf="header == 'SubArea' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.subAreaId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'StrategicBusinessUnit' && srcCombData.showElement == true">{{srcCombData.strategicBusinessUnitId}}</span>
+                                                                            *ngIf="header == 'StrategicBusinessUnit' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.strategicBusinessUnitId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Division' && srcCombData.showElement == true">{{srcCombData.divisionMasterId}}</span>
+                                                                            *ngIf="header == 'Division' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.divisionMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Department' && srcCombData.showElement == true">{{srcCombData.departmentMasterId}}</span>
+                                                                            *ngIf="header == 'Department' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.departmentMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'SubDepartment' && srcCombData.showElement == true">{{srcCombData.subDepartmentId}}</span>
+                                                                            *ngIf="header == 'SubDepartment' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.subDepartmentId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'CostCentre' && srcCombData.showElement == true">{{srcCombData.costCentreId}}</span>
+                                                                            *ngIf="header == 'CostCentre' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.costCentreId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'SubCostCenter' && srcCombData.showElement == true">{{srcCombData.subCostCenterId}}</span>
+                                                                            *ngIf="header == 'SubCostCenter' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.subCostCenterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'ProfitCentre' && srcCombData.showElement == true">{{srcCombData.profitCentreMasterId}}</span>
+                                                                            *ngIf="header == 'ProfitCentre' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.profitCentreMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Grade' && srcCombData.showElement == true">{{srcCombData.gradeMasterId}}</span>
+                                                                            *ngIf="header == 'Grade' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.gradeMasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Designation1' && srcCombData.showElement == true">{{srcCombData.designation1MasterId}}</span>
+                                                                            *ngIf="header == 'Designation1' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.designation1MasterId}}</span>
                                                                         <span
-                                                                            *ngIf="header == 'Designation2' && srcCombData.showElement == true">{{srcCombData.designation2MasterId}}</span>
+                                                                            *ngIf="header == 'Designation2' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.designation2MasterId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'functionName' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.spAndFunctionMasterId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'genderType' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.genderId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTaxCategoryId' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.employeeTaxCategoryId}}</span>
+
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTypeId' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.employeeTypeId}}</span>
                                                                     </td>
                                                                     <td
                                                                         *ngIf="isRangeApplicableFlag == true && srcCombData.showElement == true">
@@ -1768,7 +1768,8 @@
                                                                             [ngClass]="{'is-invalid': srcCombData.invalidTorange}"
                                                                             (focusout)="sourceRangeToData($event.target.value,rowIndex,srcCombData)">
                                                                     </td>
-                                                                    <td *ngIf='srcCombData.showElement == true'>
+                                                                    <td
+                                                                        *ngIf='srcCombData.showElement == true && !noDerivedFlag'>
                                                                         <div class="input-group">
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="!showDropdown && !showSearchLeans"
@@ -1789,7 +1790,7 @@
                                                                                 <button class="btn btn-primary"
                                                                                     type="button">
                                                                                     <span class="fe fe-search"
-                                                                                        (click)="largepopup (template1,rowIndex,srcCombData)"><i></i>
+                                                                                        (click)="largepopup (template1,rowIndex,srcCombData,'matrixsdmSourceCombinationList')"><i></i>
                                                                                     </span>
                                                                                 </button>
                                                                             </span>
@@ -1805,7 +1806,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td class="p-d-inline-flex"
-                                                                        *ngIf='srcCombData.showElement == true'>
+                                                                        *ngIf='srcCombData.showElement == true && !noDerivedFlag && !noDerivedFlag'>
                                                                         <div class="p-d-inline-flex">
                                                                             <span
                                                                                 *ngIf='isRangeApplicableFlag != true'><i
@@ -1834,7 +1835,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td *ngIf='srcCombData.showElement == true'>
+                                                                    <td *ngIf='srcCombData.showElement == true && !noDerivedFlag'>
                                                                         <div
                                                                             class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                                             <div class="input-group">
@@ -1855,7 +1856,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class="text-center"
-                                                                        *ngIf='srcCombData.showElement == true'>
+                                                                        *ngIf='srcCombData.showElement == true && !noDerivedFlag'>
                                                                         <i [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '"
                                                                             [ngClass]="{'cursor-pointer': addbtnflag && selectedIndex == rowIndex, 'cursorStyle': selectedIndex != rowIndex }"
                                                                             class="fa fa-plus-circle font-18 text-dark-green  "
@@ -1903,6 +1904,16 @@
                                                                             *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>
+
+                                                                        <span
+                                                                            *ngIf="header == 'functionName'">{{data.selectedCombData.spAndFunctionMasterId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'genderType'">{{data.selectedCombData.genderId}}</span>
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTaxCategoryId'">{{data.selectedCombData.employeeTaxCategoryId}}</span>
+
+                                                                        <span
+                                                                            *ngIf="header == 'employeeTypeId'">{{data.selectedCombData.employeeTypeId}}</span>
                                                                     </td>
                                                                     <td>{{data.sourceRangeFrom}}</td>
                                                                     <td>{{data.sourceRangeTo}}</td>
@@ -1914,8 +1925,8 @@
                                                                     <td></td>
                                                                 </tr>
 
-                                                            </ng-template>
-                                                            <ng-template pTemplate="emptymessage">
+                                                            </tbody>
+                                                            <!-- <ng-template pTemplate="emptymessage">
                                                                 <tr>
                                                                     <td colspan="15"
                                                                         class="font-14 font500 text-center text-red">
@@ -1923,9 +1934,14 @@
                                                                             Available</span>
                                                                     </td>
                                                                 </tr>
-                                                            </ng-template>
-                                                        </p-table>
+                                                            </ng-template> -->
+                                                        </table>
                                                         <br>
+                                                       
+                                                        <span> Showing {{p}} of {{sdmSourceCombinationListData.length}} entries</span>
+                                                        <pagination-controls (pageChange)="p = $event">
+                                                            
+                                                        </pagination-controls>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1943,14 +1959,16 @@
                                                     <!-- [disabled]="saveMatrixData.length == 0" -->
                                                     <!-- <pre>{{selectedFromDateForSave == '' && selectedToDateForSave == ''}}</pre> -->
                                                     <!-- [ngClass]="{'disabled-btn-bg-green' : saveMatrixData.length == 0 || (selectedFromDateForSave == '' && selectedToDateForSave == '')}" -->
+
+                                                    <!-- <button type="submit"
+                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                        tooltip="Reset"><b>
+                                                            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp; -->
+
                                                     <button type="submit" (click)="saveMatrix()"
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                         tooltip="Save"><b>
                                                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                                                    <button type="submit"
-                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                        tooltip="Reset"><b>
-                                                            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
                                                 </div>
                                             </div>
 
@@ -1982,9 +2000,9 @@
 <div id="tblData" style="display: none;">
     <table>
         <thead>
-            <tr>
-                <th colspan="5" style="border: 1px solid black; background-color: yellow;">Source Fields</th>
-            </tr>
+            <!-- <tr>
+                <th colspan="10" style="border: 1px solid black; background-color: yellow;">Source Fields</th>
+            </tr> -->
             <tr>
                 <th rowspan="2" style="border: 1px solid black;background-color: yellow;"
                     *ngFor="let header of sourceFieldListData">
@@ -2013,6 +2031,11 @@
                     <span *ngIf="header == 'Grade'">{{srcCombData.gradeMasterId}}</span>
                     <span *ngIf="header == 'Designation1'">{{srcCombData.designation1MasterId}}</span>
                     <span *ngIf="header == 'Designation2'">{{srcCombData.designation2MasterId}}</span>
+                    <span *ngIf="header == 'functionName'">{{srcCombData.spAndFunctionMasterId}}</span>
+                    <span *ngIf="header == 'genderType'">{{srcCombData.genderId}}</span>
+                    <span *ngIf="header == 'employeeTaxCategoryId'">{{srcCombData.employeeTaxCategoryId}}</span>
+
+                    <span *ngIf="header == 'employeeTypeId'">{{srcCombData.employeeTypeId}}</span>
                 </td>
             </tr>
         </tbody>
@@ -2094,6 +2117,16 @@
                         *ngIf="header == 'Designation1' && data.showElement == true">{{data.selectedCombData.designation1MasterId}}</span>
                     <span
                         *ngIf="header == 'Designation2' && data.showElement == true">{{data.selectedCombData.designation2MasterId}}</span>
+
+                    <span
+                        *ngIf="header == 'functionName' && data.showElement == true">{{data.selectedCombData.spAndFunctionMasterId}}</span>
+                    <span
+                        *ngIf="header == 'genderType' && data.showElement == true">{{data.selectedCombData.genderId}}</span>
+                    <span
+                        *ngIf="header == 'employeeTaxCategoryId' && data.showElement == true">{{data.selectedCombData.employeeTaxCategoryId}}</span>
+
+                    <span
+                        *ngIf="header == 'employeeTypeId' && data.showElement == true">{{data.selectedCombData.employeeTypeId}}</span>
                 </td>
                 <td *ngIf="isRangeApplicableFlag == true && data.showElement == true" style="border: 1px solid black;">
                     {{data.sourceRangeFrom}}
@@ -2151,6 +2184,16 @@
                         *ngIf="header == 'Designation1' && srcCombData.showElement == true">{{srcCombData.designation1MasterId}}</span>
                     <span
                         *ngIf="header == 'Designation2' && srcCombData.showElement == true">{{srcCombData.designation2MasterId}}</span>
+
+                    <span
+                        *ngIf="header == 'functionName' && srcCombData.showElement == true">{{srcCombData.spAndFunctionMasterId}}</span>
+                    <span
+                        *ngIf="header == 'genderType' && srcCombData.showElement == true">{{srcCombData.genderId}}</span>
+                    <span
+                        *ngIf="header == 'employeeTaxCategoryId' && srcCombData.showElement == true">{{srcCombData.employeeTaxCategoryId}}</span>
+
+                    <span
+                        *ngIf="header == 'employeeTypeId' && srcCombData.showElement == true">{{srcCombData.employeeTypeId}}</span>
                 </td>
                 <td *ngIf="isRangeApplicableFlag == true && srcCombData.showElement == true"
                     style="border: 1px solid black;">
@@ -2181,7 +2224,7 @@
 
                         <span class="input-group-append" *ngIf="showSearchLeans">
                             <button class="btn btn-primary" type="button">
-                                <span class="fe fe-search" (click)="largepopup (template1,rowIndex,srcCombData)"><i></i>
+                                <span class="fe fe-search" (click)="largepopup (template1,rowIndex,srcCombData,'matrixsdmSourceCombinationList')"><i></i>
                                 </span>
                             </button>
                         </span>
@@ -2256,6 +2299,13 @@
                     <span *ngIf="header == 'Grade'">{{data.selectedCombData.gradeMasterId}}</span>
                     <span *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
                     <span *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>
+
+                    <span *ngIf="header == 'functionName'">{{data.selectedCombData.spAndFunctionMasterId}}</span>
+                    <span *ngIf="header == 'genderType'">{{data.selectedCombData.genderId}}</span>
+                    <span
+                        *ngIf="header == 'employeeTaxCategoryId'">{{data.selectedCombData.employeeTaxCategoryId}}</span>
+
+                    <span *ngIf="header == 'employeeTypeId'">{{data.selectedCombData.employeeTypeId}}</span>
                 </td>
                 <td style="border: 1px solid black;">{{data.sourceRangeFrom}}</td>
                 <td style="border: 1px solid black;">{{data.sourceRangeTo}}</td>
@@ -2580,6 +2630,16 @@
                                                 *ngIf="header == 'Designation1'">{{history.selectedCombData.designation1MasterId}}</span>
                                             <span
                                                 *ngIf="header == 'Designation2'">{{history.selectedCombData.designation2MasterId}}</span>
+
+                                            <span
+                                                *ngIf="header == 'functionName'">{{history.selectedCombData.spAndFunctionMasterId}}</span>
+                                            <span
+                                                *ngIf="header == 'genderType'">{{history.selectedCombData.genderId}}</span>
+                                            <span
+                                                *ngIf="header == 'employeeTaxCategoryId'">{{history.selectedCombData.employeeTaxCategoryId}}</span>
+
+                                            <span
+                                                *ngIf="header == 'employeeTypeId'">{{history.selectedCombData.employeeTypeId}}</span>
                                         </td>
                                         <td *ngIf="isRangeApplicableFlag == true">
                                             {{history.sourceRangeFrom}}

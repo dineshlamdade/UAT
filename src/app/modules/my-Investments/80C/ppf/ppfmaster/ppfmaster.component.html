@@ -687,7 +687,7 @@
                                         <!-- <th scope="col" class="wd-10">Frequency</th> -->
                                         <th  colspan="2" class="wd-10">Premium</th>
                                         <!-- <th rowspan="2" scope="col" class="wd-10">Amount</th> -->
-                                        <th rowspan="2" scope="col" class="wd-10">Remark</th>
+                                        <th rowspan="2" scope="col" class="wd-4">Remark</th>
                                         <th rowspan="2" scope="col" class="wd-10">Status</th>
                                         <th rowspan="2" scope="col" class="wd-5">Action</th>
                                     </tr>
@@ -727,7 +727,8 @@
                                         <!-- <td class="wd-10 align-left"><span tooltip="Remark">{{summary.remark}}</span>
                                         </td> -->
                                         <td>
-                                          <div class="d-flex">
+                                          <div class="d-flex"
+                                          class="align-center">
                                             <!-- <input
                                             style="width:100px;"
                                               type="text"
@@ -756,7 +757,8 @@
                                                     docRemarkModal(
                                                       template8,
                                                       documentDetailIndex,
-                                                      summary?.investmentGroup1MasterId
+                                                      summary?.investmentGroup1MasterId,
+                                                      summary, i
                                                     )
                                                   "
                                                   class="
@@ -773,7 +775,7 @@
                                                 class="Label_badge"
                                                 >{{
                                                 
-                                                  remarkCount
+                                                  summary?.bubbleRemarkCount
                                                 }}</span
                                               >
                                             </div>
@@ -781,10 +783,11 @@
                                         </td>
                                         <!-- <td><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
                                         </td> -->
-                                        <td class="wd-10 text-light-green font700 align-left" [ngClass]="{'badge-reOpen': summary.masterStatus=='Re-Open',
-                                        'badge-approved': summary.masterStatus=='Approved',
-                                        'badge-sendBack': summary.masterStatus=='SendBack',
-                                        'badge-submitted': summary.masterStatus=='Submitted'}"><span tooltip="masterStatus">{{summary.masterStatus}}</span></td>
+                                        <td class="wd-10 text-light-green font700 align-left"><span class="badge" [ngClass]="{'badge-primary': summary.masterStatus=='Re-Open',
+                                        ' badge-success': summary.masterStatus=='Approved',
+                                        'badge-danger': summary.masterStatus=='SendBack',
+                                        'badge-info': summary.masterStatus=='Submitted',
+                                        'badge-warning': summary.masterStatus=='Pending'}" tooltip="masterStatus">{{summary.masterStatus}}</span></td>
                                         <td>
                                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)=" editMaster(summary.accountNumber, summary.frequencyOfPayment )" tooltip="Edit"></i> &nbsp;&nbsp;
                                         </td>
@@ -1003,7 +1006,7 @@
     </button>
     </div>
 </ng-template>
-<ng-template #template8>
+<!-- <ng-template #template8>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">View Remark</h5>
     <button
@@ -1057,4 +1060,89 @@
       Ok
     </button>
   </div>
+</ng-template> -->
+
+<!-- Remark Modal started -->
+<ng-template #template8>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngFor="let documentRemark of documentRemarkList">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="form-label"
+            >{{ documentRemark.role }}:
+            <b class="text-gray">{{
+              documentRemark.remarkBy
+            }}</b></span >
+        </div>
+        <div class="col-md-6">
+          <div class="float-right">
+            <span class="form-label">
+              Date:
+              <b class="text-gray">{{
+                documentRemark.remarkDate
+                  | date: "dd-MMM-yyyy HH:mm"
+              }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+        {{ documentRemark.remark }}
+        </textarea>
+      </div>
+    </div>
+    <div class="row mt-25">
+      <div class="col-md-12">
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
+        (change)= "
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        " class="form-control" placeholder="Remark"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
+  <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+    >
+      Save
+    </button>
+  </div>
 </ng-template>
+
