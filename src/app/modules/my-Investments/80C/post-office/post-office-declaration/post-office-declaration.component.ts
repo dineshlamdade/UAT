@@ -35,6 +35,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-declaration.component.scss'],
 })
 export class PostOfficeDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -190,6 +191,10 @@ export class PostOfficeDeclarationComponent implements OnInit {
   indexCount: any;
   editRemarkData: any;
   public remarkCount : any;
+  selectedremarkIndex : any;
+
+  currentJoiningDate: Date;
+  public ispreviousEmploy = true;
 
 
 
@@ -272,6 +277,27 @@ export class PostOfficeDeclarationComponent implements OnInit {
       });
     });
 
+     // Get API call for All Current previous employee Names
+     this.postOfficeService.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
+
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
@@ -313,6 +339,10 @@ export class PostOfficeDeclarationComponent implements OnInit {
       { label: 'Approved', value: 'Approved' },
       { label: 'Send back', value: 'Send back' },
     ];
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // ------- On declaration page get API call for All Institutions added into Master-------
@@ -779,8 +809,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -920,6 +951,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.postOfficeService.getpostOfficeRecurringDepositRemarkList(
       investmentGroup1TransactionId,
     ).subscribe((res) => {
@@ -1134,14 +1166,14 @@ export class PostOfficeDeclarationComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
   }
 
-  onSaveRemarkDetails(){
+  onSaveRemarkDetails(summary, index){
     
     const data ={
       "transactionId": this.summaryDetails.investmentGroup1TransactionId,
       "masterId":0,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
       "section":"80C",
-      "subSection":"PostOfficeRecurringDeposit",
+      "subSection":"POSTOFFICERECURRINGDEPOSIT",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
@@ -1152,6 +1184,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1568,6 +1602,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
         this.transactionDetail =
           res.data.results[0].investmentGroupTransactionDetail;
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1861,10 +1897,13 @@ export class PostOfficeDeclarationComponent implements OnInit {
   ) {
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(
-      this.transactionDetail[j].groupTransactionList[i].dateOfPayment
-    );
-  }
+      console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+      if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+        this.ispreviousEmploy = false;
+      } else {
+        this.ispreviousEmploy = true;
+      }
+    }
 }
 
 class DeclarationService {

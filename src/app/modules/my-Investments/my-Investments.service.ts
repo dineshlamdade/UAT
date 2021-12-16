@@ -14,6 +14,8 @@ export class MyInvestmentsService {
   }
 public apiUrl = environment.baseUrl8085;
 
+public apiUrl1 = environment.baseUrl8082;
+
   constructor(private _HTTP: HttpClient) { }
 
   public getBlobSASUrl(): Observable<any> {
@@ -309,6 +311,14 @@ public apiUrl = environment.baseUrl8085;
   getpreviousEmployeName() {
 
     return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  getcurrentpreviousEmployeName() {
+
+    return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
     .pipe(map((res: any) => {
       return res;
     }));

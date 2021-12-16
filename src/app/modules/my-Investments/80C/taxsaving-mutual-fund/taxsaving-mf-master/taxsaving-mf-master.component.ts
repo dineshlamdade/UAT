@@ -33,6 +33,7 @@ import { PostOfficeService } from '../../post-office/post-office.service';
   styleUrls: ['./taxsaving-mf-master.component.scss'],
 })
 export class TaxsavingMfMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
 
 
@@ -133,6 +134,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   financialYearEnd: any;
   ConvertedFinancialYearEndDate: Date;
   public proofSubmissionId;
+  selectedremarkIndex : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -427,6 +429,11 @@ export class TaxsavingMfMasterComponent implements OnInit {
     return this.form.controls;
   }
 
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
   //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
@@ -472,6 +479,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.Service.getElssMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -743,7 +751,9 @@ export class TaxsavingMfMasterComponent implements OnInit {
     this.Service
     .postLicMasterRemark(data)
     .subscribe((res) => {
-      if(res.data.results.length) {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',

@@ -34,6 +34,7 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppmaster.component.scss'],
 })
 export class PpmasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
 
@@ -79,6 +80,8 @@ export class PpmasterComponent implements OnInit {
 
   viewDocumentName: any;
   viewDocumentType: any;
+
+  selectedremarkIndex : any;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -438,6 +441,10 @@ export class PpmasterComponent implements OnInit {
   this.minFormDate = this.form.get('policyStartDate').value;
 }
 
+onResetRemarkDetails() {
+  this.enteredRemark = '';
+}
+
 //----------- On change Transactional Line Item Remark --------------------------
 public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     
@@ -461,6 +468,7 @@ public docRemarkModal(
 ) {
   this.summaryDetails = summary;
   this.indexCount = count;
+  this.selectedremarkIndex = count;
   this.Service.getpensionPlanMasterRemarkList(
     masterId,
   ).subscribe((res) => {
@@ -744,6 +752,8 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       .postLicMasterRemark(data)
       .subscribe((res) => {
         if(res.status.code == "200") {
+          console.log(this.masterGridData);
+          this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
           this.alertService.sweetalertMasterSuccess(
             'Remark Saved Successfully.',
             '',

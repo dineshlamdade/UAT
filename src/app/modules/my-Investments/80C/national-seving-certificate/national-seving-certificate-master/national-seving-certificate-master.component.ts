@@ -33,6 +33,7 @@ import { NscService } from '../nsc.service';
   styleUrls: ['./national-seving-certificate-master.component.scss'],
 })
 export class NationalSevingCertificateMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -110,6 +111,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  selectedremarkIndex : any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -352,6 +354,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   ) {
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.nscService.getNscMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -411,6 +414,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     if (from > to) {
       this.form.controls.toDate.reset();
     }
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
@@ -626,6 +633,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
