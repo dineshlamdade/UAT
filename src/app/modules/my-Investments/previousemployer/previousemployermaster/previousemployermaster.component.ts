@@ -85,13 +85,20 @@ export class PreviousemployermasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  documentArray: any[] =[];
 
-  public documentRemark: any;
+  
   public isECS = true;
 
   public then: any;
 
+  public documentRemark: any;
+  public documentPassword = [];
+  public remarkList = [];
+
   public masterfilesArray: File[] = [];
+  public PremiumFileArray: File[] = [];
+
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
@@ -131,6 +138,7 @@ export class PreviousemployermasterComponent implements OnInit {
   public dateOfJoining: Date;
   public dateOfLeaving: Date;
   public typeOfRegime: string;
+  remark:any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -146,6 +154,11 @@ export class PreviousemployermasterComponent implements OnInit {
   imageFile: any;
 
   public previousEmployList: Array<any> = [];
+  summaryDetails: any;
+  indexCount: any;
+  documentRemarkList: any;
+  remarkCount: any;
+  editRemarkData: any;
 
 
   constructor(
@@ -171,7 +184,10 @@ export class PreviousemployermasterComponent implements OnInit {
       dateOfJoining: new FormControl(null, Validators.required),
       dateOfLeaving: new FormControl(null, Validators.required),
       typeOfRegime: new FormControl(null, Validators.required),
+      remark: new FormControl(null, Validators.required),
       proofSubmissionId : new FormControl(""),
+      documentPassword: new FormControl([]),
+      remarkList: new FormControl([]),
      
     });
 
@@ -221,11 +237,79 @@ export class PreviousemployermasterComponent implements OnInit {
       this.masterGridData.forEach((element) => {
         if (element.possessionDate !== null) {
           element.possessionDate = new Date(element.possessionDate);
+          element.documentInformationList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+    
+            })
+          });
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
         }
+        });
       });
-    });
-  }
+    }
 
+    public docRemarkModal(
+      documentViewerTemplate: TemplateRef<any>,
+      index: any,
+      masterId,
+      summary, count
+    ) {
+  
+  
+       this.summaryDetails = summary;
+      this.indexCount = count;
+      this.previousEmployerService.getpreviousEmpRemarkList(
+        masterId,
+      ).subscribe((res) => {
+        console.log('docremark', res);
+        
+      
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+      });
+      // console.log('documentDetail::', documentRemarkList);
+      // this.documentRemarkList = this.selectedRemarkList;
+      console.log('this.documentRemarkList', this.documentRemarkList);
+      this.modalRef = this.modalService.show(
+        documentViewerTemplate,
+        Object.assign({}, { class: 'gray modal-s' })
+      );
+    }
+
+
+     //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+   
+ 
+  }
   // ------------------------------------Master----------------------------
   //------------------- convenience getter for easy access to previousEmployerDetailsform fields -----------------
   get previousEmployerDetailsMaster() {
@@ -233,6 +317,7 @@ export class PreviousemployermasterComponent implements OnInit {
   }
   //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    this.masterPage();
     console.log('addMaster::', formData);
     this.previousEmployerDetailssubmitted = true;
 
@@ -243,12 +328,19 @@ export class PreviousemployermasterComponent implements OnInit {
 
     data.dateOfJoining = new Date(data.dateOfJoining);
     data.dateOfLeaving = new Date(data.dateOfLeaving);
-  
+    data.documentPassword = this.documentPassword;
+    data.remarkList = this.remarkList;
+    
+    data.remark = this.remark;
+
     console.log("data::::", data)
-    this.previousEmployerService
-      .submitPreviousEmployerDetailData(this.masterfilesArray, data)
-      .subscribe((res) => {
-        console.log(' ', res);
+    // this.previousEmployerService
+    //   .submitPreviousEmployerDetailData(this.masterfilesArray ,this.PremiumFileArray, data)
+    //   .subscribe((res) => {
+    //     console.log(' ', res);
+    this.previousEmployerService.submitPreviousEmployerDetailData(this.masterfilesArray,this.PremiumFileArray,data)
+    .subscribe((res)=>{
+      console.log(res);
 
         if (res) {
           if (res.data.results.length > 0) {
@@ -259,10 +351,53 @@ export class PreviousemployermasterComponent implements OnInit {
               /*  element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate); */
             });
+
+            // Remark and password Functionality
+
+            if (res.data.results.length > 0) {
+              this.masterGridData = res.data.results;
+          
+              this.masterGridData.forEach((element, index) => {
+                this.documentArray.push({
+                
+                  'dateofsubmission':new Date(),
+                    'documentType':element.documentInformationList[0].documentType,
+                    'documentName': element.documentInformationList[0].fileName,
+                    'documentPassword':element.documentInformationList[0].documentPassword,
+                    'documentRemark':element.documentInformationList[0].documentRemark,
+                    'status' : element.documentInformationList[0].status,
+                    'approverName' : element.documentInformationList[0].lastModifiedBy,
+                    'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                    // 'documentStatus' : this.premiumFileStatus,
+            
+                });
+
+                if(element.documentInformationList[1]) {
+                this.documentArray.push({
+                
+                  'dateofsubmission':new Date(),
+                    'documentType':element.documentInformationList[1].documentType,
+                    'documentName': element.documentInformationList[1].fileName,
+                    'documentPassword':element.documentInformationList[1].documentPassword,
+                    'documentRemark':element.documentInformationList[1].documentRemark,
+                    'status' : element.documentInformationList[1].status,
+                    'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                    'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                    // 'documentStatus' : this.premiumFileStatus,
+            
+                });
+              }
+              });
+            }
+
             this.alertService.sweetalertMasterSuccess(
               'Record saved Successfully.',
               'Go to "Transaction" Page to see Schedule.'
             );
+            this.masterPage();
+
           } else {
             this.alertService.sweetalertWarning(res.status.messsage);
           }
@@ -281,7 +416,42 @@ export class PreviousemployermasterComponent implements OnInit {
     /*     this.paymentDetailGridData = []; */
     this.masterfilesArray = [];
     this.submitted = false;
+    
   }
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.previousEmployerMasterDetailId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"Previous",
+      "subSection":"Employer",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.previousEmployerService
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+    this.masterPage();
+  }
+
+
+
   
  /* ....... Previous Employer Name........ */  
     OnSelectionPreviousEmployment() {     

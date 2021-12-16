@@ -96,6 +96,14 @@
       
     </fieldset>
     <div class="row mt-30">
+        <div class="col-md-6">
+          <h3 class="font-14 text-purple font-bold">Remark</h3>
+        </div>
+        <div class="col-md-7">
+          <textarea class="form-control" formControlName="remark" [(ngModel)]="remark" rows="1" style="width:45%;"></textarea>
+        </div>
+    </div>
+    <div class="row mt-30">
         <div class="col-12">
             <div class="card">
                 <div class="mb-10 row">
@@ -167,10 +175,12 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="wd-10">Sr.No.</th>
+                            <th scope="col" class="wd-10">PS.ID.</th>
                             <th scope="col" class="wd-15">Employer Name</th>
                             <th scope="col" class="wd-20">Date Of Joining</th>
                             <th scope="col" class="wd-20">Date Of Leaving</th>
                             <th scope="col" class="wd-15">Regime</th>
+                            <th scope="col" class="wd-15">Remark</th>
                             <th scope="col" class="wd-15">Action</th>
                         </tr>
                     </thead>
@@ -181,6 +191,9 @@
                    {{i+1}}
                 </span>
                             </td>
+                            <td>
+                                <span><span tooltip="{{summary.proofSubmissionId }}">{{summary.proofSubmissionId}}</span></span>
+                            </td>
                             <td class="wd-10">
                                 <span><span tooltip="{{summary.name}}">{{summary.name}}</span></span>
                             </td>
@@ -190,9 +203,63 @@
                             <td class="wd-15">
                                 <span><span tooltip="{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}">{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}</span></span>
                             </td>
-                            <td class="wd-15 align-right">
+                            <td class="wd-15 align-center">
                                 <span><span tooltip="{{summary.typeOfRegime}}">{{summary.typeOfRegime}}</span></span>
                             </td>
+                            <td style="align-items: center;">
+                                <div class="text-center">
+                                  <!-- <input
+                                  style="width:100px;"
+                                    type="text"
+                                    class="form-control"
+                                    disabled
+                                    
+                                    (change)="
+                                    onChangeDocumentRemark(
+                                        summary, i,
+                                        $event
+                                      )
+                                    "
+                                  
+                                  /> -->
+                                  <div
+                                    _ngcontent-ykc-c443=""
+                                    class="
+                                      custom_Label_badge
+                                      mr-2
+                                      ml-2
+                                    "
+                                  >
+                                    <b>
+                                      <i
+                                        (click)="
+                                          docRemarkModal(
+                                            template8,
+                                            documentDetailIndex,
+                                            summary?.previousEmployerMasterDetailId,
+                                            summary
+                                          )
+                                        "
+                                        class="
+                                          fa fa-commenting
+                                          text-dark-green
+                                          fa-2x
+                                          cursor-pointer
+                                        "
+                                      >
+                                      </i
+                                    ></b>
+                                    <span
+                                      _ngcontent-ykc-c443=""
+                                      class="Label_badge"
+                                      >{{
+                                      
+                                        summary?.bubbleRemarkCount
+                                      }}</span
+                                    >
+                                  </div>
+                                </div>
+                              </td>
                             <td class="wd-10">
                                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;
                             </td>
@@ -210,7 +277,7 @@
 </form>
 
 
-<ng-template #previousEmployerDetailsIndex>
+<!-- <ng-template #previousEmployerDetailsIndex>
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -221,9 +288,7 @@
         <div class="card">
             <div class="card-body">
                <div class="row clearfix">
-                  <!-- <div class="col-md-12">
-                        <label class="form-label">Upload File here :</label>
-                        </div> -->
+                 
                   <div class="col-md-12">
                      <div class="fileuploadbox bg-color-lightgray">
                         <label class="filelabel">
@@ -268,4 +333,156 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
     </div>
-</ng-template>
+</ng-template> -->
+
+<ng-template #previousEmployerDetailsIndex>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+            <!-- <div class="col-md-12">
+           <label class="form-label">Upload File here :</label>
+        </div> -->
+            <div class="col-md-12">
+              <div class="fileuploadbox bg-color-lightgray">
+                <label class="filelabel">
+                  <i class="fa fa-upload">
+                  </i>
+                  <span class="title">
+                      Choose file
+                    </span>
+                  <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                         accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                </label>
+              </div>
+              <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                <span class="text-purple font-14 font700">Selected Files</span>
+                <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                  <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                    <span class="title" tooltip="{{item.name}}">
+                        {{ item.name }}
+                      </span>
+                    <div>
+                      <div style="float: left; width: 40%;">
+                        <div class="col-md-8 mt-10">
+                          <label class="form-label">Password</label>
+                        </div>
+                        <div class="col-md-12">
+                          <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
+                        </div>
+  
+                      </div>
+                      <div style="float: right; width: 40%; margin-right: 59px">
+                        <div class="col-md-8 mt-10">
+                          <label class="form-label">Remark</label>
+                        </div>
+                        <div class="col-md-12">
+                          <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <i class="fa fa-times text-red font-18" (click)="removeSelectedRentAgreementDocumentDetailDocument(index)"></i>
+                  </div>
+                </label>
+  
+  
+              </div>
+            </div>
+            <!-- <div class="col-md-12 mt-10">
+                <label class="form-label">Remark</label>
+            </div>
+            <div class="col-md-12">
+                <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #template8>
+    <div class="modal-header">
+      <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+      <button
+        type="button"
+        (click)="modalRef.hide()"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  
+    <div class="card-body">
+      <div *ngFor="let documentRemark of documentRemarkList">
+        <div class="row">
+          <div class="col-md-6">
+            <span class="form-label"
+              >{{ documentRemark.role }}:
+              <b class="text-gray">{{
+                documentRemark.remarkBy
+              }}</b></span >
+          </div>
+          <div class="col-md-6">
+            <div class="float-right">
+              <span class="form-label">
+                Date:
+                <b class="text-gray">{{
+                  documentRemark.remarkDate
+                    | date: "dd-MMM-yyyy HH:mm"
+                }}</b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <textarea class="form-control remarktext" disabled>
+          {{ documentRemark.remark }}
+          </textarea>
+        </div>
+      </div>
+      <div class="row mt-25">
+        <div class="col-md-12">
+          <input type="text" 
+          (change)= "
+          onChangeDocumentRemark(
+            this.summaryDetails, this.indexCount,
+              $event
+            )
+          " class="form-control" placeholder="Remark">
+        </div>
+      </div>
+    </div>
+  <!-- 
+    <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="modalRef.hide()"
+      >
+        Ok
+      </button>
+    </div> -->
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+      >
+        Save
+      </button>
+    </div>
+  </ng-template>
