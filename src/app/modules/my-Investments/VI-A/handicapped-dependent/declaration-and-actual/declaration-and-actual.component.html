@@ -95,10 +95,64 @@
                   <input type="text" value="{{ element.amountApproved | number: '1.2-2' }}"
                     class="form-control align-right" disabled />
                 </td>
-                <td>
+                <!-- <td>
                   <span tooltip="{{ element.remark }}">
                     {{ element.remark }}
                   </span>
+                </td> -->
+                <td>
+                  <div class="d-flex"
+                  class="align-center">
+                    <!-- <input
+                    style="width:100px;"
+                      type="text"
+                      class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      
+                      (change)="
+                      onChangeDocumentRemark(
+                          summary, i,
+                          $event
+                        )
+                      "
+                    
+                    /> -->
+                    <div
+                      _ngcontent-ykc-c443=""
+                      class="
+                        custom_Label_badge
+                        mr-2
+                        ml-2
+                      "
+                    >
+                      <b>
+                        <i
+                          (click)="
+                            docRemarkModal(
+                              template8,
+                              documentDetailIndex,
+                              element?.handicappedDependentTransactionId,
+                              element, i
+                            )
+                          "
+                          class="
+                            fa fa-commenting
+                            text-dark-green
+                            fa-2x
+                            cursor-pointer
+                          "
+                        >
+                        </i
+                      ></b>
+                      <span
+                        _ngcontent-ykc-c443=""
+                        class="Label_badge"
+                        >{{
+                          summary?.bubbleRemarkCount
+                        }}</span
+                      >
+                    </div>
+                  </div>
                 </td>
                 <!-- <td>
                   <span tooltip="{{ element.proofSubmissionId }}"
@@ -365,10 +419,11 @@
                       <b>
                         <i
                           (click)="
-                            docRemarkModal(
+                            docRemarkModal2(
                               template8,
                               documentDetailIndex,
-                              summary?.proofSubmissionId, item?.policyNo
+                              summary?.handicappedDependentTransactionId,
+                              summary, i
                             )
                           "
                           class="

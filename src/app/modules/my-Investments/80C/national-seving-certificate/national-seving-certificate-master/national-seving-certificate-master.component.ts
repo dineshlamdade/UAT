@@ -640,6 +640,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

@@ -936,7 +936,7 @@ this.paymentDetailGridData = obj.paymentDetails;
       "transactionId": 0,
       "masterId":this.summaryDetails.investmentGroup1MasterId,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
-      "section":"80C",
+      "section":"VIA",
       "subSection":"NPS",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
@@ -957,6 +957,7 @@ this.paymentDetailGridData = obj.paymentDetails;
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

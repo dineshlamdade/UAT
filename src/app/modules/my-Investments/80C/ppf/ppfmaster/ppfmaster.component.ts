@@ -760,6 +760,7 @@ export class PPFMasterComponent implements OnInit {
           '',
      
         );
+         this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

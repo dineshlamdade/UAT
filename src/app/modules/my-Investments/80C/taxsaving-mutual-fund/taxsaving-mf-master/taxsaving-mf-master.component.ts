@@ -759,6 +759,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{
