@@ -15,7 +15,8 @@ const headers = new Headers({
 export class ComplianceHeadService {
   public apiUrl3 = environment.baseUrl8086;
   public apistate=environment.baseUrl8082;
-
+//-http://localhost:8083/hrms/v1/location-master/
+public apiUrlcity = environment.baseUrl8083;
   constructor(private _HTTP: HttpClient) { 
     
   }
@@ -83,6 +84,7 @@ export class ComplianceHeadService {
 // }));
 //   }
 
+//-http://localhost:8083/hrms/v1/location-master/
   public getStatutoryFreq(): Observable<any>{
     return this._HTTP.get<any>(this.apiUrl3 + 'frequency-master/getAllActive');
   }
@@ -90,4 +92,9 @@ export class ComplianceHeadService {
   public getState():Observable<any>{
     return this._HTTP.get<any>(this.apistate + '/location-information/state/');
   }
+//State with City Api 
+  public getCitywithState():Observable<any>{
+    return this._HTTP.get<any>(environment.baseUrl8083 + 'location-master/1000');
+  }
+
 }
