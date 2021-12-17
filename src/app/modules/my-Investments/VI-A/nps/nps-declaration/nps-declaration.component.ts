@@ -36,6 +36,8 @@ import { NpsService } from '../nps.service';
   styleUrls: ['./nps-declaration.component.scss']
 })
 export class NpsDeclarationComponent implements OnInit {
+  public enteredRemark = '';
+
 
   @Input() institution: string;
   @Input() accountNumber: string;
@@ -71,6 +73,9 @@ export class NpsDeclarationComponent implements OnInit {
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -188,6 +193,11 @@ export class NpsDeclarationComponent implements OnInit {
   dateOfJoining: Date;
   selectedFrequency: any;
   Remark: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -621,6 +631,49 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
 
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup1TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"NPS",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[0][this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
     summary: {
@@ -712,6 +765,7 @@ export class NpsDeclarationComponent implements OnInit {
       investmentGroup1TransactionId: number;
       investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -733,6 +787,9 @@ export class NpsDeclarationComponent implements OnInit {
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].groupTransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -757,8 +814,9 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -1325,19 +1383,22 @@ export class NpsDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
-        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
+        this.documentRemark =res?.data?.results[0]?.documentInformation[0]?.documentRemark;
         this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
+          res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
         this.editTransactionUpload =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res?.data?.results[0]?.investmentGroupTransactionDetail;
         this.grandDeclarationTotalEditModal =
-          res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+          res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data.results[0].grandActualTotal;
         this.grandRejectedTotalEditModal =
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.createDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
 
         this.masterGridData = res.data.results;
@@ -1442,6 +1503,8 @@ export class NpsDeclarationComponent implements OnInit {
         this.transactionDetail =
           res.data.results[0].investmentGroupTransactionDetail;
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1500,15 +1563,19 @@ export class NpsDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    investmentGroup1TransactionId,
+    summary, count
   ) {
-
-    this.npsService.getnpsRemarkList(
-      transactionID,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.npsService.getNPSRemarkList(
+      investmentGroup1TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+      
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1601,13 +1668,17 @@ export class NpsDeclarationComponent implements OnInit {
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
         // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
@@ -1804,6 +1875,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

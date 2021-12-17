@@ -757,6 +757,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       investmentGroup2TransactionId: number;
       investmentGroup2MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -777,6 +778,9 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].group2TransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1187,6 +1191,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
 
@@ -1895,6 +1900,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

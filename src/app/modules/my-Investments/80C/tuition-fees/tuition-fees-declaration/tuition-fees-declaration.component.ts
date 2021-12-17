@@ -759,6 +759,7 @@ addRowInList(
     investmentGroup2TransactionId: number;
     investmentGroup2MasterPaymentDetailId: number;
     previousEmployerId: number;
+    employeeMasterId: number;
     dueDate: Date;
     declaredAmount: any;
     dateOfPayment: Date;
@@ -779,6 +780,9 @@ addRowInList(
   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
   this.shownewRow = true;
   this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+  this.declarationService.employeeMasterId = this.transactionDetail[
+    j
+  ].group2TransactionList[0].employeeMasterId;
   this.declarationService.declaredAmount = null;
   this.declarationService.dueDate = null;
   this.declarationService.actualAmount = null;
@@ -1157,6 +1161,7 @@ onSaveRemarkDetails(summary, index){
         'Remark Saved Successfully.',
         '',
       );
+      this.enteredRemark = '';
       this.modalRef.hide();
 
 
@@ -1838,6 +1843,7 @@ public isECS: 0;
 public transactionStatus: 'Pending';
 public amountRejected: number;
 public amountApproved: number;
+employeeMasterId: any;
 constructor(obj?: any) {
   Object.assign(this, obj);
 }
