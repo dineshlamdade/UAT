@@ -752,28 +752,44 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let a of stateName;">
+                  <tr *ngFor="let a of stateName1">
 
                     <td>
                       <div class="d-flex">
                         <!-- <i class="fas fa-chevron-right font-16 text-dark-green mr-2 mt-1" (click)="showAP()" *ngIf="!isshowAP"></i>
                                
                                 <i class="fas fa-chevron-down font-16 text-dark-green mr-2 mt-1" (click)="hideAP()" *ngIf="isshowAP"></i> -->
+                        <!-- <div class="form-group">
+                          <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" (change)="getStateName($event.target.value)"/>
+                            <span class="custom-control-label">{{a.stateName}}</span>
+                          </label>
+                        </div> -->
                         <div class="form-group">
                           <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" />
+                            <input type="checkbox" class="custom-control-input"/>
                             <span class="custom-control-label">{{a.stateName}}</span>
                           </label>
                         </div>
                       </div>
 
-                      <div class="float-right ml-13" *ngIf="isshowAP">
+                      <!-- <div class="float-right ml-13" *ngIf="isshowAP">
                         <div class="form-group">
                           <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" />
+                            <input type="checkbox" class="custom-control-input" (change)="getCityName($event.target.value)"/>
+                            
                             <span class="custom-control-label">{{a.cityName}}</span>
                           </label>
-                        </div>
+                        </div> -->
+                        <div class="float-right ml-13" *ngIf="isshowAP">
+                          <div class="form-group">
+                            <label class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input"/>
+                              
+                              <span class="custom-control-label">{{a.cityName}}</span>
+                            </label>
+                          </div>
+
                         <!-- <div class="form-group">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" />
