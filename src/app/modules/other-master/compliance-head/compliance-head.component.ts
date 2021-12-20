@@ -7,6 +7,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
+import { AnyMxRecord } from 'dns';
 
 interface City {
   name: string,
@@ -32,13 +33,13 @@ isshowAP:boolean= true;
   countries: Array<any> = [];
   summaryHtmlDataList: Array<any> = [];
   masterGridDataList: Array<any> = [];
-  shortNameList: Array<any> = ['PF', 'EPS', 'PT', 'TDS', 'ESIC', 'LWF', 'S&E', 'Factories', 'SA', 'Gratuity', 'BOCW', 'CLRA', 'EE', 'PWD'];
+ // shortNameList: Array<any> = ['PF', 'EPS', 'PT', 'TDS', 'ESIC', 'LWF', 'S&E', 'Factories', 'SA', 'Gratuity', 'BOCW', 'CLRA', 'EE', 'PWD'];
   aplicabilityLevelList: Array<any> = ['Central', 'State', 'City', 'Municipal Corporation', 'Establishment'];
   public form: any = FormGroup;
   showButtonSaveAndReset: boolean = true;
   isSaveAndReset: boolean = true;
   isEditMode: boolean = false;
-  invalidWebsite: boolean = false;
+  //invalidWebsite: boolean = false;
   editedComplianceHeadId: number = 0;
   hideRemark = false;
   public modalRef: BsModalRef;
@@ -56,6 +57,11 @@ isshowAP:boolean= true;
   frequencyData: any;
 
   State:any;
+  // stateName: any;
+  // cityName: any;
+  //stateName1:any='Haryana';
+  stateName1:any;
+ 
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
@@ -63,10 +69,10 @@ isshowAP:boolean= true;
      // shortName: new FormControl(null),
       country: new FormControl( '', Validators.required ),
       aplicabilityLevel: new FormControl( '', Validators.required ),
-      authorityHandling: new FormControl( null, Validators.required ),
-      website: new FormControl( '', [Validators.pattern( '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?' )] ),
+    //  authorityHandling: new FormControl( null, Validators.required ),
+     // website: new FormControl( '', [Validators.pattern( '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?' )] ),
 
-      // website: new FormControl('', [Validators.required, Validators.pattern('/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/')]),
+      //website: new FormControl('', [Validators.required, Validators.pattern('/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/')]),
       remark: new FormControl( { value: '', disabled: true } ),
       complianceActive: new FormControl( { value: true, disabled: true } ),
       statutory: new FormControl(''),
@@ -77,10 +83,12 @@ isshowAP:boolean= true;
   }
 
   ngOnInit(): void {
-  this.getData(); //api call for Statotary Frequency
+ // this.getData(); //api call for Statotary Frequency
 
-  this.getState(); //Api call for State
+  this.getState(); //Api call for State 
     
+  this.getCity(); //API call for stae with city
+  
     this.complianceHeadService.getLocationInformationOrCountryList().subscribe( res => {
       this.countries = res.data.results;
     } );
@@ -97,48 +105,78 @@ this.complianceHeadService.getState().subscribe(res =>{
 });
 }
  
-  getData(): void {
+  // getData(): void {
     
-    this.complianceHeadService.getStatutoryFreq().subscribe(res => {
-      this.frequencyData = res.data.results
+  //   this.complianceHeadService.getStatutoryFreq().subscribe(res => {
+  //     this.frequencyData = res.data.results
 
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'name',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
-    });
-  }
-
-  /** Select multiselect frequency */
-  onItemSelect(event){
-    //push(event.id)
-  }
-
-    /** Select all multiselect frequency */
-  onSelectAll(event){
-    this.frequencyData.forEach(element => {
-      //push(event.id)
-    });
-  }
+  //     this.dropdownSettings = {
+  //       singleSelection: false,
+  //       idField: 'id',
+  //       textField: 'name',
+  //       selectAllText: 'Select All',
+  //       unSelectAllText: 'UnSelect All',
+  //       itemsShowLimit: 3,
+  //       allowSearchFilter: true
+  //     };
+  //   });
+  // }
 
   /** Select multiselect frequency */
-  onDeItemSelect(event){
-    this.frequencyData.forEach((element,index) => {
-      if(element.id == event.id){
-        let ind = index;
-        //splice(ind,1)
-      }
-    });
+  // onItemSelect(event){
+  //   //push(event.id)
+  // }
+
+  //   /** Select all multiselect frequency */
+  // onSelectAll(event){
+  //   this.frequencyData.forEach(element => {
+  //     //push(event.id)
+  //   });
+  // }
+
+  // /** Select multiselect frequency */
+  // onDeItemSelect(event){
+  //   this.frequencyData.forEach((element,index) => {
+  //     if(element.id == event.id){
+  //       let ind = index;
+  //       //splice(ind,1)
+  //     }
+  //   });
+  // }
+
+  // monetaryOption(evt:any){
+
+  // }
+
+  getCity(){
+    this.complianceHeadService.getCitywithState().subscribe(res=>{
+     
+      this.stateName1=res.data.results;
+    
+     console.log(res);
+      
+    })
   }
 
-  monetaryOption(evt:any){
+//   getStateName(evt:any){
+//     this.cityName=[];
+// this.stateName1.forEach(element => {
+//   if(element.stateName==evt){
+// this.cityName.push(element);
+//   }
+// });
+//   }
 
-  }
+//   getCityName(evt:any)
+//   {
+//     this.stateName=[];
+//     this.stateName1.forEach(element => {
+//       if(element.stateName==evt){
+//     this.stateName.push(element);
+//       }
+//     });
+//   }
+ 
 
   save() {
     if ( this.editedComplianceHeadId > 0 ) {
@@ -212,19 +250,19 @@ this.complianceHeadService.getState().subscribe(res =>{
   }
   onSelectShortName( evt: any ) { }
   //for Select State in Applicability Level
-  onSelectApplicabilityLevel( evt: any,template : TemplateRef<any>) {
+  onSelectApplicabilityLevel( evt: any,template : TemplateRef<any>,template3:TemplateRef<any>) {
     if(evt == 'State'){
       this.modalRef = this.modalService.show(
         template,
         Object.assign({}, { class: 'gray modal-lg' })
       );
     }
-    //  else if(evt == 'City'){
-    //   this.modalRef = this.modalService.show(
-    //     template,
-    //     Object.assign({}, { class: 'gray modal-lg' })
-    //   );
-    //  }
+     else if(evt == 'City'){
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-md'})
+      );
+     }
    }
 
   refreshHtmlTableData() {
@@ -239,14 +277,14 @@ this.complianceHeadService.getState().subscribe(res =>{
         const obj = {
           SrNo: i++,
           complianceHeadName: element.complianceHeadName,
-          shortName: element.shortName,
+       //   shortName: element.shortName,
           country: element.country,
           aplicabilityLevel: element.aplicabilityLevel,
-          authorityHandling: element.authorityHandling,
+       //   authorityHandling: element.authorityHandling,
           complianceActive: element.complianceActive,
           remark: element.remark,
           isActive: element.isActive,
-          website: element.website,
+         // website: element.website,
           complianceHeadId: element.complianceHeadId,
         };
         this.summaryHtmlDataList.push( obj );
@@ -255,7 +293,7 @@ this.complianceHeadService.getState().subscribe(res =>{
   }
   saveFormValidation() {
     this.form.patchValue( {
-      shortName: '',
+     // shortName: '',
       country: '',
       aplicabilityLevel: '',
     } );
@@ -275,58 +313,24 @@ this.complianceHeadService.getState().subscribe(res =>{
     this.form.patchValue( this.summaryHtmlDataList[i] );
   }
   deactiveActiveCheckBox() { }
-  onChangeWebsiteName( evt: string ) {
-    if ( evt.length !== 0 ) {
-      var text = evt.split( '.' );
-      // let index = evt.indexOf('.');
-      // console.log(index);
+  // onChangeWebsiteName( evt: string ) {
+  //   if ( evt.length !== 0 ) {
+  //     var text = evt.split( '.' );
+  //     let s = evt.lastIndexOf( '.' ) - evt.indexOf( '.' );
+  //     console.log( s );
+  //     // if tow dot presnt and without space
+  //     if ( evt.indexOf( '.' ) == evt.lastIndexOf( '.' ) || s == 1 ) {
+  //       this.invalidWebsite = true;
+  //     } else {
+  //       this.invalidWebsite = false;
 
-      // let index1 = evt.lastIndexOf('.');
-      // console.log(index1);
-      // if only one dot is present
+  //     }
+  //   } else {
+  //     this.invalidWebsite = false;
 
-      let s = evt.lastIndexOf( '.' ) - evt.indexOf( '.' );
-      console.log( s );
-      // if tow dot presnt and without space
-      if ( evt.indexOf( '.' ) == evt.lastIndexOf( '.' ) || s == 1 ) {
-        this.invalidWebsite = true;
-      } else {
-        this.invalidWebsite = false;
+  //   }
 
-      }
-
-      // if (text.length >= 3) {
-      //   this.invalidWebsite = true;
-
-      // } else {
-      //   this.invalidWebsite = false;
-
-      // }
-      // for (let i = 0; i < text.length; i++) {
-      //   if (text.length >= 3) {
-      //     if (text[i].length == 0) {
-      //       this.invalidWebsite = true;
-      //       break;
-      //     }
-
-      //   } else {
-      //     this.invalidWebsite = true;
-      //     break;
-
-      //   }
-      // }
-      // if (text.length >= 3) {
-      //   this.invalidWebsite = false;
-      // } else {
-      //   this.invalidWebsite = true;
-      // }
-      // console.log(text.length);
-    } else {
-      this.invalidWebsite = false;
-
-    }
-
-  }
+  // }
 
   deactivateRemark() {
     console.log( 'in deactive remakr' );
@@ -399,7 +403,7 @@ exportAsXLSX(): void {
     //  "Type":element.shortName,
       "Country": element.country,
       "Applicability Level":element.aplicabilityLevel,
-      "Authority Handling":element.authorityHandling,
+    //  "Authority Handling":element.authorityHandling,
       "Remark":element.remark,
     
     }
@@ -449,6 +453,12 @@ hideAP(){
  this.isshowAP=false;
 }
 
+CityModal(template3: TemplateRef<any>){
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-md'})
+  );
+}
 
 
 }

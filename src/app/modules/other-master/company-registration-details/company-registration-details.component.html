@@ -72,7 +72,7 @@
                       <label class="form-label">Issued By</label>
                       <select name="issuedBy" id="issuedBy" class="form-control" formControlName="issuedBy"
                         [ngClass]="{'is-invalid' : form.get('issuedBy').status == 'INVALID'}">
-                        <option selected value=''>Select </option>
+                        <option value=''>Select </option>
                         <option *ngFor="let issuedBy of issuedByList" [value]="issuedBy">
                           {{issuedBy}}
                         </option>

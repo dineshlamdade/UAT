@@ -309,8 +309,8 @@ export class CompanyGroupMasterComponent implements OnInit {
 
           // StartDate: element.startDate,
           StartDate: new Date(element.startDate),
-          // EndDate: element.endDate,
-          EndDate:new Date(element.endDate),
+           endDate: element.endDate,
+          // endDate:new Date(element.endDate),
           ReasonforExit: element.reasonForExit,
           Scale: element.scale,
           companyGroupId: element.companyGroupId,

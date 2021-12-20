@@ -1329,7 +1329,11 @@ export class EducationalLoanDeclarationComponent implements OnInit {
             ''
           );
         } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
+          // this.alertService.sweetalertWarning(res.status.messsage);
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
         }
       });
     this.receiptAmount = '0.00';

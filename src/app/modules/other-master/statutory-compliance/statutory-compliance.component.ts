@@ -17,7 +17,7 @@ import { SortEvent } from 'primeng/api';
 } )
 export class StatutoryComplianceComponent implements OnInit {
 
-
+  
   hideRemarkDiv: boolean;
   selectedIsdCode = [];
   countryCode: Array<any> = [];
@@ -71,8 +71,8 @@ export class StatutoryComplianceComponent implements OnInit {
       telephoneNumber: ['', Validators.compose( [Validators.required, Validators.pattern( /^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/ )] )],
       applicabilityLevel: new FormControl( { value: '', disabled: true } ),
       institutionName: new FormControl( null, Validators.required ),
-      country1: new FormControl( '', Validators.required ),
-
+     // country1: new FormControl( '', Validators.required ),
+     country1: new FormControl( { value: '', disabled: true } ),
       remark: new FormControl( '' ),
       institutionActive: new FormControl( { value: true, disabled: true } ),
       institutionCode: new FormControl( { value: '', disabled: true } ),
@@ -189,6 +189,11 @@ export class StatutoryComplianceComponent implements OnInit {
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.refreshHtmlTableData();
+
+         this.form.get('institutionActive').setValue(true);
+       
+          this.form.get('remark').disable();
+
           this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning( res.status.messsage );
@@ -217,6 +222,11 @@ export class StatutoryComplianceComponent implements OnInit {
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.refreshHtmlTableData();
+
+       //   this.form.get('institutionActive').disable();
+       this.form.get('institutionActive').setValue(true);
+          this.form.get('remark').disable();
+
           this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning( res.status.messsage );
@@ -228,7 +238,7 @@ export class StatutoryComplianceComponent implements OnInit {
 
       console.log( data );
     }
-
+    this.form.get('institutionActive').disable();
   }
 
   reset() {
@@ -240,6 +250,7 @@ export class StatutoryComplianceComponent implements OnInit {
     this.saveFormValidation();
    
     this.form.controls['institutionActive'].setValue(true);
+  
   }
 
   cancelView() {
@@ -257,9 +268,21 @@ export class StatutoryComplianceComponent implements OnInit {
     //this.form.get( 'remark' ).disable();
     //this.form.get( 'country1' ).disable();
     //this.form.get( 'applicabilityLevel' ).disable();
-    //this.form.get( 'state' ).disable();
-    //this.form.get( 'city' ).disable();
+    this.form.get( 'state' ).disable();
+    this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
+    this.form.get('applicabilityLevel').disable();
+    this.form.get( 'country1' ).disable();
+
+    this.form.patchValue({
+      country1:'',
+      country:'',
+      officialCountryCode:'',
+      applicabilityLevel:'',
+      typeOfOffice:'',
+      headName:'',
+    })
+    
     // this.form.get('institutionActive').enable();
     //  this.form.get('complianceActive').setValue(true);
     // this.form.get('complianceActive').disable();
@@ -275,6 +298,9 @@ export class StatutoryComplianceComponent implements OnInit {
     this.showButtonSaveAndReset = true;
     console.log( this.summaryHtmlDataList[i] );
     this.form.reset();
+    if(this.summaryHtmlDataList[i].remark!=""){
+      this.summaryHtmlDataList[i].institutionActive=false;
+    }
     this.form.patchValue( this.summaryHtmlDataList[i] );
     console.log( this.summaryHtmlDataList[i].telephoneNumber.split( ' ' ) );
 
@@ -298,12 +324,16 @@ export class StatutoryComplianceComponent implements OnInit {
     this.form.get( 'state' ).disable();
     this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
+   // this.form.get('institutionActive').disable();
   
   }
   viewMaster( i: number ) {
     this.isEditMode = false;
     this.showButtonSaveAndReset = false;
     this.form.reset();
+    if(this.summaryHtmlDataList[i].remark!=""){
+      this.summaryHtmlDataList[i].institutionActive=false;
+    }
     this.form.patchValue( this.summaryHtmlDataList[i] );
 
     this.form.patchValue( {
@@ -385,6 +415,7 @@ export class StatutoryComplianceComponent implements OnInit {
       country: '',
       typeOfOffice: '',
       country1: '',
+      
     } );
 
   }

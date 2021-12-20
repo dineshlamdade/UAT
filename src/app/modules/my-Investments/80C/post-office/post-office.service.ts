@@ -9,6 +9,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class PostOfficeService {
   apiUrl = environment.baseUrl8085;
+  apiUrl1 = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -84,9 +85,29 @@ export class PostOfficeService {
       return res;
     }));
   }
+  public getpostOfficeMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
+  public getpostOfficeRecurringDepositRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
   getAllInstitutesFromGlobal() {
     return this._HTTP.get(this.apiUrl + 'institution')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  getcurrentpreviousEmployeName() {
+
+    return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
     .pipe(map((res: any) => {
       return res;
     }));

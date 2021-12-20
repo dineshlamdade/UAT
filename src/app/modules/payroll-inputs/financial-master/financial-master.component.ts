@@ -43,11 +43,11 @@ export class FinancialMasterComponent implements OnInit {
   public headDescriptionName: string;
   selectedOption: string = 'single';
   payrollListEmpData: any;
-  selectedPayrollArea: any;
+  selectedPayrollArea: any = '';
   payrollAreaId: any;
   headData: { displayName: string; headMasterId: number; }[];
   selectedUpdationField: any;
-  slectedFromDate: any;
+  slectedFromDate: any = '';
   slectedToDate: any = '31-12-9999';
   saveFastEntrydata: any = [];
   headMasterId: any;
@@ -55,12 +55,17 @@ export class FinancialMasterComponent implements OnInit {
   changePercenatgeVal: any = 0;
   closingAmtVal: any = 0;
   tabledata: any = [];
-  index: number;
+  index: number = 0;
   employeeData: any;
-  payrollListData: string;
+  payrollListData: any;
   employeeFinDetailsData: any[];
   selectedEmployeeMasterId: number;
   headType: any;
+  summaryData: any;
+  employeeMasterId: any;
+  isvisible: boolean = false
+  showEmployeeSelectionFlag: boolean = true
+  tabIndex: number = 0;
 
   constructor(private service: FinancialMasterService,
     private datePipe: DatePipe,
@@ -74,12 +79,22 @@ export class FinancialMasterComponent implements OnInit {
 
     if (localStorage.getItem('payrollListEmpData') != null) {
       this.index = 0
+      this.tabIndex = 1
       this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
       // localStorage.removeItem('payrollListEmpData')
       this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+      this.employeeMasterId = this.payrollListEmpData[this.index].employeeMasterId;
       this.selectedPayrollArea = this.payrollListEmpData[this.index].payrollAreaCode
       this.payrollAreaId = this.payrollListEmpData[this.index].payrollAreaId
-
+      this.getCurrencyDetails();
+      this.getEmployeeDetails(this.employeeMasterId); 
+      this.getAllEmployeeDetails() 
+      this.nonRecService.employeeFinDetails(this.employeeMasterId).subscribe(
+				res => {
+					this.employeeFinDetailsData = res.data.results[0][0];
+				}
+			)
+      this.summaryPage()
     }
 
     this.headData = [
@@ -103,17 +118,30 @@ export class FinancialMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    // this.employeeListsArray = this.commonService.getEmployeeListArray();
-    // if (this.employeeListsArray === []) {
-    //   this.router.navigate(['/payrollInputs/payroll-List']);
-    // }
-    this.getCurrencyDetails();
-    this.getEmployeeDetails(1);
-    this.getAllEmployeeDetails()
-    this.summaryPage();
+    this.getAllSummarydata();
+   }
+
+  /** get all sumary data for all employess */
+  getAllSummarydata(){
+    this.service.getAllSummarydata().subscribe(res =>{
+      this.summaryData = res.data.results;
+    })
+  }
+
+  navigateToSummary(){
+    this.getAllSummarydata();
+    this.tabIndex = 0
+    localStorage.removeItem('payrollListEmpData')
+  }
+
+  navigateToTransaction(){
+    this.tabIndex = 1;
+     this.getAllEmployeeDetails()
+    
     this.changeValueFlag = true;
-      this.changePercentageFlag = true;
-      this.closingAmountFlag = false;
+    this.changePercentageFlag = true;
+    this.closingAmountFlag = false;
+  
   }
 
   /** Get Selected Employee master Id */
@@ -121,16 +149,61 @@ export class FinancialMasterComponent implements OnInit {
 		this.payrollListData = ''
 		this.employeeFinDetailsData = []
 		this.selectedEmployeeMasterId = parseInt(value)
-		console.log(this.selectedPayrollArea)
-		if (this.selectedPayrollArea != '') {
+    this.employeeMasterId = parseInt(value)
+		//console.log(this.selectedPayrollArea)
+		this.payrollAssigned()
+ 	}
+
+  payrollAssigned() {
+
+		this.nonRecService.getEmployeeWisePayrollList(this.selectedEmployeeMasterId).subscribe(
+			res => {
+				this.payrollListData = res.data.results[0];
+			}
+		)
+	}
+
+  /** get Selected Payroll Area from Dropdown */
+	getSelectedPayrollArea(value) {
+		this.employeeFinDetailsData = []
+		this.selectedPayrollArea = value;
+		this.payrollListData.forEach(element => {
+			if(element.payrollAreaCode == value){
+				this.payrollAreaId = element.payrollAreaId
+			}
+		});
+		if (this.employeeMasterId != '') {
+
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
 			)
+      this.summaryPage()
 		}
-		// this.payrollAssigned()
 	}
+
+
+  // ---------------------Summary ----------------------
+  // Summary get Call
+  public summaryPage(): void {
+    this.masterGridData = [];
+    this.headsFlag = [];
+    // const empId = this.employeeListsArray[this.employeeListIndex];
+    const empId = this.employeeMasterId;
+    this.service.getAllRecords(empId,this.selectedPayrollArea).subscribe((res) => {
+      // console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.setInitialClosingAmount();
+      this.recievedMasterGridData = this.masterGridData.map((x) => Object.assign({}, x));
+      // this.setHeadFlagAuto();
+      // if (this.masterGridData[this.index].openingAmount === 0) {
+        this.updationField = 3;
+        this.setHeadFlag('Yes');
+      // }
+      // console.log('masterGridData::', this.masterGridData);
+    });
+  }
 
 
   /** Get all  Employee data */
@@ -141,50 +214,9 @@ export class FinancialMasterComponent implements OnInit {
 	}
 
 
-  /** get Selected Payroll Area from Dropdown */
-	getSelectedPayrollArea(value) {
-		// this.employeeFinDetailsData = []
-		// this.selectedPayrollArea = value;
-		// this.payrollListData.forEach(element => {
-		// 	if(element.payrollAreaCode == value){
-		// 		this.payrollAreaId = element.payrollAreaId
-		// 	}
-		// });
-		// if (this.selectedEmployeeMasterId != '') {
-
-		// 	this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
-		// 		res => {
-		// 			this.employeeFinDetailsData = res.data.results[0][0];
-		// 		}
-		// 	)
-		// }
-	}
-
-
-  // ---------------------Summary ----------------------
-  // Summary get Call
-  public summaryPage(): void {
-    this.masterGridData = [];
-    this.headsFlag = [];
-    // const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
-    this.service.getAllRecords(empId).subscribe((res) => {
-      // console.log('masterGridData::', res);
-      this.masterGridData = res.data.results;
-      this.setInitialClosingAmount();
-      this.recievedMasterGridData = this.masterGridData.map((x) => Object.assign({}, x));
-      this.setHeadFlagAuto();
-      if (this.masterGridData[this.index].openingAmount === 0) {
-        this.updationField = 3;
-        this.setHeadFlag('Yes');
-      }
-      // console.log('masterGridData::', this.masterGridData);
-    });
-  }
-
   public getEmployeeDetails(index): void {
     // const id = this.employeeListsArray[index]
-    const id = this.payrollListEmpData[this.index].employeeMasterId; // this.employeeId
+    const id = this.employeeMasterId; // this.employeeId
     this.service.getEmployeeDetails(id).subscribe((res) => {
       // console.log('Employee Details::', res.data.results[0]);
       this.employeeDetails = res.data.results[0][0];
@@ -193,14 +225,17 @@ export class FinancialMasterComponent implements OnInit {
 
   public getCurrencyDetails(): void {
     // const id = this.employeeListsArray[ this.employeeListIndex]
-    const id = this.payrollListEmpData[this.index].employeeMasterId;
+    if(localStorage.getItem('payrollListEmpData') != null){
+      const id = this.employeeMasterId;
 
-    this.service.getCurrencyDetails(id).subscribe((res) => {
-      // console.log('Currency::', res.data.results);
-      this.currency = res.data.results[0].currency;
-      const frequencyId = res.data.results[0].businessCycleDefinitionId;
-      this.getFrequencyMaster(frequencyId);
-    });
+      this.service.getCurrencyDetails(id).subscribe((res) => {
+        // console.log('Currency::', res.data.results);
+        this.currency = res.data.results[0].currency;
+        const frequencyId = res.data.results[0].businessCycleDefinitionId;
+        this.getFrequencyMaster(frequencyId);
+      });
+   
+    }
   }
 
   public getFrequencyMaster(id): void {
@@ -215,28 +250,29 @@ export class FinancialMasterComponent implements OnInit {
       ele.closingAmount = ele.openingAmount;
     });
   }
-  public getUpdationField(evt): void {
-    this.changeValueFlag = true;
-      this.changePercentageFlag = true;
-      this.closingAmountFlag = true;
 
-    if (evt === 1) {
+  public getUpdationField(evt): void {
+    // this.changeValueFlag = true;
+    //   this.changePercentageFlag = true;
+    //   this.closingAmountFlag = true;
+    if (evt === '1') {
       this.changeValueFlag = false;
       this.changePercentageFlag = true;
       this.closingAmountFlag = true;
-    } else if (evt === 2) {
+    } else if (evt === '2') {
       this.changeValueFlag = true;
       this.changePercentageFlag = false;
       this.closingAmountFlag = true;
-    } else if (evt === 3) {
+    } else if (evt === '3') {
       this.changeValueFlag = true;
       this.changePercentageFlag = true;
       this.closingAmountFlag = false;
-    } else {
-      this.changeValueFlag = true;
-      this.changePercentageFlag = true;
-      this.closingAmountFlag = true;
-    }
+    } 
+    // else {
+    //   this.changeValueFlag = true;
+    //   this.changePercentageFlag = true;
+    //   this.closingAmountFlag = true;
+    // }
 
   }
 
@@ -290,7 +326,6 @@ export class FinancialMasterComponent implements OnInit {
     this.headsFlag = [];
     this.headField === 1 ? this.setHeadFlag('Yes') :
       this.headField === 2 ? this.setHeadFlagAuto() : this.setHeadFlag('');
-    // console.log(this.masterGridData);
   }
 
   public setHeadFlag(isPEIRecord): void {
@@ -317,7 +352,8 @@ export class FinancialMasterComponent implements OnInit {
     // console.log(' save2', this.recievedMasterGridData);
     const data = [];
     // const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
+    this.employeeMasterId = 1;
+    const empId = this.employeeMasterId;
     for (let i = 0; i < this.masterGridData.length; i++) {
       if (this.masterGridData[i].isPEIRecord === 'Yes') {
         this.masterGridData[i].fromdate = this.datePipe.transform(
@@ -420,7 +456,8 @@ export class FinancialMasterComponent implements OnInit {
     );
     console.log(data)
 
-    const empId = this.employeeDetails.employeeMasterId.toString();
+    // this.employeeDetails.employeeMasterId.toString()
+    const empId = "1";
     this.headDescriptionName = data.headDescription;
     this.headType = data.headType;
    
@@ -441,7 +478,7 @@ export class FinancialMasterComponent implements OnInit {
     this.employeeListIndex = this.employeeListIndex + 1;
     this.index = this.index +1
     //const empId = this.employeeListsArray[this.employeeListIndex];
-    const empId = this.payrollListEmpData[this.index].employeeMasterId;
+    const empId = this.employeeMasterId;
     this.getEmployeeDetails(empId);
     this.summaryPage();
   }
@@ -463,11 +500,11 @@ export class FinancialMasterComponent implements OnInit {
     this.selectedUpdationField = value
   }
 
-  getFromDate(event){
+  getFastEntryFromDate(event){
     this.slectedFromDate = event
   }
 
-  getToDate(event){
+  getFastEntryToDate(event){
     this.slectedToDate = event
   }
 
@@ -513,6 +550,14 @@ export class FinancialMasterComponent implements OnInit {
       this.alerService.sweetalertMasterSuccess("","Financial Master saved succesfully")
     })
   }
+
+  /** Selected Employee basic information expand and colapse */
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
+	}
 
 }
 

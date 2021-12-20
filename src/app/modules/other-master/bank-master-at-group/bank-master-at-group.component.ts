@@ -265,6 +265,7 @@ export class BankMasterAtGroupComponent implements OnInit {
     this.form.get('country').disable();
 
   }
+  
   viewMaster(i: number) {
     window.scrollTo(0, 0);
     this.viewMode = true;

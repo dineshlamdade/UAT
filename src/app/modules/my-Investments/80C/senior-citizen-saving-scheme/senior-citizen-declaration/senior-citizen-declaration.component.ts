@@ -36,6 +36,7 @@ import { SeniorCitizenService } from '../senior-citizen.service';
   styleUrls: ['./senior-citizen-declaration.component.scss']
 })
 export class SeniorCitizenDeclarationComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() institution: string;
   @Input() policyNo: string;
@@ -76,7 +77,16 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
+
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -196,6 +206,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
 
 
 
@@ -426,6 +437,45 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     //}
   }
 
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup3TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"SENIORCITIZENSAVINGSSCHEME",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
   //------------- When Edit of Document Details -----------------------
   declarationEditUpload(
     template2: TemplateRef<any>,
@@ -474,6 +524,9 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
 
         this.masterGridData = res.data.results;
@@ -1469,13 +1522,16 @@ onDeclearedAmountChange(
 
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
    
 
   }
@@ -1965,6 +2021,8 @@ onDeclearedAmountChange(
         console.log('transactionDetail', this.transactionDetail);
 
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -2015,17 +2073,25 @@ onDeclearedAmountChange(
   }
 
   public docRemarkModal(
+
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    investmentGroup3TransactionId,
+    summary, count
   ) {
     
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.seniorCitizenService.getSENIORCITIZENSAVINGSSCHEMERemarkList(
+      investmentGroup3TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -2035,6 +2101,7 @@ onDeclearedAmountChange(
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+
 
 
   downloadTransaction(proofSubmissionId) {

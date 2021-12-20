@@ -1,5 +1,5 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse, JsonpClientBackend } from '@angular/common/http';
 
 import jspdf from 'jspdf';
 import * as _html2canvas from 'html2canvas';
@@ -184,6 +184,12 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   imgFile: any = '';
   imageFile: any;
   proofId: any;
+  tableData: any=[];
+  public nameAndAddress: any;
+  public pan: any;
+  public residentialStatus: any;
+  public actualAmount80C: any;
+  tempDeclarationCount: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -576,7 +582,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
+   
+    
+    console.log("declarationService::" , this.declarationService);
 
     this.transactionDetail[j].previousEmployerTransactionDetailList[
       i
@@ -621,6 +629,18 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
+
+    this.tempDeclarationCount = 0
+    
+    this.transactionDetail.forEach(ele =>{
+      ele.previousEmployerTransactionDetailList.forEach(element => {
+          console.log(element.actualAmount)
+        if(element.actualAmount != 0){
+          this.tempDeclarationCount = this.tempDeclarationCount + 1
+          return;
+        }
+      });
+    })
   }
 
   // ------------Actual Amount change Edit Modal-----------
@@ -700,52 +720,53 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   // --------Add New ROW Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmountPerMonth: any;
   //   paymentDate: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  addRowInList(
-    summarynew: {
-      houseRentalTransactionDetailId: number;
-      houseRentalMasterId: number;
-      toDate: Date;
-      fromDate: Date;
-      //  paymentDate: Date;
-      actualAmount: any;
-      declaredAmountPerMonth: any;
-      remark: any;
-      receiptDate: any;
-    },
-    j: number
-  ) {
-    console.log('taddRowInList');
-    this.declarationService = new DeclarationService(summarynew);
-    console.log('declarationService::', this.declarationService);
-    this.globalAddRowIndex -= 1;
-    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
-    this.shownewRow = true;
-    this.declarationService.houseRentalTransactionDetailId =
-      this.globalAddRowIndex;
-    this.declarationService.declaredAmountPerMonth = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.fromDate = null;
-    this.declarationService.toDate = null;
-    // this.declarationService.paymentDate = null;
-    this.declarationService.remark;
-    this.declarationService.transactionStatus = 'Pending';
-    /*this.declarationService.transactionStatus = null; */
-    this.declarationService.rejectedAmount = 0.0;
-    this.declarationService.approvedAmount = 0.0;
-    this.declarationService.houseRentalMasterId =
-      this.transactionDetail[
-        j
-      ].previousEmployerTransactionDetailList[0].houseRentalMasterId;
-    this.transactionDetail[j].previousEmployerTransactionDetailList.push(
-      this.declarationService
-    );
+    // Disabled Add row Function
+  // addRowInList(
+  //   summarynew: {
+  //     houseRentalTransactionDetailId: number;
+  //     houseRentalMasterId: number;
+  //     toDate: Date;
+  //     fromDate: Date;
+  //     //  paymentDate: Date;
+  //     actualAmount: any;
+  //     declaredAmountPerMonth: any;
+  //     remark: any;
+  //     receiptDate: any;
+  //   },
+  //   j: number
+  // ) {
+  //   console.log('taddRowInList');
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   console.log('declarationService::', this.declarationService);
+  //   this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.declarationService.houseRentalTransactionDetailId =
+  //     this.globalAddRowIndex;
+  //   this.declarationService.declaredAmountPerMonth = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.fromDate = null;
+  //   this.declarationService.toDate = null;
+  //   // this.declarationService.paymentDate = null;
+  //   this.declarationService.remark;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   /*this.declarationService.transactionStatus = null; */
+  //   this.declarationService.rejectedAmount = 0.0;
+  //   this.declarationService.approvedAmount = 0.0;
+  //   this.declarationService.houseRentalMasterId =
+  //     this.transactionDetail[
+  //       j
+  //     ].previousEmployerTransactionDetailList[0].houseRentalMasterId;
+  //   this.transactionDetail[j].previousEmployerTransactionDetailList.push(
+  //     this.declarationService
+  //   );
 
-    console.log(
-      'addRow::',
-      this.transactionDetail[j].previousEmployerTransactionDetailList
-    );
-  }
+  //   console.log(
+  //     'addRow::',
+  //     this.transactionDetail[j].previousEmployerTransactionDetailList
+  //   );
+  // }
 
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
@@ -975,13 +996,24 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     );
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+
+    
+
+    let previousEmployerMasterDetail = this.transactionDetail[0].previousEmployerMasterDetailId;
+    
+    let tempArra = []
+    this.transactionDetail[0].previousEmployerTransactionDetailList.forEach(element => {
+      tempArra.push(element.previousEmployerTransactionDetailId)
+    });
     const data = {
       //proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
       proofSubmissionId: '',
-      previousEmployerMasterDetailId: '1',
-      // previousEmployerMasterDetailId: this.transactionDetail[0].previousEmployerMasterDetailId,
+      //previousEmployerMasterDetailId: '1',
+      previousEmployerMasterDetailId: previousEmployerMasterDetail,
+      previousEmployerTransactionDetailIds:tempArra,
       previousEmployerTransactionDetailList:this.transactionDetail[0].previousEmployerTransactionDetailList,
-      previousEmployerTransactionDetailIds: this.uploadGridData,
+      //previousEmployerTransactionDetailIds: this.uploadGridData,
+      //previousEmployerTransactionDetailIds:this.transactionDetail[0].previousEmployerTransactionDetailList.previousEmployerTransactionDetailId,
       receiptAmount: this.receiptAmount,
       electricVehicleLoanMasterId:
         this.transactionDetail[0].electricVehicleLoanMasterId,
@@ -1044,6 +1076,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       template4,
       Object.assign({}, { class: 'gray modal-xl' })
     );
+    // this.tableData.push(this.declarationService)
+    this.tableData.push(
+      {}
+    )
   }
 
   openFormSign(template2: TemplateRef<any>) {
@@ -1132,6 +1168,13 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('getTransactionFilterPreviousEmployerData:::', res);
 
+        this.nameAndAddress=res.data.results[0].nameAndAddress;
+        this.pan=res.data.results[0].pan;
+        this.residentialStatus=res.data.results[0].residentialStatus;
+        this.actualAmount80C=res.data.results[0].actualAmount80C;
+
+
+        console.log("nameAndAddress " ,this.nameAndAddress);
         this.transactionDetail =
           res.data.results[0].previousEmployerTransactionDetailList;
 
@@ -1461,6 +1504,26 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   }
   getImageFile(imagefile: any) {
     this.imageFile = imagefile;
+  }
+  // Total Amount of House rent
+  totalAmtHouseRent(summary){
+    let calc=0;
+    let taxEarn=parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount);
+    let exemUs =parseInt(summary.previousEmployerTransactionDetailList[2].actualAmount);
+    calc=taxEarn-exemUs;
+    return calc;
+  }
+
+  /** total colm of 6 7 8  */
+  getTotalOfColms(summary){
+    let total = 0;
+    let a = parseInt(summary.previousEmployerTransactionDetailList[0].actualAmount)   
+    let b = parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount) - parseInt(summary.previousEmployerTransactionDetailList[2].actualAmount)
+    let c = parseInt(summary.previousEmployerTransactionDetailList[3].actualAmount)
+
+    total = a + b + c;
+
+    return total;
   }
 }
 
