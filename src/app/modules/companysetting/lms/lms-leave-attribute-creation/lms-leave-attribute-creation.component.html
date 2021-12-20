@@ -1,0 +1,297 @@
+<app-leftmenu></app-leftmenu>
+
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">  
+              <form [formGroup]="LeaveAttributeCreationForm" (ngSubmit)="AddLeaveAttributeCreation()">
+                <div class="tabview-contents">        
+                <div class="row">
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Code</label>
+                    <div class="input-group">
+                      <input type="text" [readonly]="!disabled" formControlName="code" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" maxlength="25" class="form-control"
+                      [ngClass]="{'is-invalid' : LeaveAttributeCreationForm.get('code').status == 'INVALID'} " placeholder="Enter Code" >
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Description</label>
+                    <div class="input-group">
+                        <input type="text" [readonly]="!disabled" formControlName="description" class="form-control" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
+                        [ngClass]="{'is-invalid' : LeaveAttributeCreationForm.get('description').status == 'INVALID'} " placeholder="Enter Description" >
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Nature</label>
+                    <select (change)="onChangeNature($event)" formControlName="lmsAttributeNature" 
+                    [ngClass]="{'is-invalid' :LeaveAttributeCreationForm.get('lmsAttributeNature').status == 'INVALID'} " class="form-control">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let attrlist of attributeList" [value]="attrlist.value">
+                        {{attrlist.label}} </option>                       
+                    </select>
+                  </div>              
+   </div>
+
+                <div class="row mt-25" *ngIf="hidevalue" formArrayName="pfFormArray">
+                  <div class="col-5">
+                    <div class="card">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">List</h3>
+                      </div>
+                      <!-- <div class=""> -->
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="wd-4">Sr. No.</th>
+                              <th scope="col" class="wd-10">Values</th>
+                              <th scope="col" class="wd-4">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i">
+                              <td class="wd-6"><span tooltip="{{i+1}}"> {{i+1}} </span>
+                              </td>
+
+                            
+                              <td class="wd-10">
+                                <input type="text" formControlName="optionValue" [maxlength]="25" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" 
+                                [ngClass]="{'is-invalid' : LeaveAttributeCreationForm.get('pfFormArray')['controls'][i].get('optionValue').status == 'INVALID'}" class="form-control" placeholder="Enter Value" tooltip="List of values">
+                            </td>
+
+
+                              <td class="wd-4">
+
+                                <span *ngIf="i==0 && isView==true">
+                                  <i class="fa fa-plus-circle font-16  cursor-pointer text-dark-green" tooltip="Add"
+                                    (click)="addRow(0)"></i>
+
+                                </span>
+
+
+
+
+
+                                <span *ngIf="!i== 0 &&  isView ==true">
+                                  <i class="fa fa-times-circle font-16 cursor-pointer text-red" tooltip="Remove"
+                                   (click)="UploadModal1(template12);deleteRowByIndex(i)"></i>
+
+                                </span>
+
+
+                              </td>
+                            </tr>
+                            
+
+                            <ng-template #template12>
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="UploadModalLabel">Delete List From Attribute Creation</h5>
+                                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                  aria-label="Close"><span aria-hidden="true">×</span></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <div class="row clearfix">
+                                      <div class="col-md-12">
+                                        <label class="form-label">Are
+                                          you sure want to
+                                          delete list</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary"
+                                  (click)="clickedOnYesDeleteRow();modalRef.hide()">Yes</button>
+                                <button type="button" class="btn btn-secondary bg-btn-red"
+                                  (click)="modalRef.hide()">No</button>
+                              </div>
+                            </ng-template>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-25">
+                    <div class="col-12">
+                      <div class="float-right mb-15">
+                        <button type="submit" *ngIf="!viewCancelButton && !viewUpdateButton" [disabled]="LeaveAttributeCreationForm.invalid" 
+                        [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeCreationForm.invalid,'btn-bg-green': !LeaveAttributeCreationForm.invalid}" class="custom_button custom_btn mr-2 btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                              class="fa fa-floppy-o"></i></b>
+                          Save</button>
+  
+                       
+                       
+                        <button type="submit" *ngIf="viewUpdateButton" [disabled]="LeaveAttributeCreationForm.invalid" 
+                        [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeCreationForm.invalid,'btn-bg-green': !LeaveAttributeCreationForm.invalid}" class="custom_button  custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                          >
+                          <b><i class="fa fa-floppy-o"></i></b>Update</button>
+  
+                        <button type="button" *ngIf="viewCancelButton" (click)="CancelLeaveAttributeCreation()" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                          Cancel</button>
+  
+                        <button type="button" (click)="ResetLeaveAttributeCreation()" *ngIf="!viewCancelButton" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                          tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                          Reset</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>   
+          </form> 
+
+
+
+              
+             
+
+              <div class="row mt-25">
+                <div class="col-md-12">
+                  <div class="cycle-table ">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                    <!-- (onPage)="paginate($event)" -->
+                    <p-table #dt1 [value]="LeaveAttributeCreationSummaryList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5"
+                      (sortFunction)="customSort($event)" [customSort]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{LeaveAttributeCreationSummaryList.length}}                  
+                     [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['code','description','attributeNatureLongForm','optionValue']">
+
+                     <ng-template pTemplate="caption">
+                         <div class="row">
+                             <div class="col-md-12">
+                                 <div class="float-right">
+                                     <div class="d-flex">
+                                        
+                                         <span class="p-input-icon-left p-ml-auto">
+                                             <i class="pi pi-search"
+                                                 style="top: 9px !important;"></i>
+                                             <input pInputText type="text"
+                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                 placeholder="Search " />
+
+                                         </span>
+                                     </div>
+                                 </div>
+
+                             </div>
+                         </div>
+                     </ng-template>
+
+
+
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="1" class="wd-8 text-center ">
+                            Sr. No.
+                          </th>
+                          <th rowspan="1" class="wd-15 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Code
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                <p-columnFilter field="code" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th rowspan="1" class="wd-15 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Description
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th rowspan="1" class="wd-10 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Nature
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attributeNatureLongForm" pSortableColumn="attributeNatureLongForm">
+                                </p-sortIcon>
+                                <p-columnFilter field="attributeNatureLongForm" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th rowspan="1" class="wd-20 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Value
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="optionValue" pSortableColumn="optionValue">
+                                </p-sortIcon>
+                                <p-columnFilter field="optionValue" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+
+
+                          <th rowspan="1" class="wd-8 text-center">
+                            <div class="p-d-flex p-jc-center p-ai-center">
+                              Action
+                            </div>
+                          </th>
+                        </tr>
+
+                      </ng-template>
+
+
+
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr class="p-selectable-row">
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                              tooltip="{{user1.code}}">{{user1.code}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                              tooltip="{{user1.description}}">{{user1.description}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                              tooltip="{{user1.attributeNatureLongForm}}">{{user1.attributeNatureLongForm}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                              tooltip="{{user1.optionValue}}">{{user1.optionValue}}</label>
+                          </td>
+
+                          <td class="wd-10 align-left">
+                            <button type="button" class="btn btn-icon" tooltip="View"
+                              (click)="GetAttributeCreationByIdDisable(user1.lmsAttributeMasterId)">
+                              <i class="fa fa-eye"></i></button>
+                            <button type="button" class="btn btn-icon" tooltip="Edit"
+                              *ngIf="user1.attributeNatureLongForm == 'List'"
+                              (click)="editLeaveAttributeCreation(user1.lmsAttributeMasterId)">
+                              <i class="fa fa-edit"></i></button>
+                          </td>
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+

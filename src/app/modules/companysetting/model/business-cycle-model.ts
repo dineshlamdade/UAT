@@ -133,6 +133,17 @@ export class SaveAttributeSelection {
   removedAttributeGroupIdList: any[];
 }
 
+export class SaveLeaveAttributeCreation{
+  lmsAttributeMasterId: number;
+  code:string;
+  //attributeNatureLongForm: string;
+  lmsAttributeNature: string;
+  numberOfOption: string;
+  description: string;
+  optionValue: any[];
+  lmsAttributeOptionRequestDTOList:[];
+  lmsAttributeOptionId : any[];
+}
 
 
 // export class UpdateflagCycleCreation {
