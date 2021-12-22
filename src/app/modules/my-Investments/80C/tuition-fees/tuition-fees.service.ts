@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class TuitionFeesService {
 
  apiUrl = environment.baseUrl8085;
-
+ apiUrl1 = environment.baseUrl8082;
   constructor(private _HTTP: HttpClient) { }
 
 
@@ -28,6 +28,22 @@ export class TuitionFeesService {
       return res;
     }));
   }
+  public gettuitionFeesMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'tuitionFeesMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  
+
+  public getTuitionFeesRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
 
 
    //Declaration services
@@ -59,6 +75,14 @@ export class TuitionFeesService {
       return res;
     }));
   }
+  getcurrentpreviousEmployeName() {
+
+    return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
 
   // getpreviousEmployeName() {
 

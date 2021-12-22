@@ -30,6 +30,21 @@ export class NpsService {
     ));
   }
 
+
+  public getNPSMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getNPSRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getNpsSummaryFuturePlan(data) {
 
     return this._HTTP.post(this.apiUrl + 'npsMaster-detail/npsMasterSummaryFuturePolicy', data)

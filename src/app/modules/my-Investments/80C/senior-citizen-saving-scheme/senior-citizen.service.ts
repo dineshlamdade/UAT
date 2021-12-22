@@ -40,6 +40,13 @@ export class SeniorCitizenService {
     }));
   }
 
+  public getSENIORCITIZENSAVINGSSCHEMERemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {

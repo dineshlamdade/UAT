@@ -71,6 +71,7 @@ export class FastentryNRAmtComponent implements OnInit {
   deductionHeadList: any;
   selectedPayrollAreaId: any;
   saveDisabledBtn: boolean = true;
+  showOnlyGroup: boolean = true;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
@@ -176,6 +177,14 @@ export class FastentryNRAmtComponent implements OnInit {
     this.selectedFrequency = frequency
   }
 
+  getSelectedOnceEvery(value){
+    if(parseInt(value) == 1 && this.selectedTransactionType == 'NoOfTransaction'){
+      this.showOnlyGroup = true
+    }else{
+      this.showOnlyGroup = false
+    }
+  }
+
   getTransactionType(transactiontype) {
     this.selectedTransactionType = transactiontype
     this.saveTransactionType = transactiontype
@@ -184,15 +193,27 @@ export class FastentryNRAmtComponent implements OnInit {
       this.saveToDate = ''
       this.selectedNoOfTransaction = 1
       this.saveNumberTransaction = 1
+      this.showOnlyGroup = false
+      if(parseInt(this.selectedOnceEvery) == 1){
+        this.showOnlyGroup = true
+      }
     } else if (this.selectedTransactionType == 'Perpetual') {
       this.selectedToDate = '9999-12-31 00:00:00'
       this.saveToDate = '9999-12-31 00:00:00'
       this.selectedNoOfTransaction = null
       this.saveNumberTransaction = null
+      this.showOnlyGroup = false
     } else {
+      this.selectedToDate = ''
+      this.saveToDate = ''
       this.selectedNoOfTransaction = null
       this.saveNumberTransaction = null
+      // if(){
+
+      // }
     }
+
+
   }
 
   getSelectedHead(headid) {
@@ -992,6 +1013,16 @@ export class FastentryNRAmtComponent implements OnInit {
         element.transactionsType = value
       }
     });
+
+
+    if(data.onceEvery == 1 && data.transactionsType == 'NoOfTransaction'){
+			this.showOnlyGroup = true;
+		}
+		if(data.fromDate != null){
+			if(data.transactionsType == 'Defined Date' && (this.datepipe.transform(data.fromDate, 'yyyy-MM-dd') === this.datepipe.transform(data.toDate, 'yyyy-MM-dd'))){
+				this.showOnlyGroup = true;
+			}
+		}
 
     let todate = "";
     if (this.selectedTransactionType == 'NoOfTransaction') {

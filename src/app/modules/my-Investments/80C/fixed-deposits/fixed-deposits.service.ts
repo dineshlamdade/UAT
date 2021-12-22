@@ -10,6 +10,7 @@ import { Observable, of, throwError } from 'rxjs';
 export class FixedDepositsService {
 
   apiUrl = environment.baseUrl8085;
+  // apiUrl1 = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -27,6 +28,20 @@ export class FixedDepositsService {
       return res;
     }));
   }
+
+  public getFdRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  // getcurrentpreviousEmployeName() {
+
+  //   return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
    //Declaration services
 

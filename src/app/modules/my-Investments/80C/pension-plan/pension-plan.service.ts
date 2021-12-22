@@ -99,6 +99,14 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     }));
   }
 
+  // getcurrentpreviousEmployeName() {
+
+  //   return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
   getAllInstitutesFromGlobal() {
     return this._HTTP.get(this.apiUrl + 'institution')
     .pipe(map((res: any) => {

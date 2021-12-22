@@ -14,6 +14,8 @@ export class MyInvestmentsService {
   }
 public apiUrl = environment.baseUrl8085;
 
+public apiUrl1 = environment.baseUrl8082;
+
   constructor(private _HTTP: HttpClient) { }
 
   public getBlobSASUrl(): Observable<any> {
@@ -314,6 +316,14 @@ public apiUrl = environment.baseUrl8085;
     }));
   }
 
+  getcurrentpreviousEmployeName() {
+
+    return this._HTTP.get(this.apiUrl1 + 'employment-info/joining/employeeMasterId/36')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getAllInstitutesFromGlobal() {
     return this._HTTP.get(this.apiUrl + 'institution')
     .pipe(map((res: any) => {
@@ -341,6 +351,18 @@ public apiUrl = environment.baseUrl8085;
       return res;
     }));
   }
+  public getPpfRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  public getPensionPlanRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
   public getLicMasterRemarkList(masterId: String,): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'licmaster-detail/GetRemarkMaster/' + masterId)
     .pipe(map((res: any) => {
@@ -349,6 +371,24 @@ public apiUrl = environment.baseUrl8085;
   }
   public getPpfMasterRemarkList(masterId: String,): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'ppfmaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  // public getpostOfficeMasterRemarkList(masterId: String,): Observable<any> {
+  //   return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/GetRemarkMaster/670/80C/postofficerecurringdeposit/' + masterId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+  // public getsukanyaSamriddhiSchemeMasterRemarkList(masterId: String,): Observable<any> {
+  //   return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiSchemeMaster-detail/GetRemarkMaster/' + masterId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+  public getpensionPlanMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail/GetRemarkMaster/' + masterId)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -500,6 +540,19 @@ public apiUrl = environment.baseUrl8085;
       return res;
     },
     ));
+  }
+  public getElssMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elssmaster-detail/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getElssTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
   }
 
   public submitELSSMasterData(files: File[], data: any): Observable<any> {

@@ -41,6 +41,14 @@ export class PostOfficeTermDepositService {
     }));
   }
 
+  public getPOSTOFFICETERMEDDEPOSITRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {

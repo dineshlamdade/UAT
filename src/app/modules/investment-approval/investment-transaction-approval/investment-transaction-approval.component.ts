@@ -11,6 +11,7 @@ import { InvestmentMasterApprovalService } from '../investment-master-approval/i
 import { InvestmentTransactionApprovalService } from './investment-transaction-approval.service';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-master-info';
+import { MyInvestmentsService } from '../../my-Investments/my-Investments.service';
 
 @Component({
   selector: 'app-investment-transaction-approval',
@@ -18,8 +19,18 @@ import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-
   styleUrls: ['./investment-transaction-approval.component.scss'],
 })
 export class InvestmentTransactionApprovalComponent implements OnInit {
+  public enteredRemark = '';
+  public isEnteredRemark = false;
+
   documentRemarkValidation = false;
   public documentList: Array<any> = [];
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  selectedSection : any;
+  selectedGroup : any;
   checkRemark = '';
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
     employeeMasterId: 0,
@@ -36,50 +47,52 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   public modalRef: BsModalRef;
 
   public windowScrolled: boolean;
-  public transactionInfo: InvestmentApprovalTransactionInfo = {
-    psidDetail: {
-      groupName: '',
-      section: '',
-      type: '',
-      psid: '',
-      dateOfSubmission: null,
-      proofSubmissionStatus: '',
-      lastModifiedDateTime: null,
-    },
-    transactionDetail: [
-      {
-        institutionName: '',
-        policyNo: '',
-        policyholdername: '',
-        frequency: '',
-        masterPSID: '',
-        declarationTotal: 0,
-        actualTotal: 0,
-        totalApprovedAmount: 0,
-        totalRejectedAmount: 0,
-        transactionDetailList: [
-          {
-            transactionId: 0,
-            previousEmployer: '',
-            declaredAmount: 0,
-            dateOfPayment: null,
-            dueDate: null,
-            actualAmount: 0,
-            amountRejected: '0',
-            amountApproved: '0',
-            remark: '',
-            remarkList: [],
-            transactionStatus: '',
-            proofSubmissionId: '',
-          },
-        ],
-      },
-    ],
-    documentList: [],
-    grandTotalActual: 0,
-    grantTotalApproved: 0,
-    grandTotalRejected: 0,
-  };
+  public transactionInfo: any;
+  // public transactionInfo = {
+  //   psidDetail: {
+  //     groupName: '',
+  //     section: '',
+  //     type: '',
+  //     psid: '',
+  //     dateOfSubmission: null,
+  //     proofSubmissionStatus: '',
+  //     lastModifiedDateTime: null,
+  //   },
+  //   transactionDetail: [
+  //     {
+  //       institutionName: '',
+  //       policyNo: '',
+  //       policyholdername: '',
+  //       frequency: '',
+  //       masterPSID: '',
+  //       declarationTotal: 0,
+  //       actualTotal: 0,
+  //       totalApprovedAmount: 0,
+  //       totalRejectedAmount: 0,
+  //       transactionDetailList: [
+  //         {
+  //           transactionId: 0,
+  //           previousEmployer: '',
+  //           declaredAmount: 0,
+  //           dateOfPayment: null,
+  //           dueDate: null,
+  //           actualAmount: 0,
+  //           amountRejected: '0',
+  //           amountApproved: '0',
+  //           remark: '',
+  //           bubbleRemarkCount: '',
+  //           remarkList: [],
+  //           transactionStatus: '',
+  //           proofSubmissionId: '',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   documentList: [],
+  //   grandTotalActual: 0,
+  //   grantTotalApproved: 0,
+  //   grandTotalRejected: 0,
+  // };
   public localStorageProofSubmissionIdList: Array<any> = [];
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[] = [];
@@ -119,11 +132,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
    };
    public approvedDisabled: boolean = true;
   testRemark: any;
+  transactionDetail: any;
 
   constructor(
     private modalService: BsModalService,
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
     private investmentTransactionApprovalService: InvestmentTransactionApprovalService,
+    private Service: MyInvestmentsService,
     private router: Router,
     private alertService: AlertServiceService,
     private numberFormatPipe: NumberFormatPipe
@@ -193,7 +208,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   getTransactionInfoByPSID(psid: any): void {
     this.investmentTransactionApprovalService
       .getTransactionInfoByPSID(psid)
-      .subscribe((res: InvestmentApprovalTransactionInfo) => {
+      .subscribe((res) => {
         console.log('res transactionInfo::', res);
         
         if (res != null || res != undefined) {
@@ -228,7 +243,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   selectDocumentForApprovalOrDiscard(
     checkValue,
     documentDetail,
-    transaction: InvestmentApprovalTransactionInfo
+    transaction
   ) {
     console.log('checkValue::', checkValue);
     console.log('documentDetail::', documentDetail);
@@ -273,6 +288,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   //----------- On change Document Remark --------------------------
   public onChangeDocumentRemark(docDetail, event) {
+    debugger
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.documentList.indexOf(docDetail);
     console.log('index::', index);
@@ -312,10 +328,18 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   // -------------- Master Remark Modal ---------------------------
   public transactionRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
+    index: any,
     documentRemarkList,
+    transactionId,
     data,
-    transactionId
+     count, transaction
   ) {
+debugger
+    this.summaryDetails = transaction;
+    this.indexCount = index;
+    this.selectedremarkIndex = count;
+    this.selectedSection = transaction.section;
+    this.selectedGroup = transaction.groupName;
     
     this.investmentTransactionApprovalService.getTransactionApprovalRemarkList(
       transactionId,
@@ -324,6 +348,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       
     
     this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
     });
     console.log('documentRemarkDetail::', documentRemarkList);
     // this.documentRemarkList = documentRemarkList;
@@ -418,12 +443,22 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   //-------- For selecting transaction For Processing of Approval, SendBack and Forward ----------
   selectTransactionForProcess(
     checkValue,
-    trnsactionLineItem
+    trnsactionLineItem, event
   ) {
     console.log('checkValue::', checkValue);
     console.log('trnsactionLineItem::', trnsactionLineItem);
+    debugger
     // console.log("documentCheckBox::",this.documentCheckBox);
+    if (this.isEnteredRemark == false && trnsactionLineItem.amountRejected!= "0.00") {
+          this.alertService.sweetalertWarning("First enter remark for rejected amount");
+          event.checked = false;
+          // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
+          // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = this.numberFormatPipe.transform(this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount - Number(
+          //   this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected.toString().replace(/,/g, '')));
+      return;
+          }
     if (checkValue) {
+
       const data = {
         transactionId: trnsactionLineItem.transactionId,
         proofSubmissionId: trnsactionLineItem.proofSubmissionId,
@@ -614,13 +649,13 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected = "0.00";
       return;
      }
-    if (this.checkRemark == '') {
-      this.alertService.sweetalertWarning("First enter remark for rejected amount");
-      // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
-      // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = this.numberFormatPipe.transform(this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount - Number(
-      //   this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected.toString().replace(/,/g, '')));
-  return;
-      }
+  //   if (this.checkRemark == '') {
+  //     this.alertService.sweetalertWarning("First enter remark for rejected amount");
+  //     // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
+  //     // this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = this.numberFormatPipe.transform(this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount - Number(
+  //     //   this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected.toString().replace(/,/g, '')));
+  // return;
+  //     }
     if(Number(event.target.value)>this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount){
       this.alertService.sweetalertWarning("Rejected amount is greater than Actual amount");
       this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountRejected =  this.numberFormatPipe.transform(0);
@@ -640,9 +675,12 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
     console.log('event.target.value::', event.target.value);
     const index = this.transactionInfo.transactionDetail.indexOf(transactionDetail);
     console.log('index::', index);
-    if (Number(event.target.value) > transactionDetail.actualTotal) {
+    debugger
+    let number = event.target.value;
+    let test = number.toString().replace(/,/g, '')
+    if ( Number(test) > transactionDetail.actualTotal) {
       this.alertService.sweetalertWarning("Aproved amount is greater than Actual amount");
-    this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = "0.00";
+    this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].amountApproved = transactionDetail.actualTotal;
       return;
      }
     if(Number(event.target.value)>this.transactionInfo.transactionDetail[index].transactionDetailList[transIndex].actualAmount){
@@ -672,6 +710,52 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
 
   }
 
+
+
+  onSaveRemarkDetails(transaction, index){
+    debugger
+    const data ={
+      "transactionId": this.summaryDetails.transactionDetailList[0].transactionId,
+      "masterId":0,
+      "employeeMasterId":'0',
+      "section":this.summaryDetails.groupName,
+      "subSection":this.summaryDetails.section,
+      "remark":this.enteredRemark,
+      "proofSubmissionId":this.summaryDetails.transactionDetailList[0].proofSubmissionId,
+      "role":"Approval Admin",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        this.enteredRemark = '';
+        console.log(this.transactionDetail);
+        debugger
+        this.isEnteredRemark = true;
+        // this.transactionInfo.transactionDetail[0].transactionDetailList.bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionInfo.transactionDetail[0].transactionDetailList[0].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        // this.transactionDetail[0].groupTransactionList[this.indexCount].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
 // --------------------- Post Method Call ------------------------------------
 public postMethodCall(data):void{
 
@@ -687,7 +771,7 @@ public postMethodCall(data):void{
 
      this.investmentTransactionApprovalService
        .changeTransactionStatus(formData)
-       .subscribe((res: InvestmentApprovalTransactionInfo) => {
+       .subscribe((res) => {
          console.log('res transaction Status::', res);
          console.log('this.transactionList.length::', this.transactionList.length);
         
