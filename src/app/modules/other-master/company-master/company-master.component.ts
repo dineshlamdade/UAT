@@ -346,8 +346,8 @@ export class CompanyMasterComponent implements OnInit {
     //for date format
           StartDate: new Date(element.startDate),
           //end date format
-          // EndDate: element.endDate,
-          EndDate:new Date(element.endDate),
+           EndDate: element.endDate,
+         // EndDate:new Date(element.endDate),
           Scale: element.scale,
           companyGroupId: element.companyGroupId,
           globalCompanyMasterId: element.globalCompanyMasterId,
@@ -581,7 +581,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.country = this.companyMasterform.get( 'country' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.pinCode = this.companyMasterform.get( 'pinCode' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.state = this.companyMasterform.get( 'state' ).value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get( 'state' ).value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get( 'city' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get( 'village' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode = this.companyMasterform.get( 'isdCode' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber = this.companyMasterform.get( 'phoneNumber' ).value;
@@ -677,7 +677,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.country = this.companyMasterform.get( 'country' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.pinCode = this.companyMasterform.get( 'pinCode' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.state = this.companyMasterform.get( 'state' ).value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get( 'state' ).value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get( 'city' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get( 'village' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber = this.companyMasterform.get( 'phoneNumber' ).value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode = this.companyMasterform.get( 'isdCode' ).value;

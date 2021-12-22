@@ -746,6 +746,7 @@ export class UnitLinkedMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

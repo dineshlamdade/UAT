@@ -1212,6 +1212,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
           'Remark Saved Successfully.',
           '',
         );
+         this.enteredRemark = '';
         this.modalRef.hide();
 
 

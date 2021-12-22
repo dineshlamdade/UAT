@@ -683,9 +683,13 @@ this.viewFlag = false;
   }
 
   addRow() {
-   // this.validemail=false;
-   if(this.validatedEmailFlag){
-    if(this.emailId!='' && this.contactPersonName!='' ){
+   
+  //  if(this.validatedEmailFlag){
+   // if(this.emailId!='' && this.contactPersonName!='' ){
+    
+      if(this.emailId!=''){
+        if(this.contactPersonName!=''){
+      if(this.validatedEmailFlag){
       this.tempdata.push({
           "accountNumber": this.form.get('accountNumber').value,
           "accountType": this.form.get('accountType').value,
@@ -709,14 +713,29 @@ this.viewFlag = false;
       this.isdCode = ''
       //console.log("JSON for pfarray form: "+ JSON.stringify(this.form.value))
       }
+      else
+    {
+     
+     this.alertService.sweetalertWarning('Please Enter Email ID in Format');
+   
+    } 
    }
     else
     {
-     // this.alertService.sweetalertWarning('Filled Contact Person  Details');
-     this.alertService.sweetalertWarning('Please Enter Mandetory Field.');
+     
+     this.alertService.sweetalertWarning('Please Enter Mandentory Fields');
+   
     } 
-    //this.viewFlag = false;
+  }
+  else
+    {
+     
+     this.alertService.sweetalertWarning('Please Enter Contact Person Details.');
+   
+    }
     
+  
+       
   }
 
 
@@ -871,7 +890,46 @@ edittable(data,index1){
   // this.isdCode=''
 }
 
+// updateRow(){
+//   if(this.validatedEmailFlag){
+//     if(this.emailId!='' && this.contactPersonName!='' ){
+//   this.tempdata.splice(this.editIndex,1,{
+//     "accountNumber": this.form.get('accountNumber').value,
+//     "accountType": this.form.get('accountType').value,
+//     "companyBankMasterId": this.companyBankMasterId,
+//      "contactNumber": this.isdCode + ' ' +this.contactNumber,
+//  // "contactNumber": this.contactNumber,
+// // "isdCode":this.isdCode,
+//     "companyBankMappingId": this.companyBankMappingId,
+//     "contactPersonName": this.contactPersonName,
+//     "designation": this.designation,
+//     "emailId": this.emailId,
+//     "groupCompanyId": this.form.get('companyGroup').value
+//   })
+
+//   this.form.controls['pfFormArray'].setValue(this.tempdata)
+
+//     this.contactPersonName = ''
+//     this.designation = ''
+//     this.emailId = ''
+//     this.contactNumber = ''
+//     this.isdCode = ''
+//     this.editIndex = -1
+// }
+//   }
+//   else
+//   {
+  
+//    this.alertService.sweetalertWarning('Please Enter Vaild Email Id.');
+//   } 
+ 
+// }
+
 updateRow(){
+  if(this.emailId!=''){
+    if(this.contactPersonName!=''){
+  if(this.validatedEmailFlag){
+    
   this.tempdata.splice(this.editIndex,1,{
     "accountNumber": this.form.get('accountNumber').value,
     "accountType": this.form.get('accountType').value,
@@ -895,8 +953,28 @@ updateRow(){
     this.isdCode = ''
     this.editIndex = -1
 }
+else
+{
+ 
+ this.alertService.sweetalertWarning('Please Enter Email ID in Format');
 
+} 
+}
+else
+{
+ 
+ this.alertService.sweetalertWarning('Please Enter Mandentory Fields');
 
+} 
+}
+else
+{
+ 
+ this.alertService.sweetalertWarning('Please Enter Contact Person Details.');
+
+}
+ 
+}
 
 // validateEmail(email) {
 //   const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

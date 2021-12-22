@@ -1850,8 +1850,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        
         console.log(this.transactionDetail);
-        this.transactionDetail[0].investmentGroup3TransactionDetailList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -1873,7 +1874,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     investmentGroup3TransactionId,
     summary, count
   ) {
-    
+    debugger
   
     this.summaryDetails = summary;
     this.indexCount = count;

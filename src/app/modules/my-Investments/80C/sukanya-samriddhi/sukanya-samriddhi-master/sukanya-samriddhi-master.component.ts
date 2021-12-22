@@ -726,6 +726,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

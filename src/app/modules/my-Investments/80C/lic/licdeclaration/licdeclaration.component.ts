@@ -970,6 +970,7 @@ console.log( this.editTransactionUpload);
       licTransactionId: number;
       licMasterPaymentDetailsId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -990,6 +991,9 @@ console.log( this.editTransactionUpload);
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.licTransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].lictransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1416,6 +1420,7 @@ console.log( this.editTransactionUpload);
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
     
 
@@ -2050,6 +2055,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
