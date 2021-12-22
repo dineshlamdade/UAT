@@ -143,4 +143,8 @@ export class SdnCreationService {
     return this.HttpClient.get<any>(this.url1 + `payrollhead-master/global-getAll`);
   }
 
+  payrollheadmaster(data): Observable<any>{
+    return this.HttpClient.post<any>(this.url1 + `payrollhead-master/headCategorywise`, data)
+  }
+
 }
