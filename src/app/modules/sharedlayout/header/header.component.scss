@@ -7,3 +7,51 @@
 ::ng-deep.sticky-note {
     z-index: 13!important;
 }
+.dropdown-menu.show {
+    display: block;
+    margin-left: -16rem;
+    width: 300px;
+}
+.round{
+    border: 2px solid #fcfcfc;
+    border-radius: 50%;
+    width: 7rem;
+    margin-left: 76px;
+    height: 7rem;
+}
+
+.fa-5x {
+    font-size: 4em;
+    margin-left: 7px;
+    margin-top: 6px;
+    border: 9px solid #ffffff;
+    border-radius: 50%;
+    padding: 9px 17px;
+    height: 96px;
+  
+    width: 94px;
+}
+
+.puple{
+    background: #713f93;
+    color: white;
+}
+.center{
+    text-align: center;
+}
+
+.font{
+    font-size: 12px;
+}
+.font-2{
+    font-size:17px
+}
+.font1{
+    font-size: 14px;
+}
+.font3{
+    font-size: 11px;
+}
+.footer1{
+    padding: 24px 9px;
+}

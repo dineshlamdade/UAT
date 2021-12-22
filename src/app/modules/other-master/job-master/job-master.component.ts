@@ -500,6 +500,12 @@ export class JobMasterComponent implements OnInit {
   // Save Comp Master Assign
   saveJobMasterMapping() {
     console.log('Dummy data',this.companyAssignTableListDummy);
+
+let fieldName1Data = this.mappedJobMastersToCompany.find(obj => obj.fromDate == null);
+if(fieldName1Data!=null){
+  this.alertService.sweetalertError( 'Please Select FromDate' );
+  return
+}
       if ( this.mappedJobMastersToCompany.length > 0 ) {
         this.jobMasterService.postMapping(this.mappedJobMastersToCompany).subscribe(
           (res: any) => {
@@ -932,191 +938,194 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
   deactiveActiveCheckBox() {
     console.log( this.form.get( 'isActive' ).value );
+    if(this.form.get( 'jobMasterValueId' ).value==""){
+      this.form.get( 'isActive' ).setValue(true);
+    }
   }
   addItemType() { }
 
 
-  saveMapToCompany() {
-    this.modalRef.hide();
+  // saveMapToCompany() {
+  //   this.modalRef.hide();
 
-    let businessArea = [];
-    let Cost_Centre = [];
-    const Department = [];
-    const Division = [];
-    let Sub_Cost_Centre = [];
-    let Sub_Department = [];
-    let Sub_Location = [];
-    let GL_Code = [];
-    const Grade = [];
-    let Profit_Centre = [];
-    const Project = [];
-    const Region = [];
-    const SubArea = [];
-    let Strategic_Business_Unit = [];
-    const Plant = [];
-    let Work_Location = [];
-    for ( let i = 0; i < this.selectedCheckBox.length; i++ ) {
-      for ( let j = 0; j < this.selectedCompanyListCheckBox.length; j++ ) {
+  //   let businessArea = [];
+  //   let Cost_Centre = [];
+  //   const Department = [];
+  //   const Division = [];
+  //   let Sub_Cost_Centre = [];
+  //   let Sub_Department = [];
+  //   let Sub_Location = [];
+  //   let GL_Code = [];
+  //   const Grade = [];
+  //   let Profit_Centre = [];
+  //   const Project = [];
+  //   const Region = [];
+  //   const SubArea = [];
+  //   let Strategic_Business_Unit = [];
+  //   const Plant = [];
+  //   let Work_Location = [];
+  //   for ( let i = 0; i < this.selectedCheckBox.length; i++ ) {
+  //     for ( let j = 0; j < this.selectedCompanyListCheckBox.length; j++ ) {
 
 
 
-        if ( this.selectedCheckBox[i].jobMasterType == 'Business Area' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          businessArea.push( obj );
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Business Area' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         businessArea.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Cost Centre' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Cost_Centre.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Cost Centre' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Cost_Centre.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Department' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Department.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Department' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Department.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Division' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Division.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Division' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Division.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Cost Centre' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Sub_Cost_Centre.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Sub Cost Centre' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Sub_Cost_Centre.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Department' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Sub_Department.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Sub Department' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Sub_Department.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'GL Code' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          GL_Code.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'GL Code' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         GL_Code.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Grade' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Grade.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Grade' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Grade.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Plant' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Plant.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Plant' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Plant.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Location' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Sub_Location.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Sub Location' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Sub_Location.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Project' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Project.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Project' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Project.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Profit Centre' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Profit_Centre.push( obj );
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Region' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Region.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Profit Centre' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Profit_Centre.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Region' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Region.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Area' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          SubArea.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Sub Area' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         SubArea.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Strategic Business Unit' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Strategic_Business_Unit.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Strategic Business Unit' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Strategic_Business_Unit.push( obj );
 
-        }
-        if ( this.selectedCheckBox[i].jobMasterType == 'Work Location' ) {
-          const obj = {
-            masterId: this.selectedCheckBox[i].masterId,
-            groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
-            createdBy: 'AnantT',
-          };
-          Work_Location.push( obj );
+  //       }
+  //       if ( this.selectedCheckBox[i].jobMasterType == 'Work Location' ) {
+  //         const obj = {
+  //           masterId: this.selectedCheckBox[i].masterId,
+  //           groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
+  //           createdBy: 'AnantT',
+  //         };
+  //         Work_Location.push( obj );
 
-        }
-      }
-    }
+  //       }
+  //     }
+  //   }
   
-    this.enableCheckAll = false;
-    this.uncheckSelectAll = false;
-    this.selectedCheckBox = [];
-    this.uncheckSelectAll = false;
+  //   this.enableCheckAll = false;
+  //   this.uncheckSelectAll = false;
+  //   this.selectedCheckBox = [];
+  //   this.uncheckSelectAll = false;
 
 
-    this.summaryHtmlDataList.forEach( x => x.isChecked = false );
-    this.tableDataList.forEach( x => x.isChecked = false );
-    this.enableCheckAll = false;
+  //   this.summaryHtmlDataList.forEach( x => x.isChecked = false );
+  //   this.tableDataList.forEach( x => x.isChecked = false );
+  //   this.enableCheckAll = false;
 
-  }
+  // }
 
  
 
@@ -1152,13 +1161,15 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
    // --------CheckBox Select Employee For Approval in checkbox selection---------------------
 
-   onCheckJobMaster(checkValue, element): void {
+   onCheckJobMaster(checkValue, element,e): void {
     if (checkValue) {
+      this.companyAssignTableListDummy.find(x=>x.SrNo==element.SrNo).isCheckedTruefalse=true;
       const data = {
         jobMasterValueId: element.jobMasterValueId,
         groupCompanyId: parseInt(this.formAssignment.controls.companyName.value),
         fromDate: this.datePipe.transform(element.fromDate, "dd-MMM-yyyy"),
-        toDate: this.datePipe.transform(element.toDate, "dd-MMM-yyyy")
+        toDate: this.datePipe.transform(element.toDate, "dd-MMM-yyyy"),
+      //  isCheckedTruefalse:true
       };
       this.mappedJobMastersToCompany.push(data);
      
@@ -1167,6 +1178,7 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
       this.mappedJobMastersToCompany.splice(index, 1);
       // this.excelEmployeeList.splice(index, 1);
     }
+console.log('table',e);
   }
 
   updateFromDate(eventDate, jobMasterId) {
@@ -1418,7 +1430,9 @@ console.log('latest',this.form.get('masterCode').status=='Disabled'?false:true);
 
     this.UpdateModeMappedJobMaster = true;
     this.readOnlyMappedJobMaster = false;
-    this.EditMappedJobMaster = element;
+    this.EditMappedJobMaster=[];
+    let obj = this.getAllMappingDetailListNew.find(x=>x.jobMasterMappingId==element);
+     this.EditMappedJobMaster.push(obj);
     // const newArray = this.getAllMappingDetailListNew.filter( e => e.jobMasterValueId == this.selectedJobMaster.jobMasterValueId );
    // console.log("EditMappedJobMaster",this.EditMappedJobMaster);
     this.modalRef = this.modalService.show(

@@ -36,6 +36,14 @@ private readonly JWT_TOKEN = '%qycutr';
     }));
   }
 
+  checkUser(){
+    return this.http.get(this.apiUrl + 'companyMaster/globalCompanyMaster/')
+    // return this.http.post('http://deliziahruat.paysquare.com:8080/hrms/v1/otp/validate', data)
+     .pipe(map((res: any) => {
+      
+       return res;
+     }));
+  }
   // loggedIn() {
   //   return !!localStorage.getItem('token');
   // }

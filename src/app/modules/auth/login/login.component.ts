@@ -108,7 +108,22 @@ export class LoginComponent implements OnInit {
         console.log(res);
         // localStorage.setItem('token', res.data.results[0].token);
         console.log(res.data.results[0].token);
-        this.router.navigate(['dashboard']);
+       
+        this.service.checkUser().subscribe(res=>{
+          console.log('CompanyDropdownResult',res.data.results);
+         if(res.data.results[0].type=='Global'|| res.data.results[0].type=='Admin'){
+            this.router.navigate(['userRolePage']);
+            localStorage.setItem('employeeMasterId',res.data.results[0].employeeMasterId);
+         }else{
+         this.router.navigate(['/employee-master/employee-dashboard']);
+         localStorage.setItem('employeeMasterId',res.data.results[0].employeeMasterId);
+         }
+        },(err)=>{
+          err.error.status.message
+        })
+//Commented on 11-12-2021 for checking 
+     //   this.router.navigate(['dashboard']);
+      //Commented on 11-12-2021 for checking 
         this.alertService.sweetalertMasterSuccess('Login successfull', '');
         // this.alertService.sweetalertError('Something went wrong. Please try again.');
       },

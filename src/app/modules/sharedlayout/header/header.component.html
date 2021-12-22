@@ -54,7 +54,7 @@
                     </li>
                 </ul> -->
                 <div class="right">
-                  <h1 class="page-title">Welcome {{userName}}</h1>
+                    <h1 class="page-title">Welcome {{userName}}</h1>
                     <!-- <div class="dropdown d-flex" dropdown>
                         <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1"
                             href="javascript:void(0);" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -173,11 +173,74 @@
                                 all as read</a>
                         </div>
                     </div> -->
+
                     <div class="dropdown d-flex" dropdown>
-                        <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1"
-                            href="javascript:void(0);" data-toggle="dropdown" role="button" aria-haspopup="true"
-                            aria-expanded="false" id="button-basic" dropdownToggle aria-controls="dropdown-basic"
-                            style="color: #fff;box-shadow: none;" (click)="logout()" ><i class="fa fa-user"></i></a>
+
+                        <ul class="nav nav-pills">
+                            <li class="nav-item dropdown" dropdown>
+                                <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1"
+                                    href="javascript:void(0);" data-toggle="dropdown" role="button" aria-haspopup="true"
+                                    aria-expanded="false" id="button-basic" dropdownToggle
+                                    aria-controls="dropdown-basic" style="color: #fff;box-shadow: none;"><i
+                                        class="fa fa-user"></i></a>
+                                <div class="dropdown-menu" id="dropdown-basic" *dropdownMenu role="menu"
+                                    aria-labelledby="button-basic">
+
+
+                                    <div class="card">
+                                        <div class="card-body puple">
+                                            <div class="round">
+
+                                                <i class="fa fa-user fa-5x"></i>
+
+                                            </div>
+                                            <div class="row mt-10">
+                                                <div class="col-md-12">
+                                                    <h6 class="center font1">2713</h6>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5 class="center font-2">Shweta Lande</h5>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 class="center font">Team Lead</h6>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 center">
+                                                    <span class="center font3"><strong>Last Login &nbsp;
+                                                            &nbsp;</strong>09-Aug-2021 &nbsp; &nbsp; 3:00pm</span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card-footer footer1">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button _ngcontent-god-c618="" class="btn btn-success mr-2"> <i
+                                                            class="fa fa-key mr-2"></i>Change Password </button>
+                                                    <button _ngcontent-god-c618="" class="btn btn-success"
+                                                        (click)="logout()"> <i class="fa fa-power-off mr-2"></i>Log Out
+                                                    </button>
+                                                </div>
+                                                <!-- <div class="col-md-6">
+                                                            <button _ngcontent-wxs-c616="" type="button" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 " tabindex="0" ng-reflect-tooltip="Button" ng-reflect-router-link="/loan/rescheduleRequest"><b _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616="" class="fa fa-power-off "></i></b> Logout </button>
+                                                        </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" id="dropdown-basic"
                             *dropdownMenu role="menu" aria-labelledby="button-basic">
                             <a class="dropdown-item" [routerLink]="['/profile']" href="javascript:void(0)"><i
@@ -196,5 +259,91 @@
                 </div>
             </div>
         </div>
+
+
+
+
+        <ng-template #template3>
+            <div class="modal-header">
+                <h5 class="modal-title" id="UploadModalLabel"><span class="text-purple font-16">Password Expiry</span>
+                </h5>
+                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <span>"Your password will expire on 10th August 2021"</span>
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616=""
+                                                        class="fa fa-key"></i></b> Change Password </button>
+                <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+
+            </div>
+            <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616=""
+                                                        class="fa fa-times"></i></b> Close </button>
+        </ng-template>
+
+
+
+
+        <ng-template #template2>
+            <div class="modal-header">
+                <h5 class="modal-title" id="UploadModalLabel"><span class="text-purple font-16">Session Time Out </span>
+                </h5>
+                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Session Time out -->
+                        <h1>Action Required ! </h1>
+                        <span>Your session is about to expire in 1 min. To continue please click on "Stay Logged in" or click on Logged out in case you are done !
+                    
+                        </span>
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616=""
+                                                        class="fa fa-floppy-o"></i></b> STAY LOGGED IN </button>
+                <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+
+            </div>
+            <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616=""
+                                                        class="fa fa-floppy-o"></i></b> Log out </button>
+        </ng-template>
     </div>
 </div>

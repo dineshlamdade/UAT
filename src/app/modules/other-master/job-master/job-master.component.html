@@ -49,8 +49,8 @@
                                 <div class="col-md-3 mt-3" *ngIf="hideFormControl">
                                   <label class="custom-control custom-checkbox custom-control-inline pl-45">
                                     <input formControlName="isActive" type="checkbox" class="custom-control-input"
-                                      name="example-inline-checkbox1" value="option1" [disabled]="form.get('masterCode').status=='Disabled'?true:false"
-                                      (change)="deactiveActiveCheckBox()" readonly>
+                                      name="example-inline-checkbox1" value="option1" [disabled]="true"
+                                      (change)="deactiveActiveCheckBox()" >
                                     <span class="custom-control-label">Active </span>
                                   </label>
                                 </div>
@@ -478,7 +478,7 @@
                                             </td> -->
                                       <tr class="p-selectable-row" [pSelectableRow]="user1">
                                         <td>
-                                          <p-tableCheckbox [value]="user1" (click)="onCheckJobMaster(e.checked,user1)"
+                                          <p-tableCheckbox [value]="user1" (click)="onCheckJobMaster(e.checked,user1, dt2)"
                                             #e>
                                           </p-tableCheckbox>
                                         </td>
@@ -506,6 +506,7 @@
                                                 </span>
                                               </div>
                                               <input data-provide="datepicker" data-date-autoclose="true"
+                                              [ngClass]="{'is-invalid' : (user1.isCheckedTruefalse==true && user1.fromDate===null) ? true : false}"
                                                 (ngModelChange)="updateFromDate($event, user1.jobMasterValueId)"
                                                 [(ngModel)]="user1.fromDate"
                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
@@ -524,7 +525,7 @@
                                               </div>
                                               <input data-provide="datepicker" data-date-autoclose="true"
                                                 (ngModelChange)="updateToDate($event, user1.jobMasterValueId)"
-                                               
+                                               disabled
                                                 [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate"
                                                 [(ngModel)]="user1.toDate"
                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" class="form-control"
@@ -785,7 +786,7 @@
                                             tooltip="{{user1.fromDate | date :'dd-MMM-yyyy'}}">{{user1.fromDate | date
                                             :"dd-MMM-yyyy"}}</label>
                                         </td>
-                                        <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0" disabled
                                             tooltip="{{user1.toDate | date :'dd-MMM-yyyy'}}">{{user1.toDate | date
                                             :"dd-MMM-yyyy"}}</label>
                                         </td>
@@ -794,7 +795,7 @@
 
                                     
                                             <i class="fa fa-edit font-18 mr-2 text-dark-green cursor-pointer" tooltip="Edit"
-                                            (click)="UploadModalEditMode(templateEditMode, user1)"></i>
+                                            (click)="UploadModalEditMode(templateEditMode, user1.jobMasterMappingId)"></i>
 
                                         </td>
                                         <!-- (click)="editUpdateDataAssign(user1)"     -->
@@ -1110,9 +1111,10 @@
                                   <i class="fa fa-calendar"></i>
                                 </span>
                               </div>
+                              <!-- [disabled]="readOnlyMappedJobMaster"  -->
                               <!-- (ngModelChange)="updateToDateInEdit($event)" -->
                               <input data-provide="datepicker" data-date-autoclose="true"
-                                [disabled]="readOnlyMappedJobMaster" 
+                              
                                 [ngModel]="EditMappedJobMaster.toDate" (ngModel)="EditMappedJobMaster.toDateEdit" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                 class="form-control" placeholder="Date" bsDatepicker>
                             </div>
