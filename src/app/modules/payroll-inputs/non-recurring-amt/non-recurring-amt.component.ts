@@ -855,6 +855,8 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionGroupAPIEmpwise(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
+				this.NonRecurringTransactionGroupAPIEmpwiseData.sort((a,b) => a.headSequence - b.headSequence);
+
 				this.isRefererBonus = false
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 					element.showRef = false;

@@ -198,7 +198,7 @@ onSelectServiceName(evt: any) {
      this.ServiceAreaList = [];
    } else {
      this.ServiceAreaList = [];
-     this.lockService.getAreawServicesName(evt).subscribe(
+     this.lockService.getAreawServicesName(evt,96,1092).subscribe(
        (res) => {
          this.areaSeriveList = res.data.results[0];
          console.log('areaSeriveList', this.areaSeriveList);
@@ -224,7 +224,7 @@ onSelectServiceName(evt: any) {
      this.ServiceAreaList = [];
    } else {
      this.ServiceAreaList = [];
-     this.lockService.getAreawServicesName(evt).subscribe(
+     this.lockService.getAreawServicesName(evt,96,1092).subscribe(
        (res) => {
          this.areaSeriveList = res.data.results[0];
          console.log('areaSeriveList', this.areaSeriveList);

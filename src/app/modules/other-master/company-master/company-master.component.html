@@ -298,7 +298,7 @@
                           </select>
                         </div>
 
-                        <!-- <div class="col-sm-3">
+                        <div class="col-sm-3">
                           <label class="form-label">Engagement Start Date</label>
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -310,8 +310,8 @@
                               bsDatepicker (focusout)="onChangeStartDate()"
                               [ngClass]="{'is-invalid' : companyMasterform.get('startDate').status == 'INVALID'}">
                           </div>
-                        </div> -->
-                        <div class="col-sm-3">
+                        </div>
+                        <!-- <div class="col-sm-3">
                           <label class="form-label">Engagement Start Date</label>
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -323,7 +323,7 @@
                               bsDatepicker (focusout)="onChangeStartDate()"
                               [ngClass]="{'is-invalid' : companyMasterform.get('startDate').status == 'INVALID'}">
                           </div>
-                        </div>
+                        </div> -->
 
                       </div>
 
@@ -392,7 +392,7 @@
                             <span>{{employeeMasterRequestDTO.logo1}}</span>
                           </div>
                           <div class="col-md-2">
-                            <i (click)="deletelogo1()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
+                            <i (click)="deletelogo1()" class="fa fa-times text-color-red" *ngIf="!viewlogoflag"></i>
                           </div>
                           </div>
                            <!-- <span *ngIf="editlogo1"><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
@@ -443,7 +443,7 @@
                             <span>{{employeeMasterRequestDTO.logo2}}</span>
                           </div>
                             <div class="col-md-2">
-                            <i (click)="deletelogo2()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
+                            <i (click)="deletelogo2()" class="fa fa-times text-dark-red" *ngIf="!viewlogoflag"></i>
                           </div>
                           </div>
                             <!-- <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
@@ -480,7 +480,7 @@
 
                           </div>
                           <div class="col-md-2">
-                            <i (click)="deletelogo3()" class="fa fa-times" *ngIf="!viewlogoflag"></i>
+                            <i (click)="deletelogo3()" class="fa fa-times text-dark-red" *ngIf="!viewlogoflag"></i>
                             </div>
                             </div>
 
