@@ -31,6 +31,7 @@ import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
 import { HousingloanService } from '../housingloan.service';
 import { truncateSync } from 'node:fs';
+import { ThisReceiver } from '@angular/compiler';
 
 
 @Component({
@@ -128,6 +129,7 @@ export class HousingloanmasterComponent implements OnInit {
   public paymentDetailMaxDate: Date;
   public minFormDate: Date;
   public maxFromDate: Date;
+  public editMaxloanDate: Date;
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -146,7 +148,7 @@ export class HousingloanmasterComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public visibilityFlagFamily : boolean  = false;
-  public isSaveLoan : boolean  = true;
+  //public isSaveLoan : boolean  = true;
   public isUpdateLoan : boolean  = false;
   public isSaveShowInOwner : boolean  = true;
   public isUpdateShowInOwner : boolean  = false;
@@ -188,6 +190,10 @@ export class HousingloanmasterComponent implements OnInit {
   documentRemarkList: any;
   public remarkCount : any;
   editRemarkData: any;
+  enteredRemark: any;
+  isLoanAddNew:boolean = true;
+  isLoanTransfer:boolean = true;
+  indexCount: any;
   // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   // ServicesList: any;
   constructor(
@@ -212,7 +218,7 @@ export class HousingloanmasterComponent implements OnInit {
       purposeOfLoan: new FormControl(null, Validators.required),
       lenderName: new FormControl(null, Validators.required),
       lenderType: new FormControl(null, Validators.required),
-      lenderPANOrAadhar: new FormControl(null),
+      lenderPANOrAadhar: new FormControl(null,Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanAmount: new FormControl(null, [
         Validators.required,
@@ -230,7 +236,8 @@ export class HousingloanmasterComponent implements OnInit {
         Validators.max(100),
         Validators.min(0),
       ]),
-      accountStatus: new FormControl(null),
+      accountStatus: new FormControl(true),
+      loanTransfer: new FormControl(true),
 
     })),
       (this.HPUsageDetailForm = this.formBuilder.group({
@@ -241,11 +248,11 @@ export class HousingloanmasterComponent implements OnInit {
       })),
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
-        familyMemberInfoId: new FormControl(0, Validators.required),
+        familyMemberInfoId: new FormControl(0),
         ownerName: new FormControl(null, Validators.required),
+        otherOwnerName: new FormControl(null),
         firstTimeHomeBuyer: new FormControl('true', Validators.required),
         relationship: new FormControl({ value:'', disabled: true }),
-        //otherOwnerName: new FormControl(null),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
       //   housePropertyUsageTypeId : [0],
@@ -304,6 +311,7 @@ export class HousingloanmasterComponent implements OnInit {
     //  this.addOwner(0);
     // this.startDateModel = '31-dec-9999';
     this.housingLoanForm.get('country').setValue('India');
+    this.isLoanTransfer = false;
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
     //   this.financialYearStart = res.data.results[0].fromDate;
@@ -318,9 +326,8 @@ export class HousingloanmasterComponent implements OnInit {
 
 
     this.Service.getCountryList().subscribe((res) => {
-      this.countriesList = res.data.results;
-
-      console.log('Countries', this.countriesList);
+      debugger
+      this.countriesList = res.data.results.filter(e => e == "India");
     });
 
     this.Service.getEmployeeAddressList().subscribe((res) => {
@@ -433,6 +440,7 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   onCheckboxSelect(checkboxValue) {
+    debugger
     this.loanTaken = true;
     if (checkboxValue == 'false') {
       this.loanTaken = false;
@@ -496,7 +504,8 @@ export class HousingloanmasterComponent implements OnInit {
       this.isUpdateShowInOwner = false
   }
 
-  public addOwnerType() {
+  public addOwnerType(action) {
+    debugger
     this.isSaveShowInOwner = true,
       this.isUpdateShowInOwner = false,
       // houseLoanOwnerDetailSubmitted
@@ -506,13 +515,15 @@ export class HousingloanmasterComponent implements OnInit {
       // console.log("HPOwnerDetailForm",this.HPOwnerDetailForm);
       return;
     }
+    if(this.HPOwnerDetailForm.value.ownerName == "other")
+     this.HPOwnerDetailForm.get('ownerName').patchValue(this.HPOwnerDetailForm.value.otherOwnerName);
 
     this.globalAddRowIndex1 -= 1;
     // this.alertService.sweetalertWarning('Please enter PAN details');
 
     // console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
     // console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
-    if(this.houseLoanOwnerTypeList.find(
+    /* if(this.houseLoanOwnerTypeList.find(
       (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
       {
       this.alertService.sweetalertWarning('Owner name is already exists.');
@@ -527,7 +538,7 @@ export class HousingloanmasterComponent implements OnInit {
     })) {
       this.alertService.sweetalertWarning('Owner name is already exists.');
       return;
-    }
+    } */
 
 
     // this.houseLoanOwnerTypeList.find(
@@ -536,25 +547,30 @@ export class HousingloanmasterComponent implements OnInit {
     // )
     console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm)
 
+    if(action == "Update"){
+      const index = this.houseLoanOwnerTypeList.findIndex(
+        (land) =>
+          land.housePropertyOwnerDetailId ===
+          this.HPOwnerDetailForm.value.housePropertyOwnerDetailId
+      );
+      this.houseLoanOwnerTypeList[index] = this.HPOwnerDetailForm.getRawValue();
+    }
+    else {
     if (
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === 0 ||
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === null
     ) {
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId = this.globalAddRowIndex1;
       //  console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm.value)
-      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
+      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.getRawValue());
       // console.log("houseLoanOwnerTypeList", this.houseLoanOwnerTypeList)
 
     } else {
-      const index = this.houseLoanOwnerTypeList.findIndex(
-        (land) =>
-          land.housePropertyOwnerDetailId ===
-          this.HPOwnerDetailForm.value.housePropertyOwnerDetailId
-      );
+      
       this.houseLoanOwnerTypeList = []
       console.log("this.HPOwnerDetailForm.value: "+ JSON.stringify(this.HPOwnerDetailForm.value))
 
-      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
+      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.getRawValue());
 
       // this.houseLoanOwnerTypeList[index].rentAmount = this.housingLoanForm.get(
       //   'HPOwnerDetailForm'
@@ -562,6 +578,7 @@ export class HousingloanmasterComponent implements OnInit {
 
 
     }
+  }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
     console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
     //  this.HPOwnerDetailForm.get('houseLoanOwnerTypeList').reset();
@@ -570,7 +587,7 @@ export class HousingloanmasterComponent implements OnInit {
     this.HPOwnerDetailForm.patchValue({
       firstTimeHomeBuyer:'true',
     });
-    this.HPOwnerDetailForm.reset();
+    //this.HPOwnerDetailForm.reset();
 
   }
 
@@ -580,18 +597,20 @@ export class HousingloanmasterComponent implements OnInit {
     this.isShowUsageInUpdate = false;
   }
 
-  public addUsageType() {
+  public addUsageType(action) {
     /*    console.log('event::', this
     .HPUsageDetailForm); */
-
-    this.isShowUsageInSave = true;
-    this.isShowUsageInUpdate = false;
+    
     this.houseLoanDetailSubmitted = true;
     if (this.HPUsageDetailForm.invalid) {
       return;
     }
+    this.isShowUsageInSave = true;
+    this.isShowUsageInUpdate = false;
+    
+    
     this.globalAddRowIndex1 -= 1;
-    if( this.houseLoanUsageTypeList.find(
+    if( action == "Add" && this.houseLoanUsageTypeList.find(
       (usage) =>
         usage.usageType == this.HPUsageDetailForm.value.usageType
     )){
@@ -680,19 +699,27 @@ export class HousingloanmasterComponent implements OnInit {
 
   public cancelLoanDetails() {
     this.housePropertyLoanDetailList.reset();
-    this.isSaveLoan = true;
+    //this.isSaveLoan = true;
     this.isUpdateLoan = false;
     this.isActionForTransfer = false;
     this.selectedLoanTypeIndex = -1;
+    if(this.loanDetailGridData.length != 0){
+      this.isLoanAddNew = false;
+      this.isLoanTransfer = true;
+    }else{ 
+      this.isLoanAddNew = true;
+      this.isLoanTransfer = false;
+    }
+    this.editMaxloanDate = new Date(2100,12,31);
   }
 
   public addLoanDetails(formDirective: FormGroupDirective) {
+    debugger
     this.loansubmitted = true;
-    this.isSaveLoan = true;
+    //this.isSaveLoan = true;
     this.isUpdateLoan = false;
     this.isActionForTransfer = false;
-
-
+    
     // if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
     //  this.alertService.sweetalertWarning('Please enter PAN details');
     //  return;
@@ -702,7 +729,7 @@ export class HousingloanmasterComponent implements OnInit {
     if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
       if(this.housePropertyLoanDetailList.value.lenderPANOrAadhar == undefined || this.housePropertyLoanDetailList.value.lenderPANOrAadhar == null ){
         this.alertService.sweetalertWarning('Please enter PAN details.');
-        return
+        return;
       }
     }
     console.log('this.loansubmitted', this.housePropertyLoanDetailList);
@@ -714,7 +741,7 @@ export class HousingloanmasterComponent implements OnInit {
     console.log(this.selectedLoanTypeIndex)
 
     if (this.selectedLoanTypeIndex > -1) {
-      this.housePropertyLoanDetailList.get('accountStatus').setValue(true);
+      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
       this.loanDetailGridData[this.selectedLoanTypeIndex] = this.housePropertyLoanDetailList.getRawValue();
       console.log(this.loanDetailGridData)
       this.housePropertyLoanDetailList.reset();
@@ -722,11 +749,26 @@ export class HousingloanmasterComponent implements OnInit {
     }
     else {
       this.loanDetailGridData = [];
-      this.housePropertyLoanDetailList.get('accountStatus').setValue(true);
+      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
       this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
       this.housePropertyLoanDetailList.reset();
       this.loansubmitted = false;
     }
+
+    this.loanDetailGridData.sort((a, b) => {
+      return <any>new Date(b.loanEndDate) - <any>new Date(a.loanEndDate);
+    });
+
+    if(this.loanDetailGridData.length != 0){
+      this.isLoanAddNew = false;
+      this.isLoanTransfer = true;
+    }else{ 
+      this.isLoanAddNew = true;
+      this.isLoanTransfer = false;
+    }
+    this.editMaxloanDate =  new Date(2100,12,31);
+    console.log("max fromdate :: ", this.editMaxloanDate);
+
   }
 
   public trackloanDetail(index: number, loanDetail: any) {
@@ -962,7 +1004,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-
+    debugger
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
@@ -980,6 +1022,7 @@ export class HousingloanmasterComponent implements OnInit {
         this.documentDataArray.push(remarksPasswordsDto);
       }
     }
+    if(this.visibilityFlagStamp == true) {
     for (let i = 0; i <= this.stampDutydocumentPassword.length; i++) {
       if(this.stampDutydocumentPassword[i] != undefined){
         let remarksPasswordsDto = {};
@@ -992,6 +1035,7 @@ export class HousingloanmasterComponent implements OnInit {
         this.stampDutydocumentDataArray.push(remarksPasswordsDto);
       }
     }
+  }
     for (let i = 0; i <= this.loandocumentPassword.length; i++) {
       if(this.loandocumentPassword[i] != undefined){
         let remarksPasswordsDto = {};
@@ -1019,16 +1063,13 @@ export class HousingloanmasterComponent implements OnInit {
 
     // housingLoanForm housePropertyLoanDetailList HPUsageDetailForm HPOwnerDetailForm
     // houseLoanF  housePropertyLoanList HPUsageDetailF HPOwnerDetailF
-    let invalidSubmission = false;
-    if (this.housingLoanForm.invalid) {
-      invalidSubmission = true;
-      this.alertService.sweetalertWarning('Please enter property details.');
-    }
+    let invalidSubmission = false;    
 
     if (this.houseLoanOwnerTypeList.length == 0) {
       if (this.HPOwnerDetailForm.invalid) {
         invalidSubmission = true;
         this.alertService.sweetalertWarning('Please enter house owner details.');
+        return;
       }
     }
 
@@ -1038,18 +1079,28 @@ export class HousingloanmasterComponent implements OnInit {
         this.alertService.sweetalertWarning(
           'Please enter house loan usage details.'
         );
+        return;
       }
     }
 
+    if(this.loanTaken == true){ 
     if (this.loanDetailGridData.length == 0) {
       invalidSubmission = true;
       if (this.housePropertyLoanDetailList.invalid) {
         this.alertService.sweetalertWarning('Please enter loan taken details.');
+        return;
       }
     }
+  }
     
     // return the control if any on of the form is invalid
     if (invalidSubmission) {
+      return;
+    }
+
+    if (this.housingLoanForm.invalid) {
+      invalidSubmission = true;
+      this.alertService.sweetalertWarning('Please enter property details.');
       return;
     }
 
@@ -1070,6 +1121,7 @@ export class HousingloanmasterComponent implements OnInit {
       console.log('urlArray.length', this.urlArray.length);
       return;
     } else {
+      delete this.houseLoanOwnerTypeList[0].otherOwnerName;
       // const data = this.housingLoanForm.getRawValue();
       const data = {
         // property detail propertied goes here
@@ -1252,21 +1304,25 @@ export class HousingloanmasterComponent implements OnInit {
 
     }
     if (this.HPOwnerDetailForm.value.ownerName == "other" || this.HPOwnerDetailForm.value.familyMemberInfoId < 0) {
-      this.HPOwnerDetailForm.value.relationship = "other";
-      this.HPOwnerDetailForm.value.familyMemberInfoId = -1;
+      this.HPOwnerDetailForm.get('familyMemberInfoId').patchValue(-1);
+      this.HPOwnerDetailForm.get('relationship').patchValue("other");
+      //this.HPOwnerDetailForm.value.relationship = "other";
+      //this.HPOwnerDetailForm.value.familyMemberInfoId = -1;
       this.relationFlag = false;
       this.visibilityFlagFamily = true;
 
     }
 
-    if (this.HPOwnerDetailForm.value.familyMemberInfoId !== "other") {
-
-      this.HPOwnerDetailForm.get('ownerName').clearValidators();
-      this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
+    /* if (this.HPOwnerDetailForm.value.familyMemberInfoId !== "other") { */
+      if (this.HPOwnerDetailForm.value.ownerName !== "other") {
+/*       this.HPOwnerDetailForm.get('ownerName').clearValidators();
+      this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity(); */
+      this.HPOwnerDetailForm.get('otherOwnerName').clearValidators();
+      this.HPOwnerDetailForm.get('otherOwnerName').updateValueAndValidity();
     } else {
-
-      this.HPOwnerDetailForm.get('ownerName').setValidators([Validators.required]);
-      this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
+      
+      this.HPOwnerDetailForm.get('otherOwnerName').setValidators([Validators.required]);
+      this.HPOwnerDetailForm.get('otherOwnerName').updateValueAndValidity();
     }
 
   }
@@ -1372,6 +1428,13 @@ export class HousingloanmasterComponent implements OnInit {
 
       this.proofSubmissionId = obj.proofSubmissionId;
       this.isClear = true;
+      if(this.loanDetailGridData.length != 0){
+        this.isLoanAddNew = false;
+        this.isLoanTransfer = true;
+      } else{ 
+        this.isLoanAddNew = true;
+        this.isLoanTransfer = false;
+      }
       // }
     });
 
@@ -1423,10 +1486,14 @@ export class HousingloanmasterComponent implements OnInit {
 
   //Edit Loan Detail Table
   editLoanDetails(loanDetails, index) {
-    this.isSaveLoan = false;
+    //this.isSaveLoan = false;
+    this.isLoanAddNew = false;
+    this.isLoanTransfer = false;
     this.isUpdateLoan = true;
     this.selectedLoanTypeIndex = index
     // this.housePropertyLoanDetailList.patchValue(this.loanDetailGridData[i]);
+    //editdate
+    //this.editMaxloanDate = this.today;
     this.housePropertyLoanDetailList.patchValue({
       housePropertyLoanDetailId: loanDetails.housePropertyLoanDetailId,
       purposeOfLoan: loanDetails.purposeOfLoan,
@@ -1459,22 +1526,37 @@ export class HousingloanmasterComponent implements OnInit {
 
   // //edit houseLoanUsageTypeList Changes by Komal
   editLoanOwnerDetail(evt) {
+    debugger
     this.isSaveShowInOwner = false,
-      this.isUpdateShowInOwner = true,
-      console.log(evt)
-
+      this.isUpdateShowInOwner = true;
+      let ownerName;// = evt.ownerName;
+      let otherOwnerName;// = evt.relationship;
+      if(evt.relationship == 'other')
+      {
+        otherOwnerName = evt.ownerName;
+        ownerName = evt.relationship;
+        this.relationFlag = false;
+        this.visibilityFlagFamily = true;
+      }
+      else{
+        ownerName = evt.ownerName;
+        //ownerName = evt.relationship;
+        this.relationFlag = true;
+      this.visibilityFlagFamily = false;
+      }
 
     this.HPOwnerDetailForm.patchValue({
-
+      familyMemberInfoId: evt.familyMemberInfoId,
       housePropertyOwnerDetailId: evt.housePropertyOwnerDetailId,
       // firstTimeHomeBuyer: evt.firstTimeHomeBuyer,
       firstTimeHomeBuyer: evt.firstTimeHomeBuyer,
-      ownerName: evt.ownerName,
+      otherOwnerName: otherOwnerName,
+      ownerName: ownerName,
       relationship: evt.relationship
-
-
     })
-    this.HPOwnerDetailForm.patchValue(this.houseLoanOwnerTypeList[evt]);
+    //this.HPOwnerDetailForm.updateValueAndValidity();
+    /* this.houseLoanOwnerTypeList[evt] */
+    //this.HPOwnerDetailForm.patchValue(this.houseLoanOwnerTypeList);
   }
 
   // //edit houseLoanUsageTypeList
@@ -1835,9 +1917,13 @@ export class HousingloanmasterComponent implements OnInit {
   //   }
   //  }
   public loanTransfer(formDirective: FormGroupDirective) {
+    debugger
     this.loansubmitted = true;
     this.isTransferValid = false;
-    
+    if(this.housePropertyLoanDetailList.invalid){
+      return;
+    }
+
     /* if(this.loanDetailGridData.length> 0)
     {
       this.isTransferValid = true;
@@ -1854,7 +1940,7 @@ export class HousingloanmasterComponent implements OnInit {
     const loanEDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
     this.loanDetailGridData.forEach((element) => {
-      if(element.accountStatus == true &&  this.datePipe.transform(element.loanEndDate, 'yyyy-MM-dd') >= loanEDate)
+      if(element.loanTransfer == true &&  this.datePipe.transform(element.loanEndDate, 'yyyy-MM-dd') >= loanEDate)
       {
         this.isTransferValid = true;
       }
@@ -1880,22 +1966,42 @@ export class HousingloanmasterComponent implements OnInit {
       return
     }
    
-      this.housePropertyLoanDetailList.get('accountStatus').setValue(true);
-      this.loanDetailGridData[this.selectedLoanTypeIndex].accountStatus = false;
+      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+
+      const index = this.loanDetailGridData.findIndex(
+        (land) =>
+          land.loanTransfer === true
+      );
+      this.loanDetailGridData[index].loanTransfer = false;
+
       this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
       //this.housePropertyLoanDetailList.reset();
       this.loansubmitted = true;
-      this.isSaveLoan = true;
+      //this.isSaveLoan = true;
+      if(this.loanDetailGridData.length != 0){
+        this.isLoanAddNew = false;
+        this.isLoanTransfer = true;
+      }else{ 
+        this.isLoanAddNew = true;
+        this.isLoanTransfer = false;
+      }
       this.isUpdateLoan = false;
       this.isActionForTransfer = false;
+
+      this.loanDetailGridData.sort((a, b) => {
+        return <any>new Date(b.loanEndDate) - <any>new Date(a.loanEndDate);
+      });
+      this.maxFromDate = new Date(2100,12,31);
     
   }
   public remarkModal(
     templateViewer: TemplateRef<any>,    
     masterId,
-    summary
+    summary, count
   ) {
+    this.enteredRemark = null;
     this.summaryDetails = summary;
+    this.indexCount = count;
     this.Service.getHouseLoanMasterRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -1920,7 +2026,7 @@ export class HousingloanmasterComponent implements OnInit {
     const data ={
       "transactionId": 0,
       "masterId":this.summaryDetails.housePropertyMasterId,
-      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:2432,
+      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:0,
       "section":"House",
       "subSection":"Loan",
       "remark":this.editRemarkData,
@@ -1942,7 +2048,11 @@ export class HousingloanmasterComponent implements OnInit {
         this.modalRef.hide();
       } else{
         this.alertService.sweetalertWarning("Something Went Wrong");
-      }
+      } 
     });
+}
+onResetRemarkDetails(){
+  debugger
+  this.enteredRemark = null;
 }
 }

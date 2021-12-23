@@ -79,13 +79,27 @@
                 <th rowspan="2" class="wd-18 font700">
                   <span tooltip="Particular">Particular</span>
                 </th>
-                <th rowspan="2" class="wd-12 font700">Declared</th>
-                <th rowspan="2" class="wd-12 font700">Actual</th>
-                <th colspan="2" class="wd-16 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-6 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS. ID.</th>
-                <th rowspan="2" class="wd-10 font700">Status</th>
-                <th rowspan="2" class="wd-10 font700">Action</th>
+                <th rowspan="2" class="wd-12 font700"> 
+                  <span tooltip="Declared Amount">Declared Amount</span>
+                </th>
+                <th rowspan="2" class="wd-12 font700">
+                  <span tooltip="Actual Amount">Actual Amount</span>
+                  </th>
+                <th colspan="2" class="wd-16 font700">
+                  <span tooltip="Approval Amount">Approval Amount</span>
+                  </th>
+                <th rowspan="2" class="wd-6 font700">
+                  <span tooltip="Remark">Remark</span>
+                  </th>
+                <th rowspan="2" class="wd-8">
+                  <span tooltip="PS. ID.">PS. ID.</span>
+                  </th>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Status">Status</span>
+                  </th>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Action">Action</span>
+                  </th>
 
               </tr>
               <tr>
@@ -282,8 +296,8 @@
                           Previous Employer Name
                         </th>
                         <th rowspan="2" class="wd-15 font700">Particulars</th>
-                        <th rowspan="2" class="wd-15 font700">Actual</th>
-                        <th colspan="2" class="wd-16 font700">Receipt Amount</th>
+                        <th rowspan="2" class="wd-15 font700">Actual Amount</th>
+                        <th colspan="2" class="wd-16 font700">Approval Amount</th>
                         <th rowspan="2" class="wd-6 font700">Remark</th>
                         <th rowspan="2" class="wd-8">PS. ID.</th>
                         <th rowspan="2" class="wd-10 font700">Status</th>
@@ -296,8 +310,8 @@
                     <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                       <tr>
                         <th rowspan="2" class="wd-15 font700">Particulars</th>
-                        <th rowspan="2" class="wd-15 font700">Actual</th>
-                        <th colspan="2" class="wd-16 font700">Receipt Amount</th>
+                        <th rowspan="2" class="wd-15 font700">Actual Amount</th>
+                        <th colspan="2" class="wd-16 font700">Approval Amount</th>
                         <th rowspan="2" class="wd-6 font700">Remark</th>
                         <th rowspan="2" class="wd-8">PS. ID.</th>
                         <th rowspan="2" class="wd-10 font700">Status</th>
@@ -327,7 +341,7 @@
                        " class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
                             <span class="custom-control-label"></span>
                           </label>
-                          <label *ngIf="!isDisabled && summary.proofSubmissionId" class="custom-control custom-checkbox checkbox-center">
+                          <label *ngIf="!isDisabled && !summary.proofSubmissionId" class="custom-control custom-checkbox checkbox-center">
                             <input type="checkbox" [ngModel]="enableSelectAll"
                               [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                               onSelectCheckBoxPrevious(summary, $event, i, j);
@@ -803,7 +817,7 @@
                   <th scope="col" class="font700 wd-10">Date of Submission</th>
 
                   <th scope="col" class="font700 wd-20">Document Name</th>
-                  <th scope="col" class="font700 wd-10">PS. ID. Status</th>
+                  <!-- <th scope="col" class="font700 wd-10">PS. ID. Status</th> -->
                   <th scope="col" class="font700 wd-10">Action</th>
                 </tr>
               </thead>
@@ -833,17 +847,16 @@
                       }}</span>
                   </td>
                   <td>
-                    <div class="custom_Label_badge">
-                      <button class="btn bg-color-lightgray text-000"
+                    <div class="custom_Label_badge" style="top: -8px;">
+                      <a class="changeColor"
                         (click)="docViewer(template3, documentSummary.documentDetailList)">
-                        Documents
-                      </button>
-                      <span class="Label_badge">{{
-                        documentSummary.documentDetailList.length
-                        }}</span>
+                        <span class="Label_badge">{{
+                          documentSummary.documentDetailList.length
+                          }}</span>
+                    </a>
                     </div>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span class="badge" [ngClass]="{'badge-primary': documentSummary.documentDetailList[0].status=='Re-Open',
                 ' badge-success': documentSummary.documentDetailList[0].status=='Approved',
                 'badge-danger': documentSummary.documentDetailList[0].status=='SendBack',
@@ -851,7 +864,7 @@
                 'badge-warning': documentSummary.documentDetailList[0].status=='Pending'}" tooltip="{{ documentSummary.documentDetailList[0].status }}">
                 {{documentSummary.documentDetailList[0].status}}
                 </span>
-                  </td>
+                  </td> -->
                   <!-- <td>
                     <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
                       editViewTransaction(
@@ -944,7 +957,7 @@
   </div>
 </ng-template>
 <ng-template #template2>
-  <div class="modal-header">
+  <!-- <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
       Edit Document Details
     </h5>
@@ -954,7 +967,34 @@
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
-  </div>
+  </div> -->
+      <div class="modal-header">
+      <h6 class="modal-title" style="margin: auto;"><b>PS.ID. : </b>
+        <label>
+          {{ editProofSubmissionId }}</label>
+      </h6>
+      <h6 class="modal-title" style="margin: auto;"><b>Creation Date : </b>
+        <label>
+          {{ createDateTime | date:'dd-MMM-yyyy' }}</label>
+      </h6>
+      <h6 class="modal-title" style="margin: auto;"><b>Last Modified Date & Time : </b>
+        <label>
+          {{ lastModifiedDateTime | date: 'dd-MMM-yyyy HH:mm' }}</label>
+      </h6>
+      <h6 class="modal-title" style="margin: auto;"><b>Status : </b>
+        <label>
+          <span class="badge" [ngClass]="{'badge-primary': transactionStatus=='Re-Open',
+            ' badge-success': transactionStatus=='Approved',
+            'badge-danger': transactionStatus=='SendBack',
+            'badge-info': transactionStatus=='Submitted',
+            'badge-warning': transactionStatus=='Pending'}" tooltip="{{transactionStatus}}">
+          {{ transactionStatus }}</span></label>
+      </h6>
+      
+      <button type="button" (click)="modalRef1.hide()" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
   <div class="card-body Box-Spacing">
     <div *ngFor="let item of editTransactionUpload; let j = index">
       <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
@@ -1014,8 +1054,8 @@
                     <span tooltip="Particular">Particular</span>
                   </th>
                   <th rowspan="2" class="wd-12 font700">Declared</th>
-                  <th rowspan="2" class="wd-12 font700">Actual</th>
-                  <th colspan="2" class="wd-16 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-12 font700">Actual Amount</th>
+                  <th colspan="2" class="wd-16 font700">Approval Amount</th>
                   <th rowspan="2" class="wd-6 font700">Remark</th>
                   <th rowspan="2" class="wd-8">PS. ID.</th>
                   <th rowspan="2" class="wd-10 font700">Status</th>
@@ -1041,7 +1081,7 @@
                         value="option{{ summary.housePropertyTransactionId }}" />
                       <span class="custom-control-label"></span>
                     </label>
-                    <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                    <label *ngIf="!isDisabled && !summary.proofSubmissionId" class="custom-control custom-checkbox checkbox-center">
                       <input type="checkbox" [ngModel]="enableSelectAll"
                         [disabled]="summary.proofSubmissionId || isDisabled " (change)="
                         onSelectCheckBox(summary, $event, i, j);
@@ -1168,7 +1208,8 @@
           </div>
           <div class="row mt-15">
             <div class="col-12">
-              <h3 class="font-14 text-purple font-bold">Previous Employer1</h3>
+              <!-- <Previous Employer1> -->
+              <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
               <div class="row mt-15">
                 <div class="col-12">
                   <div class="table-responsive Custom_Table">
@@ -1188,8 +1229,8 @@
                             Previous Employer Name
                           </th>
                           <th rowspan="2" class="wd-15 font700">Particulars</th>
-                          <th rowspan="2" class="wd-15 font700">Actual</th>
-                          <th colspan="2" class="wd-16 font700">Receipt Amount</th>
+                          <th rowspan="2" class="wd-15 font700">Actual Amount</th>
+                          <th colspan="2" class="wd-16 font700">Approval Amount</th>
                           <th rowspan="2" class="wd-6 font700">Remark</th>
                           <th rowspan="2" class="wd-8">PS. ID.</th>
                           <th rowspan="2" class="wd-10 font700">Status</th>
@@ -1214,7 +1255,7 @@
                        " class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                            <label *ngIf="!isDisabled && !summary.proofSubmissionId" class="custom-control custom-checkbox checkbox-center">
                               <input type="checkbox" [ngModel]="enableSelectAll"
                                 [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                               onSelectCheckBoxPrevious(summary, $event, i, j);
@@ -1642,6 +1683,418 @@
       </div>
     </div> -->
     <hr class="mt-20" />
+    <div class="row">
+      <div class="col-md-12">
+        <div class="border-box">
+          <div class="row mt-30">
+            <div class="col-12">
+              <div class="card">
+                <div class="col-md-12">
+                  <h3 class="font-14 text-purple font-bold">
+                    Document Summary
+                  </h3>
+                </div>
+                <div class="col-9 col-md-10 col-sm-12">
+                  <div
+                    class="table-responsive Custom_Table"
+                  >
+                    <p-table
+                      *ngIf="urlArray"
+                      #dt2
+                      [value]="urlArray"
+                      [paginator]="true"
+                      [rows]="10"
+                      [showCurrentPageReport]="true"
+                      (sortFunction)="customSort($event)"
+                      [customSort]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10, 25, 50]"
+                      [globalFilterFields]="[
+                    'empcode',
+                    'empName',
+                    'Group',
+                    'Frequency',
+                    'Type',
+                    'proofsubmission',
+                    'PSIdDetails',
+                    'SubmissionDate',
+                    'Status'
+                  ]"
+                    >
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <!-- <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                          </th> -->
+
+                          <!-- <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            > -->
+                              <!-- Date Of Submission -->
+                              <!-- Creation Date
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th> -->
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              <!-- Time -->
+                              Document Submission Date & Time
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Document Type
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="documentType"
+                                  pSortableColumn="documentType"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="documentType"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Document Name
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="fileName"
+                                  pSortableColumn="fileName"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="fileName"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Document Type
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="documentType"
+                                  pSortableColumn="documentType"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="documentType"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th> -->
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Password
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Remark
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Status
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            >
+                              Approver Name
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th> -->
+                          <!-- <th>
+                            <div
+                              class="
+                            p-d-flex
+                            p-jc-between
+                            p-ai-center
+                          "
+                            > -->
+                              <!-- Time -->
+                              <!-- Last Modified Date & Time
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th> -->
+                        </tr>
+                      </ng-template>
+                      <ng-template
+                        pTemplate="body"
+                        let-document
+                        let-documentIndex = "rowIndex"
+                      >
+                        <tr class="p-selectable-row">
+                          <!-- <td>
+                            <p-tableCheckbox
+                              [value]="customer"
+                            >
+                            </p-tableCheckbox>
+                          </td> -->
+                          <!-- <td>
+                            {{dateofsubmission | date:'dd-MMM-yyyy' }}
+                          </td> -->
+                          <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
+                          <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                          <!-- {{ todayDate | date: 'dd/MM/yyyy HH:mm'}} -->
+                          <td>{{ document.documentType }}</td>
+                          <td>
+                            <a
+                              (click)=" docViewer1(template3,documentIndex, document)"
+
+                            >
+                              <i
+                                class="
+                              fa fa-paperclip
+                              text-orange
+                            "
+                              ></i>
+                              &nbsp;
+                              {{ document.fileName }}
+                            </a>
+                          </td>
+                          <!-- <td>{{ document.documentType }}</td> -->
+                          <td>{{ document.password }}</td>
+                          <td>
+                            <!-- <div class="custom_Label_badge">
+                              <button
+                                class="
+                                  btn btn-bg-green
+                                  text-white
+                                "
+                                (click)="
+                                  docViewer(template3)
+                                "
+                              >
+                                PSEmp
+                              </button>
+                              <span class="Label_badge"
+                                >2</span
+                              >
+                            </div> -->
+                            {{document.remark}}
+                          </td>
+                          <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                            ' badge-success': document.status=='Approved',
+                            'badge-danger': document.status=='SendBack',
+                            'badge-info': document.status=='Submitted',
+                            'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                          <!-- <td>{{ document.lastModifiedBy }}</td> -->
+                          <!-- <td>{{ document.lastModifiedTime| date:'h:mm a'  }}</td> -->
+                          <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
+                          
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+                <!-- <div class="row mt-25">
+                  <div class="col-md-12">
+                    <div class="float-right">
+                      <button
+                        type="submit"
+                        class="
+                          custom_button custom_btn
+                          btn-bg-green
+                          btn-labeled
+                          btn-labeled-left
+                          ripple
+                          mr-2
+                        "
+                        tooltip="Approve"
+                      >
+                        <b>
+                          <i class="fa fa-floppy-o"></i
+                        ></b>
+                        Approve
+                      </button>
+
+                      <button
+                        type="button"
+                        tooltip="Send Back"
+                        class="
+                          custom_button custom_btn
+                          bg-btn-red
+                          btn-labeled btn-labeled-left
+                          mr-2
+                        "
+                      >
+                        <b><i class="fa fa-times"></i></b>
+                        Discard
+                      </button>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     <hr class="mt-20" />
     <div class="row mt-20">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
@@ -1661,6 +2114,7 @@
         </div>
       </div>
     </div>
+    <hr class="mt-20" /> -->
   </div>
 
   <div class="modal-footer">
@@ -1753,7 +2207,42 @@
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
-            <div *ngIf="bankCertificate.length > 0" class="fileuploadbox">
+            <div *ngIf="bankCertificate.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of bankCertificate;  let index = index;" class="filelabeldisplay">
+                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                  <div>
+                    <div style="float: left; width: 40%;">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Password</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
+                      </div>
+
+                    </div>
+                    <div style="float: right; width: 40%; margin-right: 59px">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Remark</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedLicTransactionDocument(index)"></i>
+                </div>
+              </label>
+            </div>
+
+            <!-- <div *ngIf="bankCertificate.length > 0" class="fileuploadbox">
               Selected Files
               <label *ngFor="let item of bankCertificate; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
@@ -1766,14 +2255,14 @@
                   <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
                 </div>
               </label>
-            </div>
+            </div> -->
           </div>
-          <div class="col-md-12 mt-10">
+          <!-- <div class="col-md-12 mt-10">
             <label class="form-label">Remark</label>
-          </div>
-          <div class="col-md-12">
+          </div> -->
+          <!-- <div class="col-md-12">
             <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -1807,7 +2296,41 @@
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
-            <div *ngIf="rentalIncomeReceipt.length > 0" class="fileuploadbox">
+            <div *ngIf="rentalIncomeReceipt.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of rentalIncomeReceipt;  let index = index;" class="filelabeldisplay">
+                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                  <div>
+                    <div style="float: left; width: 40%;">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Password</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
+                      </div>
+
+                    </div>
+                    <div style="float: right; width: 40%; margin-right: 59px">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Remark</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedTransactionDocumentRental(index)"></i>
+                </div>
+              </label>
+            </div>
+            <!-- <div *ngIf="rentalIncomeReceipt.length > 0" class="fileuploadbox">
               Selected Files
               <label *ngFor="let item of rentalIncomeReceipt; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
@@ -1820,14 +2343,14 @@
                   <i class="fa fa-times text-red font-18" (click)="removeSelectedTransactionDocumentRental(index)"></i>
                 </div>
               </label>
-            </div>
+            </div> -->
           </div>
-          <div class="col-md-12 mt-10">
+          <!-- <div class="col-md-12 mt-10">
             <label class="form-label">Remark</label>
-          </div>
-          <div class="col-md-12">
+          </div> -->
+          <!-- <div class="col-md-12">
             <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -1862,7 +2385,41 @@
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
-            <div *ngIf="municipalTaxReceipt.length > 0" class="fileuploadbox">
+            <div *ngIf="municipalTaxReceipt.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of municipalTaxReceipt;  let index = index;" class="filelabeldisplay">
+                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                  <div>
+                    <div style="float: left; width: 40%;">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Password</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
+                      </div>
+
+                    </div>
+                    <div style="float: right; width: 40%; margin-right: 59px">
+                      <div class="col-md-8 mt-10">
+                        <label class="form-label">Remark</label>
+                      </div>
+                      <div class="col-md-12">
+                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedTransactionDocumentMunciple(index)"></i>
+                </div>
+              </label>
+            </div>
+            <!-- <div *ngIf="municipalTaxReceipt.length > 0" class="fileuploadbox">
               Selected Files
               <label *ngFor="let item of municipalTaxReceipt; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
@@ -1876,7 +2433,7 @@
                     (click)="removeSelectedTransactionDocumentMunciple(index)"></i>
                 </div>
               </label>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-12 mt-10">
             <label class="form-label">Remark</label>
@@ -2160,7 +2717,7 @@
 </ng-template>
 <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2203,17 +2760,25 @@
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <input type="text" 
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"  
         (change)= "
         onChangeDocumentRemark(
           this.summaryDetails, this.indexCount,
             $event
           )
-        "  class="form-control" placeholder="Remark">
+        "  class="form-control" placeholder="Remark"></textarea>
       </div>
     </div>
   </div>
   <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onResetRemarkDetails()"
+    >
+    Reset
+    </button>
     <button
       type="button"
       class="btn btn-secondary"
@@ -2223,6 +2788,13 @@
     </button>
   </div>
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onResetRemarkDetails()"
+    >
+    Reset
+    </button>
     <button
       type="button"
       class="btn btn-secondary"

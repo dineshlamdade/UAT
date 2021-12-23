@@ -180,6 +180,11 @@ export class HousingloandeclarationComponent implements OnInit {
   editRemarkData: any;
   public remarkCount : any;
   remarkType: any;
+  enteredRemark: any;
+  //public editProofSubmissionIdOnView: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1454,7 +1459,6 @@ export class HousingloandeclarationComponent implements OnInit {
     proofSubmissionId: string
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
-
     this.modalRef = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
@@ -1469,6 +1473,10 @@ export class HousingloandeclarationComponent implements OnInit {
       this.editTransactionUpload = res.data.results[0].housePropertyTransactionDetailList;
         this.edithousePropertyMasterId = res.data.results[0].housePropertyTransactionDetailList[0].housePropertyMasterId;
       this.editProofSubmissionId = res.data.results[0].housePropertyTransactionDocumentDetailList[0].proofSubmissionId;
+      //this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+      this.createDateTime = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].creationDate;
+      this.lastModifiedDateTime = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].lastModifiedTime;
+      this.transactionStatus = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].status;
       this.editReceiptAmount = res.data.results[0].receiptAmount;
       this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1825,6 +1833,7 @@ export class HousingloandeclarationComponent implements OnInit {
   ) {
     
     debugger
+    this.enteredRemark = null;
     this.summaryDetails = summary;
     this.indexCount = count;
     this.remarkType = remarkType;
@@ -1907,6 +1916,9 @@ export class HousingloandeclarationComponent implements OnInit {
         this.alertService.sweetalertWarning("Something Went Wrong");
       }
     });
+}
+onResetRemarkDetails(){
+  this.enteredRemark=null;
 }
 }
 
