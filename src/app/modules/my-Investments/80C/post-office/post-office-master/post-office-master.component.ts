@@ -611,14 +611,14 @@ export class PostOfficeMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.documentPassword.length; i++) {
+      for (let i = 0; i <= this.masterfilesArray.length; i++) {
         if(this.documentPassword[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
             "documentSubType": "",
-            "remark": this.remarkList[i],
-            "password": this.documentPassword[i]
+            "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
           };
           this.documentDataArray.push(remarksPasswordsDto);
         }
@@ -754,6 +754,7 @@ export class PostOfficeMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

@@ -2,3 +2,27 @@
     cursor: not-allowed !important;
     pointer-events: none;
 }
+
+.changeColor span:hover {
+    cursor: pointer;
+background-color: blue !important;
+  }
+
+  .admin-class{
+    background-color: blue !important;
+    
+}
+
+.employee-class{
+    background-color: gray !important;
+}
+
+
+.btn-bg-blue{
+    color: white;
+    background: blue;
+}
+.btn-bg-grey{
+    color: white;
+    background:grey;
+}

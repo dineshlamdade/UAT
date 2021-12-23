@@ -537,14 +537,14 @@ export class NpsMasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
 
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.masterfilesArray.length; i++) {
       if (this.remarkList[i] != undefined || this.remarkList[i] == undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -936,7 +936,7 @@ this.paymentDetailGridData = obj.paymentDetails;
       "transactionId": 0,
       "masterId":this.summaryDetails.investmentGroup1MasterId,
       "employeeMasterId":this.summaryDetails.employeeMasterId,
-      "section":"80C",
+      "section":"VIA",
       "subSection":"NPS",
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
@@ -957,6 +957,7 @@ this.paymentDetailGridData = obj.paymentDetails;
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

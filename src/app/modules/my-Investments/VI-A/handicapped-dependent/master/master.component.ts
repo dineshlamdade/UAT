@@ -29,6 +29,7 @@ import { HandicappedDependentService } from '../handicapped-dependent.service';
   styleUrls: ['./master.component.scss']
 })
 export class MasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public disabilityTypeName : any;
 
   public showdocument = true;
@@ -130,10 +131,18 @@ export class MasterComponent implements OnInit {
   public isSaveVisible: boolean = true;
 
   public  isRadioButtonDisabled:boolean = true;
+  public remarkCount : any;
+  
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  selectedremarkIndex : any;
+  documentRemarkList: any;
 
   constructor(
     private formBuilder: FormBuilder,
-    private myInvestmentsService: MyInvestmentsService,
+    // private myInvestmentsService: MyInvestmentsService,
+    private Service: MyInvestmentsService,
     private handicappedDependentService: HandicappedDependentService,
     private datePipe: DatePipe,
     private http: HttpClient,
@@ -174,6 +183,8 @@ export class MasterComponent implements OnInit {
   }
 
  public ngOnInit(): void {
+   debugger
+   console.log(this.disabilityTypeName);
     this.initiateMasterForm();
     this.getMasterFamilyInfo();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -208,7 +219,7 @@ export class MasterComponent implements OnInit {
 
   // Family Member List API call
   getMasterFamilyInfo() {
-    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+    this.Service.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
 
@@ -257,7 +268,7 @@ export class MasterComponent implements OnInit {
 
   // Get All Previous Employer
   getPreviousEmployer() {
-    this.myInvestmentsService.getAllPreviousEmployer().subscribe((res) => {
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
@@ -316,6 +327,96 @@ export class MasterComponent implements OnInit {
     });
   }
 
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    handicappedDependentDetailMasterId,
+    summary, count
+  ) {
+
+
+     this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.handicappedDependentService.getHandicappeddependentMasterRemarkList(
+      handicappedDependentDetailMasterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.handicappedDependentDetailMasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"80DD",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
+
+  
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event?.target?.value;
+   
+ 
+  }
+
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective,): void {
     this.submitted = true;
@@ -336,14 +437,14 @@ export class MasterComponent implements OnInit {
     }
   }
 
-  for (let i = 0; i < this.documentPassword.length; i++) {
+  for (let i = 0; i < this.masterfilesArray.length; i++) {
     if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
         "documentSubType": "",
-        "remark": this.remarkList[i],
-        "password": this.documentPassword[i]
+        "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
       };
       this.documentDataArray.push(remarksPasswordsDto);
     }
@@ -433,6 +534,7 @@ export class MasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
+      this.showUpdateButton = false;
       this.urlArray = [];
       this.documentRemark = [];
       this.documentRemark = '';
@@ -441,7 +543,7 @@ export class MasterComponent implements OnInit {
       this.isVisibleTable = false;
       this.isEdit = false;
 
-      this.showUpdateButton = false;
+     
     // }
     // this.form.patchValue({
     //   accountType: 'Tier_1',
@@ -494,12 +596,15 @@ export class MasterComponent implements OnInit {
   }
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
+    debugger
     this.isCancelShow = false;
-    this.isSaveShow = false;
+    this.isSaveShow = true;
     this.isUpdateShow = true;
     this.isEdit = true;
     this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
+     
+
 
       console.log('masterGridData::', res);
 
@@ -737,6 +842,8 @@ export class MasterComponent implements OnInit {
     docViewer(template3: TemplateRef<any>,index:any, data: any) {
       console.log("---in doc viewer--");
       this.urlIndex = index;
+      this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
 
       console.log('urlIndex::' , this.urlIndex);

@@ -1,0 +1,17 @@
+.admin-class{
+    background-color: blue !important;
+    
+}
+
+.employee-class{
+    background-color: gray !important;
+}
+.changeColor span:hover {
+    cursor: pointer;
+background-color: blue !important;
+  }
+
+  .disabled{
+    cursor: not-allowed !important;
+    pointer-events: none;
+}

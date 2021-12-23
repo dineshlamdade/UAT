@@ -35,6 +35,7 @@ import { Mediclaim80DService } from '../mediclaim80-d.service';
   styleUrls: ['./mediclaim-declaration.component.scss'],
 })
 export class MediclaimDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public institution: string;
   @Input() public policyNo: string;
   @Input() public data: any;
@@ -215,6 +216,12 @@ export class MediclaimDeclarationComponent implements OnInit {
   mediclaimTransList = [];
   preventiveHealthCheckupTransactionList:any[] = [];
   editDocumentRemark: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1824,31 +1831,77 @@ export class MediclaimDeclarationComponent implements OnInit {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-   //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+    //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+ 
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  this.transactionDetail[0].mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[0].mediclaimTransactionList[transIndex].remark =  event.target.value;
+ 
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+}
 
 
-  }
+ onSaveRemarkDetails(summary, index){
+    
+      const data ={
+        "transactionId": this.summaryDetails.mediclaimTransactionId,
+        "masterId":0,
+        "employeeMasterId":this.summaryDetails.employeeMasterId,
+        "section":"VIA",
+        "subSection":"MEDICLAIM",
+        "remark":this.editRemarkData,
+        "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+        "role":"Employee",
+        "remarkType":"Transaction"
+  
+      };
+      this.Service
+      .postLicMasterRemark(data)
+      .subscribe((res) => {
+        if(res.status.code == "200") {
+        
+          
+          console.log(this.transactionDetail);
+          // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+          this.transactionDetail[0].mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[0].mediclaimTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+          this.alertService.sweetalertMasterSuccess(
+            'Remark Saved Successfully.',
+            '',
+          );
+           this.enteredRemark = '';
+          this.modalRef.hide();
+  
+  
+        } else{
+          this.alertService.sweetalertWarning("Something Went Wrong");
+        }
+      });
+    }
+
+    onResetRemarkDetails() {
+      this.enteredRemark = '';
+    }
+
+
   transactionDetail(arg0: string, transactionDetail: any) {
     throw new Error('Method not implemented.');
   }
 
   upload() {
-    for (let i = 0; i < this.documentPassword.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -2678,15 +2731,19 @@ export class MediclaimDeclarationComponent implements OnInit {
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    mediclaimTransactionId,
+    summary, count
   ) {
-
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.mediclaim80DService.getmediclaimTransactionRemarkList(
+      mediclaimTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;

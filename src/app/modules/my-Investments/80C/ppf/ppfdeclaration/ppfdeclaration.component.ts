@@ -1034,6 +1034,7 @@ debugger
       investmentGroup1TransactionId: number;
       investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -1042,6 +1043,8 @@ debugger
     },
     j: number
   ) {
+
+   
     // console.log('summary::',  summarynew);
     // if (this.initialArrayIndex[j] > i) {
     //   this.hideRemoveRow = false;
@@ -1054,6 +1057,9 @@ debugger
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].groupTransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1079,6 +1085,8 @@ debugger
 
   // -------- Delete Row--------------
   deleteRow(j: number, i) {
+
+    debugger
     // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
     const rowCount = i;
     // console.log('rowcount::', rowCount);
@@ -1460,6 +1468,7 @@ console.log('this.transactionDetail', this.transactionDetail);
           'Remark Saved Successfully.',
           '',
         );
+         this.enteredRemark = '';
         this.modalRef.hide();
 
 
@@ -1864,13 +1873,17 @@ console.log('this.transactionDetail', this.transactionDetail);
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
@@ -2153,6 +2166,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

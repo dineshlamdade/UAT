@@ -31,6 +31,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { HandicappedDependentService } from '../handicapped-dependent.service';
+import { Checkbox } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-declaration-and-actual',
@@ -38,6 +39,8 @@ import { HandicappedDependentService } from '../handicapped-dependent.service';
   styleUrls: ['./declaration-and-actual.component.scss']
 })
 export class DeclarationAndActualComponent implements OnInit {
+  public enteredRemark = '';
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -93,6 +96,14 @@ export class DeclarationAndActualComponent implements OnInit {
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -180,6 +191,7 @@ export class DeclarationAndActualComponent implements OnInit {
   public hideRemoveRow: boolean;
   public isClear: boolean;
   public isCancel: boolean;
+  public disableOnView = false;
   public financialYear: any;
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
@@ -197,6 +209,7 @@ export class DeclarationAndActualComponent implements OnInit {
   public severity : string;
   public hideShowSaveButton  : boolean = false;
   public proofSubmissionId: '';
+  currentlyChecked= false;
   element: any;
   constructor(
     private formBuilder: FormBuilder,
@@ -249,6 +262,9 @@ export class DeclarationAndActualComponent implements OnInit {
   public ngOnInit(): void {
     // console.log('data::', this.data);
     this.getMasterFamilyInfo ();
+    debugger
+  
+    console.log(this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
     } else {
@@ -256,6 +272,12 @@ export class DeclarationAndActualComponent implements OnInit {
       this.globalInstitution = input.institution;
       this.globalPolicy = input.policyNo;
       // this.getInstitutionListWithPolicyNo();
+      if(this.data.canView == true){
+        this.disableOnView = true;
+        
+            } else {
+              this.disableOnView = false;
+            }
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
     }
 
@@ -267,7 +289,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
     this.deactiveCopytoActualDate();
     this.getpreviousEmployeName();
-
+  this.previousEmployerName();
     this.getAllPreviousEmployer();
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -517,6 +539,7 @@ export class DeclarationAndActualComponent implements OnInit {
   //Get previous Employer Name List
   previousEmployerName() {
     this.Service.getpreviousEmployeName().subscribe((res) => {
+      debugger
       console.log('previousEmployeeList::', res);
       if (!res.data.results[0]) {
         return;
@@ -1452,8 +1475,12 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  onSelectCurrentEmp(element, event: { target: { checked: any } })
+  onSelectCurrentEmp(element, event: { target: { checked: any } }, handicappedDependentTransactionId)
   {
+    // debugger
+    // if ( this.currentlyChecked == handicappedDependentTransactionId ) {
+    // this.currentlyChecked = CheckBoxType.NONE;
+    // }
     const checked = event.target.checked;
     this.declarationService.handicappedDependentTransactionId = 0;
         this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
@@ -1499,6 +1526,7 @@ export class DeclarationAndActualComponent implements OnInit {
  //----------- On change Transactional Line Item Remark --------------------------
  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
   console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
 
  console.log('this.transactionDetail', this.transactionDetail);
   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
@@ -1509,17 +1537,31 @@ export class DeclarationAndActualComponent implements OnInit {
 
 }
 
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark1(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
 
   upload() {
 
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1617,6 +1659,16 @@ export class DeclarationAndActualComponent implements OnInit {
 
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[0].totalApprovedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[0].actualTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[0].declaredTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[0].handicappeddependentTransactionList;
+    delete this.currentEmployerHandicappedDependentResponseList[0].handicappedDependentDetailMasterId;
+    delete this.currentEmployerHandicappedDependentResponseList[0].dateOfSubmission;
+    delete this.currentEmployerHandicappedDependentResponseList[0].severity;
+    delete this.currentEmployerHandicappedDependentResponseList[0].familyMemberName;
+    delete this.currentEmployerHandicappedDependentResponseList[0].proofSubmissionDetailId;
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
@@ -2006,19 +2058,31 @@ export class DeclarationAndActualComponent implements OnInit {
       }
     });
   }
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
 
-  public docRemarkModal(
+  onResetRemarkDetails1() {
+    this.enteredRemark = '';
+  }
+
+
+  public docRemarkModal1(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    handicappedDependentTransactionId,
+    element, count
   ) {
-
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = element;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.handicappedDependentService.getHandicappedDependentRemarkList(
+      handicappedDependentTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -2027,6 +2091,108 @@ export class DeclarationAndActualComponent implements OnInit {
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-s' })
     );
+  }
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    handicappedDependentTransactionId,
+    summary, count
+  ) {
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.handicappedDependentService.getHandicappedDependentRemarkList(
+      handicappedDependentTransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
+
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.handicappedDependentTransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"80DD",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.previousEmployerHandicappedDependentResponseList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+         this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+
+
+
+  onSaveRemarkDetails1(element, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.handicappedDependentTransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"80DD",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        
+        console.log(this.transactionDetail);
+        this.currentEmployerHandicappedDependentResponseList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+         this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
   }
 
   downloadTransaction(proofSubmissionId) {

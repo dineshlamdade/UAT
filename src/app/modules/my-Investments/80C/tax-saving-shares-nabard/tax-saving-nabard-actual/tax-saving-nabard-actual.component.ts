@@ -35,6 +35,7 @@ import { TaxSavingNabardService } from '../tax-saving-nabard.service';
   styleUrls: ['./tax-saving-nabard-actual.component.scss'],
 })
 export class TaxSavingNabardActualComponent implements OnInit {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -203,7 +204,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
-
+  selectedremarkIndex : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1951,10 +1952,13 @@ export class TaxSavingNabardActualComponent implements OnInit {
     .postLicMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
 
@@ -1962,6 +1966,10 @@ export class TaxSavingNabardActualComponent implements OnInit {
         this.alertService.sweetalertWarning("Something Went Wrong");
       }
     });
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // Remove Selected Transaction Document Edit Maodal
@@ -2044,6 +2052,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.taxSavingNabardService.getNabardRemarkList(
       investmentGroup3TransactionId,
     ).subscribe((res) => {
