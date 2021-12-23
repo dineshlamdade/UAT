@@ -822,6 +822,7 @@ export class TuitionFeesMasterComponent implements OnInit {
           '',
      
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
       } else{

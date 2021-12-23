@@ -761,6 +761,7 @@ debugger
       investmentGroup2TransactionId: number;
       investmentGroup2MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -781,6 +782,9 @@ debugger
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].group2TransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -829,6 +833,7 @@ debugger
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
 
@@ -840,6 +845,7 @@ debugger
 
   // -------- Delete Row--------------
   deleteRow(j: number, i) {
+    debugger
     // const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
     const rowCount = i;
     // console.log('rowcount::', rowCount);
@@ -1695,6 +1701,7 @@ debugger
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
 
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
@@ -1702,6 +1709,10 @@ debugger
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
@@ -1856,6 +1867,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

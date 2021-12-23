@@ -1617,6 +1617,16 @@ export class DeclarationAndActualComponent implements OnInit {
 
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[0].totalApprovedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[0].actualTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[0].declaredTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[0].handicappeddependentTransactionList;
+    delete this.currentEmployerHandicappedDependentResponseList[0].handicappedDependentDetailMasterId;
+    delete this.currentEmployerHandicappedDependentResponseList[0].dateOfSubmission;
+    delete this.currentEmployerHandicappedDependentResponseList[0].severity;
+    delete this.currentEmployerHandicappedDependentResponseList[0].familyMemberName;
+    delete this.currentEmployerHandicappedDependentResponseList[0].proofSubmissionDetailId;
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,

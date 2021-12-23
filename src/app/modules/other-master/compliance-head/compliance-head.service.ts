@@ -94,7 +94,7 @@ public apiUrlcity = environment.baseUrl8083;
   }
 //State with City Api 
   public getCitywithState():Observable<any>{
-    return this._HTTP.get<any>(environment.baseUrl8083 + 'location-master/1000');
+    return this._HTTP.get<any>(environment.baseUrl8083 + 'location-master/105');
   }
 
 }

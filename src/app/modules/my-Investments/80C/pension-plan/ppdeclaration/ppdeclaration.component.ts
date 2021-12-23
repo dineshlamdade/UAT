@@ -819,6 +819,7 @@ export class PpdeclarationComponent implements OnInit {
       investmentGroup1TransactionId: number;
       investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -839,6 +840,9 @@ export class PpdeclarationComponent implements OnInit {
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].groupTransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1234,6 +1238,7 @@ export class PpdeclarationComponent implements OnInit {
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
 
@@ -1780,6 +1785,7 @@ export class PpdeclarationComponent implements OnInit {
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
 
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
@@ -1787,6 +1793,10 @@ export class PpdeclarationComponent implements OnInit {
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
@@ -1941,6 +1951,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  public employeeMasterId: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

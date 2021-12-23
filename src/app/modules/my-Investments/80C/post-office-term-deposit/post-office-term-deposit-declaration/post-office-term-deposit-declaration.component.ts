@@ -479,11 +479,12 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     .subscribe((res) => {
       if(res.status.code == "200") {
         console.log(this.transactionDetail);
-        this.transactionDetail[0].investmentGroup3TransactionDetailList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
         );
+        this.enteredRemark = '';
         this.modalRef.hide();
 
 

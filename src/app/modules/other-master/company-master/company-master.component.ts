@@ -26,7 +26,7 @@ export class CompanyMasterComponent implements OnInit {
   selectedImageFileLogo3: any;
   @ViewChild( 'fileInput' ) public el: ElementRef;
   // @ViewChild('fileInput2') fileInput2: any;
-  //public groupStartDateValidation;
+  public groupStartDateValidation;
   public shortNameInvalid: boolean = false;
   public companyNameInvalid: boolean = false;
   public invalidWebsite: boolean = false;
@@ -942,7 +942,7 @@ export class CompanyMasterComponent implements OnInit {
         companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
         startDate: ''
       } );
-     // this.groupStartDateValidation = new Date( this.tempObjForgroupNameScaleStartDate.startDate );
+      this.groupStartDateValidation = new Date( this.tempObjForgroupNameScaleStartDate.startDate );
     }
   }
 

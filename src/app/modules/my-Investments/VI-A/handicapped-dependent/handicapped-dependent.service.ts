@@ -63,6 +63,16 @@ export class HandicappedDependentService {
     }));
   }
 
+
+  public getHandicappeddependentMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'handicappeddependent-detailmaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
   getFamilyInfoList() : Observable<any>  {
     return this._HTTP.get(this.apiUrl + 'handicappedDependent-Transaction/handicappedDependentMasterList')
     .pipe(map((res: any) => {

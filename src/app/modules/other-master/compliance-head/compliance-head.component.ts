@@ -57,8 +57,10 @@ isshowAP:boolean= true;
   frequencyData: any;
 
   State:any;
-  stateName: any;
-  
+  // stateName: any;
+  // cityName: any;
+  //stateName1:any='Haryana';
+  stateName1:any;
  
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
@@ -149,12 +151,32 @@ this.complianceHeadService.getState().subscribe(res =>{
   getCity(){
     this.complianceHeadService.getCitywithState().subscribe(res=>{
      
-      this.stateName=res.data.results;
+      this.stateName1=res.data.results;
     
      console.log(res);
       
     })
   }
+
+//   getStateName(evt:any){
+//     this.cityName=[];
+// this.stateName1.forEach(element => {
+//   if(element.stateName==evt){
+// this.cityName.push(element);
+//   }
+// });
+//   }
+
+//   getCityName(evt:any)
+//   {
+//     this.stateName=[];
+//     this.stateName1.forEach(element => {
+//       if(element.stateName==evt){
+//     this.stateName.push(element);
+//       }
+//     });
+//   }
+ 
 
   save() {
     if ( this.editedComplianceHeadId > 0 ) {

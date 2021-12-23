@@ -759,6 +759,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
             '',
        
           );
+          this.enteredRemark = '';
           this.modalRef.hide();
   
         } else{
