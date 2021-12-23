@@ -86,6 +86,9 @@ export class PreviousemployermasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
   documentArray: any[] =[];
+  public enteredRemark = '';
+  public isVisibleTable:boolean;
+  public toShowUpdateBtn :boolean;
 
   
   public isECS = true;
@@ -159,6 +162,10 @@ export class PreviousemployermasterComponent implements OnInit {
   documentRemarkList: any;
   remarkCount: any;
   editRemarkData: any;
+  viewDocumentName: any;
+   filesUrlArray: Array<any> = [];
+  viewDocumentType: any;
+  toShowSaveBtn: boolean;
 
 
   constructor(
@@ -204,7 +211,7 @@ export class PreviousemployermasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-
+    this.toShowSaveBtn=true;
     this.previousDate = this.today;
    /*  this.previousDate.setDate(this.today.getDate() - 1); */
 
@@ -233,6 +240,7 @@ export class PreviousemployermasterComponent implements OnInit {
   public masterPage() {
     this.previousEmployerService.getPreviousEmployerMaster().subscribe((res) => {
       console.log('masterGridData::', res);
+      this.filesUrlArray=res.data.results[0].documentInformationList;
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
         if (element.possessionDate !== null) {
@@ -240,6 +248,7 @@ export class PreviousemployermasterComponent implements OnInit {
           element.documentInformationList.forEach(element => {
             // if(element!=null)
             this.documentArray.push({
+              'blobURI':element.blobURI,
               'dateofsubmission':element.creatonTime,
               'documentType':element.documentType,
               'documentName': element.fileName,
@@ -251,17 +260,17 @@ export class PreviousemployermasterComponent implements OnInit {
     
             })
           });
-          this.documentArray.push({
-            'dateofsubmission':element.creatonTime,
-            'documentType':element.documentType,
-            'documentName': element.fileName,
-            'documentPassword':element.documentPassword,
-            'documentRemark':element.documentRemark,
-            'status' : element.status,
-            'lastModifiedBy' : element.lastModifiedBy,
-            'lastModifiedTime' : element.lastModifiedTime,
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
   
-          })
+          // })
         }
         });
       });
@@ -316,6 +325,12 @@ export class PreviousemployermasterComponent implements OnInit {
     return this.previousEmployerDetailsform.controls;
   }
   //-------------- Post Master Page Data API call -------------------
+  
+  getRemark(){
+    console.log(this.remarkList)
+    
+  }
+
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.masterPage();
     console.log('addMaster::', formData);
@@ -325,6 +340,7 @@ export class PreviousemployermasterComponent implements OnInit {
       return;
     }
     const data = this.previousEmployerDetailsform.getRawValue();
+
 
     data.dateOfJoining = new Date(data.dateOfJoining);
     data.dateOfLeaving = new Date(data.dateOfLeaving);
@@ -361,6 +377,7 @@ export class PreviousemployermasterComponent implements OnInit {
                 this.documentArray.push({
                 
                   'dateofsubmission':new Date(),
+                  'blobURI':element.blobURI,
                     'documentType':element.documentInformationList[0].documentType,
                     'documentName': element.documentInformationList[0].fileName,
                     'documentPassword':element.documentInformationList[0].documentPassword,
@@ -377,6 +394,7 @@ export class PreviousemployermasterComponent implements OnInit {
                 this.documentArray.push({
                 
                   'dateofsubmission':new Date(),
+                  'blobURI':element.blobURI,
                     'documentType':element.documentInformationList[1].documentType,
                     'documentName': element.documentInformationList[1].fileName,
                     'documentPassword':element.documentInformationList[1].documentPassword,
@@ -427,7 +445,7 @@ export class PreviousemployermasterComponent implements OnInit {
       "section":"Previous",
       "subSection":"Employer",
       "remark":this.editRemarkData,
-      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "proofSubmissionId":"",
       "role":"Employee",
       "remarkType":"Master"
 
@@ -448,6 +466,8 @@ export class PreviousemployermasterComponent implements OnInit {
       }
     });
     this.masterPage();
+    this.onResetRemarkDetails();
+
   }
 
 
@@ -476,6 +496,11 @@ export class PreviousemployermasterComponent implements OnInit {
         this.masterfilesArray.push(file);
         console.log('masterfilesArray::', this.masterfilesArray);
       }
+    }
+
+    for(let i =0 ; i<this.masterfilesArray.length; i++ ){
+      this.remarkList[i] = ''
+      this.documentPassword[i] = ''
     }
     console.log('this.masterfilesArray::', this.masterfilesArray);
   }
@@ -526,9 +551,12 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
     this.scrollToTop();
+    this.toShowUpdateBtn=true;
+    this.toShowSaveBtn=false;
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     console.log('abc::', abc);
+    this.isVisibleTable=true;
 
     //console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
 
@@ -558,6 +586,9 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
+    this.isVisibleTable=false;
+    this.toShowSaveBtn=true;
+    this.toShowUpdateBtn=false;
     /*    this.previousEmployerDetailsform.get('active').setValue(true);
        this.showUpdateButton = false;
        this.isCancel = false; */
@@ -596,5 +627,61 @@ export class PreviousemployermasterComponent implements OnInit {
 
   getImageFile(imagefile : any){
       this.imageFile = imagefile;
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+  //Docviewer
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+
+    this.urlArray = data;
+    console.log("data",this.urlArray)
+    console.log('urlIndex::', this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+   // ---------- For Doc Viewer -----------------------
+   public nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+  }
+  zoomin() {
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 2500) return false;
+    else {
+      myImg.style.width = (currWidth + 100) + "px";
+    }
+  }
+  zoomout() {
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 100) return false;
+    else {
+      myImg.style.width = (currWidth - 100) + "px";
+    }
   }
 }

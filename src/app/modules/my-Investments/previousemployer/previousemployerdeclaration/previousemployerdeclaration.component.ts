@@ -62,7 +62,11 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
+  public documentDetail: Array<any> = [];
+
+  
   public uploadGridData: Array<any> = [];
+  public enteredRemark = '';
 
   public transactionInstitutionNames: Array<any> = [];
 
@@ -201,6 +205,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   documentRemarkList: any;
   remarkCount: any;
   editRemarkData: any;
+  viewDocumentName: any;
+  viewDocumentType: any;
+  mode: string;
+  selectedremarkIndex: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -219,7 +227,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   ) {
     // ---------------- Transaction status List -----------------
     /* this.refreshTransactionStatustList(); */
-
+    console.log("data",this.data)
     this.grandTabStatus = false;
     this.isCheckAll = false;
     this.isDisabled = true;
@@ -237,9 +245,16 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   public ngOnInit(): void {
     console.log('data::', this.data);
+    console.log("previousEmployerName",this.previousEmployerName)
+
+    if(localStorage.getItem("mode") != null){
+       this.mode = localStorage.getItem("mode")
+    }
+
+    console.log("mode is: "+ this.mode)
     if (this.data === undefined || this.data === null) {
-      this.declarationPage();
       this.canEdit = true;
+      this.declarationPage();
     } else {
       const input = this.data;
       this.globalInstitution = input.propertyHouseName;
@@ -249,6 +264,11 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.getTransactionFilterPreviousEmployerData(input.propertyHouseName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+    }
+    if(this.mode=="edit"){
+      this.actualAmtBoolean=false
+    }else{
+      this.actualAmtBoolean=true;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -273,6 +293,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
+
+    console.log("canedit: "+ this.canEdit)
     this.previousEmployerTransactionDetailList = [];
     /*     this.transactionPolicyList = [];
     this.transactionStatustList = [];
@@ -290,6 +312,27 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     this.resetAll();
     this.selectedTransactionInstName('All');
+  }
+  declarationPage1() {
+
+    console.log("canedit: "+ this.canEdit)
+    this.previousEmployerTransactionDetailList = [];
+    /*     this.transactionPolicyList = [];
+    this.transactionStatustList = [];
+ */
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.previousEmployerTransactionDetailList.push(data);
+    this.transactionPolicyList.push(data);
+    /*     this.refreshTransactionStatustList(); */
+
+    this.getInstitutionListWithPolicyNo();
+
+    this.resetAll();
+    //this.selectedTransactionInstName('All');
   }
 
   public getInstitutionListWithPolicyNo() {
@@ -337,6 +380,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.actualAmtBoolean= false;
 
     }
+    
 
     this.resetAll();
   }
@@ -929,16 +973,19 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     lictransactionID,
     summary, count
   ) {
+
+
+    //alert(count)
     
-  
+    this.onResetRemarkDetails();
     this.summaryDetails = summary;
     this.indexCount = count;
+    this.selectedremarkIndex = count;
     this.previousEmployerService.getPreviousDeclartionRemarkList(
       lictransactionID,
     ).subscribe((res) => {
       console.log('docremark', res);
       
-    
     this.documentRemarkList  = res.data.results[0];
     this.remarkCount = res.data.results[0].length;
     });
@@ -961,7 +1008,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       "section":"Previous",
       "subSection":"Employer",
       "remark":this.editRemarkData,
-      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "proofSubmissionId":"",
       "role":"Employee",
       "remarkType":"Transaction"
 
@@ -976,11 +1023,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         );
         this.modalRef.hide();
 
+        this.previousEmployerService.getPreviousDeclartionRemarkList(
+          this.summaryDetails.previousEmployerTransactionDetailId,
+        ).subscribe((res) => {
+          console.log('docremark', res);
+          
+        this.documentRemarkList  = res.data.results[0];
+        this.remarkCount = res.data.results[0].length;
+        this.transactionDetail[0].previousEmployerTransactionDetailList[this.selectedremarkIndex].bubbleRemarkCount = this.remarkCount
+        });
+       
 
       } else{
         this.alertService.sweetalertWarning("Something Went Wrong");
       }
-      this.declarationPage();
+     // this.declarationPage1();
+      this.onResetRemarkDetails();
     });
   }
 
@@ -1050,6 +1108,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('this.transactionDetail::....', this.transactionDetail);
     console.log('documentPassword: ', this.documentPassword)
     this.declarationPage();
+    this.getInstitutionListWithPolicyNo();
+    this.getTransactionFilterPreviousEmployerData("All");
 
     // const parentsDelete = this.transactionDetail[0].previousEmployerTransactionDetailList[0];
     /*   const parentsDelete = this.previousEmployerTransactionDetailList[0]; */
@@ -1158,6 +1218,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             ''
           );
+    this.getTransactionFilterPreviousEmployerData("All");
+
 
           this.initialArrayIndex = [];
 
@@ -1192,6 +1254,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.rentReciept = [];
     this.globalSelectedAmount = '0.00';
+    this.declarationPage();
+    this.getInstitutionListWithPolicyNo();
   }
 
   openForm12BModal(template4: TemplateRef<any>) {
@@ -1306,7 +1370,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           this.transactionDetail
         );
 
+        this.transactionDetail.forEach(element =>{
+          element.actualTotal = 0
+          element.previousEmployerTransactionDetailList.forEach(ele => {
+            element.actualTotal = element.actualTotal + ele.actualAmount
+          });
+          
+        })
+        //console.log("transactionDetail",this.transactionDetail)
+
+        
+
         this.documentDetailList = res.data.results[0].previousEmployerTransactionDetailList;
+        this.documentDetail=res.data.results;
+        console.log("Documnet Detail",this.documentDetail);
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1591,6 +1668,24 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     );
   }
 
+  // Docviewer for pdf
+  docViewer1(template3: TemplateRef<any>, documentDetailList: any) {
+    
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
   /* =================pdf======================== */
   download() {
     console.log('hi');
@@ -1608,11 +1703,30 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       // A4 size page of PDF
       const pdf = new jspdf('p', 'mm', 'a4');
       const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, 208, 310, '','FAST');
+      // pdf.addImage(contentDataURL, 'PNG', 0, position, 208, 310, '','FAST');
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight, '','FAST');
       // Generated PDF
       pdf.save('FORM12B.pdf');
     }, 700);
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
+
+//edit functionality
+editMaster(i: number) {
+  this.scrollToTop();
+ this.actualAmtBoolean=false;
+}
 
   onImageChange(e) {
     const reader = new FileReader();
@@ -1715,6 +1829,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     return total;
   } 
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
 }
 
 class DeclarationService {
