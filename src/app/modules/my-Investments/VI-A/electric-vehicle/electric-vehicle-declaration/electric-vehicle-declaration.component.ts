@@ -22,6 +22,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
+import { de } from 'date-fns/locale';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
@@ -35,6 +36,9 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
   styleUrls: ['./electric-vehicle-declaration.component.scss'],
 })
 export class ElectricVehicleDeclarationComponent implements OnInit {
+
+  public enteredRemark = '';
+
 
 
   @Input() public lenderName: string;
@@ -73,6 +77,14 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
 
   viewDocumentName: any;
   viewDocumentType: any;
+  selectedFilter: any;
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
 
 
@@ -415,6 +427,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
 // --------- On institution selection show all transactions list accordingly all policies--------
 selectedTransactionLenderName(lenderName: any) {
   this.filesArray = [];
+  this.selectedFilter = lenderName;
   this.transactionDetail = [];
   this.AccountlenderNameList = [];
   this.globalInstitution = lenderName;
@@ -996,29 +1009,131 @@ selectedTransactionLenderName(lenderName: any) {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-   //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+    //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
 
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+  this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList[transIndex].remark =  event.target.value;
 
 
+}
+
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark1(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  debugger
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].electricVehicleLoanTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.electricVehicleLoanTransactionId,
+      // "transactionId": 278,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"ELECTRICVEHICLE",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        // this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+         this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+
+
+
+  onSaveRemarkDetails1(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.electricVehicleLoanTransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"ELECTRICVEHICLE",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        
+        console.log(this.transactionDetail);
+        // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[0].electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+         this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+  onResetRemarkDetails1() {
+    this.enteredRemark = '';
   }
 
   upload() {
-
-    for (let i = 0; i < this.documentPassword.length; i++) {
+debugger
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1125,11 +1240,13 @@ selectedTransactionLenderName(lenderName: any) {
       remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
+    debugger
     this.electricVehicleService
       .uploadElectricVehicleTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          debugger
           this.transactionDetail =
             res.data.results[0].electricVehicleLoanTransactionDetailList;
           // res.data.results[0].electricVehicleLoanTransactionList;
@@ -1212,6 +1329,7 @@ selectedTransactionLenderName(lenderName: any) {
             'Transaction Saved Successfully.',
             ''
           );
+          this.selectedTransactionLenderName(this.selectedFilter);
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -1219,6 +1337,7 @@ selectedTransactionLenderName(lenderName: any) {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.selectedTransactionLenderName(this.selectedFilter);
   }
 
   changeReceiptAmountFormat() {
@@ -1746,7 +1865,7 @@ selectedTransactionLenderName(lenderName: any) {
             }
           );
         });
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1768,18 +1887,22 @@ selectedTransactionLenderName(lenderName: any) {
 
 
 
-  public docRemarkModal(
+  public docRemarkModal1(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    electricVehicleLoanTransactionId,
+    summary, count
   ) {
-
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.electricVehicleService.getElectricVehicleLoanTransactionRemarkList(
+      electricVehicleLoanTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1790,6 +1913,32 @@ selectedTransactionLenderName(lenderName: any) {
     );
   }
 
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    electricVehicleLoanTransactionId,
+    summary, count
+  ) {
+    
+    debugger
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.electricVehicleService.getElectricVehicleLoanTransactionRemarkList(
+      electricVehicleLoanTransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
   public uploadUpdateTransaction() {
 
     for (let i = 0; i < this.editdocumentPassword.length; i++) {

@@ -183,6 +183,8 @@ export class MasterComponent implements OnInit {
   }
 
  public ngOnInit(): void {
+   debugger
+   console.log(this.disabilityTypeName);
     this.initiateMasterForm();
     this.getMasterFamilyInfo();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -435,14 +437,14 @@ export class MasterComponent implements OnInit {
     }
   }
 
-  for (let i = 0; i < this.documentPassword.length; i++) {
+  for (let i = 0; i < this.masterfilesArray.length; i++) {
     if(this.documentPassword[i] == undefined || this.documentPassword[i] != undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
         "documentSubType": "",
-        "remark": this.remarkList[i],
-        "password": this.documentPassword[i]
+        "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
       };
       this.documentDataArray.push(remarksPasswordsDto);
     }
@@ -594,7 +596,7 @@ export class MasterComponent implements OnInit {
   }
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
-    
+    debugger
     this.isCancelShow = false;
     this.isSaveShow = true;
     this.isUpdateShow = true;

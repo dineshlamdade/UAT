@@ -36,6 +36,8 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
 })
 export class EducationalLoanDeclarationComponent implements OnInit {
 
+  public enteredRemark = '';
+
 
   @Input() public lenderName: string;
   @Input() public data: any;
@@ -185,6 +187,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public canEdit : boolean;
   public updateReceiptAmount: any;
   public onHideSaveButton : boolean = false;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1137,29 +1146,128 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
    //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+ public onChangeDocumentRemark1(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  this.transactionDetail[0].educationalLoanTransactionList[transIndex].remark =  event.target.value;
+ 
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+}
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
+
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].educationalLoanTransactionPreviousEmployerList[transIndex].remark =  event.target.value;
 
 
-  }
+}
+
+onResetRemarkDetails1() {
+  this.enteredRemark = '';
+}
+
+onResetRemarkDetails() {
+  this.enteredRemark = '';
+}
+
+onSaveRemarkDetails1(summary, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.educationLoanTransactionId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"EDUCATIONALLOAN",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+      
+      console.log(this.transactionDetail);
+      // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.transactionDetail[0].educationalLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = null;
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+
+onSaveRemarkDetails(summary, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.educationLoanTransactionId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"EDUCATIONALLOAN",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+      console.log(this.transactionDetail);
+      // this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.transactionDetail[0].educationalLoanTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = null;
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+
+
+
+
 
   upload() {
 
 
-    for (let i = 0; i < this.documentPassword.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1684,6 +1792,61 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       });
   }
 
+
+  public docRemarkModal1(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    educationLoanTransactionId,
+    summary, count
+  ) {
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.educationalLoanServiceService.getEducationalLoanTransactionRemarkList(
+      educationLoanTransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    educationLoanTransactionId,
+    summary, count
+  ) {
+    
+    debugger
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.educationalLoanServiceService.getEducationalLoanTransactionRemarkList(
+      educationLoanTransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
   public docViewer1(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
@@ -1767,27 +1930,27 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
 
-  public docRemarkModal(
-    documentViewerTemplate: TemplateRef<any>,
-    index: any,
-    psId, policyNo
-  ) {
+  // public docRemarkModal(
+  //   documentViewerTemplate: TemplateRef<any>,
+  //   index: any,
+  //   psId, policyNo
+  // ) {
 
-    this.Service.getRemarkList(
-      policyNo,
-      psId
-    ).subscribe((res) => {
-      console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
-    });
-    // console.log('documentDetail::', documentRemarkList);
-    // this.documentRemarkList = this.selectedRemarkList;
-    console.log('this.documentRemarkList', this.documentRemarkList);
-    this.modalRef = this.modalService.show(
-      documentViewerTemplate,
-      Object.assign({}, { class: 'gray modal-s' })
-    );
-  }
+  //   this.Service.getRemarkList(
+  //     policyNo,
+  //     psId
+  //   ).subscribe((res) => {
+  //     console.log('docremark', res);
+  //   this.documentRemarkList  = res.data.results[0].remarkList
+  //   });
+  //   // console.log('documentDetail::', documentRemarkList);
+  //   // this.documentRemarkList = this.selectedRemarkList;
+  //   console.log('this.documentRemarkList', this.documentRemarkList);
+  //   this.modalRef = this.modalService.show(
+  //     documentViewerTemplate,
+  //     Object.assign({}, { class: 'gray modal-s' })
+  //   );
+  // }
 
 
   public uploadUpdateTransaction() {

@@ -62,6 +62,15 @@ export class GgaService {
   }
 
 
+  public getdonations80GGATransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'donations80GGA-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  // http://localhost:8085/hrms/v1/donations80GGA-transaction/GetRemarkTransaction/249
+
+
   // getAllInstitutesFromGlobal() {
   //   return this._HTTP.get(this.apiUrl + 'institution')
   //   .pipe(map((res: any) => {
