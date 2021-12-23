@@ -73,6 +73,12 @@ export class PhysicallyHandicappedService {
       return res;
     }));
   }
+  public getphysicallyhandicappedTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'physicallyhandicapped-detail/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
   uploadPhysicallyHandicappedTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();

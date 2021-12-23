@@ -23,6 +23,7 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
   styleUrls: ['./interest-on-tta-master.component.scss'],
 })
 export class InterestOnTtaMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -129,10 +130,17 @@ public viewCancel : boolean = false
   public isClaiming80U: boolean = true;
   public proofSubmissionId;
   codeInvalid: boolean = false;
+  public remarkCount : any;
+  
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  selectedremarkIndex : any;
+  documentRemarkList: any;
 
   constructor(
     private formBuilder: FormBuilder,
-    private myInvestmentsService: MyInvestmentsService,
+    private Service: MyInvestmentsService,
     private interestOnTtaService: InterestOnTtaService,
     private datePipe: DatePipe,
     private http: HttpClient,
@@ -215,7 +223,7 @@ public viewCancel : boolean = false
 
   // Business Financial Year API Call
   getFinacialYear() {
-    this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
+    this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
   }
@@ -356,7 +364,7 @@ public viewCancel : boolean = false
 
   // Get All Previous Employer
   getPreviousEmployer() {
-    this.myInvestmentsService.getAllPreviousEmployer().subscribe((res) => {
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
@@ -421,14 +429,14 @@ public viewCancel : boolean = false
     }
   }
 
-  for (let i = 0; i < this.remarkList.length; i++) {
+  for (let i = 0; i < this.masterfilesArray.length; i++) {
     if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
       let remarksPasswordsDto = {};
       remarksPasswordsDto = {
         "documentType": "Back Statement/ Premium Reciept",
         "documentSubType": "",
-        "remark": this.remarkList[i],
-        "password": this.documentPassword[i]
+        "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
       };
       this.documentDataArray.push(remarksPasswordsDto);
     }
@@ -556,6 +564,93 @@ public viewCancel : boolean = false
       this.isVisibleTable = false;
       this.isEdit = false;
     // }
+  }
+
+
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event?.target?.value;
+   
+ 
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.interestOnSavingDeposit80TTMasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"80TTA",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    interestOnSavingDeposit80TTMasterId,
+    summary, count
+  ) {
+
+
+     this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.interestOnTtaService.getinterestonsavingdeposit80TTAMasterRemarkList(
+      interestOnSavingDeposit80TTMasterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
   }
 
 

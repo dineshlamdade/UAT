@@ -6,14 +6,14 @@
           <thead class="thead-dark">
             <tr>
               <th rowspan="2" class="wd-20 font700">Lender Name</th>
-              <th rowspan="2" class="wd-20 font700">Student Name</th>
-              <th rowspan="2" class="wd-20 font700">Account Number</th>
-              <th colspan="2" class="wd-22 font700">Interest Payment</th>
-              <th rowspan="2" class="wd-15 font700">Action</th>
+              <th rowspan="2" class="wd-6 font700">Student Name</th>
+              <th rowspan="2" class="wd-6 font700">Account Number</th>
+              <th colspan="2" class="wd-12 font700">Interest Payment</th>
+              <th rowspan="2" class="wd-6 font700">Action</th>
             </tr>
             <tr>
-              <th class="wd-11">Declared</th>
-              <th class="wd-11">Actual</th>
+              <th class="wd-6">Declared Amount</th>
+              <th class="wd-6">Actual Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -23,27 +23,27 @@
                   summary.lenderName
                   }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-6 align-left">
                 <span tooltip="{{ summary.studentName }}">{{
                   summary.studentName
                   }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-6 align-left">
                 <span tooltip="{{ summary.loanAccountNumber }}">
                   {{ summary.loanAccountNumber }}
                 </span>
               </td>
-              <td class="wd-11 align-right">
-                <span class="padding-right-12" tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
+              <td class="wd-6 align-right">
+                <span class="padding-right-9" tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
                   {{ summary.declaredAmount | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="wd-11 align-right">
-                <span class="padding-right-12" tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
+              <td class="wd-6 align-right">
+                <span class="padding-right-9" tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
                   {{ summary.actualAmount | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="wd-10">
+              <td class="wd-6">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="redirectToDeclarationActual(summary.lenderName, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
@@ -66,13 +66,13 @@
                 Total &nbsp; <span class="Letterbadge">A</span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
-                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
-                  {{ totalActualAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
+                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td></td>
@@ -100,13 +100,13 @@
                   B</span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
-                  {{ grandTotalDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
-                  {{ grandTotalActualAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
