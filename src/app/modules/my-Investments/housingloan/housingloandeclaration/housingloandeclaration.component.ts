@@ -185,6 +185,9 @@ export class HousingloandeclarationComponent implements OnInit {
   public createDateTime: any;
   public lastModifiedDateTime: any;
   public transactionStatus: any;
+  rentReceiptBankStatement: boolean = false;
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1483,9 +1486,11 @@ export class HousingloandeclarationComponent implements OnInit {
       this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
       // console.log(this.urlArray);
+      debugger
       this.urlArray.forEach((element) => {
         // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-        element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        element.blobURI =  element.blobURI;
+        //'data:image/image;base64,' +
         // new Blob([element.blobURI], { type: 'application/octet-stream' });
       });
 
@@ -1549,6 +1554,15 @@ export class HousingloandeclarationComponent implements OnInit {
               innerElement.actualAmount
             );
           });
+
+          element.housePropertyUsageTypeList.forEach((innerElement)=>{
+            if(innerElement.usageType != "selfOccupied")
+            this.rentReceiptBankStatement = true;
+            else if(property != "All"){
+              this.rentReceiptBankStatement = false;
+
+            }
+          })
 
           this.initialArrayIndex.push(
             element.housePropertyTransactionPreviousEmployerList.length
@@ -1802,6 +1816,7 @@ export class HousingloandeclarationComponent implements OnInit {
   }
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    debugger
     console.log('documentDetailList::', documentDetailList);
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
@@ -1889,7 +1904,7 @@ export class HousingloandeclarationComponent implements OnInit {
     const data ={
       "transactionId": this.summaryDetails.housePropertyTransactionId,
       "masterId":0,
-      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:2432 ,
+      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:0 ,
       "section":"House",
       "subSection":"Loan",
       "remark":this.editRemarkData,
@@ -1919,6 +1934,25 @@ export class HousingloandeclarationComponent implements OnInit {
 }
 onResetRemarkDetails(){
   this.enteredRemark=null;
+}
+public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
+  console.log('---in doc viewer--');
+  debugger
+  this.urlIndex = index;
+  // this.urlIndex = 0;
+  this.viewDocumentName = data.documentName;
+  this.viewDocumentType = data.documentType;
+
+  console.log('urlIndex::' , this.urlIndex);
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI
+  );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
 }
 }
 

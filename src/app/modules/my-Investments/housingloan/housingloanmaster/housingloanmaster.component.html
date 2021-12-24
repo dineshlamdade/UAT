@@ -115,7 +115,7 @@
       <div class="col-sm-6 col-md-3">
         <label class="form-label">City</label>
         <input type="text" formControlName="city" class="form-control" placeholder=""
-          [ngClass]="{ 'is-invalid': submitted && houseLoanF.city.errors }" disabled>
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.city.errors }">
         <div *ngIf="submitted && houseLoanF.city.errors" class="invalid-feedback">
           <div *ngIf="houseLoanF.city.errors.required">City Name is mandatory</div>
         </div>
@@ -179,7 +179,7 @@
               </div>
               <div class="col-sm-3 col-md-3" *ngIf="relationFlag">
                 <label class="form-label">Relationship</label>
-                <input type="text" formControlName="relationship" class="form-control" disabled
+                <input type="text" formControlName="relationship" class="form-control" 
                   [ngClass]="{ 'is-invalid':  houseLoanOwnerDetailSubmitted && HPOwnerDetailF.relationship.errors }">
                 <div *ngIf="houseLoanOwnerDetailSubmitted && HPOwnerDetailF.relationship.errors" class="invalid-feedback">
                   <div *ngIf="HPOwnerDetailF.relationship.errors.required">Relationship is mandatory</div>
@@ -328,7 +328,7 @@
                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
-                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate" data-provide="datepicker"
+                       data-provide="datepicker"
                       data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker
 
                       [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
@@ -349,7 +349,6 @@
                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                       data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
                       bsDatepicker
                       [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.toDate.errors }">
@@ -673,7 +672,7 @@
                 (click)="loanTransfer()"><b>
                   <i class="fa fa-plus"></i></b> Loan Transfer </button>&nbsp; -->
 
-                  <button type="button" *ngIf="isLoanTransfer || houseLoanF.housePropertyMasterId != 0"
+                  <button type="button" *ngIf="isLoanTransfer"
                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add loan Transfer"
                 (click)="loanTransfer()"><b>
                   <i class="fa fa-plus"></i></b> Loan Transfer </button>&nbsp;
@@ -682,7 +681,7 @@
                 (click)="loanTransfer()"><b>
                   <i class="fa fa-plus"></i></b> loan transfer </button>&nbsp;
  -->
-                <button type="button" *ngIf="isUpdateLoan || houseLoanF.housePropertyMasterId == 0"
+                <button type="button" *ngIf="isUpdateLoan"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add"
                   (click)="addLoanDetails()"><b>
                     <i class="fa fa-plus"></i></b> Update Loan</button>&nbsp;&nbsp;&nbsp;

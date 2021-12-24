@@ -32,6 +32,7 @@ import { MyInvestmentsService } from '../../my-Investments.service';
 import { HousingloanService } from '../housingloan.service';
 import { truncateSync } from 'node:fs';
 import { ThisReceiver } from '@angular/compiler';
+import { element } from 'protractor';
 
 
 @Component({
@@ -192,8 +193,9 @@ export class HousingloanmasterComponent implements OnInit {
   editRemarkData: any;
   enteredRemark: any;
   isLoanAddNew:boolean = true;
-  isLoanTransfer:boolean = true;
+  isLoanTransfer:boolean = false;
   indexCount: any;
+  employeeOwner: boolean = true;
   // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   // ServicesList: any;
   constructor(
@@ -244,7 +246,7 @@ export class HousingloanmasterComponent implements OnInit {
         housePropertyUsageTypeId: new FormControl(0),
         usageType: new FormControl(null, Validators.required),
         fromDate: new FormControl(null, Validators.required),
-        toDate: new FormControl(null, Validators.required),
+        toDate: new FormControl(new Date("31-Dec-9999"), Validators.required),
       })),
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
@@ -307,11 +309,13 @@ export class HousingloanmasterComponent implements OnInit {
   public ngOnInit(): void {
 
     //this.visibilityFlag = true;
+    debugger
     console.log("visibilityFlag", this.visibilityFlag);
     //  this.addOwner(0);
     // this.startDateModel = '31-dec-9999';
     this.housingLoanForm.get('country').setValue('India');
-    this.isLoanTransfer = false;
+    //if(this.houseLoanF.housePropertyMasterId.value != 0)
+    //this.isLoanTransfer = false;
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
     //   this.financialYearStart = res.data.results[0].fromDate;
@@ -326,7 +330,6 @@ export class HousingloanmasterComponent implements OnInit {
 
 
     this.Service.getCountryList().subscribe((res) => {
-      debugger
       this.countriesList = res.data.results.filter(e => e == "India");
     });
 
@@ -379,7 +382,7 @@ export class HousingloanmasterComponent implements OnInit {
         };
         this.familyMemberName.push(obj);
       });
-    });
+    });   
 
     // // Family Member List API call
     // this.Service.getFamilyInfo().subscribe((res) => {
@@ -478,7 +481,9 @@ export class HousingloanmasterComponent implements OnInit {
         { value: null, disabled: true },
         Validators.required
       ),
-      city: new FormControl(null),
+      city: new FormControl({
+        value: null, disabled: true
+      }),
       town: new FormControl(null),
       village: new FormControl(null),
       // stampDutyRegistrationDate: new FormControl(null),
@@ -705,9 +710,11 @@ export class HousingloanmasterComponent implements OnInit {
     this.selectedLoanTypeIndex = -1;
     if(this.loanDetailGridData.length != 0){
       this.isLoanAddNew = false;
+      if(this.houseLoanF.housePropertyMasterId.value != 0)
       this.isLoanTransfer = true;
     }else{ 
       this.isLoanAddNew = true;
+      if(this.houseLoanF.housePropertyMasterId.value != 0)
       this.isLoanTransfer = false;
     }
     this.editMaxloanDate = new Date(2100,12,31);
@@ -761,9 +768,11 @@ export class HousingloanmasterComponent implements OnInit {
 
     if(this.loanDetailGridData.length != 0){
       this.isLoanAddNew = false;
+      if(this.houseLoanF.housePropertyMasterId.value != 0)
       this.isLoanTransfer = true;
     }else{ 
       this.isLoanAddNew = true;
+      if(this.houseLoanF.housePropertyMasterId.value != 0)
       this.isLoanTransfer = false;
     }
     this.editMaxloanDate =  new Date(2100,12,31);
@@ -1092,11 +1101,6 @@ export class HousingloanmasterComponent implements OnInit {
       }
     }
   }
-    
-    // return the control if any on of the form is invalid
-    if (invalidSubmission) {
-      return;
-    }
 
     if (this.housingLoanForm.invalid) {
       invalidSubmission = true;
@@ -1104,6 +1108,21 @@ export class HousingloanmasterComponent implements OnInit {
       return;
     }
 
+    // return the control if any on of the form is invalid
+    if (invalidSubmission) {
+      return;
+    }
+    this.houseLoanOwnerTypeList.forEach((element)=>{
+      if(element.relationship == "Self")
+      {
+        this.employeeOwner = false;
+      }
+    });
+    debugger
+    if(this.employeeOwner && this.housingLoanForm.get('housePropertyMasterId').value == 0){
+      this.alertService.sweetalertWarning("Please Include yourself as owner.");
+    }
+    
     if(
       (this.propertyIndex.length === 0 || 
         this.visibilityFlagStamp? this.stampDutyRegistration.length === 0 : false ) &&
@@ -1179,7 +1198,7 @@ export class HousingloanmasterComponent implements OnInit {
           });
         }
       });
-
+      debugger
       this.Index = -1;
       formDirective.resetForm();
       this.housingLoanForm.reset();
@@ -1187,6 +1206,7 @@ export class HousingloanmasterComponent implements OnInit {
       this.HPUsageDetailForm.reset();
       this.housePropertyLoanDetailList.reset()
       this.showUpdateButton = false;
+      this.isLoanAddNew = true;
       this.loanDetailGridData = [];
       this.houseLoanOwnerTypeList = [];
       this.propertyIndex = [];
@@ -1430,13 +1450,16 @@ export class HousingloanmasterComponent implements OnInit {
       this.isClear = true;
       if(this.loanDetailGridData.length != 0){
         this.isLoanAddNew = false;
+        if(this.houseLoanF.housePropertyMasterId.value != 0)
         this.isLoanTransfer = true;
       } else{ 
         this.isLoanAddNew = true;
+        if(this.houseLoanF.housePropertyMasterId.value != 0)
         this.isLoanTransfer = false;
       }
       // }
     });
+    debugger
 
   }
 
@@ -1488,6 +1511,7 @@ export class HousingloanmasterComponent implements OnInit {
   editLoanDetails(loanDetails, index) {
     //this.isSaveLoan = false;
     this.isLoanAddNew = false;
+    if(this.houseLoanF.housePropertyMasterId.value != 0)
     this.isLoanTransfer = false;
     this.isUpdateLoan = true;
     this.selectedLoanTypeIndex = index
@@ -1972,6 +1996,7 @@ export class HousingloanmasterComponent implements OnInit {
         (land) =>
           land.loanTransfer === true
       );
+      if(index >-1)
       this.loanDetailGridData[index].loanTransfer = false;
 
       this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
@@ -1980,9 +2005,11 @@ export class HousingloanmasterComponent implements OnInit {
       //this.isSaveLoan = true;
       if(this.loanDetailGridData.length != 0){
         this.isLoanAddNew = false;
+        if(this.houseLoanF.housePropertyMasterId.value != 0)
         this.isLoanTransfer = true;
       }else{ 
         this.isLoanAddNew = true;
+        if(this.houseLoanF.housePropertyMasterId.value != 0)
         this.isLoanTransfer = false;
       }
       this.isUpdateLoan = false;

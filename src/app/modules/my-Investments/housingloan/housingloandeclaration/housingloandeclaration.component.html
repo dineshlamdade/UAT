@@ -710,7 +710,7 @@
                           "></i>&nbsp;&nbsp;
                       </td>
                     </tr>
-                    <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+                    <tr *ngIf="rentReceiptBankStatement">
                       <th scope="row"><span tooltip="2">2</span></th>
                       <td>
                         <span tooltip="Rent Receipt / Bank Statement"></span>Rent Receipt / Bank Statement
@@ -733,7 +733,7 @@
                         <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
                       </td>
                     </tr>
-                    <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+                    <tr *ngIf="rentReceiptBankStatement">
                       <th scope="row"><span tooltip="3">3</span></th>
                       <td>
                         <span tooltip="Municipal Tax Receipt"></span>Municipal Tax Receipt
