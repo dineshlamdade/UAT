@@ -38,6 +38,7 @@ import { PhysicallyHandicappedService } from '../physically-handicapped.service'
 export class PhysicallyHandicappedDeclarationAndActualComponent
   implements OnInit
 {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -195,6 +196,12 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
 
   EditDocumentRemark: any;
   editDocumentRemark: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1267,27 +1274,154 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
     return amount;
   }
 
-  //----------- On change Transactional Line Item Remark --------------------------
-  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+//----------- On change Transactional Line Item Remark --------------------------
+public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  debugger
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-    console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  this.previousEmployerHandicappedDetailList[transIndex].remark =  event.target.value;
+ 
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =
-      event.target.value;
-  }
+}
+onSaveRemarkDetails(summary, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.physicallyHandicappedDetailId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"80U",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
 
-  upload() {
-    for (let i = 0; i < this.remarkList.length; i++) {
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+      
+      console.log(this.transactionDetail);
+      // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.previousEmployerHandicappedDetailList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = '';
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+onResetRemarkDetails() {
+  this.enteredRemark = '';
+}
+
+
+public docRemarkModal1(
+  documentViewerTemplate: TemplateRef<any>,
+  index: any,
+  physicallyHandicappedDetailId,
+  physicallyHandicappedDetail, count
+) {
+
+  this.summaryDetails = physicallyHandicappedDetail;
+  this.indexCount = count;
+  this.selectedremarkIndex = count;
+  this.physicallyHandicappedService.getphysicallyhandicappedTransactionRemarkList(
+    physicallyHandicappedDetailId,
+  ).subscribe((res) => {
+    console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+  });
+  // console.log('documentDetail::', documentRemarkList);
+  // this.documentRemarkList = this.selectedRemarkList;
+  console.log('this.documentRemarkList', this.documentRemarkList);
+  this.modalRef = this.modalService.show(
+    documentViewerTemplate,
+    Object.assign({}, { class: 'gray modal-s' })
+  );
+}
+
+
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark1(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  debugger
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[transIndex].remark =  event.target.value;
+ 
+
+}
+
+onSaveRemarkDetails1(physicallyHandicappedDetail, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.physicallyHandicappedDetailId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"80U",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+      
+      console.log(this.transactionDetail);
+      // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = '';
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+
+onResetRemarkDetails1() {
+  this.enteredRemark = '';
+}
+
+
+upload() {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if (this.remarkList[i] != undefined || this.remarkList[i] == undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
-          documentType: 'Back Statement/ Premium Reciept',
-          documentSubType: '',
-          remark: this.remarkList[i],
-          password: this.documentPassword[i],
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1784,12 +1918,19 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId,
-    policyNo
+    physicallyHandicappedDetailId,
+    summary, count
   ) {
-    this.Service.getRemarkList(policyNo, psId).subscribe((res) => {
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.physicallyHandicappedService.getphysicallyhandicappedTransactionRemarkList(
+      physicallyHandicappedDetailId,
+    ).subscribe((res) => {
       console.log('docremark', res);
-      this.documentRemarkList = res.data.results[0].remarkList;
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1799,6 +1940,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+
+
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);

@@ -35,6 +35,7 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-declaration.component.scss'],
 })
 export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public patientName: string;
   @Input() public data: any;
 
@@ -194,6 +195,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public visibilityFlagForRecovery: boolean = false;
   editDocumentRemark: any;
   editfilesArray: any[];
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1148,30 +1155,76 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     console.log('this.proofForRecoveryFromInsuranceCompany.size::', this.proofForRecoveryFromInsuranceCompany.length);
   }
 
-   //----------- On change Transactional Line Item Remark --------------------------
-   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+    //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+ 
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  this.transactionDetail[0].specifiedDiseaseTransactionList[transIndex].remark =  event.target.value;
+ 
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+}
 
 
-  }
+onSaveRemarkDetails(summary, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.specifiedDiseaseTransactionId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"SPECIFIEDDISEASE",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+    
+      
+      console.log(this.transactionDetail);
+      // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.transactionDetail[0].specifiedDiseaseTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = '';
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+onResetRemarkDetails() {
+  this.enteredRemark = '';
+}
+
+
 
 
 
   upload() {
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.proofForAmountSpent.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1804,7 +1857,7 @@ this.documentArray = [];
             }
           );
         });
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1825,15 +1878,19 @@ this.documentArray = [];
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    specifiedDiseaseTransactionId,
+    summary, count
   ) {
-
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.treatmentOfSpecifiedService.getspecifiedDiseaseTransactionRemarkList(
+      specifiedDiseaseTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1843,7 +1900,6 @@ this.documentArray = [];
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
-
   public uploadUpdateTransaction() {
     for (let i = 0; i < this.editdocumentPassword.length; i++) {
       if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){

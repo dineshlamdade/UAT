@@ -7,21 +7,21 @@
             <tr>
               <th scope="col" class="wd-20">Employee Name</th>
               <th scope="col" class="wd-20">Severity</th>
-              <th scope="col" class="wd-15">Declared</th>
-              <th scope="col" class="wd-15">Actual</th>
+              <th scope="col" class="wd-15">Declared Amount</th>
+              <th scope="col" class="wd-15">Actual Amount</th>
               <th scope="col" class="wd-10">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td>
+              <td class="align-left">
                 <span tooltip="{{userName}}">{{userName}}</span>
               </td>
-              <td class="padding-right-12"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
+              <td class="padding-right-12 align-left"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.totalDeclaredAmount | number:'1.2-2'}}">
-                  {{summary.totalDeclaredAmount | number:'1.2-2'}}
+                <span class="padding-right-9" tooltip="{{summary.totalDeclaredAmount | number:'1.2-2'}}">
+                  <b>{{summary.totalDeclaredAmount | number:'1.2-2'}}</b>
                 </span>
               <!-- </td>
               <td class="wd-15 align-right">
@@ -30,8 +30,8 @@
                 </span>
               </td> -->
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.totalActualAmount | number:'1.2-2'}}">
-                  {{summary.totalActualAmount | number:'1.2-2'}}
+                <span class="padding-right-9" tooltip="{{summary.totalActualAmount | number:'1.2-2'}}">
+                  <b>{{summary.totalActualAmount | number:'1.2-2'}}</b>
                 </span>
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
@@ -55,18 +55,18 @@
               </td>
               <td class="align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}"
                 >
-                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ totalActualAmount | number: '1.2-2' }}"
                 >
-                  {{ totalActualAmount | number: "1.2-2" }}
+                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td>
@@ -74,12 +74,12 @@
             <tr class="table-light-color">
               <td colspan="2" class="align-right font700">Limit&nbsp; <span class="Letterbadge">B</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limit | number:'1.2-2'}}">
                   {{limit | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limit | number:'1.2-2'}}">
                   {{limit | number:'1.2-2'}}
                 </span>
               </td>
@@ -89,13 +89,13 @@
             <tr class="table-light-color">
               <td colspan="2" class="align-right font700">Benefit Available [Sec.80-U] &nbsp; <span class="Letterbadge">C</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{benefitDeclared | number:'1.2-2'}}">
-                  {{benefitDeclared | number:'1.2-2'}}
+                <span class="padding-right-9" tooltip="{{benefitDeclared | number:'1.2-2'}}">
+                  <b>{{benefitDeclared | number:'1.2-2'}}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{benefitActual | number:'1.2-2'}}">
-                  {{benefitActual | number:'1.2-2'}}
+                <span class="padding-right-9" tooltip="{{benefitActual | number:'1.2-2'}}">
+                  <b>{{benefitActual | number:'1.2-2'}}</b>
                 </span>
               </td>
               <td></td>

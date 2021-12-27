@@ -163,20 +163,22 @@
                 </td> -->
 
                 <td>
-                  <div class="d-flex">
-                    <input
+                  <div class="d-flex"
+                  class="align-center">
+                    <!-- <input
                     style="width:100px;"
                       type="text"
                       class="form-control"
-
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      
                       (change)="
                       onChangeDocumentRemark(
                           summary, i,
                           $event
                         )
                       "
-
-                    />
+                    
+                    /> -->
                     <div
                       _ngcontent-ykc-c443=""
                       class="
@@ -191,7 +193,8 @@
                             docRemarkModal(
                               template8,
                               documentDetailIndex,
-                              summary?.proofSubmissionId, item?.policyNo
+                              summary?.donations80GGTransactionId,
+                              summary, i
                             )
                           "
                           class="
@@ -207,7 +210,7 @@
                         _ngcontent-ykc-c443=""
                         class="Label_badge"
                         >{{
-                          documentDetail?.documentRemarkDetailList?.length
+                          summary?.bubbleRemarkCount
                         }}</span
                       >
                     </div>
@@ -1852,7 +1855,7 @@
 <!-- Remark Modal started -->
 <ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -1872,8 +1875,7 @@
             >{{ documentRemark.role }}:
             <b class="text-gray">{{
               documentRemark.remarkBy
-            }}</b></span
-          >
+            }}</b></span >
         </div>
         <div class="col-md-6">
           <div class="float-right">
@@ -1888,20 +1890,48 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
+    <div class="row mt-25">
+      <div class="col-md-12">
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
+        (change)= "
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        " class="form-control" placeholder="Remark"></textarea>
+      </div>
+    </div>
   </div>
 
-  <div class="modal-footer">
+  <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
       type="button"
       class="btn btn-secondary"
       (click)="modalRef.hide()"
     >
       Ok
+    </button>
+  </div>
+  <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+    >
+      Save
     </button>
   </div>
 </ng-template>

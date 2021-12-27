@@ -72,6 +72,14 @@ export class HandicappedDependentService {
   }
 
 
+  public getHandicappedDependentRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'handicappedDependent-Transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
 
   getFamilyInfoList() : Observable<any>  {
     return this._HTTP.get(this.apiUrl + 'handicappedDependent-Transaction/handicappedDependentMasterList')

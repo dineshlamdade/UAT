@@ -1258,6 +1258,29 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </th>
+
+                                                                                    <th rowspan="2"
+                                                                                        class="wd-12 text-center" *ngIf="derivedTableName == 'NonRecurringTransactionGroup' || 
+                                                                                        derivedTableName == 'GarnishmentMaster' ||
+                                                                                        derivedTableName == 'NonRecurringQuantity' || derivedTableName == 'FinancialMaster'">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
+                                                                                            Head
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="sourceObjectName"
+                                                                                                    pSortableColumn="sourceObjectName">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    type="text"
+                                                                                                    field="text"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
@@ -1309,6 +1332,11 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{data.sourceObjectName}}
+                                                                                    </td>
+                                                                                    <td *ngIf="derivedTableName == 'NonRecurringTransactionGroup' || 
+                                                                                    derivedTableName == 'GarnishmentMaster' ||
+                                                                                    derivedTableName == 'NonRecurringQuantity' || derivedTableName == 'FinancialMaster'">
+                                                                                    
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         <!-- commented on 09/12/2021 -->
@@ -1487,11 +1515,14 @@
                                                                             style="margin-left:100px;">Source Range
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="1" class="wd-6 text-center thClassDataTable"
-                                                                        *ngIf="!noDerivedFlag">
+                                                                    <th colspan="1" class="wd-6 text-center thClassDataTable" *ngIf="!noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Derived
-
+                                                                        </div>
+                                                                    </th>
+                                                                    <th colspan="1" class="wd-6 text-center thClassDataTable" *ngIf="noDerivedFlag && isRangeApplicableFlag == false">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Derived
                                                                         </div>
                                                                     </th>
                                                                     <th colspan="2" class="wd-8 text-center thClassDataTable" *ngIf="!noDerivedFlag">
@@ -1500,7 +1531,7 @@
                                                                             
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="!noDerivedFlag">
+                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="isRangeApplicableFlag == true || !noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Action
                                                                         </div>
@@ -1528,8 +1559,15 @@
                                                                            
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center thClassDataTable"
-                                                                        *ngIf="!noDerivedFlag">
+                                                                    <th rowspan="2" class=" text-center thClassDataTable" *ngIf="!noDerivedFlag">
+                                                                        <!--  -->
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            {{derivedFieldName}}
+                                                                           
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2" class=" text-center thClassDataTable" *ngIf="noDerivedFlag && isRangeApplicableFlag == false">
+                                                                        <!--  -->
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             {{derivedFieldName}}
                                                                            
@@ -1619,7 +1657,8 @@
                                                                         <!-- [disabled]="data.disableFlag == true" -->
                                                                     </td>
                                                                     <td
-                                                                        *ngIf="data.showElement == true && !noDerivedFlag">
+                                                                        *ngIf="data.showElement == true">
+                                                                        <!-- && !noDerivedFlag -->
                                                                         <!-- {{showSearchLeans}}
                                                                         {{selectedIndex}}
                                                                         {{rowIndex}}
@@ -1636,6 +1675,11 @@
                                                                                 (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                                 value="{{data.applicableValue}}">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
+
+                                                                            <input type="text" class="form-control"
+                                                                            *ngIf="noDerivedFlag && showEditTextBox"
+                                                                            (focusout)="getEditedApplicableValue($event.target.value,data)"
+                                                                            value="{{data.applicableValue}}">
 
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="showSearchLeans && selectedIndex != rowIndex && !showEditTextBox"
@@ -1682,10 +1726,12 @@
                                                                             value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
                                                                     <td *ngIf="data.showElement == true && !noDerivedFlag">
+                                                                        <!-- {{data.derivedFromDate}} -->
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                             class="form-control"
+                                                                            [minDate]="data.derivedFromDate"
                                                                             value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"
                                                                             [disabled]="data.disableFlag == true"
                                                                             (bsValueChange)="getEditToDateForSave($event,data)"
@@ -1700,8 +1746,17 @@
                                                                         <i class="fa fa-eye font-18 text-dark-blue"
                                                                             tooltip="View History"
                                                                             (click)="viewMatrixDataHistory(data);extralargepopup(template4)">
-                                                                        </i>
+                                                                        </i> &nbsp;&nbsp;
+
+                                                                        <!-- New Functionality 17th Dec2021 -->
+                                                                        <!-- <i class="fa fa-plus-circle font-18 text-dark-green"
+                                                                        tooltip="Add"
+                                                                        (click)="addMatrixData(srcCombData,rowIndex)"
+                                                                        *ngIf="isRangeApplicableFlag == true"></i> -->
+                                                                        <!-- [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '" -->
+                                                                        <!-- [ngClass]="{'cursor-pointer': addbtnflag && selectedIndex == rowIndex, 'cursorStyle': selectedIndex != rowIndex }" -->
                                                                     </td>
+                                                                  
                                                                 </tr>
 
                                                                 <tr class="p-selectable-row"
@@ -1770,20 +1825,23 @@
                                                                     </td>
                                                                     <td
                                                                         *ngIf='srcCombData.showElement == true && !noDerivedFlag'>
+                                                                        <!-- applicableValue: {{applicableValue}} <br>
+                                                                        {{srcCombData.applicableValue}} -->
                                                                         <div class="input-group">
+                                                                            <!-- selectedIndex == rowIndex ? applicableValue : ''  -->
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="!showDropdown && !showSearchLeans"
-                                                                                [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
+                                                                                [value]="srcCombData.applicableValue"
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="showSearchLeans"
                                                                                 [value]="srcCombData.applicableValue1"
-                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="showSearchLeans && selectedIndex != rowIndex"
-                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
@@ -1798,15 +1856,24 @@
                                                                         <select type="text" class="form-control"
                                                                             *ngIf="showDropdown"
                                                                             [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                                                                            (change)="applicableValueData($event.target.value,srcCombData)">
+                                                                            (change)="applicableValueData($event.target.value,srcCombData,rowIndex)">
                                                                             <option>Select</option>
                                                                             <option
                                                                                 *ngFor="let data of derivedDropdownValue">
                                                                                 {{data}}</option>
                                                                         </select>
                                                                     </td>
+
+                                                                    <td *ngIf='noDerivedFlag && isRangeApplicableFlag == false'>
+                                                                        <div class="input-group">
+                                                                               <input type="text" class="form-control"
+                                                                                [value]="srcCombData.applicableValue1"
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
+                                                                        </div>
+                                                                    </td>
                                                                     <td class="p-d-inline-flex"
-                                                                        *ngIf='srcCombData.showElement == true && !noDerivedFlag && !noDerivedFlag'>
+                                                                        *ngIf='srcCombData.showElement == true && !noDerivedFlag '>
+                                                                        
                                                                         <div class="p-d-inline-flex">
                                                                             <span
                                                                                 *ngIf='isRangeApplicableFlag != true'><i
@@ -1823,12 +1890,15 @@
                                                                                                 class="fa fa-calendar"></i>
                                                                                         </span>
                                                                                     </div>
-
+                                                                                    <!--  [(ngModel)]="srcCombData.derivedFromDate"
+                                                                                        [ngModelOptions]="{standalone: true}"
+                                                                                        -->
+                                                                                  
                                                                                     <input data-provide="datepicker"
                                                                                         data-date-autoclose="true"
                                                                                         class="form-control"
                                                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
-                                                                                        value="{{srcCombData.derivedFromDate | date: 'dd-MMM-yyyy'}}"
+                                                                                        value="{{srcCombData.derivedFromDate | date:'dd-MMM-yyyy'}}"
                                                                                         (bsValueChange)="getFromDateForSave($event,srcCombData,rowIndex)"
                                                                                         placeholder="Date" bsDatepicker>
                                                                                 </div>
@@ -1848,14 +1918,14 @@
                                                                                     data-date-autoclose="true"
                                                                                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                                     class="form-control"
-                                                                                    value="{{srcCombData.derivedToDate | date:'dd-MMM-yyyy'}}"
+                                                                                    [value]="srcCombData.derivedToDate | date:'dd-MMM-yyyy'"
                                                                                     [minDate]="srcCombData.derivedFromDate || selectedFromDateForSave"
                                                                                     (bsValueChange)="getToDateForSave($event,srcCombData,rowIndex)"
                                                                                     placeholder="Date" bsDatepicker>
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="text-center"
+                                                                    <!-- <td class="text-center"
                                                                         *ngIf='srcCombData.showElement == true && !noDerivedFlag'>
                                                                         <i [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '"
                                                                             [ngClass]="{'cursor-pointer': addbtnflag && selectedIndex == rowIndex, 'cursorStyle': selectedIndex != rowIndex }"
@@ -1864,7 +1934,19 @@
                                                                             (click)="addMatrixData(srcCombData,rowIndex)"
                                                                             *ngIf="isRangeApplicableFlag == true">
                                                                         </i>
+                                                                    </td> -->
+
+                                                                    <td class="text-center"
+                                                                        *ngIf='isRangeApplicableFlag == true'>
+                                                                        <i [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '"
+                                                                            [ngClass]="{'cursor-pointer': addbtnflag && selectedIndex == rowIndex, 'cursorStyle': selectedIndex != rowIndex }"
+                                                                            class="fa fa-plus-circle font-18 text-dark-green  "
+                                                                            tooltip="Add"
+                                                                            (click)="addMatrixData(srcCombData,rowIndex)"
+                                                                            *ngIf="isRangeApplicableFlag == true">
+                                                                        </i>
                                                                     </td>
+                                                                    
                                                                 </tr>
 
                                                                 <tr class="p-selectable-row text-center"
@@ -1917,28 +1999,18 @@
                                                                     </td>
                                                                     <td>{{data.sourceRangeFrom}}</td>
                                                                     <td>{{data.sourceRangeTo}}</td>
-                                                                    <td>{{data.applicableValue}}</td>
-                                                                    <td>{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}
-                                                                    </td>
-                                                                    <td>{{data.derivedToDate | date: 'dd-MMM-yyyy'}}
-                                                                    </td>
+                                                                    <td *ngIf="!noDerivedFlag">{{data.applicableValue}}</td>
+                                                                    <td *ngIf="!noDerivedFlag">{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}</td>
+                                                                    <td *ngIf="!noDerivedFlag">{{data.derivedToDate | date: 'dd-MMM-yyyy'}}</td>
                                                                     <td></td>
                                                                 </tr>
 
                                                             </tbody>
-                                                            <!-- <ng-template pTemplate="emptymessage">
-                                                                <tr>
-                                                                    <td colspan="15"
-                                                                        class="font-14 font500 text-center text-red">
-                                                                        <span>No Data
-                                                                            Available</span>
-                                                                    </td>
-                                                                </tr>
-                                                            </ng-template> -->
+                                                           
                                                         </table>
                                                         <br>
                                                        
-                                                        <span> Showing {{p}} of {{sdmSourceCombinationListData.length}} entries</span>
+                                                        <!-- <span> Showing {{p}} of {{sdmSourceCombinationListData.length}} entries</span> -->
                                                         <pagination-controls (pageChange)="p = $event">
                                                             
                                                         </pagination-controls>
@@ -2213,14 +2285,14 @@
                     <div class="input-group">
                         <input type="text" class="form-control" *ngIf="!showDropdown && !showSearchLeans"
                             [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                            (focusout)="applicableValueData($event.target.value,srcCombData)">
+                            (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                         <input type="text" class="form-control" *ngIf="showSearchLeans"
                             [value]="srcCombData.applicableValue1"
-                            (focusout)="applicableValueData($event.target.value,srcCombData)">
+                            (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                         <input type="text" class="form-control" *ngIf="showSearchLeans && selectedIndex != rowIndex"
-                            (focusout)="applicableValueData($event.target.value,srcCombData)">
+                            (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
                         <span class="input-group-append" *ngIf="showSearchLeans">
                             <button class="btn btn-primary" type="button">
@@ -2231,7 +2303,7 @@
                     </div>
                     <select type="text" class="form-control" *ngIf="showDropdown"
                         [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                        (change)="applicableValueData($event.target.value,srcCombData)">
+                        (change)="applicableValueData($event.target.value,srcCombData,rowIndex)">
                         <option>Select</option>
                         <option *ngFor="let data of derivedDropdownValue">
                             {{data}}</option>

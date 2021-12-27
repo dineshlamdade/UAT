@@ -97,6 +97,22 @@ getAllInstitutesFromGlobal() {
   }));
 }
 
+public getspecifiedDiseaseMasterRemarkList(masterId: String,): Observable<any> {
+  return this._HTTP.get(this.apiUrl + 'specifiedDiseaseMaster/GetRemarkMaster/' + masterId)
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
+
+
+
+public getspecifiedDiseaseTransactionRemarkList(psId: String,): Observable<any> {
+  return this._HTTP.get(this.apiUrl + 'specifiedDiseaseTransaction/GetRemarkTransaction/' + psId)
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
+
 uploadMultipleMasterFiles(files: File[], data:any): Observable<any> {
   var formData: any = new FormData();
   console.log('in uploadMultipleFiles Service::', files);

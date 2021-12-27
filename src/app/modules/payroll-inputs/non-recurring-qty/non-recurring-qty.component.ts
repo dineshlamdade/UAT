@@ -791,6 +791,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.nonRecQtyService.NonRecurringTransactionGroupAPIEmpwise(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
+				this.NonRecurringTransactionGroupAPIEmpwiseData.sort((a,b) => a.headSequence - b.headSequence);
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 					if (element.onceEvery == 0) {
 						element.onceEvery = 1

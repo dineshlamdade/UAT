@@ -26,10 +26,10 @@
                                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b>
                                     <i class="fa fa-check-square-o"></i></b>Approve
                                 </button>
-                                <button type="button" tooltip="Edit Transaction"
+                                <!-- <button type="button" tooltip="Edit Transaction"
                                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2">
                                   <b><i class="fa fa-pencil"></i></b> Edit Transaction
-                                </button>
+                                </button> -->
                               </div>
                             </div>
 
@@ -46,8 +46,9 @@
 
                                 <ng-template pTemplate="caption">
                                   <div class="row">
-                                    <div class="col-md-2"> <label class="form-label mb-0 mr-2  float-left">Total
-                                        Records <span class="text-dark-green font-14 font-bold">(0)</span></label>
+                                    <div class="col-md-2">
+                                      <!-- <label class="form-label mb-0 mr-2  float-left">Selected
+                                        Records <span class="text-dark-green font-14 font-bold">(0)</span></label> -->
                                     </div>
 
                                     <div class="col-md-10">
@@ -62,6 +63,8 @@
                                                   </span>
                                                 </div>
                                                 <input data-provide="datepicker" data-date-autoclose="true"
+                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                [(ngModel)]="summaryFromDate" [ngModelOptions]="{standalone : true}"
                                                   class="form-control" placeholder="From Date" bsDatepicker>
                                               </div>
                                             </div>
@@ -75,6 +78,8 @@
                                                   </span>
                                                 </div>
                                                 <input data-provide="datepicker" data-date-autoclose="true"
+                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                [(ngModel)]="summaryToDate" [ngModelOptions]="{standalone : true}"
                                                   class="form-control" placeholder="To Date" bsDatepicker>
                                               </div>
                                             </div>
@@ -96,7 +101,7 @@
 
                                 <ng-template pTemplate="header">
                                   <tr>
-                                    <th>
+                                    <th class="wd-2">
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                         Emp. Code
                                         <div class="Sort_Filter_Position">
@@ -121,7 +126,7 @@
                                         </div>
                                       </div>
                                     </th>
-                                    <th class="wd-8">
+                                    <th class="wd-2">
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                         Head Name
                                         <div class="Sort_Filter_Position">
@@ -134,9 +139,9 @@
                                         </div>
                                       </div>
                                     </th>
-                                    <th class="wd-8">
+                                    <th class="wd-2">
                                       <div class="p-d-flex p-jc-between p-ai-center">
-                                        Head Type
+                                        <!-- Head Type -->
                                         <div class="Sort_Filter_Position">
                                           <p-sortIcon field="headMaster.headNature"
                                             pSortableColumn="headMaster.headNature">
@@ -192,7 +197,7 @@
                                         </div>
                                       </div>
                                     </th>
-                                    <th class="text-center wd-23">
+                                    <!-- <th class="text-center wd-23">
                                       <div class="p-d-flex p-ai-center justify-content-center">
                                         Remark
                                         <div class="Sort_Filter_Position">
@@ -202,7 +207,7 @@
                                           </p-columnFilter>
                                         </div>
                                       </div>
-                                    </th>
+                                    </th> -->
                                     <th> Status </th>
                                     <th>Action</th>
 
@@ -214,7 +219,7 @@
 
                                 <ng-template pTemplate="body" let-summary>
                                   <tr class="p-selectable-row">
-                                    <td class="text-center">{{summary.employeeMasterEntity.employeeCode}}</td>
+                                    <td >{{summary.employeeMasterEntity.employeeCode}}</td>
                                     <td class="bg-color-light_gray">
                                       <label class="form-lable mb-0">{{summary.employeeMasterEntity.fullName}}</label>
                                     </td>
@@ -222,13 +227,13 @@
                                       <label class="form-lable mb-0">{{summary.headMaster.standardName}}</label>
                                     </td>
                                     <td class="bg-color-light_gray">
-                                      <label class="form-lable mb-0">{{summary.headMaster.headNature}}</label>
+                                      <label class="form-lable mb-0" tooltip="{{summary.headMaster.headNature}}">{{summary.headMaster.headNature.charAt(0)}}</label>
                                     </td>
                                     <td class="bg-color-light_gray">
-                                      <label class="form-lable mb-0">{{summary.fromDate | date : 'dd-MMM-yy'}}</label>
+                                      <label class="form-lable mb-0" tooltip="{{summary.fromDate | date: 'dd-MMM-yyyy'}}">{{summary.fromDate | date : 'dd-MMM-yy'}}</label>
                                     </td>
                                     <td class="bg-color-light_gray">
-                                      <label class="form-lable mb-0">{{summary.toDate | date: 'dd-MMM-yy'}}</label>
+                                      <label class="form-lable mb-0" tooltip="{{summary.toDate | date: 'dd-MMM-yyyy'}}">{{summary.toDate | date: 'dd-MMM-yy'}}</label>
                                     </td>
                                     <td class="bg-color-light_gray">
                                       <label class="form-lable mb-0">{{summary.uom}}</label>
@@ -237,12 +242,10 @@
                                     <td class="bg-color-light_gray text-right" style="text-align: right;">
                                       <label class="form-lable mb-0">{{summary.value | number: '1.2-2'}}</label>
                                     </td>
-                                    <td class="bg-color-light_gray text-center">
+                                    <!-- <td class="bg-color-light_gray text-center">
                                       <label class="form-lable mb-0">{{summary.remark}}</label>
-                                    </td>
-                                    <td>
-
-                                    </td>
+                                    </td> -->
+                                    <td></td>
                                     <td>
                                       <i class="fa fa-eye text-blue font-16 mr-2"></i>
                                       <i class="fa fa-deviantart text-blue font-16"
@@ -282,12 +285,12 @@
                         <div class="card-body">
 
                           <div class="row" *ngIf="payrollListEmpData">
-                            <div class="col-md-6">
+                            <div class="col-md-6" *ngIf="payrollListEmpData.length > 0">
                               <div class="form-label">
                                 Record {{payrollListEmpData.length}}
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" *ngIf="payrollListEmpData.length > 0">
                               <div class="float-right">
                                 <label class="custom-switch ">
                                   <span class="form-label mr-2">Single Entry</span>
@@ -312,7 +315,6 @@
                                   [(ngModel)]="selectedEmployeeMasterId" [disabled]="showDropdownDisabled"
                                   (change)="getSelectedEmployeeCode($event.target.value)">
                                   <option value="">Select</option>
-                                  <!-- <option value="1"> 1111 </option> -->
                                   <option value="{{emp.employeeMasterId}}" *ngFor="let emp of employeeData">
                                     {{emp.employeeCode}}
                                   </option>
@@ -455,7 +457,7 @@
                               </div>
                             </div>
 
-                            <div class="row mt-15" *ngIf="masterGridData.length > 0">
+                            <div class="row mt-15">
                               <div class="col-md-12 p-0">
                                 <div class="table-responsive Custom_Table">
                                   <p-table [value]="masterGridData" class="mt-10" [paginator]="true" [rows]="10"
@@ -484,9 +486,9 @@
                                             <div class="col-md-4">
                                               <label class=" form-label ">Job Field</label>
                                               <select class="form-control">
-                                                <option value="1">Sweeper</option>
-                                                <option value="0">Cleaner</option>
-                                                <option value="0">Gardner</option>
+                                                <option value="0">Sweeper</option>
+                                                <option value="1">Cleaner</option>
+                                                <option value="1">Gardner</option>
                                               </select>
                                             </div>
                                             <div class="col-md-4">
@@ -535,65 +537,48 @@
 
                                     <ng-template pTemplate="header">
                                       <tr>
-                                        <th>Sr. No.</th>
+                                        <!-- <th>Sr. No.</th> -->
                                         <th>
                                           <div class="p-d-flex p-jc-between p-ai-center">
-                                            Head Description
+                                            <!-- Head Type -->
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="headdesc.headtype"></p-sortIcon>
-                                              <p-columnFilter field="headdesc" matchMode="in" display="menu"
-                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                                class="p-ml-auto">
-                                                <ng-template pTemplate="header">
-                                                  <div class="p-px-3 p-pt-3 p-pb-0">
-                                                    <span class="p-text-bold">Agent Picker</span>
-                                                  </div>
-                                                </ng-template>
-                                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                                  <p-multiSelect [ngModel]="value" [options]="" placeholder="Any"
-                                                    (onChange)="filter($event.value)" optionLabel="name">
-                                                    <ng-template let-option pTemplate="item">
-                                                      <div class="p-multiselect-representative-option">
-
-                                                        <span class="p-ml-1">{{
-                                                          option.headtype
-                                                          }}</span>
-                                                      </div>
-                                                    </ng-template>
-                                                  </p-multiSelect>
-                                                </ng-template>
-                                              </p-columnFilter>
-                                            </div>
-                                          </div>
-                                        </th>
-                                        <th>
-                                          <div class="p-d-flex p-jc-between p-ai-center">
-                                            Head Type
-                                            <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="headtype"></p-sortIcon>
-                                              <p-columnFilter type="text" field="headtype" display="menu"
+                                              <p-sortIcon field="headType"></p-sortIcon>
+                                              <p-columnFilter type="text" field="headType" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                             </div>
                                           </div>
                                         </th>
+                                        <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                            Head Description
+                                            <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="headDescription"></p-sortIcon>
+                                              <p-columnFilter type="text" field="headDescription" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                          </div>
+                                        </th>
+
                                         <th class="text-center">
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             From Date
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="headtype"></p-sortIcon>
-                                              <p-columnFilter type="text" field="headtype" display="menu"
+                                              <p-sortIcon field="fromdate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="fromdate" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                             </div>
+                                          
                                           </div>
                                         </th>
                                         <th class="text-center">
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             To Date
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="headtype"></p-sortIcon>
-                                              <p-columnFilter type="text" field="headtype" display="menu"
+                                              <p-sortIcon field="todate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="todate" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                             </div>
+                                          
                                           </div>
                                         </th>
 
@@ -601,8 +586,8 @@
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             Opening Amount
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="date"></p-sortIcon>
-                                              <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                              <p-sortIcon field="openingAmount"></p-sortIcon>
+                                              <p-columnFilter type="numeric" field="openingAmount" display="menu" class="p-ml-auto">
                                               </p-columnFilter>
                                             </div>
                                           </div>
@@ -612,60 +597,31 @@
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             Change Amount
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="status"></p-sortIcon>
-                                              <p-columnFilter field="status" matchMode="equals" display="menu"
-                                                class="p-ml-auto">
-                                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                                  <p-dropdown [ngModel]="value" [options]="statuses"
-                                                    (onChange)="filter($event.value)" placeholder="Any">
-                                                    <ng-template let-option pTemplate="item">
-                                                      <span [class]="
-                                                                                    'customer-badge status-' + option.value
-                                                                                  ">{{ option.label }}</span>
-                                                    </ng-template>
-                                                  </p-dropdown>
-                                                </ng-template>
-                                              </p-columnFilter>
+                                              <p-sortIcon field="changeValue"></p-sortIcon>
+                                              <p-columnFilter type="numeric" field="changeValue" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
                                             </div>
+                                          
                                           </div>
                                         </th>
                                         <th class="wd-8 text-center">
                                           <div class="p-d-flex justify-content-center p-ai-center">
                                             Change %
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="activity"></p-sortIcon>
-                                              <p-columnFilter field="activity" matchMode="between" display="menu"
-                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                                class="p-ml-auto">
-                                                <ng-template pTemplate="filter" let-filter="filterCallback">
-                                                  <p-slider [ngModel]="activityValues" [range]="true"
-                                                    (onSlideEnd)="filter($event.values)" styleClass="p-m-3"></p-slider>
-                                                  <div class="p-d-flex p-ai-center p-jc-between p-px-2">
-                                                    <span>{{ activityValues[0] }}</span>
-                                                    <span>{{ activityValues[1] }}</span>
-                                                  </div>
-                                                </ng-template>
-                                              </p-columnFilter>
+                                              <p-sortIcon field="changePercenatge"></p-sortIcon>
+                                              <p-columnFilter type="numeric" field="changePercenatge" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
                                             </div>
+                                          
                                           </div>
                                         </th>
                                         <th class="wd-8">
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             Closing Amount
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="activity"></p-sortIcon>
-                                              <p-columnFilter field="activity" matchMode="between" display="menu"
-                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                                class="p-ml-auto">
-                                                <ng-template pTemplate="filter" let-filter="filterCallback">
-                                                  <p-slider [ngModel]="activityValues" [range]="true"
-                                                    (onSlideEnd)="filter($event.values)" styleClass="p-m-3"></p-slider>
-                                                  <div class="p-d-flex p-ai-center p-jc-between p-px-2">
-                                                    <span>{{ activityValues[0] }}</span>
-                                                    <span>{{ activityValues[1] }}</span>
-                                                  </div>
-                                                </ng-template>
-                                              </p-columnFilter>
+                                              <p-sortIcon field="closingAmount"></p-sortIcon>
+                                              <p-columnFilter type="numeric" field="closingAmount" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
                                             </div>
                                           </div>
                                         </th>
@@ -673,23 +629,12 @@
                                           <div class="p-d-flex p-jc-between p-ai-center">
                                             <span tooltip="Unit of Measure">UOM</span>
                                             <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="activity"></p-sortIcon>
-                                              <p-columnFilter field="activity" matchMode="between" display="menu"
-                                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                                class="p-ml-auto">
-                                                <ng-template pTemplate="filter" let-filter="filterCallback">
-                                                  <p-slider [ngModel]="activityValues" [range]="true"
-                                                    (onSlideEnd)="filter($event.values)" styleClass="p-m-3"></p-slider>
-                                                  <div class="p-d-flex p-ai-center p-jc-between p-px-2">
-                                                    <span>{{ activityValues[0] }}</span>
-                                                    <span>{{ activityValues[1] }}</span>
-                                                  </div>
-                                                </ng-template>
-                                              </p-columnFilter>
+                                              <p-sortIcon field="uom"></p-sortIcon>
+                                              <p-columnFilter type="text" field="uom" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
                                             </div>
                                           </div>
                                         </th>
-
                                         <th>Remark</th>
                                         <th></th>
                                         <!-- <th style="width: 8rem"></th> -->
@@ -699,23 +644,25 @@
 
                                     <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
                                       <tr class="p-selectable-row" *ngIf="headsFlag[rowIndex]">
-                                        <td><span>{{summary.srNo}} </span></td>
+                                        <!-- <td><span>{{summary.srNo}} </span></td> -->
+                                        <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}">
+                                            {{summary.headType.charAt(0) }} </span>
+                                        </td>
                                         <td class="bg-color-light_gray">
                                           <span class="text-link"
                                             (click)="ViewHistory(template,summary.id,summary)">{{summary.headDescription}}</span>
                                         </td>
 
-                                        <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}">{{
-                                            summary.headType }} </span>
-                                        </td>
+
 
                                         <td colspan="2">
                                           <div class="d-flex">
                                             <span class="ml-2 mr-2 mt-2" (click)="copyDateFromUpdteMaster(rowIndex)"><i
                                                 class="fa fa-clone text-blue font-16"></i></span>
+                                                <!-- {{summary.todate}} -->
 
                                             <input type="text" class="form-control"
-                                              [ngModel]="summary.fromdate | date: 'dd-MMM-yyyy'"
+                                              [ngModel]="summary.fromdate | date: 'dd-MMM-yy'"
                                               (ngModelChange)="summary.fromdate = $event.toLocaleDateString()"
                                               [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                                               bsDatepicker />
@@ -726,13 +673,12 @@
                                               bsDatepicker />
                                           </div>
                                         </td>
-                                        <td><input type="text" [(ngModel)]="summary.openingAmount"
-                                          value="{{summary.openingAmount | number : '1.2-2'}}"
+                                        <td><input type="text" style="text-align: right;" [(ngModel)]="summary.openingAmount"
+                                            value="{{summary.openingAmount | number : '1.2-2'}}"
                                             class="form-control align-right" disabled /> </td>
                                         <td>
-                                          <input type="text" (change)="onChangeValueCalculation(rowIndex)"
+                                          <input type="text" style="text-align: right;" (change)="onChangeValueCalculation(rowIndex)"
                                             [(ngModel)]="summary.changeValue" class="form-control"
-                                            value="{{summary.changeValue | number : '1.2-2'}}"
                                             [disabled]="((changeValueFlag) || (summary.isPEIRecord !='Yes'))" />
                                         </td>
                                         <td>
@@ -742,9 +688,8 @@
                                             [disabled]="((changePercentageFlag) || (summary.isPEIRecord !='Yes'))" />
                                         </td>
                                         <td>
-                                          <input type="text" (change)="onChangeClosingAmountCalculation(rowIndex)"
+                                          <input type="text" style="text-align: right;" (change)="onChangeClosingAmountCalculation(rowIndex)"
                                             [(ngModel)]="summary.closingAmount" class="form-control"
-                                            value="{{summary.closingAmount | number : '1.2-2'}}"
                                             [disabled]="((closingAmountFlag) || (summary.isPEIRecord !='Yes'))" />
                                         </td>
                                         <td class="bg-color-light_gray text-center"> <label
@@ -777,24 +722,35 @@
                                 <div class="row mt-15">
                                   <div class="col-12">
                                     <div class="float-right mb-15">
-                                      <button type="submit" tooltip="Save & Next Employee"
+                                      <button type="submit" *ngIf="payrollListEmpData" tooltip="Save & Next Employee"
+                                      [disabled]="payrollListEmpData.length == 1 || (payrollListEmpData.length-1) == index"
+                                      [ngClass]="{'disabled-btn-bg-green' : payrollListEmpData.length == 1 || (payrollListEmpData.length-1) == index}"
                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
                                         <b> <i class="fa fa-floppy-o"></i></b> Save & Next Employee
                                       </button>
                                       <button type="button" tooltip="Save"
+                                      [disabled]="saveDisabledFlag"
+                                      [ngClass]="{'disabled-btn-bg-green' : saveDisabledFlag}"
                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"
                                         (click)="submit()">
                                         <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save
                                       </button>
-                                      <button type="button" tooltip="Next"
+                                      <button type="button" tooltip="Previous" *ngIf="payrollListEmpData"
+                                      [disabled]="payrollListEmpData.length == 1 || index == 0"
+                                      [ngClass]="{'disabled-btn-bg-green' : payrollListEmpData.length == 1 || index == 0}"
+                                      (click)="previousEmployee()"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                         <b><i class="fa fa-angle-double-left" aria-hidden="true"></i></b>Previous
                                       </button>
-                                      <button type="button" tooltip="Next"
+                                      <button type="button" tooltip="Next" *ngIf="payrollListEmpData"
+                                      [disabled]="payrollListEmpData.length == 1 || (payrollListEmpData.length-1) == index"
+                                      [ngClass]="{'disabled-btn-bg-green' : payrollListEmpData.length == 1 || (payrollListEmpData.length-1) == index}"
+                                      (click)="nextEmployee()"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                         <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>Next
                                       </button>
-                                      <button type="button" tooltip="Next"
+                                      <button type="button" tooltip="Reset"
+                                      (click)="resetData()"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset
                                       </button>
@@ -825,15 +781,15 @@
                                             <div class="row mt-20">
                                               <div class="col-sm-3">
                                                 <label class="form-label"> Head</label>
-                                                <select name="payrollarea" class="form-control input-icon ">
+                                                <select name="payrollarea" class="form-control input-icon " [(ngModel)]="headMasterId">
 
 
                                                   <option> Select
                                                     <span class="input-icon-addon"><i class="fa fa-search"></i></span>
                                                   </option>
                                                   <option *ngFor="let head of headData" value="{{head.headMasterId}}"
-                                                      [selected]="headMasterId == head.headMasterId">
-                                                      {{head.displayName}}
+                                                    [selected]="headMasterId == head.headMasterId">
+                                                    {{head.displayName}}
                                                   </option>
                                                 </select>
 
@@ -887,7 +843,7 @@
                                                   </div>
                                                   <input data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    [value]="slectedFromDate"
+                                                    [value]="slectedFromDate | date: 'dd-MMM-yyyy'"
                                                     (bsValueChange)="getFastEntryFromDate($event)" placeholder="Date"
                                                     bsDatepicker>
                                                 </div>
@@ -903,8 +859,9 @@
                                                     </span>
                                                   </div>
                                                   <input data-provide="datepicker" data-date-autoclose="true"
-                                                  [value]="slectedToDate"
-                                                    class="form-control" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    [value]="slectedToDate" class="form-control"
+                                                    [minDate]="slectedFromDate"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     (bsValueChange)="getFastEntryToDate($event)" placeholder="Date"
                                                     bsDatepicker>
                                                 </div>
@@ -1000,16 +957,6 @@
                                                       </div>
                                                     </div>
                                                   </th>
-                                                  <!-- <th rowspan="2" class=" text-center">
-                                                                                <div class="p-d-flex p-jc-between p-ai-center">Updation Type
-                                                                                  <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="ToDate" pSortableColumn="ToDate">
-                                                                                    </p-sortIcon>
-                                                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
-                                                                                    </p-columnFilter>
-                                                                                  </div>
-                                                                                </div>
-                                                                              </th> -->
                                                   <th rowspan="2" class=" text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center"
                                                       style="margin-left:25px;">Change Amount
@@ -1037,7 +984,7 @@
                                                     </div>
                                                   </th>
 
-                                                  <th rowspan="2" class="wd-3 text-center"> Action </th>
+                                                  <!-- <th rowspan="2" class="wd-3 text-center"> Action </th> -->
 
                                                 </tr>
 
@@ -1063,8 +1010,9 @@
                                                               <i class="fa fa-calendar"></i>
                                                             </span>
                                                           </div>
-                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                                          [value]="data.fromDate"
+                                                          <input data-provide="datepicker" data-date-autoclose="true"
+                                                            class="form-control"
+                                                            [value]="data.fromDate | date:'dd-MMM-yyyy'"
                                                             placeholder="Date" bsDatepicker>
                                                         </div>
                                                       </div>
@@ -1079,15 +1027,16 @@
                                                               <i class="fa fa-calendar"></i>
                                                             </span>
                                                           </div>
-                                                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                                          [value]="data.toDate"
+                                                          <input data-provide="datepicker" data-date-autoclose="true"
+                                                            class="form-control"
+                                                            [value]="data.toDate | date: 'dd-MMM-yyyy'"
                                                             placeholder="Date" bsDatepicker>
                                                         </div>
                                                       </div>
                                                     </div>
                                                   </td>
-                      
-                                                  
+
+
                                                   <td>
                                                     {{data.updationField}}
                                                   </td>
@@ -1097,11 +1046,11 @@
                                                   <!-- <td>
                                                     {{data.remark}}
                                                   </td> -->
-                                                  <td>
-                                                   <!-- <i class="fa fa-times"></i> -->
-                                                  </td>
-                      
-                                                 
+                                                  <!-- <td> -->
+                                                  <!-- <i class="fa fa-times"></i> -->
+                                                  <!-- </td> -->
+
+
                                                 </tr>
 
                                               </ng-template>
@@ -1974,19 +1923,19 @@
                     <th class="wd-15 font700">To Date</th>
                     <th class="wd-15 font700">Opening Value</th>
                     <th class="wd-15 font700">Change Value</th>
-                    <th class="wd-10 font700">Change Percentage</th>
+                    <th class="wd-10 font700">Change Percentage (%)</th>
                     <th class="wd-15 font700">Closing closingAmount</th>
                     <th class="wd-15 font700">Unit of Measure</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of historyArrayData;">
-                    <td>{{data.fromdate}}</td>
-                    <td>{{data.todate}}</td>
-                    <td>{{data.openingAmount | number : '1.2-2'}}</td>
-                    <td>{{data.changeValue | number : '1.2-2'}}</td>
-                    <td>{{data.changePercenatge | number : '1.2-2'}}</td>
-                    <td>{{data.openingAmount | number : '1.2-2'}}</td>
+                    <td>{{data.fromdate | date: 'dd-MMM-yy'}}</td>
+                    <td>{{data.todate | date: 'dd-MMM-yy'}}</td>
+                    <td style="text-align: right;">{{data.openingAmount | number : '1.2-2'}}</td>
+                    <td style="text-align: right;">{{data.changeValue | number : '1.2-2'}}</td>
+                    <td>{{data.changePercenatge.toFixed(2)}}</td>
+                    <td style="text-align: right;">{{data.openingAmount | number : '1.2-2'}}</td>
                     <td>{{data.uom}}</td>
                   </tr>
                 </tbody>

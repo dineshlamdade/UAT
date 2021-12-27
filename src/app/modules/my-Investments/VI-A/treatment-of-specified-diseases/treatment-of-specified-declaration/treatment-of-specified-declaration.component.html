@@ -75,12 +75,12 @@
                   </label>
                 </th>
                 <th rowspan="2" class="wd-15 font700">Particulars</th>
-                <th rowspan="2" class="wd-10 font700">Declared</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-20 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-10 font700">Declared Amount</th>
+                <th rowspan="2" class="wd-9 font700">Actual Amount</th>
+                <th colspan="2" class="wd-20 font700">Approval Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-5">PS.ID.</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-5">PS. ID.</th>
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -101,7 +101,7 @@
                   </label>
                 </td> -->
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'"
                     tooltip="Select bankName for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
@@ -110,7 +110,7 @@
                       " class="custom-control-input" value="option{{ summary.specifiedDiseaseTransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                  <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId || summary.particulars === 'Reimbursement from the Employer'"
                       (change)="
@@ -156,11 +156,13 @@
                   </span>
                 </td> -->
                 <td>
-                  <div class="d-flex">
-                    <input
+                  <div class="d-flex"
+                  class="align-center">
+                    <!-- <input
                     style="width:100px;"
                       type="text"
                       class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                       
                       (change)="
                       onChangeDocumentRemark(
@@ -169,7 +171,7 @@
                         )
                       "
                     
-                    />
+                    /> -->
                     <div
                       _ngcontent-ykc-c443=""
                       class="
@@ -184,7 +186,8 @@
                             docRemarkModal(
                               template8,
                               documentDetailIndex,
-                              summary?.proofSubmissionId, item?.policyNo
+                              summary?.specifiedDiseaseTransactionId,
+                              summary, i
                             )
                           "
                           class="
@@ -200,7 +203,7 @@
                         _ngcontent-ykc-c443=""
                         class="Label_badge"
                         >{{
-                          documentDetail?.documentRemarkDetailList?.length
+                          summary?.bubbleRemarkCount
                         }}</span
                       >
                     </div>
@@ -378,7 +381,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
+                  <!-- <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'"> -->
+                    <tr >
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
                       <span tooltip="Proof for Expenses Incurred (Medical / hospital / Consultation bills)"></span> Proof for Expenses Incurred (Medical / hospital / Consultation bills)
@@ -413,7 +417,8 @@
                       <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
                     </td>
                   </tr>
-                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
+                  <!-- <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'"> -->
+                    <tr>
                     <th scope="row"><span tooltip="2">2</span></th>
                     <td>
                       <span tooltip=" Proof of Amount paid by Insurance Company"></span> Proof of Amount paid by Insurance Company
@@ -1983,10 +1988,10 @@
   </div>
 </ng-template>
 
- <!-- Remark Modal started -->
- <ng-template #template8>
+<!-- Remark Modal started -->
+<ng-template #template8>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+    <h5 class="modal-title" id="jasdjgh">Remark</h5>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -2006,8 +2011,7 @@
             >{{ documentRemark.role }}:
             <b class="text-gray">{{
               documentRemark.remarkBy
-            }}</b></span
-          >
+            }}</b></span >
         </div>
         <div class="col-md-6">
           <div class="float-right">
@@ -2022,20 +2026,48 @@
         </div>
       </div>
       <div class="row">
-        <textarea class="form-control remarktext" disabled>
+        <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
         {{ documentRemark.remark }}
         </textarea>
       </div>
     </div>
+    <div class="row mt-25">
+      <div class="col-md-12">
+        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <textarea type="text" [(ngModel)]="enteredRemark"
+        (change)= "
+        onChangeDocumentRemark(
+          this.summaryDetails, this.indexCount,
+            $event
+          )
+        " class="form-control" placeholder="Remark"></textarea>
+      </div>
+    </div>
   </div>
 
-  <div class="modal-footer">
+  <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
     <button
       type="button"
       class="btn btn-secondary"
       (click)="modalRef.hide()"
     >
       Ok
+    </button>
+  </div>
+  <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+    Reset
+  </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+    >
+      Save
     </button>
   </div>
 </ng-template>

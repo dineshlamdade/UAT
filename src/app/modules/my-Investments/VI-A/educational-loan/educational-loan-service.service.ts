@@ -88,6 +88,24 @@ getEducationalLoanSummary() {
     }));
   }
 
+
+
+  public getEducationalLoanMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'educationalLoanMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
+  public getEducationalLoanTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   // getTransactionByProofSubmissionId(proofSubmissionId: String) {
   //   return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/psid/' + proofSubmissionId)
   //   .pipe(map((res: any) => {
