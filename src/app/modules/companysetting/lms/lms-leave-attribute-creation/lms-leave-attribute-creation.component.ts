@@ -6,6 +6,7 @@ import { LeaveHeadCreationService } from '../leave-head-creation.service';
 import {SaveLeaveAttributeCreation} from '../../model/business-cycle-model';
 import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
+import { ExcelserviceService } from './../../../../core/services/excelservice.service';
 
 @Component({
   selector: 'app-lms-leave-attribute-creation',
@@ -19,7 +20,7 @@ export class LmsLeaveAttributeCreationComponent implements OnInit {
   valueData: Array<any> =[];
 
   constructor(private formBuilder:FormBuilder,private modalService : BsModalService,private leaveAttributeService:LeaveHeadCreationService,
-    private alertService : AlertServiceService , private addLeaveAttributeCreationService : LeaveHeadCreationService) { }
+    private alertService : AlertServiceService , private addLeaveAttributeCreationService : LeaveHeadCreationService,private excelservice:ExcelserviceService) { }
 
   LeaveAttributeCreationForm : FormGroup;
   hidevalue :boolean = false;
@@ -35,6 +36,8 @@ export class LmsLeaveAttributeCreationComponent implements OnInit {
   AttributeCreationList : Array<any> = [];
   disabled: boolean = true;
   lmsAttributeOptionIdForDeleteArray : Array<any> =[];
+  header: any[];
+  excelData: any[];
     
   ngOnInit(): void {
 
@@ -98,7 +101,7 @@ console.log(this.pfArray);
 
   addRowEdit(i? :number,lmsAttId? :number,lmsAttOptionId? :number,optionValue?:any){
     this.pfArray.insert(this.pfArray.length,this.formBuilder.group({
-    optionValue :optionValue,
+    optionValue :[optionValue,Validators.required],
     lmsAttributeMasterId:lmsAttId,
     lmsAttributeOptionId:lmsAttOptionId
   
@@ -154,7 +157,7 @@ this.ResponseList = res.data.results[0];
 this.Data = res.data.results[0];
 
 data.forEach( element => {
-
+debugger
   let value: string = '';
   let lmsAttributeOptionId ; 
   //let lmsAttributeOptionId:number=element.lmsAttributeOptionResponseDTOList.lmsAttributeOptionId;
@@ -288,6 +291,7 @@ editLeaveAttributeCreation( lmsAttributeMasterId : any){
     this.viewUpdateButton = true;
     this.hidevalue = true;
     this.lmsAttributeMasterId = lmsAttributeMasterId;
+    debugger
     let index = this.LeaveAttributeCreationSummaryList.findIndex( o => o.lmsAttributeMasterId == lmsAttributeMasterId );
 
 
@@ -368,6 +372,30 @@ customSort(event: SortEvent) {
 
       return (event.order * result);
   });
+}
+
+
+//excel
+exportAsXLSX(): void {
+  this.excelData = [];
+  debugger
+  this.header = [];
+  this.header =["Code","Discription","Nature","List Value"];
+  this.excelData=[];
+  if(this.LeaveAttributeCreationSummaryList.length>0){
+  this.LeaveAttributeCreationSummaryList.forEach(element => {
+    let obj = {
+      "Code":element.code,
+      "Discription":element.description,
+      "Nature": element.lmsAttributeNature,
+      "List Value":element.optionValue,
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+} 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Leave Attribute Creation ','Leave Attribute Creation',this.header);
+      
 }
 
 }

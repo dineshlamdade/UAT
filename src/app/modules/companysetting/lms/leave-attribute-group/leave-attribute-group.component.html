@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-body">
             
-              <form [formGroup]="LeaveAttributeGroupFrom">
+              <form [formGroup]="LeaveAttributeGroupFrom" (ngSubmit)="addLeaveAttributeSelection()">
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Attribute Group Name</label>
@@ -23,13 +23,13 @@
                   </div>
 
 
-                  <div class="col-sm-6 col-md-4">
+                  <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Copy From</label>
-                    <select name="lmsAttributeNature" id="lmsAttributeNature"
+                    <select (change)="onStatusChange($event);" name="lmsAttributeNature" id="lmsAttributeNature"
                     class="form-control" formControlName="lmsAttributeNature">
                       <option selected value=''>Select </option>
-                      <option >
-                        
+                      <option *ngFor="let by of LeaveAttributeSelectionList" [value]="by.name">
+                        {{by.name}}
                       </option>
                     </select>
                   </div>
@@ -53,7 +53,7 @@
                           <div class="float-right">
                             <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
                               Attributes: &nbsp;
-                              <span class="font-14 text-dark-green">(10)</span>
+                              <span class="font-14 text-dark-green">({{selectedUser.length}})</span>
                             </span>
                           </div>
                         </div>
@@ -63,6 +63,7 @@
                       <p-table [value]="SourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         [pageLinks]="5" (onPage)="paginate($event)"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{SourceProducts.length}}
                        [rowsPerPageOptions]="[10,25,50,100,200]">
 
 
@@ -129,7 +130,7 @@
                   </div>
 
 
-                  <div class="col-1" >
+                  <div class="col-1" *ngIf="viewLeftRightButton" >
                     <div class="row mt-150">
                       <div class="col-md-12 mt-10 text-center">
                         <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
@@ -147,28 +148,53 @@
                   <div class="col-5">
                     <div class="cycle-table mt-4">
 
+                      <!-- <ng-template pTemplate="caption" *ngIf="isExcelVisible"> -->
+                        <div class="row" *ngIf="isExcelVisible">
+                            <div class="col-md-12">
+                                <div class="float-right">
+                                    <div class="d-flex">                                 
+                                        <span class="p-input-icon-left p-ml-auto">
+                                            <i class="pi pi-search"
+                                                style="top: 9px !important;right:43px;"></i>
+                                            <input pInputText type="text"
+                                                (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search " />
+
+                                        </span>
+                                        &nbsp;
+                                         <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                         tooltip="Export To Excel" (click)="selectexportAsXLSX()"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    <!-- </ng-template> -->
                       <div class="row">
                         <div class="col-md-6">
                           <span class="form-label font-14 text-purple font-bold">Total Attributes:
-                            <span class="font-14 text-dark-green">(1)</span>
+                            <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
                           </span>
                         </div>
                         <div class="col-md-6">
                           <div class="float-right">
                             <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
                               Attributes: &nbsp;
-                              <span class="font-14 text-dark-green">(1)</span>
+                              <span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
                             </span>
                           </div>
                         </div>
                       </div>
 
                      
-                      <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      <p-table #dt2 [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         [pageLinks]="5" (onPage)="paginate($event)"
+                        (sortFunction)="selectcustomSort($event)" [customSort]="true"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                       [rowsPerPageOptions]="[10,25,50,100,200]">
+                        totalRecords={{targetProducts.length}}
+                        [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['code','description','lmsAttributeNature']">
 
+                 
                         <ng-template pTemplate="header">
                           <tr>
 
@@ -196,8 +222,8 @@
                               <div class="p-d-flex p-jc-between p-ai-center">
                                 Nature
                                 <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="attributeNature" pSortableColumn="attributeNature"></p-sortIcon>
-                                  <p-columnFilter field="attributeNature" display="menu" class="p-ml-auto">
+                                  <p-sortIcon field="lmsAttributeNature" pSortableColumn="lmsAttributeNature"></p-sortIcon>
+                                  <p-columnFilter field="lmsAttributeNature" display="menu" class="p-ml-auto">
                                   </p-columnFilter>
 
                                 </div>
@@ -215,7 +241,7 @@
                             <td>{{user1.code}}</td>
                             <td>{{user1.description}}
                             </td>
-                            <td>{{user1.attributeNature}}
+                            <td>{{user1.lmsAttributeNature}}
                             </td>
 
                           </tr>
@@ -256,7 +282,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-primary"
-                      (click)="DeleteAttributeSelection();deleteModalRef.hide()">Yes</button>
+                      (click)="DeleteAttributeGroupSelection();deleteModalRef.hide()">Yes</button>
                     <button type="button" class="btn btn-secondary bg-btn-red"
                       (click)="deleteModalRef.hide()">No</button>
                   </div>
@@ -268,26 +294,28 @@
                     <div class="float-right mb-15">
 
 
-                      <button type="submit" [disabled]="LeaveAttributeGroupFrom.invalid"
+                      <button type="submit" *ngIf="!viewCancelButton"  [disabled]="LeaveAttributeGroupFrom.invalid"
                       [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid} "
                         class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left mr-2" tooltip="Save">
                         <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
 
 
-                      <button type="button" 
+                      <button type="button" *ngIf="viewUpdateButton" (click)="UpdateAttributeSelection()"  [disabled]="LeaveAttributeGroupFrom.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid} "
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        [ngClass]="{ 'disabled-btn-bg-green':updateDisable}" [disabled]="updateDisable"
                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>
                         Update</button>
 
 
 
-                      <button type="button" 
+                      <button type="button" *ngIf="viewCancelButton" (click)="CancelAttributeCreation()"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                         tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
                         Cancel</button>
 
-                      <button type="button" 
+                      <button type="button" *ngIf="!viewCancelButton" (click)="resetAttributeSelection()"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
                         tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
                         Reset</button>
@@ -305,10 +333,37 @@
                     <!-- <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       [rowsPerPageOptions]="[10,25,50,100,200]"> -->
-                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <p-table #dt1 [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       [pageLinks]="5" (onPage)="paginate($event)"
+                      (sortFunction)="customSort($event)" [customSort]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      totalRecords={{summaryList.length}}
+                      [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['name','description','options']">
+
+                      <ng-template pTemplate="caption">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="float-right">
+                                    <div class="d-flex">                                 
+                                        <span class="p-input-icon-left p-ml-auto">
+                                            <i class="pi pi-search"
+                                                style="top: 9px !important;right:43px;"></i>
+                                            <input pInputText type="text"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search " />
+
+                                        </span>
+                                        &nbsp;
+                                         <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                         tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-template>
+
+
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-8 text-center">
@@ -336,7 +391,7 @@
                           </th>
                           <th rowspan="1" class="wd-8">
                             <div class="p-d-flex p-jc-between p-ai-center">
-                              Count
+                              Attribute Count
                               <div class="Sort_Filter_Position">
                                 <p-sortIcon field="options" pSortableColumn="options"></p-sortIcon>
                                 <p-columnFilter field="options" display="menu" class="p-ml-auto"></p-columnFilter>
@@ -370,14 +425,14 @@
                           <td class="wd-10 align-left">
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
-                              (click)="GetAttributeSelectionById(user1.id,user1.used)">
+                              (click)="GetAttributeSelectionById(user1.lmsAttributeGroupDefinitionId,user1.isUsed)">
                               <i class="fa fa-edit"></i></button>
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="View"
-                              (click)="GetAttributeSelectionByIdDisable(user1.id)">
+                              (click)="GetAttributeSelectionByIdDisable(user1.lmsAttributeGroupDefinitionId)">
                               <i class="fa fa-eye"></i></button>
 
-                            <button type="button" *ngIf="user1.used==false" (click)="UploadModal1(template12,user1.id);"
+                            <button type="button" *ngIf="user1.isUsed==false" (click)="UploadModal1(template12,user1.lmsAttributeGroupDefinitionId);"
                               class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
                                 class="fa fa-trash-o"></i></button>
                           </td>

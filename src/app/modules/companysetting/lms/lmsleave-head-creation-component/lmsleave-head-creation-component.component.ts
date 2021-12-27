@@ -45,6 +45,7 @@ export class LMSLeaveHeadCreationComponentComponent implements OnInit {
       {label:'Bereavement Leave',value:'Bereavement Leave'},
       {label:'Compensatory Off',value:'Compensatory Off'},
       {label:'Leave Without Pay',value:'Leave Without Pay'},
+      {label:'Other',value:'Other'},
     ];
 
     this.LeaveHeadCreationForm = this.formBuilder.group({

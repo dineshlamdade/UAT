@@ -145,6 +145,16 @@ export class SaveLeaveAttributeCreation{
   lmsAttributeOptionId : any[];
 }
 
+export class SaveLeaveAttributeSelection {
+  lmsAttributeGroupDefinitionId: number;
+  name: string;
+  description: string;
+  lmsAttributeList: any[];
+  isUsed : boolean;
+  isActive: boolean;
+  removedAttributeGroupIdList: any[];
+  lmsAttributeMasterId : number;
+}
 
 // export class UpdateflagCycleCreation {
 //   mappingGroupRequest: SaveAttributeAssignment[];

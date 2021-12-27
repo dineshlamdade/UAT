@@ -169,16 +169,18 @@
                          <div class="row">
                              <div class="col-md-12">
                                  <div class="float-right">
-                                     <div class="d-flex">
-                                        
+                                     <div class="d-flex">                                 
                                          <span class="p-input-icon-left p-ml-auto">
                                              <i class="pi pi-search"
-                                                 style="top: 9px !important;"></i>
+                                                 style="top: 9px !important;right:43px;"></i>
                                              <input pInputText type="text"
                                                  (input)="dt1.filterGlobal($event.target.value, 'contains')"
                                                  placeholder="Search " />
 
                                          </span>
+                                         &nbsp;
+                                          <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                          tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
                                      </div>
                                  </div>
 
@@ -225,7 +227,7 @@
                           </th>
                           <th rowspan="1" class="wd-20 text-center">
                             <div class="p-d-flex p-jc-between p-ai-center">
-                              Value
+                             List Value
                               <div class="Sort_Filter_Position">
                                 <p-sortIcon field="optionValue" pSortableColumn="optionValue">
                                 </p-sortIcon>
