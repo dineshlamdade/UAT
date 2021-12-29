@@ -295,7 +295,6 @@ export class HousingloandeclarationComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
-    debugger
   }
 
   public updatePreviousEmpId(event: any, i: number, j: number) {
@@ -1471,6 +1470,7 @@ export class HousingloandeclarationComponent implements OnInit {
       proofSubmissionId
     ).subscribe((res) => {
       console.log('edit Data:: ', res);
+      debugger
       this.urlArray =
         res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList;
       this.editTransactionUpload = res.data.results[0].housePropertyTransactionDetailList;
@@ -1486,7 +1486,6 @@ export class HousingloandeclarationComponent implements OnInit {
       this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
       // console.log(this.urlArray);
-      debugger
       this.urlArray.forEach((element) => {
         // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
         element.blobURI =  element.blobURI;
@@ -1816,7 +1815,6 @@ export class HousingloandeclarationComponent implements OnInit {
   }
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
-    debugger
     console.log('documentDetailList::', documentDetailList);
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
@@ -1847,7 +1845,6 @@ export class HousingloandeclarationComponent implements OnInit {
     summary, count
   ) {
     
-    debugger
     this.enteredRemark = null;
     this.summaryDetails = summary;
     this.indexCount = count;
@@ -1887,7 +1884,6 @@ export class HousingloandeclarationComponent implements OnInit {
     console.log('event.target.value::', event.target.value);
     this.editRemarkData =  event.target.value;
     
-    debugger
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
     // console.log('index::', index);
@@ -1900,7 +1896,6 @@ export class HousingloandeclarationComponent implements OnInit {
   }
   
   onSaveRemarkDetails(transIndex){
-    debugger 
     const data ={
       "transactionId": this.summaryDetails.housePropertyTransactionId,
       "masterId":0,
@@ -1937,7 +1932,6 @@ onResetRemarkDetails(){
 }
 public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
   console.log('---in doc viewer--');
-  debugger
   this.urlIndex = index;
   // this.urlIndex = 0;
   this.viewDocumentName = data.documentName;
