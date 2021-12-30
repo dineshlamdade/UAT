@@ -188,6 +188,12 @@ export class HousingloandeclarationComponent implements OnInit {
   rentReceiptBankStatement: boolean = false;
   viewDocumentName: any;
   viewDocumentType: any;
+  bankDocumentPassword =[];
+  bankRemarkList =[];
+  rentDocumentPassword =[];
+  rentRemarkList =[];
+  municipleDocumentPassword =[];
+  municipleRemarkList =[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1470,7 +1476,6 @@ export class HousingloandeclarationComponent implements OnInit {
       proofSubmissionId
     ).subscribe((res) => {
       console.log('edit Data:: ', res);
-      debugger
       this.urlArray =
         res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList;
       this.editTransactionUpload = res.data.results[0].housePropertyTransactionDetailList;

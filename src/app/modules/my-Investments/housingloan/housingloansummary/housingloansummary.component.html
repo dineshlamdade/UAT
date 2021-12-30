@@ -9,7 +9,7 @@
               <th rowspan="2" class="wd-15 font700">Usage Type</th>
               <th rowspan="2" class="wd-10 font700">From Date</th>
               <th rowspan="2" class="wd-10 font700">To Date</th>
-              <th colspan="2" class="wd-30 font700">Income/Loss from House Property </th>
+              <th colspan="2" class="wd-30 font700">Income / Loss from House Property </th>
               <th rowspan="2" class="wd-10 font700">Action</th>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
               </td>
               <td class="padding-0">
                 <div class="pd-5" *ngFor="let usageType of summary.housePropertyUsageTypeList"
-                  tooltip="{{ usageType.fromDate }}">
+                  tooltip="{{ usageType.fromDate | date :'dd-MMM-yyyy' }}">
                   <div colspan="1">
                     <!-- <div *ngFor="let summary of usageType.mediclaimBenefeciaryDetailList; let i = index"> -->
                     {{usageType.fromDate | date :'dd-MMM-yyyy'}}
@@ -41,7 +41,7 @@
               </td>
               <td class="padding-0">
                 <div class="pd-5" *ngFor="let usageType of summary.housePropertyUsageTypeList"
-                  tooltip="{{ usageType.toDate }}">
+                  tooltip="{{ usageType.toDate | date :'dd-MMM-yyyy'}}">
                   <div colspan="1">
                     {{ usageType.toDate | date :'dd-MMM-yyyy' }}
                   </div>
@@ -111,7 +111,7 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="4" class="align-right font700">Grand Total &nbsp; <span class="Letterbadge">C</span>&nbsp;=
-                &nbsp;<span class="Letterbadge">A</span> + &nbsp; <span class="Letterbadge">B2</span></td>
+                &nbsp;<span class="Letterbadge">A</span> Minus &nbsp; <span class="Letterbadge">B2</span></td>
               <td class="align-right"><span class="padding-right-12"
                   tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
                   {{ grandTotalDeclaredAmount | number: "1.2-2" }}</span> </td>
@@ -287,14 +287,14 @@
           <label class="text-purple  font600 font-16">Criteria for Benefits U/s 80-EEA</label>
         </div>
         <div class="col-md-12 mt-3">
-          <label class="text-unnderline font700 align-left">Additional benefit of Rs. 150000 is available subject to
+          <label class="text-unnderline font700 align-left">Additional benefit of Rs. 150,000 is available subject to
             below conditions</label>
         </div>
         <div class="col-md-12 mt-2">
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Employee is
-            First Time Home buyer and does not have any house property on his/her name</p>
+            First Time Home buyer and does not have any house property in his/her name</p>
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Loan is
-            sanctioned during Financial Year 2019-20 or 2020-2021</p>
+            Sanctioned during Financial Year 2019-20, 2020-21 or 2021-22</p>
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;House Property
             Value
             <= Rs. 45 Lakh </p>

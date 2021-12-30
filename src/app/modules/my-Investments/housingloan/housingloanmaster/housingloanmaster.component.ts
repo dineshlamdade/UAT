@@ -586,6 +586,16 @@ export class HousingloanmasterComponent implements OnInit {
 
 
     }
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
   }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
     console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
@@ -721,10 +731,19 @@ export class HousingloanmasterComponent implements OnInit {
       this.isLoanTransfer = false;
     }
     this.editMaxloanDate = new Date(2100,12,31);
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
   }
 
   public addLoanDetails(formDirective: FormGroupDirective) {
-    debugger
     this.loansubmitted = true;
     //this.isSaveLoan = true;
     this.isUpdateLoan = false;
@@ -782,7 +801,17 @@ export class HousingloanmasterComponent implements OnInit {
     }
     this.editMaxloanDate =  new Date(2100,12,31);
     console.log("max fromdate :: ", this.editMaxloanDate);
-
+    //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
   }
 
   public trackloanDetail(index: number, loanDetail: any) {
@@ -1027,7 +1056,6 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-    debugger
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
@@ -1136,7 +1164,6 @@ export class HousingloanmasterComponent implements OnInit {
       this.alertService.sweetalertWarning("Please Include yourself as owner.");
       return;
     }
-    debugger
     if(
       (this.propertyIndex.length === 0 || 
         this.visibilityFlagStamp? this.stampDutyRegistration.length === 0 : false ) &&
@@ -1224,7 +1251,8 @@ export class HousingloanmasterComponent implements OnInit {
       this.housingLoanForm.reset();
       this.HPOwnerDetailForm.reset();
       this.HPUsageDetailForm.reset();
-      this.housePropertyLoanDetailList.reset()
+      this.housePropertyLoanDetailList.reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
       this.showUpdateButton = false;
       this.isLoanAddNew = true;
       this.loanDetailGridData = [];
@@ -1501,6 +1529,16 @@ export class HousingloanmasterComponent implements OnInit {
         this.isUpdateLoan = false;
       }
       // }
+      if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+      }
+      else {
+        //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+      }
     });
   }
 
@@ -1687,6 +1725,7 @@ export class HousingloanmasterComponent implements OnInit {
     // this.houseLoanOwnerTypeList = [];
     this.houseLoanUsageTypeList = [];
     this.housingLoanForm.reset();
+    this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
     this.housePropertyLoanDetailList.reset();
     this.loanDetailGridData = [];
     this.propertyIndex = [];
@@ -1982,7 +2021,6 @@ export class HousingloanmasterComponent implements OnInit {
   //   }
   //  }
   public loanTransfer(formDirective: FormGroupDirective) {
-    debugger
     this.loansubmitted = true;
     this.isTransferValid = false;
     if(this.housePropertyLoanDetailList.invalid){
