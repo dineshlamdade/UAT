@@ -1,0 +1,1074 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3 col-md-2" style="margin-left: 18px;">
+<!-- ................................. trasaction type selection .......................................................                    -->
+                  <label class="form-label">Transaction Type</label>
+                  <select  class="form-control"
+                  (change)="selectTrasactionType($event.target.value)" >
+                    <!-- <option value="">Select</option> -->
+                    <option value="All" selected>All</option>
+                    <option value="Loan Application"  *ngIf="userName != 'AjayS'" >Loan Application</option>
+                    <option value="Disbursement">Disbursement</option>
+                    <option value="Adhoc">Adhoc</option>
+                    <option value="Reschedule" *ngIf="userName != 'AjayS'">Reschedule </option>
+                    <option value="Settlement" >Settlement </option>
+                  </select>
+                </div>
+            </div>
+<!-- ............................status count UI ...................................................  -->
+              <div class="d-flex justify-content-spacearound mt-4">
+                <div class="wd-150">
+                  <div class="card text-center btn-bg-green">
+                    <a (click)="submittedClick()">
+                      <div class="card-body text-light detailedcard">
+                          <h3>{{submittedStatusLength}}</h3>
+                          <span> Submitted</span>
+                      </div>
+                    </a>
+                  </div>
+              </div>
+              <div class="wd-150" *ngIf="userName != 'AjayS'">
+                <div class="card text-center btn-bg-green">
+                  <a (click)="inProcessClick()">
+                    <div class="card-body text-light detailedcard">
+                        <h3>{{inprocessStatusLength}}</h3>
+                        <span> In-Process</span>
+                    </div>
+                  </a>
+                </div>
+            </div>
+              <div class="wd-150" *ngIf="userName != 'AjayS'">
+                <div class="card text-center btn-bg-green">
+                  <a (click)="sendBackClick()">
+                    <div class="card-body text-light detailedcard">
+                        <h3>{{sendBackStatusLength}}</h3>
+                        <span>Send Back</span>
+                    </div>
+                  </a>
+                </div>
+            </div>
+            <div class="wd-150">
+              <div class="card text-center btn-bg-green">
+                <a (click)="approvedClick()">
+                  <div class="card-body text-light detailedcard">
+                      <h3>{{approvedStatusLength}}</h3>
+                      <span>Approved</span>
+                  </div>
+                </a>
+              </div>
+          </div>
+          <div class="wd-150">
+            <div class="card text-center btn-bg-green">
+              <a (click)="closedClick()">
+                <div class="card-body text-light detailedcard">
+                    <h3>{{closedStatusLength}}</h3>
+                    <span>Closed</span>
+                </div>
+              </a>
+            </div>
+        </div>
+                <div class="wd-150" style="height: 10px;">
+                    <div class="card text-center btn-bg-green">
+                      <a (click)="totalClick()">
+                        <div class="card-body text-light detailedcard">
+                            <h3>{{totalStatus}}</h3>
+                            <span>Total</span>
+                        </div>
+                      </a>
+                    </div>
+                </div>
+
+
+
+              </div>
+
+              <form [formGroup]="LoanForm">
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                  <p-table *ngIf="allTableFlag" #dt1  [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="getTrasactionTypeDataforSummary"
+                    [rowsPerPageOptions]="[10,25,50,100,200]"
+                    [globalFilterFields]="['loanApplicationNumber','createDateTime','employeeMaster.employeeCode','employeeMaster.fullName','payrollArea',
+                    'loanMaster.loanCode','transactionType','approvedAmount','interest','status']">
+
+<!-- .................................. form buttons ......................................................                      -->
+<!-- ......................................for admin btns ...................................................  -->
+                <ng-template pTemplate="caption" *ngIf="userName == 'AjayS'">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- <div class="row"> -->
+
+                        <div class="float-right btn-Name" role="Name" aria-label="Basic example">
+                          <button type="button" tooltip="Start Transaction " (click)="startApproval()"
+                          [ngClass]="{ 'disabled-btn-bg-green':  selectedloandata == ''}"
+                          [disabled]=" selectedloandata == ''"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                          aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Start Transaction
+                        </button>
+                        <div class="float-right">
+                          <div class="d-flex">
+                            <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
+                            <span class="p-input-icon-left">
+                              <i class="pi pi-search" style="top:9px"></i>
+                              <input pInputText
+                                type="text"
+                                (input)="
+                                  dt1.filterGlobal($event.target.value, 'contains') "
+                                placeholder="Search"
+                              /> </span
+                            >&nbsp;
+                            <span style="margin-right: -18px" ><a  tooltip="Export to Excel"
+                                (click)="exportAsXLSX()"><i class=" fa fa-file-excel-o font-18 text-dark-green
+                                    mr-10  mt-10"
+                                  aria-hidden="true"
+                                ></i></a
+                            ></span>
+                          </div>
+                        </div>
+                        </div>
+                    </div>
+
+                  </div>
+                </ng-template>
+<!-- .....................................emp btns .....................................................  -->
+                    <ng-template pTemplate="caption" *ngIf="userName != 'AjayS'">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <!-- <div class="row"> -->
+
+                            <div class="float-right btn-Name" role="Name" aria-label="Basic example">
+                              <button type="button" tooltip="Start Approval " (click)="startApproval()"
+                              [ngClass]="{ 'disabled-btn-bg-green':  selectedloandata == ''}"
+                              [disabled]=" selectedloandata == ''"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Start Approval
+                            </button>
+                              <button type="button" tooltip="Approve"
+                              [ngClass]="{ 'disabled-btn-bg-green':  selectedloandata == ''}"
+                              [disabled]=" selectedloandata == ''"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true" (click)="postLoanApproval('Approved')" ><b><i class="fa fa-check-square-o"></i></b>Approve
+                            </button>
+                            <button type="button" tooltip="Send back"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true"  [ngClass]="{ 'disabled-btn-bg-green':  selectedloandata == '' }"
+                              [disabled]=" selectedloandata == ''"  (click)="postLoanApproval('sendBack')" ><b>
+                                <i class="fa fa-reply-all"></i></b>Send back
+                            </button>
+
+                            <button type="button" tooltip="Forward" (click)="forwardScreenPopUP(template6)"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true"  [ngClass]="{ 'disabled-btn-bg-green':  selectedloandata == ''}"
+                              [disabled]=" selectedloandata == ''"><b><i class="fa fa-share"></i></b>Forward
+                            </button>
+
+                                <div class="float-right">
+                                  <div class="d-flex">
+                                    <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
+                                    <span class="p-input-icon-left">
+                                      <i class="pi pi-search" style="top:9px"></i>
+                                      <input pInputText
+                                        type="text"
+                                        (input)="
+                                          dt1.filterGlobal($event.target.value, 'contains') "
+                                        placeholder="Search"
+                                      /> </span
+                                    >&nbsp;
+                                    <span style="margin-right: -18px" ><a  tooltip="Export to Excel"
+                                        (click)="exportAsXLSX()"><i class=" fa fa-file-excel-o font-18 text-dark-green
+                                            mr-10  mt-10"
+                                          aria-hidden="true"
+                                        ></i></a
+                                    ></span>
+                                  </div>
+                                </div>
+
+                            </div>
+                        </div>
+                      </div>
+                    </ng-template>
+<!-- ...................................loanApproval table ..................................................                    -->
+                     <ng-template pTemplate="header">
+                      <tr>
+                        <th style="width: 3rem">
+                          <div class="p-d-flex p-jc-between p-ai-center" >
+                            Select
+                          </div>
+                        </th>
+                        <th *ngIf="loanApplicationNumberFlag">
+                          <div class="p-d-flex p-jc-between p-ai-center">Appln. No.
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="loanApplicationNumber" pSortableColumn="loanApplicationNumber"></p-sortIcon>
+                              <p-columnFilter field="loanApplicationNumber" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th  *ngIf="loanAppNoFlag">
+                          <div class="p-d-flex p-jc-between p-ai-center">Appln. No.
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="loanApplicationNumber" pSortableColumn="loanApplicationNumber"></p-sortIcon>
+                              <p-columnFilter field="loanApplicationNumber" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th >
+                          <div class="p-d-flex p-jc-between p-ai-center">App. Date
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="createDateTime" pSortableColumn="createDateTime"></p-sortIcon>
+                              <p-columnFilter type="date" field="createDateTime" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th *ngIf="forOtherTrasaction1" style="width: 5%;">
+                          <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="employeeMaster.employeeCode" pSortableColumn="employeeMaster.employeeCode"></p-sortIcon>
+                              <p-columnFilter type="text" field="employeeMaster.employeeCode" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th *ngIf="forLoanApplication1" style="width: 5%;">
+                          <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="employeeMaster.employeeCode" pSortableColumn="employeeMaster.employeeCode"></p-sortIcon>
+                              <p-columnFilter type="text" field="employeeMaster.employeeCode" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th *ngIf="forOtherTrasaction">
+                          <div class="p-d-flex p-jc-between p-ai-center">Emp. Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="employeeMaster.fullName" pSortableColumn="employeeMaster.fullName"></p-sortIcon>
+                              <p-columnFilter type="text" field="employeeMaster.fullName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th  *ngIf="forLoanApplication">
+                          <div class="p-d-flex p-jc-between p-ai-center">Emp. Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="employeeMaster.fullName" pSortableColumn="employeeMaster.fullName"></p-sortIcon>
+                              <p-columnFilter type="text" field="employeeMaster.fullName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <!-- <th rowspan="2">
+                          <div class="p-d-flex p-ai-center justify-content-center">Payroll Area
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="payrollArea" pSortableColumn="payrollArea"></p-sortIcon>
+                              <p-columnFilter type="text" field="payrollArea" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th> -->
+                        <th *ngIf="loantypenormal">
+                          <div class="p-d-flex p-jc-between p-ai-center">Loan Type
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="loanMaster.loanCode" pSortableColumn="loanMaster.loanCode"></p-sortIcon>
+                              <p-columnFilter type="text" field="loanMaster.loanCode" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th  *ngIf="loantypeForSummary">
+                          <div class="p-d-flex p-jc-between p-ai-center">Loan Type
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="loanMaster.loanCode" pSortableColumn="loanMaster.loanCode"></p-sortIcon>
+                              <p-columnFilter type="text" field="loanMaster.loanCode" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th style="width: 5%;">
+                          <div class="p-d-flex p-jc-between p-ai-center">Transaction Type
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="transactionType" pSortableColumn="transactionType"></p-sortIcon>
+                              <p-columnFilter type="text" field="transactionType" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th >
+                          <!-- *ngIf="getTrasactionTypeDataforSummary.transactionType != 'Reschedule' && getTrasactionTypeDataforSummary.transactionType != 'Settlement'" -->
+                          <div class="p-d-flex p-jc-between p-ai-center">Amount
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="approvedAmount" pSortableColumn="approvedAmount"></p-sortIcon>
+                              <p-columnFilter type="text" field="approvedAmount" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th >
+                          <!-- *ngIf="getTrasactionTypeDataforSummary.transactionType == 'Reschedule' && getTrasactionTypeDataforSummary.transactionType == 'Settlement'" -->
+                          <div class="p-d-flex p-jc-between p-ai-center">Particulars
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="approvedAmount" pSortableColumn="approvedAmount"></p-sortIcon>
+                              <p-columnFilter type="text" field="approvedAmount" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+
+                        <th style="width: 5%;">
+                          <div class="p-d-flex p-ai-center justify-content-center">Docs
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                              <p-columnFilter type="text" field="proofsubmission" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th style="width: 5%;">
+                          <div class="p-d-flex p-ai-center justify-content-center"> Deviation
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                              <p-columnFilter type="text" field="proofsubmission" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th >
+                          <div class="p-d-flex p-jc-between p-ai-center">Remark
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="remark" pSortableColumn="remark"></p-sortIcon>
+                              <p-columnFilter type="text" field="remark" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th >
+                          <div class="p-d-flex justify-content-center p-ai-center">Status
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="status" pSortableColumn="status"></p-sortIcon>
+                              <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th >Action</th>
+                      </tr>
+
+                      <tr>
+                      </tr>
+
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-user let-rowIndex = "rowIndex">
+                      <tr class="p-selectable-row">
+                        <td class="text-center bg-color-light_gray">
+                          <label  class=" custom-control custom-checkbox " *ngIf="user.status == 'submitted' || user.status == 'Submitted'">
+
+                            <input type="checkbox" class="custom-control-input"  name="select"
+
+                            (click)="selectedLoan($event.target,user,rowIndex)" >
+                            <!-- [checked]="selectedAllFlag" -->
+                            <span class="custom-control-label"></span>
+                          </label>
+                        </td>
+                        <td>{{ user.loanApplicationNumber}}</td>
+                        <td>{{ user.createDateTime |date:'dd-MMM-yyyy'}}</td>
+                        <td>
+                          <a class="text-link text-center" tooltip="Employee Details"
+                              (click)="empcodepopup(template1,user);getEmpMasterDetails()">
+                              {{user.empCode}}
+                          </a>
+                        </td>
+                        <td>{{ user.fullName}}</td>
+                        <td><a class="text-link text-center" tooltip="Loan History" (click)="loanHistoryPopUp(template2);getLoanHistory()">
+                          {{ user.loneTypeForSummary}}</a></td>
+                        <td>{{ user.transactionType}}</td>
+                        <td class="text-right">{{ user.approvedAmount |number:'1.2-2'}}</td>
+                        <td class="text-right" *ngIf="user.balance">{{ user.balance |number:'1.2-2'}}</td>
+
+                        <td >
+                          <!-- *ngIf="user.transactionType == 'Reschedule' && user.transactionType == 'Settlement'" -->
+                          <span *ngIf="user.transactionType == 'Reschedule'  ">{{ user.noOfInstallmentToReschedule}}, {{user.propsedEMI}}</span>
+                           <span *ngIf="user.transactionType == 'Settlement'">{{ user.settelmentDate | date :"dd-MMM-yyyy"}}, {{ user.total}}</span>
+                        </td>
+
+                        <td>
+
+              <!-- <div class="d-flex"> -->
+                <!-- <div class="float-right"></div> -->
+
+               <div *ngIf="user.loanMaster">
+                <div class="custom_Label_badge mr-15" *ngIf="user.loanMaster.document.length > 0 ">
+                  <!-- || user.proofSubmissionId != null"  -->
+                  <b >
+                  <i class="fa fa-file font-16 text-blue cursor-pointer" aria-hidden="true" tooltip=" Document"
+                  (click)="document(template3,user);getDocumentForView()"></i>
+                </b> <span class="Label_badge" style="text-align: center;">{{user.loanMaster.document.length}}</span>
+                </div>
+               </div>
+
+            <!-- </div> -->
+             </td>
+             <td>
+              <div *ngIf="user.deviations">
+                <div class="custom_Label_badge " *ngIf="user.deviations.length> 0" >
+                <b >
+                <i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true" tooltip=" Deviation"
+                (click)="deviation(template,user)"></i>
+                </b>  <span class="Label_badge" style="text-align: center;">{{user.deviations.length}}</span>
+                </div>
+              </div>
+             </td>
+                        <td>
+                          <!-- {{user.invalidText}} -->
+                          <div class="d-flex"  >
+                            <!-- *ngIf="hideShowRemark && user.status == 'Send Back'" -->
+                            <!-- <input type="text" class="form-control" style="width: 75%;"
+                            [class.invalidtext]="user.invalidText" (focusout)="remarkValidation($event.target.value,rowIndex,user)"
+                            /> -->
+
+                            <div _ngcontent-ykc-c443=""  class="custom_Label_badge" ><b><i
+                            (click)=" masterRemarkModal( template5)" class=" fa fa-commenting text-dark-green fa-2x cursor-pointer">
+                            </i></b><span _ngcontent-ykc-c443="" class="Label_badge" >1</span >
+                            </div>
+                          </div>
+                        </td>
+                        <td >
+                          <a class="text-link text-center">
+                            <span class=" badge badge-info" *ngIf="user.status == 'inprocess ' || user.status == 'InProcess'" (click)="inProcessStatusPopup(template4)">
+                              {{user.status }}</span>
+                         </a>
+                          <span  class=" badge badge-warning" *ngIf="user.status == 'pending'">{{user.status}}</span>
+                          <span  class=" badge badge-success" *ngIf="user.status == 'approved' || user.status == 'Approved'"> {{user.status}}</span>
+                          <a class="text-link text-center">
+                          <span  class=" badge badge-danger" *ngIf="user.status == 'Send Back' || user.status == 'SendBack'" >
+                            {{user.status}}</span></a>
+                          <span  class=" badge badge-info" *ngIf="user.status == 'submitted' || user.status == 'Submitted'"> {{user.status}}</span>
+                          <span  class=" badge badge-success" *ngIf="user.status == 'Closed'"> {{user.status}}</span>
+                          <span  class=" badge badge-success" *ngIf="user.status == 'paid'"> {{user.status}}</span>
+
+
+                        <!-- <span class=" Badge badge-info" *ngIf="user.status != 'inprocess'">{{user.status}}</span> -->
+                      </td>
+                        <td class="primeng-table-header-left"><span>
+                        <i class="fa fa-edit font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                         (click)="editLoanApprovalForm(user)" *ngIf="user.status == 'Submitted' || user.status == 'submitted'"></i>
+                         <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10" tooltip="View"
+                         (click)="viewLoanApprovalForm(user)" ></i>
+                         <i class="fas fa-history font-16 text-orange cursor-pointer mr-10" *ngIf="user.transactionType == 'Loan Application'" tooltip="Loan History"
+                         (click)="loanHistoryPopUp(template2);getLoanHistory()" ></i>
+                         <i class="fa fa-file font-16 text-blue cursor-pointer mr-10" *ngIf="user.transactionType == 'Loan Application'" tooltip="Loan Schedule"
+                         (click)="loanSchedulePopUp(template7)" ></i>
+                           </span>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft">
+                      <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                      </p-button>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorright">
+                      <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                      </p-button>
+                    </ng-template>
+                  </p-table>
+
+
+                </div>
+                </div>
+
+
+<!-- .................................deviation pop up ......................................................  -->
+                <ng-template #template>
+                  <div class="modal-header">
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Deviations</h5>
+
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card">
+                      <div class="card-body">
+
+                            <div class="row mb-10">
+                              <div class="col-sm-6 col-md-3" >
+                                  <label class="form-label">Emp. Code</label>
+                                  <input type="text" class="form-control"
+                                      value="{{empCode}}" disabled />
+                              </div>
+                              <div class=" col-sm-6 col-md-3" >
+                                  <label class="form-label">Emp. Name</label>
+                                  <input type="text" class="form-control"
+                                      value="{{empFullName}}" disabled />
+                              </div>
+                              <div class="col-sm-6 col-md-3" >
+                                  <label class="form-label">Loan Type</label>
+                                  <input type="text" class="form-control"
+                                      value="{{loanNo}}" disabled />
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                  <label class="form-label">Loan No.</label>
+                                  <input type="text" class="form-control"
+                                  value="{{lonType}}" disabled />
+                              </div>
+                          </div>
+                          <br>
+
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
+                                  <thead class="thead-dark">
+                                    <tr >
+                                      <th scope="col">Deviation Types</th>
+                                      <th scope="col">User Input</th>
+                                      <th scope="col">Limit</th>
+                                      <th scope="col">Deviation Value</th>
+                                      <th scope="col">Reason</th>
+                                      <th scope="col">Remark</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody *ngFor="let deviation of deviationData">
+                                    <tr>
+                                      <td>
+                                        Loan Amount </td>
+                                      <td>{{deviation.userLimit}}</td>
+                                      <td>{{deviation.userLimit}}</td>
+                                      <td>{{deviation.deviationValue}}</td>
+                                      <td>{{deviation.reason}}</td>
+                                      <!-- formControlName="loanAmount" -->
+                                      <td><textarea  type="text" rows="1" class="form-control"
+                                        value="" ></textarea></td>
+                                    </tr>
+
+                                    <tr>
+                                      <td>
+                                        No.Of Installments</td>
+                                        <td>{{deviation.userLimit}}</td>
+                                        <td>{{deviation.userLimit}}</td>
+                                        <td>{{deviation.deviationValue}}</td>
+                                        <td>{{deviation.reason}}</td>
+                                      <td><textarea  type="text" rows="1" class="form-control"
+                                        value="" ></textarea></td>
+                                    </tr>
+
+                                    <tr>
+                                      <td>
+                                        Interest Rate</td>
+                                        <td>{{deviation.userLimit}}</td>
+                                        <td>{{deviation.userLimit}}</td>
+                                        <td>{{deviation.deviationValue}}</td>
+                                        <td>{{deviation.reason}}</td>
+                                      <td><textarea  type="text" rows="1" class="form-control"
+                                        value="" ></textarea></td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                              </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="row float-right">
+
+                      <div class="float-right ">
+
+                          <button type="submit"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Approve Loan" ><b>
+                                  <i class="fa fa-check-square-o "></i></b> Approve Loan
+                              </button>&nbsp;
+
+                              <button type="submit"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Approve Deviation"><b>
+                                <i class="fa fa-check-square-o "></i></b> Approve Deviation
+                                </button>&nbsp;
+                                <button type="submit"
+                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                                tooltip=" Send Back Loan" ><b>
+                                    <i class="fa fa-reply"></i></b> Send Back Loan</button>&nbsp;
+
+                                <button type="submit"
+                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                tooltip="Reset"><b>
+                                    <i class="fa fa-refresh"></i></b> Reset
+                                  </button>&nbsp;
+
+
+                      </div>
+                  </div>
+                  </div>
+                </ng-template>
+
+<!-- .................................emp details pop up ......................................................  -->
+                <ng-template #template1>
+                  <div class="modal-header">
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Employee Details</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="cards">
+                      <div class="card-bodys">
+                        <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong >Emp. Code :
+                                </strong >{{perticularEmpDetails.employeeCode}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Emp. Name :
+                                </strong>{{perticularEmpDetails.fullName}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Establishment :
+                                </strong>{{perticularEmpDetails.establishment}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Department :
+                                </strong>{{perticularEmpDetails.establishment}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Grade :
+                                </strong>{{perticularEmpDetails.grade}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Designation :
+                                </strong>{{perticularEmpDetails.designation}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Payroll Area :
+                                </strong>{{perticularEmpDetails.designation}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Date of Joining :
+                                </strong>{{perticularEmpDetails.joiningDate|date:
+                                  'dd-MMM-yyyy'}}
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Status :
+                                </strong>{{perticularEmpDetails.designation}}
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                  </div>
+                </ng-template>
+
+<!-- .................................Loan History pop up ..........................................................                 -->
+                <ng-template #template2>
+                  <div class="modal-header">
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Loan History</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="cards">
+                      <div class="card-bodys">
+                        <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+
+                          <p-table  #dt1 [value]="getLoanHistoryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+
+                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                           [rowsPerPageOptions]="[10,25,50,100,200]"
+                           [globalFilterFields]="['loanApplicationNumber','createDateTime','employeeMaster.employeeCode','employeeMaster.fullName','payrollArea',
+                           'loanMaster.loanCode','transactionType','approvedAmount','interest','status']">
+
+       <!-- ...................................loanApproval table ..................................................                    -->
+                            <ng-template pTemplate="header">
+                             <tr>
+                               <th>
+                                 <div class="p-d-flex p-jc-between p-ai-center">Loan Type
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="loanType" pSortableColumn="loanType"></p-sortIcon>
+                                     <p-columnFilter field="loanType" display="menu" class="p-ml-auto">
+                                     </p-columnFilter>
+                                   </div>
+                                 </div>
+                               </th>
+                               <th >
+                                 <div class="p-d-flex p-jc-between p-ai-center">Loan Date
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="loanStartDate" pSortableColumn="loanStartDate"></p-sortIcon>
+                                     <p-columnFilter  type="date"  field="loanStartDate" display="menu" class="p-ml-auto">
+                                     </p-columnFilter>
+                                   </div>
+                                 </div>
+                               </th>
+                               <th >
+                                 <div class="p-d-flex p-jc-between p-ai-center">Loan End Date
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="loanEndDate" pSortableColumn="loanEndDate"></p-sortIcon>
+                                     <p-columnFilter type="date" field="loanEndDate" display="menu" class="p-ml-auto">
+                                     </p-columnFilter>
+                                   </div>
+                                 </div>
+                               </th>
+                               <th>
+                                 <div class="p-d-flex p-jc-between p-ai-center">Approved Amount
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="loanApproveAmount" pSortableColumn="loanApproveAmount"></p-sortIcon>
+                                     <p-columnFilter type="text" field="loanApproveAmount" display="menu" class="p-ml-auto">
+                                     </p-columnFilter>
+                                   </div>
+                                 </div>
+                               </th>
+                               <th >
+                                 <div class="p-d-flex p-jc-between p-ai-center">Balance Amount
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="loanBalance" pSortableColumn="loanBalance"></p-sortIcon>
+                                     <p-columnFilter type="text" field="loanBalance" display="menu" class="p-ml-auto">
+                                     </p-columnFilter>
+                                   </div>
+                                 </div>
+                               </th>
+
+                             </tr>
+
+                           </ng-template>
+
+                           <ng-template pTemplate="body" let-user >
+                             <tr class="p-selectable-row">
+                               <td>{{ user.loanType}}</td>
+                               <td>{{ user.loanStartDate |date:'dd-MMM-yyyy'}}</td>
+                               <td> {{ user.loanEndDate |date:'dd-MMM-yyyy'}}</td>
+                               <td>{{ user.loanApproveAmount}}</td>
+                               <td > {{user.loanBalance}}</td>
+                             </tr>
+                           </ng-template>
+
+
+                           <ng-template pTemplate="paginatorleft">
+                             <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                             </p-button>
+                           </ng-template>
+                           <ng-template pTemplate="paginatorright">
+                             <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                             </p-button>
+                           </ng-template>
+                         </p-table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                  </div>
+                </ng-template>
+
+<!-- ............../..................budge document view pop up..........................................................  -->
+                 <ng-template #template3>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label class="form-label">Employee Code</label>
+                        <input type="text" class="form-control" value="{{empCode}}"  disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label">Employee Name</label>
+                        <input type="text" class="form-control" value="{{empFullName}}" disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label">Loan Type</label>
+                        <input type="text" class="form-control" value="{{lonType}}" disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label">Loan Number</label>
+                        <input type="text" class="form-control" value="{{loanNo}}" disabled />
+                      </div>
+                    </div>
+                    <br>
+                      <div class="row">
+                      <div class="col-md-3">
+                        <label class="form-label">Document Type</label>
+                        <input type="text" class="form-control" value="{{docType}}" disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label">Loan Status</label>
+                        <input type="text" class="form-control" value="{{statusForDoc}}" disabled />
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-1">
+                        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+                          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+                          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+                        </button>
+                      </div>
+                      <div class="col-md-10" *ngIf="getDocumentForViewData.blobURI">
+                        <iframe style="height: 100vh; width: 100%; display: block" [src]="photoURL(getDocumentForViewData.blobURI)" provider="google"></iframe>
+                      </div>
+                      <div class="col-md-1">
+                        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document"
+                        (click)="nextDocViewer()"
+                          [disabled]="urlIndex == urlArray.length - 1">
+                          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+                      Ok
+                    </button>
+                  </div>
+                </ng-template>
+
+<!-- ..................................In process status pop up ...............................................................                  -->
+                <ng-template #template4>
+                  <div class="modal-header">
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Pending With</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="cards">
+                      <div class="card-bodys">
+                        <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong > Approver Code:
+                                </strong >
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong > Approver Name :
+                                </strong >
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                  </div>
+                </ng-template>
+
+                   <!-- Remark Modal started -->
+                <ng-template #template5 style="max-height: 200px; overflow-y: scroll;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+                    <button
+                      type="button"
+                      (click)="modalRef.hide()"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"  >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                <div style ='overflow-y: scroll; height: 200px; max-height: 200px;'>
+                  <div class="card-body" >
+                    <div >
+                      <div class="row">
+                        <div class="col-md-6">
+                          <span class="form-label">
+                            <b class="text-gray"></b></span>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="float-right">
+                            <span class="form-label">
+                              Date:
+                              <b class="text-gray">{{cuurentDate | Date : 'dd-MMM-yyyy'}}</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <textarea class="form-control remarktext" disabled>
+                        </textarea>
+                      </div>
+                      <br><br>
+                      <div class="row">
+                        <div class="float-right">
+                          <span class="form-label">
+                            Date:
+                            <b class="text-gray">{{cuurentDate | Date : 'dd-MMM-yyyy'}}</b>
+                          </span>
+                        </div>
+                        <textarea class="form-control remarktext" placeholder="Add Remark Here">
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="submit" tooltip="Save"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true" (click)="loanRemark()"><b>
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="modalRef.hide()">   Ok
+                    </button>
+                  </div>
+                </ng-template>
+            <!-- Remark Modal End -->
+<!-- .....................................forward screen pop up ...........................................................              -->
+                <ng-template #template6>
+                  <div class="modal-header">
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Forward To Details</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="cards">
+                      <div class="card-bodys">
+                        <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label class="form-label">Forward To</label>
+                              <select  class="form-control custom-select" (change)="roleChange($event.target.value)" >
+                                <option [ngValue]="null" selected >Select</option>
+                                <option value="{{module.approverId}}" *ngFor="let module of postApproverDetailsData">
+                                  {{module.approverName}}</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label"> Role</label>
+                               <input class="form-control"  *ngIf="approverEmpRoleName"
+                                value="{{approverEmpRoleName}}"  disabled>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label"> Remark</label>
+                              <textarea></textarea>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                  </div>
+                </ng-template>
+<!-- ............................................schedule pop up ...........................................................  -->
+              <ng-template #template7 let-c="close">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">Schedule</h5>
+                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="cards">
+                    <div class="card-bodys">
+                      <div class="row clearfix">
+                        <div class="col-12">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                              <!-- <div class="float-right">
+                                        <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="download()"></i></span>&nbsp;
+                                        <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span>
+                                          <br><br>
+                                    </div> -->
+                              <div class="table-responsive Custom_Table " id="contentToConvert">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="wd-15" rowspan="2">Date</th>
+                                      <th scope="col" class="wd-15" rowspan="2">Opening Balance</th>
+                                      <th colspan="2">Interest </th>
+                                      <th scope="col" class="wd-15" rowspan="2">Disbursement</th>
+                                      <th colspan="3">Repayment</th>
+                                      <th scope="col" class="wd-15" rowspan="2">Closing Balance</th>
+                                    </tr>
+                                    <tr style="background-color: #8d8b8d; color: floralwhite;">
+                                      <td scope="col" class="wd-8">Rate - PA</td>
+                                      <td scope="col" class="wd-8">Charge</td>
+                                      <td scope="col" class="wd-8">Principal</td>
+                                      <td scope="col" class="wd-8">Interest</td>
+                                      <td scope="col" class="wd-8">Total</td>
+
+                                    </tr>
+                                  </thead>
+                                  <tbody *ngFor="let schedule of getscheduleData">
+                                    <tr>
+                                      <td>{{schedule.date | date :"dd-MMM-yyyy"}}</td>
+                                      <td>{{schedule.openingBalance |number:'1.2-2'}}</td>
+                                      <td>{{schedule.rateOfIntrest |number:'1.2-2'}}%</td>
+                                      <td>{{schedule.interestCharged | number:'1.2-2'}}</td>
+                                      <td>{{schedule.disbursedAmount | number:'1.2-2'}}</td>
+                                      <td>{{schedule.proposedScheduledRecoveryPrincipal | number:'1.2-2'}} </td>
+                                      <td>{{schedule.proposedScheduledRecoveryInterest | number:'1.2-2'}} </td>
+                                      <td>{{schedule.recoveryPrinInterestTotalBalance | number:'1.2-2'}} </td>
+
+                                      <td>{{schedule.closingBalance | number:'1.2-2'}} </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                    (click)="modalRef.hide()">Ok</button>
+                </div>
+              </ng-template>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

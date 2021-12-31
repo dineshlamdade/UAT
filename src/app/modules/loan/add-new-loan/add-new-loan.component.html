@@ -7,12 +7,59 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
-              <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
+              <form [formGroup]="AddLoanForm">
                 <!-- <div class="float-right">
                   <button type="button" class="btn btn-success" [routerLink]="['/loan/application']">Back</button>
                 </div> -->
-                <br><br>
+                <!-- <br><br> -->
+                <fieldset>
+                  <legend>Employee Details</legend>
+                  <div class="row" *ngIf="perticularEmpDetails">
+                    <div class="col-md-12 pl-0 pr-0">
+                      <div class="border-dark-card radius-10 p-2">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Employee No. & Name </label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode
+                              +' - '+ perticularEmpDetails.fullName}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Date of Joining</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate|date:
+                              'dd-MMM-yyyy'}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Establishment</label>
+                            <label
+                              class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
 
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Department</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Grade</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
+
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Designation</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
+                            <!-- <input type="text" class="form-control"  value="UI Developer" disabled /> -->
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Status</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.status}}</label>
+                            <!-- <input type="text" class="form-control"  value="Probation" disabled /> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
                 <fieldset>
                   <legend>Apply Loan</legend>
                   <div class="row" *ngIf="viewAppNo">
@@ -25,16 +72,34 @@
                       <input type="text" class="form-control" value="{{editLoanData.createDateTime | date: 'dd-MMM-yyyy'}}"disabled />
                     </div>
                   </div>
+
+                  <div class="row" *ngIf="selectedLoanForApprovalFlag">
+                    <div class="col-md-3" *ngIf="selectedLoanDataForApproval[index].loanApplicationNumber">
+                      <label class="form-label">Loan Application No.</label>
+                      <input type="text" class="form-control" value="{{selectedLoanDataForApproval[index].loanApplicationNumber}}" disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Application Date</label>
+                      <input type="text" class="form-control" value="{{selectedLoanDataForApproval[index].createDateTime | date: 'dd-MMM-yyyy'}}" disabled />
+                    </div>
+                  </div>
+
                   <br>
                   <div class="row">
                     <div class="col-md-3">
                       <label class="form-label">Loan Type</label>
-                      <select class="form-control" formControlName="loanType"
+                      <select class="form-control" formControlName="loanType" *ngIf="loanTypevisible"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('loanType').status == 'INVALID'}"
                         placeholder="Select" (change)="assetValueShowHide($event.target.value)">
                         <option [ngValue]="null" selected>Select</option>
                         <option *ngFor="let loan of loanTypeData " [selected]="loanType == loan.loanCode">
                           {{loan.loanCode}}</option>
+                      </select>
+                      <select class="form-control" formControlName="loanType" *ngIf="editTimeLoanType">
+                        <!-- <option [ngValue]="null" selected>Select</option>
+                        <option *ngFor="let loan of loanTypeData " [selected]="loanType == loan.loanCode">
+                          {{loan.loanCode}}</option> -->
+                          <option>{{loanType}}</option>
                       </select>
                     </div>
                     <div class="col-md-3">
@@ -97,12 +162,14 @@
                       <input type="text" class="form-control" placeholder="Flat Interest" />
                     </div>
 
-                    <div class="col-md-3 placeholderStyle" *ngIf="!flatIntrestVisible">
+                    <div class="col-md-3 " *ngIf="!flatIntrestVisible">
                       <label class="form-label">Interest rate (%)</label>
-                      <input type="text" class="form-control-sm" formControlName="interestRate"
+                      <div class="d-flex">
+                      <input type="text" class="form-control" formControlName="interestRate"
                         placeholder="Interest Rate (%)"
                         (focusout)="calculateRateOfInterest($event.target.value)" />&nbsp;
                       <span style="font-size: 11px; font-weight:500;">Per Annum</span>
+                       </div>
                       <label style="font-size: 10px;">As per Policy :12%</label>
 
                     </div>
@@ -136,8 +203,16 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark" />
+                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark"
+                      />
                     </div>
+
+                    <!-- <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark"
+                       />
+                    </div> -->
+
                     <div class="col-md-3">
                       <label class="form-label">External Referance No.</label>
                       <input type="text" class="form-control" formControlName="externalReferenceNumber"
@@ -146,11 +221,30 @@
                   </div>
                   <br />
                   <div class="float-right">
-                    <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal"
-                      [disabled]="!AddLoanForm.valid"
+                    <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="schedule(template)" data-target="#UploadModal"
+                      [disabled]="!AddLoanForm.valid" *ngIf="loanApprNormalFlag"
                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
                       <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
+                    </button> -->
+
+                    <button type="button" tooltip="Schedule "
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  "
+                    aria-hidden="true" [disabled]="!AddLoanForm.valid" *ngIf="loanApprNormalFlag" (click)="schedule(template)" data-target="#UploadModal"
+                    [disabled]="!AddLoanForm.valid"
+                    [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}"><b><i class="fa fa-clock-o"
+                      ></i></b>Schedule
                     </button>
+
+                    <button type="button" tooltip="Schedule" (click)="schedule(template)"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  "
+                    aria-hidden="true" *ngIf="loanApprEditFlag"><b><i class="fa fa-clock-o"
+                      ></i></b>Schedule
+                    </button>
+
+                    <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="schedule(template)" data-target="#UploadModal"
+                    *ngIf="loanApprEditFlag"> <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
+                  </button> -->
+
                   </div>
                   <br />
                   <br />
@@ -390,43 +484,39 @@
                             <th scope="col" class="wd-14">Approver Name</th>
                             <th scope="col" class="wd-14">Action Date</th>
                             <th scope="col" class="wd-14">Action Time</th>
-                            <th scope="col" class="wd-14">Remark</th>
+                            <th scope="col" class="wd-14" >Remark</th>
+
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="wd-9">First</td>
-                            <td class="wd-14">approve001</td>
-                            <td class="wd-14">approver1</td>
-                            <td class="wd-14">Null</td>
-                            <td class="wd-14">Null</td>
-                            <td class="wd-14">approved</td>
-                          </tr>
-                        </tbody>
-                        <!-- <tbody>
-                        <tr *ngFor="let approver of approvalDetailsData">
+                        <tr *ngFor="let approver of postApproverDetailsData">
                           <td class="wd-9">{{approver.sequence}}</td>
                           <td class="wd-14">{{approver.approverEmpCode}}</td>
                           <td class="wd-14">{{approver.approverName}}</td>
-                          <td class="wd-14"></td>
-                          <td class="wd-14"></td>
-                          <td class="wd-14"></td>
+                          <td class="wd-14">Null</td>
+                          <td class="wd-14">Null</td>
+                          <td class="wd-14" *ngIf="inputnormalFlag">approved</td>
+                          <td class="wd-14" *ngIf="inputRemarkFlag">
+                            <input type="text" class="form-control" [(ngModel)]="approvalRemark" [ngModelOptions]="{standalone:true}"
+                            [ngClass]="{'is-invalid':approvalRemark == ''}" [required]="approvalRemark == ''">
+                          </td>
                         </tr>
-                      </tbody> -->
+                      </tbody>
                       </table>
                     </div>
 
                   </div>
                   <br><br>
-                  <ng-container class="float-right">
+                  <ng-container class="float-right" *ngIf="loanAppBtns">
                     <!-- || (documentList.length != documentReason.length)
 
                     || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length)-->
                     <!-- || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) -->
                     <div class="row float-right" style="margin: 10px">
-                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)=" addloanFormSubmit()"
                         [disabled]="AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length)"
-                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}" *ngIf="!isVisiblee">
+                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  ||
+                        (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}" *ngIf="!isVisiblee">
                         <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
                       <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -449,9 +539,80 @@
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                         [routerLink]="['/loan/application']" >
                         <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
-
                     </div>
                   </ng-container>
+                  <!-- .............................................manager flow edit time btns ...............................................  -->
+                  <ng-container class="float-right"  *ngIf="loanApprEditTimeBtns">
+                    <div class="row float-right" style="margin: 10px">
+
+                    <button type="submit"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                    tooltip="Approved" (click)="postLoanApproval('Approved')"
+                   ><b> <i class="fa fa-check-square-o "></i>
+                    </b> Approved </button>&nbsp;
+
+                    <button type="submit"
+                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                    tooltip=" Send Back" (click)="postLoanApproval('Send Back')"
+                    [disabled]="approvalRemark == ''"[ngClass]="{'disabled-btn-bg-green': approvalRemark == '' }"><b> <i class="fa fa-reply"></i>
+                    </b> Send Back </button>&nbsp;
+
+                    <button type="button" tooltip="Forward"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true" >
+                    <b><i class="fa fa-share"></i></b>Forward
+                    </button>
+
+<!-- ...............................selected multiple employee buttons ..........................................   -->
+                      <button type="button" *ngIf="multiplEmpFlag" tooltip="Previous" class="custom_button custom_btn
+                       bg-teal-400 btn-labeled btn-labeled-left mr-10"
+                       (click)="priviousRecord()" [disabled]=" selectedLoanDataForApproval.length == 1 || index == 0"
+                      [ngClass]="{'disabled-btn-bg-green' : selectedLoanDataForApproval.length == 1
+                       || index == 0,'btn-bg-gray': !AddLoanForm.invalid }" >
+                        <b><i class="fa fa-angle-double-left" aria-hidden="true" >
+                      </i></b>Previous </button>
+
+                      <button type="button" *ngIf="multiplEmpFlag" tooltip="Next" class="custom_button custom_btn
+                      bg-teal-400 btn-labeled btn-labeled-left mr-10"
+                      (click)="nextRecord()" [disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index"
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index,'btn-bg-gray': !AddLoanForm.invalid }"> <b>
+                      <i class="fa fa-angle-double-right"></i></b> Next </button>
+
+                      <button type="submit" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                      tooltip=" Send Back & Next" (click)="postLoanApproval('Send Back');nextRecord()"
+                      [disabled]="selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index ||approvalRemark == ''"
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index || approvalRemark == '','btn-bg-red': !AddLoanForm.invalid }"><b> <i class="fa fa-reply"></i>
+                      </b> Send Back & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                      <button type="submit" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                      tooltip="Approved & Next" (click)="postLoanApproval('Approved');nextRecord()"
+                      [disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index "
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index ,'btn-bg-green': !AddLoanForm.invalid }"><b>
+                         <i class="fa fa-check-square-o "></i>
+                      </b> Approved & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                      <button type="button" tooltip="Forward & Next" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true"[disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index "
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index ,'btn-bg-green': !AddLoanForm.invalid }"><b>
+                        <i class="fa fa-share"></i></b>Forward & <i class="fa fa-angle-double-right"></i>
+                      </button>
+
+                      <button type="button" tooltip="Close" (click)="close()"
+                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                      <b><i  class="fa fa-times-circle"></i></b> Close
+                    </button>
+
+
+                  </div>
+                </ng-container>
+
                 </fieldset>
               </form>
             </div>
