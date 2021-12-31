@@ -50,8 +50,9 @@ import { AdhocComponent } from './business-cycle/adhoc/adhoc.component';
 import { SupplementaryComponent } from './business-cycle/supplementary/supplementary.component';
 
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
-
+import { LMSLeaveHeadCreationComponentComponent } from './lms/lmsleave-head-creation-component/lmsleave-head-creation-component.component';
+import { LmsLeaveAttributeCreationComponent } from './lms/lms-leave-attribute-creation/lms-leave-attribute-creation.component';
+import { LeaveAttributeGroupComponent } from './lms/leave-attribute-group/leave-attribute-group.component';
 
 @NgModule( {
   declarations: [
@@ -75,7 +76,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
      AreasetComponent,
      EmployeesetComponent,
      AdhocComponent,
-     SupplementaryComponent
+     SupplementaryComponent,
+     LMSLeaveHeadCreationComponentComponent,
+     LmsLeaveAttributeCreationComponent,
+     LeaveAttributeGroupComponent
     
   ],
   imports: [
@@ -110,8 +114,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ToastModule,
     InputTextModule,
     ProgressBarModule,
-    MultiSelectModule,
-   
+    MultiSelectModule
   ],
 
   providers: [DatePipe, NumberFormatPipe],
