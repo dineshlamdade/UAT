@@ -11,24 +11,34 @@
             
               <form [formGroup]="LeaveAttributeGroupFrom" (ngSubmit)="addLeaveAttributeSelection()">
                 <div class="row">
-                  <div class="col-sm-6 col-md-4">
+                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Attribute Group Name</label>
                     <input type="text" [readonly]="!disabled" formControlName="name" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25" 
-                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('name').status == 'INVALID'}" class="form-control">
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('name').status == 'INVALID'}" class="form-control" placeholder="Enter Attribute Group Name">
                   </div>
-                  <div class="col-sm-6 col-md-4">
+                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <input type="text" [readonly]="!disabled" formControlName="description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" 
-                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('description').status == 'INVALID'}" class="form-control">
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('description').status == 'INVALID'}" class="form-control" placeholder="Enter Description">
+                  </div>
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Type</label>
+                    <select (change)="onTypeStatusChange($event);" name="type" id="type"
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('type').status == 'INVALID'}"
+                    class="form-control" formControlName="type">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let ty of typeList" [value]="ty.value">
+                        {{ty.label}}
+                      </option>
+                    </select>
                   </div>
 
-
-                  <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Copy From</label>
                     <select (change)="onStatusChange($event);" name="lmsAttributeNature" id="lmsAttributeNature"
                     class="form-control" formControlName="lmsAttributeNature">
                       <option selected value=''>Select </option>
-                      <option *ngFor="let by of LeaveAttributeSelectionList" [value]="by.name">
+                      <option *ngFor="let by of copyFromList" [value]="by.name">
                         {{by.name}}
                       </option>
                     </select>
@@ -36,7 +46,28 @@
                 </div>
 
 
-                
+                <!-- <ng-template pTemplate="caption" *ngIf="isExcelVisible"> -->
+                  <!-- <div class="row"  *ngIf="isExcelVisible">
+                    <div class="col-md-12">
+                        <div class="float-right">
+                            <div class="d-flex">                                 
+                                <span class="p-input-icon-left p-ml-auto">
+                                    <i class="pi pi-search"
+                                        style="top: 9px !important;right:43px;"></i>
+                                    <input pInputText type="text"
+                                        (input)="dt2.filterGlobal($event.target.value, 'contains') || dt3.filterGlobal($event.target.value, 'contains') "
+                                        placeholder="Search " />
+
+                                </span>
+                                &nbsp;
+                                 <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                 tooltip="Export To Excel" (click)="selectexportAsXLSX()"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> -->
+            <!-- </ng-template> -->
 
 
                 <div class="row mt-25">
@@ -44,27 +75,48 @@
 
                     <div class="cycle-table mt-4">
                       <div class="row">
-                        <div class="col-md-6">
-                          <span class="form-label font-14 text-purple font-bold">Total Attributes:
+                        <div class="col-md-4">
+                          <span class="form-label font-14 text-purple font-bold">Total :
                             <span class="font-14 text-dark-green">({{SourceProducts.length}})</span>
                           </span>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="float-right">
-                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
-                              Attributes: &nbsp;
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected :
+                               &nbsp;
                               <span class="font-14 text-dark-green">({{selectedUser.length}})</span>
                             </span>
                           </div>
                         </div>
+                        <div class="col-md-4">
+                          <div class="float-right">
+                              <div class="d-flex">
+
+                                  <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"
+                                          style="top: 9px !important;right:43px"></i>
+                                      <input pInputText type="text"
+                                          (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Search " />
+
+                                  </span>
+                                  <i
+                                      class="fa fa-file-excel-o font-18 mt-1 ml-2 text-dark-green cursor-pointer"
+                                      tooltip="Export To Excel" (click)="sourcexportAsXLSX()"></i>
+                              </div>
+                          </div>
+
+                      </div>
+
                       </div>
                    
 
-                      <p-table [value]="SourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                        [pageLinks]="5" (onPage)="paginate($event)"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      <p-table #dt2 [value]="SourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="3" (onPage)="paginate($event)"
+                        (sortFunction)="selectcustomSort($event)" [customSort]="true"
+                        
                         totalRecords={{SourceProducts.length}}
-                       [rowsPerPageOptions]="[10,25,50,100,200]">
+                       [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['code','description','lmsAttributeNature']">
 
 
                         <ng-template pTemplate="header">
@@ -148,49 +200,47 @@
                   <div class="col-5">
                     <div class="cycle-table mt-4">
 
-                      <!-- <ng-template pTemplate="caption" *ngIf="isExcelVisible"> -->
-                        <div class="row" *ngIf="isExcelVisible">
-                            <div class="col-md-12">
-                                <div class="float-right">
-                                    <div class="d-flex">                                 
-                                        <span class="p-input-icon-left p-ml-auto">
-                                            <i class="pi pi-search"
-                                                style="top: 9px !important;right:43px;"></i>
-                                            <input pInputText type="text"
-                                                (input)="dt2.filterGlobal($event.target.value, 'contains')"
-                                                placeholder="Search " />
-
-                                        </span>
-                                        &nbsp;
-                                         <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
-                                         tooltip="Export To Excel" (click)="selectexportAsXLSX()"></i>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    <!-- </ng-template> -->
+                      
                       <div class="row">
-                        <div class="col-md-6">
-                          <span class="form-label font-14 text-purple font-bold">Total Attributes:
+                        <div class="col-md-4">
+                          <span class="form-label font-14 text-purple font-bold">Total :
                             <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
                           </span>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="float-right">
-                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
-                              Attributes: &nbsp;
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected : &nbsp;
                               <span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
                             </span>
                           </div>
                         </div>
+                        <div class="col-md-4">
+                          <div class="float-right">
+                              <div class="d-flex">
+
+                                  <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"
+                                          style="top: 9px !important;right:43px"></i>
+                                      <input pInputText type="text"
+                                          (input)="dt3.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Search " />
+
+                                  </span>
+                                  <i
+                                      class="fa fa-file-excel-o font-18 mt-1 ml-2 text-dark-green cursor-pointer"
+                                      tooltip="Export To Excel" (click)="targetxportAsXLSX()"></i>
+                              </div>
+                          </div>
+
+                      </div>
+
                       </div>
 
                      
-                      <p-table #dt2 [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                        [pageLinks]="5" (onPage)="paginate($event)"
+                      <p-table #dt3 [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="3" (onPage)="paginate($event)"
                         (sortFunction)="selectcustomSort($event)" [customSort]="true"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        
                         totalRecords={{targetProducts.length}}
                         [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['code','description','lmsAttributeNature']">
 
@@ -294,8 +344,8 @@
                     <div class="float-right mb-15">
 
 
-                      <button type="submit" *ngIf="!viewCancelButton"  [disabled]="LeaveAttributeGroupFrom.invalid"
-                      [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid} "
+                      <button type="submit" *ngIf="!viewCancelButton"  [disabled]="LeaveAttributeGroupFrom.invalid || saveDisable"
+                      [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid || saveDisable, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid || saveDisable} "
                         class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left mr-2" tooltip="Save">
                         <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
@@ -334,11 +384,11 @@
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       [rowsPerPageOptions]="[10,25,50,100,200]"> -->
                     <p-table #dt1 [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                      [pageLinks]="5" (onPage)="paginate($event)"
+                      [pageLinks]="5" 
                       (sortFunction)="customSort($event)" [customSort]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       totalRecords={{summaryList.length}}
-                      [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['name','description','options']">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['name','description','options','type']">
 
                       <ng-template pTemplate="caption">
                         <div class="row">
@@ -400,7 +450,16 @@
                             </div>
                           </th>
 
+                          <th rowspan="1" class="wd-8">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Type
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="type" pSortableColumn="type"></p-sortIcon>
+                                <p-columnFilter field="type" display="menu" class="p-ml-auto"></p-columnFilter>
 
+                              </div>
+                            </div>
+                          </th>
 
                           <th rowspan="1" class="wd-10 text-center">
                             <div class="p-d-flex p-jc-center p-ai-center">
@@ -415,11 +474,9 @@
                           <td class="bg-color-light_gray text-center"><label
                               class="form-lable mb-0">{{rowIndex+1}}</label></td>
                           <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.name}}</label></td>
-                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label>
-                          </td>
-                          <td class="bg-color-light_gray text-center"><label
-                              class="form-lable mb-0">{{user1.options}}</label></td>
-
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label> </td>
+                          <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{user1.options}}</label></td>
+                          <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{user1.type}}</label></td>
 
 
                           <td class="wd-10 align-left">

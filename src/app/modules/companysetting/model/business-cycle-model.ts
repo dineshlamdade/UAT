@@ -152,6 +152,7 @@ export class SaveLeaveAttributeSelection {
   lmsAttributeList: any[];
   isUsed : boolean;
   isActive: boolean;
+  type : string;
   removedAttributeGroupIdList: any[];
   lmsAttributeMasterId : number;
 }

@@ -7,6 +7,7 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
 import { SaveLeaveAttributeSelection } from '../../model/business-cycle-model';
 import { LeaveHeadCreationService } from '../leave-head-creation.service';
 import { SortEvent } from 'primeng/api';
+import { element } from 'protractor';
 @Component({
   selector: 'app-leave-attribute-group',
   templateUrl: './leave-attribute-group.component.html',
@@ -34,12 +35,15 @@ export class LeaveAttributeGroupComponent implements OnInit {
   selectedUser2 : Array<any> = [];
   targetProducts : Array<any> = [];
   targetData : Array<any> =[];
+  typeList : Array<any> = [];
   HighlightRight : any;
   userHasSelectedMandatoryFieldOnly = false;
   viewLeftRightButton = true;
   summaryList = [];
   LeaveAttributeSelectionList : Array<any> =[];
   originalSourceProductList : Array<any> =[];
+  getAllAttributeList : Array<any>= [];
+  copyFromList : Array<any> =[];
   originalTargetList = [];
   used = false;
   active =true;
@@ -50,17 +54,24 @@ export class LeaveAttributeGroupComponent implements OnInit {
   idToBeDeletetd: number = null;
   header: any[];
   excelData: any[];
-  isExcelVisible = false;
+  isExcelVisible = true;
   updateDisable = false;
+  saveDisable = true;
   constructor( private formBuilder:FormBuilder,private leaveAttributeService : LeaveHeadCreationService,
     private alertService:AlertServiceService,private modalService: BsModalService,private excelservice:ExcelserviceService) { }
 
   ngOnInit(): void {
+    this.typeList = [
+      {label : 'Attendance Regularzation',value: 'Attendance Regularzation'},
+      {label : 'Leave',value: 'Leave'},
+      {label : 'Shift',value: 'Shift'}
+    ];
     this.LeaveAttributeGroupFrom = this.formBuilder.group({
       name: new FormControl('',Validators.required),
       description : new FormControl('',Validators.required),
       lmsAttributeNature : new FormControl(''),
-      lmsAttributeGroupDefinitionId : new FormControl('')
+      lmsAttributeGroupDefinitionId : new FormControl(''),
+      type : new FormControl('',Validators.required),
     }
     );
     this.getAllAttributeCreation();
@@ -70,6 +81,7 @@ export class LeaveAttributeGroupComponent implements OnInit {
  
   getAllAttributeCreation():void{
     this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe((res:any)=>{
+      this.getAllAttributeList = res.data.results;
       this.SourceProducts = res.data.results[0];
     }); 
   }
@@ -78,8 +90,10 @@ export class LeaveAttributeGroupComponent implements OnInit {
     this.summaryList = [];
     this.leaveAttributeService.getAllAttributeGroup().subscribe( res => {
       this.LeaveAttributeSelectionList = res.data.results;
+      this.copyFromList = res.data.results;
       this.Data = res.data.results[0];
-      res.data.results.forEach( (element: { description: any; lmsattributeGroupMasterResponseDTO: any; lmsAttributeGroupDefinitionId: any; name: any; isUsed: any; }) => {
+      console.log('Responce Data',this.LeaveAttributeSelectionList);
+      res.data.results.forEach( element=> {
         let obj = {
           //lmsAttributeNature: element.lmsAttributeNature,
           //numberOfOption: element.numberOfOption,
@@ -88,6 +102,7 @@ export class LeaveAttributeGroupComponent implements OnInit {
           lmsAttributeGroupDefinitionId: element.lmsAttributeGroupDefinitionId,
           name: element.name,
           isUsed: element.isUsed,
+          type : element.type,
         }
         this.summaryList.push( obj );
       } );
@@ -159,6 +174,7 @@ export class LeaveAttributeGroupComponent implements OnInit {
       if(this.targetProducts.length > 0){
         this.isExcelVisible =true;
         this.updateDisable = false;
+        this.saveDisable = false;
       }
     } );
 
@@ -211,10 +227,12 @@ export class LeaveAttributeGroupComponent implements OnInit {
       this.LeaveAttributeGroupFrom.setErrors( null );
     }
     if(this.targetProducts.length <= 0){
-      this.isExcelVisible = false;
+      //this.isExcelVisible = false;
       this.updateDisable = true;
+      this.saveDisable = true;
     }else{
       this.updateDisable = false;
+      this.saveDisable =false;
     }
   }
 
@@ -231,13 +249,58 @@ export class LeaveAttributeGroupComponent implements OnInit {
   GetAttributeSelectionById( id: number, isUsed: boolean ): void {
     window.scrollTo( 0, 0 );
     this.SourceProducts = [];
-    this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe( res => {
-      //this.originalSourceProductList = res.data.results;
-      this.SourceProducts = res.data.results[0];
-    }, ( error ) => {
-      this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    // this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe( res => {
+    //   //this.originalSourceProductList = res.data.results;
+    //   this.SourceProducts = res.data.results[0];
+    // }, ( error ) => {
+    //   this.alertService.sweetalertError( error["error"]["status"]["message"] );
 
-    }, () => {
+    // }, () => {
+    //   debugger
+    //   this.originalTargetList = [];
+    //   this.targetProducts = [];
+    //   this.targetData = [];
+    //   this.viewLeftRightButton = true;
+    //   this.disabled = true;
+    //   this.isExcelVisible = true;
+    //   this.LeaveAttributeGroupFrom.disable();
+    //   this.viewUpdateButton = true;
+    //   this.viewCancelButton = true;
+    //   this.id = id;
+    //    let index= this.LeaveAttributeSelectionList.findIndex( o => o.lmsAttributeGroupDefinitionId == id );
+    //    this.targetData = this.LeaveAttributeSelectionList[index].lmsattributeGroupMasterResponseDTO;
+
+    //    this.targetData.forEach( element => {
+    //           element.disabled = isUsed;
+    //           this.SourceProducts = this.SourceProducts.filter( e => e.code !== element.lmsAttributeMasterResponseDTO[0].code );
+    //           let obj={
+    //             code:element.lmsAttributeMasterResponseDTO[0].code,
+    //             description:element.lmsAttributeMasterResponseDTO[0].description,
+    //             lmsAttributeNature:element.lmsAttributeMasterResponseDTO[0].lmsAttributeNature,
+    //             lmsAttributeGroupId:element.lmsAttributeGroupId,
+    //             lmsAttributeMasterId:element.lmsAttributeMasterId,
+    //             lmsAttributeGroupDefinitionId: this.LeaveAttributeSelectionList[index].lmsAttributeGroupDefinitionId,
+    //             isUsed : this.LeaveAttributeSelectionList[index].isUsed,
+    //           }
+    //           this.targetProducts.push(obj); 
+    //         } );
+    //      //console.log('show final source',this.SourceProducts);
+
+    //      this.LeaveAttributeGroupFrom.patchValue( { name:  this.LeaveAttributeSelectionList[index].name } );
+    //      this.LeaveAttributeGroupFrom.patchValue( { description:  this.LeaveAttributeSelectionList[index].description } );
+    //      this.LeaveAttributeGroupFrom.patchValue( { type:  this.LeaveAttributeSelectionList[index].type } );
+    //      //this.LeaveAttributeGroupFrom.patchValue( { lmsAttributeNature: this.LeaveAttributeSelectionList[index].name } );
+    //      this.LeaveAttributeGroupFrom.patchValue( {
+    //       lmsAttributeNature: ''
+    //     } );
+    //     // this.disabled = false;
+    //     this.LeaveAttributeGroupFrom.disable();
+    // } );
+
+
+  
+      debugger
+      this.SourceProducts= this.getAllAttributeList[0];
       this.originalTargetList = [];
       this.targetProducts = [];
       this.targetData = [];
@@ -269,13 +332,14 @@ export class LeaveAttributeGroupComponent implements OnInit {
 
          this.LeaveAttributeGroupFrom.patchValue( { name:  this.LeaveAttributeSelectionList[index].name } );
          this.LeaveAttributeGroupFrom.patchValue( { description:  this.LeaveAttributeSelectionList[index].description } );
+         this.LeaveAttributeGroupFrom.patchValue( { type:  this.LeaveAttributeSelectionList[index].type } );
          //this.LeaveAttributeGroupFrom.patchValue( { lmsAttributeNature: this.LeaveAttributeSelectionList[index].name } );
          this.LeaveAttributeGroupFrom.patchValue( {
           lmsAttributeNature: ''
         } );
         // this.disabled = false;
         this.LeaveAttributeGroupFrom.disable();
-    } );
+    
   }
 
 
@@ -295,6 +359,7 @@ export class LeaveAttributeGroupComponent implements OnInit {
     addAttributeCreation.name = this.LeaveAttributeGroupFrom.value.name;
     addAttributeCreation.description = this.LeaveAttributeGroupFrom.value.description;
     addAttributeCreation.isUsed =this.used;
+    addAttributeCreation.type = this.LeaveAttributeGroupFrom.value.type; 
     addAttributeCreation.lmsAttributeGroupDefinitionId = 0;
     addAttributeCreation.isActive = this.active;
     //console.log( JSON.stringify( addAttributeCreation ) );
@@ -308,6 +373,9 @@ export class LeaveAttributeGroupComponent implements OnInit {
       this.isExcelVisible = false;
       this.getAllAttributeCreation();
       this.getAllAttributeGroup();
+      this.LeaveAttributeGroupFrom.patchValue( {
+        type: ''
+      } );
       //this.resetAttributeSelection();
     },
       ( error: any ) => {
@@ -321,13 +389,19 @@ export class LeaveAttributeGroupComponent implements OnInit {
     this.SourceProducts = [];
     this.selectedUser2 = [];
     this.selectedUser = [];
-    this.isExcelVisible =false;
+    //this.isExcelVisible =false;
     this.LeaveAttributeGroupFrom.reset();
     this.viewCancelButton = false;
+    this.SourceProducts= this.getAllAttributeList[0];
+    this.copyFromList = this.LeaveAttributeSelectionList;   
     this.LeaveAttributeGroupFrom.patchValue( {
       lmsAttributeNature: ''
     } );
-    this.getAllAttributeCreation();
+    this.LeaveAttributeGroupFrom.patchValue( {
+      type: ''
+    } );
+
+    //this.getAllAttributeCreation();
   }
 
 
@@ -379,7 +453,7 @@ export class LeaveAttributeGroupComponent implements OnInit {
       this.disabled = true;
       this.viewCancelButton = false;
       this.viewUpdateButton = false;
-      this.isExcelVisible = false;
+      //this.isExcelVisible = false;
       this.alertService.sweetalertMasterSuccess( res.status.messsage, '' );
       this.LeaveAttributeGroupFrom.reset();
       this.LeaveAttributeGroupFrom.enable();
@@ -403,21 +477,28 @@ export class LeaveAttributeGroupComponent implements OnInit {
       this.viewCancelButton = false;
       this.viewUpdateButton = false;
       this.viewLeftRightButton = true;
-      this.isExcelVisible= false;
-      this.SourceProducts = this.originalSourceProductList;
+      
+      //this.isExcelVisible= false;
+      //this.SourceProducts = this.originalSourceProductList;
+      this.SourceProducts= this.getAllAttributeList[0];  
+      this.LeaveAttributeGroupFrom.patchValue( { lmsAttributeNature: '' } );
+      this.copyFromList = this.LeaveAttributeSelectionList; 
       this.LeaveAttributeGroupFrom.patchValue( {
-        attributeNature: ''
+        type: ''
       } );
-      this.getAllAttributeCreation();
+      //this.getAllAttributeCreation();
     }
 
     DeleteAttributeGroupSelection():void{
         this.disabled = true;
-        this.isExcelVisible = false;
+        //this.isExcelVisible = false;
         this.leaveAttributeService.DeleteLeaveAttributeGroup(this.idToBeDeletetd).subscribe(res=>{
         this.getAllAttributeGroup();
         this.alertService.sweetalertMasterSuccess( res.status.messsage, '' );
         this.LeaveAttributeGroupFrom.reset();
+        this.LeaveAttributeGroupFrom.patchValue( {
+          type: ''
+        } );
         this.targetProducts = [];
 }, ( error ) => {
   this.alertService.sweetalertError( error["error"]["status"]["messsage"] );
@@ -435,13 +516,46 @@ export class LeaveAttributeGroupComponent implements OnInit {
     GetAttributeSelectionByIdDisable(id :number):void{
     window.scrollTo( 0, 0 );
     this.SourceProducts = [];
-    this.isExcelVisible =true;
-    this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe( res => {
-      this.SourceProducts = res.data.results[0];
-    }, ( error ) => {
-      this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    // this.isExcelVisible =true;
+    // this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe( res => {
+    //   this.SourceProducts = res.data.results[0];
+    // }, ( error ) => {
+    //   this.alertService.sweetalertError( error["error"]["status"]["message"] );
 
-    }, () => {
+    // }, () => {
+    //   this.targetProducts = [];
+    //   this.targetData = [];
+    //   this.viewLeftRightButton = false;
+    //   this.disabled = false;
+    //   this.viewUpdateButton = false;
+    //   this.viewCancelButton = true;
+    //   this.id = id;
+    //   this.isExcelVisible = true;
+    //    let index= this.LeaveAttributeSelectionList.findIndex( o => o.lmsAttributeGroupDefinitionId == id );
+    //    this.targetData = this.LeaveAttributeSelectionList[index].lmsattributeGroupMasterResponseDTO;
+    //    this.targetData.forEach( element => {
+    //           this.SourceProducts = this.SourceProducts.filter( e => e.code !== element.lmsAttributeMasterResponseDTO[0].code );
+    //           let obj={
+    //             code:element.lmsAttributeMasterResponseDTO[0].code,
+    //             description:element.lmsAttributeMasterResponseDTO[0].description,
+    //             lmsAttributeNature:element.lmsAttributeMasterResponseDTO[0].lmsAttributeNature,
+    //             lmsAttributeGroupId:element.lmsAttributeGroupId,
+    //             lmsAttributeMasterId:element.lmsAttributeMasterId,
+    //             lmsAttributeGroupDefinitionId: this.LeaveAttributeSelectionList[index].lmsAttributeGroupDefinitionId,
+    //             isUsed : this.LeaveAttributeSelectionList[index].isUsed,
+    //           }
+    //           this.targetProducts.push(obj); 
+    //         } );
+    //      this.LeaveAttributeGroupFrom.patchValue( { name:  this.LeaveAttributeSelectionList[index].name } );
+    //      this.LeaveAttributeGroupFrom.patchValue( { description:  this.LeaveAttributeSelectionList[index].description } );
+    //      this.LeaveAttributeGroupFrom.patchValue( { type: this.LeaveAttributeSelectionList[index].type } );
+    //      this.LeaveAttributeGroupFrom.patchValue( {
+    //       lmsAttributeNature: ''
+    //     } );
+    //      this.LeaveAttributeGroupFrom.disable();
+    // } );
+
+      this.SourceProducts= this.getAllAttributeList[0];  
       this.targetProducts = [];
       this.targetData = [];
       this.viewLeftRightButton = false;
@@ -467,12 +581,11 @@ export class LeaveAttributeGroupComponent implements OnInit {
             } );
          this.LeaveAttributeGroupFrom.patchValue( { name:  this.LeaveAttributeSelectionList[index].name } );
          this.LeaveAttributeGroupFrom.patchValue( { description:  this.LeaveAttributeSelectionList[index].description } );
-         //this.LeaveAttributeGroupFrom.patchValue( { lmsAttributeNature: this.LeaveAttributeSelectionList[index].name } );
-         this.LeaveAttributeGroupFrom.patchValue( {
-          lmsAttributeNature: ''
-        } );
+         this.LeaveAttributeGroupFrom.patchValue( { type: this.LeaveAttributeSelectionList[index].type } );
+         this.LeaveAttributeGroupFrom.patchValue( { lmsAttributeNature: '' } );
+        this.copyFromList = this.LeaveAttributeSelectionList; 
          this.LeaveAttributeGroupFrom.disable();
-    } );
+    
 }
 
 onStatusChange( event ) {
@@ -486,7 +599,7 @@ onStatusChange( event ) {
     this.leaveAttributeService.getAllLeaveAttributeCreation().subscribe( res => {
       this.originalSourceProductList = res.data.results;
       this.SourceProducts = res.data.results[0];
-      this.isExcelVisible = false;
+      //this.isExcelVisible = false;
     } );
   } else {
       this.targetData = [];
@@ -524,11 +637,45 @@ onStatusChange( event ) {
   }
 }
 
+onTypeStatusChange( event ) {
+  debugger
+  this.selectedUser2 = [];
+  this.selectedUser = [];
+  this.SourceProducts = [];
+  this.targetProducts = [];
+  this.copyFromList = [];
+  this.saveDisable = true;
+  if ( event.target.value == 'Attendance Regularzation') {
+    this.getAllAttributeList.forEach(element =>{
+      this.SourceProducts= this.getAllAttributeList[0].filter( o => o.type == event.target.value );
+    });
+    this.LeaveAttributeSelectionList.forEach(element =>{
+      this.copyFromList = this.LeaveAttributeSelectionList.filter( o => o.type == event.target.value ); 
+    });
+  } else if(event.target.value == 'Leave'){
+    this.getAllAttributeList.forEach(element =>{
+      this.SourceProducts= this.getAllAttributeList[0].filter( o => o.type == event.target.value );
+    });
+    this.LeaveAttributeSelectionList.forEach(element =>{
+      this.copyFromList = this.LeaveAttributeSelectionList.filter( o => o.type == event.target.value ); 
+    });
+  }else if(event.target.value == 'Shift'){
+    this.getAllAttributeList.forEach(element =>{
+      this.SourceProducts= this.getAllAttributeList[0].filter( o => o.type == event.target.value );
+    });
+    this.LeaveAttributeSelectionList.forEach(element =>{
+      this.copyFromList = this.LeaveAttributeSelectionList.filter( o => o.type == event.target.value ); 
+    });
+  }else{
+      this.SourceProducts= this.getAllAttributeList[0];
+      this.copyFromList = this.LeaveAttributeSelectionList;   
+  }
+}
 //excel
 exportAsXLSX(): void {
   this.excelData = [];
   this.header = [];
-  this.header =["Attribute Group Name","Discription","Attribute Count"];
+  this.header =["Attribute Group Name","Discription","Attribute Count","Type"];
   this.excelData=[];
   if(this.summaryList.length>0){
   this.summaryList.forEach(element => {
@@ -536,6 +683,7 @@ exportAsXLSX(): void {
       "Attribute Group Name":element.name,
       "Discription":element.description,
       "Attribute Count": element.options,
+      "Type" : element.type,
     }
     this.excelData.push(obj)
   });
@@ -568,10 +716,32 @@ customSort(event: SortEvent) {
 }
   
 //excel
-selectexportAsXLSX(): void {
+sourcexportAsXLSX(): void {
   this.excelData = [];
   this.header = [];
-  this.header =["Code","Discription","Nature"];
+  this.header =["Code","Discription","Nature","Type"];
+  this.excelData=[];
+  if(this.SourceProducts.length>0){
+  this.SourceProducts.forEach(element => {
+    let obj = {
+      "Code":element.code,
+      "Discription":element.description,
+      "Nature": element.lmsAttributeNature,
+      "Type":element.type,
+    }
+    this.excelData.push(obj)
+  });
+  console.log('this.excelData::', this.excelData);
+} 
+  this.excelservice.exportAsExcelFile(this.excelData, 'Source Attribute','Source Attribute',this.header);
+      
+}
+
+//excel
+targetxportAsXLSX(): void {
+  this.excelData = [];
+  this.header = [];
+  this.header =["Code","Discription","Nature","Type"];
   this.excelData=[];
   if(this.targetProducts.length>0){
   this.targetProducts.forEach(element => {
@@ -579,15 +749,15 @@ selectexportAsXLSX(): void {
       "Code":element.code,
       "Discription":element.description,
       "Nature": element.lmsAttributeNature,
+      "Type":element.type,
     }
     this.excelData.push(obj)
   });
   console.log('this.excelData::', this.excelData);
 } 
-  this.excelservice.exportAsExcelFile(this.excelData, 'Select Attribute','Select Attribute',this.header);
+  this.excelservice.exportAsExcelFile(this.excelData, 'Destination Attribute','Destination Attribute',this.header);
       
 }
-
 
 //sort
 selectcustomSort(event: SortEvent) {

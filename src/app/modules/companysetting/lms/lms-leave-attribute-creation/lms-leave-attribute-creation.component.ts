@@ -8,6 +8,7 @@ import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
 import { ExcelserviceService } from './../../../../core/services/excelservice.service';
 
+
 @Component({
   selector: 'app-lms-leave-attribute-creation',
   templateUrl: './lms-leave-attribute-creation.component.html',
@@ -28,6 +29,7 @@ export class LmsLeaveAttributeCreationComponent implements OnInit {
   viewCancelButton: boolean = false;
   viewUpdateButton: boolean = false;
   attributeList : Array<any> = [];
+  typeList : Array<any> = [];
   optionValue : Array<any> = [];
   lmsAttributeOptionId : Array<any>= [];
   modalRef : BsModalRef;
@@ -57,14 +59,19 @@ export class LmsLeaveAttributeCreationComponent implements OnInit {
     {label : 'Range Value No. of Instances Per Period ',value: 'Range Value No. of Instances Per Period'},
     {label : 'Range Value Per Instance SDM',value: 'Range Value Per Instance SDM'},
     {label : 'Range Value Per Period SDM',value: 'Range Value Per Period SDM'},
-    {label : 'Range Value No. of Instances Per Period SDM',value: 'Range Value No. of Instances Per Period SDM'}
-
-     
+    {label : 'Range Value No. of Instances Per Period SDM',value: 'Range Value No. of Instances Per Period SDM'}   
+  ];
+  
+  this.typeList = [
+    {label : 'Attendance Regularzation',value: 'Attendance Regularzation'},
+    {label : 'Leave',value: 'Leave'},
+    {label : 'Shift',value: 'Shift'}
   ];
     this.LeaveAttributeCreationForm = this.formBuilder.group({
       code : new FormControl('',Validators.required),
       description : new FormControl('',Validators.required),
       lmsAttributeNature : new FormControl('',Validators.required),
+      type : new FormControl('',Validators.required),
       pfFormArray : new FormArray( [] ),
       
     });
@@ -197,6 +204,7 @@ debugger
     description: element.description,
     optionValue: value,
     lmsAttributeOptionId:lmsAttributeOptionId,
+    type:element.type,
   }
   this.LeaveAttributeCreationSummaryList.push( obj );
 } );
@@ -209,6 +217,7 @@ debugger
 
 
 AddLeaveAttributeCreation():void{ 
+  debugger
   if ( this.viewUpdateButton == false ){
 const addLeaveAttributeCreation : SaveLeaveAttributeCreation = Object.assign({},this.LeaveAttributeCreationForm.value);
 let addLeaveAttributeCreation1=this.LeaveAttributeCreationForm.getRawValue();
@@ -225,6 +234,9 @@ addLeaveAttributeCreation1.lmsAttributeOptionRequestDTOList.forEach(element => {
   this.getAllLeaveAttributeCreation();
   //this.ResetLeaveAttributeCreation();
   this.CancelLeaveAttributeCreation();
+  this.LeaveAttributeCreationForm.patchValue( {
+    type: ''
+  } );
   },
   ( error: any ) => {
         this.alertService.sweetalertError( error["error"]["status"]["messsage"] );
@@ -260,6 +272,9 @@ this.leaveAttributeService.DeleteAttributeLeaveCreation(lmsAttributeOptionIdForD
     this.getAllLeaveAttributeCreation();
     this.hidevalue = true;
     this.CancelLeaveAttributeCreation();
+    this.LeaveAttributeCreationForm.patchValue( {
+      type: ''
+    } );
   });
 }
 }
@@ -303,7 +318,9 @@ editLeaveAttributeCreation( lmsAttributeMasterId : any){
     
     this.LeaveAttributeCreationForm.patchValue( { code: this.LeaveAttributeCreationSummaryList[index].code } );
     this.LeaveAttributeCreationForm.patchValue( { description: this.LeaveAttributeCreationSummaryList[index].description } );
-    this.LeaveAttributeCreationForm.patchValue( { lmsAttributeNature: this.LeaveAttributeCreationSummaryList[index].attributeNatureLongForm } );  
+    this.LeaveAttributeCreationForm.patchValue( { lmsAttributeNature: this.LeaveAttributeCreationSummaryList[index].attributeNatureLongForm } );
+    this.LeaveAttributeCreationForm.patchValue( { type: this.LeaveAttributeCreationSummaryList[index].type } );
+    this.LeaveAttributeCreationForm.get( 'type' ).disable();  
     this.LeaveAttributeCreationForm.get( 'lmsAttributeNature' ).disable();
 
 }
@@ -319,6 +336,7 @@ let index = this.LeaveAttributeCreationSummaryList.findIndex( o => o.lmsAttribut
 this.LeaveAttributeCreationForm.patchValue( { code: this.LeaveAttributeCreationSummaryList[index].code } );
 this.LeaveAttributeCreationForm.patchValue( { description: this.LeaveAttributeCreationSummaryList[index].description } );
 this.LeaveAttributeCreationForm.patchValue( { lmsAttributeNature: this.LeaveAttributeCreationSummaryList[index].attributeNatureLongForm } );
+this.LeaveAttributeCreationForm.patchValue( { type: this.LeaveAttributeCreationSummaryList[index].type } );
 if ( this.LeaveAttributeCreationSummaryList[index].attributeNatureLongForm == 'List' ) {
   this.hidevalue = true;
   this.isView = false;
@@ -347,6 +365,9 @@ CancelLeaveAttributeCreation(): void {
   this.viewUpdateButton = false;
   this.LeaveAttributeCreationForm.patchValue( {
     lmsAttributeNature: ''
+  } );
+  this.LeaveAttributeCreationForm.patchValue( {
+    type: ''
   } );
 }
 
@@ -380,7 +401,7 @@ exportAsXLSX(): void {
   this.excelData = [];
   debugger
   this.header = [];
-  this.header =["Code","Discription","Nature","List Value"];
+  this.header =["Code","Discription","Nature","List Value","Type"];
   this.excelData=[];
   if(this.LeaveAttributeCreationSummaryList.length>0){
   this.LeaveAttributeCreationSummaryList.forEach(element => {
@@ -389,6 +410,7 @@ exportAsXLSX(): void {
       "Discription":element.description,
       "Nature": element.lmsAttributeNature,
       "List Value":element.optionValue,
+      "Type" : element.type,
     }
     this.excelData.push(obj)
   });

@@ -26,6 +26,15 @@
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Type</label>
+                    <select (change)="onChangeNature($event)" formControlName="type" 
+                    [ngClass]="{'is-invalid' :LeaveAttributeCreationForm.get('type').status == 'INVALID'} " class="form-control">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let type of typeList" [value]="type.value">
+                        {{type.label}} </option>                       
+                    </select>
+                  </div>  
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
                     <select (change)="onChangeNature($event)" formControlName="lmsAttributeNature" 
                     [ngClass]="{'is-invalid' :LeaveAttributeCreationForm.get('lmsAttributeNature').status == 'INVALID'} " class="form-control">
@@ -163,7 +172,7 @@
                       (sortFunction)="customSort($event)" [customSort]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       totalRecords={{LeaveAttributeCreationSummaryList.length}}                  
-                     [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['code','description','attributeNatureLongForm','optionValue']">
+                     [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['code','description','attributeNatureLongForm','optionValue','type']">
 
                      <ng-template pTemplate="caption">
                          <div class="row">
@@ -237,7 +246,18 @@
 
                             </div>
                           </th>
+                          <th rowspan="1" class="wd-20 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                             Type
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="type" pSortableColumn="type">
+                                </p-sortIcon>
+                                <p-columnFilter field="type" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
 
+                            </div>
+                          </th>
 
                           <th rowspan="1" class="wd-8 text-center">
                             <div class="p-d-flex p-jc-center p-ai-center">
@@ -265,6 +285,9 @@
                           <td class="bg-color-light_gray"><label class="form-lable mb-0"
                               tooltip="{{user1.optionValue}}">{{user1.optionValue}}</label>
                           </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                            tooltip="{{user1.optionValue}}">{{user1.type}}</label>
+                        </td>
 
                           <td class="wd-10 align-left">
                             <button type="button" class="btn btn-icon" tooltip="View"
