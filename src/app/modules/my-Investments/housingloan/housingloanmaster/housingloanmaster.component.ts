@@ -184,6 +184,7 @@ export class HousingloanmasterComponent implements OnInit {
   public isRadioButtonDisabled:boolean = true;
   public isTransferValid: boolean = false;
   public isActionForTransfer: boolean = false;
+  public isVisibleTable: boolean = false;
   public abc: any[];
   myDate: string;
   selectedLoanTypeIndex: any = -1;
@@ -196,6 +197,11 @@ export class HousingloanmasterComponent implements OnInit {
   isLoanTransfer:boolean = false;
   indexCount: any;
   employeeOwner: boolean = true;
+  documentArray: any[] = [];
+  viewDocumentName: any;
+  viewDocumentType: any;
+  public urlArraySummary: any;
+
   // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   // ServicesList: any;
   constructor(
@@ -239,7 +245,7 @@ export class HousingloanmasterComponent implements OnInit {
         Validators.min(0),
       ]),
       accountStatus: new FormControl(true),
-      loanTransfer: new FormControl(true),
+      //loanTransfer: new FormControl(false),
 
     })),
       (this.HPUsageDetailForm = this.formBuilder.group({
@@ -309,7 +315,6 @@ export class HousingloanmasterComponent implements OnInit {
   public ngOnInit(): void {
 
     //this.visibilityFlag = true;
-    debugger
     console.log("visibilityFlag", this.visibilityFlag);
     //  this.addOwner(0);
     // this.startDateModel = '31-dec-9999';
@@ -443,7 +448,6 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   onCheckboxSelect(checkboxValue) {
-    debugger
     this.loanTaken = true;
     if (checkboxValue == 'false') {
       this.loanTaken = false;
@@ -510,7 +514,6 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public addOwnerType(action) {
-    debugger
     this.isSaveShowInOwner = true,
       this.isUpdateShowInOwner = false,
       // houseLoanOwnerDetailSubmitted
@@ -582,6 +585,16 @@ export class HousingloanmasterComponent implements OnInit {
       // ).value.rentAmount;
 
 
+    }
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
     }
   }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
@@ -718,10 +731,19 @@ export class HousingloanmasterComponent implements OnInit {
       this.isLoanTransfer = false;
     }
     this.editMaxloanDate = new Date(2100,12,31);
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
   }
 
   public addLoanDetails(formDirective: FormGroupDirective) {
-    debugger
     this.loansubmitted = true;
     //this.isSaveLoan = true;
     this.isUpdateLoan = false;
@@ -748,7 +770,8 @@ export class HousingloanmasterComponent implements OnInit {
     console.log(this.selectedLoanTypeIndex)
 
     if (this.selectedLoanTypeIndex > -1) {
-      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      //this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      this.housePropertyLoanDetailList.get('accountStatus').patchValue(true);
       this.loanDetailGridData[this.selectedLoanTypeIndex] = this.housePropertyLoanDetailList.getRawValue();
       console.log(this.loanDetailGridData)
       this.housePropertyLoanDetailList.reset();
@@ -756,7 +779,8 @@ export class HousingloanmasterComponent implements OnInit {
     }
     else {
       this.loanDetailGridData = [];
-      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      //this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      this.housePropertyLoanDetailList.get('accountStatus').patchValue(true);
       this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
       this.housePropertyLoanDetailList.reset();
       this.loansubmitted = false;
@@ -777,7 +801,17 @@ export class HousingloanmasterComponent implements OnInit {
     }
     this.editMaxloanDate =  new Date(2100,12,31);
     console.log("max fromdate :: ", this.editMaxloanDate);
-
+    //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+    if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
+    else {
+      //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+    }
   }
 
   public trackloanDetail(index: number, loanDetail: any) {
@@ -859,6 +893,15 @@ export class HousingloanmasterComponent implements OnInit {
     //     this.visibilityFlagProperty = true;
     //     this.visibilityFlagStamp = false;
     //   }
+    if(this.visibilityFlag)
+    {
+      this.housingLoanForm.get('stampDutyRegistrationAmount').clearValidators();
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+    }
+    else{
+      this.housingLoanForm.get('stampDutyRegistrationAmount').setValidators([Validators.required,Validators.pattern('^[0-9]*$')])
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+    }
     console.log("visibilityFlagProperty", this.visibilityFlagProperty);
   }
 
@@ -1013,7 +1056,6 @@ export class HousingloanmasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-    debugger
     this.submitted = true;
     this.houseLoanOwnerTypeList.length;
     this.houseLoanUsageTypeList.length;
@@ -1118,11 +1160,10 @@ export class HousingloanmasterComponent implements OnInit {
         this.employeeOwner = false;
       }
     });
-    debugger
     if(this.employeeOwner && this.housingLoanForm.get('housePropertyMasterId').value == 0){
       this.alertService.sweetalertWarning("Please Include yourself as owner.");
+      return;
     }
-    
     if(
       (this.propertyIndex.length === 0 || 
         this.visibilityFlagStamp? this.stampDutyRegistration.length === 0 : false ) &&
@@ -1140,7 +1181,10 @@ export class HousingloanmasterComponent implements OnInit {
       console.log('urlArray.length', this.urlArray.length);
       return;
     } else {
-      delete this.houseLoanOwnerTypeList[0].otherOwnerName;
+      this.houseLoanOwnerTypeList.forEach((element) => {
+        delete element.otherOwnerName;
+      })
+      //delete this.houseLoanOwnerTypeList[0].otherOwnerName;
       // const data = this.housingLoanForm.getRawValue();
       const data = {
         // property detail propertied goes here
@@ -1198,13 +1242,17 @@ export class HousingloanmasterComponent implements OnInit {
           });
         }
       });
-      debugger
+      if(this.isLoanTransfer)
+      {
+        this.isLoanTransfer = false;
+      }
       this.Index = -1;
       formDirective.resetForm();
       this.housingLoanForm.reset();
       this.HPOwnerDetailForm.reset();
       this.HPUsageDetailForm.reset();
-      this.housePropertyLoanDetailList.reset()
+      this.housePropertyLoanDetailList.reset();
+      this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
       this.showUpdateButton = false;
       this.isLoanAddNew = true;
       this.loanDetailGridData = [];
@@ -1429,7 +1477,6 @@ export class HousingloanmasterComponent implements OnInit {
       });
 
       const obj = this.findByPolicyNo(housePropertyMasterId, this.masterGridData);
-
       this.loanDetailGridData = [];
       this.houseLoanUsageTypeList = [];
       this.houseLoanOwnerTypeList = [];
@@ -1448,6 +1495,26 @@ export class HousingloanmasterComponent implements OnInit {
 
       this.proofSubmissionId = obj.proofSubmissionId;
       this.isClear = true;
+      this.documentArray = [];
+      /* if(obj.propertyIndex.length != 0 || obj.loanSanctionLetter.length != 0 
+        || obj.possessionLetter.length != 0){ */
+          obj.propertyIndex.forEach(element => {
+            this.documentArray.push(element);
+          });
+          obj.loanSanctionLetter.forEach(element => {
+            this.documentArray.push(element);
+          });
+          obj.possessionLetter.forEach(element => {
+            this.documentArray.push(element);
+          });
+        
+    
+      /* if(obj.stampDutyRegistration.length != 0){ */
+        obj.stampDutyRegistration.forEach(element => {
+          this.documentArray.push(element);
+        });
+/*       }
+ */      this.isVisibleTable = true;
       if(this.loanDetailGridData.length != 0){
         this.isLoanAddNew = false;
         if(this.houseLoanF.housePropertyMasterId.value != 0)
@@ -1457,10 +1524,22 @@ export class HousingloanmasterComponent implements OnInit {
         if(this.houseLoanF.housePropertyMasterId.value != 0)
         this.isLoanTransfer = false;
       }
+      if( this.isUpdateLoan == true)
+      {
+        this.isUpdateLoan = false;
+      }
       // }
+      if(this.houseLoanOwnerTypeList.length == 1 && this.isloanTaken){
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').patchValue(100);
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').disable();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+      }
+      else {
+        //this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').reset();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
+        this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
+      }
     });
-    debugger
-
   }
 
   // Find PolicyNo
@@ -1550,7 +1629,6 @@ export class HousingloanmasterComponent implements OnInit {
 
   // //edit houseLoanUsageTypeList Changes by Komal
   editLoanOwnerDetail(evt) {
-    debugger
     this.isSaveShowInOwner = false,
       this.isUpdateShowInOwner = true;
       let ownerName;// = evt.ownerName;
@@ -1647,6 +1725,7 @@ export class HousingloanmasterComponent implements OnInit {
     // this.houseLoanOwnerTypeList = [];
     this.houseLoanUsageTypeList = [];
     this.housingLoanForm.reset();
+    this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
     this.housePropertyLoanDetailList.reset();
     this.loanDetailGridData = [];
     this.propertyIndex = [];
@@ -1657,6 +1736,7 @@ export class HousingloanmasterComponent implements OnInit {
     this.stampDutyRegistration = [];
     this.loanSanctionLetter = [];
     this.possessionLetter = [];
+    this.isVisibleTable = false;
   }
   // On View Cancel
   public cancelView() {
@@ -1941,7 +2021,6 @@ export class HousingloanmasterComponent implements OnInit {
   //   }
   //  }
   public loanTransfer(formDirective: FormGroupDirective) {
-    debugger
     this.loansubmitted = true;
     this.isTransferValid = false;
     if(this.housePropertyLoanDetailList.invalid){
@@ -1964,7 +2043,7 @@ export class HousingloanmasterComponent implements OnInit {
     const loanEDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
     this.loanDetailGridData.forEach((element) => {
-      if(element.loanTransfer == true &&  this.datePipe.transform(element.loanEndDate, 'yyyy-MM-dd') >= loanEDate)
+      if(element.accountStatus == true &&  this.datePipe.transform(element.loanEndDate, 'yyyy-MM-dd') >= loanEDate)
       {
         this.isTransferValid = true;
       }
@@ -1990,14 +2069,19 @@ export class HousingloanmasterComponent implements OnInit {
       return
     }
    
-      this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      //this.housePropertyLoanDetailList.get('loanTransfer').patchValue(true);
+      this.housePropertyLoanDetailList.get('accountStatus').patchValue(true);
 
       const index = this.loanDetailGridData.findIndex(
         (land) =>
-          land.loanTransfer === true
+          land.accountStatus === true
       );
       if(index >-1)
-      this.loanDetailGridData[index].loanTransfer = false;
+      {
+        //this.loanDetailGridData[index].loanTransfer = false;
+        this.loanDetailGridData[index].accountStatus = false;
+      }
+      
 
       this.loanDetailGridData.push(this.housePropertyLoanDetailList.getRawValue());
       //this.housePropertyLoanDetailList.reset();
@@ -2044,6 +2128,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   public onChangeDocumentRemark(transIndex, event) { 
     this.editRemarkData =  event.target.value;
+    if(this.transactionDetail.length != 0)
    this.transactionDetail[0].housePropertyTransactionList[transIndex].remark =  event.target.value;
   
   }
@@ -2059,7 +2144,7 @@ export class HousingloanmasterComponent implements OnInit {
       "remark":this.editRemarkData,
       "proofSubmissionId":this.summaryDetails.proofSubmissionId,
       "role":"Employee",
-      "remarkType":"Transaction"
+      "remarkType":"Master"
 
     };
     this.Service
@@ -2079,7 +2164,38 @@ export class HousingloanmasterComponent implements OnInit {
     });
 }
 onResetRemarkDetails(){
-  debugger
   this.enteredRemark = null;
+}
+/* get documentArray(){
+  if(this.propertyIndex.length != 0 || this.loanSanctionLetter.length != 0 
+    || this.possessionLetter.length != 0){
+      this.documentArrayList.push(this.propertyIndex);
+      this.documentArrayList.push(this.loanSanctionLetter);
+      this.documentArrayList.push(this.possessionLetter);  
+    }
+
+  if(this.stampDutyRegistration.length != 0){
+    this.documentArrayList.push(this.stampDutyRegistration);
+  }
+return this.documentArrayList;
+} */
+public docViewerSummary(template3: TemplateRef<any>, index: any, data: any) {
+  console.log('---in doc viewer--');
+  this.urlIndex = index;
+  // this.urlIndex = 0;
+  this.viewDocumentName = data.documentName;
+  this.viewDocumentType = data.documentType
+  this.urlArraySummary = data;
+  
+console.log('urlIndex::' , this.urlIndex);
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArraySummary.blobURI
+  );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
 }
 }
