@@ -30,6 +30,29 @@ tbody .align td{
   height: 35px;
   margin-right: 15px;
 }
-.float-right{
-  margin-top: -8px;
+// .float-right{
+//   margin-top: -8px;
+// }
+.p-input-icon-left>i:first-of-type {
+  top: 9px;
+  z-index: 1;
+  right: 24px;
+  color: #6c757d;
+  position: absolute;
+  }
+
+.Label_badge {
+  position: relative;
+  top: -9px;
+  right: 14px;
+  font-size: 10px;
+  width: 24px;
+  height: 20px;
+  line-height: 12px;
+  font-weight: bold;
+  color: #006666;
+  padding-left: 6px;
+    border: 1px solid #999;
+    background: #f2f2f2;
+    border-radius: 50px;
 }

@@ -8,7 +8,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { EmiCalculatorComponent } from './loan/emi-calculator/emi-calculator.component';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-// import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {TableModule} from 'primeng/table';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
@@ -35,13 +35,14 @@ import { RescheduleComponent } from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
 // import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
-import { EmpListComponent } from './emp-list/emp-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
+// import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
+import { LoanApprovalComponent } from './loan-approval/loan-approval.component';
 
 
 @NgModule({
-  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent, EmpListComponent, LoanSummaryComponent],
+  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent,
+     SettlementComponent,  LoanApprovalComponent],
   imports: [
     CollapseModule,ProgressbarModule,PopoverModule,ToastrModule,ModalModule,BsDropdownModule,CarouselModule,
     AlertModule,AccordionModule,
@@ -53,7 +54,7 @@ import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
     ChartsModule,
     NgxSliderModule,
     FormsModule,
-    // Ng2SearchPipeModule,
+    Ng2SearchPipeModule,
     TableModule,
     BsDatepickerModule.forRoot(),
     TooltipModule,

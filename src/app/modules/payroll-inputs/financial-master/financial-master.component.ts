@@ -137,14 +137,35 @@ export class FinancialMasterComponent implements OnInit {
     this.service.getAllSummarydata().subscribe(res => {
       this.tempsummaryData = res.data.results;
 
+      var min= this.tempsummaryData.sort((a,b)=>a-b)[0], max= this.tempsummaryData.slice(-1)[0];
+
+      console.log(new Date(max.fromDate));
+
+      let selectedfromdate = this.datePipe.transform(this.summaryFromDate, 'yyyy-MM-dd')
+      // console.log(selectedfromdate)
+
       this.tempsummaryData.forEach(element => {
-        console.log(new Date (element.fromDate))
-        console.log(new Date (this.summaryFromDate))
-        // if(new Date (element.fromDate) < new Date(this.summaryFromDate) ){
+       console.log(new Date (element.fromDate))
+      //  console.log(new Date(max.fromDate).getTime() === new Date (element.fromDate).getTime())
+  // new Date (element.fromDate) < new Date(selectedfromdate)  &&
+        if( new Date(max.fromDate).getTime() === new Date (element.fromDate).getTime()){
            this.summaryData.push(element)
-        // }
+        }
       });
+
+      // console.log(JSON.stringify(this.summaryData))
     })
+  }
+
+  getSelectedFromDate(value){
+    this.summaryData = []
+    console.log(new Date(value).getTime())
+    this.tempsummaryData.forEach(element => {
+      console.log(new Date (element.fromDate).getTime())
+       if( new Date(element.fromDate).getTime() >= new Date (value).getTime()){
+          this.summaryData.push(element)
+       }
+     });
   }
 
   navigateToSummary() {
@@ -236,6 +257,7 @@ export class FinancialMasterComponent implements OnInit {
 
       this.masterGridData.sort((a,b) => a.headSequence - b.headSequence);
 
+    
       // this.masterGridData.forEach(ele =>{
       //   ele.sort((a,b) => b - a);
       // })

@@ -3,13 +3,11 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
-import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
+import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import { LoanService } from '../loan.service';
-import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
-const html2canvas: any = _html2canvas;
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -25,19 +23,43 @@ export class LoanComponent implements OnInit {
   loandata: any = '';
   searchText:string;
   editflag: boolean = false;
-
+  getLoanApplicationSummaryData: any=[];
+  employeeMasterId: any;
+  userData: any;
+  header: any[];
+  selectedLoanData: any ='';
+  getLoanApplicationSummaryData2: any;
+  getLoanTransactiondata: any;
+  loanDisbursementPaymentDetailsData: any=[];
+  transactionLength: any;
+  type: string;
+  selectedEmpLoanData:any=[];
+  recoveryMethod: any;
+  loanAdhocPaymentDetailsData: any[];
+  loanReschdulePaymentDetailsData: any[];
+  loanSettelmentPaymentDetailsData: any[];
+  createdDate: any;
+  loanApplicationId: any;
+  trasactionData: any;
+  settlementRequestFlag:boolean=false;
+  // expectedPaymentDate:Date=new Date();
+  // getLoanApplicationSummaryDataLength: any;
   constructor(public formBuilder : FormBuilder,
-    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ,
-    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router) {
-    this.LoanForm = this.formBuilder.group({
-
-      // "searchText": new FormControl(''),
-
+    private modalService: BsModalService, public loanservice:LoanService,
+    private datePipe: DatePipe,private excelservice: ExcelserviceService ,public sanitizer: DomSanitizer,private router: Router,
+    private authService: AuthService) {
+      this.LoanForm = new FormGroup({
     })
+
+    this.userData = this.authService.getprivileges()
+    this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
 
    }
   ngOnInit(): void {
-    this.getAllData();
+    // this.getAllData();
+    this.getLoanApplicationSummary(this.employeeMasterId)
+   this.getLoanTransaction(this.employeeMasterId)
+
   }
   loanFormSubmit()
   {
@@ -70,34 +92,14 @@ export class LoanComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
-  // .......................................Excel and PDF Code.................................................
-  exportAsXLSX():void {
-    this.excelData = [];
-    this.excelData = this.summaryData;
-    this.excelservice.exportAsExcelFile(this.excelData, 'Loan Summary');
-  }
 
-  download(){
-    let data = document.getElementById('contentToConvert');  // Id of the table
-    html2canvas(data).then(canvas => {
-    const imgWidth = 208;
-    const pageHeight = 295;
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-    const heightLeft = imgHeight;
-
-    const contentDataURL = canvas.toDataURL('image/png')
-    const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-    const position = 0;
-    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-    pdf.save('Loan-Summary.pdf'); // Generated PDF
-  });
-  }
   // .......................API.......................................................................
   getAllData()
 {
 this.loanservice.getAll().subscribe(res =>
   {
     this.summaryData = res.data.results[0];
+    // console.log("this.summaryData",this.summaryData)
   })
 }
 
@@ -131,6 +133,209 @@ deleteLoanForm()
 }
 downloadSchedule()
 {
+
+}
+getLoanApplicationSummary(employeeMasterId)
+{
+
+  this.loanservice.getLoanApplicationSummary(this.employeeMasterId).subscribe(res =>
+    {
+     this.getLoanApplicationSummaryData = res.data.results[0];
+     this.getLoanApplicationSummaryData.forEach(element => {
+       element.count =[];
+     });
+    })
+}
+
+getLoanTransaction(id){
+  this.loanservice.getLoanTransaction(id).subscribe(res =>
+    {
+      this.getLoanTransactiondata = res.data.results;
+      // console.log("this.getLoanTransactiondata",JSON.stringify(this.getLoanTransactiondata))
+      this.loanDisbursementPaymentDetailsData = [];
+      this.getLoanTransactiondata.forEach(element => {
+
+        element.loanDisbursementPaymentDetails.forEach(disbursement => {
+          disbursement.type = 'Disbursement'
+          disbursement.count = element.loanDisbursementPaymentDetails.length
+          this.loanDisbursementPaymentDetailsData.push(disbursement)
+        });
+
+        element.adhocPaymentDetails.forEach(adhoc => {
+          adhoc.type = 'Adhoc'
+          adhoc.count = element.adhocPaymentDetails.length
+          // console.log("adhoc.count",adhoc.count)
+          this.loanDisbursementPaymentDetailsData.push(adhoc)
+          // console.log("adhoc data",adhoc)
+        });
+
+        element.loanRescheduleDetails.forEach(reschdule => {
+          reschdule.type = 'Reschedule'
+          reschdule.count = element.loanRescheduleDetails.length
+          // console.log("Reschedule.count",reschdule.count)
+          this.loanDisbursementPaymentDetailsData.push(reschdule)
+          // console.log("reschdule data",reschdule)
+
+        });
+
+        element.loanSettlement.forEach(settlment => {
+          settlment.type = 'Settelment'
+          settlment.count = element.loanSettlement.length
+          this.loanDisbursementPaymentDetailsData.push(settlment)
+        });
+
+        // this.transactionLength = this.loanDisbursementPaymentDetailsData.length;
+
+      });
+      // let count = []
+      this.getLoanApplicationSummaryData.forEach(element => {
+        element.count = [];
+        // console.log("element.loanApplicationId",element.loanApplicationId)
+       this.loanDisbursementPaymentDetailsData.forEach(ele => {
+         if(element.loanApplicationId == ele.loanApplicationId){
+         element.count.push(ele)
+        //  console.log("element.loanApplicationId",element.loanApplicationId)//console the same id
+        //  console.log("ele.loanApplicationId",ele.loanApplicationId)
+
+         }
+         if(ele.loanApplication){
+          if(element.loanApplicationId == ele.loanApplication.loanApplicationId){
+            element.count.push(ele)
+            // console.log("ele.loanApplication.loanApplicationId",ele.loanApplication.loanApplicationId)
+           }
+         }
+
+       });
+    })
+    // console.log("this.loanDisbursementPaymentDetailsData", this.loanDisbursementPaymentDetailsData)
+    // console.log("getLoanApplicationSummaryData",this.getLoanApplicationSummaryData)
+  })
+}
+
+selectedLoan(summary)
+{
+  this.selectedLoanData = summary;
+  console.log(" this.selectedLoanData", this.selectedLoanData)
+  localStorage.clear();
+  localStorage.setItem('selectedLoanData',JSON.stringify(summary))
+  this.recoveryMethod = this.selectedLoanData.loanMaster.recoveryMethod;
+
+  summary.count.forEach(element => {   // till not use bcz of testing (this code is used when one the type of loan getting the settelment req then not allow to other req )
+    this.settlementRequestFlag = false;
+    if(element.type == 'Settelment')
+    {
+    this.settlementRequestFlag = true;
+    }
+  });
+
+
+}
+
+viewTransactionDetails(transactionData){
+  if(transactionData.type == 'Disbursement' ){
+  localStorage.setItem('viewTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/disbursement']);
+  }
+  else if(transactionData.type == 'Adhoc' ){
+  localStorage.setItem('viewTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/adhoc']);
+  }
+  else if(transactionData.type == 'Reschedule' ){
+  localStorage.setItem('viewTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/rescheduleRequest']);
+  }
+  else if(transactionData.type == 'Settelment' ){
+    localStorage.setItem('viewTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/settlementRequest']);
+  }
+}
+editTransactionDetails(transactionData)
+{
+  if(transactionData.type == 'Disbursement' ){
+  localStorage.setItem('editTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/disbursement']);
+
+}else if(transactionData.type == 'Adhoc' ){
+  localStorage.setItem('editTransaction',JSON.stringify(transactionData));
+    this.router.navigate(['/loan/adhoc']);
+}
+else if(transactionData.type == 'Reschedule' ){
+  localStorage.setItem('editTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/rescheduleRequest']);
+  }
+  else if(transactionData.type == 'Settelment' ){
+    localStorage.setItem('editTransaction',JSON.stringify(transactionData));
+  this.router.navigate(['/loan/settlementRequest']);
+  }
+}
+// .......................................Excel and PDF Code.................................................
+exportAsXLSX(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["loan Application Number","last Modified DateTime","loan Type","Repayment Type","Approved Amount",
+ "Subject", "Priority", "Last Updated", "Status",]
+  this.getLoanApplicationSummaryData.forEach(element => {
+    let obj = {
+      "loan Application Number":element.loanApplicationNumber,
+      "last Modified DateTime":element.lastModifiedDateTime,
+      "loan Type": element.loanType,
+      "Repayment Type": element.repaymentType,
+      "Approved Amount": element.approvedAmount,
+      "Module Name": element.applicationModuleName,
+      "Query Type": element.queryDescription,
+      "Sub-Query Type": element.subqueryDescription,
+      "Status": element.status,
+
+    }
+    this.excelData.push(obj)
+  });
+  this.excelservice.exportAsExcelFile(this.excelData, 'Loan Summary','Loan Summary',this.header);
+
+}
+
+smallpopup1(viewTransaction: TemplateRef<any>,loanApplicationId) {
+  this.modalRef = this.modalService.show(viewTransaction,
+    Object.assign({}, { class: 'gray modal-lg' })
+  );
+  this.loanApplicationId = loanApplicationId;
+  // console.log(" this.loanApplicationId", this.loanApplicationId)
+  this.trasactionData =[];
+  this.loanDisbursementPaymentDetailsData.forEach(element => {
+    // console.log('element.loanApplicationId',element.loanApplicationId)
+    // console.log('this.loanApplicationId',this.loanApplicationId)
+
+    if(element.loanApplicationId == this.loanApplicationId)
+    {
+    this.trasactionData.push(element)
+    }
+    if(element.loanApplication){
+      if(element.loanApplication.loanApplicationId == this.loanApplicationId){
+        // element.loanApplicationId == ele.loanApplication.loanApplicationId
+      this.trasactionData.push(element)
+      }
+    }
+
+  });
+  console.log(" this.trasactionData", this.trasactionData)
+
+}
+
+transactionExportAsXLSX()
+{
+  this.excelData = [];
+  this.header = []
+  this.header =["Transaction Number","Expected Payment Date","Type","Amount","Status",]
+  this.loanDisbursementPaymentDetailsData.forEach(element => {
+    let obj = {
+      "Transaction Number":element.transactionNo,
+      "Expected Payment Date":element.expectedPaymentDate,
+      "Type": element.type,
+      "Amount": element.amount,
+      "Status": element.status,
+    }
+    this.excelData.push(obj)
+  });
+  this.excelservice.exportAsExcelFile(this.excelData, 'Loan Trasaction Summary','Loan Trasaction Summary',this.header);
 
 }
 }
