@@ -45,6 +45,7 @@ export class NpsDeclarationComponent implements OnInit {
   documentRemarkList: any;
 
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -651,7 +652,7 @@ export class NpsDeclarationComponent implements OnInit {
     .subscribe((res) => {
       if(res.status.code == "200") {
         console.log(this.transactionDetail);
-        this.transactionDetail[0].groupTransactionList[0][this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
@@ -959,14 +960,14 @@ export class NpsDeclarationComponent implements OnInit {
 
   upload() {
 
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1222,7 +1223,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[i].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].groupTransactionList[i].declaredAmount
     );
@@ -1241,6 +1242,8 @@ export class NpsDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
@@ -1374,7 +1377,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );

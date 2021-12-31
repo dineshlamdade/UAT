@@ -174,6 +174,26 @@ export class HousingloandeclarationComponent implements OnInit {
   transactionDetailEdit: any;
   edithousePropertyMasterId: any;
   housePropertyTransactionDetailList: any;
+  documentRemarkList: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  remarkType: any;
+  enteredRemark: any;
+  //public editProofSubmissionIdOnView: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
+  rentReceiptBankStatement: boolean = false;
+  viewDocumentName: any;
+  viewDocumentType: any;
+  bankDocumentPassword =[];
+  bankRemarkList =[];
+  rentDocumentPassword =[];
+  rentRemarkList =[];
+  municipleDocumentPassword =[];
+  municipleRemarkList =[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -211,6 +231,7 @@ export class HousingloandeclarationComponent implements OnInit {
     this.previousEmpParticularList = [
       { label: 'House Loan Benefit', value: 'houseLoanBenefit' },
       { label: 'Principal Repayment', value: 'principalRepayment' },
+      { label: 'Stamp Duty and Registration Charges', value: 'stampDutyRegistrationAmount'},
 
       // { label: 'House Loan Benefit', value: 'houseLoanBenefit' },
       // { label: 'Principal Repayment', value: 'principalRepayment' },
@@ -452,7 +473,7 @@ export class HousingloandeclarationComponent implements OnInit {
     // this.globalSelectedAmountMunicipal === 0
     //   ? this.globalSelectedAmountMunicipal
     //   : this.globalSelectedAmountMunicipal;
-
+      
     if (checked) {
       this.transactionDetail[j].housePropertyTransactionList[i].actualAmount =
         data.declaredAmount;
@@ -857,6 +878,7 @@ export class HousingloandeclarationComponent implements OnInit {
     this.PreviousEmployeeService.transactionStatus = 'Pending';
     this.PreviousEmployeeService.rejectedAmount = 0.0;
     this.PreviousEmployeeService.approvedAmount = 0.0;
+    this.PreviousEmployeeService.remark = null;
     // this.PreviousEmployeeService.licMasterPaymentDetailsId = this.transactionDetail[
     //   j
     // ].housePropertyTransactionList[0].licMasterPaymentDetailsId;
@@ -1224,7 +1246,7 @@ export class HousingloandeclarationComponent implements OnInit {
       proofSubmissionId: '',
     };
 
-
+    
     console.log('data::', data);
     this.HousingLoanService.uploadTransactionWithMultipleFiles(
       this.bankCertificate,
@@ -1445,7 +1467,6 @@ export class HousingloandeclarationComponent implements OnInit {
     proofSubmissionId: string
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
-
     this.modalRef = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
@@ -1460,6 +1481,10 @@ export class HousingloandeclarationComponent implements OnInit {
       this.editTransactionUpload = res.data.results[0].housePropertyTransactionDetailList;
         this.edithousePropertyMasterId = res.data.results[0].housePropertyTransactionDetailList[0].housePropertyMasterId;
       this.editProofSubmissionId = res.data.results[0].housePropertyTransactionDocumentDetailList[0].proofSubmissionId;
+      //this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+      this.createDateTime = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].creationDate;
+      this.lastModifiedDateTime = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].lastModifiedTime;
+      this.transactionStatus = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList[0].status;
       this.editReceiptAmount = res.data.results[0].receiptAmount;
       this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1468,7 +1493,8 @@ export class HousingloandeclarationComponent implements OnInit {
       // console.log(this.urlArray);
       this.urlArray.forEach((element) => {
         // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-        element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        element.blobURI =  element.blobURI;
+        //'data:image/image;base64,' +
         // new Blob([element.blobURI], { type: 'application/octet-stream' });
       });
 
@@ -1532,6 +1558,15 @@ export class HousingloandeclarationComponent implements OnInit {
               innerElement.actualAmount
             );
           });
+
+          element.housePropertyUsageTypeList.forEach((innerElement)=>{
+            if(innerElement.usageType != "selfOccupied")
+            this.rentReceiptBankStatement = true;
+            else if(property != "All"){
+              this.rentReceiptBankStatement = false;
+
+            }
+          })
 
           this.initialArrayIndex.push(
             element.housePropertyTransactionPreviousEmployerList.length
@@ -1808,6 +1843,116 @@ export class HousingloandeclarationComponent implements OnInit {
   // }
 
   // *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'"/
+  public remarkModal(
+    remarkType,
+    templateViewer: TemplateRef<any>,    
+    transactionID,
+    summary, count
+  ) {
+    
+    this.enteredRemark = null;
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.remarkType = remarkType;
+    if(remarkType=='Transaction'){
+    this.Service.getHousePropertyTransactionRemarkList(
+      transactionID,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+  } else if(remarkType == 'PreviousEmployer') {
+    this.Service.getHousePropertyTransactionRemarkList(
+      transactionID,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+  }
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    //console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      templateViewer,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+    if(this.remarkType == 'Transaction'){
+    this.transactionDetail[0].housePropertyTransactionList[transIndex].remark =  event.target.value;
+  }
+  else if (this.remarkType == 'PreviousEmployer'){
+    this.transactionDetail[0].housePropertyTransactionPreviousEmployerList[transIndex].remark =  event.target.value;
+  }
+  }
+  
+  onSaveRemarkDetails(transIndex){
+    const data ={
+      "transactionId": this.summaryDetails.housePropertyTransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId?this.summaryDetails.employeeMasterId:0 ,
+      "section":"House",
+      "subSection":"Loan",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+    };
+    this.Service
+    .postHousePropertyTransactionRemarkList(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        if(this.remarkType == 'Transaction'){
+          this.transactionDetail[0].housePropertyTransactionList[transIndex].bubbleRemarkCount =  res.data.results[0].bubbleRemarkCount;
+        }
+        else if (this.remarkType == 'PreviousEmployer'){
+          this.transactionDetail[0].housePropertyTransactionPreviousEmployerList[transIndex].bubbleRemarkCount =  res.data.results[0].bubbleRemarkCount;
+        }
+        this.modalRef.hide();
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+}
+onResetRemarkDetails(){
+  this.enteredRemark=null;
+}
+public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
+  console.log('---in doc viewer--');
+  this.urlIndex = index;
+  // this.urlIndex = 0;
+  this.viewDocumentName = data.documentName;
+  this.viewDocumentType = data.documentType;
+
+  console.log('urlIndex::' , this.urlIndex);
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI
+  );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
+}
 }
 
 class PreviousEmployeeService {
@@ -1819,6 +1964,8 @@ class PreviousEmployeeService {
   public rejectedAmount: number;
   public approvedAmount: number;
   public transactionStatus: 'Pending';
+  public remark: any;
+  public bubbleRemarkCount: number;
   // public isECS: 0;
   // public dateOfPayment: Date;
   // public dueDate: Date;

@@ -57,6 +57,20 @@ export class ElectricVehicleService {
   }
 
 
+  public getElectricVehicleLoanMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getElectricVehicleLoanTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
 
   // getElectricVehicleNoList(lenderName:String, no:any) {
   //   return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/loanAccNo/' + lenderName + '/' + no)
