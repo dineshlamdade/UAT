@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EmployeeDashboardService } from './employee-dashboard.service';
 import { GalleryService } from './gallery.service';
 
 @Component({
@@ -9,8 +10,16 @@ import { GalleryService } from './gallery.service';
 export class EmployeeDashboardComponent implements OnInit {
 
   images: any[];
+    thoughtOfTheDay: any;
+    newJoineeData: any;
+    birthdayData: any;
+    workAnniversaryData: any;
+    display: boolean;
 
-    constructor(private photoService: GalleryService) { }
+    constructor(private photoService: GalleryService,
+        private employeeDashboardService: EmployeeDashboardService) { }
+
+
 
     responsiveOptions:any[] = [
         {
@@ -27,7 +36,28 @@ export class EmployeeDashboardComponent implements OnInit {
         }
     ];
     ngOnInit() {
-        this.photoService.getImages().then(images => this.images = images);
-    }
+       
+       
 
+        //this.photoService.getImages().then(images => this.images = images);
+//Thought Of the Day API
+        this.employeeDashboardService.getThoughtOfTheDay().subscribe(res =>   {
+        this.thoughtOfTheDay = res.data.results[0].quote;    
+        })
+// new joinee API 
+        this.employeeDashboardService.getNewJoineeData().subscribe(res => {
+        this.newJoineeData = res.data.results;      
+        console.log('newJoineeData Daata',this.newJoineeData);
+     })
+        //anniversary API     
+        this.employeeDashboardService.getWorkAnniversaryData().subscribe(res => {
+        this.workAnniversaryData = res.data.results;    
+        console.log('workAnniversaryData Daata',this.workAnniversaryData); 
+        })
+//birthday API
+        this.employeeDashboardService.getBirthdayData().subscribe(res => {
+        this.birthdayData = res.data.results;
+        console.log('birthday Daata',this.birthdayData);    
+        })
+   } 
 }

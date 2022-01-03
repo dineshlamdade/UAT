@@ -51,6 +51,7 @@ public isCollapsedQuery = true;
   public menuIconSelect: any;
   public staticscard = true;
   public friendscard = true;
+  public isLMSCollapsed = true;
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;

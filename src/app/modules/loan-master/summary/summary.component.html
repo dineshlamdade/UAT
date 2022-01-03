@@ -11,7 +11,7 @@
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                   <div class="form-group">
                     <div class="table-responsive Custom_Table">
-                      <table
+                      <!-- <table
                         class="
                           table table-striped table-hover table-bordered
                           m-b-0
@@ -22,8 +22,7 @@
                             <th>Code</th>
                             <th>Description</th>
                             <th>Method Of Recovery</th>
-                            <!-- <th>Rate Of Interest (%)</th>
-                            <th>No. of Installments</th> -->
+
                             <th>Loan</th>
                             <th>Action</th>
                           </tr>
@@ -38,9 +37,8 @@
                             <td>{{ loandata.loanCode }}</td>
                             <td>{{ loandata.loanDescription }}</td>
                             <td>{{ loandata.recoveryMethod }}</td>
-                            <!-- <td>{{ loandata.intRate }}</td>
-                            <td>{{ loandata.recoveryNoOfInstallments }}</td> -->
-                            <td>Loan</td>
+
+                            <td>{{ loandata.loanDescription }}</td>
                             <td>
                               <i
                                 class="fa fa-eye"
@@ -57,7 +55,145 @@
                             </td>
                           </tr>
                         </tbody>
-                      </table>
+                      </table> -->
+
+                      <p-table [globalFilterFields]="['loanCode','loanDescription','recoveryMethod','taxSettingPerquisiteLoanCategory',]"
+                       #dt [value]="loanSummaryData" [rows]="10"
+                       [showCurrentPageReport]="true"
+                       [rowsPerPageOptions]="[10,25,50,100,200]"
+                      [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+                      <ng-template pTemplate="caption">
+                        <!-- <div class="col-md-6 mt-4">
+                          <label class="form-label">Total Count : &nbsp;({{summaryLength}})</label>
+                      </div> -->
+                        <div style="text-align: right; ">
+                            <span class="p-input-icon-left p-ml-auto">
+                              <i class="pi pi-search" style="top: 25px !important; right:58px !important"></i>
+                              <input pInputText type="text"
+                                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                  placeholder="Search" />
+                            </span>&nbsp;
+                            <div class="float-right">
+                              <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
+                                <a tooltip="Export to Excel" style="cursor: pointer"
+                                  (click)="exportAsXLSX()"><i
+                                      class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                      aria-hidden="true"></i></a>
+                          </div>
+                        </div>
+
+                      </ng-template>
+
+                      <ng-template pTemplate="header">
+                              <tr>
+                                  <th class="wd-14">Sr. No.</th>
+                                  <th class="wd-15">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Code
+                                          <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="name" pSortableColumn="loanCode"></p-sortIcon>
+                                              <p-columnFilter type="text"
+                                                  display="menu" class="p-ml-auto"
+                                                  field="loanCode">
+                                              </p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th class="wd-15">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Description
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"  pSortableColumn="loanDescription"></p-sortIcon>
+                                              <p-columnFilter type="date" field="loanDescription"
+                                                  display="menu" class="p-ml-auto">
+                                              </p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+
+                                  <th class="wd-15">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Method Of Recovery
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon   pSortableColumn="recoveryMethod"></p-sortIcon>
+                                              <p-columnFilter field="recoveryMethod"
+                                                  matchMode="equals" display="menu"
+                                                  class="p-ml-auto">
+                                              </p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th class="wd-10">
+                                      <div
+                                          class="p-d-flex justify-content-center p-ai-center">
+                                          Loan Type
+                                          <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="activity" pSortableColumn="taxSettingPerquisiteLoanCategory"></p-sortIcon>
+                                            <p-columnFilter
+                                              field="taxSettingPerquisiteLoanCategory"
+                                              display="menu"
+                                              class="p-ml-auto"
+                                            >
+                                            </p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+
+                                  <th class="wd-10">Action</th>
+                              </tr>
+
+                          </ng-template>
+                          <ng-template pTemplate="body" let-loandata let let-rowIndex="rowIndex" >
+                              <tr class="p-selectable-row">
+                                  <td class="text-center">{{rowIndex + 1}}</td>
+                                  <td>
+                                      <label
+                                          class="form-lable mb-0">
+                                          {{ loandata.loanCode }}</label>
+                                  </td>
+                                  <td>
+                                      <label
+                                          class="form-lable mb-0 ">{{loandata.loanDescription}}</label>
+                                  </td>
+
+                                  <td> <label
+                                          class="form-lable mb-0 ">{{loandata.recoveryMethod}}</label>
+                                          </td>
+
+                                  <td> <label
+                                          class="form-lable mb-0 ">{{loandata.taxSettingPerquisiteLoanCategory}}</label>
+
+                                  </td>
+
+                                              <td>
+                                                <i
+                                class="fa fa-eye"
+                                aria-hidden="true"
+                                style="color: darkcyan"
+                                (click)="viewLoanData(loandata)" tooltip="View Loan"
+                              ></i
+                              >&nbsp;
+                              <i
+                                class="fa fa-pencil"
+                                aria-hidden="true"
+                                (click)="editLoanData(loandata)" tooltip="Edit Loan"
+                              ></i>
+                                              </td>
+                              </tr>
+                          </ng-template>
+
+
+                          <ng-template pTemplate="emptymessage">
+                              <tr>
+                                  <td colspan="15"
+                                      class="font-14 font500 text-center text-red">
+                                      <span>No Data
+                                          Available</span>
+                                  </td>
+                              </tr>
+                          </ng-template>
+                      </p-table>
+
+
                     </div>
                   </div>
                 </div>

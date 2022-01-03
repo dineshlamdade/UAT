@@ -55,34 +55,35 @@ export class InvestmentHandicappeddependentmasterApprovalComponent implements On
     grade: '',
     establishment: '',
   };
+  public masterInfo: any;
 
-  public masterInfo: InvestmentApprovalMasterInfo = {
-    // psidDetailList: [],
-    psidDetail: {
-      groupName: '',
-      section: '',
-      type: '',
-      psid: '',
-      dateOfSubmission: null,
-      proofSubmissionStatus: '',
-      lastModifiedDateTime: null,
-    },
-    masterDetail: {
-      masterId: 0,
-      employeeMasterId: 0,
-      institutionName: '',
-      policyNo: '',
-      policyholdername: '',
-      relationship: '',
-      policyStartDate: null,
-      policyEndDate: null,
-      proofSubmissionId: '',
-      masterStatus: '',
-      paymentDetailList: [],
-      documentDetailList: this.documentDetailList,
-      masterRemarkDetailList: [],
-    },
-  };
+  // public masterInfo: InvestmentApprovalMasterInfo = {
+  //   // psidDetailList: [],
+  //   psidDetail: {
+  //     groupName: '',
+  //     section: '',
+  //     type: '',
+  //     psid: '',
+  //     dateOfSubmission: null,
+  //     proofSubmissionStatus: '',
+  //     lastModifiedDateTime: null,
+  //   },
+  //   masterDetail: {
+  //     masterId: 0,
+  //     employeeMasterId: 0,
+  //     institutionName: '',
+  //     policyNo: '',
+  //     policyholdername: '',
+  //     relationship: '',
+  //     policyStartDate: null,
+  //     policyEndDate: null,
+  //     proofSubmissionId: '',
+  //     masterStatus: '',
+  //     paymentDetailList: [],
+  //     documentDetailList: this.documentDetailList,
+  //     masterRemarkDetailList: [],
+  //   },
+  // };
   public remarkValidation: boolean = false;
   public approvedDisabled: boolean = true;
   public approvedDiscardDisabled = false;
@@ -540,7 +541,7 @@ export class InvestmentHandicappeddependentmasterApprovalComponent implements On
 
     console.log("status::", status);
     console.log("status::", status == 'Discarded');
-    debugger
+    
     if (status == 'Discarded') {
       this.documentList.forEach((doc) => {
         console.log("doc.statusRemark::", doc.statusRemark);
@@ -605,7 +606,7 @@ export class InvestmentHandicappeddependentmasterApprovalComponent implements On
   selectDocumentForApprovalOrDiscard(
     checkValue,
     documentDetail,
-    masterDetail: InvestmentApprovalMasterInfo
+    masterDetail
   ) {
     console.log('checkValue::', checkValue);
     console.log('documentDetail::', documentDetail);
@@ -627,7 +628,6 @@ export class InvestmentHandicappeddependentmasterApprovalComponent implements On
     }
     console.log('documentList::', this.documentList);
   }
-
   //---------------- Edit Document Detail for Approval or Discard ---------------------------
   public editDocument(docDetail) {
     const index =

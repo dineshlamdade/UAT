@@ -171,6 +171,14 @@ export class LockService {
   }
 
 
+  getEmpCodeByDefId(companyId,businessCycleId){
+    return this._HTTP.get(environment.baseUrl8084 + 'employee-lock/' + companyId+'/'+businessCycleId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
 
 
   //Get APIs
@@ -402,7 +410,35 @@ export class LockService {
       }));
   }
 
+  GETAllPendingCycles() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(environment.baseUrl8084 + 'payrollArea-lock/GETAllPendingCycles')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
+  GETAllLockStatusDataByCycleDefId(businessCycleDefId) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(environment.baseUrl8084 + 'payrollArea-lock/GETAllLockStatusData/'+ businessCycleDefId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+  getAllareaByBusDefId(businessCycleDefId,businessCycleId) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(environment.baseUrl8084 + 'payrollArea-lock/getAllareaByBusDefId/'+ businessCycleDefId + '/' + businessCycleId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
 }
 
