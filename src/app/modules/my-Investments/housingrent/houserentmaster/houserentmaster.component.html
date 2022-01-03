@@ -8,8 +8,8 @@
          <div class="row">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">House Name</label>
-               <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-               placeholder="Enter House Name"
+               <input type="text" formControlName="propertyName" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter House Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.propertyName.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.propertyName.errors.required">House Name is mandatory</div>
@@ -17,8 +17,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label"><b> Address</b> (Copy From)</label>
-               <select name="copyFrom" id="copyFrom" placeholder="Copy Address"
-                  (change)='onSelectAddressType($event)' formControlName="copyFrom" class="form-control custom-select"
+               <select name="copyFrom" id="copyFrom" placeholder="Copy Address" (change)='onSelectAddressType($event)'
+                  formControlName="copyFrom" class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.copyFrom.errors }" #CopyFrom>
                   <option [ngValue]="null">Select</option>
                   <option *ngFor="let addressType of employeeAddressType" [value]="addressType.value">
@@ -34,8 +34,8 @@
          <div class="row mt-20">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Address 1</label>
-               <input type="text" formControlName="address1" class="form-control" 
-               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Address 1"
+               <input type="text" formControlName="address1" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Address 1"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address1.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address1.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address1.errors.required">Address 1 is mandatory</div>
@@ -43,8 +43,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Address 2</label>
-               <input type="text" formControlName="address2" class="form-control"onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-               placeholder="Enter Address 2"
+               <input type="text" formControlName="address2" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Address 2"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address2.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address2.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address2.errors.required">Address 2 is mandatory</div>
@@ -52,8 +52,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Address3</label>
-               <input type="text" formControlName="address3" class="form-control"  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-               placeholder="Enter Address 2"
+               <input type="text" formControlName="address3" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Address 2"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address3.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address3.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address3.errors.required">Address 2 is mandatory</div>
@@ -64,6 +64,7 @@
                <select name="Country" id="country" placeholder=" Enter Country" formControlName="country"
                   class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.country.errors }" #country>
+                  <option [ngValue]="null">Select</option>
                   <option *ngFor="let country of countriesList" [value]="country">
                      {{country}}
                   </option>
@@ -77,8 +78,8 @@
             <div class="col-sm-6 col-md-3">
                <label class="form-label">PIN</label>
                <input name="pinCode" id="pinCode" placeholder="PIN" (change)='getPermanentAddressFromPIN()'
-                  formControlName="pinCode" minlength="6" maxlength="6" class="form-control custom-select"
-                  pattern="[0-9]{6}"
+                  (focusout)=checkMetroCity(pinCode.value) formControlName="pinCode" minlength="6" maxlength="6"
+                  class="form-control custom-select" pattern="[0-9]{6}"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.pinCode.errors }" #pinCode>
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.pinCode.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.pinCode.errors.required">PIN is mandatory</div>
@@ -113,14 +114,14 @@
             <div class="col-sm-6 col-md-3">
                <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
-                   [value]="true" checked  >
+                     [value]="true" [checked]="isMetro">
                   <span class="custom-control-label form-label">Metro City</span>
                </label>
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
-                  [value]="false">
+                     [value]="false" [checked]="isNonMetro">
                   <span class="custom-control-label form-label">Non-Metro City</span>
                </label>
             </div>
@@ -134,8 +135,7 @@
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Landlord Name</label>
                <input type="text" formControlName="name" placeholder="Landlord Name" class="form-control"
-               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-                  name="Premium Amount"
+                  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.name.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.name.errors" class="invalid-feedback">
                   <div *ngIf="landLordDetailForm.name.errors.required">Landlord Name</div>
@@ -144,8 +144,7 @@
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Address</label>
                <input type="text" formControlName="address" placeholder=" Enter Address" class="form-control"
-               onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-                  name="Premium Amount"
+                  onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.address.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.address.errors" class="invalid-feedback">
                   <div *ngIf="landLordDetailForm.address.errors.required">Address is mandatory</div>
@@ -158,10 +157,11 @@
                   <span class="form-label">Landlord PAN</span>
                </label>
                <input type="text" maxlength="12" minlength="10" formControlName="landLordPan"
-                  placeholder="Enter PAN " class="form-control" pattern="^[A-Z]{5}[0-9]{4}[A-Z]$" name="PAN"
+                  oninput="this.value = this.value.toUpperCase()" placeholder="Enter PAN " class="form-control"
+                  pattern="^[A-Z]{5}[0-9]{4}[A-Z]$" name="PAN"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN is Mandatory</div>
+                  <!-- <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN is Mandatory</div> -->
                   <div *ngIf="landLordDetailForm.landLordPan.errors?.pattern">Enter valid PAN Number</div>
                </div>
             </div>
@@ -176,17 +176,23 @@
                   <div *ngIf="landLordDetailForm.percentageShareOfRent.errors?.max">Max 100 is allowed</div>
                </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col-sm-6 col-md-2" *ngIf="this.landLordDetailTableList.length != 2 || btn ">
                <div class="custom-controls-stacked ml-15 mt-20">
-                  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" 
-                  tooltip="Add " (click)="addOwner()"><b><i class="fa fa-plus"
-                        aria-hidden="true"></i></b> Add
-                    </button> &nbsp;&nbsp;&nbsp;
+                  <button type="button"
+                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10"
+                     *ngIf="toShowAddBtn" tooltip="Add " (click)="addOwner('add')"><b><i class="fa fa-plus"
+                           aria-hidden="true"></i></b> Add
+                  </button> &nbsp;&nbsp;&nbsp;
+                  <button type="button"
+                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10"
+                     *ngIf="showUpdateButton" tooltip="Update " (click)="addOwner('update')"><b><i class="fa fa-plus"
+                           aria-hidden="true"></i></b> Update
+                  </button> &nbsp;&nbsp;&nbsp;
                </div>
             </div>
          </div>
       </div>
-      <div class="row mt-30">
+      <div class="row mt-30" *ngIf="this.landLordDetailTableList.length != 0 ">
          <div class="col-12 col-md-12 col-sm-12">
             <div class="table-responsive Custom_Table ">
                <table class="table table-striped table-bordered table-hover m-b-0">
@@ -202,7 +208,7 @@
                      <tr *ngFor="let loanDetail of landLordDetailTableList ;  let i = index">
                         <td>
                            <span>
-                                   {{loanDetail.name}}
+                              {{loanDetail.name}}
                            </span>
                         </td>
                         <td>
@@ -235,7 +241,7 @@
    </fieldset>
    <fieldset>
       <legend>Agreement Details</legend>
-      <div formGroupName="agreementDetail" [formGroup]="houseRentform" #formDirective_="ngForm">
+      <div formGroupName="agreementDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
          <div class="row mt-4 mb-10">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Start Date</label>
@@ -244,14 +250,14 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"                    
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control" 
-                         placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()" 
-                          [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
-                          <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
+                     <input [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                        placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()"
+                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
+                     <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.fromDate.errors.required">Start Date is mandatory</div>
                      </div> -->
-                     
+
                   </div>
                </div>
             </div>
@@ -262,10 +268,11 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" 
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control"   [maxDate]="AgreementtoDate" 
-                         placeholder="End Date" bsDatepicker  (bsValueChange)="getAgreementRent2From()"  [minDate]="rentMinDate"
-                         [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
+                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                        [maxDate]="AgreementtoDate" placeholder="End Date" bsDatepicker
+                        (bsValueChange)="getAgreementRent2From()" [minDate]="rentMinDate"
+                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
                      <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
                         class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.toDate.errors.required">From Date is mandatory</div>
@@ -283,9 +290,9 @@
             </div> -->
             <div class="col-sm-6 col-md-3">
                <label class="form-label pl-10">Remark</label>
-               <textarea formControlName="remark"  id="exampleFormControlTextarea2"  [ngClass]="{'form-submitted': formDirective.submitted}"
-                  class="form-control ml-10" rows="1"  placeholder="Remark"
-                  [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
+               <textarea formControlName="remark" id="exampleFormControlTextarea2"
+                  [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1"
+                  placeholder="Remark" [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
                <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
                   class="invalid-feedback">
                   <div *ngIf="houseAgreementMasterForm.remark.errors.required">Remark is mandatory</div>
@@ -293,8 +300,7 @@
             </div>
          </div>
       </div>
-      <div class="row mt-30">
-         <!-- {{loanDetailGridData?.length}} -->
+      <!-- <div class="row mt-30">
          <div class="col-12 col-md-12 col-sm-12">
             <div class="table-responsive Custom_Table ">
                <table class="table table-striped table-bordered table-hover m-b-0">
@@ -302,9 +308,9 @@
                      <tr>
                         <th scope="col" class="wd-9">Start Date</th>
                         <th scope="col" class="wd-14">End Date</th>
-                        <!--   <th scope="col" class="wd-14">Rent Agreement</th> -->
+                        --   <th scope="col" class="wd-14">Rent Agreement</th> --
                         <th scope="col" class="wd-20">Remark</th>
-                     <!--    <th scope="col" class="wd-14">Action</th> -->
+                     --    <th scope="col" class="wd-14">Action</th> --
                      </tr>
                   </thead>
                   <tbody>
@@ -325,10 +331,6 @@
                               {{loanDetail.remark}}
                            </span>
                         </td>
-
-                        <!-- <td>
-                           <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editAgreementDetails(i)" tooltip="Edit"></i>&nbsp;&nbsp;
-                        </td> -->
                      </tr>
                      <tr *ngIf="!agreementDetailsTableList?.length">
                         <td colspan="4">
@@ -340,11 +342,11 @@
                </table>
             </div>
          </div>
-      </div>
+      </div> -->
    </fieldset>
    <fieldset>
       <legend>Rent Details</legend>
-      <div formGroupName="rentDetail" [formGroup]="houseRentform" #formDirective_="ngForm">
+      <div formGroupName="rentDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
          <div class="row">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">From Date</label>
@@ -353,10 +355,9 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" 
-                       data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker  
-                        [minDate]="rentMinDate" (bsValueChange)="rentTodate()"                           
+                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                        placeholder="From Date" bsDatepicker [minDate]="rentMinDate" (bsValueChange)="rentTodate()"
                         [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.fromDate.errors }">
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.fromDate.errors" class="invalid-feedback">
                         <div *ngIf="landRentDetailForm.fromDate.errors.required">From Date is mandatory</div>
@@ -371,12 +372,10 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate" 
-                         data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker                     
-                        [maxDate]="rentMaxDate" 
-                        [minDate] ="rentFromMinDate" 
-                     [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
+                     <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate"
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
+                        bsDatepicker [maxDate]="rentMaxDate" [minDate]="rentFromMinDate"
+                        [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }">
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
                         <div *ngIf="landRentDetailForm.toDate.errors.required">Property Name is mandatory</div>
                      </div>
@@ -386,7 +385,7 @@
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Monthly Rent Amount</label>
                <p-inputNumber class="p-inputright" formControlName="rentAmount" mode="decimal"
-                  locale="en-IN" [minFractionDigits]="2"
+                  (focusout)="monthRentAmount()" locale="en-IN" [minFractionDigits]="2"
                   [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.rentAmount.errors }">
                </p-inputNumber>
                <div *ngIf="rentDetailsSubmitted && landRentDetailForm.rentAmount.errors" class="invalid-feedback">
@@ -396,10 +395,10 @@
             </div>
             <div class="col-sm-6 col-md-2">
                <div class="custom-controls-stacked ml-15 mt-20">
-                <!--   <button class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" 
+                  <!--   <button class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" 
                    type="button" (click)="addOwnerRent()"><i class="fa fa-plus"
                   aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp; -->
-                 <!--  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" 
+                  <!--  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" 
                   tooltip="Add " (click)="addOwnerRent()"><b><i class="fa fa-plus"
                         aria-hidden="true"></i></b> Add
                     </button> &nbsp;&nbsp;&nbsp; -->
@@ -407,7 +406,7 @@
             </div>
          </div>
       </div>
-      <div class="row mt-30">
+      <div class="row mt-30" *ngIf="false">
          <div class="col-12 col-md-12 col-sm-12">
             <div class="table-responsive Custom_Table ">
                <table class="table table-striped table-bordered table-hover m-b-0">
@@ -416,18 +415,18 @@
                         <th scope="col" class="wd-9">From Date</th>
                         <th scope="col" class="wd-14">To Date</th>
                         <th scope="col" class="wd-13">Rent Amount</th>
-                      <!--   <th scope="col" class="wd-14">Action</th> -->
+                        <!--   <th scope="col" class="wd-14">Action</th> -->
                      </tr>
                   </thead>
                   <tbody>
                      <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
-                     <tr *ngFor="let loanDetail of RentDetailTableList  ;  let i = index">
+                     <tr *ngFor="let loanDetail of RentDetailTableList ;  let i = index">
                         <td>
                            <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'}}">
                               {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
                            </span>
                         </td>
-                        <td >
+                        <td>
                            <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
                               {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
                            </span>
@@ -437,7 +436,7 @@
                               {{loanDetail.rentAmount}}
                            </span>
                         </td>
-                      <!--   <td>
+                        <!-- <td>
                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editRentDetails(i)"
                               tooltip="Edit"></i>&nbsp;&nbsp;
                         </td> -->
@@ -481,7 +480,7 @@
                            <tr>
                               <th scope="row"><span tooltip="1">1</span></th>
                               <td><span tooltip="Rent Agreement"></span>Rent Agreement</td>
-                             
+
                               <td><span *ngFor="let item of rentAgreementDocumentDetail" class="text-orange"
                                     tooltip="{{item.name}},"><i class="fa fa-paperclip"
                                        aria-hidden="true"></i>&nbsp;{{item.name}},</span>
@@ -493,7 +492,7 @@
                                  </i>&nbsp;&nbsp;
                               </td>
                            </tr>
-                           <tr>
+                           <tr *ngIf="toShowPanDeclr">
                               <th scope="row"><span tooltip="2">2</span></th>
                               <td><span tooltip="Landlord PAN Declaration"></span>Landlord PAN Declaration
                               </td>
@@ -503,10 +502,14 @@
                               </td>
                               <td>
                                  <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"
-                                 tooltip="File Generate"
-                                  (click)="openForm12BModal(template1)" ></i>&nbsp;&nbsp;&nbsp;
+                                    tooltip="File Generate" *ngIf="toShowTemp1"
+                                    (click)="openForm12BModal(template1)"></i>&nbsp;&nbsp;&nbsp;
 
-                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                                 <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"
+                                    tooltip="File Generate" *ngIf="toShowTemp2"
+                                    (click)="openForm12BModal(template2)"></i>&nbsp;&nbsp;&nbsp;
+
+                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" *ngIf="true"
                                     (click)="UploadModal(declarationofLandlordPAN)" data-toggle="modal"
                                     data-target="#UploadModal"></i>&nbsp;&nbsp;
                               </td>
@@ -539,14 +542,14 @@
             <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                tooltip="Save"><b>
                   <i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
-                <!--   <button type="reset" onclick="resetForm()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            <!--   <button type="reset" onclick="resetForm()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                   tooltip="Reset"><b>
                      <i class="fa fa-floppy-o"></i></b> Reset</button> -->
-                     <button type="button"  (click)="resetView()"
-                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
-                     <i class="fa fa-floppy-o"></i></b> Reset</button>
+            <button type="button" (click)="resetView()"
+               class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+                  <i class="fa fa-floppy-o"></i></b> Reset</button>
          </div>
-        
+
       </div>
    </div>
    <div class="row mt-20">
@@ -560,11 +563,14 @@
                   <table class="table table-striped table-hover table-bordered m-b-0">
                      <thead class="thead-dark">
                         <tr>
-                           <th rowspan="2" class="wd-12 font700">Sr.No</th>
+                           <!-- <th rowspan="2" class="wd-12 font700">Sr.No</th> -->
+                           <th rowspan="2" class="wd-12 font700">PS. ID</th>
                            <th rowspan="2" class="wd-25 font700">House Name</th>
                            <th colspan="2" class="wd-30 font700">Agreement</th>
                            <th colspan="2" class="wd-30 font700">Rent </th>
                            <th rowspan="2" class="wd-10 font700">Rent Amount</th>
+                           <th rowspan="2" class="wd-7 font700">Remark</th>
+                           <th rowspan="2" class="wd-10 font700">Status</th>
                            <th rowspan="2" class="wd-10 font700">Action</th>
                         </tr>
                         <tr>
@@ -576,17 +582,21 @@
                      </thead>
                      <tbody>
                         <tr *ngFor="let summary of masterGridData; let i = index">
-                           <td class="wd-2">
+                           <!-- <td class="wd-2">
                               <span tooltip="{{i+1}}">
                                  {{i+1}}
                               </span>
+                           </td> -->
+                           <td>
+                              <span
+                                 tooltip="{{summary.houseRentMaster.proofSubmissionId}}">{{summary.houseRentMaster.proofSubmissionId}}</span>
                            </td>
                            <td>
                               <span
                                  tooltip="{{summary.houseRentMaster.propertyName}}">{{summary.houseRentMaster.propertyName}}</span>
                            </td>
                            <td>
-                              <span  *ngIf="summary.agreementDetailList?.length"
+                              <span *ngIf="summary.agreementDetailList?.length"
                                  tooltip="{{ summary.agreementDetailList[0].fromDate | date :'dd-MMM-yyyy' }}">{{summary.agreementDetailList[0].fromDate
                                  | date :"dd-MMM-yyyy"}}</span>
                            </td>
@@ -610,10 +620,46 @@
                               <span *ngIf="summary.rentDetailList?.length"
                                  tooltip="{{summary.rentDetailList[0].rentAmount}}">{{summary.rentDetailList[0].rentAmount}}</span>
                            </td>
-
+                           <td>
+                              <div class="align-center">
+                                 <div _ngcontent-ykc-c443="" class="
+                                    custom_Label_badge
+                                    mr-2
+                                    ml-2
+                                  ">
+                                    <b>
+                                       <i (click)="
+                                        docRemarkModal(
+                                          template8,
+                                          documentDetailIndex,
+                                          summary?.rentDetailList[0].houseRentalMasterId,
+                                          summary, i
+                                        )
+                                      " class="
+                                        fa fa-commenting
+                                        text-dark-green
+                                        fa-2x
+                                        cursor-pointer
+                                      ">
+                                       </i></b>
+                                    <span _ngcontent-ykc-c443="" class="Label_badge">{{
+                                       summary.houseRentMaster.bubbleRemarkCount
+                                       }}</span>
+                                 </div>
+                              </div>
+                           </td>
+                           <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': summary.houseRentMaster.transactionStatus=='Re-Open',
+                              ' badge-success': summary.houseRentMaster.transactionStatus=='Approved',
+                              'badge-danger': summary.houseRentMaster.transactionStatus=='SendBack',
+                              'badge-info': summary.houseRentMaster.transactionStatus=='Submitted',
+                              'badge-warning': summary.houseRentMaster.transactionStatus=='Pending'}"
+                                 tooltip={{summary.houseRentMaster.transactionStatus}}>{{summary.houseRentMaster.transactionStatus}}</span>
+                           </td>
                            <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(summary.houseRentMaster.houseRentalMasterId)" tooltip="Edit"></i>
-                         
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                 (click)="editHouseRentMaster(summary.houseRentMaster.houseRentalMasterId)"
+                                 tooltip="Edit"></i>
+
                            </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">
@@ -667,23 +713,24 @@
                            </span>
                            <div>
                               <div style="float: left; width: 40%;">
-                                <div class="col-md-8 mt-10">
-                                  <label class="form-label">Password</label>
-                                </div>
-                                <div class="col-md-12">
-                                  <input class="form-control" [(ngModel)]="LandlordPANdocumentPassword[index]" rows="1">
-                                </div>
-          
+                                 <div class="col-md-8 mt-10">
+                                    <label class="form-label">Password</label>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <input class="form-control" [(ngModel)]="LandlordPANdocumentPassword[index]"
+                                       rows="1">
+                                 </div>
+
                               </div>
                               <div style="float: right; width: 40%; margin-right: 59px">
-                                <div class="col-md-8 mt-10">
-                                  <label class="form-label">Remark</label>
-                                </div>
-                                <div class="col-md-12">
-                                  <input class="form-control" [(ngModel)]="LandlordPANremarkList[index]" rows="1">
-                                </div>
+                                 <div class="col-md-8 mt-10">
+                                    <label class="form-label">Remark</label>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <input class="form-control" [(ngModel)]="LandlordPANremarkList[index]" rows="1">
+                                 </div>
                               </div>
-                            </div>
+                           </div>
                         </div>
                         <div>
                            <i class="fa fa-times text-red font-18"
@@ -692,12 +739,12 @@
                      </label>
                   </div>
                </div>
-               <div class="col-md-12 mt-10">
+               <!-- <div class="col-md-12 mt-10">
                   <label class="form-label">Remark</label>
                </div>
                <div class="col-md-12">
                   <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -728,8 +775,8 @@
                            Choose file
                         </span>
                         <input class="FileUpload1" class="dropify"
-                           (change)="onMasterUpload($event,'rentAgreementDocument');"
-                           accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                           (change)="onMasterUpload($event,'rentAgreementDocument');" accept=".jpg , .jpeg, .pdf , .png"
+                           id="FileInput" type="file" multiple />
                      </label>
                   </div>
                   <div *ngIf="rentAgreementDocumentDetail.length > 0 " class="fileuploadbox">
@@ -743,23 +790,24 @@
                            </span>
                            <div>
                               <div style="float: left; width: 40%;">
-                                <div class="col-md-8 mt-10">
-                                  <label class="form-label">Password</label>
-                                </div>
-                                <div class="col-md-12">
-                                  <input class="form-control" [(ngModel)]="rentAgreementdocumentPassword[index]" rows="1">
-                                </div>
-          
+                                 <div class="col-md-8 mt-10">
+                                    <label class="form-label">Password</label>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <input class="form-control" [(ngModel)]="rentAgreementdocumentPassword[index]"
+                                       rows="1">
+                                 </div>
+
                               </div>
                               <div style="float: right; width: 40%; margin-right: 59px">
-                                <div class="col-md-8 mt-10">
-                                  <label class="form-label">Remark</label>
-                                </div>
-                                <div class="col-md-12">
-                                  <input class="form-control" [(ngModel)]="rentAgreementremarkList[index]" rows="1">
-                                </div>
+                                 <div class="col-md-8 mt-10">
+                                    <label class="form-label">Remark</label>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <input class="form-control" [(ngModel)]="rentAgreementremarkList[index]" rows="1">
+                                 </div>
                               </div>
-                            </div>
+                           </div>
                         </div>
                         <div>
                            <i class="fa fa-times text-red font-18"
@@ -788,84 +836,272 @@
    <div class="modal-header">
       <div class="col-md-2">
          <h3 class="font-14 text-purple font-bold">Landlord PAN Declaration</h3>
-     </div>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-         aria-label="Close">
+      </div>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
          <span aria-hidden="true">×</span>
       </button>
-   </div> 
+   </div>
    <div class="section-body mt-3">
-      <div class="container-fluid" id="htmlData" #htmlData>
-          <div class="row clearfix">
-              <div class="col-12">
-                  <div class="card">
-                      <div class="card-body">
-                          <div class="row border-bottom-gray">
-                             <!--  <div class="col-md-2">
+      <div class="container-fluid">
+         <div class="row clearfix">
+            <div class="col-12">
+               <div class="card">
+                  <div class="card-body">`
+                     <div class="row border-bottom-gray">
+                        <!--  <div class="col-md-2">
                                   <h3 class="font-14 text-purple font-bold">Form 12BB</h3>
                               </div> -->
-                              <div class="col-md-10 mb-10">
-                                  <div class="float-right">                                    
-                                      <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button>
-                                      <button type="button" tooltip="Download PDF" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="download()"><b><i class="fa fa-file-pdf-o"></i></b> Download PDF </button>
-                                    
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="row mt-20">
-                              <div class="col-md-12">
-                                  <h4 class="text-center font-16">To Whomsoever It May Concern</h4>
-                                <!--   <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 BB</h5>
+                        <div class="col-md-10 mb-10">
+                           <div class="float-right">
+                              <button type="button" tooltip="Print"
+                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
+                                       class="fa fa-print"></i></b> Print </button>
+                              <button type="button" tooltip="Download PDF"
+                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                                 (click)="download()"><b><i class="fa fa-file-pdf-o"></i></b> Download PDF </button>
+
+                           </div>
+                        </div>
+                     </div>
+                     <div id="htmlData" #htmlData>
+                        <div class="row mt-20">
+                           <div class="col-md-12">
+                              <h4 class="text-center font-16">To Whomsoever It May Concern</h4>
+                              <!--   <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 BB</h5>
                                   <label class="text-center form-label mb-0 mt-0">(See rule 26C)</label> -->
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-12">
-                                  <div class="text-center"><label class=" text-center font500 mt-10 mb-10 ">Declaration to be provided by Landlord as per Circular No.08/2013 dated 
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-12">
+                              <div class="text-center"><label class=" text-center font500 mt-10 mb-10 ">Declaration to
+                                    be
+                                    provided by Landlord as per Circular No.08/2013 dated
                                     10.10.2013 issued by Central Board of Direct Taxes (CBDT) </label>
-                                 </div>  
                               </div>
-                          </div>
-                          <div class="row mt-20">
-                          <p style="font-size: 21px;"> I, ________________________________________________ hereby declare that I own a 
-                           residential house located at _________________________________________________ 
-                           which has been rented to Mr.________________________________________________ 
-                           from __/__/____ to __/__/_____ for a monthly rental of Rs.______. As per Circular 
-                           no.08/2013 dated 10.10.2013 issued by CBDT, I hereby also declare that I receive rent 
-                           which exceeds Rs.100,000/- (Rupees One Lac only) per annum and I do not have a valid 
-                           Permanent Account Number (PAN).</p>
-                          </div><br>
-                          <div class="row mt-20">
-                             <p>Name of the Landlord :- ______________________________________ </p>
                            </div>
-                           <div class="row mt-20">
-                             <p>Address :-   
-                           </div>
-                           <div class="row mt-20">
-                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
-                           </div>
-                             <div class="row mt-20">
-                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
-                           </div>
-                             <div class="row mt-20">
-                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
-                             </div>
-                             <div class="row mt-20">
-                              <p>
-                                 Signature of Landlord :                                 
-                              </p><br>
-                           </div>
-                           <div class="row mt-20">
-                              <p>
-                                 Date:
+                        </div>
+                        <div class="row mt-20">
+                           <div class="col-md-12">
+                              <p><label class="font500">
+                                    I, <b><u> {{landLordDetailTableList[0].name}} </u></b> hereby declare that I own a
+                                    residential house located at <b><u> {{address1}}, {{address2}}, {{address3}},
+                                          {{city}},
+                                          {{state}} </u></b>
+                                    which has been rented to <b><u> Mr. {{declrName}} </u></b>
+                                    from <b><u>{{rentFromDate | date :'dd-MMM-yyyy'}} </u></b> to <b><u>{{rentToDate |
+                                          date
+                                          :'dd-MMM-yyyy'}} </u></b> for a monthly rental of <b><u> Rs.{{monthlyRent}}
+                                       </u></b>. As per Circular
+                                    no.08/2013 dated 10.10.2013 issued by CBDT, I hereby also declare that I receive
+                                    rent
+                                    which exceeds Rs.100,000/- (Rupees One Lac only) per annum and I do not have a valid
+                                    Permanent Account Number (PAN).</label>
                               </p>
-                          </div>
-                      </div>
+                           </div>
+                        </div><br>
+                        <div class="row mt-20">
+                           <p>Name of the Landlord :- <b><u>{{landLordDetailTableList[0].name}} </u></b></p>
+                        </div>
+                        <div class="row mt-20">
+                           <p>Address :- <b><u> {{landLordDetailTableList[0].address}} </u></b>
+                        </div>
+                        <!--<div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{landLordDetailTableList[0].address}} </p>
+                           </div>
+                             <-- <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                           </div>
+                             <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                             </div> -->
+                        <div class="row mt-20">
+                           <p>
+                              Signature of Landlord :
+                           </p><br>
+                        </div>
+                        <div class="row mt-20">
+                           <p>
+                              Date:
+                           </p>
+                        </div>
+                     </div>
                   </div>
-              </div>
-          </div>
+               </div>
+            </div>
+         </div>
       </div>
-  </div>
+   </div>
    <div class="modal-footer">
+   </div>
+</ng-template>
+<ng-template #template2>
+   <div class="modal-header">
+      <div class="col-md-2">
+         <h3 class="font-14 text-purple font-bold">Landlord PAN Declaration</h3>
+      </div>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">×</span>
+      </button>
+   </div>
+   <div class="section-body mt-3">
+      <div class="container-fluid">
+         <div class="row clearfix">
+            <div class="col-12">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="row border-bottom-gray">
+                        <!--  <div class="col-md-2">
+                                  <h3 class="font-14 text-purple font-bold">Form 12BB</h3>
+                              </div> -->
+                        <div class="col-md-10 mb-10">
+                           <div class="float-right">
+                              <button type="button" tooltip="Print"
+                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
+                                       class="fa fa-print"></i></b> Print </button>
+                              <button type="button" tooltip="Download PDF"
+                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                                 (click)="download()"><b><i class="fa fa-file-pdf-o"></i></b> Download PDF </button>
+
+                           </div>
+                        </div>
+                     </div>
+                     <div id="htmlData" #htmlData>
+                        <div class="row mt-20">
+                           <div class="col-md-12">
+                              <h4 class="text-center font-16">To Whomsoever It May Concern</h4>
+                              <!--   <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 BB</h5>
+                                  <label class="text-center form-label mb-0 mt-0">(See rule 26C)</label> -->
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-12">
+                              <div class="text-center"><label class=" text-center font500 mt-10 mb-10 ">Declaration to
+                                    be
+                                    provided by Landlord as per Circular No.08/2013 dated
+                                    10.10.2013 issued by Central Board of Direct Taxes (CBDT) </label>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row mt-20">
+                           <div class="col-md-12">
+                              <p><label class="font500">
+                                    I, <b><u>{{landLordDetailTableList[1].name}} </u></b> hereby declare that I own a
+                                    residential house located at <b><u>{{address1}}, {{address2}}, {{address3}},
+                                          {{city}},
+                                          {{state}} </u></b>
+                                    which has been rented to <b><u> Mr. {{declrName}} </u></b>
+                                    from <b><u>{{rentFromDate | date :"dd-MMM-yyyy"}} </u></b> to <b><u>{{rentToDate |
+                                          date
+                                          :"dd-MMM-yyyy"}} </u></b> for a monthly rental of <b><u> Rs. {{monthlyRent}}
+                                       </u></b>. As per Circular
+                                    no.08/2013 dated 10.10.2013 issued by CBDT, I hereby also declare that I receive
+                                    rent
+                                    which exceeds Rs.100,000/- (Rupees One Lac only) per annum and I do not have a valid
+                                    Permanent Account Number (PAN).</label>
+                              </p>
+                           </div>
+                        </div><br>
+                        <div class="row mt-20">
+                           <p>Name of the Landlord :- <b><u>{{landLordDetailTableList[1].name}} </u></b> </p>
+                        </div>
+                        <div class="row mt-20">
+                           <p>Address :- <b><u>{{landLordDetailTableList[1].address}}</u></b>
+                        </div>
+                        <!-- <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{landLordDetailTableList[1].address}}   </p>
+                           </div> -->
+                        <!-- <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                           </div>
+                             <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                             </div> -->
+                        <div class="row mt-20">
+                           <p>
+                              Signature of Landlord :
+                           </p><br>
+                        </div>
+                        <div class="row mt-20">
+                           <p>
+                              Date:
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal-footer">
+   </div>
+</ng-template>
+
+<ng-template #template8>
+   <div class="modal-header">
+      <h5 class="modal-title" id="jasdjgh">Remark</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">×</span>
+      </button>
+   </div>
+
+   <div class="card-body">
+      <div *ngFor="let documentRemark of documentRemarkList">
+         <div class="row">
+            <div class="col-md-6">
+               <span class="form-label">{{ documentRemark?.role }}:
+                  <b class="text-gray">{{
+                     documentRemark?.remarkBy
+                     }}</b></span>
+            </div>
+            <div class="col-md-6">
+               <div class="float-right">
+                  <span class="form-label">
+                     Date:
+                     <b class="text-gray">{{
+                        documentRemark?.remarkDate
+                        | date: "dd-MMM-yyyy HH:mm"
+                        }}</b>
+                  </span>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <textarea class="form-control remarktext" disabled
+               [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+         {{ documentRemark?.remark }}
+         </textarea>
+         </div>
+      </div>
+      <div class="row mt-25">
+         <div class="col-md-12">
+            <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+            <textarea type="text" [(ngModel)]="enteredRemark" (change)="
+         onChangeDocumentRemark(
+           this?.summaryDetails, this?.indexCount,
+             $event
+           )
+         " class="form-control" placeholder="Remark"></textarea>
+         </div>
+      </div>
+   </div>
+   <!-- 
+   <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+     <button
+       type="button"
+       class="btn btn-secondary"
+       (click)="modalRef.hide()"
+     >
+       Ok
+     </button>
+   </div> -->
+   <div *ngIf="this.summaryDetails?.rentDetailList[0].houseRentalMasterId" class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onResetRemarkDetails()">
+         Reset
+      </button>
+      <button type="button" class="btn btn-secondary"
+         (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)">
+         Save
+      </button>
    </div>
 </ng-template>
