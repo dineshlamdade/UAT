@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class PreviousEmployerService {
   public apiUrl = environment.baseUrl8085;
   public baseUrl8085Employee = environment.baseUrl8082;
+  public apiUrl1 = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) {}
 
@@ -78,14 +79,16 @@ public getPreviousEmployerMaster(): Observable<any> {
 
 
 /*   ----------------master post save ------------------------ */
-  public submitPreviousEmployerDetailData(document: File[], data: any): Observable<any> {
-    console.log('in uploadMultipleFiles Service::', document);
+  public submitPreviousEmployerDetailData(files: File[],file1: File[] , data: any): Observable<any> {
+    //console.log('in uploadMultipleFiles Service::', document);
     let formData: any = new FormData();    
-    console.log('in uploadMultipleFiles Service::', data);
-    for (const file of document) {
+    console.log('in uploadMultipleFiles Service::', files);
+    for (const file of files) {
       formData.append('document', file);
     }
-    // formData.append('licDocuments', document);
+    for (const file of file1) {
+      formData.append('document', file);
+    }
     formData.append('previousEmployerDetail', JSON.stringify(data));
 
     console.log('formData', formData);
@@ -210,6 +213,29 @@ postEightyCDeclarationTransaction(data) {
       return res;
     })
   );
+}
+// Bubble remark
+public getpreviousEmpRemarkList(masterId: String,): Observable<any> {
+  return this._HTTP.get(this.apiUrl + 'previousEmployerMaster/GetRemarkMaster/' + masterId)
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
+
+//post remark
+postLicMasterRemark(data) {
+  return this._HTTP.post(this.apiUrl1 + 'licmaster-detail/addRemark', data)
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
+
+//Bubble remark for previous employee declaration
+public getPreviousDeclartionRemarkList(psId: String,): Observable<any> {
+  return this._HTTP.get(this.apiUrl + 'previousEmployerTransactionDetail/GetRemarkTransaction/' + psId)
+  .pipe(map((res: any) => {
+    return res;
+  }));
 }
 
 }

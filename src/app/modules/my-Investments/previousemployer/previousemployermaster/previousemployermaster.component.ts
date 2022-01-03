@@ -85,13 +85,23 @@ export class PreviousemployermasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  documentArray: any[] =[];
+  public enteredRemark = '';
+  public isVisibleTable:boolean;
+  public toShowUpdateBtn :boolean;
 
-  public documentRemark: any;
+  
   public isECS = true;
 
   public then: any;
 
+  public documentRemark: any;
+  public documentPassword = [];
+  public remarkList = [];
+
   public masterfilesArray: File[] = [];
+  public PremiumFileArray: File[] = [];
+
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
@@ -131,6 +141,7 @@ export class PreviousemployermasterComponent implements OnInit {
   public dateOfJoining: Date;
   public dateOfLeaving: Date;
   public typeOfRegime: string;
+  remark:any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -146,6 +157,15 @@ export class PreviousemployermasterComponent implements OnInit {
   imageFile: any;
 
   public previousEmployList: Array<any> = [];
+  summaryDetails: any;
+  indexCount: any;
+  documentRemarkList: any;
+  remarkCount: any;
+  editRemarkData: any;
+  viewDocumentName: any;
+   filesUrlArray: Array<any> = [];
+  viewDocumentType: any;
+  toShowSaveBtn: boolean;
 
 
   constructor(
@@ -171,7 +191,10 @@ export class PreviousemployermasterComponent implements OnInit {
       dateOfJoining: new FormControl(null, Validators.required),
       dateOfLeaving: new FormControl(null, Validators.required),
       typeOfRegime: new FormControl(null, Validators.required),
+      remark: new FormControl(null, Validators.required),
       proofSubmissionId : new FormControl(""),
+      documentPassword: new FormControl([]),
+      remarkList: new FormControl([]),
      
     });
 
@@ -188,7 +211,7 @@ export class PreviousemployermasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-
+    this.toShowSaveBtn=true;
     this.previousDate = this.today;
    /*  this.previousDate.setDate(this.today.getDate() - 1); */
 
@@ -217,22 +240,99 @@ export class PreviousemployermasterComponent implements OnInit {
   public masterPage() {
     this.previousEmployerService.getPreviousEmployerMaster().subscribe((res) => {
       console.log('masterGridData::', res);
+      this.filesUrlArray=res.data.results[0].documentInformationList;
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
         if (element.possessionDate !== null) {
           element.possessionDate = new Date(element.possessionDate);
+          element.documentInformationList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'blobURI':element.blobURI,
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+    
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+  
+          // })
         }
+        });
       });
-    });
-  }
+    }
 
+    public docRemarkModal(
+      documentViewerTemplate: TemplateRef<any>,
+      index: any,
+      masterId,
+      summary, count
+    ) {
+  
+  
+       this.summaryDetails = summary;
+      this.indexCount = count;
+      this.previousEmployerService.getpreviousEmpRemarkList(
+        masterId,
+      ).subscribe((res) => {
+        console.log('docremark', res);
+        
+      
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+      });
+      // console.log('documentDetail::', documentRemarkList);
+      // this.documentRemarkList = this.selectedRemarkList;
+      console.log('this.documentRemarkList', this.documentRemarkList);
+      this.modalRef = this.modalService.show(
+        documentViewerTemplate,
+        Object.assign({}, { class: 'gray modal-s' })
+      );
+    }
+
+
+     //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+   
+ 
+  }
   // ------------------------------------Master----------------------------
   //------------------- convenience getter for easy access to previousEmployerDetailsform fields -----------------
   get previousEmployerDetailsMaster() {
     return this.previousEmployerDetailsform.controls;
   }
   //-------------- Post Master Page Data API call -------------------
+  
+  getRemark(){
+    console.log(this.remarkList)
+    
+  }
+
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    this.masterPage();
     console.log('addMaster::', formData);
     this.previousEmployerDetailssubmitted = true;
 
@@ -241,14 +341,22 @@ export class PreviousemployermasterComponent implements OnInit {
     }
     const data = this.previousEmployerDetailsform.getRawValue();
 
+
     data.dateOfJoining = new Date(data.dateOfJoining);
     data.dateOfLeaving = new Date(data.dateOfLeaving);
-  
+    data.documentPassword = this.documentPassword;
+    data.remarkList = this.remarkList;
+    
+    data.remark = this.remark;
+
     console.log("data::::", data)
-    this.previousEmployerService
-      .submitPreviousEmployerDetailData(this.masterfilesArray, data)
-      .subscribe((res) => {
-        console.log(' ', res);
+    // this.previousEmployerService
+    //   .submitPreviousEmployerDetailData(this.masterfilesArray ,this.PremiumFileArray, data)
+    //   .subscribe((res) => {
+    //     console.log(' ', res);
+    this.previousEmployerService.submitPreviousEmployerDetailData(this.masterfilesArray,this.PremiumFileArray,data)
+    .subscribe((res)=>{
+      console.log(res);
 
         if (res) {
           if (res.data.results.length > 0) {
@@ -259,10 +367,55 @@ export class PreviousemployermasterComponent implements OnInit {
               /*  element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate); */
             });
+
+            // Remark and password Functionality
+
+            if (res.data.results.length > 0) {
+              this.masterGridData = res.data.results;
+          
+              this.masterGridData.forEach((element, index) => {
+                this.documentArray.push({
+                
+                  'dateofsubmission':new Date(),
+                  'blobURI':element.blobURI,
+                    'documentType':element.documentInformationList[0].documentType,
+                    'documentName': element.documentInformationList[0].fileName,
+                    'documentPassword':element.documentInformationList[0].documentPassword,
+                    'documentRemark':element.documentInformationList[0].documentRemark,
+                    'status' : element.documentInformationList[0].status,
+                    'approverName' : element.documentInformationList[0].lastModifiedBy,
+                    'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                    // 'documentStatus' : this.premiumFileStatus,
+            
+                });
+
+                if(element.documentInformationList[1]) {
+                this.documentArray.push({
+                
+                  'dateofsubmission':new Date(),
+                  'blobURI':element.blobURI,
+                    'documentType':element.documentInformationList[1].documentType,
+                    'documentName': element.documentInformationList[1].fileName,
+                    'documentPassword':element.documentInformationList[1].documentPassword,
+                    'documentRemark':element.documentInformationList[1].documentRemark,
+                    'status' : element.documentInformationList[1].status,
+                    'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                    'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                    // 'documentStatus' : this.premiumFileStatus,
+            
+                });
+              }
+              });
+            }
+
             this.alertService.sweetalertMasterSuccess(
               'Record saved Successfully.',
               'Go to "Transaction" Page to see Schedule.'
             );
+            this.masterPage();
+
           } else {
             this.alertService.sweetalertWarning(res.status.messsage);
           }
@@ -281,7 +434,44 @@ export class PreviousemployermasterComponent implements OnInit {
     /*     this.paymentDetailGridData = []; */
     this.masterfilesArray = [];
     this.submitted = false;
+    
   }
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.previousEmployerMasterDetailId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"Previous",
+      "subSection":"Employer",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":"",
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.previousEmployerService
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+    this.masterPage();
+    this.onResetRemarkDetails();
+
+  }
+
+
+
   
  /* ....... Previous Employer Name........ */  
     OnSelectionPreviousEmployment() {     
@@ -306,6 +496,11 @@ export class PreviousemployermasterComponent implements OnInit {
         this.masterfilesArray.push(file);
         console.log('masterfilesArray::', this.masterfilesArray);
       }
+    }
+
+    for(let i =0 ; i<this.masterfilesArray.length; i++ ){
+      this.remarkList[i] = ''
+      this.documentPassword[i] = ''
     }
     console.log('this.masterfilesArray::', this.masterfilesArray);
   }
@@ -356,9 +551,12 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
     this.scrollToTop();
+    this.toShowUpdateBtn=true;
+    this.toShowSaveBtn=false;
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     console.log('abc::', abc);
+    this.isVisibleTable=true;
 
     //console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
 
@@ -388,6 +586,9 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
+    this.isVisibleTable=false;
+    this.toShowSaveBtn=true;
+    this.toShowUpdateBtn=false;
     /*    this.previousEmployerDetailsform.get('active').setValue(true);
        this.showUpdateButton = false;
        this.isCancel = false; */
@@ -426,5 +627,61 @@ export class PreviousemployermasterComponent implements OnInit {
 
   getImageFile(imagefile : any){
       this.imageFile = imagefile;
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+  //Docviewer
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+
+    this.urlArray = data;
+    console.log("data",this.urlArray)
+    console.log('urlIndex::', this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+   // ---------- For Doc Viewer -----------------------
+   public nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.filesUrlArray[this.urlIndex].blobURI
+    );
+  }
+  zoomin() {
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 2500) return false;
+    else {
+      myImg.style.width = (currWidth + 100) + "px";
+    }
+  }
+  zoomout() {
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if (currWidth == 100) return false;
+    else {
+      myImg.style.width = (currWidth - 100) + "px";
+    }
   }
 }

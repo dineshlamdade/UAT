@@ -178,6 +178,20 @@ export class HouserentdeclarationComponent implements OnInit {
 
   public testnumber1: number = 5000;
   public testnumber2: number = 5000;
+  summaryDetails: any;
+  indexCount: any;
+  selectedremarkIndex: any;
+  documentRemarkList: any;
+  remarkCount: any;
+  editRemarkData: any;
+  enteredRemark: string;
+  createDateTime: any;
+  documentArray: any;
+  creationDate: any;
+  lastModifiedTime: any;
+  status: any;
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1222,6 +1236,10 @@ export class HouserentdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
 
+        this.documentArray = res.data.results[0].documentInformationList[0].documentDetailList;
+        this.creationDate = res.data.results[0].documentInformationList[0].documentDetailList[0].creationDate;
+        this.lastModifiedTime = res.data.results[0].documentInformationList[0].documentDetailList[0].lastModifiedTime;
+        this.status = res.data.results[0].documentInformationList[0].documentDetailList[0].status;
         this.urlArray =
           res.data.results[0].documentInformationList[0].documentDetailList;
         this.editTransactionUpload =
@@ -1233,9 +1251,10 @@ export class HouserentdeclarationComponent implements OnInit {
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotalEditModal =
           res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
-        // console.log(this.urlArray);      
+        // this.createDateTime= res.data.results[0].
+        // this.grandApprovedTotalEditModal =
+        //   res.data.results[0].grandApprovedTotal;
+        console.log(this.editTransactionUpload);      
         this.editTransactionUpload.forEach((element) => {
           element.houseRentalTransactionList.forEach((innerElement) => {
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
@@ -1603,11 +1622,100 @@ export class HouserentdeclarationComponent implements OnInit {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI,
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template1,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
+  }
+
+
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId,
+    summary, count
+  ) {
+
+
+     this.summaryDetails = summary;
+     console.log("summary",this.summaryDetails)
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.houseRentService.gethouseRentActualRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+     console.log('documentDetail::', this.documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.houseRentalTransactionDetailId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"House",
+      "subSection":"Rental",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":'',
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+
+    console.log('post data',data);
+    this.houseRentService.postHouseRentMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.transactionDetail[0].houseRentalTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+    
+  }
+  onResetRemarkDetails(){
+    this.enteredRemark='';
+  }
+
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].houseRentalTransactionList[transIndex].remark =  event?.target?.value;
+   
+ 
   }
 
 

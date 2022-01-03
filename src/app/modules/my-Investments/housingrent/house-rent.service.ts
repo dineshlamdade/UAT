@@ -149,12 +149,53 @@ export class HouseRentService {
     // Get Computation
     getComputation(): Observable<any> {
       return this._HTTP
-        .get(this.apiUrl + '/houseRentalMaster/hraComputation')
+        .get(this.apiUrl + 'houseRentalMaster/hraComputation')
         .pipe(
           map((res: any) => {
             return res;
           })
         );
+    }
+
+
+    public gethouseRentMasterRemarkList(masterId: String,): Observable<any> {
+      return this._HTTP.get(this.apiUrl + 'houseRentalMaster/GetRemarkMaster/' + masterId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+
+    postHouseRentMasterRemark(data) {
+      return this._HTTP.post(this.apiUrl + 'licmaster-detail/addRemark', data)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+
+
+    // Declaration page
+    public gethouseRentActualRemarkList(masterId: String,): Observable<any> {
+      return this._HTTP.get(this.apiUrl + 'houseRentalTransaction/GetRemarkTransaction/' + masterId)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+    
+    // Metro Api
+    public toCheckMetroCity(pin:any){
+      return this._HTTP.get(this.apiUrl+'landingPage/infoByPincode/'+pin)
+      .pipe(map((res:any)=>{
+        return res;
+      }));
+
+    }
+
+    //family member list
+    getFamilyInfo() : Observable<any>  {
+      return this._HTTP.get(this.apiUrl + 'licmaster-detail/familyMemberList')
+      .pipe(map((res: any) => {
+        return res;
+      }));
     }
 
 
