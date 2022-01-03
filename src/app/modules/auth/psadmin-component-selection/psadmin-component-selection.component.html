@@ -1,0 +1,69 @@
+<!-- <app-leftadminmenu>
+</app-leftadminmenu> -->
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="height:500px">
+                        <div class="card-body">
+                            <div class="row">
+        
+                                <div class="col-md-12">
+        
+                                    <div  class="rup mt-5">
+                                        <div class="row clearfix row d-flex justify-content-center text-bold">
+                                            <div   class=" col-md-4">
+                                                <div class="card  btn-bg-green">
+                                                    <div class="card-body">
+                                                        <a (click)="rediredToEmployee()"  [routerLink]="['/employee-master/employee-dashboard']"
+                                                            href="javascript:void(0)" class="my_sort_cut text-muted">
+                                                           <i class="fa fa-users"></i>
+                                                            <span>Employee </span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                            <div *ngIf="distinctRoles.includes('Admin')" class="col-md-4">
+                                                <div class="card btn-bg-green">
+                                                    <div class="card-body">
+                                                        <a [routerLink]="['/userGroupSelectPage']"
+                                                            href="javascript:void(0)" class="my_sort_cut text-muted">
+                                                         <i class="fa fa-user"></i>
+                                                            <span>Admin</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       
+                                            
+                                            <div *ngIf="distinctRoles.includes('Global')" class="col-md-4">
+                                                <div class="card btn-bg-green">
+                                                    <div class="card-body ribbon">
+        
+                                                        <a [routerLink]="['/userGroupSelectPage']" href="javascript:void(0)"
+                                                            class="my_sort_cut text-muted">
+                                                         <i class=" fa fa-cogs"></i>
+                                                            <span>Global</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+               
+                                        </div>
+                                     
+                                    </div>
+                                </div>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

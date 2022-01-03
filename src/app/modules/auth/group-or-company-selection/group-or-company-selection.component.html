@@ -1,0 +1,65 @@
+<!-- <app-leftmenu></app-leftmenu> -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body ">
+                           
+                                <!-- Option2nd -->
+                                <div class="tabview-contents  center mt-25">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class= "form-label ">Select Country</label>
+                                            <select class="form-control" (change)="onChangeCountry($event.target.value)">
+                                                <option value="">Select</option> 
+                                                <option *ngFor="let country of distinctCountries" [value]="country">{{country}}</option>
+                                              </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class= "form-label ">Select Group</label>
+                                            <select class="form-control" (change)="onChangeGroup($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let group of distinctGroups" [value]="group">{{group}}</option>
+                                              </select>
+                                              <i class="fa fa-cog text-purple float-right" tooltip="Company Setting"></i>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class= "form-label">Select Company</label>
+                                            <select class="form-control" (change)="companySelection($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let company of distinctCompanies">{{company}}</option>
+                                              </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-25">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <button _ngcontent-wxs-c616="" type="button" tooltip="Button" (click)="redictionTo()"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i class="fa fa-arrow-right" aria-hidden="true"></i></b> Go </button>
+                                            <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2 ng-star-inserted  "
+                                                tabindex="0" ng-reflect-tooltip="Button"
+                                                ng-reflect-router-link="/loan/rescheduleRequest"><b
+                                                    _ngcontent-wxs-c616=""><i _ngcontent-wxs-c616=""
+                                                        class="fa fa-refresh "></i></b> Reset </button>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>
