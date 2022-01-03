@@ -35,6 +35,7 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
   styleUrls: ['./electric-vehicle-master.component.scss']
 })
 export class ElectricVehicleMasterComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() public vehicleNo: any;
   public modalRef: BsModalRef;
@@ -136,6 +137,13 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public loanAccountNumbers: any;
   public validVehicleNumbers: boolean = false;
   public validloanAccountNumber: boolean = false;
+  public remarkCount : any;
+  
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  selectedremarkIndex : any;
+  documentRemarkList: any;
 
 
   constructor(
@@ -157,7 +165,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       vehicleNumber: new FormControl(null, Validators.required),
       lenderName: new FormControl(null, Validators.required),
       remark: new FormControl(null),
-      accountHolderName: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl({ value: "Aishwarya Malviya", disabled: true },Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanStartDate: new FormControl(null, Validators.required),
       loanEndDate: new FormControl(null, Validators.required),
@@ -386,14 +394,14 @@ console.log('this.isEdit', this.isEdit);
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i < this.remarkList.length; i++) {
+      for (let i = 0; i < this.masterfilesArray.length; i++) {
         if(this.remarkList[i] == undefined || this.remarkList[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
             "documentSubType": "",
-            "remark": this.remarkList[i],
-            "password": this.documentPassword[i]
+            "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
           };
           this.documentDataArray.push(remarksPasswordsDto);
         }
@@ -544,6 +552,111 @@ console.log('this.isEdit', this.isEdit);
     // }
   }
 
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.electricVehicleLoanMasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"VIA",
+      "subSection":"ELECTRICVEHICLE",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
+
+
+
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event?.target?.value;
+   
+ 
+  }
+
+
+
+
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    electricVehicleLoanMasterId,
+    summary, count
+  ) {
+
+
+     this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.electricVehicleService.getElectricVehicleLoanMasterRemarkList(
+      electricVehicleLoanMasterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   onMasterUpload(event: { target: { files: string | any[] } }) {
     console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -567,6 +680,7 @@ console.log('this.isEdit', this.isEdit);
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
     );
+      // this.form.get('accountHolderName').setValue('Aishwarya Malviya');
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }

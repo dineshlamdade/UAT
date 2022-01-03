@@ -64,6 +64,7 @@
                                                 </div>
                                                 <input data-provide="datepicker" data-date-autoclose="true"
                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                (bsValueChange)="getSelectedFromDate($event)"
                                                 [(ngModel)]="summaryFromDate" [ngModelOptions]="{standalone : true}"
                                                   class="form-control" placeholder="From Date" bsDatepicker>
                                               </div>
@@ -187,7 +188,31 @@
                                     </th>
                                     <th>
                                       <div class="p-d-flex p-jc-between p-ai-center">
-                                        <span tooltip="Unit of Measure">Closing
+                                        <span>Opening
+                                          Amount</span>
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="value" pSortableColumn="value">
+                                          </p-sortIcon>
+                                          <p-columnFilter type="number" field="value" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        <span>Percentage</span>
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="value" pSortableColumn="value">
+                                          </p-sortIcon>
+                                          <p-columnFilter type="number" field="value" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        <span>Closing
                                           Amount</span>
                                         <div class="Sort_Filter_Position">
                                           <p-sortIcon field="value" pSortableColumn="value">
@@ -239,6 +264,12 @@
                                       <label class="form-lable mb-0">{{summary.uom}}</label>
                                     </td>
 
+                                    <td class="bg-color-light_gray text-right" style="text-align: right;">
+                                      <label class="form-lable mb-0">{{summary.changeValue | number: '1.2-2'}}</label>
+                                    </td>
+                                    <td class="bg-color-light_gray text-right" style="text-align: right;">
+                                      <label class="form-lable mb-0">{{summary.changePercenatge | number: '1.2-2'}}</label>
+                                    </td>
                                     <td class="bg-color-light_gray text-right" style="text-align: right;">
                                       <label class="form-lable mb-0">{{summary.value | number: '1.2-2'}}</label>
                                     </td>

@@ -709,6 +709,35 @@ public apiUrl1 = environment.baseUrl8082;
       }))
   }
 
-
-
+  public getHousePropertyTransactionRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'housePropertyTransaction/GetRemarkTransaction/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  public postHousePropertyTransactionRemarkList(data)
+  {
+    return this._HTTP.post(this.apiUrl + 'licmaster-detail/addRemark',data)
+    .pipe(map((res: any)=> {
+      return res
+    }))
+  }
+  public getHousePropTrnPreviousEmployerRemarkList(masterId: String): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'previousEmployerMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  public getHouseLoanMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'housingLoanMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  /* public postHousePropTrnPreviousEmployerRemarkList(data)
+  {
+    return this._HTTP.post(this.apiUrl + 'ic-transaction/addRemark',data).pipe(map((res: any)=> {
+      return res
+    }))
+  } */
 }

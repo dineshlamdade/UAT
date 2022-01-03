@@ -9,6 +9,9 @@ import { GeneralComponent } from './general/general.component';
 import { RecoveryComponent } from './recovery/recovery.component';
 import { PaymentComponent } from './payment/payment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {TableModule} from 'primeng/table';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 
 
 @NgModule({
@@ -19,6 +22,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedlayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    TableModule,
+    TooltipModule,
+
   ]
 })
 export class LoanMasterModule { }

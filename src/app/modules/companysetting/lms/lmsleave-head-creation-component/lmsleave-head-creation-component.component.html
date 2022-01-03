@@ -1,0 +1,245 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="LeaveHeadCreationForm" (ngSubmit)="addLeaveHeadCreation()">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="" class="form-label">Code</label>
+                                    <input type="text " (change)="onChangeEvent($event)" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)"  [maxlength]="25" formControlName="code" 
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('code').status == 'INVALID' || codeInvalid == true}" class="form-control" placeholder="Enter Code">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="" class="form-label">Description</label>
+                                    <input type="text " onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" formControlName="description" class="form-control" 
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('description').status == 'INVALID'}" placeholder="Enter Description">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="" class="form-label">Short Name</label>
+                                    <input type="text " onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)"  [maxlength]="25" formControlName="shortName" class="form-control" 
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('shortName').status == 'INVALID'}" placeholder="Enter Short Name">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="" class="form-label">Display Name</label>
+                                    <input type="text " onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" formControlName= "displayName" class="form-control" 
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('displayName').status == 'INVALID'}" placeholder="Enter Display Name">
+                                </div>
+                            </div>
+                            <div class="row mt-25">
+                                <div class="col-md-3">
+                                    <label class="form-label">Nature</label>
+                                    <select  class="custom-select" name="nature" id="nature" class="form-control" 
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('nature').status == 'INVALID'}" formControlName="nature">
+                                        <option selected value=''>Select</option>
+                                        <option *ngFor="let nature of NatureList" [value]="nature.value">
+                                            {{nature.value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Type</label>
+                                    <select class="custom-select" name="type" id="type" class="form-control"
+                                    [ngClass]="{'is-invalid' : LeaveHeadCreationForm.get('type').status == 'INVALID'}" formControlName="type">
+                                        <option selected value=''>Select </option>
+                                        <option *ngFor="let type of TypeList" [value]="type.value">
+                                            {{type.value}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row mt-15">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <button type="submit" *ngIf="!viewCancelButton" [disabled]="LeaveHeadCreationForm.invalid" 
+                                        [ngClass]="{'disabled-btn-bg-green' : LeaveHeadCreationForm.invalid,'btn-bg-green': !LeaveHeadCreationForm.invalid}"
+                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                            tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                                            Save</button>
+
+                                        <button type="button" (click)="CancelLeaveHeadCreation()" *ngIf="viewCancelButton"
+                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                                            Cancel</button>
+
+
+
+                                        <button type="button" (click)="ResetLeaveHeadCreation()" *ngIf="!viewCancelButton"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                                            Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+                            <div class="row mt-25">
+                                <div class="col-md-12">
+                                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                                </div>
+                            </div>
+                            <div class="row mt-25">
+                                <div class="col-md-12 p-0">
+                                    <div class="table-responsive Custom_Table">
+
+                                        <p-table #dt1 [value]="LeaveHeadCreationList"  class="mt-10" [paginator]="true" [rows]="10"
+                                            [showCurrentPageReport]="true"
+                                            (sortFunction)="customSort($event)"
+                                             [customSort]="true"
+                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                            totalRecords={{LeaveHeadCreationList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                                            [globalFilterFields]="['code','description','shortName','displayName','nature','type']">
+
+                                            <ng-template pTemplate="caption">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="float-right">
+                                                            <div class="d-flex">
+
+                                                                <span class="p-input-icon-left p-ml-auto">
+                                                                    <i class="pi pi-search"
+                                                                        style="top: 9px !important;right:43px;"></i>
+                                                                    <input pInputText type="text"
+                                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                                        placeholder="Search " />
+
+                                                                </span>
+                                                                &nbsp;
+                                                                <i
+                                                                    class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                                                    tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+
+
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th rowspan="1" class="wd-8 text-center">Sr. No.</th>
+                                                    <th>
+                                                        <div class="p-d-flex text-center p-jc-between p-ai-center">Code
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                                                <p-columnFilter type="text" field="code" display="menu"
+                                                                    class="p-ml-auto">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="p-d-flex text-center p-jc-between p-ai-center">
+                                                            Description
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                                                <p-columnFilter type="text" field="description" display="menu"
+                                                                    class="p-ml-auto">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">Short Name
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
+                                                                <p-columnFilter type="date" field="shortName" display="menu"
+                                                                    class="p-ml-auto"> </p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="p-d-flex p-jc-between p-ai-center"> Display Name
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="displayName" pSortableColumn="displayName"></p-sortIcon>
+                                                                <p-columnFilter field="displayName" matchMode="equals"
+                                                                    display="menu" class="p-ml-auto"></p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class=" text-center">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="nature" pSortableColumn="nature"></p-sortIcon>
+                                                                <p-columnFilter field="nature" display="menu"
+                                                                    class="p-ml-auto">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="">
+                                                        <div class="p-d-flex text-center p-jc-between p-ai-center">Type
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="type" pSortableColumn="type"></p-sortIcon>
+                                                                <p-columnFilter field="type" display="menu"
+                                                                    class="p-ml-auto">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+
+
+                                                    <th>Action</th>
+                                                </tr>
+
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-leaveHeadCreationList let-rowIndex="rowIndex">
+                                                <tr class="p-selectable-row">
+                                                    <td class="bg-color-light_gray text-center">
+                                                        <label class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+                                                    <td class="bg-color-light_gray">
+                                                        <label class="form-lable mb-0">{{leaveHeadCreationList.code}}</label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray">
+                                                        <label class="form-lable mb-0">{{leaveHeadCreationList.description}}</label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray"> <label class="form-lable mb-0">{{leaveHeadCreationList.shortName}} </label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray"> 
+                                                        <label class="form-lable mb-0">{{leaveHeadCreationList.displayName}} </label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray"> 
+                                                        <label class="form-lable mb-0">{{leaveHeadCreationList.nature}}</label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray"> 
+                                                        <label class="form-lable mb-0">{{leaveHeadCreationList.type}} </label>
+                                                    </td>                 
+                                                    <td>
+                                                      <button type="button" class="btn btn-icon" tooltip="View"
+                                                      (click)="GetLeaveHeadCreationbyIdDisable(leaveHeadCreationList)">
+                                                      <i class="fa fa-eye text-blue font-16"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="15" class="font-14 font500 text-center text-red">
+                                                        <span>No Data Available</span>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

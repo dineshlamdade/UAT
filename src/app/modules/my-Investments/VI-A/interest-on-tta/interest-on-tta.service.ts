@@ -105,6 +105,22 @@ export class InterestOnTtaService {
   //     return res;
   //   }));
   // }
+  public getinterestonsavingdeposit80TTAMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'interestonsavingdeposit80TTA-master/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getinterestonsavingdeposit80TTATransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
 
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {

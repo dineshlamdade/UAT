@@ -3,8 +3,6 @@
   <app-header></app-header>
   <div class="section-body mt-3">
     <div class="container-fluid">
-
-
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -18,7 +16,7 @@
                     <div class="row">
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Employee No. & Name </label>
-                        <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode +''+
+                        <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode +' - '+
                           perticularEmpDetails.fullName}}</label>
                       </div>
                       <div class="col-md-2">
@@ -71,7 +69,7 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Description</label>
-                      <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}" disabled />
+                      <input type="text" class="form-control" value="{{loanDescription}}" disabled />
                     </div>
                     <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Loan No.</label>
@@ -91,7 +89,7 @@
                           </div>
                           <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
                             placeholder="Date" value="{{loanDetails.createDateTime|date:
-                              'dd-MMM-yyyy'}}" bsDatepicker>
+                              'dd-MMM-yyyy'}}" bsDatepicker disabled>
                         </div>
                       </div>
 
@@ -110,7 +108,10 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Loan Balance</label>
-                      <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
+                      <!-- <input type="text" class="form-control" value="{{balance}}" disabled /> -->
+                      <p-inputNumber class="p-inputleft" [(ngModel)]="balance" [ngModelOptions]="{standalone: true}" disabled="isEditable"
+                      mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                     max="100" [step]="2.5" maxlength="5"></p-inputNumber>
                     </div>
                   </div>
 
@@ -130,13 +131,13 @@
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
                       <label class="form-label">Transaction No.</label>
-                      <input type="text" class="form-control" formControlName="loanApplicationNumber"  />
+                      <input type="text" class="form-control" formControlName="transactionNo"  placeholder="Transaction No."  disabled />
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">
                         Application Date
                       </label>
-                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -144,7 +145,8 @@
                             </span>
                           </div>
                           <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                            formControlName="applicationDate" placeholder="Date" bsDatepicker>
+                            placeholder="Date" bsDatepicker value="{{myDate |date:
+                              'dd-MMM-yyyy'}}" disabled>
                         </div>
                       </div>
 
@@ -152,47 +154,65 @@
 
                     <div class="col-md-3">
                       <label class="form-label">Mode of Payment</label>
-                      <select class="form-control" formControlName="employeeModeOfPayment">
+                      <select class="form-control" formControlName="employeeModeOfPayment" (change)="adhocModeOfPayment($event.target.value)">
                         <option selected value=''>Select </option>
-                        <option selected value='self'>self </option>
-                        <option selected value='Online'>Online </option>
+                        <option  value='Bank Transfer'>Bank Transfer</option>
+                        <option  value='Cheque'>Cheque </option>
+
 
                       </select>
                     </div>
-                    <div class="col-md-3">
-                      <button type="button" tooltip="Button"
+                    <div class="col-md-3" >
+                      <button type="button" *ngIf="showbtn"  tooltip="Employee Bank Details"  (click)="empBankDetailsInfo(template1)"
                         class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
-                        aria-hidden="true"><b><i class="fa fa-university" aria-hidden="true"></i>
-                        </b>Employee Bank Details
-
+                        aria-hidden="true" >
+                        <b><i class="fa fa-university" aria-hidden="true" ></i></b>
+                        Employee Bank Details
                       </button>
+
+                      <button type="button" tooltip="Employee Bank Details" *ngIf="disabledbtn" (click)="empBankDetailsInfo(template1)"
+                      class="custom_button custom_btn1 disabled-btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
+                      aria-hidden="true" >
+                      <b><i class="fa fa-university" aria-hidden="true" ></i></b>
+                      Employee Bank Details
+                    </button>
                     </div>
+
                   </div>
 
                   <br>
                   <div class="row mt-1 mb-0">
 
-                    <div class="col-md-3">
+                    <div class="col-md-3" >
                       <label class="form-label">IFSC</label>
-                      <input type="text" class="form-control" formControlName="ifscCode" />
+                      <input type="text" class="form-control" placeholder="IFSC" formControlName="ifscCode" />
                     </div>
 
-                    <div class="col-md-3">
+
+                    <div class="col-md-3" >
                       <label class="form-label">Bank Name</label>
-                      <input type="text" class="form-control" formControlName="bankName" />
+                      <input type="text" class="form-control" placeholder="Bank Name" formControlName="bankName" />
                     </div>
-                    <div class="col-md-3">
+
+                    <div class="col-md-3" >
                       <label class="form-label">Branch Name</label>
-                      <input type="text" class="form-control" formControlName="bankAddress" />
+                      <input type="text" class="form-control" placeholder="Branch Name" formControlName="bankAddress" />
                     </div>
-                    <!-- <div class="col-md-3">
-                    <label class="form-label">Branch Address</label>
-                    <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
-                      value="{{loanAmount | number:'1.2-2'}}" ></textarea>
-                  </div> -->
-                    <div class="col-md-3">
-                      <label class="form-label">Cheque/ UTR No.</label>
-                      <input type="text" class="form-control" formControlName="chequeUtrNo" />
+<!--
+                    <div class="col-md-3" >
+                      <label class="form-label">Account No.</label>
+                      <input type="text" class="form-control" placeholder="Account No" formControlName="accountNo" />
+                    </div> -->
+
+                    <div class="col-md-3" *ngIf="isChequeNo">
+                      <label class="form-label">Cheque No.</label>
+                      <input type="text" class="form-control" placeholder="Cheque No." formControlName="chequeUtrNo"
+                      [ngClass]="{'is-invalid' : addAdhocForm.get('chequeUtrNo').status == 'INVALID'}"/>
+                    </div>
+                    <div class="col-md-3" *ngIf="isUTRNo">
+                      <label class="form-label">UTR No.</label>
+                      <input type="text" class="form-control" placeholder="UTR No." formControlName="chequeUtrNo"
+                      [ngClass]="{'is-invalid' : addAdhocForm.get('chequeUtrNo').status == 'INVALID'}"/>
                     </div>
                   </div>
                   <br>
@@ -208,19 +228,32 @@
                               <i class="fa fa-calendar"></i>
                             </span>
                           </div>
-                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                            formControlName="paymentDate" placeholder="Date" bsDatepicker>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="dateChange($event)"
+                                 placeholder="Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" bsDatepicker [value]="currentDate | date:'dd-MMM-yyyy'"
+                                [minDate]="dateOfPayment" *ngIf="modeOfPayment == 'Cheque'" [disabled]="viewMode" >
+
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="dateChange($event)"
+                                 placeholder="Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" bsDatepicker [value]="currentDate | date:'dd-MMM-yyyy'"
+                                *ngIf="modeOfPayment != 'Cheque'" [maxDate]="dateOfPayment" [disabled]="viewMode" >
+
                         </div>
                       </div>
 
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Amount</label>
-                      <input type="text" class="form-control" formControlName="amount" />
+                      <!-- <input type="text" class="form-control" formControlName="amount" placeholder="Amount"  (focusout)="forGreteramounthanyettodisburse($event.target.value)"
+                      [ngClass]="{'is-invalid' : addAdhocForm.get('amount').status == 'INVALID' || amountisnotgraterthan} "/> -->
+                      <p-inputNumber class="p-inputright" formControlName="amount" name=" Amount"
+                          (focusout)="forGreteramounthanyettodisburse($event.target.value)"
+                          [ngClass]="{'is-invalid' : addAdhocForm.get('amount').status == 'INVALID' || amountisnotgraterthan}"
+                           mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                          min="0"></p-inputNumber>
                     </div>
+
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <textarea type="text" rows="1" class="form-control" formControlName="remark" ></textarea>
+                      <textarea type="text" rows="1" class="form-control" formControlName="remark" placeholder="Remark"></textarea>
                     </div>
                   </div>
 
@@ -229,6 +262,10 @@
 
             </fieldset>
             <br>
+              </form>
+
+<!-- ..........................................................For ofc use ..................................................              -->
+            <form [formGroup]="officeUseForm">
             <fieldset>
               <legend>For Office Use</legend>
               <div class="col-md-12 pl-0 pr-0">
@@ -237,73 +274,95 @@
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
                       <label class="form-label">Mode of Payment</label>
-                      <select class="form-control" placeholder="Select" disabled>
-                        <option [ngValue]="null">Select</option>
-                        <!-- <option
-                             [selected]="loanType == loan.loanCode" 
-                            selected>
-                              Cheque</option>
-                            <option [selected]="loanType == loan.loanCode">
-                              Bank Transfer</option>
-                            <option [selected]="loanType == loan.loanCode">
-                              Through Salary</option> -->
+                      <select class="form-control" placeholder="Select" formControlName="modeofPayment" (change)="ofcUseModeOfpayment($event.target.value)" [disabled]="managerFlag">
+                        <option selected value=''>Select </option>
+                        <option  value='Bank Transfer'>Bank Transfer</option>
+                        <option  value='Cheque'>Cheque </option>
+
                       </select>
                     </div>
                     <div class="col-md-3">
-                      <button type="button" tooltip="Button"
+                      <button type="button" (click)="cmpnybankDetailsInfo(template2)" tooltip="Company Bank Details"
                         class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
-                        aria-hidden="true"><b><i class="fa fa-university" aria-hidden="true"></i>
+                        aria-hidden="true" ><b><i class="fa fa-university" aria-hidden="true" [disabled]="cmpnybankDetailsInfoFlag"></i>
                         </b>Company Bank Details
-
                       </button>
+                    </div>
+
+                    <div class="col-md-3" *ngIf="isChequeNo">
+                      <label class="form-label">Cheque No.</label>
+                      <input type="text" class="form-control" placeholder="Cheque No." formControlName="companyChequeUTRNo"
+                      [ngClass]="{'is-invalid' : officeUseForm.get('companyChequeUTRNo').status == 'INVALID'}"/>
+                    </div>
+                    <div class="col-md-3" *ngIf="isUTRNo">
+                      <label class="form-label">UTR No.</label>
+                      <input type="text" class="form-control" placeholder="UTR No." formControlName="companyChequeUTRNo"
+                      [ngClass]="{'is-invalid' : officeUseForm.get('companyChequeUTRNo').status == 'INVALID'}"/>
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">IFSC</label>
-                      <input type="text" class="form-control" />
-                    </div>
-
-                    <div class="col-md-3">
-                      <label class="form-label">Bank Name</label>
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control" placeholder="IFSC"  formControlName="companyIfscCode" disabled/>
                     </div>
 
                   </div>
                   <br>
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
+                      <label class="form-label">Bank Name</label>
+                      <input type="text" class="form-control" placeholder="Bank Name" formControlName="companyBankName" disabled/>
+                    </div>
+                    <div class="col-md-3">
                       <label class="form-label">Branch Name</label>
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control" placeholder="Branch Name" formControlName="companyBankAddress"  disabled/>
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Account No.</label>
-                      <textarea type="text" rows="1" class="form-control"></textarea>
+                      <input type="text" rows="1" class="form-control" placeholder="Account No." formControlName="companyAccountNo"  disabled/>
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Date of Receipt</label>
-                      <input type="text" class="form-control" disabled />
+                      <!-- <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                      placeholder="Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" bsDatepicker
+                      [minDate]="dateOfPayment"> -->
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth" >
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="dateChangeForOfc($event)"
+                          placeholder="Date" bsDatepicker  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyDateOfPayment">
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Cycle Name
-                      </label>
-                      <input type="text" class="form-control" disabled />
-                    </div>
+
 
                   </div>
                   <br>
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
+                      <label class="form-label">Cycle Name
+                      </label>
+                      <input type="text" class="form-control"  [disabled]="managerFlag" placeholder="Cycle Name" formControlName="businessCycleId"/>
+                    </div>
+                    <div class="col-md-3">
                       <label class="form-label">Amount</label>
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control" placeholder="Amount"  [disabled]="managerFlag" formControlName="amountReceived"/>
                     </div>
 
 
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <textarea type="text" rows="1" class="form-control"></textarea>
+                      <textarea type="text" rows="1" class="form-control" formControlName="companyRemark" placeholder="Remark" [disabled]="managerFlag"></textarea>
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Loan Balance</label>
-                      <input type="text" class="form-control" />
+                      <!-- <input type="text" class="form-control" [(ngModel)]="loanBalance" [ngModelOptions]="{standalone: true}" placeholder="Loan Balance" disabled/> -->
+                      <p-inputNumber class="p-inputleft" [(ngModel)]="balance" [ngModelOptions]="{standalone: true}" disabled="isEditable"
+                      mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                     max="100" [step]="2.5" maxlength="5"></p-inputNumber>
                     </div>
                   </div>
 
@@ -317,29 +376,444 @@
 
             <br><br>
 
-            <ng-container class="float-right">
+            <ng-container class="float-right" *ngIf="loanAppBtns">
 
               <div class="row float-right" style="margin: 10px">
-                <button type="button" tooltip="Button"
+                <button type="button" tooltip="Save" *ngIf="isSave"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                  aria-hidden="true" (click)="addAdhocData()"><b><i class="fa fa-check-square-o"></i></b>Save
+                  aria-hidden="true" (click)="addAdhocData()"   [disabled]="!addAdhocForm.valid"
+                  [ngClass]="{'disabled-btn-bg-green' : addAdhocForm.invalid ,'btn-bg-green':
+                  !addAdhocForm.invalid }"  ><b><i class="fa fa-floppy-o"></i></b>Save
                 </button>
-                <button type="button" tooltip="Button"
+                <!-- [disabled]="!addAdhocForm.valid"
+                      [ngClass]="{'disabled-btn-bg-green' : addAdhocForm.invalid ,'btn-bg-green':
+                      !addAdhocForm.invalid }" -->
+                <button type="button" tooltip="Update" *ngIf="isUpdate"
                   class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
-                  aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send Back
+                  aria-hidden="true" (click)="updateAdhocForm()"  [disabled]="!addAdhocForm.valid"
+                  [ngClass]="{'disabled-btn-bg-green' : addAdhocForm.invalid ,'btn-bg-green':
+                  !addAdhocForm.invalid }"
+                 ><b><i class="fa fa-reply"></i></b>Update
                 </button>
-                <button type="button" tooltip="Cancel" (click)="cancel()"
+                <!-- [ngClass]="{'disabled-btn-bg-green' : addAdhocForm.invalid ,'btn-bg-green':
+                !addAdhocForm.invalid }"[disabled]="!addAdhocForm.valid"  -->
+                <!-- <button type="button" tooltip="Send Back"
+                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
+                <b><i class="fa fa-reply"></i></b> Send Back
+              </button> -->
+                <button type="button" tooltip="Close" (click)="cancel()"
                   class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
-                  <b><i class="fa fa-times"></i></b> Close
+                  <b><i  class="fa fa-times-circle"></i></b> Close
                 </button>
+                <button type="button" tooltip="Reset" (click)="resetAdhocForm()"
+                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                <b><i class="fa fa-refresh"></i></b> Reset
+              </button>
               </div>
             </ng-container>
+      <!-- .............................................edit time btns ...............................................  -->
+      <ng-container class="float-right"  *ngIf="loanApprEditTimeBtns">
+        <div class="row float-right" style="margin: 10px">
 
+        <button type="submit"
+        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        tooltip="Approved" ><b> <i class="fa fa-check-square-o "></i>
+        </b> Approved </button>&nbsp;
+
+        <button type="submit"
+        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+        tooltip=" Send Back"><b> <i class="fa fa-reply"></i>
+        </b> Send Back </button>&nbsp;
+
+        <button type="button" tooltip="Forward"
+        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+        aria-hidden="true"><b><i class="fa fa-share"></i></b>Forward
+        </button>
+
+<!-- ...............................selected multiple employee buttons ..........................................   -->
+          <button type="button" tooltip="Previous" *ngIf="multiplEmpFlag"  class=" custom_button custom_btn bg-teal-400
+          btn-labeled btn-labeled-left mr-2" > <b><i class="fa fa-angle-double-left" aria-hidden="true" >
+          </i></b>Previous </button>
+
+          <button type="button" tooltip="Next" *ngIf="multiplEmpFlag" class=" custom_button custom_btn bg-teal-400
+          btn-labeled btn-labeled-left mr-2" > <b><i class="fa fa-angle-double-right"></i></b>
+          Next</button>
+
+          <button type="submit" *ngIf="multiplEmpFlag"
+          class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+          tooltip=" Send Back & Next"  ><b> <i class="fa fa-reply"></i>
+          </b> Send Back & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+          <button type="submit" *ngIf="multiplEmpFlag"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+          tooltip="Approved & Next" ><b> <i class="fa fa-check-square-o "></i>
+          </b> Approved & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+          <button type="button" tooltip="Forward & Next" *ngIf="multiplEmpFlag"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+          aria-hidden="true"><b><i class="fa fa-share"></i></b>Forward & <i class="fa fa-angle-double-right"></i>
+          </button>
+
+          <button type="button" tooltip="Close"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+          <b><i  class="fa fa-times-circle"></i></b> Close
+        </button>
+
+
+      </div>
+    </ng-container>
+
+    <!-- .......................................multiple loan selection btns.............................................  -->
+    <ng-container class="float-right"  *ngIf="userName == 'AjayS' || ofcUseBtns">
+      <div class="row float-right" style="margin: 10px">
+        <button type="button" *ngIf="multiplEmpFlag" tooltip="Previous"
+         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left  ml-2 mr-2 "
+        (click)="priviousRecord()" [disabled]="
+       selectedLoanDataForApproval.length == 1 || index == 0"
+       [ngClass]="{'disabled-btn-bg-green' : selectedLoanDataForApproval.length == 1
+        || index == 0,'btn-bg-gray': !addDisburseForm.invalid }" >
+         <b><i class="fa fa-angle-double-left" aria-hidden="true" >
+       </i></b>Previous </button>
+
+    <button type="submit" tooltip="Save" *ngIf="isSave || userName == 'AjayS'"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+      aria-hidden="true" (click)="adhocPutOfcUse('Closed')"  [disabled]="!officeUseForm.valid"
+      [routerLink]="['/loan/loan-approval']"
+      [ngClass]="{'disabled-btn-bg-green' : officeUseForm.invalid ,'btn-bg-green': !officeUseForm.invalid }"><b>
+        <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save ofc use </button>
+
+
+    <button type="submit" *ngIf="multiplEmpFlag" tooltip="Save & Next"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      (click)="adhocPutOfcUse('Closed');nextRecord()"
+      [disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index "
+      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+       || (selectedLoanDataForApproval.length-1) == index ,'btn-bg-green': !addDisburseForm.invalid }"><b>
+      <i class="fa fa-check-square-o "></i>
+      </b> Save & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+        <button type="button" *ngIf="multiplEmpFlag" tooltip="Next" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
+        (click)="nextRecord()" [disabled]="
+       selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index"
+       [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+       || (selectedLoanDataForApproval.length-1) == index,'btn-bg-gray': !addDisburseForm.invalid }"> <b>
+       <i class="fa fa-angle-double-right"></i></b> Next </button>
+
+       <button type="button" tooltip="Reset"   (click)="resetOfcUseForm()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+          <b><i class="fa fa-refresh"></i></b> Reset
+        </button>
+
+        <button type="button" tooltip="Close"   [routerLink]="['loan/loan-approval']" (click)="closeOfcUseForm()"
+        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+        <b><i  class="fa fa-times-circle"></i></b> Close
+      </button>
+  </div>
+</ng-container>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <!-- .............................emp bank details pop up...........................................................  -->
+    <ng-template #template1>
+      <div class="modal-header">
+          <h5 class="modal-title" id="UploadModalLabel">Bank Details</h5>
+          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+          <div class="card">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-12">
+                     <div class="float-right mb-15">
+                      <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-icon mb-3">
+                          <div class="float-right">
+                            <div class="d-flex">
+                                <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
+                                  <a tooltip="Export to Excel" style="cursor: pointer"
+                                    (click)="empBankExportAsXLSX()"><i
+                                        class="fa fa-file-excel-o font-18 text-dark-green  mr-10 mt-10"
+                                        aria-hidden="true"></i></a>
+
+                                        <span class="p-input-icon-left p-ml-auto">
+                                          <i class="pi pi-search" style="top: 8px; right: 10px;" ></i>
+                                          <input pInputText type="text"
+                                              (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                              placeholder="Search" />
+                            </span>
+                          </div>
+                          </div>
+                        </div>
+                        </div>
+                       </div>
+                       </div>
+                       </div>
+                  <div class="row clearfix">
+
+                      <div class="col-md-12">
+
+                        <p-table #dt [value]="bankData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100,200]"
+             [globalFilterFields]="['bankIFSC','bankName','branchName','accountNo']">
+             <ng-template pTemplate="header">
+              <tr>
+
+                  <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Select
+                    </div>
+                </th>
+
+
+                <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      IFCS Code
+
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="bankIFSC"
+                          pSortableColumn="bankIFSC"></p-sortIcon>
+                         <p-columnFilter type="text" field="bankIFSC" display="menu"
+                             class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+
+
+          <th rowspan="2" >
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Bank Name
+                <div class="Sort_Filter_Position">
+                  <p-sortIcon field="bankName"
+                  pSortableColumn="bankName"></p-sortIcon>
+                    <p-columnFilter type="text" field="bankName" display="menu"
+                        class="p-ml-auto"></p-columnFilter>
+                </div>
+            </div>
+        </th>
+        <th rowspan="2" >
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Branch Name
+              <div class="Sort_Filter_Position">
+                <p-sortIcon field="branchName"
+                pSortableColumn="branchName"></p-sortIcon>
+                  <p-columnFilter type="text" field="branchName" display="menu"
+                      class="p-ml-auto"></p-columnFilter>
+              </div>
+          </div>
+      </th>
+      <th rowspan="2" >
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Account Number
+            <div class="Sort_Filter_Position">
+              <p-sortIcon field="accountNo"
+              pSortableColumn="accountNo"></p-sortIcon>
+                <p-columnFilter type="text" field="accountNo" display="menu"
+                    class="p-ml-auto"></p-columnFilter>
+            </div>
+        </div>
+    </th>
+              </tr>
+          </ng-template>
+
+                          <ng-template pTemplate="body" let-selectedbankData let-rowIndex = rowIndex>
+                              <tr class="p-selectable-row">
+                                <td class="text-center bg-color-light_gray">
+                                  <label class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="select"
+                                    (click)="onSelectBanksdetails(selectedbankData,rowIndex)"
+                                     />
+                                     <!-- [checked]="selectedbankData.checked == true" -->
+                                    <span class="custom-control-label"></span>
+                               </label>
+
+                                </td>
+                                    <td class="text-center bg-color-light_gray">{{selectedbankData.bankIFSC}}</td>
+                                      <td class="text-center bg-color-light_gray">{{selectedbankData.bankName}}</td>
+                                      <td class="text-center bg-color-light_gray">{{selectedbankData.branchName}}</td>
+                                      <td class="text-center bg-color-light_gray">{{selectedbankData.accountNo}}</td>
+
+                            </tr>
+
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                              <tr>
+                                  <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                          Available</span></td>
+                              </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modalRef.hide()"
+        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right" tooltip="Proceed"><b>
+        <i class="fa fa-arrow-circle-o-right"></i></b> Proceed</button>&nbsp;
+
+          <button type="button"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" tooltip="Close" (click)="modalRef.hide();reset()"><b>
+            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+          </div>
+    </ng-template>
+
+    <!-- .............................emp bank details pop up...........................................................  -->
+    <ng-template #template2>
+      <div class="modal-header">
+          <h5 class="modal-title" id="UploadModalLabel">Company Bank Details</h5>
+          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+          <div class="card">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+                      <div class="form-group">
+                        <label class="form-label"></label>
+                        <!-- <div class="input-icon mb-3">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                        </div> -->
+                        <div class="input-icon mb-3">
+                          <div class="float-right">
+                            <div class="d-flex">
+                                <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
+                                  <a tooltip="Export to Excel" style="cursor: pointer"
+                                    (click)="companyBankExportAsXLSX()"><i
+                                        class="fa fa-file-excel-o font-18 text-dark-green  mr-10 mt-10"
+                                        aria-hidden="true"></i></a>
+
+                                        <span class="p-input-icon-left p-ml-auto">
+                                          <i class="pi pi-search" style="top: 8px; right: 10px;" ></i>
+                                          <input pInputText type="text"
+                                              (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                              placeholder="Search" />
+                            </span>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                      </div>
+                      </div>
+                  <div class="row clearfix">
+
+                      <div class="col-md-12">
+
+                        <p-table [value]="companySelectedBankData" #dt2 [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" >
+                          <ng-template pTemplate="header"
+                          [globalFilterFields]="['bankIFSC','bankName','branchName','accountNo']">
+                              <tr>
+
+                                  <th rowspan="2">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Select
+                                    </div>
+                                </th>
+
+                                <th rowspan="2">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      IFCS Code
+
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="bankIFSC"
+                                          pSortableColumn="bankIFSC"></p-sortIcon>
+                                        <p-columnFilter type="text" field="bankIFSC" display="menu"
+                                            class="p-ml-auto"></p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+
+                          <th rowspan="2" >
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Bank Name
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="bankName"
+                                  pSortableColumn="bankName"></p-sortIcon>
+                                    <p-columnFilter type="date" field="bankName" display="menu"
+                                        class="p-ml-auto"></p-columnFilter>
+                                </div>
+                            </div>
+                        </th>
+                        <th rowspan="2" >
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Branch Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="branchName"
+                                pSortableColumn="branchName"></p-sortIcon>
+                                  <p-columnFilter type="date" field="branchName" display="menu"
+                                      class="p-ml-auto"></p-columnFilter>
+                              </div>
+                          </div>
+                      </th>
+                      <th rowspan="2" >
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Account Number
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="accountNo"
+                              pSortableColumn="accountNo"></p-sortIcon>
+                                <p-columnFilter type="date" field="accountNo" display="menu"
+                                    class="p-ml-auto"></p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                              </tr>
+                          </ng-template>
+
+                          <ng-template pTemplate="body" let-companybankData let-rowIndex = rowIndex>
+                              <tr class="p-selectable-row">
+                                <td class="text-center bg-color-light_gray">
+                                  <label class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" name="select"
+                                    (click)="companyBankChecked(companybankData)"
+                                    [checked]="companybankData.checked == true"  />
+                                    <span class="custom-control-label"></span>
+                              </label>
+
+                                </td>
+                                <td class="text-center bg-color-light_gray">{{companybankData.ifscCode}}</td>
+                                <td class="text-center bg-color-light_gray">{{companybankData.bankName}}</td>
+                                <td class="text-center bg-color-light_gray">{{companybankData.branchName
+                                  }}</td>
+                                <td class="text-center bg-color-light_gray">{{companybankData.accountNumber}}</td>
+                                <!-- {{companybankData.accountNumber}} -->
+                            </tr>
+
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                              <tr>
+                                  <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                          Available</span></td>
+                              </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="modalRef.hide()"
+        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right" tooltip="Proceed"><b>
+        <i class="fa fa-arrow-circle-o-right"></i></b> Proceed</button>&nbsp;
+
+          <button type="button"
+        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close" (click)="modalRef.hide();reset()"><b>
+        <i class="fa fa-times"></i></b> Reset</button>&nbsp;
+          </div>
+    </ng-template>
     <app-footer></app-footer>
   </div>
 </div>

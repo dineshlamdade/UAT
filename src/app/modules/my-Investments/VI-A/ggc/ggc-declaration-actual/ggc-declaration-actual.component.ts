@@ -35,7 +35,7 @@ import { GgcService } from '../ggc.service';
   styleUrls: ['./ggc-declaration-actual.component.scss']
 })
 export class GgcDeclarationActualComponent implements OnInit {
-
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() childName: string;
   @Input() data: any;
@@ -194,6 +194,12 @@ export class GgcDeclarationActualComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1046,29 +1052,28 @@ export class GgcDeclarationActualComponent implements OnInit {
   }
 
     //----------- On change Transactional Line Item Remark --------------------------
-    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-      console.log('event.target.value::', event.target.value);
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    console.log('event.target.value::', event.target.value);
+debugger
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
 
-     console.log('this.transactionDetail', this.transactionDetail);
-      // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-      // console.log('index::', index);
-
-      this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+    this.transactionDetail[transIndex].remark =  event.target.value;
 
 
-    }
-
+  }
 
   upload() {
 
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1839,15 +1844,19 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
       public docRemarkModal(
         documentViewerTemplate: TemplateRef<any>,
         index: any,
-        psId, policyNo
+        donations80GGTransactionId,
+        summary, count
       ) {
-
-        this.Service.getRemarkList(
-          policyNo,
-          psId
+      
+        this.summaryDetails = summary;
+        this.indexCount = count;
+        this.selectedremarkIndex = count;
+        this.ggcService.getdonations80GGCTransactionRemarkList(
+          donations80GGTransactionId,
         ).subscribe((res) => {
           console.log('docremark', res);
-        this.documentRemarkList  = res.data.results[0].remarkList
+          this.documentRemarkList  = res.data.results[0];
+          this.remarkCount = res.data.results[0].length;
         });
         // console.log('documentDetail::', documentRemarkList);
         // this.documentRemarkList = this.selectedRemarkList;
@@ -1857,8 +1866,50 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
           Object.assign({}, { class: 'gray modal-s' })
         );
       }
+    
 
-
+      onSaveRemarkDetails(summary, index){
+    
+        const data ={
+          "transactionId": this.summaryDetails.donations80GGTransactionId,
+          // "transactionId": 278,
+          "masterId":0,
+          "employeeMasterId":this.summaryDetails.employeeMasterId,
+          "section":"VIA",
+          "subSection":"80GGC",
+          "remark":this.enteredRemark,
+          "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+          "role":"Employee",
+          "remarkType":"Transaction"
+    
+        };
+        this.Service
+        .postLicMasterRemark(data)
+        .subscribe((res) => {
+          if(res.status.code == "200") {
+            console.log(this.transactionDetail);
+            // this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+            this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+            this.alertService.sweetalertMasterSuccess(
+              'Remark Saved Successfully.',
+              '',
+            );
+             this.enteredRemark = '';
+            this.modalRef.hide();
+    
+    
+          } else{
+            this.alertService.sweetalertWarning("Something Went Wrong");
+          }
+        });
+      }
+    
+    
+    
+      onResetRemarkDetails() {
+        this.enteredRemark = '';
+      }
+    
 
       downloadTransaction(proofSubmissionId) {
         console.log(proofSubmissionId);
