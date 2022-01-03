@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -11,13 +12,15 @@ export class GroupOrCompanySelectionComponent implements OnInit {
   distinctCountries: any;
   distinctGroups: any;
   distinctCompanies: any;
+  distinctRoles: Array<any>=[];
+  companyName: any;
 
-  constructor( private service: AuthService,) { }
+  constructor( private service: AuthService,private router: Router) { }
 
   ngOnInit(): void {
 
     this.service.checkUser().subscribe(res=>{
-      
+     
       this.groupCompanyData = res.data.results; 
       this.distinctCountries = this.groupCompanyData.map(item => item.country).filter((value, index, self) => self.indexOf(value) === index)
     //      console.log('this.distinctCountries',this.distinctCountries)
@@ -28,11 +31,23 @@ export class GroupOrCompanySelectionComponent implements OnInit {
   }
 
   onChangeCountry(country){
-    this.distinctGroups = this.groupCompanyData.filter(ele=>ele.country==country).map(item => item.code).filter((value, index, self) => self.indexOf(value) === index)
+    this.distinctGroups = this.groupCompanyData.filter(ele=>ele.country==country).map(item => item.companyGroupName).filter((value, index, self) => self.indexOf(value) === index)
     //console.log('this.distinctGroups',this.distinctGroups)
   }
   onChangeGroup(group){
-    this.distinctCompanies= this.groupCompanyData.filter(ele=>ele.code==group).map(item => item.companyGroupCode).filter((value, index, self) => self.indexOf(value) === index)
+    this.distinctCompanies= this.groupCompanyData.filter(ele=>ele.companyGroupName==group).map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
     //console.log('this.distinctCompanies',this.distinctCompanies)
+  }
+  companySelection(companyName){
+    this.companyName=companyName;
+  }
+
+  redictionTo(){
+    let dataCompany = this.groupCompanyData.find(a=>a.companyName==this.companyName);
+    if(dataCompany.type=='Admin'){
+      this.router.navigate(['/employee-master/emp-master-landing-page']);
+    }else{
+      this.router.navigate(['/dashboard']);
+    }
   }
 }

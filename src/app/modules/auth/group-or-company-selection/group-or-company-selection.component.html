@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class= "form-label">Select Company</label>
-                                            <select class="form-control">
+                                            <select class="form-control" (change)="companySelection($event.target.value)">
                                                 <option value="">Select</option>
                                                 <option *ngFor="let company of distinctCompanies">{{company}}</option>
                                               </select>
@@ -38,7 +38,7 @@
                                     <div class="row mt-25">
                                         <div class="col-md-12">
                                             <div class="float-right">
-                                                <button _ngcontent-wxs-c616="" type="button" tooltip="Button"
+                                                <button _ngcontent-wxs-c616="" type="button" tooltip="Button" (click)="redictionTo()"
                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  mr-2"
                                                 tabindex="0" ng-reflect-tooltip="Button"
                                                 ng-reflect-router-link="/loan/rescheduleRequest"><b

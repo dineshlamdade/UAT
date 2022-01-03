@@ -13,9 +13,9 @@
         
                                 <div class="col-md-12">
         
-                                    <div class="rup mt-5">
+                                    <div  class="rup mt-5">
                                         <div class="row clearfix row d-flex justify-content-center text-bold">
-                                            <div class=" col-md-4">
+                                            <div   class=" col-md-4">
                                                 <div class="card  btn-bg-green">
                                                     <div class="card-body">
                                                         <a (click)="rediredToEmployee()"  [routerLink]="['/employee-master/employee-dashboard']"
@@ -27,7 +27,7 @@
                                                 </div>
                                             </div>
                                           
-                                            <div class="col-md-4">
+                                            <div *ngIf="distinctRoles.includes('Admin')" class="col-md-4">
                                                 <div class="card btn-bg-green">
                                                     <div class="card-body">
                                                         <a [routerLink]="['/userGroupSelectPage']"
@@ -40,7 +40,7 @@
                                             </div>
                                        
                                             
-                                            <div class="col-md-4">
+                                            <div *ngIf="distinctRoles.includes('Global')" class="col-md-4">
                                                 <div class="card btn-bg-green">
                                                     <div class="card-body ribbon">
         
