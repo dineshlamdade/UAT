@@ -46,6 +46,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   documentRemarkList: any;
 
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -70,6 +71,9 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public electricVehicleLoanTransactionList;
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   public editDocumentByPSID: Array<any> = [];
   documentDataArray = [];
@@ -138,7 +142,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public grandApprovedTotalEditModal: number;
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
-  public isDisabled: boolean;
+  // public isDisabled: boolean;
+  public isDisabled = false;
   public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
@@ -202,6 +207,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public declarationData: string;
   public updateReceiptAmount: any;
   Remark: any;
+  createdDateTime: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -249,6 +255,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       this.getTransactionFilterData(input.lenderName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      if(this.data.canView == true){
+        this.isDisabled = true;
+        
+            } else {
+              this.isDisabled = false;
+            }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -1698,7 +1710,7 @@ debugger
     this.documentArray = [];
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -1732,6 +1744,18 @@ debugger
           res.data.results[0].electricVehicleLoanTransactionDetailList;
         // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
         this.editProofSubmissionId = proofSubmissionId;
+
+        if(res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0].electricVehicleLoanTransactionList.length) {
+        this.createDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.createDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.transactionStatus;
+        }    
+if(res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0].electricVehicleLoanTransactionPreviousEmployerList.length) {
+        this.createdDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.createdDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.transactionStatus;
+}
+
         this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1807,6 +1831,7 @@ debugger
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    debugger
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

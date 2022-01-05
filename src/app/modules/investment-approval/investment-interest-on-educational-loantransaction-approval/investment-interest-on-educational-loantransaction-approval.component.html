@@ -99,7 +99,7 @@
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Section</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.section }}
+                          {{ transactionInfo?.psidDetail?.section }}
                         </label>
                       </div>
                       <div class="col-md-1">
@@ -111,7 +111,7 @@
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">PS ID</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.psid }}
+                          {{ transactionInfo?.psidDetail?.psid }}
                         </label>
                       </div>
 
@@ -369,55 +369,57 @@
                                       </td>
                                       <td>
 
-                                          <div class="d-flex">
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            (change)="
-                                              onChangeTransactionalRemark(
-                                                transactionDetail,
-                                                transactionIndex,
-                                                $event
-                                              )
-                                            "
-                                            [disabled]="
-                                              transaction.transactionStatus ==
-                                                'Approved'
-                                            "
-                                          />
-                                          <div
-                                            _ngcontent-ykc-c443=""
-                                            class="custom_Label_badge mr-2 ml-2"
-                                          >
-                                            <b>
-                                              <i
-                                                (click)="
-                                                  docRemarkModal(
-                                                    template3,
-                                                    transactionIndex,
-                                                    transaction.documentRemarkDetailList
-                                                  )
-                                                "
-                                                class="
-                                                  fa fa-commenting
-                                                  text-dark-green
-                                                  fa-2x
-                                                  cursor-pointer
-                                                "
-                                              >
-                                              </i
-                                            ></b>
-                                            <span
-                                              _ngcontent-ykc-c443=""
-                                              class="Label_badge "
-                                              >{{
-                                                transaction.remarkList.length
-                                              }}</span
+                                        <div class="d-flex">
+                                        <!-- <input
+                                          type="text"
+                                          [(ngModel)]="checkRemark"
+                                          class="form-control"
+                                          (change)="
+                                            onChangeTransactionalRemark(
+                                              transactionDetail,
+                                              transactionIndex,
+                                              $event
+                                            )
+                                          "
+                                          [disabled]="
+                                            transaction.transactionStatus ==
+                                              'Approved'
+                                          "
+                                        /> -->
+                                        <div
+                                          _ngcontent-ykc-c443=""
+                                          class="custom_Label_badge mr-2 ml-2"
+                                        >
+                                          <b>
+                                            <i
+                                              (click)="
+                                                transactionRemarkModal(
+                                                  template3,
+                                                  transactionIndex,
+                                                  transaction.documentRemarkDetailList,
+                                                  transaction?.transactionId,
+                                                  transaction, i, transactionDetail
+                                                )
+                                              "
+                                              class="
+                                                fa fa-commenting
+                                                text-dark-green
+                                                fa-2x
+                                                cursor-pointer
+                                              "
                                             >
-                                          </div>
+                                            </i
+                                          ></b>
+                                          <span
+                                            _ngcontent-ykc-c443=""
+                                            class="Label_badge "
+                                            >{{transaction?.bubbleRemarkCount}}</span
+                                          >
                                         </div>
+                                      </div>
 
-                                      </td>
+                                    </td>
+
 
                                       <td class="disabled">
                                         {{ transaction.transactionStatus }}
@@ -1658,7 +1660,7 @@
               <!-- Master Details Pop Up Ended -->
 
               <!-- Remark Modal started -->
-              <ng-template #template3>
+              <!-- <ng-template #template3>
                 <div class="modal-header">
                   <h5 class="modal-title" id="jasdjgh">View Remark</h5>
                   <button
@@ -1713,8 +1715,97 @@
                     Ok
                   </button>
                 </div>
-              </ng-template>
+              </ng-template> -->
               <!-- Remark Modal End -->
+              <ng-template #template3>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="jasdjgh">Remark</h5>
+                  <button
+                    type="button"
+                    (click)="modalRef.hide()"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+              
+                <div class="card-body">
+                  <div *ngFor="let documentRemark of documentRemarkList">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <span class="form-label"
+                          >{{ documentRemark?.role }}:
+                          <b class="text-gray">{{
+                            documentRemark?.remarkBy
+                          }}</b></span >
+                      </div>
+                      <div class="col-md-6">
+                        <div class="float-right">
+                          <span class="form-label">
+                            Date:
+                            <b class="text-gray">{{
+                              documentRemark?.remarkDate
+                                | date: "dd-MMM-yyyy HH:mm"
+                            }}</b>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+                      {{ documentRemark?.remark }}
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="row mt-25">
+                    <div class="col-md-12">
+                      <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+                      <textarea type="text" [(ngModel)]="enteredRemark"
+                      (change)= "
+                      onChangeDocumentRemark(
+                        this.summaryDetails, this.indexCount,
+                          $event
+                        )
+                      " class="form-control" placeholder="Remark"></textarea>
+                    </div>
+                  </div>
+                </div>
+              
+                <div *ngIf="!this.summaryDetails?.masterPSID" class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modalRef.hide()"
+                  >
+                    Ok
+                  </button>
+                </div>
+                <div *ngIf="this.summaryDetails?.masterPSID" class="modal-footer">
+                  <!-- <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onResetRemarkDetails()"
+                >
+                  Reset
+                </button> -->
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+                  >
+                    Save
+                  </button>
+                  <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onResetRemarkDetails()"
+                >
+                  Reset
+                </button>
+                </div>
+              </ng-template>
 
               <div
                 class="scroll-to-top"

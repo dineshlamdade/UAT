@@ -196,7 +196,7 @@ export class MediclaimMasterComponent implements OnInit {
       },
       {
       //  label: 'Medical Expenses For Parents(Senior Citizen/S)',
-        label: 'Medical Expenses for Sr. Citzen/s',
+        label: 'Medical Expenses for Sr. Citizen/s',
         value: 'Medical Expenses for Parents',
       },
 

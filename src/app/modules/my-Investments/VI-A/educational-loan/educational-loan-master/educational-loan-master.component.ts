@@ -134,6 +134,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   selectedremarkIndex : any;
   documentRemarkList: any;
   public remarkCount : any;
+  loanaccountNo: boolean;
   
 
   constructor(
@@ -316,6 +317,24 @@ export class EducationalLoanMasterComponent implements OnInit {
         });
       });
   }
+
+
+
+
+  toggleFieldTextType() {
+    this.loanaccountNo = !this.loanaccountNo;
+  }
+
+  hideAccountNo(loanaccountNo) {
+    if (loanaccountNo == true) {
+      setTimeout(() => {
+        this.loanaccountNo = false;
+      }, 3000);
+    }
+  }
+
+  
+
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
