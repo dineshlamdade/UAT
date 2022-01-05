@@ -3284,7 +3284,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
     if (this.selectedToDateForSave != '') {
       todate = this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd')
     }
-    let inputCycleId: 2790
+   // let inputCycleId: 2790
     let sdmSubCombinationId=1;
     let tempData= this.tempMatrixData.filter(ele=>ele.sdmSourceCombinationId=sdmcombination.sdmSourceCombinationId);
     if(tempData.length>0){

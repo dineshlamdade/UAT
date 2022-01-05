@@ -222,7 +222,8 @@ this.modalRef = this.modalService.show(
     //this.companyGroupName =  headname;
     this.service.postUserroupGetAllDistinctByCompanyGroups(data).subscribe((res) => {
       console.log("AssignedGroupCompanyData",res);
-      this.assignGroupData = res.data.results;
+     // this.assignGroupData = res.data.results;
+      res.data.results.forEach((ele) => { this.assignGroupData.push(Object.assign({}, ele)) });
 
       if(!this.isSaveAndReset){
         this.companyMasterData = []
