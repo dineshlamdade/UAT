@@ -214,12 +214,16 @@ this.modalRef = this.modalService.show(
 
     let data = {
       "userGroupName":this.userGroupName,
-      "listCompanyGroupIds":this.companyGroupMasterId      }
-    
+      // changes for tthe new change by apporrva for the al Company Data
+      //this.service.postUserGroupGetAllCompanyGroupsByUserGroup(data).subscribe((res) => {
+     //"listCompanyGroupIds":this.companyGroupMasterId  
+        }
+        
     //this.companyGroupName =  headname;
-    this.service.postUserGroupGetAllCompanyGroupsByUserGroup(data).subscribe((res) => {
+    this.service.postUserroupGetAllDistinctByCompanyGroups(data).subscribe((res) => {
       console.log("AssignedGroupCompanyData",res);
-      this.assignGroupData = res.data.results;
+     // this.assignGroupData = res.data.results;
+      res.data.results.forEach((ele) => { this.assignGroupData.push(Object.assign({}, ele)) });
 
       if(!this.isSaveAndReset){
         this.companyMasterData = []
