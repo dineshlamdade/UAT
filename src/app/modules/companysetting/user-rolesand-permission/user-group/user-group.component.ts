@@ -213,17 +213,17 @@ this.modalRef = this.modalService.show(
    this.userGroupName=this.form.controls['groupName'].value
 
     let data = {
-      "userGroupName":this.userGroupName,
+      "userGroupName":this.userGroupName
       // changes for tthe new change by apporrva for the al Company Data
       //this.service.postUserGroupGetAllCompanyGroupsByUserGroup(data).subscribe((res) => {
      //"listCompanyGroupIds":this.companyGroupMasterId  
         }
         
     //this.companyGroupName =  headname;
-    this.service.postUserroupGetAllDistinctByCompanyGroups(data).subscribe((res) => {
+    this.service.postUserroupGetAllDefaultCompanyGroups(data).subscribe((res) => {
       console.log("AssignedGroupCompanyData",res);
-     // this.assignGroupData = res.data.results;
-      res.data.results.forEach((ele) => { this.assignGroupData.push(Object.assign({}, ele)) });
+      this.assignGroupData = res.data.results;
+     // res.data.results.forEach((ele) => { this.assignGroupData.push(Object.assign({}, ele)) });
 
       if(!this.isSaveAndReset){
         this.companyMasterData = []
@@ -281,23 +281,35 @@ this.modalRef = this.modalService.show(
   assignuserGrpData(assigndata,event){
     // console.log("assigndata : "+ JSON.stringify(assigndata))
     if(event.checked){
-      this.asginUserGroup=[assigndata.companyGroupMasterId];
-      // this.companyMasterData  = []
-       this.companyGroupMasterId.forEach(element => {
-         if(element == assigndata.companyGroupMasterId){
+     // this.asginUserGroup=[assigndata.companyGroupMasterId];
+     //  this.companyMasterData  = []
+     if(this.companyMasterData.length==0){
+       let CompanyData=this.assignGroupData.filter(x=>x.active==true)
+       
+       CompanyData.forEach(Element=>{
+        this.companyMasterData.push({
+          "userGroupId": this.userGroupId,
+        "companyGroupMasterId":Element.companyGroupMasterId,
+        "active": true
+       });
+        })
+        
+      }
+     //  this.companyGroupMasterId.forEach(element => {
+      //   if(element == assigndata.companyGroupMasterId){
           this.companyMasterData.push(
             {
               "userGroupId": this.userGroupId,
-              "companyGroupMasterId":element,
+              "companyGroupMasterId":assigndata.companyGroupMasterId,
               "active": true
           
-          })
-         }
+        //  })
+        // }
          
        });
        
     }else{
-      if(this.companyMasterData.length > 0){
+      if(this.asginUserGroup.length > 0){
         this.companyMasterData.forEach((element,index) => {
          if(element.companyGroupMasterId == assigndata.companyGroupMasterId){
            let ind = index;
@@ -309,6 +321,10 @@ this.modalRef = this.modalService.show(
       }
      
     }
+    this.asginUserGroup=[];
+    this.companyMasterData.forEach(element => {
+      this.asginUserGroup.push(element.companyGroupMasterId)
+    });
    
 
    console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
@@ -386,6 +402,7 @@ this.modalRef = this.modalService.show(
         this.assignGroupData = res.data.results;
       });
     }
+    //this.companyMasterData=[];
   }
 
   Grouplist(template2: TemplateRef<any>,gName) {
