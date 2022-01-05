@@ -48,6 +48,13 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalService {
       );
   }
 
+  public geteducationalLoanMasterApprovalRemarkList(masterId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'educationalLoanMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   changeMasterStatus(formData: any) {
     return this.httpClient.post<APIResponse>(
       this.apiUrl + 'master-approval',

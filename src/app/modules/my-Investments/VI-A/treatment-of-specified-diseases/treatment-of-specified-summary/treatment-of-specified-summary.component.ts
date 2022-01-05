@@ -42,7 +42,21 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
   public minofCAndTotalActualAmountReceived  : number;
   public benefitAvailableOnDeclaredAmount  : number;
   public benefitAvailableOnActualAmount  : number;
+  public futureNewPolicyDeclaredAmount: 0
+  public futureGlobalPolicyDeclaredAmount: 0
+  public deductionEDeclared: number;
+  public minAmt: number;
+  public minAmtActual: number;
+  public eligibleForDeductionFDeclared: number;
+  public minAmtEligibleForDeductionFDeclared: number;
 
+  public deductionEActual: number;
+  public eligibleForDeductionFActual: number;
+  minAmtEligibleForDeductionFActual: number;
+  public minimumOfDeclaredAndLimit: number;
+  public minimumOfActualAndLimit : number;
+  public limitD: number = 40000;
+  public tempFlag: boolean;
   constructor(
     private service: MyInvestmentsService,
     private treatmentOfSpecifiedService: TreatmentOfSpecifiedService,
@@ -62,7 +76,8 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
     const data = {
       patientName: patientName,
       tabIndex: this.tabIndex,
-      canEdit: mode == 'edit' ? true : false,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: mode == 'view' ? true : false,
     };
     this.patientName = patientName;
     this.myEvent.emit(data);
@@ -85,7 +100,14 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
     this.treatmentOfSpecifiedService.getSpecifiedSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].specifiedDiseaseSummaryDetails;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      debugger
       this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureDeclaredAmount;
+        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limit = res.data.results[0].limit;
       this.minofTotalAndLimitDeclaredAmountC = res.data.results[0].minofTotalAndLimitDeclaredAmountC;
       this.minofTotalAndLimitActualAmountC = res.data.results[0].minofTotalAndLimitActualAmountC;
@@ -99,19 +121,73 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
       this.minofCAndTotalActualAmountReceived = res.data.results[0].minofCAndTotalActualAmountReceived;
       this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
       this.benefitAvailableOnActualAmount = res.data.results[0].benefitAvailableOnActualAmount;
-      // this.onChangeLimit();
+      this.onChangeLimit();
     });
   }
+
+   // Post New Future Policy Data API call
+   public addFuturePolicy(): void {
+    const data = {
+      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
+    };
+
+    this.treatmentOfSpecifiedService.getspecifiedDiseaseSummaryFuturePlan(data).subscribe((res) => {
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+     
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.onChangeLimit();
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved.', '');
+    });
+  }
+
+  onChangeLimit() {
+    this.deductionEDeclared = Math.min(this.minimumOfDeclaredAndLimit, this.limitD);
+   // console.log("minimumOfDeclaredAndLimit",this.minimumOfDeclaredAndLimit)
+    this.eligibleForDeductionFDeclared =this.minimumOfDeclaredAndLimit- this.deductionEDeclared;
+
+    this.deductionEActual = Math.min(this.minimumOfActualAndLimit, this.limitD);
+    this.eligibleForDeductionFActual =
+      this.minimumOfActualAndLimit - this.deductionEActual;
+  }
+
+
+
+
 
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+    if (this.futureNewPolicyDeclaredAmount > 0) {
+      this.addFuturePolicy();
+    } else if (this.futureNewPolicyDeclaredAmount < 0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
 
-    this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
-      this.interestOnFutureLoanDeclaredAmount
-    );
+    // this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
+    //   this.interestOnFutureLoanDeclaredAmount
+    // );
     // this.onChangeLimit();
     // this.addFuturePolicy();
+  }
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+
+    if (!pattern.test(inputChar)) {
+      // this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
   }
 
 

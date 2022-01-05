@@ -47,6 +47,14 @@ export class InvestmentIntereston80TTATTBMasterApprovalService {
       );
   }
 
+
+  public getinterestonsavingdeposit80TTA80TTBMasterApprovalRemarkList(masterId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'interestonsavingdeposit80TTA-master/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   changeMasterStatus(formData: any) {
     return this.httpClient.post<APIResponse>(
       this.apiUrl + 'master-approval',

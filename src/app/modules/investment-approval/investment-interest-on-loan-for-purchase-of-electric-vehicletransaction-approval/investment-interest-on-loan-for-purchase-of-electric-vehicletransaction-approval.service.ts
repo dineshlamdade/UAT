@@ -30,6 +30,15 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionAppr
       );
   }
 
+
+
+  public getelectricVehicleLoanTransactionApprovalRemarkList(transactionId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'electricVehicleLoanTransaction/GetRemarkTransaction/' + transactionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   // --------- POST API for changing Transaction List status ---------------------------------
   changeTransactionStatus(formData: any) {
     return this.httpClient.post<APIResponse>(

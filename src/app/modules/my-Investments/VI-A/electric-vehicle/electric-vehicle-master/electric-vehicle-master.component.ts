@@ -144,6 +144,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
   editRemarkData: any;
   selectedremarkIndex : any;
   documentRemarkList: any;
+  loanaccountNo: boolean;
 
 
   constructor(
@@ -323,6 +324,32 @@ export class ElectricVehicleMasterComponent implements OnInit {
       this.form.controls.loanEndDate.reset();
     }
   }
+
+
+  toggleFieldTextType() {
+    this.loanaccountNo = !this.loanaccountNo;
+  }
+
+  hideAccountNo(loanaccountNo) {
+    if (loanaccountNo == true) {
+      setTimeout(() => {
+        this.loanaccountNo = false;
+      }, 3000);
+    }
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
 
   // Get Master Page Data API call
   masterPage() {

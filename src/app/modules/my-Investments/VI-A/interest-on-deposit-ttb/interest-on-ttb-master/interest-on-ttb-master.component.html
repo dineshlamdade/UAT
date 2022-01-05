@@ -252,192 +252,301 @@
           <div class="row mt-30">
             <div class="col-12">
               <div class="card">
-                <div class="mb-0">
+                <div class="col-md-12">
                   <h3 class="font-14 text-purple font-bold">
-                    Document
+                    Document Summary
                   </h3>
                 </div>
-                <div class="col-12 col-md-12 col-sm-12">
-                  <div class="table-responsive Custom_Table">
-                    <p-table *ngIf="documentArray" #dt2 [value]="documentArray" [paginator]="true" [rows]="10"
-                      [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                <div class="col-9 col-md-10 col-sm-12">
+                  <div
+                    class="table-responsive Custom_Table"
+                  >
+                    <p-table
+                    *ngIf="documentArray"
+                      #dt2
+                      [value]="documentArray"
+                      [paginator]="true"
+                      [rows]="10"
+                      [showCurrentPageReport]="true"
+                      (sortFunction)="customSort($event)"
+                      [customSort]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="[
-                          'empcode',
-                          'empName',
-                          'Group',
-                          'Frequency',
-                          'Type',
-                          'proofsubmission',
-                          'PSIdDetails',
-                          'SubmissionDate',
-                          'Status'
-                        ]">
+                      [rowsPerPageOptions]="[10, 25, 50]"
+                      [globalFilterFields]="[
+                        'empcode',
+                        'empName',
+                        'Group',
+                        'Frequency',
+                        'Type',
+                        'proofsubmission',
+                        'PSIdDetails',
+                        'SubmissionDate',
+                        'Status'
+                      ]"
+                    >
                       <ng-template pTemplate="header">
                         <tr>
-                          <!-- <th style="width: 3rem">
-                              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th> -->
+                         
 
                           <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
-                              Date Of Submission
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
+                            Document Submission Date & Time
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
                           </th>
+                      
                           <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
-                              Document Name
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="documentName" pSortableColumn="documentName"></p-sortIcon>
-                                <p-columnFilter field="documentName" display="menu" class="p-ml-auto">
-                                </p-columnFilter>
-                              </div>
-                            </div>
-                          </th>
-                          <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Document Type
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="documentType" pSortableColumn="documentType"></p-sortIcon>
-                                <p-columnFilter field="documentType" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="documentType"
+                                  pSortableColumn="documentType"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="documentType"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
                           </th>
                           <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
+                              Document Name
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="documentName"
+                                  pSortableColumn="documentName"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="documentName"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Password
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
                           </th>
                           <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Remark
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
                           </th>
                           <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Status
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
                           </th>
-                          <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                          <!-- <th>
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Approver Name
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
-                          </th>
-                          <th>
-                            <div class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                ">
+                          </th> -->
+                          <!-- <th>
+                            <div
+                              class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                            >
                               Time
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
-                                <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                              <div
+                                class="Sort_Filter_Position"
+                              >
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
                                 </p-columnFilter>
                               </div>
                             </div>
-                          </th>
+                          </th> -->
                         </tr>
                       </ng-template>
-                      <ng-template pTemplate="body" let-document let-documentIndex="rowIndex">
+                      <ng-template
+                        pTemplate="body"
+                        let-document
+                        let-documentIndex = "rowIndex"
+                      >
                         <tr class="p-selectable-row">
+                         
                           <!-- <td>
-                              <p-tableCheckbox
-                                [value]="customer"
-                              >
-                              </p-tableCheckbox>
-                            </td> -->
-                          <td>
                             {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
-                          </td>
+                          </td> -->
+                          <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                          <td>{{ document.documentType }}</td>
                           <td>
-                            <a (click)=" docViewer(template3,documentIndex, document)">
-                              <i class="
-                                    fa fa-paperclip
-                                    text-orange
-                                  "></i>
+                            <a
+                            (click)=" docViewer(template3,documentIndex, document)"
+
+                            >
+                              <i
+                                class="
+                                  fa fa-paperclip
+                                  text-orange
+                                "
+                              ></i>
                               &nbsp;
                               {{ document.documentName }}
                             </a>
                           </td>
-                          <td>{{ document.documentType }}</td>
+                         
                           <td>{{ document.documentPassword }}</td>
                           <td>
                             <!-- <div class="custom_Label_badge">
-                                <button
-                                  class="
-                                    btn btn-bg-green
-                                    text-white
-                                  "
-                                  (click)="
-                                    docViewer(template3)
-                                  "
-                                >
-                                  PSEmp
-                                </button>
-                                <span class="Label_badge"
-                                  >2</span
-                                >
-                              </div> -->
+                              <button
+                                class="
+                                  btn btn-bg-green
+                                  text-white
+                                "
+                                (click)="
+                                  docViewer(template3)
+                                "
+                              >
+                                PSEmp
+                              </button>
+                              <span class="Label_badge"
+                                >2</span
+                              >
+                            </div> -->
                             {{document.documentRemark}}
                           </td>
-                          <td>{{ document.status }}</td>
-                          <td>{{ document.lastModifiedBy }}</td>
-                          <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm' }}</td>
+                          <!-- <td>{{ document.status }}</td> -->
+                          <td><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                            ' badge-success': document.status=='Approved',
+                            'badge-danger': document.status=='SendBack',
+                            'badge-info': document.status=='Submitted',
+                            'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                          <!-- <td>{{ document.lastModifiedBy }}</td>
+                          <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td> -->
                         </tr>
                       </ng-template>
                     </p-table>
@@ -493,7 +602,7 @@
             tooltip="Save"><b>
               <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
           <button type="button" (click)="resetView()"
-            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
               <i class="fa fa-floppy-o"></i></b> Reset</button>
         </div>
       </div>
@@ -503,7 +612,7 @@
       <div class="col-12">
         <div class="float-right mb-15">
           <button type="submit"
-          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update"
          ><b> <i
             class="fa fa-floppy-o"></i></b>Update</button>
               &nbsp;
@@ -896,14 +1005,14 @@
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <h6 class="modal-title" id="jasdjgh">New Remark</h6>
         <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this?.summaryDetails, this?.indexCount,
             $event
           )
-        " class="form-control" placeholder="Remark"></textarea>
+        " class="form-control" placeholder="Enter New Remark"></textarea>
       </div>
     </div>
   </div>
@@ -918,13 +1027,13 @@
     </button>
   </div> -->
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
-    <button
+    <!-- <button
       type="button"
       class="btn btn-secondary"
       (click)="onResetRemarkDetails()"
     >
     Reset
-    </button>
+    </button> -->
     <button
       type="button"
       class="btn btn-secondary"
@@ -932,6 +1041,13 @@
     >
       Save
     </button>
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+  Reset
+  </button>
   </div>
 </ng-template>
 

@@ -7,8 +7,8 @@
                  <tr>
                     <th scope="col" class="wd-20">Donee</th>
                     <th scope="col" class="wd-20">Purpose</th>
-                    <th scope="col" class="wd-15">Declared</th>
-                    <th scope="col" class="wd-15">Actual</th>
+                    <th scope="col" class="wd-15">Declared Amount</th>
+                    <th scope="col" class="wd-15">Actual Amount</th>
                     <th scope="col" class="wd-15">Action</th>
                  </tr>
               </thead>
@@ -45,19 +45,19 @@
                  </tr>
                  <tr>
                   <td colspan="5">
-                      <h3 class="align-left font-14 text-purple font-bold"> Computation Of Sec.80-GGC</h3>
+                      <h3 class="align-left font-14 text-purple font-bold"> Computation</h3>
                   </td>
                 </tr>
                  <tr class="table-light-color">
                     <td colspan="2" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
-                       {{totalDeclaredAmount | number:'1.2-2'}}
+                       <span class="padding-right-9" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
+                       <b>{{totalDeclaredAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>
                     <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
-                       {{totalActualAmount | number:'1.2-2'}}
+                       <span class="padding-right-9" tooltip="{{totalActualAmount | number:'1.2-2'}}">
+                       <b>{{totalActualAmount | number:'1.2-2'}}</b>
                        </span>
                     </td>
                     <td></td>
@@ -88,18 +88,18 @@
                   </td>
                   <td class="align-right">
                     <span
-                      class="padding-right-12"
+                      class="padding-right-9"
                       tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}"
                     >
-                      {{ grandTotalDeclaredAmount | number: "1.2-2" }}
+                      <b>{{ grandTotalDeclaredAmount | number: "1.2-2" }}</b>
                     </span>
                   </td>
                   <td class="align-right">
                     <span
-                      class="padding-right-12"
+                      class="padding-right-9"
                       tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}"
                     >
-                      {{ grandTotalActualAmount | number: "1.2-2" }}
+                      <b>{{ grandTotalActualAmount | number: "1.2-2" }}</b>
                     </span>
                   </td>
                   <td></td>
@@ -112,12 +112,12 @@
                     & &nbsp;<span class="Letterbadge"> C </span>
                   </td>
                   <td class="align-right">
-                    <span class="padding-right-12" tooltip="{{benefitAvailableOnDeclaredAmount | number:'1.2-2'}}">
+                    <span class="padding-right-9" tooltip="{{benefitAvailableOnDeclaredAmount | number:'1.2-2'}}">
                       {{benefitAvailableOnDeclaredAmount | number:'1.2-2'}}
                     </span>
                   </td>
                   <td class="align-right">
-                    <span class="padding-right-12" tooltip="{{benefitAvailableOnActualAmount | number:'1.2-2'}}">
+                    <span class="padding-right-9" tooltip="{{benefitAvailableOnActualAmount | number:'1.2-2'}}">
                       {{benefitAvailableOnActualAmount | number:'1.2-2'}}
                     </span>
                   </td>

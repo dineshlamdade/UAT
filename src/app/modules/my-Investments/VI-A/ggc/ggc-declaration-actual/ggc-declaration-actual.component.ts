@@ -120,6 +120,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
   public viewDocumentList: Array<any> = [];
+  public previoustransactionDetail: Array<any> = [];
 
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
@@ -200,6 +201,10 @@ export class GgcDeclarationActualComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  donations80GGTransactionPreviousEmployerList: any = [];
+  public onHideSaveButton: boolean = false;
+  declarationData: any;
+ 
 
   constructor(
     private formBuilder: FormBuilder,
@@ -287,9 +292,12 @@ export class GgcDeclarationActualComponent implements OnInit {
       purpose: new FormControl(null, Validators.required),
       dateOfPayment: new FormControl(null, Validators.required),
       declaredAmount: new FormControl(null, Validators.required),
-      actualAmount: new FormControl(null, Validators.required),
-      amountApproved: new FormControl(null),
-      amountRejected: new FormControl(null),
+      // actualAmount: new FormControl(null, Validators.required),
+      // amountApproved: new FormControl(null),
+      // amountRejected: new FormControl(null),
+      actualAmount: new FormControl('0.00', Validators.required),
+      amountApproved: new FormControl('0.00'),
+      amountRejected: new FormControl('0.00'),
       remark: new FormControl(null),
       proofSubmissionId: new FormControl(null),
       transactionStatus : new FormControl('Pending'),
@@ -328,9 +336,9 @@ export class GgcDeclarationActualComponent implements OnInit {
   }
 
   //New Row add CheckBox
-    // onSelectCheckBoxNew(){
-    //   this.uploadGridData.push(0);
-    // }
+    onSelectCheckBoxNew(){
+      this.uploadGridData.push(0);
+    }
 
     onSelectReactiveCheckbox(event) {
 
@@ -540,15 +548,27 @@ export class GgcDeclarationActualComponent implements OnInit {
 
 
 
-  updatePreviousEmpId(event: any, i: number, j: number) {
+  // updatePreviousEmpId(event: any, i: number, j: number) {
+  //   console.log('select box value::', event.target.value);
+  //   this.transactionDetail[j].previousEmployerId =
+  //     event.target.value;
+  //   console.log(
+  //     'previous emp id::',
+  //     this.transactionDetail[j].previousEmployerId
+  //   );
+  // }
+
+
+  updatePreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].previousEmployerId =
+    this.donations80GGTransactionPreviousEmployerList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].previousEmployerId
+      this.donations80GGTransactionPreviousEmployerList[i].previousEmployerId
     );
   }
+
 
   // -----------on Page referesh transactionStatustList------------
   refreshTransactionStatustList() {
@@ -653,13 +673,102 @@ export class GgcDeclarationActualComponent implements OnInit {
   }
 
   // -------- ON select to check input boxex--------
+  // public onSelectCheckBox(
+  //   data: any,
+  //   event: { target: { checked: any } },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   const checked = event.target.checked;
+
+  //   const formatedGlobalSelectedValue = Number(
+  //     this.globalSelectedAmount == '0'
+  //       ? this.globalSelectedAmount
+  //       : this.globalSelectedAmount.toString().replace(/,/g, '')
+  //   );
+
+  //   let formatedActualAmount: number = 0;
+  //   let formatedSelectedAmount: string;
+  //   if (checked) {
+  //     if (this.transactionDetail[j].donations80GGTransactionList[i].isECS === 1) {
+  //       this.transactionDetail[j].donations80GGTransactionList[i].actualAmount =
+  //         data.declaredAmount;
+  //       this.transactionDetail[j].donations80GGTransactionList[
+  //         i
+  //       ].dateOfPayment = new Date(data.dueDate);
+  //       console.log(
+  //         'in IS actualAmount::',
+  //         this.transactionDetail[j].donations80GGTransactionList[i].actualAmount
+  //       );
+  //       console.log(
+  //         'in IS dateOfPayment::',
+  //         this.transactionDetail[j].donations80GGTransactionList[i].dateOfPayment
+  //       );
+  //     } else {
+  //       this.transactionDetail[j].donations80GGTransactionList[i].actualAmount =
+  //         data.declaredAmount;
+  //     }
+
+  //     formatedActualAmount = Number(
+  //       this.transactionDetail[j].actualAmount
+  //         .toString()
+  //         .replace(/,/g, '')
+  //     );
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue + formatedActualAmount
+  //     );
+  //     console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+  //     this.uploadGridData.push(data.donations80GGTransactionId);
+
+  //     // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+  //     // this.actualAmountGlobal = Number(data.declaredAmount);
+  //   } else {
+  //     formatedActualAmount = Number(
+  //       this.transactionDetail[j].actualAmount
+  //         .toString()
+  //         .replace(/,/g, '')
+  //     );
+  //     this.transactionDetail[j].actualAmount = this.numberFormat.transform(0);
+  //     this.transactionDetail[j].dateOfPayment = null;
+
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue - formatedActualAmount
+  //     );
+  //     // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+  //     const index = this.uploadGridData.indexOf(
+  //       data.donations80GGTransactionId
+  //     );
+  //     this.uploadGridData.splice(index, 1);
+  //   }
+
+  //   this.globalSelectedAmount = formatedSelectedAmount;
+  //   console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+  //   this.grandActualTotal = 0;
+  //   this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
+  //     // console.log(element.actualAmount.toString().replace(',', ""));
+  //     this.grandActualTotal += Number(
+  //       element.actualAmount.toString().replace(/,/g, '')
+  //     );
+  //   });
+  //   this.transactionDetail[j].grandActualTotal = this.grandActualTotal;
+
+  //   if (this.uploadGridData.length) {
+  //     this.enableFileUpload = true;
+  //   }
+  //   console.log(this.uploadGridData);
+  //   console.log(this.uploadGridData.length);
+  // }
   public onSelectCheckBox(
     data: any,
     event: { target: { checked: any } },
     i: number,
     j: number
   ) {
+
+    debugger
+    
     const checked = event.target.checked;
+  
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -676,14 +785,6 @@ export class GgcDeclarationActualComponent implements OnInit {
         this.transactionDetail[j].donations80GGTransactionList[
           i
         ].dateOfPayment = new Date(data.dueDate);
-        console.log(
-          'in IS actualAmount::',
-          this.transactionDetail[j].donations80GGTransactionList[i].actualAmount
-        );
-        console.log(
-          'in IS dateOfPayment::',
-          this.transactionDetail[j].donations80GGTransactionList[i].dateOfPayment
-        );
       } else {
         this.transactionDetail[j].donations80GGTransactionList[i].actualAmount =
           data.declaredAmount;
@@ -697,11 +798,8 @@ export class GgcDeclarationActualComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.donations80GGTransactionId);
 
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
@@ -710,6 +808,70 @@ export class GgcDeclarationActualComponent implements OnInit {
       );
       this.transactionDetail[j].actualAmount = this.numberFormat.transform(0);
       this.transactionDetail[j].dateOfPayment = null;
+
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue - formatedActualAmount
+      );
+      const index = this.uploadGridData.indexOf(
+        data.donations80GGTransactionId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+
+    this.globalSelectedAmount = formatedSelectedAmount;
+    console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+    this.grandActualTotal = 0;
+    this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
+      this.grandActualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
+      );
+    });
+    this.transactionDetail[j].grandActualTotal = this.grandActualTotal;
+
+    if (this.uploadGridData.length) {
+      this.enableFileUpload = true;
+    }
+    console.log(this.uploadGridData);
+    console.log(this.uploadGridData.length);
+  }
+
+
+
+  // -------- ON select to check input boxex--------
+  public onSelectCheckBox1(
+    data: any,
+    event: { target: { checked: any } },
+    i: number,
+    j: number
+  ) {
+    debugger
+    const checked = event.target.checked;
+    this.onHideSaveButton = checked;
+
+    this.declarationData = data
+
+    const formatedGlobalSelectedValue = Number(
+      this.globalSelectedAmount == '0'
+        ? this.globalSelectedAmount
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
+    );
+
+    let formatedActualAmount = 0;
+    let formatedSelectedAmount: string;
+
+    if (checked) {
+       this.previoustransactionDetail[i].actualAmount = data.actualAmount;
+        formatedActualAmount = Number(
+        this.previoustransactionDetail[i].actualAmount
+          .toString().replace(/,/g, ''));
+      formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
+      this.uploadGridData.push(data.donations80GGTransactionId);
+    } else {
+      formatedActualAmount = Number(this.previoustransactionDetail[i].actualAmount
+          .toString()
+          .replace(/,/g, '')
+      );
+      this.previoustransactionDetail[i].actualAmount = this.numberFormat.transform(0);
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
@@ -724,13 +886,15 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.grandActualTotal = 0;
-    this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+    this.previoustransactionDetail[
+      i
+    ].forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.grandActualTotal += Number(
         element.actualAmount.toString().replace(/,/g, '')
       );
     });
-    this.transactionDetail[j].grandActualTotal = this.grandActualTotal;
+    this.previoustransactionDetail[i].grandActualTotal = this.grandActualTotal;
 
     if (this.uploadGridData.length) {
       this.enableFileUpload = true;
@@ -738,6 +902,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
   }
+
 
 
   // onEmployerCheckboxSelect(formArrayElement, handicappedDependentDetailMasterId, event) {
@@ -876,18 +1041,57 @@ export class GgcDeclarationActualComponent implements OnInit {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
+  // addRowInList(
+  //   summarynew: {
+  //     donations80GGTransactionId: number;
+  //     // investmentGroup2MasterPaymentDetailId: number;
+  //     previousEmployerId: number;
+  //     declaredAmount: any;
+  //     purpose: string;
+  //     actualAmount: any;
+  //     donee: string;
+  //   },
+  //   j: number
+  // ) {
+  //   // console.log('summary::',  summarynew);
+  //   // if (this.initialArrayIndex[j] > i) {
+  //   //   this.hideRemoveRow = false;
+  //   // } else {
+  //   //   this.hideRemoveRow  = true;
+  //   // }
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   // console.log('declarationService::', this.declarationService);
+  //   this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.isDisabled = false;
+  //   this.declarationService.donations80GGTransactionId = this.globalAddRowIndex;
+  //   this.declarationService.declaredAmount = null;
+  //   this.declarationService.purpose = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.donee =null;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   this.declarationService.amountRejected = 0.0;
+  //   this.declarationService.amountApproved = 0.0;
+  //   // this.declarationService.donations80GGTransactionId = this.transactionDetail[j].donations80GGTransactionList[0].donations80GGTransactionId;
+  //   // this.transactionDetail[j].donations80GGTransactionList.push(this.declarationService);
+  //   // console.log('addRow::', this.transactionDetail[j].donations80GGTransactionList);
+  // }
+
   addRowInList(
     summarynew: {
       donations80GGTransactionId: number;
+      employeeMasterId: number;
       // investmentGroup2MasterPaymentDetailId: number;
       previousEmployerId: number;
       declaredAmount: any;
-      purpose: string;
+      // purpose: string;
       actualAmount: any;
-      donee: string;
+      // donee: string;
     },
     j: number
   ) {
+    debugger
     // console.log('summary::',  summarynew);
     // if (this.initialArrayIndex[j] > i) {
     //   this.hideRemoveRow = false;
@@ -901,16 +1105,21 @@ export class GgcDeclarationActualComponent implements OnInit {
     this.shownewRow = true;
     this.isDisabled = false;
     this.declarationService.donations80GGTransactionId = this.globalAddRowIndex;
-    this.declarationService.declaredAmount = null;
-    this.declarationService.purpose = null;
+    // this.declarationService.declaredAmount = null;
+    // this.declarationService.purpose = null;
     this.declarationService.actualAmount = null;
-    this.declarationService.donee =null;
+    // this.declarationService.donee =null;
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
+    this.declarationService.donations80GGTransactionId = 0;
     // this.declarationService.donations80GGTransactionId = this.transactionDetail[j].donations80GGTransactionList[0].donations80GGTransactionId;
     // this.transactionDetail[j].donations80GGTransactionList.push(this.declarationService);
     // console.log('addRow::', this.transactionDetail[j].donations80GGTransactionList);
+    let k = this.previoustransactionDetail.length + 1;
+    this.previoustransactionDetail.push(this.declarationService);
+    console.log(this.globalAddRowIndex);
+    console.log('addRow::', this.previoustransactionDetail);
   }
 
   sweetalertWarning(msg: string) {
@@ -922,17 +1131,30 @@ export class GgcDeclarationActualComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].length - 1;
-    // console.log('rowcount::', rowCount);
-    // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].length == 1) {
-      return false;
-    } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].splice(rowCount, 1);
-      return true;
+  // deleteRow(j: number) {
+  //   const rowCount = this.transactionDetail[j].length - 1;
+  //   // console.log('rowcount::', rowCount);
+  //   // console.log('initialArrayIndex::', this.initialArrayIndex);
+  //   if (this.transactionDetail[j].length == 1) {
+  //     return false;
+  //   } else if (this.initialArrayIndex[j] <= rowCount) {
+  //     this.transactionDetail[j].splice(rowCount, 1);
+  //     return true;
+  //   }
+  // }
+    // -------- Delete Row--------------
+    deleteRow(j: number) {
+      const rowCount = this.transactionDetail[j].length - 1;
+      // console.log('rowcount::', rowCount);
+      // console.log('initialArrayIndex::', this.initialArrayIndex);
+      if (this.transactionDetail[j].length == 1) {
+        return false;
+      } else if (this.initialArrayIndex[j] <= rowCount) {
+        this.transactionDetail[j].splice(rowCount, 1);
+        return true;
+      }
     }
-  }
+  
 
   editDeclrationRow(
     summary: {
@@ -1799,6 +2021,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
           console.log('getTransactionFilterData', res);
           if (res.data.results.length > 0) {
             this.transactionDetail = res.data.results[0].donations80GGTransactionList;
+            this.previoustransactionDetail = res.data.results[0].donations80GGTransactionPreviousEmployerList;
 
             console.log('transactionDetail', this.transactionDetail);
             this.documentDetailList = res.data.results[0].documentInformation;
@@ -2006,6 +2229,7 @@ public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
 
     class DeclarationService {
       public donations80GGTransactionId = 0;
+      public employeeMasterId: number;
       // public investmentGroup2MasterPaymentDetailId: number;
       public previousEmployerId = 0;
       public donee: string;
