@@ -36,6 +36,14 @@ export class InvestmentHandicappeddependentmasterApprovalService {
       );
   }
 
+
+  public gethandicappeddependentMasterApprovalRemarkList(masterId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'handicappeddependent-detailmaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getMasterInfo(psid: any): Observable<InvestmentApprovalMasterInfo> {
     // const investmentApprovalEmployeeMasterInfo = of(MasterInfo);
     // return investmentApprovalEmployeeMasterInfo;

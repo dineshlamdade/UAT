@@ -96,6 +96,9 @@ export class DeclarationAndActualComponent implements OnInit {
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+  public editDocumentByPSID: Array<any> = [];
+  public updateReceiptAmount: any;
+  public editTransactionData = [];
 
 
   summaryDetails: any;
@@ -211,6 +214,12 @@ export class DeclarationAndActualComponent implements OnInit {
   public proofSubmissionId: '';
   currentlyChecked= false;
   element: any;
+  isChecked: boolean;
+  isCheckedName: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
+  public modalRef1: BsModalRef;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -696,6 +705,8 @@ export class DeclarationAndActualComponent implements OnInit {
       //   this.editReceiptAmount = res.data.results[0].receiptAmount;
       // });
       .subscribe((res) => {
+        debugger
+        this.editTransactionData = res.data.results[0].currentEmployerHandicappedDependentResponseList;
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformationList[0].documentInformationResponseList;
@@ -741,7 +752,8 @@ export class DeclarationAndActualComponent implements OnInit {
         element.actualAmount = 0.0;
       }
     });
-
+    // delete this.editTransactionUpload[0].proofSubmissionDetailId;
+    
     // const data = this.currentEmployerHandicappedDependentResponseList.getRawValue();
     const data = {
       currentEmployerHandicappedDependentResponseList: this.editTransactionUpload[0],
@@ -1482,6 +1494,7 @@ export class DeclarationAndActualComponent implements OnInit {
     // this.currentlyChecked = CheckBoxType.NONE;
     // }
     const checked = event.target.checked;
+   
     this.declarationService.handicappedDependentTransactionId = 0;
         this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
         this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
@@ -1535,6 +1548,137 @@ export class DeclarationAndActualComponent implements OnInit {
   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
 
 
+}
+ // When Edit of Document Details
+ editViewTransaction(
+  template2: TemplateRef<any>,
+      proofSubmissionId: string
+) {
+  debugger
+  this.documentRemark = '';
+  this.editDocumentByPSID = [];
+  this.documentArray = [];
+  console.log('proofSubmissionId::', proofSubmissionId);
+
+  this.modalRef1 = this.modalService.show(
+    template2,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
+
+  this.handicappedDependentService
+    .getTransactionByProofSubmissionId(proofSubmissionId)
+    .subscribe((res) => {
+      console.log('edit Data:: ', res);
+      this.editTransactionData = res.data.results[0].currentEmployerHandicappedDependentResponseList;
+      // console.log('test', res.data.results[0].documentInformationList[0].receiptAmount);
+
+      // this.updateReceiptAmount = res.data.results[0].documentInformationList[0].receiptAmount;
+      // this.editDocumentByPSID = res.data.results[0].documentInformationList;
+      this.editDocumentByPSID.forEach(element => {
+        element.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission': element.dateOfSubmission,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.password,
+            'documentRemark':element.remark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+          });
+          });
+        });
+        debugger
+      
+        
+      this.urlArray =
+        res.data.results[0].documentInformationList[0].documentDetailList;
+      this.editTransactionUpload =
+        res.data.results[0].documentInformationList;
+      // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
+      this.editProofSubmissionId = proofSubmissionId;
+
+      if(res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0].length) {
+      this.createDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.createDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.transactionStatus;
+      }    
+if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].length) {
+      this.createDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.createdDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.transactionStatus;
+}
+
+      this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+      this.grandDeclarationTotalEditModal =
+        res.data.results[0].grandDeclarationTotal;
+      this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+      this.grandRejectedTotalEditModal =
+        res.data.results[0].grandRejectedTotal;
+      this.grandApprovedTotalEditModal =
+        res.data.results[0].grandApprovedTotal;
+
+        this.masterGridData = res.data.results;
+
+        // this.masterGridData.forEach((element) => {
+        //   // element.policyStartDate = new Date(element.policyStartDate);
+        //   // element.policyEndDate = new Date(element.policyEndDate);
+        //   // element.fromDate = new Date(element.fromDate);
+        //   // element.toDate = new Date(element.toDate);
+        //   element.documentInformation.forEach(element => {
+        //     // this.dateofsubmission = element.dateOfSubmission;
+        //     // this.documentArray.push({
+        //     //   'dateofsubmission': ,
+        //     // })
+
+        //     element.documentDetailList.forEach(element => {
+        //     // if(element!=null)
+        //     this.documentArray.push({
+        //       'dateofsubmission': element.dateOfSubmission,
+        //       'documentType':element.documentType,
+        //       'documentName': element.fileName,
+        //       'documentPassword':element.documentPassword,
+        //       'documentRemark':element.documentRemark,
+        //       'status' : element.status,
+        //       'lastModifiedBy' : element.lastModifiedBy,
+        //       'lastModifiedTime' : element.lastModifiedTime,
+        //     })
+        //     })
+        //   });
+        //   // this.documentArray.push({
+        //   //   'dateofsubmission':element.creatonTime,
+        //   //   'documentType':element.documentType,
+        //   //   'documentName': element.fileName,
+        //   //   'documentPassword':element.documentPassword,
+        //   //   'documentRemark':element.documentRemark,
+        //   //   'status' : element.status,
+        //   //   'lastModifiedBy' : element.lastModifiedBy,
+        //   //   'lastModifiedTime' : element.lastModifiedTime,
+        //   //
+        //   // })
+        // });
+      }
+    );
+
+      // //console.log(this.urlArray);
+      // this.urlArray.forEach((element) => {
+      //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+      //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+      //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+      // });
+      //console.log('converted:: ', this.urlArray);
+      // this.editTransactionUpload.forEach((element) => {
+      //   element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+      //     innerElement.declaredAmount = this.numberFormat.transform(
+      //       innerElement.declaredAmount,
+      //     );
+      //     innerElement.actualAmount = this.numberFormat.transform(
+      //       innerElement.actualAmount,
+      //     );
+      //   });
+      // });
+    // });
 }
 
  //----------- On change Transactional Line Item Remark --------------------------
@@ -2200,6 +2344,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.handicappedDependentService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
+        debugger
         console.log('edit Data:: ', res);
         this.urlArray =
           // res.data.results[0].documentInformation[0].documentInformationResponseList;

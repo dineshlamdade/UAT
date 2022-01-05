@@ -193,6 +193,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   EditDocumentRemark: any;
   editinterestOnSavingDeposit80TTMasterId: any;
   selectedFilter: any;
+  public onHideSaveButton: boolean = false;
   
   summaryDetails: any;
   indexCount: any;
@@ -200,6 +201,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  declarationData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -345,11 +347,11 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   }
   // --------- On bankName selection show all transactions list accordingly all banks--------
   selectedTransactionBankName(bankMasterId: number) {
-    const selectedBank = this.transactionBankNameList.find(
-      (item) => item.interestOnSavingsDeposit80TTMasterId == bankMasterId
+    const selectedBank = this?.transactionBankNameList?.find(
+      (item) => item?.interestOnSavingsDeposit80TTMasterId == bankMasterId
     );
-    this.globalBank = selectedBank.bankName;
-    this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
+    this.globalBank = selectedBank?.bankName;
+    this.selectedMasterId = selectedBank?.interestOnSavingsDeposit80TTMasterId;
     this.getTransactionFilterData(this.globalBank);
     this.globalSelectedAmount = this.numberFormat.transform(0);
 
@@ -613,6 +615,7 @@ selectedTransactionLenderName(bankName: any) {
     // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
     data: any,
@@ -723,6 +726,183 @@ selectedTransactionLenderName(bankName: any) {
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
   }
+  // -------- ON select to check input boxex--------
+  // public onSelectCheckBox(
+  //   data: any,
+  //   event: { target: { checked: any } },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   const checked = event.target.checked;
+
+  //   const formatedGlobalSelectedValue = Number(
+  //     this.globalSelectedAmount == '0'
+  //       ? this.globalSelectedAmount
+  //       : this.globalSelectedAmount.toString().replace(/,/g, '')
+  //   );
+
+  //   let formatedActualAmount: number = 0;
+  //   let formatedSelectedAmount: string;
+  //   console.log(
+  //     'in IS ECS::',
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i]
+  //       .isECS
+  //   );
+  //   if (checked) {
+  //     if (
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i]
+  //         .isECS === 1
+  //     ) {
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //         i
+  //       ].actualAmount = data.declaredAmount;
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //         i
+  //       ].interestReceivedDate = new Date(data.dueDate);
+  //       console.log(
+  //         'in IS actualAmount::',
+  //         this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //           i
+  //         ].actualAmount
+  //       );
+  //       console.log(
+  //         'in IS interestReceivedDate ::',
+  //         this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //           i
+  //         ].interestReceivedDate
+  //       );
+  //     } else {
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //         i
+  //       ].actualAmount = data.declaredAmount;
+  //     }
+
+  //     formatedActualAmount = Number(
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //         i
+  //       ].actualAmount
+  //         .toString()
+  //         .replace(/,/g, '')
+  //     );
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue + formatedActualAmount
+  //     );
+  //     console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+  //     this.uploadGridData.push(data.interestOnSavingDeposit80TTTransactionId);
+
+  //     // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+  //     // this.actualAmountGlobal = Number(data.declaredAmount);
+  //   } else {
+  //     formatedActualAmount = Number(
+  //       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //         i
+  //       ].actualAmount
+  //         .toString()
+  //         .replace(/,/g, '')
+  //     );
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //       i
+  //     ].actualAmount = this.numberFormat.transform(0);
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+  //       i
+  //     ].interestReceivedDate = null;
+
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue - formatedActualAmount
+  //     );
+  //     // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+  //     const index = this.uploadGridData.indexOf(
+  //       data.interestOnSavingDeposit80TTTransactionId
+  //     );
+  //     this.uploadGridData.splice(index, 1);
+  //   }
+
+  //   this.globalSelectedAmount = formatedSelectedAmount;
+  //   console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+  //   this.actualTotal = 0;
+  //   this.transactionDetail[
+  //     j
+  //   ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
+  //     // console.log(element.actualAmount.toString().replace(',', ""));
+  //     this.actualTotal += Number(
+  //       element.actualAmount.toString().replace(/,/g, '')
+  //     );
+  //   });
+  //   this.transactionDetail[j].actualTotal = this.actualTotal;
+
+  //   if (this.uploadGridData.length) {
+  //     this.enableFileUpload = true;
+  //   }
+  //   console.log(this.uploadGridData);
+  //   console.log(this.uploadGridData.length);
+  // }
+
+  // -------- ON select to check input boxex--------
+  public onSelectCheckBox1(
+    data: any,
+    event: { target: { checked: any } },
+    i: number,
+    j: number
+  ) {
+    const checked = event.target.checked;
+    this.onHideSaveButton = checked;
+
+    this.declarationData = data
+
+    const formatedGlobalSelectedValue = Number(
+      this.globalSelectedAmount == '0'
+        ? this.globalSelectedAmount
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
+    );
+
+    let formatedActualAmount = 0;
+    let formatedSelectedAmount: string;
+
+   
+
+    if (checked) {
+       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[i].actualAmount = data.actualAmount;
+        formatedActualAmount = Number(
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[i].actualAmount
+          .toString().replace(/,/g, ''));
+      formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
+      this.uploadGridData.push(data.interestOnSavingDeposit80TTTransactionId);
+    } else {
+      formatedActualAmount = Number(this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[i].actualAmount
+          .toString()
+          .replace(/,/g, '')
+      );
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[i].actualAmount = this.numberFormat.transform(0);
+
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue - formatedActualAmount
+      );
+      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+      const index = this.uploadGridData.indexOf(
+        data.interestOnSavingDeposit80TTTransactionId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+
+    this.globalSelectedAmount = formatedSelectedAmount;
+    console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+    this.actualTotal = 0;
+    this.transactionDetail[
+      j
+    ].interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
+      );
+    });
+    this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    if (this.uploadGridData.length) {
+      this.enableFileUpload = true;
+    }
+    console.log(this.uploadGridData);
+    console.log(this.uploadGridData.length);
+  }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any) {
@@ -743,6 +923,57 @@ selectedTransactionLenderName(bankName: any) {
           element.interestOnSavingDeposit80TTTransactionId
         );
       });
+      this.enableFileUpload = true;
+    }
+    // console.log('enableSelectAll...',  this.enableSelectAll);
+    // console.log('uploadGridData...',  this.uploadGridData);
+  }
+
+   // ------------ To Check / Uncheck All  Checkboxes-------------
+  //  checkUncheckAll(item: any) {
+  //   // console.log(this.isCheckAll);
+  //   if (this.isCheckAll) {
+  //     // console.log('CHECK ALL IS FALSE ');
+  //     this.isCheckAll = false;
+  //     this.enableSelectAll = false;
+  //     this.enableCheckboxFlag2 = null;
+  //     this.uploadGridData = [];
+  //   } else {
+  //     // console.log('CHECK ALL IS TRUE ');
+  //     this.isCheckAll = true;
+  //     this.enableSelectAll = true;
+  //     this.enableCheckboxFlag2 = item.bankNames;
+  //     item.interestOnSavingDeposit80TTTransactionList.forEach((element) => {
+  //       this.uploadGridData.push(
+  //         element.interestOnSavingDeposit80TTTransactionId
+  //       );
+  //     });
+  //     this.enableFileUpload = true;
+  //   }
+  //   // console.log('enableSelectAll...',  this.enableSelectAll);
+  //   // console.log('uploadGridData...',  this.uploadGridData);
+  // }
+
+
+  // ------------ To Check / Uncheck All  Checkboxes Previous Emp-------------
+  checkUncheckAllPreviousEmp(item: any) {
+    // console.log(this.isCheckAll);
+    if (this.isCheckAll) {
+      // console.log('CHECK ALL IS FALSE ');
+      this.isCheckAll = false;
+      this.enableSelectAll = false;
+      this.enableCheckboxFlag2 = null;
+      this.uploadGridData = [];
+    } else {
+      // console.log('CHECK ALL IS TRUE ');
+      this.isCheckAll = true;
+      this.enableSelectAll = true;
+      this.enableCheckboxFlag2 = item.lenderName;
+      item.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
+        (element) => {
+          this.uploadGridData.push(element.interestOnSavingDeposit80TTTransactionId);
+        }
+      );
       this.enableFileUpload = true;
     }
     // console.log('enableSelectAll...',  this.enableSelectAll);
@@ -847,6 +1078,44 @@ selectedTransactionLenderName(bankName: any) {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   interestReceivedDate : Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
+  // addRowInList(
+  //   summarynew: {
+  //     interestOnSavingDeposit80TTTransactionId: number;
+  //     previousEmployerId: number;
+  //     declaredAmount: any;
+  //     interestReceivedDate: Date;
+  //     actualAmount: any;
+  //   },
+
+  //   j: number
+  // ) {
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   // this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.declarationService.interestOnSavingDeposit80TTTransactionId = 0;
+  //   this.declarationService.declaredAmount = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.interestReceivedDate = null;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   this.declarationService.amountRejected = 0.0;
+  //   this.declarationService.amountApproved = 0.0;
+  //   if (
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList ==
+  //     null
+  //   ) {
+  //     this.declarationService.interestOnSavingDeposit80TTMasterId = this.selectedMasterId;
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList = [];
+  //   }
+  //   this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.push(
+  //     this.declarationService
+  //   );
+  //   console.log(
+  //     'addRow::',
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+  //   );
+  // }
+
   addRowInList(
     summarynew: {
       interestOnSavingDeposit80TTTransactionId: number;
@@ -884,6 +1153,48 @@ selectedTransactionLenderName(bankName: any) {
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
     );
   }
+  addRowInList1(
+    summarynew: {
+      interestOnSavingDeposit80TTTransactionId: number;
+      previousEmployerId: number;
+      // declaredAmount: any;
+      // interestReceivedDate: Date;
+      actualAmount: any;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.interestOnSavingDeposit80TTTransactionId = this.globalAddRowIndex;
+    // this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    // this.declarationService.interestReceivedDate = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.0;
+    this.declarationService.amountApproved = 0.0;
+    // if (
+    //   this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList ==
+    //   null
+    // ) {
+    //   this.declarationService.interestOnSavingDeposit80TTMasterId = this.selectedMasterId;
+    //   this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList = [];
+    // }
+    // this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.push(
+    //   this.declarationService
+    // );
+    this.transactionDetail[
+      j
+    ].interestOnSavingDeposit80TTTransactionPreviousEmployerList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList
+    );
+  }
 
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
@@ -894,21 +1205,59 @@ selectedTransactionLenderName(bankName: any) {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
+  // deleteRow(j: number) {
+  //   const rowCount =
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+  //       .length - 1;
+    
+  //   if (
+  //     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+  //       .length == 1
+  //   ) {
+  //     return false;
+  //   } else if (this.initialArrayIndex[j] <= rowCount) {
+  //     this.transactionDetail[
+  //       j
+  //     ].interestOnSavingDeposit80TTTransactionList.splice(rowCount, 1);
+  //     return true;
+  //   }
+  // }
+
+
+  // -------- Delete Row--------------
+deleteRow(j: number) {
+  const rowCount =
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].interestOnSavingDeposit80TTTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
+  deleteRow1(j: number) {
     const rowCount =
-      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList
         .length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (
-      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList
         .length == 1
     ) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
       this.transactionDetail[
         j
-      ].interestOnSavingDeposit80TTTransactionList.splice(rowCount, 1);
+      ].interestOnSavingDeposit80TTTransactionPreviousEmployerList.splice(rowCount, 1);
       return true;
     }
   }
@@ -1095,6 +1444,35 @@ selectedTransactionLenderName(bankName: any) {
           }
         );
       }
+       //previous emp table number format
+       if (element.interestOnSavingDeposit80TTTransactionPreviousEmployerList !== null) {
+        element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
+          (innerElement) => {
+            if (
+              innerElement.actualAmount !== undefined ||
+              innerElement.actualAmount !== null
+            ) {
+              innerElement.actualAmount = innerElement.actualAmount
+                .toString()
+                .replace(/,/g, '');
+            } else {
+              innerElement.actualAmount = 0.0;
+            }
+            // if (
+            //   innerElement.declaredAmount !== undefined ||
+            //   innerElement.declaredAmount !== null
+            // ) {
+            //   innerElement.declaredAmount = innerElement.declaredAmount
+            //     .toString()
+            //     .replace(/,/g, '');
+            // } else {
+            //   innerElement.declaredAmount = 0.0;
+            // }
+            innerElement.declaredAmount = 0.0;
+
+          }
+        );
+      }
     });
 
     // const data =   this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList;
@@ -1103,6 +1481,7 @@ selectedTransactionLenderName(bankName: any) {
 
     const ttaPost = [{
            interestOnSavingDeposit80TTTransactionList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList,
+           interestOnSavingDeposit80TTTransactionPreviousEmployerList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionPreviousEmployerList,
            interestOnSavingDeposit80TTMasterId: this.transactionDetail[0].interestOnSavingDeposit80TTMasterId
     }];
 
@@ -1156,32 +1535,65 @@ selectedTransactionLenderName(bankName: any) {
               });
             }
           });
-          this.transactionDetail =
-            res.data.results[0].interestOnSavingDeposit80TTTransactionList;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.transactionDetail =
+          //   res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.transactionDetail.forEach((element) => {
+          //   element.interestOnSavingDeposit80TTTransactionList.forEach(
+          //     (innerElement) => {
+          //       if (innerElement.interestReceivedDate !== null) {
+          //         innerElement.interestReceivedDate = new Date(
+          //           innerElement.interestReceivedDate
+          //         );
+          //       }
+          //       if (this.employeeJoiningDate < innerElement.dueDate) {
+          //         innerElement.active = false;
+          //       }
+          //       innerElement.declaredAmount = this.numberFormat.transform(
+          //         innerElement.declaredAmount
+          //       );
+          //       innerElement.actualAmount = this.numberFormat.transform(
+          //         innerElement.actualAmount
+          //       );
+          //       // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+          //     }
+          //   );
+          // });
+          this.initialArrayIndex = [];
+
           this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(
+              element.interestOnSavingDeposit80TTTransactionList.length
+            );
+
             element.interestOnSavingDeposit80TTTransactionList.forEach(
-              (innerElement) => {
-                if (innerElement.interestReceivedDate !== null) {
-                  innerElement.interestReceivedDate = new Date(
-                    innerElement.interestReceivedDate
-                  );
-                }
-                if (this.employeeJoiningDate < innerElement.dueDate) {
-                  innerElement.active = false;
-                }
-                innerElement.declaredAmount = this.numberFormat.transform(
-                  innerElement.declaredAmount
+              (item) => {
+                item.declaredAmount = this.numberFormat.transform(
+                  item.declaredAmount
                 );
+                item.actualAmount = this.numberFormat.transform(
+                  item.actualAmount
+                );
+              }
+            );
+
+            this.initialArrayIndex.push(
+              element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.length
+            );
+
+            element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
+              (innerElement) => {
+                // innerElement.declaredAmount = this.numberFormat.transform(
+                //   innerElement.declaredAmount
+                // );
                 innerElement.actualAmount = this.numberFormat.transform(
                   innerElement.actualAmount
                 );
-                // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
               }
             );
           });
@@ -1203,7 +1615,225 @@ selectedTransactionLenderName(bankName: any) {
     this.documentDataArray = [];
     this.selectedTransactionLenderName(this.selectedFilter);
   }
-
+  // upload() {
+  //   debugger
+  //       for (let i = 0; i < this.filesArray.length; i++) {
+  //         if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
+  //           let remarksPasswordsDto = {};
+  //           remarksPasswordsDto = {
+  //             "documentType": "Back Statement/ Premium Reciept",
+  //             "documentSubType": "",
+  //             "remark": this.remarkList[i] ? this.remarkList[i] : '',
+  //             "password": this.documentPassword[i] ? this.documentPassword[i] : ''
+  //           };
+  //           this.documentDataArray.push(remarksPasswordsDto);
+  //         }
+  //       }
+    
+  //       console.log('testtttttt', this.documentDataArray);
+    
+  //       this.transactionDetail.forEach((element) => {
+  //         //current emp table number format
+  //         element.interestOnSavingDeposit80TTTransactionList.forEach((item) => {
+          
+  //           if (item.declaredAmount !== null) {
+  //             item.declaredAmount = item.declaredAmount
+  //               .toString()
+  //               .replace(/,/g, '');
+  //           } else {
+  //             item.declaredAmount = 0.0;
+  //           }
+  //           if (item.actualAmount !== null) {
+  //             item.actualAmount = item.actualAmount
+  //               .toString()
+  //               .replace(/,/g, '');
+  //           } else {
+  //             item.actualAmount = 0.0;
+  //           }
+    
+  //         });
+  //   debugger
+  //         //previous emp table number format
+  //         if (element.interestOnSavingDeposit80TTTransactionPreviousEmployerList !== null) {
+  //           element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
+  //             (innerElement) => {
+  //               if (
+  //                 innerElement.actualAmount !== undefined ||
+  //                 innerElement.actualAmount !== null
+  //               ) {
+  //                 innerElement.actualAmount = innerElement.actualAmount
+  //                   .toString()
+  //                   .replace(/,/g, '');
+  //               } else {
+  //                 innerElement.actualAmount = 0.0;
+  //               }
+  //               // if (
+  //               //   innerElement.declaredAmount !== undefined ||
+  //               //   innerElement.declaredAmount !== null
+  //               // ) {
+  //               //   innerElement.declaredAmount = innerElement.declaredAmount
+  //               //     .toString()
+  //               //     .replace(/,/g, '');
+  //               // } else {
+  //               //   innerElement.declaredAmount = 0.0;
+  //               // }
+  //               innerElement.declaredAmount = 0.0;
+    
+  //             }
+  //           );
+  //         }
+  //       });
+    
+    
+  //       // let numberValue = Number(actualAmount);
+  //       console.log((this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[0].actualAmount));
+    
+  //       if(this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[0].actualAmount == 0 && this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[0].declaredAmount == '0.00'){
+    
+  //         if(this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList.length == 0 || this.transactionDetail[0].interestOnSavingDeposit80TTTransactionPreviousEmployerList.length == 0)
+  //           {
+  //             this.alertService.sweetalertError(
+  //               'Please enter value.'
+  //             );
+  //             return;
+  //           }
+  //         }
+    
+  //       if(this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
+  //        this.alertService.sweetalertError(
+  //           'Please attach Premium Receipt / Premium Statement.'
+  //         );
+  //         return;
+  //        }
+  //        if(this.transactionDetail[0].interestOnSavingDeposit80TTTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
+  //         this.alertService.sweetalertError(
+  //           'Please attach Premium Receipt / Premium Statement.'
+  //         );
+  //         return;
+    
+  //        }
+  //       console.log('this.transactionDetail::', this.transactionDetail);
+    
+  //       // console.log("JSON data", this.declarationData);
+    
+  //       console.log(JSON.stringify(this.declarationData))
+    
+    
+    
+  //       this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+  //       const data = {
+  //         interestOnSavingDeposit80TTTransactionList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList,
+  //         interestOnSavingDeposit80TTTransactionPreviousEmployerList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionPreviousEmployerList,
+  //         // electricVehicleLoanTransactionIds: this.uploadGridData,
+  //         receiptAmount: this.receiptAmount,
+  //         proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
+  //         electricVehicleLoanMasterId: this.transactionDetail[0].electricVehicleLoanMasterId,
+  //         remarkPasswordList: this.documentDataArray
+  //         // transactionIds: this.uploadGridData,
+ 
+  //       };
+  //       console.log('data::', data);
+  //       debugger
+        
+  //     this.interestOnTtbService
+  //         .upload80TTBTransactionwithDocument(this.filesArray, data)
+      
+  //         .subscribe((res) => {
+  //           console.log(res);
+  //           if (res.data.results.length > 0) {
+  //             debugger
+  //             this.transactionDetail =
+  //               res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+  //             // res.data.results[0].electricVehicleLoanTransactionList;
+  //             this.documentDetailList =
+  //               res.data.results[0].documentInformation;
+  //             this.grandDeclarationTotal =
+  //               res.data.results[0].grandDeclarationTotal;
+  //             this.grandActualTotal = res.data.results[0].grandActualTotal;
+  //             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+  //             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+    
+  //             this.masterGridData.forEach((element, index) => {
+  //               this.documentArray.push({
+    
+  //                 'dateofsubmission':new Date(),
+  //                 'documentType':element.documentInformationList[0].documentType,
+  //                 'documentName': element.documentInformationList[0].fileName,
+  //                 'documentPassword':element.documentInformationList[0].documentPassword,
+  //                 'documentRemark':element.documentInformationList[0].documentRemark,
+  //                 'status' : element.documentInformationList[0].status,
+  //                 'approverName' : element.documentInformationList[0].lastModifiedBy,
+  //                 'Time' : element.documentInformationList[0].lastModifiedTime,
+    
+  //                 // 'documentStatus' : this.premiumFileStatus,
+    
+  //               });
+    
+  //               if(element.documentInformationList[1]) {
+  //                 this.documentArray.push({
+    
+  //                   'dateofsubmission':new Date(),
+  //                   'documentType':element.documentInformationList[1].documentType,
+  //                   'documentName': element.documentInformationList[1].fileName,
+  //                   'documentPassword':element.documentInformationList[1].documentPassword,
+  //                   'documentRemark':element.documentInformationList[1].documentRemark,
+  //                   'status' : element.documentInformationList[1].status,
+  //                   'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+  //                   'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+    
+  //                   // 'documentStatus' : this.premiumFileStatus,
+    
+  //                 });
+  //               }
+  //             });
+    
+  //             this.initialArrayIndex = [];
+    
+  //             this.transactionDetail.forEach((element) => {
+  //               this.initialArrayIndex.push(
+  //                 element.interestOnSavingDeposit80TTTransactionList.length
+  //               );
+    
+  //               element.interestOnSavingDeposit80TTTransactionList.forEach(
+  //                 (item) => {
+  //                   item.declaredAmount = this.numberFormat.transform(
+  //                     item.declaredAmount
+  //                   );
+  //                   item.actualAmount = this.numberFormat.transform(
+  //                     item.actualAmount
+  //                   );
+  //                 }
+  //               );
+    
+  //               this.initialArrayIndex.push(
+  //                 element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.length
+  //               );
+    
+  //               element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
+  //                 (innerElement) => {
+  //                   // innerElement.declaredAmount = this.numberFormat.transform(
+  //                   //   innerElement.declaredAmount
+  //                   // );
+  //                   innerElement.actualAmount = this.numberFormat.transform(
+  //                     innerElement.actualAmount
+  //                   );
+  //                 }
+  //               );
+  //             });
+  //             this.alertService.sweetalertMasterSuccess(
+  //               'Transaction Saved Successfully.',
+  //               ''
+  //             );
+  //             this.selectedTransactionLenderName(this.selectedFilter);
+  //           } else {
+  //             this.alertService.sweetalertWarning(res.status.messsage);
+  //           }
+  //         });
+  //       this.receiptAmount = '0.00';
+  //       this.filesArray = [];
+  //       this.globalSelectedAmount = '0.00';
+  //       this.selectedTransactionLenderName(this.selectedFilter);
+  //     }
   changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_: number;
@@ -1462,20 +2092,20 @@ selectedTransactionLenderName(bankName: any) {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         //this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
-        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
-        this.editinterestOnSavingDeposit80TTMasterId = res.data.results[0].interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTMasterId;
-        this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
+        this.urlArray = res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
+        this.editTransactionUpload = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList;
+        this.editinterestOnSavingDeposit80TTMasterId = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTMasterId;
+        this.editProofSubmissionId = res?.data?.results[0]?.documentInformation[0]?.proofSubmissionId;
       //  this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
-        this.editReceiptNumber = res.data.results[0].receiptNumber;
-        this.editDocumentRemark = res.data.results[0].documentRemark;
-        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+        this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
+        this.editReceiptNumber = res?.data?.results[0]?.receiptNumber;
+        this.editDocumentRemark = res?.data?.results[0]?.documentRemark;
+        this.grandDeclarationTotalEditModal = res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
         this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
+          res?.data?.results[0]?.grandRejectedTotal;
         this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
+          res?.data?.results[0]?.grandApprovedTotal;
 
           this.editTransactionUpload.forEach((element) => {
             element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
@@ -1542,32 +2172,30 @@ selectedTransactionLenderName(bankName: any) {
   getTransactionFilterData(bankName: String) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
 
-    this.interestOnTtbService
-      .getTransactionFilterData(bankName)
-      .subscribe((res) => {
+    this?.interestOnTtbService?.getTransactionFilterData(bankName)?.subscribe((res) => {
         console.log('getTransactionFilterData', res);
         this.transactionDetail =
-          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
-        this.documentDetailList = res.data.results[0].documentInformation;
+          res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList;
+        this.documentDetailList = res?.data?.results[0]?.documentInformation;
 
-        this.transactionDetail.forEach(ele =>{
-          this.documentDetailList.forEach(element =>{
-            if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
-              element.bankName = ele.bankName;
-              element.accountNumber = ele.accountNumber
+        this?.transactionDetail?.forEach(ele =>{
+          this?.documentDetailList?.forEach(element =>{
+            if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0]?.proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              element.bankName = ele?.bankName;
+              element.accountNumber = ele?.accountNumber
             }
           })
         })
 
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        this.grandDeclarationTotal = res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotal = res?.data?.results[0]?.grandActualTotal;
+        this.grandRejectedTotal = res?.data?.results[0]?.grandRejectedTotal;
+        this.grandApprovedTotal = res?.data?.results[0]?.grandApprovedTotal;
 
         console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
         this.initialArrayIndex = [];
-        this.transactionDetail.forEach((element) => {
+        this?.transactionDetail?.forEach((element) => {
           if (element.interestOnSavingDeposit80TTTransactionList !== null) {
             this.initialArrayIndex.push(
               element.interestOnSavingDeposit80TTTransactionList.length
@@ -1589,9 +2217,9 @@ selectedTransactionLenderName(bankName: any) {
             );
           }
         });
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
-          this.documentArray.push({
+          this?.documentArray?.push({
             'dateofsubmission':element.creatonTime,
             'documentType':element.documentType,
             'documentName': element.fileName,
