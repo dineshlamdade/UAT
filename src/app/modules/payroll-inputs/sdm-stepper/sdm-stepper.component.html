@@ -2743,10 +2743,12 @@
                                             </div> -->
                                             </div>
                                         </th>
-                                        <th rowspan="3" class=" text-center">
+                                        <th rowspan="2" class="wd-4 text-center">
                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                Input Cycle                                              
+                                                Input Cycle
+                                               
                                             </div>
+                                           
                                         </th>
                                     </tr>
                                 </ng-template>
@@ -2816,16 +2818,15 @@
                                         <td>
                                             {{history.derivedToDate | date: 'dd-MMM-yyyy'}}
                                         </td>
-<td>
-    {{history.inputCycleId}}
-</td>
+                                       <td>
+                                          {{history.inputCycleId}}
+                                          </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
                                         <td colspan="15" class="font-14 font500 text-center text-red">
-                                            <span>No Data
-                                                Available</span>
+                                            <span>No Data Available</span>
                                         </td>
                                     </tr>
                                 </ng-template>

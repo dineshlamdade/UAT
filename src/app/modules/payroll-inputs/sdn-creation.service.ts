@@ -147,4 +147,11 @@ export class SdnCreationService {
     return this.HttpClient.post<any>(this.url1 + `payrollhead-master/headCategorywise`, data)
   }
 
+
+  postCycleIdData(data): Observable<any>{
+    return this.HttpClient.post<any>(this.url1 + `source-derived-matrix/combination-matrix/inputCycle`, data)
+  }
+  
+
+
 }
