@@ -10,11 +10,14 @@ import { map } from 'rxjs/operators';
 })
 export class LoanMasterService {
 
-  url = environment.baseUrl8087;
+  public url = environment.baseUrl8087;
   public apiUrl = environment.baseUrl8091;
   public apiUrl1 = environment.baseUrl8083;
   public apiUrl2 = environment.baseUrl8088;
   public apiUrl3 = environment.baseUrl8082;
+  public apiUrl4 = environment.baseUrl8084
+  // public apiUrl4 = environment.baseUrl8087;
+
 
   constructor(private HttpClient: HttpClient) { }
 
@@ -52,18 +55,28 @@ export class LoanMasterService {
   }
 
  // workflow get data
- getAllapprovalWorkFlowSDM() {
-  return this.HttpClient.get(this.apiUrl1 + 'source-derived-matrix/1')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
-getAllDerivedSDM() {
-  return this.HttpClient.get(this.apiUrl1 + 'source-derived-matrix/derived-master/67')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
+//  getAllapprovalWorkFlowSDM() {
+//   return this.HttpClient.get(this.apiUrl1 + 'source-derived-matrix/1')
+//     .pipe(map((res: any) => {
+//       return res;
+//     }));
+// }
 
-
+// ................................Pooja Katkar.................................................
+getAllApprovalSDM(): Observable<any>
+{
+  return this.HttpClient.get<any>(this.url + 'loan-Master/getAllSdm')
+}
+getAllDerivedSDM(id): Observable<any>
+{
+  return this.HttpClient.get<any>(this.url + 'loan-Master/sdmDerviedFeild/' + id)
+}
+getsalaryDefination()
+{
+  return this.HttpClient.get<any>(this.apiUrl4 + 'formula-master')
+}
+getAllPerquisite() : Observable<any>
+{
+  return this.HttpClient.get<any>(this.url + 'loan-Master/getPerquisite')
+}
 }

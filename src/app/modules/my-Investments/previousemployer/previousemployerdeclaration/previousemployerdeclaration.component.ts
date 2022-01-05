@@ -62,7 +62,11 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
+  public documentDetail: Array<any> = [];
+
+  
   public uploadGridData: Array<any> = [];
+  public enteredRemark = '';
 
   public transactionInstitutionNames: Array<any> = [];
 
@@ -86,6 +90,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public familyRelationSame: boolean;
   public enableEditRow: number;
   public enableAddRow: number;
+  public actualAmtBoolean:boolean;
   public enablePolicyTable: number;
   public enableCheckbox: number;
   public enableCheckboxFlag: number;
@@ -115,7 +120,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
-  public documentRemark: any;
   public isECS = true;
   public hideCopytoActualDate = false;
   public shownewRow = false;
@@ -134,6 +138,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   //public paymentDate: Date;
   public date3: Date;
   public loaded = 0;
+  public documentRemark: any;
+  public documentPassword = [];
+  public remarkList = [];
 
   public selectedFiles: FileList;
   public currentFileUpload: File;
@@ -186,10 +193,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   proofId: any;
   tableData: any=[];
   public nameAndAddress: any;
+  public employeeName:any;
   public pan: any;
+  public name:any;
   public residentialStatus: any;
   public actualAmount80C: any;
   tempDeclarationCount: number = 0;
+  transactionObjectLength: number = 1; 
+  summaryDetails: any;
+  indexCount: any;
+  documentRemarkList: any;
+  remarkCount: any;
+  editRemarkData: any;
+  viewDocumentName: any;
+  viewDocumentType: any;
+  mode: string;
+  selectedremarkIndex: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -208,7 +227,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   ) {
     // ---------------- Transaction status List -----------------
     /* this.refreshTransactionStatustList(); */
-
+    console.log("data",this.data)
     this.grandTabStatus = false;
     this.isCheckAll = false;
     this.isDisabled = true;
@@ -226,9 +245,16 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   public ngOnInit(): void {
     console.log('data::', this.data);
+    console.log("previousEmployerName",this.previousEmployerName)
+
+    if(localStorage.getItem("mode") != null){
+       this.mode = localStorage.getItem("mode")
+    }
+
+    console.log("mode is: "+ this.mode)
     if (this.data === undefined || this.data === null) {
-      this.declarationPage();
       this.canEdit = true;
+      this.declarationPage();
     } else {
       const input = this.data;
       this.globalInstitution = input.propertyHouseName;
@@ -238,6 +264,11 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.getTransactionFilterPreviousEmployerData(input.propertyHouseName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+    }
+    if(this.mode=="edit"){
+      this.actualAmtBoolean=false
+    }else{
+      this.actualAmtBoolean=true;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -262,6 +293,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
+
+    console.log("canedit: "+ this.canEdit)
     this.previousEmployerTransactionDetailList = [];
     /*     this.transactionPolicyList = [];
     this.transactionStatustList = [];
@@ -279,6 +312,27 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     this.resetAll();
     this.selectedTransactionInstName('All');
+  }
+  declarationPage1() {
+
+    console.log("canedit: "+ this.canEdit)
+    this.previousEmployerTransactionDetailList = [];
+    /*     this.transactionPolicyList = [];
+    this.transactionStatustList = [];
+ */
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.previousEmployerTransactionDetailList.push(data);
+    this.transactionPolicyList.push(data);
+    /*     this.refreshTransactionStatustList(); */
+
+    this.getInstitutionListWithPolicyNo();
+
+    this.resetAll();
+    //this.selectedTransactionInstName('All');
   }
 
   public getInstitutionListWithPolicyNo() {
@@ -319,10 +373,14 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     if (previousEmployer == 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
+      this.actualAmtBoolean= true;
     } else {
       this.grandTabStatus = false;
       this.isDisabled = false;
+      this.actualAmtBoolean= false;
+
     }
+    
 
     this.resetAll();
   }
@@ -632,15 +690,34 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     this.tempDeclarationCount = 0
     
-    this.transactionDetail.forEach(ele =>{
-      ele.previousEmployerTransactionDetailList.forEach(element => {
-          console.log(element.actualAmount)
-        if(element.actualAmount != 0){
+    // this.transactionDetail.forEach(ele =>{
+    //   ele.previousEmployerTransactionDetailList.forEach(element => {
+    //       console.log(element.actualAmount)
+    //     if(element.actualAmount != 0){
+    //       this.tempDeclarationCount = this.tempDeclarationCount + 1
+    //       return;
+    //     }
+    //   });
+    // })
+
+    this.transactionObjectLength = this.transactionDetail.length * 2
+
+    // this.transactionDetail.forEach(ele =>{
+      for(let i=0; i<this.transactionDetail.length; i++){
+        if(this.transactionDetail[i].previousEmployerTransactionDetailList[0].actualAmount != 0 ){
           this.tempDeclarationCount = this.tempDeclarationCount + 1
-          return;
         }
-      });
-    })
+        if(this.transactionDetail[i].previousEmployerTransactionDetailList[1].actualAmount != 0){
+          this.tempDeclarationCount = this.tempDeclarationCount + 1
+        }
+        // if(this.transactionDetail[i].previousEmployerTransactionDetailList[2].actualAmount != 0){
+         
+        //   this.tempDeclarationCount = this.tempDeclarationCount + 1
+            
+        //   }
+      }
+      
+      // });
   }
 
   // ------------Actual Amount change Edit Modal-----------
@@ -648,7 +725,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*   previousEmployerName: any; */
       declaredAmountPerMonth: number;
-      /// paymentDate: Date;
+      /// paymentDate: Date;` 
       remark: any;
       actualAmount: number;
       /*    dueDate: Date; */
@@ -715,6 +792,21 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
+  }
+
+
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].previousEmployerTransactionDetailList[transIndex].remark =  event.target.value;
+   
+ 
   }
 
   // --------Add New ROW Function---------
@@ -873,6 +965,83 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.resetAll();
   }
 
+
+  public docRemarkModal(
+
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    lictransactionID,
+    summary, count
+  ) {
+
+
+    //alert(count)
+    
+    this.onResetRemarkDetails();
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.previousEmployerService.getPreviousDeclartionRemarkList(
+      lictransactionID,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  //
+  onSaveRemarkDetails(){
+    
+    const data ={
+      "transactionId": this.summaryDetails.previousEmployerTransactionDetailId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"Previous",
+      "subSection":"Employer",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":"",
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.previousEmployerService
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.data.results.length) {
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+        this.previousEmployerService.getPreviousDeclartionRemarkList(
+          this.summaryDetails.previousEmployerTransactionDetailId,
+        ).subscribe((res) => {
+          console.log('docremark', res);
+          
+        this.documentRemarkList  = res.data.results[0];
+        this.remarkCount = res.data.results[0].length;
+        this.transactionDetail[0].previousEmployerTransactionDetailList[this.selectedremarkIndex].bubbleRemarkCount = this.remarkCount
+        });
+       
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+     // this.declarationPage1();
+      this.onResetRemarkDetails();
+    });
+  }
+
   // Reset All
   resetAll() {
     this.enableEditRow = this.enablePolicyTable = this.addRow2 = -1;
@@ -937,6 +1106,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       return;
     }
     console.log('this.transactionDetail::....', this.transactionDetail);
+    console.log('documentPassword: ', this.documentPassword)
+    this.declarationPage();
+    this.getInstitutionListWithPolicyNo();
+    this.getTransactionFilterPreviousEmployerData("All");
 
     // const parentsDelete = this.transactionDetail[0].previousEmployerTransactionDetailList[0];
     /*   const parentsDelete = this.previousEmployerTransactionDetailList[0]; */
@@ -1005,6 +1178,12 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.transactionDetail[0].previousEmployerTransactionDetailList.forEach(element => {
       tempArra.push(element.previousEmployerTransactionDetailId)
     });
+
+   
+    this.transactionDetail[0].previousEmployerTransactionDetailList.forEach(element => {
+      element.actualAmount = parseInt(element.actualAmount.toString().replace(/,/g, ''))
+    });
+
     const data = {
       //proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
       proofSubmissionId: '',
@@ -1017,6 +1196,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       receiptAmount: this.receiptAmount,
       electricVehicleLoanMasterId:
         this.transactionDetail[0].electricVehicleLoanMasterId,
+        documentPassword:this.documentPassword,
+        remarkList:this.remarkList
     };
     console.log('data::', data);
     this.previousEmployerService
@@ -1025,13 +1206,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
-            res.data.results[0].previousEmployerTransactionDetailList[0];
-          this.documentDetailList = res.data.results[0].documentInformationList;
+            res.data.results[0].previousEmployerTransactionDetailList;
+          this.documentDetailList = res.data.results[0].previousEmployerTransactionDetailList;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
+    this.getTransactionFilterPreviousEmployerData("All");
+
 
           this.initialArrayIndex = [];
 
@@ -1058,10 +1246,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
             );
           });
 
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
+         
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -1069,6 +1254,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.rentReciept = [];
     this.globalSelectedAmount = '0.00';
+    this.declarationPage();
+    this.getInstitutionListWithPolicyNo();
   }
 
   openForm12BModal(template4: TemplateRef<any>) {
@@ -1114,23 +1301,17 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   // When Edit of Document Details
   declarationEditUpload(
-    template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
-
-    this.modalRef = this.modalService.show(
-      template2,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-
     this.previousEmployerService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
 
         this.urlArray =
-          res.data.results[0].documentInformationList[0].documentDetailList;
+          res.data.results[0].previousEmployerTransactionDocumentDetailList[0].documentDetailList;
+          console.log("res",res)
         this.editTransactionUpload =
           res.data.results[0].previousEmployerTransactionDetailList;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -1170,8 +1351,14 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
         this.nameAndAddress=res.data.results[0].nameAndAddress;
         this.pan=res.data.results[0].pan;
+        this.name=res.data.results[0].employeeName;
+
         this.residentialStatus=res.data.results[0].residentialStatus;
         this.actualAmount80C=res.data.results[0].actualAmount80C;
+        this.employeeName=res.data.results[0].employeeName;
+
+        console.log("actualAmount80C",this.actualAmount80C)
+        console.log(res)
 
 
         console.log("nameAndAddress " ,this.nameAndAddress);
@@ -1183,7 +1370,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           this.transactionDetail
         );
 
-        this.documentDetailList = res.data.results[0].documentInformationList;
+        this.transactionDetail.forEach(element =>{
+          element.actualTotal = 0
+          element.previousEmployerTransactionDetailList.forEach(ele => {
+            element.actualTotal = element.actualTotal + ele.actualAmount
+          });
+          
+        })
+        //console.log("transactionDetail",this.transactionDetail)
+
+        
+
+        this.documentDetailList = res.data.results[0].previousEmployerTransactionDetailList;
+        this.documentDetail=res.data.results;
+        console.log("Documnet Detail",this.documentDetail);
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1275,7 +1475,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       previousEmployerTransactionDetailList:
         this.editTransactionUpload[0].previousEmployerTransactionDetailList,
       previousEmployerTransactionDetailIds: this.uploadGridData,
-      //  documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
 
       receiptDate: Date,
@@ -1294,7 +1494,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
           this.transactionDetail =
             res.data.results[0].previousEmployerTransactionDetailList;
-          this.documentDetailList = res.data.results[0].documentInformationList;
+          this.documentDetailList = res.data.results[0].previousEmployerTransactionDetailList;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1468,6 +1668,24 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     );
   }
 
+  // Docviewer for pdf
+  docViewer1(template3: TemplateRef<any>, documentDetailList: any) {
+    
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
   /* =================pdf======================== */
   download() {
     console.log('hi');
@@ -1479,16 +1697,36 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       const pageHeight = 295;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const heightLeft = imgHeight;
+      
 
       const contentDataURL = canvas.toDataURL('image/png');
       // A4 size page of PDF
       const pdf = new jspdf('p', 'mm', 'a4');
       const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      // pdf.addImage(contentDataURL, 'PNG', 0, position, 208, 310, '','FAST');
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight, '','FAST');
       // Generated PDF
-      pdf.save('FORM.12B.pdf');
+      pdf.save('FORM12B.pdf');
     }, 700);
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
+
+//edit functionality
+editMaster(i: number) {
+  this.scrollToTop();
+ this.actualAmtBoolean=false;
+}
 
   onImageChange(e) {
     const reader = new FileReader();
@@ -1507,23 +1745,93 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   }
   // Total Amount of House rent
   totalAmtHouseRent(summary){
-    let calc=0;
-    let taxEarn=parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount);
-    let exemUs =parseInt(summary.previousEmployerTransactionDetailList[2].actualAmount);
-    calc=taxEarn-exemUs;
+    
+    var calc=0;
+    // var taxEarn=parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount.replace(/,/g, ''));
+    // var exemUs =parseInt(summary.previousEmployerTransactionDetailList[2].actualAmount.replace(/,/g, ''));
+    // console.log(taxEarn)
+    // calc = taxEarn-exemUs;
+    // //console.log(calc)
+    // return calc;
+    let obj
+    if(summary.previousEmployerTransactionDetailList[1].actualAmount != "0"){
+    obj = summary.previousEmployerTransactionDetailList[1].actualAmount.toString().replace(/,/g, '')
+      }else
+      {
+      obj =  summary.previousEmployerTransactionDetailList[1].actualAmount
+    }
+    //obj = summary.previousEmployerTransactionDetailList[1].actualAmount.replace(/,/g, '')
+
+    let firstobj
+    if(summary.previousEmployerTransactionDetailList[2].actualAmount != "0"){
+    firstobj = summary.previousEmployerTransactionDetailList[2].actualAmount.toString().replace(/,/g, '')
+      }else{
+      firstobj =  summary.previousEmployerTransactionDetailList[2].actualAmount
+      }
+    //firstobj = summary.previousEmployerTransactionDetailList[2].actualAmount.replace(/,/g, '')
+
+    calc = obj-firstobj;
     return calc;
   }
 
   /** total colm of 6 7 8  */
   getTotalOfColms(summary){
-    let total = 0;
-    let a = parseInt(summary.previousEmployerTransactionDetailList[0].actualAmount)   
-    let b = parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount) - parseInt(summary.previousEmployerTransactionDetailList[2].actualAmount)
-    let c = parseInt(summary.previousEmployerTransactionDetailList[3].actualAmount)
+    var total = 0;
+
+    let obj;
+    // console.log(parseInt(summary.previousEmployerTransactionDetailList[1].actualAmount))
+    if(summary.previousEmployerTransactionDetailList[0].actualAmount != "0"){  
+    obj = summary.previousEmployerTransactionDetailList[0].actualAmount.toString().replace(/,/g, '')
+    }else{
+      obj =  summary.previousEmployerTransactionDetailList[0].actualAmount
+    }
+    // obj = summary.previousEmployerTransactionDetailList[0].actualAmount.replace(/,/g, '')
+
+
+    let firstobj
+    if(summary.previousEmployerTransactionDetailList[1].actualAmount != "0"){
+    firstobj = summary.previousEmployerTransactionDetailList[1].actualAmount.toString().replace(/,/g, '')
+    }else{
+      firstobj =  summary.previousEmployerTransactionDetailList[1].actualAmount
+    }
+    //firstobj = summary.previousEmployerTransactionDetailList[1].actualAmount.replace(/,/g, '')
+
+
+    let secondobj
+    if(summary.previousEmployerTransactionDetailList[2].actualAmount != "0"){
+    secondobj = summary.previousEmployerTransactionDetailList[2].actualAmount.toString().replace(/,/g, '')
+
+    }else{
+      secondobj =  summary.previousEmployerTransactionDetailList[2].actualAmount
+    }
+    // secondobj = summary.previousEmployerTransactionDetailList[2].actualAmount.replace(/,/g, '')
+
+
+    let thirdtobj
+    if(summary.previousEmployerTransactionDetailList[3].actualAmount != "0"){
+      thirdtobj = summary.previousEmployerTransactionDetailList[3].actualAmount.toString().replace(/,/g, '')
+    }else{
+      thirdtobj =  summary.previousEmployerTransactionDetailList[3].actualAmount
+    }
+      // thirdtobj = summary.previousEmployerTransactionDetailList[3].actualAmount.replace(/,/g, '')
+
+
+    
+    var a = parseInt(obj)   
+    var b = parseInt(firstobj) - parseInt(secondobj)
+    var c = parseInt(thirdtobj)
 
     total = a + b + c;
+    // console.log("a ",a)
+    // console.log("b ",b)
+    // console.log("c ",c)
+
 
     return total;
+  } 
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 }
 

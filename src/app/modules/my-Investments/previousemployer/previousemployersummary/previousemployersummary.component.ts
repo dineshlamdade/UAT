@@ -50,7 +50,10 @@ export class PreviousemployersummaryComponent implements OnInit {
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService,
     private modalService: BsModalService
-  ) {}
+  ) {
+
+    localStorage.removeItem("mode")
+  }
 
   public ngOnInit(): void {
     // Summary get Call on Page Load
@@ -59,6 +62,7 @@ export class PreviousemployersummaryComponent implements OnInit {
 
   redirectToDeclarationActual(propertyName: string, mode: string) {
     this.tabIndex = 2;
+    localStorage.setItem("mode",mode)
     const data = {
       propertyHouseName: propertyName,
       tabIndex: this.tabIndex,

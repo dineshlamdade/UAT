@@ -9,21 +9,18 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-6">
-
-                                            Loan Type
-
-                                        <br><br>
-                                          <select
-                                            class="form-control"
+                                            <label class="form-label">Loan Type</label>
+                                          <select class="form-control"
                                             placeholder="Select" (change)="getLoanType($event.target.value)">
                                             <option value="" selected >Select</option>
-                                            <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
+                                            <option value={{loan.loanMasterId}} *ngFor="let loan of loanTypeData">
+                                              {{loan.loanCode}}</option>
                                           </select>
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="well" *ngIf="loanType != ''">
+                            <div class="well">
+                              <!-- *ngIf="loanType != ''" -->
                               <!-- <form #emiCalculatorForm="ngForm" (ngSubmit)="submitEmiCalculator()"></form> -->
                                 <div class="form-group">
                                     <div class="col-md-12">

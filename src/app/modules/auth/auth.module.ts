@@ -19,6 +19,13 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { TokenInterceptorService } from './token-interceptor/token-interceptor.service';
+import { PsadminComponentSelectionComponent } from './psadmin-component-selection/psadmin-component-selection.component';
+import { GroupOrCompanySelectionComponent } from './group-or-company-selection/group-or-company-selection.component';
+import { GlobalModuleListComponent } from './global-module-list/global-module-list.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { SharedModule } from 'primeng/api';
+import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
@@ -31,8 +38,10 @@ registerLocaleData(localeGb, 'en-GB');
     TranslocoModule,
     FormsModule,
     HttpClientModule,
+    SharedModule,
+    SharedlayoutModule,
   ],
-  declarations: [AuthRoutingModule.components, LoginComponent, ForgotPasswordComponent, RegisterComponent, ErrorPageComponent, ErrorPage2Component],
+  declarations: [AuthRoutingModule.components, LoginComponent, ForgotPasswordComponent, RegisterComponent, ErrorPageComponent, ErrorPage2Component, PsadminComponentSelectionComponent, GroupOrCompanySelectionComponent, GlobalModuleListComponent, ChangepasswordComponent],
   providers: [ translocoLoader,
     AuthService,
     {

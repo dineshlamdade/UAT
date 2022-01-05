@@ -10,6 +10,8 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { PayrollInputsService } from '../payroll-inputs.service';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
+import { constants } from 'perf_hooks';
 
 
 
@@ -1521,7 +1523,7 @@ export class SdmStepperComponent implements OnInit {
       res.data.results.forEach(element => {
         if (this.derivedTypeName == 'JobField') {
           //  console.log("jobfield: ")
-          if (element.derivedObjectName == 'EmployeeJobMapping' || element.derivedObjectName == 'EmployeePositionMapping' ||
+          if (element.derivedObjectName == 'EmployeeJobMapping' || element.derivedObjectName == 'EmployeePositionMapping' || 
             element.derivedObjectName == 'EmployeeMaster' || element.derivedObjectName == 'complianceSDMMapping' && element.derivedObjectName != 'PayrollAreaInformation') {
             this.derivedTableFieldsData.push(element)
           }
@@ -1536,7 +1538,7 @@ export class SdmStepperComponent implements OnInit {
         else {
           //  console.log("percentage and value: ")
           if (element.derivedObjectName != 'EmployeeJobMapping' && element.derivedObjectName != 'EmployeePositionMapping' &&
-            element.derivedObjectName != 'EmployeeMaster' && element.derivedObjectName != 'complianceSDMMapping' &&
+            element.derivedObjectName != 'EmployeeMaster' && element.derivedObjectName != 'complianceSDMMapping' && 
             element.derivedObjectName != 'PayrollAreaInformation' && element.derivedObjectName != 'LoanMaster' &&
             element.derivedObjectName != 'NonRecurringTransactionGroup' && element.derivedObjectName != 'FlexiSectionMaster' &&
             element.derivedObjectName != 'FlexiHeadSetting' && element.derivedObjectName != 'JobMaster'
@@ -1603,6 +1605,10 @@ export class SdmStepperComponent implements OnInit {
         // this.fieldTypes =element.sourceObjectFieldNameList
         this.sdmService.derivedTablesFieldsValue(formdata).subscribe(res => {
           this.fieldTypes = res.data.results;
+          // if(this.fieldTypes.length==1){
+          //   this.selectedDerivedName=this.fieldTypes[0].derivedFieldName;
+          //   this.sdmFormStep3.get('sdmDerivedTableId').patchValue(this.selectedDerivedName);
+          // }
           if (this.tempeditDerivedData) {
             this.sdmFormStep3.patchValue(this.editDerivedData)
             // console.log("derivedFieldName: "+ JSON.stringify(this.editDerivedData))
@@ -1737,7 +1743,8 @@ export class SdmStepperComponent implements OnInit {
       }
     });
 
-    this.sdmFormStep3.reset()
+    this.sdmFormStep3.reset();
+    this.derivedApplicableFlag=true;
     this.derivedTableName = ""
     this.derivedactive = true
     this.selectedDerivedName = ""
@@ -1805,10 +1812,13 @@ export class SdmStepperComponent implements OnInit {
       // this.alertService.sweetalertMasterSuccess("", "Derived data saved successfully.")
       //  alert(JSON.stringify(res.status))
       this.alertService.sweetalertMasterSuccess(res.status.messsage, "");
+      this.saveDerivedData=[];
       //this.sdmFormStep1.controls['sdmName'].disable();
       // this.duplicateDataErrorMessage = res.status.messsage[1];
+      this.derivedMaster();
 
       this.sdmFormStep3.reset();
+      
       // this.alertService.sweetalertError( error["error"]["status"]["message"] );
     },
     (error: any) => {
@@ -1897,9 +1907,10 @@ export class SdmStepperComponent implements OnInit {
           this.matrixsdmSourceCombinationList.forEach((ele, index) => {
             ele.showElement = true
             ele.derivedFromDate = null
+            ele.sdmSubCombinationId=1
             ele.derivedToDate = ''
             ele.applicableValue = ''
-            console.log("chnage daata: "+ JSON.stringify(ele))
+            //console.log("chnage daata: "+ JSON.stringify(ele))
             this.SDMCombinationwithDerivedIdData.forEach(element => {
               if (ele.sdmSourceCombinationId == element.sdmSourceCombinationId) {
                 ele.showElement = false
@@ -1923,6 +1934,8 @@ export class SdmStepperComponent implements OnInit {
               "sdmCombinationId": element.sdmCombinationId,
               "sdmDerivedMasterId": element.sdmDerivedMasterId,
               "sdmMasterId": element.sdmMasterId,
+              "sdmSubCombinationId":element.sdmSubCombinationId,
+              "inputCycleId":element.inputCycleId,
               "sdmSourceCombinationId": element.sdmSourceCombinationId,
               "sourceRangeFrom": element.sourceRangeFrom,
               "sourceRangeTo": element.sourceRangeTo
@@ -1946,6 +1959,8 @@ export class SdmStepperComponent implements OnInit {
                 "sourceRangeTo": element.sourceRangeTo,
                 "derivedFromDate": element.derivedFromDate,
                 "derivedToDate": element.derivedToDate,
+                "sdmSubCombinationId":element.sdmSubCombinationId,
+                "inputCycleId":element.inputCycleId,
                 "applicableValue": element.applicableValue
               }
             )
@@ -1990,6 +2005,19 @@ export class SdmStepperComponent implements OnInit {
 
           this.derivedFieldName = element.derivedFieldName
         }
+// work flow master dropdown on fourth page 
+else if (element.derivedObjectName == 'WorkflowMaster') {
+  this.sdmService.derivedFieldName('WorkflowMaster', element.derivedFieldName).subscribe(res => {
+    this.derivedDropdownValue = res.data.results[0]
+  })
+  this.showDropdown = true;
+
+  this.derivedObjectNames = element.derivedObjectName
+
+  this.derivedFieldName = element.derivedFieldName
+}
+//
+        
         else if (element.derivedObjectName == 'PositionDetailDD') {
           this.sdmService.derivedFieldName('PositionDetailDD', element.derivedFieldName).subscribe(res => {
             this.derivedDropdownValue = res.data.results[0]
@@ -2117,7 +2145,14 @@ export class SdmStepperComponent implements OnInit {
 
     if (this.saveMatrixData.length > 0) {
       this.saveMatrixData.forEach((element, index) => {
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+
+        //change
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId==srcCombData.sdmCombinationId ) {
+        
+        //change
+        //if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+
+        ///change done
           // if(element.sourceRangeFrom > value){
           let ind = index;
           this.saveMatrixData.splice(ind, 1, {
@@ -2176,6 +2211,17 @@ export class SdmStepperComponent implements OnInit {
           // })
         }
       });
+//cahnge
+
+      this.saveMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+          element.derivedFromDate= srcCombData.derivedFromDate;
+          element.derivedToDate = srcCombData.derivedToDate;
+        }   
+         })
+//change
+
+
     } else {
       this.saveMatrixData.push({
         "sdmCombinationId": srcCombData.sdmCombinationId,
@@ -2186,7 +2232,9 @@ export class SdmStepperComponent implements OnInit {
         "sourceRangeTo": this.sourceRangeTo,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-        "applicableValue": this.applicableValue
+        "applicableValue": this.applicableValue,
+        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":srcCombData.inputCycleId,
       })
 
       // this.tempEditMatrixData.push({
@@ -2225,7 +2273,11 @@ export class SdmStepperComponent implements OnInit {
 
     if (this.saveMatrixData.length > 0) {
       this.saveMatrixData.forEach((element, index) => {
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+
+        
+
+        //change as 2231
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId==srcCombData.sdmCombinationId ) {
           let ind = index;
           this.saveMatrixData.splice(ind, 1, {
             "sdmCombinationId": element.sdmCombinationId,
@@ -2234,8 +2286,10 @@ export class SdmStepperComponent implements OnInit {
             "sdmSourceCombinationId": element.sdmSourceCombinationId,
             "sourceRangeFrom": element.sourceRangeFrom,
             "sourceRangeTo": value,
-            "derivedFromDate": element.derivedFromDate,
-            "derivedToDate": element.derivedToDate,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":srcCombData.inputCycleId,
+            // "derivedFromDate": element.derivedFromDate,
+            // "derivedToDate": element.derivedToDate,
             "applicableValue": element.applicableValue
           })
           // this.tempEditMatrixData.splice(ind,1,{
@@ -2275,6 +2329,8 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeFrom": srcCombData.sourceRangeFrom,
             "sourceRangeTo": value,
             "derivedFromDate": this.selectedFromDateForSave,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+           "inputCycleId":srcCombData.inputCycleId,
             "derivedToDate": this.selectedToDateForSave,
             "applicableValue": srcCombData.applicableValue
           })
@@ -2294,6 +2350,20 @@ export class SdmStepperComponent implements OnInit {
           // })
         }
       });
+
+      //change 
+
+      this.saveMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+          element.derivedFromDate= srcCombData.derivedFromDate;
+          element.derivedToDate = srcCombData.derivedToDate;
+        }   
+         })
+      //change
+      
+      
+
+
     } else {
       this.saveMatrixData.push({
         "sdmCombinationId": srcCombData.sdmCombinationId,
@@ -2302,6 +2372,8 @@ export class SdmStepperComponent implements OnInit {
         "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
         "sourceRangeFrom": srcCombData.sourceRangeFrom,
         "sourceRangeTo": value,
+        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":srcCombData.inputCycleId,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue
@@ -2380,10 +2452,31 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeTo": srcCombData.sourceRangeTo,
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+             "inputCycleId":srcCombData.inputCycleId,
             "applicableValue": srcCombData.applicableValue
           })
         }
       });
+
+            //change 
+
+            this.saveMatrixData.forEach((element, index) => {
+              if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+                element.derivedFromDate= this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd');
+                
+              }   
+               })
+
+               this.tempEditMatrixData.forEach((element, index) => {
+                if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+                  element.derivedFromDate= srcCombData.derivedFromDate;
+                //  element.derivedToDate = srcCombData.derivedToDate;
+                }   
+                 })
+
+            //change
+
     } else {
       this.saveMatrixData.push({
         "sdmCombinationId": srcCombData.sdmCombinationId,
@@ -2392,6 +2485,8 @@ export class SdmStepperComponent implements OnInit {
         "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
         "sourceRangeFrom": srcCombData.sourceRangeFrom,
         "sourceRangeTo": srcCombData.sourceRangeTo,
+        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":srcCombData.inputCycleId,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue
@@ -2425,7 +2520,9 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeTo": element.sourceRangeTo,
             "derivedFromDate": element.derivedFromDate,
             "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-            "applicableValue": element.applicableValue
+            "applicableValue": element.applicableValue,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":srcCombData.inputCycleId
           })
 
         } else {
@@ -2452,10 +2549,31 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeTo": srcCombData.sourceRangeTo,
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
-            "applicableValue": srcCombData.applicableValue
+            "applicableValue": srcCombData.applicableValue,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":srcCombData.inputCycleId
           })
         }
       });
+
+      //change
+      this.saveMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+       //  element.derivedToDate= this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd');
+          element.derivedToDate= new Date(this.selectedToDateForSave);
+          
+        }   
+         })
+
+         this.tempEditMatrixData.forEach((element, index) => {
+          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+            element.derivedToDate= srcCombData.derivedToDate;
+          //  element.derivedToDate = srcCombData.derivedToDate;
+          }   
+           })
+
+
+         //change
     } else {
       this.saveMatrixData.push({
         "sdmCombinationId": srcCombData.sdmCombinationId,
@@ -2466,7 +2584,9 @@ export class SdmStepperComponent implements OnInit {
         "sourceRangeTo": srcCombData.sourceRangeTo,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-        "applicableValue": this.applicableValue
+        "applicableValue": this.applicableValue,
+        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":srcCombData.inputCycleId
       })
     }
 
@@ -2500,7 +2620,9 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeTo": element.sourceRangeTo,
             "derivedFromDate": element.derivedFromDate,
             "derivedToDate": element.derivedToDate,
-            "applicableValue": value
+            "applicableValue": value,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":srcCombData.inputCycleId
           })
         } else {
 
@@ -2527,7 +2649,9 @@ export class SdmStepperComponent implements OnInit {
             "sourceRangeTo": srcCombData.sourceRangeTo,
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
-            "applicableValue": value
+            "applicableValue": value,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":srcCombData.inputCycleId
           })
         }
       });
@@ -2558,7 +2682,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": element.sourceRangeTo,
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": element.derivedToDate,
-              "applicableValue": value
+              "applicableValue": value,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
           } else {
 
@@ -2584,7 +2710,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": srcCombData.sourceRangeTo,
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedFromDateForSave,
-              "applicableValue": value
+              "applicableValue": value,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
 
           }
@@ -2600,7 +2728,9 @@ export class SdmStepperComponent implements OnInit {
           "sourceRangeTo": srcCombData.sourceRangeTo,
           "derivedFromDate": this.selectedFromDateForSave,
           "derivedToDate": this.selectedFromDateForSave,
-          "applicableValue": value
+          "applicableValue": value,
+          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+          "inputCycleId":srcCombData.inputCycleId
         })
 
       }
@@ -2673,7 +2803,9 @@ export class SdmStepperComponent implements OnInit {
                   "sourceRangeTo": element.sourceRangeTo,
                   "derivedFromDate": element.derivedFromDate,
                   "derivedToDate": element.derivedToDate,
-                  "applicableValue": value
+                  "applicableValue": value,
+                  "sdmSubCombinationId":element.sdmSubCombinationId,
+                  "inputCycleId":element.inputCycleId
                 })
                 // this.tempMatrixData.splice(ind,1,{
                 //   "sdmCombinationId": element.sdmCombinationId,
@@ -2721,7 +2853,9 @@ export class SdmStepperComponent implements OnInit {
                   "sourceRangeTo": srcCombData.sourceRangeTo,
                   "derivedFromDate": this.selectedFromDateForSave,
                   "derivedToDate": this.selectedToDateForSave,
-                  "applicableValue": value
+                  "applicableValue": value,
+                  "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+                  "inputCycleId":srcCombData.inputCycleId
                 })
 
                 // console.log("here appl val: "+ JSON.stringify(this.saveMatrixData))
@@ -2752,7 +2886,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": srcCombData.sourceRangeTo,
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedToDateForSave,
-              "applicableValue": value
+              "applicableValue": value,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
 
             // this.tempMatrixData.push({
@@ -2786,7 +2922,9 @@ export class SdmStepperComponent implements OnInit {
                   "sourceRangeTo": element.sourceRangeTo,
                   "derivedFromDate": element.derivedFromDate,
                   "derivedToDate": element.derivedToDate,
-                  "applicableValue": value
+                  "applicableValue": value,
+                  "sdmSubCombinationId":element.sdmSubCombinationId,
+                  "inputCycleId":element.inputCycleId
                 })
               } else {
 
@@ -2822,7 +2960,9 @@ export class SdmStepperComponent implements OnInit {
                   "sourceRangeTo": srcCombData.sourceRangeTo,
                   "derivedFromDate": this.selectedFromDateForSave,
                   "derivedToDate": this.selectedToDateForSave,
-                  "applicableValue": value
+                  "applicableValue": value,
+                  "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+                  "inputCycleId":srcCombData.inputCycleId
                 })
 
               }
@@ -2838,7 +2978,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": srcCombData.sourceRangeTo,
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedToDateForSave,
-              "applicableValue": value
+              "applicableValue": value,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
 
           }
@@ -2888,7 +3030,11 @@ export class SdmStepperComponent implements OnInit {
 
       if (this.saveMatrixData.length > 0) {
         this.saveMatrixData.forEach((element, index) => {
-          if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+//change
+        //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+          //change
             let ind = index;
             if (element.derivedToDate = '' || element.derivedToDate == null) {
               element.derivedToDate = this.selectedToDateForSave
@@ -2901,8 +3047,13 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeFrom": null,
               "sourceRangeTo": null,
               "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
-              "derivedToDate": element.derivedToDate,
-              "applicableValue": element.applicableValue
+              //change
+            //  "derivedToDate": element.derivedToDate,
+              "derivedToDate": this.selectedToDateForSave,
+              //change
+              "applicableValue": element.applicableValue,
+              "sdmSubCombinationId":element.sdmSubCombinationId,
+              "inputCycleId":element.inputCycleId
             })
           } else {
 
@@ -2933,11 +3084,31 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": null,
               "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
               "derivedToDate": this.selectedToDateForSave,
-              "applicableValue": srcCombData.applicableValue
+              "applicableValue": srcCombData.applicableValue,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
 
           }
         });
+
+
+          //change 
+          this.saveMatrixData.forEach(element => {
+            if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+              element.derivedFromDate= srcCombData.derivedFromDate;
+            } });
+          
+      // this.tempEditMatrixData.forEach((element, index) => {
+      //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+      //     element.derivedFromDate= srcCombData.derivedFromDate;
+      //   //  element.derivedToDate = srcCombData.derivedToDate;
+      //   }   
+      //    })
+      //change
+      //change
+
+
       } else {
 
         this.saveMatrixData.push({
@@ -2949,7 +3120,9 @@ export class SdmStepperComponent implements OnInit {
           "sourceRangeTo": null,
           "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
           "derivedToDate": this.selectedToDateForSave,
-          "applicableValue": srcCombData.applicableValue
+          "applicableValue": srcCombData.applicableValue,
+          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+          "inputCycleId":srcCombData.inputCycleId
         })
 
       }
@@ -2981,7 +3154,8 @@ export class SdmStepperComponent implements OnInit {
 
       if (this.saveMatrixData.length > 0) {
         this.saveMatrixData.forEach((element, index) => {
-          if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+        //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+            if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
             let ind = index;
             this.saveMatrixData.splice(ind, 1, {
               "sdmCombinationId": element.sdmCombinationId,
@@ -2992,7 +3166,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": null,
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-              "applicableValue": element.applicableValue
+              "applicableValue": element.applicableValue,
+              "sdmSubCombinationId":element.sdmSubCombinationId,
+              "inputCycleId":element.inputCycleId
             })
           } else {
 
@@ -3023,11 +3199,29 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": null,
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-              "applicableValue": srcCombData.applicableValue
+              "applicableValue": srcCombData.applicableValue,
+              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+              "inputCycleId":srcCombData.inputCycleId
             })
 
           }
         });
+
+          //change 
+
+          this.saveMatrixData.forEach(element => {
+            if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+              element.derivedToDate= srcCombData.derivedToDate;
+            } });
+          
+      // this.tempEditMatrixData.forEach((element, index) => {
+      //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+      //     element.derivedToDate= srcCombData.derivedToDate;
+      //   //  element.derivedToDate = srcCombData.derivedToDate;
+      //   }   
+      //    })
+      //change
+
       } else {
 
         this.saveMatrixData.push({
@@ -3039,7 +3233,9 @@ export class SdmStepperComponent implements OnInit {
           "sourceRangeTo": null,
           "derivedFromDate": this.selectedFromDateForSave,
           "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-          "applicableValue": srcCombData.applicableValue
+          "applicableValue": srcCombData.applicableValue,
+          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+          "inputCycleId":srcCombData.inputCycleId
         })
 
       }
@@ -3088,20 +3284,33 @@ export class SdmStepperComponent implements OnInit {
     if (this.selectedToDateForSave != '') {
       todate = this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd')
     }
-
+    let inputCycleId: 2790
+    let sdmSubCombinationId=1;
+    let tempData= this.tempMatrixData.filter(ele=>ele.sdmSourceCombinationId=sdmcombination.sdmSourceCombinationId);
+    if(tempData.length>0){
+    let tempData =this.tempMatrixData.reduce((p, c) => p.sdmSubCombinationId > c.sdmSubCombinationId ? p : c)
+    // if(tempData.length>0){
+    sdmSubCombinationId=tempData.sdmSubCombinationId+1
+  // }
+    }
     if (this.selectedIndex == rowIndex) {
       this.saveMatrixData.push({
         "sdmCombinationId": "0",
         "sdmMasterId": this.sdmMasterId,
         "sdmDerivedMasterId": this.matrixDerivedMasterId,
+        "sdmSubCombinationId":sdmSubCombinationId,
         "sdmSourceCombinationId": sdmcombination.sdmSourceCombinationId,
         "sourceRangeFrom": this.sourceRangeFrom,
         "sourceRangeTo": this.sourceRangeTo,
         "derivedFromDate": fromdate,
         "derivedToDate": todate,
-        "applicableValue": this.applicableValue
+        "applicableValue": this.applicableValue,
+       // "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        "inputCycleId":inputCycleId
       })
-
+      //change
+      //fromdate = '';
+      //change
       this.tempMatrixData.push({
         "sdmCombinationId": "0",
         "sdmMasterId": this.sdmMasterId,
@@ -3111,12 +3320,32 @@ export class SdmStepperComponent implements OnInit {
         "sourceRangeTo": this.sourceRangeTo,
         "derivedFromDate": fromdate,
         "derivedToDate": todate,
-        "applicableValue": this.applicableValue,
+        "sdmSubCombinationId":sdmSubCombinationId,
+        "inputCycleId":inputCycleId,
+        "applicableValue": this.applicableValue, 
         'selectedCombData': this.selectedCombData
       })
 
+      // change for insert row below combination
+      
+      this.matrixsdmSourceCombinationList[rowIndex].newData = [];
+this.matrixsdmSourceCombinationList[rowIndex].newData.push({
+  "sdmCombinationId": "0",
+  "sdmMasterId": this.sdmMasterId,
+  "sdmDerivedMasterId": this.matrixDerivedMasterId,
+  "sdmSourceCombinationId": sdmcombination.sdmSourceCombinationId,
+  "sourceRangeFrom": this.sourceRangeFrom,
+  "sourceRangeTo": this.sourceRangeTo,
+  "derivedFromDate": fromdate,
+  "derivedToDate": todate,
+  "sdmSubCombinationId":sdmSubCombinationId,
+        "inputCycleId":inputCycleId,
+  "applicableValue": this.applicableValue,
+  'selectedCombData': this.selectedCombData
+});
+      // change for insert row below combination
       // console.log("this.saveMatrixData: " + JSON.stringify(this.saveMatrixData))
-
+    //  this.selectedFromDateForSave == '';
     }
 
     this.sourceRangeFrom = ''
@@ -3126,7 +3355,7 @@ export class SdmStepperComponent implements OnInit {
     this.applicableValue = ''
     this.addbtnflag = false
     this.selectedIndex = -1
-    this.selectedFromDateForSave = ''
+   // this.selectedFromDateForSave = ''
     // this.selectedToDateForSave = ''
 
     this.matrixsdmSourceCombinationList.forEach((ele, index) => {
@@ -3134,9 +3363,19 @@ export class SdmStepperComponent implements OnInit {
       ele.derivedToDate = ''
       ele.applicableValue = ''
     })  
+sdmcombination.derivedFromDate=''
+    this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = this.selectedFromDateForSave;
+  //  this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = this.selectedToDateForSave;
+    this.matrixsdmSourceCombinationList[rowIndex].derivedToDate =this.selectedToDateForSave;
+    // this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate.disabled;
+    // this.matrixsdmSourceCombinationList[rowIndex].derivedToDate.disabled;
+    this.matrixsdmSourceCombinationList[rowIndex].applicableValue1 = ''
+    this.matrixsdmSourceCombinationList[rowIndex].disableFlag =true;
 
-    this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = ''
-    this.matrixsdmSourceCombinationList[rowIndex].derivedToDate = ''
+
+
+  //  this.selectedFromDateForSave = ''
+  //  this.selectedToDateForSave = ''
   }
 
 
@@ -3158,7 +3397,23 @@ export class SdmStepperComponent implements OnInit {
     //     })
     //   });
     // }
-    if (!this.showErrorFlag) {
+
+    //change on 23 12 2021
+   // if (!this.showErrorFlag) {
+     //change
+//change for null entires 
+
+     this.saveMatrixData.forEach((element,index) => {
+      element.inputCycleId=2790
+       if(element.derivedFromDate==null || element.derivedToDate==null ){
+       delete  this.saveMatrixData[index];
+       }
+    //  element.derivedFromDate=this.datepipe.transform(new Date(element.derivedFromDate), 'yyyy-MM-dd 00:00:000');
+      // element.derivedToDate=this.datepipe.transform(new Date(element.derivedToDate), 'yyyy-MM-dd 00:00:000');
+
+     });
+
+     //change for null entires 
 
       this.sdmService.saveMatrix(this.saveMatrixData).subscribe(res => {
         //this.toaster.success("", "Matrix data saved successfully")
@@ -3181,10 +3436,16 @@ export class SdmStepperComponent implements OnInit {
         //  this.combinationMatrix();
 
         this.onChangeDriveName(this.tempSelectedDerivedName);
+      },error =>{
+        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
       })
-    } else {
-      this.alertService.sweetalertError('Please filled all valid details')
-    }
+    
+    //change
+   // change on 23 12 2021
+    // } else {
+    //   this.alertService.sweetalertError('Please filled all valid details')
+    // }
+    //change
 
   }
 
@@ -3276,7 +3537,9 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": element.sourceRangeTo,
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": element.derivedToDate,
-              "applicableValue": element.applicableValue
+              "applicableValue": element.applicableValue,
+              "sdmSubCombinationId":element.sdmSubCombinationId,
+              "inputCycleId":element.inputCycleId
             }
           )
         });
@@ -3292,6 +3555,11 @@ export class SdmStepperComponent implements OnInit {
     const formData = new FormData();
     formData.append('sdmMasterId', this.sdmMasterId)
     formData.append('sdmSourceCombinationId', matrixdata.sdmSourceCombinationId)
+   
+    if(matrixdata.sourceRangeFrom!=null || matrixdata.sourceRangeFrom!=""){
+      formData.append('sdmDerivedMasterId',matrixdata.sdmDerivedMasterId)
+    }
+   
 
     this.sdmService.getHistory(formData).subscribe(res => {
       let temp = []
@@ -3535,6 +3803,11 @@ export class SdmStepperComponent implements OnInit {
     }
   }
 
+  clearCopiedDate(){
+    this.copyFromFlag=false;
+    this.selectedFromDateForSave=''
+    this.selectedToDateForSave=''
+  }
 
 
   /**
@@ -3690,5 +3963,4 @@ export class SdmStepperComponent implements OnInit {
 
 
 }
-
 

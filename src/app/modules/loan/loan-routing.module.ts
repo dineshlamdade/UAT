@@ -6,8 +6,8 @@ import { LoanComponent } from './loan/loan.component';
 import {AdhocComponent} from './adhoc/adhoc.component';
 import {RescheduleComponent} from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
-import { EmpListComponent } from './emp-list/emp-list.component';
-import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
+// import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
+import { LoanApprovalComponent } from './loan-approval/loan-approval.component';
 
 const routes: Routes = [
   {
@@ -19,41 +19,41 @@ const routes: Routes = [
 
       },
       {
-        path:'disbursement',
-        component:DisbursementComponent,
+          path:'disbursement',
+          component:DisbursementComponent,
 
-    },
-    {
-      path:'adhoc',
-      component:AdhocComponent,
-
-  },
-  {
-    path:'rescheduleRequest',
-    component:RescheduleComponent,
-
-},
-{
-  path:'settlementRequest',
-  component:SettlementComponent,
-
-},
+      },
       {
-        path:'application',
-        component:LoanComponent,
+          path:'adhoc',
+          component:AdhocComponent,
 
-    },
-    {
-      path:'summary',
-      component:LoanSummaryComponent,
+      },
+      {
+          path:'rescheduleRequest',
+          component:RescheduleComponent,
 
-  },
-    {
-      path:'empList',
-      component:EmpListComponent,
-    
-    },
-    ]
+      },
+      {
+          path:'settlementRequest',
+          component:SettlementComponent,
+
+      },
+      {
+            path:'application',
+            component:LoanComponent,
+
+      },
+      // {
+      //     path:'summary',
+      //     component:LoanSummaryComponent,
+
+      // },
+      {
+          path:'loan-approval',
+          component:LoanApprovalComponent,
+
+      },
+      ]
   },
 
   // {

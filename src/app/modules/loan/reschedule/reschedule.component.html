@@ -19,7 +19,7 @@
                           <div class="col-md-2">
                             <label class="form-label mt-1 mb-0">Employee No. & Name </label>
                             <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode
-                              +''+ perticularEmpDetails.fullName}}</label>
+                              +' - '+ perticularEmpDetails.fullName}}</label>
                           </div>
                           <div class="col-md-2">
                             <label class="form-label mt-1 mb-0">Date of Joining</label>
@@ -82,8 +82,8 @@
                         <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
                          disabled />
                       </div>
-                      
-                     
+
+
                     </div>
                   </div>
                 </div> -->
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Description</label>
-                          <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}" disabled />
+                          <input type="text" class="form-control" value="{{loanDescription}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label ">Loan No.</label>
@@ -112,7 +112,7 @@
                             Application Date
                           </label>
 
-                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled>
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" >
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text">
@@ -120,14 +120,14 @@
                                 </span>
                               </div>
                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="Date" value="{{loanDetails.createDateTime|date:
-                                  'dd-MMM-yyyy'}}" bsDatepicker>
+                              placeholder="Date" value="{{loanDetails.createDateTime|date:
+                                'dd-MMM-yyyy'}}" bsDatepicker disabled>
                             </div>
                           </div>
                         </div>
-</div>
+                    </div>
                       <br>
-                      
+
                       <div class="row">
                         <div class="col-md-3">
                           <label class="form-label">Repayment Type</label>
@@ -137,15 +137,42 @@
                           <label class="form-label">Payroll Area</label>
                           <input type="text" class="form-control" value="{{loanDetails.payrollArea}}" disabled />
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <label class="form-label">Scheduled EMI</label>
                           <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
-                        </div>
+                        </div> -->
                         <div class="col-md-3">
                           <label class="form-label">Loan Balance</label>
-                          <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
+                          <!-- <input type="text" class="form-control" value="{{balance}}" placeholder="Loan Balance" disabled /> -->
+                          <p-inputNumber class="p-inputleft" [(ngModel)]="balance" [ngModelOptions]="{standalone: true}" disabled="isEditable"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                         max="100" [step]="2.5" maxlength="5"></p-inputNumber>
                         </div>
-</div>
+
+                        <div class="col-md-3" *ngIf="scheduledEMI">
+                          <label class="form-label">Scheduled EMI</label>
+                          <!-- <input type="text" class="form-control" value="{{scheduleEmi}}"  placeholder="Scheduled EMI" disabled /> -->
+                          <p-inputNumber class="p-inputleft" [(ngModel)]="scheduleEmi" [ngModelOptions]="{standalone: true}" disabled="isEditable"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                         max="100" [step]="2.5" maxlength="5"></p-inputNumber>
+                        </div>
+
+                        <div class="col-md-3" *ngIf="schedulePriRepayment">
+                          <label class="form-label">Scheduled Principal Repayment</label>
+                          <!-- <input type="text" class="form-control" value="{{propsedPrincipal}}" placeholder="Schedule Principal Repayment" disabled /> -->
+                          <p-inputNumber class="p-inputleft" [(ngModel)]="propsedPrincipal" [ngModelOptions]="{standalone: true}" disabled="isEditable"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                         max="100" [step]="2.5" maxlength="5"></p-inputNumber>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label"> Remaining No. Of Installments</label>
+                          <input type="text" class="form-control" placeholder="No. Of Installment"  value="{{remainingInstallment}}"  disabled />
+                        </div>
+                        </div>
+
                       <br />
                     </div>
                   </div>
@@ -159,7 +186,7 @@
                       <div class="row">
                         <div class="col-md-3">
                           <label class="form-label">Transaction No.</label>
-                          <input type="text" class="form-control" formControlName="transactionNo" />
+                          <input type="text" class="form-control" formControlName="transactionNo" placeholder="Transaction No." disabled />
                         </div>
 
                         <div class="col-md-3">
@@ -174,21 +201,33 @@
                                 </span>
                               </div>
                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="Date" bsDatepicker formControlName="createDateTime">
+                                placeholder="Date" bsDatepicker value="{{myDate |date:
+                                  'dd-MMM-yyyy'}}" disabled>
                             </div>
                           </div>
                         </div>
 
                         <div class="col-md-3">
-                          <label class="form-label ">Rescheduling Type</label>
-                          <select class="form-control" placeholder="Select" formControlName="rescheduleType">
-                            <option selected value=''>Select </option>
-                        <option selected value='Reducing Balance'>Reducing Balance </option>
+                        <label class="form-label ">Rescheduling Type</label>
+                        <select class="form-control" placeholder="Select" *ngIf="normalreschduletype" formControlName="rescheduleType" (change)="rescheduleTypeChg($event.target.value)">
+                        <option  value=''>Select </option>
+                        <option  value='No of Instalments to Reschedule'>No. of Instalments to Reschedule</option>
+                        <option  value='Till Loan End'>Till Loan End </option>
+                        </select>
+                        <select class="form-control" placeholder="Select" formControlName="rescheduleType" *ngIf="loanapprovaltimereschduletype">
+                          <option [value]="rescheduleType">{{rescheduleType}} </option>
                           </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3" *ngIf="noOfIntsallmentShow">
                           <label class="form-label">No. Of Installments to Reschedule</label>
-                          <input type="text" class="form-control" formControlName="noOfInstallmentToReschedule" />
+                          <input type="text" class="form-control" formControlName="noOfInstallmentToReschedule" (focusout)="notGreterthanRemainingNoOdInstall($event.target.value)"
+                          [ngClass]="{'is-invalid' : addRescheduleForm.get('noOfInstallmentToReschedule').status == 'INVALID' || amountisnotgraterthan} "
+                          />
+                        </div>
+                        <div class="col-md-3" *ngIf="noOfIntsallmentHide">
+                          <label class="form-label">No. Of Installments to Reschedule</label>
+                          <input type="text" class="form-control" formControlName="noOfInstallmentToReschedule"  disabled
+                         />
                         </div>
                       </div>
                       <br>
@@ -203,62 +242,40 @@
                               </span>
                             </div>
                             <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                              placeholder="Date" bsDatepicker formControlName="effectiveDate">
+                              placeholder="Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                               [minDate]="myDate"  formControlName="expectedPaymentDate"  [disabled]="viewMode" >
                           </div>
                         </div>
 
-                        <!-- <div class="col-md-3">
+                        <div class="col-md-3" *ngIf="proPriRepayment">
+                          <label class="form-label">Proposed Principal Repayment (Per Installment)</label>
+                          <!-- <input type="text" class="form-control" placeholder="Proposed Principal Pepayment " formControlName="propsedPrincipal"
+                          [ngClass]="{'is-invalid' : addRescheduleForm.get('propsedPrincipal').status == 'INVALID'}"/> -->
+                          <p-inputNumber class="p-inputright " formControlName="propsedPrincipal" name=" propsedPrincipal"
+                           mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                          min="0"></p-inputNumber>
+                          <!--  [class.is-invalid]="addRescheduleForm.get('propsedPrincipal').status == 'INVALID'"-->
+                        </div>
+
+                        <div class="col-md-3" *ngIf="proposedEMI">
+                          <label class="form-label">Proposed EMI</label>
+                          <!-- <input type="text" class="form-control" placeholder="Proposed Emi" formControlName="propsedEMI"
+                          [ngClass]="{'is-invalid' : addRescheduleForm.get('propsedEMI').status == 'INVALID'}"/> -->
+                          <p-inputNumber class="p-inputright" formControlName="propsedEMI" name=" propsedEMI"
+                           mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                          min="0"></p-inputNumber>
+                          <!--  [class.is-invalid]="addRescheduleForm.get('propsedEMI').status == 'INVALID'" -->
+                        </div>
+
+                        <div class="col-md-3">
                           <label class="form-label">Remark</label>
-                          <textarea type="text" rows="1" class="form-control"></textarea>
-                        </div> -->
+                          <textarea rows="1" type="text" class="form-control" placeholder="Remark" formControlName="remark" >
+                          </textarea>
+                        </div>
+
                       </div>
                       <br>
-                      <!-- <div class="row">
-                        <div class="col-md-6">
-                          
-                          <legend>Installments to Reschedule </legend>
-                          <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
-                              <thead class="thead-dark">
-                                <tr>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Scheduled Principal</th>
-                                  <th scope="col">Proposed Principal</th>
-                                  <th scope="col">Scheduled EMI</th>
-                                  <th scope="col">Proposed EMI</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>12-Apr-2021</td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" formControlName="propsedPrincipal" /></td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" formControlName="propsedEMI" /></td>
-                                </tr>
 
-                                <tr>
-                                  <td>2-June-2021</td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" /></td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" /></td>
-
-                                </tr>
-
-                                <tr>
-                                  <td>1-May-2021</td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" /></td>
-                                  <td></td>
-                                  <td> <input type="text" class="form-control" /></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                         
-                        </div>
-                      </div> -->
                     </div>
                   </div>
                 </fieldset>
@@ -272,12 +289,12 @@
                         <div class="col-md-6">
                           <h3 class="font-14 text-purple font-bold">Approval Details</h3>
                         </div>
-                        <div class="col-md-6 ">
+                        <!-- <div class="col-md-6 ">
                           <h6 class="font-12 mb-3 font-normal float-right">
                             <strong>Overall Status : </strong>&nbsp;&nbsp;
                             <strong class="btn-bg-green p-2">Pending </strong>
                           </h6>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="row" >
                         <div class="col-md-12">
@@ -295,13 +312,14 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngIf="loanDetails" let i = index>
-                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
-                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
-                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
-                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
-                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
-                                <td><textarea type="text" rows="1" class="form-control"></textarea></td>
+                                <tr *ngFor="let approver of postApproverDetailsData">
+                                  <td class="wd-9">{{approver.sequence}}</td>
+                                  <td class="wd-14">{{approver.approverEmpCode}}</td>
+                                  <td class="wd-14">{{approver.approverName}}</td>
+                                  <td class="wd-14">Null</td>
+                                  <td class="wd-14">Null</td>
+                                  <td class="wd-14" *ngIf="inputnormalFlag">approved</td>
+                                  <td class="wd-14" *ngIf="inputRemarkFlag"><input type="text"></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -313,21 +331,83 @@
                 </div>
                 <br><br>
 
-                <ng-container class="float-right">
+                <ng-container class="float-right" *ngIf="loanAppBtns">
 
                   <div class="row float-right" style="margin: 10px">
-                    <button type="button" tooltip="Button"
+                    <button type="button" tooltip="Save" *ngIf="isSave"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                      aria-hidden="true" (click)="addRescheduleData()"><b><i class="fa fa-check-square-o"></i></b>Save
+                      aria-hidden="true" (click)="addRescheduleData()"  [disabled]="!addRescheduleForm.valid"
+                      [ngClass]="{'disabled-btn-bg-green' : addRescheduleForm.invalid ,'btn-bg-green':
+                      !addRescheduleForm.invalid }"><b><i class="fa fa-floppy-o"></i></b>Save
                     </button>
-                    <button type="button" tooltip="Button"
-                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
-                      aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Cancel
+
+                        <button type="button" tooltip="Update" *ngIf="isUpdate"
+                        [disabled]="!addRescheduleForm.valid"
+                        [ngClass]="{'disabled-btn-bg-green' : addRescheduleForm.invalid ,'btn-bg-green':
+                        !addRescheduleForm.invalid }"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2"
+                      aria-hidden="true"  (click)=" updateReschduleForm()" ><b><i class="fa fa-floppy-o"></i></b>Update
                     </button>
-                    <button type="button" tooltip="Cancel" (click)="cancel()"
-                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
-                      <b><i class="fa fa-times"></i></b> Close
-                    </button>
+
+                <!-- <button type="button" tooltip="Send Back"
+                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
+                <b><i class="fa fa-reply"></i></b> Send Back
+              </button> -->
+                <button type="button" tooltip="Close" (click)="close()"
+                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                  <b><i  class="fa fa-times-circle"></i></b> Close
+                </button>
+                <button type="button" tooltip="Reset" (click)="resetScheduleForm()"
+                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                <b><i class="fa fa-refresh"></i></b> Reset
+              </button>
+                  </div>
+                </ng-container>
+
+                   <!-- .............................................edit time btns ...............................................  -->
+                   <ng-container class="float-right"  *ngIf="loanApprEditTimeBtns">
+                    <div class="row float-right" style="margin: 10px">
+
+                    <button type="submit"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                    tooltip="Approved" ><b>
+                        <i class="fa fa-check-square-o "></i></b> Approved
+                    </button>&nbsp;
+
+                    <button type="submit"
+                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                    tooltip=" Send Back"><b>
+                        <i class="fa fa-reply"></i></b> Send Back </button>&nbsp;
+
+                   <!-- ...............................selected multiple employee buttons ..........................................   -->
+                <button type="button" tooltip="Previous" class=" custom_button custom_btn bg-teal-400
+                btn-labeled btn-labeled-left mr-2"*ngIf="multiplEmpFlag" > <b><i class="fa fa-angle-double-left" aria-hidden="true" >
+                </i></b>Previous </button>
+
+                <button type="button" tooltip="Next" class=" custom_button custom_btn bg-teal-400
+                btn-labeled btn-labeled-left mr-2" *ngIf="multiplEmpFlag"> <b><i class="fa fa-angle-double-right"></i></b>
+                Next</button>
+
+                <button type="submit" *ngIf="multiplEmpFlag"
+                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                tooltip=" Send Back & Next" ><b> <i class="fa fa-reply"></i>
+                </b> Send Back & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                <button type="submit" *ngIf="multiplEmpFlag"
+                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                tooltip="Approved & Next" ><b> <i class="fa fa-check-square-o "></i>
+                </b> Approved & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                <button type="button" tooltip="Forward & Next" *ngIf="multiplEmpFlag"
+                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                aria-hidden="true"><b><i class="fa fa-share"></i></b>Forward <i class="fa fa-angle-double-right"></i>
+                </button>
+
+                <button type="button" tooltip="Close"
+                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                <b><i  class="fa fa-times-circle"></i></b> Close
+              </button>
+
                   </div>
                 </ng-container>
               </form>
