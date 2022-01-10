@@ -129,6 +129,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
   ConvertedFinancialYearStartDate: Date;
   financialYearEnd: any;
   ConvertedFinancialYearEndDate: Date;
+  maxDate: Date;
+  minDate: Date
   viewDocumentName: any;
   viewDocumentType: any;
 
@@ -145,6 +147,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
   selectedremarkIndex : any;
   documentRemarkList: any;
   loanaccountNo: boolean;
+  ConvertedFinancialYearEndDate1: any;
 
 
   constructor(
@@ -192,6 +195,19 @@ export class ElectricVehicleMasterComponent implements OnInit {
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].loanStartDate;
+     debugger
+      //  this.maxDate = new Date(this.maxDate);
+      // this.maxDate = this.datePipe.transform(
+      //   res.data.results[0].toDate,
+      //   'dd-MMM-yyyy'
+      // );
+      this.maxDate = new Date( res.data.results[0].toDate);
+      this.minDate = new Date( res.data.results[0].fromDate);
+      // this.ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+      //   this.maxDate,
+      //   'dd-MMM-yyyy'
+      // );
+    
     });
 
 
@@ -215,7 +231,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
         // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
     });
-
+debugger
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
         this.today.getFullYear() - 1 + '-' + this.today.getFullYear();

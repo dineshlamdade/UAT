@@ -205,6 +205,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  selectedMasterId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -548,12 +549,21 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
   }
 
+  updatePrevious(   data: any,
+    event,
+    i: number,
+    j: number){
+
+this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars = event.target.value;
+  }
+
   public onCurrentSelectCheckBox(
     data: any,
     event: { target: { checked: any } },
     i: number,
     j: number
   ) {
+    debugger
     const checked = event.target.checked;
 
 
@@ -982,6 +992,47 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   }
 
 
+  addRowInList1(
+    summarynew: {
+      specifiedDiseaseTransactionId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      dateOfPayment: Date;
+      actualAmount: any;
+      particulars: string;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.specifiedDiseaseTransactionId = 0;
+    this.declarationService.particulars = null;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    this.declarationService.dateOfPayment = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.0;
+    this.declarationService.amountApproved = 0.0;
+    if (
+      this.transactionDetail[j].specifiedDiseaseTransactionList ==
+      null
+    ) {
+      this.declarationService.specifiedDiseaseMasterId = this.selectedMasterId;
+      this.transactionDetail[j].specifiedDiseaseTransactionList = [];
+    }
+    this.transactionDetail[j].specifiedDiseaseTransactionList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].specifiedDiseaseTransactionList
+    );
+  }
+
+
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
   }
@@ -1008,6 +1059,27 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       return true;
     }
   }
+
+
+  // -------- Delete Row--------------
+deleteRow1(j: number) {
+  const rowCount =
+    this.transactionDetail[j].specifiedDiseaseTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].specifiedDiseaseTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].specifiedDiseaseTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
 
   editDeclrationRow(
     summary: {
@@ -1325,6 +1397,12 @@ onResetRemarkDetails() {
             .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
+        }
+        if(item.dateOfPayment){
+        item.dateOfPayment = this.datePipe.transform(
+          item.dateOfPayment,
+          'yyyy-MM-dd'
+        );
         }
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
@@ -2224,11 +2302,11 @@ this.documentArray = [];
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
+    this.transactionDetail[j].specifiedDiseaseTransactionDetailList[
       i
     ].dateOfPayment = summary.dateOfPayment;
     console.log(
-      this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
+      this.transactionDetail[j].specifiedDiseaseTransactionDetailList[
         i
       ].dateOfPayment
     );
@@ -2293,6 +2371,10 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public rejectedAmount: number;
   public approvedAmount: number;
+  specifiedDiseaseMasterId: any;
+  dateOfPayment: any;
+  amountRejected: number;
+  amountApproved: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

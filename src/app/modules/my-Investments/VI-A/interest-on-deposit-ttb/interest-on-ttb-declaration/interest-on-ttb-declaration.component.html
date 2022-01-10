@@ -57,8 +57,8 @@
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.accountNumber }}">
-          {{ item.accountNumber }}
+          tooltip="{{ item.accountNumber | accountNumberMaskPipe:4 }}">
+          {{ item.accountNumber | accountNumberMaskPipe:4 }}
         </label>
       </div>
       <!-- <div class="ml-2 pl-1 pr-0">
@@ -1382,8 +1382,8 @@
                     </span>
                   </td>
                   <td class="align-left">
-                    <span tooltip="{{ documentSummary.accountNumber }}">
-                      {{ documentSummary.accountNumber }}
+                    <span tooltip="{{ documentSummary.accountNumber | accountNumberMaskPipe:4}}">
+                      {{ documentSummary.accountNumber | accountNumberMaskPipe:4 }}
                     </span>
                   </td>
                   <td class="align-right">
@@ -1555,12 +1555,33 @@
 </ng-template>
 <ng-template #template2>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
+    <!-- <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
       Edit Document Details
     </h5>
     <h5 class="modal-title" id="jasdjgh" *ngIf="!viewTransactionDetail">
       View Document Details
-    </h5>
+    </h5> -->
+    <h6 class="modal-title" style="margin: auto;"><b>PS.ID. : </b>
+      <label>
+        {{ editProofSubmissionId }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Creation Date : </b>
+      <label>
+        {{ this.createDateTime | date:'dd-MMM-yyyy' }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Last Modified Date & Time : </b>
+      <label>
+        {{ lastModifiedDateTime | date: 'dd-MMM-yyyy HH:mm' }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Status : </b>
+      <label>
+        <span class="badge" [ngClass]="{'badge-primary': transactionStatus=='Re-Open',
+          ' badge-success': transactionStatus=='Approved',
+          'badge-danger': transactionStatus=='SendBack',
+          'badge-info': transactionStatus=='Submitted',
+          'badge-warning': transactionStatus=='Pending'}" tooltip="{{transactionStatus}}">
+        {{ transactionStatus }}</span></label>
+    </h6>
     <button
       type="button"
       (click)="modalRef.hide()"
@@ -1591,12 +1612,12 @@
         <div class="ml-2 pl-1 pr-0">
           <label
             class="font-12 text-ellipsis mt-1"
-            tooltip="{{ item.accountNumber }}"
+            tooltip="{{ item.accountNumber | accountNumberMaskPipe:4  }}"
           >
-            {{ item.accountNumber }}</label
+            {{ item.accountNumber | accountNumberMaskPipe:4 }}</label
           >
         </div>
-        <div class="ml-2 pl-1 pr-0">
+        <!-- <div class="ml-2 pl-1 pr-0">
           <label class="form-label mt-1 pl-10">Account Holder Name</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
@@ -1606,7 +1627,7 @@
           >
             {{ item.accountHolderName }}</label
           >
-        </div>
+        </div> -->
         <!-- <div class="ml-2 pl-1 pr-0">
           <label class="form-label mt-1">Account Holder Name</label>
         </div>
@@ -1650,12 +1671,12 @@
                     </label>
                   </th> -->
                   <th rowspan="2" class="wd-11 font700">Interest Received Date</th>
-                  <th rowspan="2" class="wd-9 font700">Declared</th>
-                  <th rowspan="2" class="wd-9 font700">Actual</th>
-                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-9 font700">Declared Amount</th>
+                  <th rowspan="2" class="wd-9 font700">Actual Amount</th>
+                  <th colspan="2" class="wd-17 font700">Approval Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">PS.ID</th>
-                  <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                  <th rowspan="2" class="wd-10">PS. ID.</th>
+                  <th rowspan="2" class="wd-15 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -1716,7 +1737,7 @@
                     </div>
                   </td>
                  
-                  <td>
+                  <!-- <td>
                     <input
                       type="text" onkeypress="return /[0-9 ]/i.test(event.key)"
                       id="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
@@ -1725,9 +1746,15 @@
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       class="form-control align-right"
                     />
-                  </td>
+                  </td> -->
+                  <td class="wd-4 align-right">
+      
+                    <span  class="padding-right-5" tooltip="{{summary.actualAmount}}">
+                     {{summary.actualAmount}}
+                     </span>
+           </td>
                   <!--  (change)="onActualAmountChangeInEditCase(summary, i, j)" -->
-                  <td>
+                  <!-- <td>
                     <input
                       type="text"
                       [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -1742,19 +1769,88 @@
                       class="form-control align-right"
                       disabled
                     />
-                  </td>
-                  <td>
-                    <span tooltip="{{ summary.remark }}">
-                      {{ summary.remark }}
+                  </td> -->
+                  <td class="wd-6 align-right">
+                    <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                    {{summary.amountRejected | number:'1.2-2'}}
                     </span>
+                 </td>
+                    <td class="wd-6 align-right">
+                      <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                      {{summary.amountApproved | number:'1.2-2'}}
+                      </span>
+                   </td>
+                   <td>
+                    <div class="d-flex"
+                    class="align-center">
+                      <!-- <input
+                      style="width:100px;"
+                        type="text"
+                        class="form-control"
+                        [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                        
+                        (change)="
+                        onChangeDocumentRemark(
+                            summary, i,
+                            $event
+                          )
+                        "
+                      
+                      /> -->
+                      <div
+                        _ngcontent-ykc-c443=""
+                        class="
+                          custom_Label_badge
+                          mr-2
+                          ml-2
+                        "
+                      >
+                        <b>
+                          <i
+                            (click)="
+                              docRemarkModal(
+                                template8,
+                                documentDetailIndex,
+                                summary?.interestOnSavingDeposit80TTTransactionId,
+                                summary, i
+                              )
+                            "
+                            class="
+                              fa fa-commenting
+                              text-dark-green
+                              fa-2x
+                              cursor-pointer
+                            "
+                          >
+                          </i
+                        ></b>
+                        <span
+                          _ngcontent-ykc-c443=""
+                          class="Label_badge"
+                          >{{
+                            summary?.bubbleRemarkCount
+                          }}</span
+                        >
+                      </div>
+                    </div>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
                       <i class="fa fa-clipboard"></i>
                     </span>
+                  </td> -->
+                  <td>
+                    <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted' || summary.transactionStatus === 'Approved' || summary.transactionStatus === 'SendBack' || summary.transactionStatus === 'Re-Open'">
+                      <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                      <!-- {{ summary.proofSubmissionId }} -->
+                    </span>
                   </td>
-                  <td class="text-orange font700">
-                    <span tooltip="{{ summary.transactionStatus }}">
+                  <td class="wd-6">
+                    <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+                    ' badge-success': summary.transactionStatus=='Approved',
+                    'badge-danger': summary.transactionStatus=='SendBack',
+                    'badge-info': summary.transactionStatus=='Submitted',
+                    'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary?.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span>
                   </td>
@@ -1814,7 +1910,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item.declaredTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item.declaredTotal | number: "1.2-2" }}
                     </span>
@@ -1825,7 +1921,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip="{{ item.actualTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item.actualTotal | number: "1.2-2" }}
                     </span>
@@ -1835,7 +1931,7 @@
                       tooltip=" {{
                         item.totalRejectedAmount | number: '1.2-2'
                       }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item.totalRejectedAmount | number: "1.2-2" }}
                     </span>
@@ -1843,7 +1939,7 @@
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}"
-                      class="padding-right-12"
+                      class="padding-right-9"
                     >
                       {{ item.totalApprovedAmount | number: "1.2-2" }}
                     </span>
@@ -2295,26 +2391,26 @@
       </div>
     </div>
 
-    <hr class="mt-20" />
+    <!-- <hr class="mt-20" />
     <div class="row mt-20">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Uploaded Documents
         </h3>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-md-12">
-        <div class="row clearfix mt-10">
+        <!-- <div class="row clearfix mt-10">
           <div class="col-md-12" *ngFor="let doc of urlArray">
             <div class="labelbox" placement="left" tooltip="{{ doc.fileName }}">
               <i class="fa fa-paperclip text-orange"></i> &nbsp; {{ doc.fileName }}
             </div>
-          </div>
+          </div> -->
           <!-- <div class="col-md-1">
            <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
            </div> -->
-        </div>
+        <!-- </div> -->
 
         <div class="row">
           <div class="col-md-12">
@@ -2322,12 +2418,12 @@
               <div class="row mt-30">
                 <div class="col-12">
                   <div class="card">
-                    <div class="mb-0">
+                    <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">
-                        Document
+                        Document Summary
                       </h3>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
+                    <div class="col-9 col-md-10 col-sm-12">
                       <div
                         class="table-responsive Custom_Table"
                       >
@@ -2360,16 +2456,16 @@
                                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                               </th> -->
 
-                              <th>
+                              <!-- <th>
                                 <div
                                   class="
                                 p-d-flex
                                 p-jc-between
                                 p-ai-center
                               "
-                                >
+                                > -->
                                   <!-- Date Of Submission -->
-                                  Creation Date
+                                  <!-- Creation Date
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -2385,7 +2481,7 @@
                                     </p-columnFilter>
                                   </div>
                                 </div>
-                              </th>
+                              </th> -->
                               <th>
                                 <div
                                   class="
@@ -2394,16 +2490,17 @@
                                 p-ai-center
                               "
                                 >
-                                  Document Name
+                                  <!-- Time -->
+                                  Document Submission Date & Time
                                   <div
                                     class="Sort_Filter_Position"
                                   >
                                     <p-sortIcon
-                                      field="documentName"
-                                      pSortableColumn="documentName"
+                                      field="empcode"
+                                      pSortableColumn="empcode"
                                     ></p-sortIcon>
                                     <p-columnFilter
-                                      field="documentName"
+                                      field="empcode"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -2436,6 +2533,56 @@
                                   </div>
                                 </div>
                               </th>
+                              <th>
+                                <div
+                                  class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                                >
+                                  Document Name
+                                  <div
+                                    class="Sort_Filter_Position"
+                                  >
+                                    <p-sortIcon
+                                      field="documentName"
+                                      pSortableColumn="documentName"
+                                    ></p-sortIcon>
+                                    <p-columnFilter
+                                      field="documentName"
+                                      display="menu"
+                                      class="p-ml-auto"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <!-- <th>
+                                <div
+                                  class="
+                                p-d-flex
+                                p-jc-between
+                                p-ai-center
+                              "
+                                >
+                                  Document Type
+                                  <div
+                                    class="Sort_Filter_Position"
+                                  >
+                                    <p-sortIcon
+                                      field="documentType"
+                                      pSortableColumn="documentType"
+                                    ></p-sortIcon>
+                                    <p-columnFilter
+                                      field="documentType"
+                                      display="menu"
+                                      class="p-ml-auto"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th> -->
                               <th>
                                 <div
                                   class="
@@ -2511,7 +2658,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th>
+                              <!-- <th>
                                 <div
                                   class="
                                 p-d-flex
@@ -2535,17 +2682,17 @@
                                     </p-columnFilter>
                                   </div>
                                 </div>
-                              </th>
-                              <th>
+                              </th> -->
+                              <!-- <th>
                                 <div
                                   class="
                                 p-d-flex
                                 p-jc-between
                                 p-ai-center
                               "
-                                >
+                                > -->
                                   <!-- Time -->
-                                  Last Modified Time
+                                  <!-- Last Modified Date & Time
                                   <div
                                     class="Sort_Filter_Position"
                                   >
@@ -2561,7 +2708,7 @@
                                     </p-columnFilter>
                                   </div>
                                 </div>
-                              </th>
+                              </th> -->
                             </tr>
                           </ng-template>
                           <ng-template
@@ -2576,9 +2723,13 @@
                                 >
                                 </p-tableCheckbox>
                               </td> -->
-                              <td>
-                                {{ document.lastModifiedTime | date:'dd-MMM-yyyy'  }}
-                              </td>
+                              <!-- <td>
+                                {{dateofsubmission | date:'dd-MMM-yyyy' }}
+                              </td> -->
+                              <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
+                              <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                              <!-- {{ todayDate | date: 'dd/MM/yyyy HH:mm'}} -->
+                              <td>{{ document.documentType }}</td>
                               <td>
                                 <a
                                   (click)=" docViewer1(template3,documentIndex, document)"
@@ -2594,7 +2745,7 @@
                                   {{ document.documentName }}
                                 </a>
                               </td>
-                              <td>{{ document.documentType }}</td>
+                              <!-- <td>{{ document.documentType }}</td> -->
                               <td>{{ document.documentPassword }}</td>
                               <td>
                                 <!-- <div class="custom_Label_badge">
@@ -2615,9 +2766,15 @@
                                 </div> -->
                                 {{document.documentRemark}}
                               </td>
-                              <td>{{ document.status }}</td>
-                              <td>{{ document.lastModifiedBy }}</td>
-                              <td>{{ document.lastModifiedTime | date:'h:mm a'  }}</td>
+                              <td><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                                ' badge-success': document.status=='Approved',
+                                'badge-danger': document.status=='SendBack',
+                                'badge-info': document.status=='Submitted',
+                                'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                              <!-- <td>{{ document.lastModifiedBy }}</td> -->
+                              <!-- <td>{{ document.lastModifiedTime| date:'h:mm a'  }}</td> -->
+                              <!-- <td>{{ document.lastModifiedTime| date:'dd-MMM-yyyy, h:mm a'  }}</td> -->
+                              
                             </tr>
                           </ng-template>
                         </p-table>
@@ -2684,12 +2841,22 @@
   <div class="modal-footer">
     <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left">
-      <b><i class="fa fa-eye"></i></b> View
+      <b><i class="fa fa-eye"></i></b> View All
     </button> &nbsp;&nbsp;
     <button *ngIf="viewTransactionDetail" type="button" tooltip="Save"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
+    </button>
+    &nbsp;&nbsp;
+    <button
+    
+      type="button"
+      tooltip="Close Document"
+      (click)="modalRef1?.hide()"
+      class="custom_button custom_btn btn-bg-grey btn-labeled btn-labeled-left"
+    >
+    <b><i class="fa fa-times"></i></b> Close
     </button>
   </div>
 </ng-template>

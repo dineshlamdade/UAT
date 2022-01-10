@@ -5,11 +5,13 @@
     </div>
     <div class="row mt-25">
       <div class="col-12">
+       
         <fieldset>
           <legend>Disabled Family Member Details</legend>
           <div class="row" >
             <div class="col-sm-6 col-md-3" >
               <label class="form-label">Famliy Member Name</label>
+              <span *ngIf="!isEdit">
               <select name="family_Member_Name" id="familyMemberName" formControlName="familyMemberName"
                 (change)='OnSelectionfamilyMemberGroup()' class="form-control custom-select"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.familyMemberName.errors }">
@@ -18,6 +20,12 @@
                   {{familyMemberName.label}}
                 </option>
               </select>
+            </span>
+            <div *ngIf="isEdit">
+              <input type="text" formControlName="familyMemberName" class="form-control" disabled
+             >
+            </div>
+
               <div *ngIf="submitted && masterForm.familyMemberName.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.familyMemberName.errors.required">family Member Name Is Mandatory</div>
               </div>

@@ -129,16 +129,20 @@
 
                 </td> -->
                 <td class="wd-6">
+                  <label  tooltip="{{summary.particulars}}"  placement="bottom">
                   <select name="particulars" class="form-control custom-select" 
-                    [ngModel]="summary.particulars">
+                  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                    [ngModel]="summary.particulars"  (change)="updatePrevious(summary,$event, i, j)">
                     <option value="" disabled selected>Select</option>
                     <option *ngFor="let particulars of particularsList" [value]="particulars.value">
                       {{particulars.label}}
                     </option>
                   </select>
+                </label>
                 </td>
 
                 <td>
+                  <label  tooltip="{{summary.declaredAmount}}"  placement="bottom">
                   <div class="custom_icon_badge">
                     <input type="text" id="declaredAmount{{ summary.specifiedDiseaseTransactionId }}"
                       name="declaredAmount{{ summary.specifiedDiseaseTransactionId }}"
@@ -146,8 +150,10 @@
                       (change)="onDeclaredAmountChangeCurrentEmp(summary, i, j)"
                       [disabled]="isDisabled || summary.transactionStatus === 'Submitted'" />
                   </div>
+                  </label>
                 </td>
                 <td>
+                  <label  tooltip="{{summary.dateOfPayment | date: 'dd-MMM-yy' }}"  placement="bottom">
                   <input type="text" [ngModel]="summary.dateOfPayment  | date: 'dd-MMM-yy'"
                     [minDate]="financialYearStartDate" [maxDate]="today" [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                     data-provide="datepicker" data-date-autoclose="true" (ngModelChange)="
@@ -156,6 +162,7 @@
                     " [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
                     " class="form-control" bsDatepicker />
+                    </label>  
                 </td>
                 <!-- || summary.particulars === 'Reimbursement from the Employer' -->
                 <!-- <td>
@@ -290,6 +297,23 @@
                     viewTransactionDetail = true
                   " tooltip="Edit"></i>
 
+                </td>
+              </tr>
+              <tr *ngIf="!isDisabled && canEdit">
+                <td *ngIf="previousEmployeeList?.length" colspan="11"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add"
+                    (click)="addRowInList1(declarationService, j,item.specifiedDiseaseMasterId)"></i>
+                  <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow1(j)"></i>
+                </td>
+                <td *ngIf="!previousEmployeeList?.length" colspan="11"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList1(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow1(j)"></i>
                 </td>
               </tr>
             </tbody>
