@@ -125,7 +125,7 @@
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'"
                     tooltip="Select ">
                     <input type="checkbox" [ngModel]="enableSelectAll"
-                      [disabled]="summary.proofSubmissionId || isDisabled " (change)="
+                      [disabled]="isDisabled " (change)="
                       onSelectCheckBoxCurrent(summary, $event, i, j);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.educationLoanTransactionId }}" />
@@ -133,7 +133,7 @@
                   </label>
                   <label *ngIf="!isDisabled && summary.transactionStatus !== 'Submitted'  && summary.transactionStatus !== 'Approved' && summary.transactionStatus !== 'SendBack'" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
-                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                      [disabled]="isDisabled" (change)="
                       onSelectCheckBoxCurrent(summary, $event, i, j);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.educationLoanTransactionId }}" />
@@ -283,6 +283,23 @@
                       );
                       viewTransactionDetail = true
                     " tooltip="Edit"></i>
+                </td>
+              </tr>
+              <tr *ngIf="!isDisabled && canEdit">
+                <td *ngIf="previousEmployeeList?.length" colspan="10"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add"
+                    (click)="addRowInList1(declarationService, j,item.educationalLoanMasterId)"></i>
+                  <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow1(j)"></i>
+                </td>
+                <td *ngIf="!previousEmployeeList?.length" colspan="10"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList1(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow1(j)"></i>
                 </td>
               </tr>
             </tbody>

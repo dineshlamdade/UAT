@@ -1979,6 +1979,16 @@ deleteRow(j: number) {
         this.editTransactionUpload = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.editInterestOnSavingDeposit80TTMasterId = res.data.results[0].interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTMasterId;
         this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
+        if(res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTTransactionList.length) {
+          this.createDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.createdDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.transactionStatus;
+          }    
+  if(res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTTransactionPreviousEmployerList.length) {
+    this.createDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionPreviousEmployerList[0]?.createdDateTime;
+    this.lastModifiedDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+    this.transactionStatus = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionPreviousEmployerList[0]?.transactionStatus;
+  }
         this.createDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.createDateTime;
         this.lastModifiedDateTime = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.lastModifiedDateTime;
         this.transactionStatus = res?.data?.results[0]?.interestOnSavingDeposit80TTTransactionList[0]?.interestOnSavingDeposit80TTTransactionList[0]?.transactionStatus;

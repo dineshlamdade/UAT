@@ -37,18 +37,7 @@
               </div>
             </div>
 
-            <div class="col-sm-6 col-md-3">
-              <label class="form-label">Account Number</label>
-              <input type="password" [type]="accountNo ? 'text' : 'password'"
-                onkeypress="return /[0-9]/i.test(event.key)" formControlName="accountNumber" class="form-control"
-                (change)="matchAccountNumber($event.target.value)" placeholder="Enter Account Number"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-              <i class="fa fa-eye mt-2 text-blue" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
-                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
-              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
-              </div>
-            </div>
+            
 
 
             <div class="col-sm-6 col-md-3">
@@ -86,11 +75,23 @@
                 <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
             </div> -->
-
-
-
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">State Name</label>
+              <label class="form-label">Account Number</label>
+              <input type="password" [type]="accountNo ? 'text' : 'password'"
+                onkeypress="return /[0-9]/i.test(event.key)" formControlName="accountNumber" class="form-control"
+                (change)="matchAccountNumber($event.target.value)" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+              <i class="fa fa-eye mt-2 text-blue" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              </div>
+            </div>
+
+
+<!-- 
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">State Name</label> -->
               <!-- <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState($event.target.value)'
                 class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                 <option [ngValue]="null">Select</option>
@@ -103,12 +104,12 @@
               <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
               </div> -->
-              <input type="text" formControlName="state" class="form-control" disabled
+              <!-- <input type="text" formControlName="state" class="form-control" disabled
                 [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
               <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.state.errors.required">State Name Is Mandatory</div>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
@@ -645,8 +646,9 @@
                 <thead class="thead-dark">
                   <tr>
                     <th rowspan="2" scope="col" class="wd-20">PS. ID.</th>
-                    <th scope="col" class="wd-15">State Name</th>
                     <th scope="col" class="wd-15">IFSC Code</th>
+                    <!-- <th scope="col" class="wd-15">State Name</th> -->
+                   
                     <th scope="col" class="wd-15">Bank Name</th>
                     <th scope="col" class="wd-15">Branch Name</th>
                     <th scope="col" class="wd-19">Account Number</th>
@@ -659,15 +661,16 @@
                   <tr *ngFor="let summary of masterGridData; let i = index">
                     <td class="align-left wd-15"><span tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
                     </td>
-                    <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
+                    <!-- <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
                     </td>
-                    <td class="wd-10 align-left"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
-                    </td>
+                   -->
                     <td class="align-left wd-15"><span tooltip="{{summary.ifscCode}}">{{summary.ifscCode}}</span>
                     </td>
                     <td class="wd-10 align-left"><span tooltip="{{summary.bankName}}">{{summary.bankName}}</span>
                     </td>
                     <td class="wd-10 align-left"><span tooltip="{{summary.branchName}}">{{summary.branchName}}</span>
+                    </td>
+                    <td class="wd-10 align-left"><span tooltip="{{summary.accountNumber | accountNumberMaskPipe:4}}">{{summary.accountNumber | accountNumberMaskPipe:4 }}</span>
                     </td>
                     <!-- <td class="wd-10 align-left"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                     </td> -->

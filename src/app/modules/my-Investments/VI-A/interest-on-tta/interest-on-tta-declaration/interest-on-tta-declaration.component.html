@@ -50,8 +50,8 @@
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.accountNumber }}">
-          {{ item.accountNumber }}
+          tooltip="{{ item.accountNumber | accountNumberMaskPipe:4 }}">
+          {{ item.accountNumber | accountNumberMaskPipe:4 }}
         </label>
       </div>
       <!-- <div class="ml-2 pl-1 pr-0">
@@ -1220,8 +1220,8 @@
                     </span>
                   </td>
                   <td class="align-left">
-                    <span tooltip="{{ documentSummary.accountNumber }}">
-                      {{ documentSummary.accountNumber }}
+                    <span tooltip="{{ documentSummary.accountNumber | accountNumberMaskPipe:4 }}">
+                      {{ documentSummary.accountNumber | accountNumberMaskPipe:4 }}
                     </span>
                   </td>
                   <!-- <td>
@@ -1436,8 +1436,8 @@
           <label class="form-label mt-1 pl-10">Account Number :</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.accountNumber }}">
-            {{ item.accountNumber }}</label>
+          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.accountNumber | accountNumberMaskPipe:4 }}">
+            {{ item.accountNumber | accountNumberMaskPipe:4 }}</label>
         </div>
         <!-- <div class="ml-2 pl-1 pr-0">
           <label class="form-label mt-1 pl-10">Account Holder Name :</label>

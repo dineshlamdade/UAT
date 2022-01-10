@@ -199,6 +199,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  selectedMasterId: any;
 
 
   constructor(
@@ -1020,6 +1021,47 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     console.log('addRow::', this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList);
   }
 
+
+
+
+
+  addRowInList1(
+    summarynew: {
+      educationLoanTransactionId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      // interestReceivedDate: Date;
+      actualAmount: any;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.educationLoanTransactionId = 0;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    // this.declarationService.interestReceivedDate = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.00;
+    this.declarationService.amountApproved = 0.00;
+    if (
+      this.transactionDetail[j].educationalLoanTransactionList ==
+      null
+    ) {
+      this.declarationService.educationalLoanMasterId = this.selectedMasterId;
+      this.transactionDetail[j].educationalLoanTransactionList = [];
+    }
+    this.transactionDetail[j].educationalLoanTransactionList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].educationalLoanTransactionList
+    );
+  }
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
   }
@@ -1039,6 +1081,28 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       return true;
     }
   }
+
+
+
+   // -------- Delete Row--------------
+deleteRow1(j: number) {
+  const rowCount =
+    this.transactionDetail[j].educationalLoanTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].educationalLoanTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].educationalLoanTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
 
   editDeclrationRow(
     summary: {
@@ -1777,7 +1841,7 @@ onSaveRemarkDetails(summary, index){
         this.urlArray =
           res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.documentDetailList;
         this.editTransactionUpload = res?.data?.results[0]?.educationalLoanTransactionDetailList;
-          this.editProofSubmissionId = res?.data?.results[0]?.documentInformation[0]?.proofSubmissionId;
+          this.editProofSubmissionId = res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.proofSubmissionId;
     //       if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionList[0].length) {
     //         this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.createDateTime;
     //         this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.lastModifiedDateTime;
@@ -1789,7 +1853,7 @@ onSaveRemarkDetails(summary, index){
     //         this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.transactionStatus;
     // }
     if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionList.length) {
-      this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.createDateTime;
+      this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.createdDateTime;
       this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.lastModifiedDateTime;
       this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.transactionStatus;
       }    
@@ -2264,8 +2328,11 @@ class DeclarationService {
   public actualAmount: number;
   public remark: boolean;
   public transactionStatus: 'Pending';
-  public rejectedAmount: number;
-  public approvedAmount: number;
+  public rejectedAmount: number = 0.00;;
+  public approvedAmount: number = 0.00;;
+  amountRejected: number;
+  amountApproved: number;
+  educationalLoanMasterId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

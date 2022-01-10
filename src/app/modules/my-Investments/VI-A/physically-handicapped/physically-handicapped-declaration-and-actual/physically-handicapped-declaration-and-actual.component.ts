@@ -90,6 +90,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -1957,13 +1958,13 @@ upload() {
       // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
       this.editProofSubmissionId = proofSubmissionId;
 
-      if(res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.length) {
+      if(res?.data?.results[0]?.physicallyHandicappedTransactionList?.length) {
       this.createDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.createDateTime;
       this.lastModifiedDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.lastModifiedDateTime;
       this.transactionStatus = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.transactionStatus;
       }    
-if(res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.length) {
-      this.createDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.createdDateTime;
+if(res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList?.length) {
+      this.createDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.createDateTime;
       this.lastModifiedDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
       this.transactionStatus = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.transactionStatus;
 }

@@ -29,6 +29,14 @@
               </div>
             </div>
             <div class="col-sm-6 col-md-3">
+              <label class="form-label">Age Bracket</label>
+              <input type="text" formControlName="ageBracket" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.ageBracket.errors }">
+              <div *ngIf="submitted && masterForm.ageBracket.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.ageBracket.errors.required">Relationship is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
               <label class="form-label">Specified Disease Name</label>
               <select id="specifiedDiseaseName" formControlName="specifiedDiseaseName"
                 (change)='OnSpecifiedDiseaseChange($event.target.value)' class="form-control custom-select"
@@ -538,6 +546,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th rowspan="2" scope="col" class="wd-20">PS. ID.</th>
+                    <th rowspan="2" scope="col" class="wd-10">Date Of Submission</th>
                     <th scope="col" class="wd-15">Patient Name</th>
                     <th scope="col" class="wd-15">Relationship</th>
                     <th scope="col" class="wd-15">Disease</th>
@@ -552,6 +561,9 @@
                     <td class="align-left wd-15"><span
                       tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
                   </td>
+                  <td class="wd-10 align-left"><span tooltip="{{summary.creationDate | date: 'dd-MMM-yyyy'}}">
+                    {{summary.creationDate | date: "dd-MMM-yyyy"}}</span>
+                </td>
                     <td class="wd-10 align-left"><span tooltip="{{summary.patientName}}">{{summary.patientName}}</span>
                     </td>
                     <td class="wd-10 align-left"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
