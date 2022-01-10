@@ -272,6 +272,7 @@ export class SdmStepperComponent implements OnInit {
   isUomFlag: boolean = false;
   noDerivedFlag: boolean = false;
   selectedType: string;
+  cycle: void;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
@@ -1874,7 +1875,7 @@ export class SdmStepperComponent implements OnInit {
 
 
   onChangeDriveName(value) {
-
+ 
     this.tempSelectedDerivedName = value
    // alert(this.selectedIndex)
       this.sourceRangeFrom = ''
@@ -2139,6 +2140,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditedSourceRangeFrom(value, srcCombData) {
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
     this.sourceRangeFrom = value
@@ -2164,7 +2166,10 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sourceRangeTo": element.sourceRangeTo,
             "derivedFromDate": this.datepipe.transform(new Date(element.derivedFromDate), 'yyyy-MM-dd'),
             "derivedToDate": this.datepipe.transform(new Date(element.derivedToDate), 'yyyy-MM-dd'),
-            "applicableValue": element.applicableValue
+            "applicableValue": element.applicableValue,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":element.inputCycleId,
+
           })
 
 
@@ -2193,7 +2198,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sourceRangeTo": srcCombData.sourceRangeTo,
             "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
             "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-            "applicableValue": srcCombData.applicableValue
+            "applicableValue": srcCombData.applicableValue,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId
           })
 
           // this.tempEditMatrixData.push({
@@ -2235,6 +2241,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "applicableValue": this.applicableValue,
         "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
         "inputCycleId":srcCombData.inputCycleId,
+       
       })
 
       // this.tempEditMatrixData.push({
@@ -2267,6 +2274,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditedSourceRangeTo(value, srcCombData) {
+
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
     this.sourceRangeTo = value
@@ -2409,6 +2418,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditFromDateForSave(value, srcCombData) {
+
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     this.selectedFromDateForSave = value
 
     if (this.saveMatrixData.length > 0) {
@@ -2424,7 +2435,10 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sourceRangeTo": element.sourceRangeTo,
             "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
             "derivedToDate": element.derivedToDate,
-            "applicableValue": element.applicableValue
+            "applicableValue": element.applicableValue,
+            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+            "inputCycleId":element.inputCycleId,
+
           })
 
         } else {
@@ -2603,7 +2617,11 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditedApplicableValue(value, srcCombData) {
+
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     // console.log(JSON.stringify(srcCombData))
+
+    
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
 
@@ -2766,6 +2784,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
 
 
   applicableValueData(value, srcCombData,index) {
+
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     // console.log("srcCombData: "+ JSON.stringify(srcCombData.sdmCombinationId))
     // console.log("this.matrixDerivedMasterId: "+ this.matrixDerivedMasterId)
     // console.log(value)
@@ -3002,6 +3022,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getFromDateForSave(event, srcCombData, index) {
+
+    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     this.derivedFromDate = event
     this.selectedFromDateForSave = event
 
@@ -3143,6 +3165,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getToDateForSave(event, srcCombData, index) {
+   this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
     this.derivedToDate = event
     this.selectedToDateForSave = event
 
@@ -3305,7 +3328,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "derivedFromDate": fromdate,
         "derivedToDate": todate,
         "applicableValue": this.applicableValue,
-       // "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
+        
         "inputCycleId":inputCycleId
       })
       //change
@@ -3404,7 +3427,7 @@ sdmcombination.derivedFromDate=''
 //change for null entires 
 
      this.saveMatrixData.forEach((element,index) => {
-      element.inputCycleId=2790
+      //element.inputCycleId=2790
        if(element.derivedFromDate==null || element.derivedToDate==null ){
        delete  this.saveMatrixData[index];
        }
@@ -3960,6 +3983,11 @@ sdmcombination.derivedFromDate=''
   }
 
 
+cycleIdChanges(data){
+   this.sdmService.postCycleIdData(data).subscribe(res => {
+    return res.data.results[0];
+ })
+}
 
 
 }
