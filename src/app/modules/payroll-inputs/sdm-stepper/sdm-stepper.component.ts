@@ -1524,7 +1524,7 @@ export class SdmStepperComponent implements OnInit {
       res.data.results.forEach(element => {
         if (this.derivedTypeName == 'JobField') {
           //  console.log("jobfield: ")
-          if (element.derivedObjectName == 'EmployeeJobMapping' || element.derivedObjectName == 'EmployeePositionMapping' || 
+          if (element.derivedObjectName == 'EmployeeJobMapping' || element.derivedObjectName == 'EmployeePositionMapping' || element.derivedObjectName == 'WorkflowMaster' ||
             element.derivedObjectName == 'EmployeeMaster' || element.derivedObjectName == 'complianceSDMMapping' && element.derivedObjectName != 'PayrollAreaInformation') {
             this.derivedTableFieldsData.push(element)
           }
@@ -1539,12 +1539,14 @@ export class SdmStepperComponent implements OnInit {
         else {
           //  console.log("percentage and value: ")
           if (element.derivedObjectName != 'EmployeeJobMapping' && element.derivedObjectName != 'EmployeePositionMapping' &&
-            element.derivedObjectName != 'EmployeeMaster' && element.derivedObjectName != 'complianceSDMMapping' && 
+            element.derivedObjectName != 'EmployeeMaster' && element.derivedObjectName != 'complianceSDMMapping' &&
             element.derivedObjectName != 'PayrollAreaInformation' && element.derivedObjectName != 'LoanMaster' &&
             element.derivedObjectName != 'NonRecurringTransactionGroup' && element.derivedObjectName != 'FlexiSectionMaster' &&
             element.derivedObjectName != 'FlexiHeadSetting' && element.derivedObjectName != 'JobMaster'
             && element.derivedObjectName != 'PositionDetailDD') {
-            this.derivedTableFieldsData.push(element)
+            if (element.derivedObjectName != 'WorkflowMaster') {
+              this.derivedTableFieldsData.push(element)
+            }
           }
         }
         // else{
@@ -1569,32 +1571,32 @@ export class SdmStepperComponent implements OnInit {
     this.derivedTableName = value
 
 
-    if(this.derivedTableName == 'NonRecurringTransactionGroup' || 
-    this.derivedTableName == 'GarnishmentMaster' ||
-    this.derivedTableName == 'NonRecurringQuantity' || this.derivedTableName == 'FinancialMaster'){
+    if (this.derivedTableName == 'NonRecurringTransactionGroup' ||
+      this.derivedTableName == 'GarnishmentMaster' ||
+      this.derivedTableName == 'NonRecurringQuantity' || this.derivedTableName == 'FinancialMaster') {
       const formData = new FormData();
 
       let name = ''
-      if(value == 'GarnishmentMaster'){
+      if (value == 'GarnishmentMaster') {
         name = 'Non-Recurring-Garnishment'
       }
-      else if(value == 'NonRecurringTransactionGroup'){
+      else if (value == 'NonRecurringTransactionGroup') {
         name = 'Non-Recurring-Amount'
       }
-      else if(value == 'NonRecurringQuantity'){
+      else if (value == 'NonRecurringQuantity') {
         name = 'Non-Recurring-Quantity'
       }
-      else if(value == 'FinancialMaster'){
+      else if (value == 'FinancialMaster') {
         name = 'FinancialMaster'
       }
       formData.append('categoryName', name)
-        this.sdmService.payrollheadmaster(formData).subscribe(res =>{
-          this.headList = res.data.results
-        })
+      this.sdmService.payrollheadmaster(formData).subscribe(res => {
+        this.headList = res.data.results
+      })
     }
-  
 
-    
+
+
     this.sdmFormStep3.controls['derivedObjectName'].setValue(this.derivedTableName)
     this.derivedTableFieldsData.forEach(element => {
       if (element.derivedObjectName == value) {
@@ -1745,7 +1747,7 @@ export class SdmStepperComponent implements OnInit {
     });
 
     this.sdmFormStep3.reset();
-    this.derivedApplicableFlag=true;
+    this.derivedApplicableFlag = true;
     this.derivedTableName = ""
     this.derivedactive = true
     this.selectedDerivedName = ""
@@ -1813,25 +1815,26 @@ export class SdmStepperComponent implements OnInit {
       // this.alertService.sweetalertMasterSuccess("", "Derived data saved successfully.")
       //  alert(JSON.stringify(res.status))
       this.alertService.sweetalertMasterSuccess(res.status.messsage, "");
-      this.saveDerivedData=[];
+      this.saveDerivedData = [];
       //this.sdmFormStep1.controls['sdmName'].disable();
       // this.duplicateDataErrorMessage = res.status.messsage[1];
       this.derivedMaster();
 
       this.sdmFormStep3.reset();
-      
+
       // this.alertService.sweetalertError( error["error"]["status"]["message"] );
     },
-    (error: any) => {
-      //  this.sweetalertError(error["error"]["status"]["message"]);
-      this.alertService.sweetalertError(error['error']['status']['messsage']);
-    })
+      (error: any) => {
+        //  this.sweetalertError(error["error"]["status"]["message"]);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
+      })
   }
 
 
   KeywordMasterDetails() {
     this.tempMatrixData = []
     this.sdmService.KeywordMasterDetails().subscribe(res => {
+
       this.keywordData = res.data.results;
 
     })
@@ -1875,13 +1878,15 @@ export class SdmStepperComponent implements OnInit {
 
 
   onChangeDriveName(value) {
- 
+
     this.tempSelectedDerivedName = value
-   // alert(this.selectedIndex)
-      this.sourceRangeFrom = ''
-      this.sourceRangeTo = ''
-      this.applicableValue = ''
-  
+    // alert(this.selectedIndex)
+    this.sourceRangeFrom = ''
+    this.sourceRangeTo = ''
+    this.applicableValue = ''
+this.matrixsdmSourceCombinationList.forEach(element => {
+  element.disableFlag = false;
+});
     // console.log(JSON.stringify(this.matrixsdmSourceCombinationList))
 
     // alert(value)
@@ -1908,7 +1913,7 @@ export class SdmStepperComponent implements OnInit {
           this.matrixsdmSourceCombinationList.forEach((ele, index) => {
             ele.showElement = true
             ele.derivedFromDate = null
-            ele.sdmSubCombinationId=1
+            ele.sdmSubCombinationId = 1
             ele.derivedToDate = ''
             ele.applicableValue = ''
             //console.log("chnage daata: "+ JSON.stringify(ele))
@@ -1935,11 +1940,12 @@ export class SdmStepperComponent implements OnInit {
               "sdmCombinationId": element.sdmCombinationId,
               "sdmDerivedMasterId": element.sdmDerivedMasterId,
               "sdmMasterId": element.sdmMasterId,
-              "sdmSubCombinationId":element.sdmSubCombinationId,
-              "inputCycleId":element.inputCycleId,
+              "sdmSubCombinationId": element.sdmSubCombinationId,
+              "inputCycleId": element.inputCycleId,
               "sdmSourceCombinationId": element.sdmSourceCombinationId,
               "sourceRangeFrom": element.sourceRangeFrom,
-              "sourceRangeTo": element.sourceRangeTo
+              "sourceRangeTo": element.sourceRangeTo,
+              "periodName":element.periodName
             })
 
             // }
@@ -1960,9 +1966,10 @@ export class SdmStepperComponent implements OnInit {
                 "sourceRangeTo": element.sourceRangeTo,
                 "derivedFromDate": element.derivedFromDate,
                 "derivedToDate": element.derivedToDate,
-                "sdmSubCombinationId":element.sdmSubCombinationId,
-                "inputCycleId":element.inputCycleId,
-                "applicableValue": element.applicableValue
+                "sdmSubCombinationId": element.sdmSubCombinationId,
+                "inputCycleId": element.inputCycleId,
+                "applicableValue": element.applicableValue,
+                "periodName":element.periodName
               }
             )
           });
@@ -1989,7 +1996,7 @@ export class SdmStepperComponent implements OnInit {
             });
 
           }
-
+          //this.tempEditMatrixData.Sort((a,b)=>a.sdmSourceCombinationId - b.sdmSourceCombinationId)
 
 
           this.filter()
@@ -2006,19 +2013,19 @@ export class SdmStepperComponent implements OnInit {
 
           this.derivedFieldName = element.derivedFieldName
         }
-// work flow master dropdown on fourth page 
-else if (element.derivedObjectName == 'WorkflowMaster') {
-  this.sdmService.derivedFieldName('WorkflowMaster', element.derivedFieldName).subscribe(res => {
-    this.derivedDropdownValue = res.data.results[0]
-  })
-  this.showDropdown = true;
+        // work flow master dropdown on fourth page 
+        else if (element.derivedObjectName == 'WorkflowMaster') {
+          this.sdmService.derivedFieldName('WorkflowMaster', element.derivedFieldName).subscribe(res => {
+            this.derivedDropdownValue = res.data.results[0]
+          })
+          this.showDropdown = true;
 
-  this.derivedObjectNames = element.derivedObjectName
+          this.derivedObjectNames = element.derivedObjectName
 
-  this.derivedFieldName = element.derivedFieldName
-}
-//
-        
+          this.derivedFieldName = element.derivedFieldName
+        }
+        //
+
         else if (element.derivedObjectName == 'PositionDetailDD') {
           this.sdmService.derivedFieldName('PositionDetailDD', element.derivedFieldName).subscribe(res => {
             this.derivedDropdownValue = res.data.results[0]
@@ -2140,7 +2147,13 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditedSourceRangeFrom(value, srcCombData) {
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    if (srcCombData.rangeApplicable == false) {
+      this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    } else {
+      this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    }
+
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
     this.sourceRangeFrom = value
@@ -2149,12 +2162,12 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
       this.saveMatrixData.forEach((element, index) => {
 
         //change
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId==srcCombData.sdmCombinationId ) {
-        
-        //change
-        //if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId == srcCombData.sdmCombinationId) {
 
-        ///change done
+          //change
+          //if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+
+          ///change done
           // if(element.sourceRangeFrom > value){
           let ind = index;
           this.saveMatrixData.splice(ind, 1, {
@@ -2167,8 +2180,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": this.datepipe.transform(new Date(element.derivedFromDate), 'yyyy-MM-dd'),
             "derivedToDate": this.datepipe.transform(new Date(element.derivedToDate), 'yyyy-MM-dd'),
             "applicableValue": element.applicableValue,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":element.inputCycleId,
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": element.inputCycleId,
 
           })
 
@@ -2199,7 +2212,7 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
             "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
             "applicableValue": srcCombData.applicableValue,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId
           })
 
           // this.tempEditMatrixData.push({
@@ -2217,15 +2230,15 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
           // })
         }
       });
-//cahnge
+      //cahnge
 
       this.saveMatrixData.forEach((element, index) => {
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-          element.derivedFromDate= srcCombData.derivedFromDate;
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          element.derivedFromDate = srcCombData.derivedFromDate;
           element.derivedToDate = srcCombData.derivedToDate;
-        }   
-         })
-//change
+        }
+      })
+      //change
 
 
     } else {
@@ -2239,9 +2252,11 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue,
-        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-        "inputCycleId":srcCombData.inputCycleId,
-       
+        "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+        "inputCycleId": srcCombData.inputCycleId,
+"periodName": srcCombData.periodName
+
+
       })
 
       // this.tempEditMatrixData.push({
@@ -2275,7 +2290,12 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
 
   getEditedSourceRangeTo(value, srcCombData) {
 
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    if (srcCombData.rangeApplicable == false) {
+      this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    } else {
+      this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    }
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
     this.sourceRangeTo = value
@@ -2283,10 +2303,10 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
     if (this.saveMatrixData.length > 0) {
       this.saveMatrixData.forEach((element, index) => {
 
-        
+
 
         //change as 2231
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId==srcCombData.sdmCombinationId ) {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId && element.sdmCombinationId == srcCombData.sdmCombinationId) {
           let ind = index;
           this.saveMatrixData.splice(ind, 1, {
             "sdmCombinationId": element.sdmCombinationId,
@@ -2295,8 +2315,9 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sdmSourceCombinationId": element.sdmSourceCombinationId,
             "sourceRangeFrom": element.sourceRangeFrom,
             "sourceRangeTo": value,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":srcCombData.inputCycleId,
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId,
+"periodName": srcCombData.periodName,
             // "derivedFromDate": element.derivedFromDate,
             // "derivedToDate": element.derivedToDate,
             "applicableValue": element.applicableValue
@@ -2338,8 +2359,9 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sourceRangeFrom": srcCombData.sourceRangeFrom,
             "sourceRangeTo": value,
             "derivedFromDate": this.selectedFromDateForSave,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-           "inputCycleId":srcCombData.inputCycleId,
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId,
+            "periodName": srcCombData.periodName,
             "derivedToDate": this.selectedToDateForSave,
             "applicableValue": srcCombData.applicableValue
           })
@@ -2363,14 +2385,14 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
       //change 
 
       this.saveMatrixData.forEach((element, index) => {
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-          element.derivedFromDate= srcCombData.derivedFromDate;
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          element.derivedFromDate = srcCombData.derivedFromDate;
           element.derivedToDate = srcCombData.derivedToDate;
-        }   
-         })
+        }
+      })
       //change
-      
-      
+
+
 
 
     } else {
@@ -2381,8 +2403,9 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
         "sourceRangeFrom": srcCombData.sourceRangeFrom,
         "sourceRangeTo": value,
-        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-        "inputCycleId":srcCombData.inputCycleId,
+        "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+        "inputCycleId": srcCombData.inputCycleId,
+"periodName": srcCombData.periodName,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue
@@ -2418,8 +2441,13 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditFromDateForSave(value, srcCombData) {
+    let valueCheck = srcCombData.hasOwnProperty('rangeApplicable');
+    if (srcCombData.rangeApplicable == false) {
+      this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    } else {
+      this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
 
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    }
     this.selectedFromDateForSave = value
 
     if (this.saveMatrixData.length > 0) {
@@ -2436,8 +2464,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
             "derivedToDate": element.derivedToDate,
             "applicableValue": element.applicableValue,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":element.inputCycleId,
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": element.inputCycleId,
 
           })
 
@@ -2466,30 +2494,31 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "sourceRangeTo": srcCombData.sourceRangeTo,
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-             "inputCycleId":srcCombData.inputCycleId,
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId,
+            "periodName": srcCombData.periodName,
             "applicableValue": srcCombData.applicableValue
           })
         }
       });
 
-            //change 
+      //change 
 
-            this.saveMatrixData.forEach((element, index) => {
-              if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-                element.derivedFromDate= this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd');
-                
-              }   
-               })
+      this.saveMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          element.derivedFromDate = this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd');
 
-               this.tempEditMatrixData.forEach((element, index) => {
-                if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-                  element.derivedFromDate= srcCombData.derivedFromDate;
-                //  element.derivedToDate = srcCombData.derivedToDate;
-                }   
-                 })
+        }
+      })
 
-            //change
+      this.tempEditMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          element.derivedFromDate = srcCombData.derivedFromDate;
+          //  element.derivedToDate = srcCombData.derivedToDate;
+        }
+      })
+
+      //change
 
     } else {
       this.saveMatrixData.push({
@@ -2499,8 +2528,9 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
         "sourceRangeFrom": srcCombData.sourceRangeFrom,
         "sourceRangeTo": srcCombData.sourceRangeTo,
-        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-        "inputCycleId":srcCombData.inputCycleId,
+        "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+        "inputCycleId": srcCombData.inputCycleId,
+"periodName": srcCombData.periodName,
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue
@@ -2519,6 +2549,14 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getEditToDateForSave(value, srcCombData) {
+
+    if (srcCombData.rangeApplicable == false) {
+      this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    } else {
+      this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    }
+
     this.selectedToDateForSave = value
 
     if (this.saveMatrixData.length > 0) {
@@ -2535,8 +2573,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": element.derivedFromDate,
             "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
             "applicableValue": element.applicableValue,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-        "inputCycleId":srcCombData.inputCycleId
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId
           })
 
         } else {
@@ -2564,30 +2602,30 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
             "applicableValue": srcCombData.applicableValue,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":srcCombData.inputCycleId
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId
           })
         }
       });
 
       //change
       this.saveMatrixData.forEach((element, index) => {
-        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-       //  element.derivedToDate= this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd');
-          element.derivedToDate= new Date(this.selectedToDateForSave);
-          
-        }   
-         })
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          //  element.derivedToDate= this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd');
+          element.derivedToDate = new Date(this.selectedToDateForSave);
 
-         this.tempEditMatrixData.forEach((element, index) => {
-          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-            element.derivedToDate= srcCombData.derivedToDate;
+        }
+      })
+
+      this.tempEditMatrixData.forEach((element, index) => {
+        if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+          element.derivedToDate = srcCombData.derivedToDate;
           //  element.derivedToDate = srcCombData.derivedToDate;
-          }   
-           })
+        }
+      })
 
 
-         //change
+      //change
     } else {
       this.saveMatrixData.push({
         "sdmCombinationId": srcCombData.sdmCombinationId,
@@ -2599,8 +2637,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
         "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
         "applicableValue": this.applicableValue,
-        "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-        "inputCycleId":srcCombData.inputCycleId
+        "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+        "inputCycleId": srcCombData.inputCycleId
       })
     }
 
@@ -2618,10 +2656,16 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
 
   getEditedApplicableValue(value, srcCombData) {
 
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    // let valueCheck = srcCombData.hasOwnProperty('rangeApplicable');
+    // if (srcCombData.rangeApplicable == false) {
+    //   this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    // } else {
+    //   this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    // }
     // console.log(JSON.stringify(srcCombData))
 
-    
+
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
 
@@ -2639,8 +2683,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": element.derivedFromDate,
             "derivedToDate": element.derivedToDate,
             "applicableValue": value,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":srcCombData.inputCycleId
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId
           })
         } else {
 
@@ -2668,8 +2712,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
             "derivedFromDate": this.selectedFromDateForSave,
             "derivedToDate": this.selectedToDateForSave,
             "applicableValue": value,
-            "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-            "inputCycleId":srcCombData.inputCycleId
+            "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+            "inputCycleId": srcCombData.inputCycleId
           })
         }
       });
@@ -2701,8 +2745,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": element.derivedToDate,
               "applicableValue": value,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
           } else {
 
@@ -2729,8 +2773,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedFromDateForSave,
               "applicableValue": value,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
 
           }
@@ -2747,8 +2791,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
           "derivedFromDate": this.selectedFromDateForSave,
           "derivedToDate": this.selectedFromDateForSave,
           "applicableValue": value,
-          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-          "inputCycleId":srcCombData.inputCycleId
+          "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+          "inputCycleId": srcCombData.inputCycleId
         })
 
       }
@@ -2783,9 +2827,14 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
 
-  applicableValueData(value, srcCombData,index) {
+  applicableValueData(value, srcCombData, index) {
 
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    // if (srcCombData.rangeApplicable == false) {
+    //   this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    // } else {
+    //   this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    // }
     // console.log("srcCombData: "+ JSON.stringify(srcCombData.sdmCombinationId))
     // console.log("this.matrixDerivedMasterId: "+ this.matrixDerivedMasterId)
     // console.log(value)
@@ -2824,8 +2873,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
                   "derivedFromDate": element.derivedFromDate,
                   "derivedToDate": element.derivedToDate,
                   "applicableValue": value,
-                  "sdmSubCombinationId":element.sdmSubCombinationId,
-                  "inputCycleId":element.inputCycleId
+                  "sdmSubCombinationId": element.sdmSubCombinationId,
+                  "inputCycleId": element.inputCycleId
                 })
                 // this.tempMatrixData.splice(ind,1,{
                 //   "sdmCombinationId": element.sdmCombinationId,
@@ -2874,8 +2923,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
                   "derivedFromDate": this.selectedFromDateForSave,
                   "derivedToDate": this.selectedToDateForSave,
                   "applicableValue": value,
-                  "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-                  "inputCycleId":srcCombData.inputCycleId
+                  "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+                  "inputCycleId": srcCombData.inputCycleId
                 })
 
                 // console.log("here appl val: "+ JSON.stringify(this.saveMatrixData))
@@ -2907,8 +2956,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedToDateForSave,
               "applicableValue": value,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
 
             // this.tempMatrixData.push({
@@ -2943,8 +2992,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
                   "derivedFromDate": element.derivedFromDate,
                   "derivedToDate": element.derivedToDate,
                   "applicableValue": value,
-                  "sdmSubCombinationId":element.sdmSubCombinationId,
-                  "inputCycleId":element.inputCycleId
+                  "sdmSubCombinationId": element.sdmSubCombinationId,
+                  "inputCycleId": element.inputCycleId
                 })
               } else {
 
@@ -2981,8 +3030,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
                   "derivedFromDate": this.selectedFromDateForSave,
                   "derivedToDate": this.selectedToDateForSave,
                   "applicableValue": value,
-                  "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-                  "inputCycleId":srcCombData.inputCycleId
+                  "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+                  "inputCycleId": srcCombData.inputCycleId
                 })
 
               }
@@ -2999,8 +3048,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.selectedToDateForSave,
               "applicableValue": value,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
 
           }
@@ -3022,14 +3071,33 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getFromDateForSave(event, srcCombData, index) {
+    // let valueCheck = srcCombData.hasOwnProperty('rangeApplicable');
+    // if (valueCheck == true) {
+    //   if (srcCombData.rangeApplicable == false) {
+    //     this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    //   }
+    //   else {
+    //     this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+    //   }
+    // } else {
+    //   if (srcCombData.sourceRangeFrom != null) {
+    //     this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+    //   } else {
+    //     this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    //   }
 
-    this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    // }
     this.derivedFromDate = event
     this.selectedFromDateForSave = event
 
     this.matrixsdmSourceCombinationList[index].derivedFromDate = event
-
-    let todate = '9999-12-31'
+    let todate;
+    if(event==null){
+       todate = ''
+    }else{
+       todate = '9999-12-31'
+    }
+    
     this.matrixsdmSourceCombinationList[index].derivedToDate = todate
     this.selectedToDateForSave = '9999-12-31'
 
@@ -3053,10 +3121,10 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
       if (this.saveMatrixData.length > 0) {
         this.saveMatrixData.forEach((element, index) => {
 
-          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-//change
-        //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
-          //change
+          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+            //change
+            //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+            //change
             let ind = index;
             if (element.derivedToDate = '' || element.derivedToDate == null) {
               element.derivedToDate = this.selectedToDateForSave
@@ -3070,12 +3138,12 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "sourceRangeTo": null,
               "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
               //change
-            //  "derivedToDate": element.derivedToDate,
+              //  "derivedToDate": element.derivedToDate,
               "derivedToDate": this.selectedToDateForSave,
               //change
               "applicableValue": element.applicableValue,
-              "sdmSubCombinationId":element.sdmSubCombinationId,
-              "inputCycleId":element.inputCycleId
+              "sdmSubCombinationId": element.sdmSubCombinationId,
+              "inputCycleId": element.inputCycleId
             })
           } else {
 
@@ -3107,28 +3175,29 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
               "derivedToDate": this.selectedToDateForSave,
               "applicableValue": srcCombData.applicableValue,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
 
           }
         });
 
 
-          //change 
-          this.saveMatrixData.forEach(element => {
-            if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-              element.derivedFromDate= srcCombData.derivedFromDate;
-            } });
-          
-      // this.tempEditMatrixData.forEach((element, index) => {
-      //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-      //     element.derivedFromDate= srcCombData.derivedFromDate;
-      //   //  element.derivedToDate = srcCombData.derivedToDate;
-      //   }   
-      //    })
-      //change
-      //change
+        //change 
+        this.saveMatrixData.forEach(element => {
+          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+            element.derivedFromDate = srcCombData.derivedFromDate;
+          }
+        });
+
+        // this.tempEditMatrixData.forEach((element, index) => {
+        //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+        //     element.derivedFromDate= srcCombData.derivedFromDate;
+        //   //  element.derivedToDate = srcCombData.derivedToDate;
+        //   }   
+        //    })
+        //change
+        //change
 
 
       } else {
@@ -3143,8 +3212,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
           "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
           "derivedToDate": this.selectedToDateForSave,
           "applicableValue": srcCombData.applicableValue,
-          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-          "inputCycleId":srcCombData.inputCycleId
+          "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+          "inputCycleId": srcCombData.inputCycleId
         })
 
       }
@@ -3165,7 +3234,12 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
   }
 
   getToDateForSave(event, srcCombData, index) {
-   this.cycle =  this.cycleIdChanges(srcCombData.payrollAreaCode);
+    if (srcCombData.rangeApplicable == false) {
+      this.cycle = this.cycleIdChanges(srcCombData.payrollAreaId);
+    } else {
+      this.cycle = this.cycleIdChanges(srcCombData.selectedCombData.payrollAreaId);
+
+    }
     this.derivedToDate = event
     this.selectedToDateForSave = event
 
@@ -3177,8 +3251,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
 
       if (this.saveMatrixData.length > 0) {
         this.saveMatrixData.forEach((element, index) => {
-        //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
-            if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+          //  if (element.sdmCombinationId == srcCombData.sdmCombinationId) {
+          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
             let ind = index;
             this.saveMatrixData.splice(ind, 1, {
               "sdmCombinationId": element.sdmCombinationId,
@@ -3190,8 +3264,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
               "applicableValue": element.applicableValue,
-              "sdmSubCombinationId":element.sdmSubCombinationId,
-              "inputCycleId":element.inputCycleId
+              "sdmSubCombinationId": element.sdmSubCombinationId,
+              "inputCycleId": element.inputCycleId
             })
           } else {
 
@@ -3223,27 +3297,28 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
               "derivedFromDate": this.selectedFromDateForSave,
               "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
               "applicableValue": srcCombData.applicableValue,
-              "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-              "inputCycleId":srcCombData.inputCycleId
+              "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+              "inputCycleId": srcCombData.inputCycleId
             })
 
           }
         });
 
-          //change 
+        //change 
 
-          this.saveMatrixData.forEach(element => {
-            if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-              element.derivedToDate= srcCombData.derivedToDate;
-            } });
-          
-      // this.tempEditMatrixData.forEach((element, index) => {
-      //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
-      //     element.derivedToDate= srcCombData.derivedToDate;
-      //   //  element.derivedToDate = srcCombData.derivedToDate;
-      //   }   
-      //    })
-      //change
+        this.saveMatrixData.forEach(element => {
+          if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) {
+            element.derivedToDate = srcCombData.derivedToDate;
+          }
+        });
+
+        // this.tempEditMatrixData.forEach((element, index) => {
+        //   if (element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId ){
+        //     element.derivedToDate= srcCombData.derivedToDate;
+        //   //  element.derivedToDate = srcCombData.derivedToDate;
+        //   }   
+        //    })
+        //change
 
       } else {
 
@@ -3257,8 +3332,8 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
           "derivedFromDate": this.selectedFromDateForSave,
           "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
           "applicableValue": srcCombData.applicableValue,
-          "sdmSubCombinationId":srcCombData.sdmSubCombinationId,
-          "inputCycleId":srcCombData.inputCycleId
+          "sdmSubCombinationId": srcCombData.sdmSubCombinationId,
+          "inputCycleId": srcCombData.inputCycleId
         })
 
       }
@@ -3308,28 +3383,29 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
       todate = this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd')
     }
     let inputCycleId: 2790
-    let sdmSubCombinationId=1;
-    let tempData= this.tempMatrixData.filter(ele=>ele.sdmSourceCombinationId=sdmcombination.sdmSourceCombinationId);
-    if(tempData.length>0){
-    let tempData =this.tempMatrixData.reduce((p, c) => p.sdmSubCombinationId > c.sdmSubCombinationId ? p : c)
-    // if(tempData.length>0){
-    sdmSubCombinationId=tempData.sdmSubCombinationId+1
-  // }
+    let sdmSubCombinationId = 1;
+    let tempData = this.tempMatrixData.filter(ele => ele.sdmSourceCombinationId = sdmcombination.sdmSourceCombinationId);
+    if (tempData.length > 0) {
+      let tempData = this.tempMatrixData.reduce((p, c) => p.sdmSubCombinationId > c.sdmSubCombinationId ? p : c)
+      // if(tempData.length>0){
+      sdmSubCombinationId = tempData.sdmSubCombinationId + 1
+      // }
     }
     if (this.selectedIndex == rowIndex) {
       this.saveMatrixData.push({
         "sdmCombinationId": "0",
         "sdmMasterId": this.sdmMasterId,
         "sdmDerivedMasterId": this.matrixDerivedMasterId,
-        "sdmSubCombinationId":sdmSubCombinationId,
+        "sdmSubCombinationId": sdmSubCombinationId,
         "sdmSourceCombinationId": sdmcombination.sdmSourceCombinationId,
         "sourceRangeFrom": this.sourceRangeFrom,
         "sourceRangeTo": this.sourceRangeTo,
         "derivedFromDate": fromdate,
         "derivedToDate": todate,
         "applicableValue": this.applicableValue,
-        
-        "inputCycleId":inputCycleId
+        "periodName":sdmcombination.periodName,
+
+        "inputCycleId": sdmcombination.inputCycleId
       })
       //change
       //fromdate = '';
@@ -3343,32 +3419,36 @@ else if (element.derivedObjectName == 'WorkflowMaster') {
         "sourceRangeTo": this.sourceRangeTo,
         "derivedFromDate": fromdate,
         "derivedToDate": todate,
-        "sdmSubCombinationId":sdmSubCombinationId,
-        "inputCycleId":inputCycleId,
-        "applicableValue": this.applicableValue, 
-        'selectedCombData': this.selectedCombData
+        "sdmSubCombinationId": sdmSubCombinationId,
+        "inputCycleId": sdmcombination.inputCycleId,
+        "applicableValue": this.applicableValue,
+        'selectedCombData': this.selectedCombData,
+        "periodName":sdmcombination.periodName,
+
       })
 
       // change for insert row below combination
-      
+
       this.matrixsdmSourceCombinationList[rowIndex].newData = [];
-this.matrixsdmSourceCombinationList[rowIndex].newData.push({
-  "sdmCombinationId": "0",
-  "sdmMasterId": this.sdmMasterId,
-  "sdmDerivedMasterId": this.matrixDerivedMasterId,
-  "sdmSourceCombinationId": sdmcombination.sdmSourceCombinationId,
-  "sourceRangeFrom": this.sourceRangeFrom,
-  "sourceRangeTo": this.sourceRangeTo,
-  "derivedFromDate": fromdate,
-  "derivedToDate": todate,
-  "sdmSubCombinationId":sdmSubCombinationId,
-        "inputCycleId":inputCycleId,
-  "applicableValue": this.applicableValue,
-  'selectedCombData': this.selectedCombData
-});
+      this.matrixsdmSourceCombinationList[rowIndex].newData.push({
+        "sdmCombinationId": "0",
+        "sdmMasterId": this.sdmMasterId,
+        "sdmDerivedMasterId": this.matrixDerivedMasterId,
+        "sdmSourceCombinationId": sdmcombination.sdmSourceCombinationId,
+        "sourceRangeFrom": this.sourceRangeFrom,
+        "sourceRangeTo": this.sourceRangeTo,
+        "derivedFromDate": fromdate,
+        "derivedToDate": todate,
+        "sdmSubCombinationId": sdmSubCombinationId,
+        "inputCycleId": sdmcombination.inputCycleId,
+        "applicableValue": this.applicableValue,
+        'selectedCombData': this.selectedCombData,
+        "periodName":sdmcombination.periodName,
+
+      });
       // change for insert row below combination
       // console.log("this.saveMatrixData: " + JSON.stringify(this.saveMatrixData))
-    //  this.selectedFromDateForSave == '';
+      //  this.selectedFromDateForSave == '';
     }
 
     this.sourceRangeFrom = ''
@@ -3378,27 +3458,27 @@ this.matrixsdmSourceCombinationList[rowIndex].newData.push({
     this.applicableValue = ''
     this.addbtnflag = false
     this.selectedIndex = -1
-   // this.selectedFromDateForSave = ''
+    // this.selectedFromDateForSave = ''
     // this.selectedToDateForSave = ''
 
     this.matrixsdmSourceCombinationList.forEach((ele, index) => {
       ele.derivedFromDate = ''
       ele.derivedToDate = ''
       ele.applicableValue = ''
-    })  
-sdmcombination.derivedFromDate=''
+    })
+    sdmcombination.derivedFromDate = ''
     this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = this.selectedFromDateForSave;
-  //  this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = this.selectedToDateForSave;
-    this.matrixsdmSourceCombinationList[rowIndex].derivedToDate =this.selectedToDateForSave;
+    //  this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate = this.selectedToDateForSave;
+    this.matrixsdmSourceCombinationList[rowIndex].derivedToDate = this.selectedToDateForSave;
     // this.matrixsdmSourceCombinationList[rowIndex].derivedFromDate.disabled;
     // this.matrixsdmSourceCombinationList[rowIndex].derivedToDate.disabled;
     this.matrixsdmSourceCombinationList[rowIndex].applicableValue1 = ''
-    this.matrixsdmSourceCombinationList[rowIndex].disableFlag =true;
+    this.matrixsdmSourceCombinationList[rowIndex].disableFlag = true;
 
 
 
-  //  this.selectedFromDateForSave = ''
-  //  this.selectedToDateForSave = ''
+    //  this.selectedFromDateForSave = ''
+    //  this.selectedToDateForSave = ''
   }
 
 
@@ -3422,49 +3502,52 @@ sdmcombination.derivedFromDate=''
     // }
 
     //change on 23 12 2021
-   // if (!this.showErrorFlag) {
-     //change
-//change for null entires 
+    // if (!this.showErrorFlag) {
+    //change
+    //change for null entires 
 
-     this.saveMatrixData.forEach((element,index) => {
+    this.saveMatrixData.forEach((element, index) => {
       //element.inputCycleId=2790
-       if(element.derivedFromDate==null || element.derivedToDate==null ){
-       delete  this.saveMatrixData[index];
-       }
-    //  element.derivedFromDate=this.datepipe.transform(new Date(element.derivedFromDate), 'yyyy-MM-dd 00:00:000');
+      if(element==null){
+        delete this.saveMatrixData[index];  
+      }
+      if (element.derivedFromDate == null || element.derivedToDate == null) {
+        delete this.saveMatrixData[index];
+      }
+      //  element.derivedFromDate=this.datepipe.transform(new Date(element.derivedFromDate), 'yyyy-MM-dd 00:00:000');
       // element.derivedToDate=this.datepipe.transform(new Date(element.derivedToDate), 'yyyy-MM-dd 00:00:000');
 
-     });
+    });
 
-     //change for null entires 
+    //change for null entires 
 
-      this.sdmService.saveMatrix(this.saveMatrixData).subscribe(res => {
-        //this.toaster.success("", "Matrix data saved successfully")
-        this.alertService.sweetalertMasterSuccess(res.status.messsage, "");
-        this.editFlag = true
-        this.saveMatrixData = []
-        this.tempMatrixData = []
-        this.setPrevDisabled = true;
-        this.copyFromFlag = true;
-        this.showEditTextBox = false
-        this.selectedIndex = -1
-        // this.getMatrixData();
+    this.sdmService.saveMatrix(this.saveMatrixData).subscribe(res => {
+      //this.toaster.success("", "Matrix data saved successfully")
+      this.alertService.sweetalertMasterSuccess(res.status.messsage, "");
+      this.editFlag = true
+      this.saveMatrixData = []
+      this.tempMatrixData = []
+      this.setPrevDisabled = true;
+      this.copyFromFlag = true;
+      this.showEditTextBox = false
+      this.selectedIndex = -1
+      // this.getMatrixData();
 
-        localStorage.clear()
-        //this.summeryFlag = false
+      localStorage.clear()
+      //this.summeryFlag = false
 
-        //  this.sdmSummery()
-        //  this.getMatrixTableData();
-        // this.derivedMaster();
-        //  this.combinationMatrix();
+      //  this.sdmSummery()
+      //  this.getMatrixTableData();
+      // this.derivedMaster();
+      //  this.combinationMatrix();
 
-        this.onChangeDriveName(this.tempSelectedDerivedName);
-      },error =>{
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
-      })
-    
+      this.onChangeDriveName(this.tempSelectedDerivedName);
+    }, error => {
+      this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+    })
+
     //change
-   // change on 23 12 2021
+    // change on 23 12 2021
     // } else {
     //   this.alertService.sweetalertError('Please filled all valid details')
     // }
@@ -3561,8 +3644,8 @@ sdmcombination.derivedFromDate=''
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": element.derivedToDate,
               "applicableValue": element.applicableValue,
-              "sdmSubCombinationId":element.sdmSubCombinationId,
-              "inputCycleId":element.inputCycleId
+              "sdmSubCombinationId": element.sdmSubCombinationId,
+              "inputCycleId": element.inputCycleId
             }
           )
         });
@@ -3578,11 +3661,11 @@ sdmcombination.derivedFromDate=''
     const formData = new FormData();
     formData.append('sdmMasterId', this.sdmMasterId)
     formData.append('sdmSourceCombinationId', matrixdata.sdmSourceCombinationId)
-   
-    if(matrixdata.sourceRangeFrom!=null || matrixdata.sourceRangeFrom!=""){
-      formData.append('sdmDerivedMasterId',matrixdata.sdmDerivedMasterId)
+
+    if (matrixdata.sourceRangeFrom != null || matrixdata.sourceRangeFrom != "") {
+      formData.append('sdmDerivedMasterId', matrixdata.sdmDerivedMasterId)
     }
-   
+
 
     this.sdmService.getHistory(formData).subscribe(res => {
       let temp = []
@@ -3826,10 +3909,10 @@ sdmcombination.derivedFromDate=''
     }
   }
 
-  clearCopiedDate(){
-    this.copyFromFlag=false;
-    this.selectedFromDateForSave=''
-    this.selectedToDateForSave=''
+  clearCopiedDate() {
+    this.copyFromFlag = false;
+    this.selectedFromDateForSave = ''
+    this.selectedToDateForSave = ''
   }
 
 
@@ -3896,7 +3979,7 @@ sdmcombination.derivedFromDate=''
 
       this.matrixsdmSourceCombinationList[this.selectedIndex].applicableValue1 = employeedata.employeeCode
       this.applicableValue = this.selectedEmployeeId
-      this.applicableValueData(this.selectedEmployeeId, this.selectedSercData,this.selectedIndex)
+      this.applicableValueData(this.selectedEmployeeId, this.selectedSercData, this.selectedIndex)
       this.EmployeeData.forEach((element, index) => {
         if (this.selectedempindex != index) {
           element.checkboxFlag = true
@@ -3983,11 +4066,14 @@ sdmcombination.derivedFromDate=''
   }
 
 
-cycleIdChanges(data){
-   this.sdmService.postCycleIdData(data).subscribe(res => {
-    return res.data.results[0];
- })
-}
+  cycleIdChanges(data) {
+    const frmData = new FormData();
+    frmData.append('payrollAreaId', data)
+    this.sdmService.postCycleIdData(frmData).subscribe(res => {
+
+      return res.data.results[0];
+    })
+  }
 
 
 }

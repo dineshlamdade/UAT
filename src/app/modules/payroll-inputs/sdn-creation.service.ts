@@ -149,7 +149,7 @@ export class SdnCreationService {
 
 
   postCycleIdData(data): Observable<any>{
-    return this.HttpClient.post<any>(this.url1 + `source-derived-matrix/combination-matrix/inputCycle`, data)
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/inputCycle`, data)
   }
   
 
