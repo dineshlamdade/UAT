@@ -153,6 +153,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   public actualAmountGlobal: Number;
   public dueDate: Date;
   public dateOfPayment: Date;
+  showRow = false
   public date3: Date;
   public loaded = 0;
   public selectedFiles: FileList;
@@ -1286,6 +1287,11 @@ debugger
 
   }
 
+  test56(){
+    this.showRow = true;
+  }
+  
+
   upload() {
 
     for (let i = 0; i < this.filesArray.length; i++) {
@@ -1368,6 +1374,7 @@ debugger
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.showRow = false;
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
 

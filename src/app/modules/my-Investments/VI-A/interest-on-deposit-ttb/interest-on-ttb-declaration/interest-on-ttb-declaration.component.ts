@@ -298,12 +298,12 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[
       i
     ].previousEmployerId = event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i]
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionPreviousEmployerList[i]
         .previousEmployerId
     );
   }
@@ -1403,16 +1403,16 @@ deleteRow(j: number) {
     }
 
     console.log('testtttttt', this.documentDataArray);
-    if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement.'
-      );
-      return;
-    }
+    // if (this.filesArray.length === 0) {
+    //   this.alertService.sweetalertError(
+    //     'Please attach Premium Receipt / Premium Statement.'
+    //   );
+    //   return;
+    // }
 
-    console.log('this.transactionDetail::', this.transactionDetail);
+    // console.log('this.transactionDetail::', this.transactionDetail);
     this.transactionDetail.forEach((element) => {
-      if (element.interestOnSavingDeposit80TTTransactionList !== null) {
+      // if (element.interestOnSavingDeposit80TTTransactionList !== null) {
         element.interestOnSavingDeposit80TTTransactionList.forEach(
           (innerElement) => {
             if (innerElement.declaredAmount !== null) {
@@ -1443,8 +1443,8 @@ deleteRow(j: number) {
             // innerElement.dueDate = dueDate;
           }
         );
-      }
-       //previous emp table number format
+      // }
+      //  //previous emp table number format
        if (element.interestOnSavingDeposit80TTTransactionPreviousEmployerList !== null) {
         element.interestOnSavingDeposit80TTTransactionPreviousEmployerList.forEach(
           (innerElement) => {
