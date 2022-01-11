@@ -525,9 +525,12 @@
               " tooltip="Edit"></i>
             </td>
           </tr>
-          <tr [formGroup]="tuitionFeesFormForm"> 
+          <ng-container  role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="eightyGGCForm"
+          #formDirective="ngForm" method="post" novalidate>
+          <!-- <tr [formGroup]="tuitionFeesFormForm"> 
             <tr role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="eightyGGCForm"
-              #formDirective="ngForm" method="post" novalidate>
+              #formDirective="ngForm" method="post" novalidate> -->
+              <tr *ngIf="this.showRow">
            <td>
                   <label class="custom-control custom-checkbox checkbox-center"
                     tooltip="Select donee for proof submission">
@@ -627,6 +630,16 @@
           </td>
           <td></td>
         </tr>
+      </ng-container>
+      <tr>
+        <td colspan="12"
+          class="align-right font700 font-16 text-light-green cursor-pointer">
+          <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="test56()"></i>
+          <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+          <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+            (click)="deleteRow(transactionDetail.length + 1)"></i>
+        </td>
+      </tr>
           <!-- <tr [formGroup]="tuitionFeesFormForm"> 
               <tr role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="eightyGGCForm"
                 #formDirective="ngForm" method="post" novalidate> -->

@@ -73,7 +73,7 @@
                       class="form-control align-right"
                     /> -->
 
-                    <p-inputNumber class="p-inputright" [(ngModel)]=" physicallyHandicappedDetail.declaredAmount "
+                    <p-inputNumber class="p-inputright" [(ngModel)]="physicallyHandicappedDetail.declaredAmount "
                       [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0">
                     </p-inputNumber>
 
@@ -88,7 +88,7 @@
                     class="form-control align-right"
                   /> -->
 
-                  <p-inputNumber class="p-inputright" [(ngModel)]=" physicallyHandicappedDetail.actualAmount "
+                  <p-inputNumber class="p-inputright" [ngModel]="physicallyHandicappedDetail.actualAmount"
                     [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0">
                   </p-inputNumber>
 </label>
@@ -896,7 +896,8 @@
                 <tr>
                   <th scope="col" class="font700 wd-15">PS. ID.</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-20">Disability & Severity % </th>
+                  <th scope="col" class="font700 wd-20">Disability</th>
+                  <th scope="col" class="font700 wd-20">Severity % </th>
                   <th scope="col" class="font700 wd-10">Actual Amount</th>
                   <th scope="col" class="font700 wd-10">Rejected Amount</th>
                   <th scope="col" class="font700 wd-10">Approved Amount</th>
@@ -928,8 +929,12 @@
                       }}</span>
                   </td>
                   <td class="align-left">
-                    <span tooltip=" {{documentSummary.disability}}:{{ documentSummary.severity }}">
-                      {{disability}} & {{severity}} </span>
+                    <span tooltip=" {{documentSummary.disability}}">
+                      {{disability}} </span>
+                  </td>
+                  <td class="align-left">
+                    <span tooltip="{{ documentSummary.severity }}">
+                      {{severity}} </span>
                   </td>
                   <!-- <td>
                     <span tooltip="{{
@@ -959,15 +964,15 @@
                       </span>
                   </td>
                   <td class="align-right">
-                    <span tooltip="{{documentSummary.rejectedAmount | number:'1.2-2'}}">
-                      {{documentSummary.rejectedAmount | number:'1.2-2'}}
+                    <span tooltip="{{documentSummary.amountRejected | number:'1.2-2'}}">
+                      {{documentSummary.amountRejected | number:'1.2-2'}}
                       </span>
                 </td>
                     <td class="align-right">
                         <span tooltip="{{
-                          documentSummary.approvedAmount | number: '1.2-2'
+                          documentSummary.amountApproved | number: '1.2-2'
                         }}">
-                          {{ documentSummary.approvedAmount | number: "1.2-2" }}
+                          {{ documentSummary.amountApproved | number: "1.2-2" }}
                         </span>
                     </td>
                   <!-- <td>
@@ -1069,18 +1074,65 @@
 
 <ng-template #template2>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
+    <!-- <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
       Edit Document Details
     </h5>
     <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
       View Document Details
-    </h5>
+    </h5> -->
+    <h6 class="modal-title" style="margin: auto;"><b>PS.ID. : </b>
+      <label>
+        {{ editProofSubmissionId }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Creation Date : </b>
+      <label>
+        {{ this.createDateTime | date:'dd-MMM-yyyy' }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Last Modified Date & Time : </b>
+      <label>
+        {{ lastModifiedDateTime | date: 'dd-MMM-yyyy HH:mm' }}</label>
+    </h6>
+    <h6 class="modal-title" style="margin: auto;"><b>Status : </b>
+      <label>
+        <span class="badge" [ngClass]="{'badge-primary': transactionStatus=='Re-Open',
+          ' badge-success': transactionStatus=='Approved',
+          'badge-danger': transactionStatus=='SendBack',
+          'badge-info': transactionStatus=='Submitted',
+          'badge-warning': transactionStatus=='Pending'}" tooltip="{{transactionStatus}}">
+        {{ transactionStatus }}</span></label>
+    </h6>
     <button type="button" (click)="modalRef1?.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="card-body Box-Spacing">
     <div >
+      <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
+        <div class="ml-3 pl-2 pr-1">
+          <label class="form-label mt-1">Disability :</label>
+        </div>
+        <div class="ml-3 pl-1 pr-0">
+          <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+            tooltip=" {{disability}}">
+            {{disability}} </label>
+          <!-- <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+            tooltip="{{ item.lenderName }}">
+            {{ item.lenderName }} -->
+
+        </div>
+        <div class="ml-9 pl-5 pr-3">
+          <label class="form-label mt-1 pl-10">Severity :</label>
+        </div>
+        <div class="ml-3 pl-2 pr-0">
+          <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+            tooltip="{{ severity }}">
+            {{ severity }}
+            <!-- <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+            tooltip="{{ item.accountNumber }}">
+            {{ item.accountNumber }} -->
+          </label>
+        </div>
+      </div>
       
       <div class="row mt-15">
         <div class="col-12">
@@ -1200,11 +1252,48 @@
                     
                     </div>
                   </td> -->
-                  <td class="align-right">
-                    <!-- <input type="text" value="{{element.declaredAmount}}" disabled class="form-control align-right"
-                      (change)="onDeclaredAmountChange(element, i, j)" /> -->
-                    {{ physicallyHandicappedDetail.declaredAmount | number: '1.2-2'}}
+                  <td>
+                    <label  tooltip="{{physicallyHandicappedDetail.declaredAmount}}"  placement="bottom">
+                    <div class="custom_icon_badge">
+                      <!-- id  ="declaredAmount{{
+                        physicallyHandicappedDetail.physicallyHandicappedDetailId
+                      }}"
+                      name="declaredAmount{{
+                        physicallyHandicappedDetail.physicallyHandicappedDetailId
+                      }}" -->
+                      <!-- <input  type="text" value="{{ physicallyHandicappedDetail.declaredAmount }}" -->
+  
+  
+                      <!-- <input  type="text"
+                        [(ngModel)]=" physicallyHandicappedDetail.declaredAmount "
+                        [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"
+                        class="form-control align-right"
+                      /> -->
+  
+                      <p-inputNumber class="p-inputright" [(ngModel)]=" physicallyHandicappedDetail.declaredAmount "
+                        [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0">
+                      </p-inputNumber>
+  
+                    </div>
+                    </label>
                   </td>
+                  <td>
+                    <label  tooltip="{{physicallyHandicappedDetail.actualAmount}}"  placement="bottom">
+                    <!-- <input type="text"
+                      [(ngModel)]="physicallyHandicappedDetail.actualAmount"
+                      [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"
+                      class="form-control align-right"
+                    /> -->
+  
+                    <p-inputNumber class="p-inputright" [ngModel]="physicallyHandicappedDetail.actualAmount"
+                      [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0">
+                    </p-inputNumber>
+  </label>
+                  </td>
+                  <!-- <td class="align-right">
+                   
+                    {{ physicallyHandicappedDetail.declaredAmount | number: '1.2-2'}}
+                  </td> -->
 
                   <!-- <td>
                     <input type="text" id="actualAmount{{ summary.handicappedDependentDetailMasterId }}" name="actualAmount{{
@@ -1221,11 +1310,11 @@
                       class="form-control align-right" disabled />
                   </td> -->
                   
-                <td class="align-right">
-                  <!-- <input type="text" value="{{element.actualAmount}}" disabled class="form-control align-right" /> -->
+                <!-- <td class="align-right">
+              
                 {{physicallyHandicappedDetail.actualAmount | number: '1.2-2'}}
 
-                </td>
+                </td> -->
                 <!-- <td>
                   
                   <input type="text" value="{{ element.amountRejected | number: '1.2-2' }}"
@@ -1420,17 +1509,27 @@
                     <label  tooltip="{{summary.actualAmount}}"  placement="bottom">
                     <input type="text" id="actualAmount{{ summary.physicallyHandicappedDetailId }}" name="actualAmount{{
                         summary.physicallyHandicappedDetailId
-                      }}" [ngModel]="summary.actualAmount | number: '1.2-2'" class="form-control align-right" />
+                      }}" [ngModel]="summary.actualAmount | number: '1.2-2'" class="form-control align-right" disabled />
         </label>
                   </td>
-                  <td>
+                  <!-- <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                       class="form-control align-right" disabled />
                   </td>
                   <td>
                     <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
                       class="form-control align-right" disabled />
-                  </td>
+                  </td> -->
+                  <td class="wd-6 align-right">
+                    <span  class="padding-right-5" tooltip="{{summary.amountRejected | number:'1.2-2'}}">
+                    {{summary.amountRejected | number:'1.2-2'}}
+                    </span>
+                 </td>
+                 <td class="wd-6 align-right">
+                  <span  class="padding-right-5" tooltip="{{summary.amountApproved | number:'1.2-2'}}">
+                  {{summary.amountApproved | number:'1.2-2'}}
+                  </span>
+               </td>
                   <td>
                     <div class="d-flex"
                     class="align-center">
@@ -1507,7 +1606,7 @@
                   </td>
                   
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                
@@ -1532,10 +1631,8 @@
                       {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  <!-- <td class="bg-lightgray font-18 font700"></td> -->
-                  <!-- <td class="bg-lightgray font-18 font700"></td>
-                  <td class="bg-lightgray font-18 font700"></td> -->
-                </tr>
+               
+                </tr> -->
               </tbody>
             </table>
 
@@ -1547,7 +1644,7 @@
       <hr />
     </div>
 
-    <hr />
+    <!-- <hr /> -->
     <div class="row" *ngIf="viewDocumentDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
@@ -1607,24 +1704,24 @@
       </div>
     </div>
 
-    <hr class="mt-20" />
+    <!-- <hr class="mt-20" />
     <div class="row mt-20">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Uploaded Documents
         </h3>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-md-12">
-        <div class="row clearfix mt-10">
+        <!-- <div class="row clearfix mt-10">
           <div class="col-md-12" *ngFor="let doc of urlArray">
             <div class="labelbox" placement="left" tooltip="{{ doc.fileName }}">
               <i class="fa fa-paperclip text-orange"></i> &nbsp; {{ doc.fileName }}
             </div>
           </div>
      
-        </div>
+        </div> -->
 
 
         <div class="row">

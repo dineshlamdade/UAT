@@ -152,6 +152,7 @@
                     </select>
                   </td> -->
                   <td>
+                    <label  tooltip="{{summary.declaredAmount}}"  placement="bottom">
                     <div class="custom_icon_badge">
                           <input
                           type="text" placeholder="Enter Declared Amount"
@@ -162,8 +163,10 @@
                           (change)="onDeclaredAmountChange(summary, i, j)"  [disabled]="initialArrayIndex[j] > i"
                           [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
                         /></div>
+                        </label>
                   </td>
                   <td>
+                    <label  tooltip="{{summary.dateOfPayment | date: 'dd-MMM-yyyy'}}"  placement="bottom">
                     <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate" [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
@@ -172,6 +175,7 @@
                         setDateOfPayment(summary, i, j)"  class="form-control" bsDatepicker
                         [disabled]="initialArrayIndex[j] > i"
                           [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' " />
+                          </label>
                   </td>
                   <td *ngIf="previousEmployeeList?.length">
                     <select name="Previous Employer Name" class="form-control custom-select"

@@ -770,6 +770,46 @@ export class DeclarationAndActualComponent implements OnInit {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
 
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
+
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             '',
@@ -1599,13 +1639,13 @@ export class DeclarationAndActualComponent implements OnInit {
       // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
       this.editProofSubmissionId = proofSubmissionId;
 
-      if(res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0].length) {
+      if(res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList.length) {
       this.createDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.createDateTime;
       this.lastModifiedDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
       this.transactionStatus = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.transactionStatus;
       }    
 if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].length) {
-      this.createDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.createdDateTime;
+      this.createDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.createDateTime;
       this.lastModifiedDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
       this.transactionStatus = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.transactionStatus;
 }
@@ -1679,6 +1719,7 @@ if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].le
       //   });
       // });
     // });
+    this.documentArray = [];
 }
 
  //----------- On change Transactional Line Item Remark --------------------------
@@ -1801,18 +1842,23 @@ if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].le
 
     // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
 
-
+debugger
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
-    delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
-    delete this.currentEmployerHandicappedDependentResponseList[0].totalApprovedAmount;
-    delete this.currentEmployerHandicappedDependentResponseList[0].actualTotal;
-    delete this.currentEmployerHandicappedDependentResponseList[0].declaredTotal;
-    delete this.currentEmployerHandicappedDependentResponseList[0].handicappeddependentTransactionList;
-    delete this.currentEmployerHandicappedDependentResponseList[0].handicappedDependentDetailMasterId;
-    delete this.currentEmployerHandicappedDependentResponseList[0].dateOfSubmission;
-    delete this.currentEmployerHandicappedDependentResponseList[0].severity;
-    delete this.currentEmployerHandicappedDependentResponseList[0].familyMemberName;
-    delete this.currentEmployerHandicappedDependentResponseList[0].proofSubmissionDetailId;
+    // delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
+  for(let i = 0; i< this.currentEmployerHandicappedDependentResponseList.length; i++){
+    delete this.currentEmployerHandicappedDependentResponseList[i].proofSubmissionDetailId;
+    delete this.currentEmployerHandicappedDependentResponseList[i].familyMemberName;
+    delete this.currentEmployerHandicappedDependentResponseList[i].severity;
+    delete this.currentEmployerHandicappedDependentResponseList[i].dateOfSubmission;
+    delete this.currentEmployerHandicappedDependentResponseList[i].handicappedDependentDetailMasterId;
+    delete this.currentEmployerHandicappedDependentResponseList[i].handicappeddependentTransactionList;
+    delete this.currentEmployerHandicappedDependentResponseList[i].declaredTotal;
+    
+    delete this.currentEmployerHandicappedDependentResponseList[i].actualTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[i].totalApprovedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[i].totalRejectedAmount;
+    
+  }
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
@@ -1835,6 +1881,39 @@ if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].le
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.currentEmployerHandicappedDependentResponseList =
           res.data.results[0].currentEmployerHandicappedDependentResponseList;
           this.previousEmployerHandicappedDependentResponseList =
@@ -1853,39 +1932,39 @@ if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].le
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );
-              this.masterGridData.forEach((element, index) => {
-                this.documentArray.push({
+              // this.masterGridData.forEach((element, index) => {
+              //   this.documentArray.push({
 
-                  'dateofsubmission':new Date(),
-                  'documentType':element.documentInformationList[0].documentType,
-                  'documentName': element.documentInformationList[0].fileName,
-                  'documentPassword':element.documentInformationList[0].documentPassword,
-                  'documentRemark':element.documentInformationList[0].documentRemark,
-                  'status' : element.documentInformationList[0].status,
-                  'approverName' : element.documentInformationList[0].lastModifiedBy,
-                  'Time' : element.documentInformationList[0].lastModifiedTime,
+              //     'dateofsubmission':new Date(),
+              //     'documentType':element.documentInformationList[0].documentType,
+              //     'documentName': element.documentInformationList[0].fileName,
+              //     'documentPassword':element.documentInformationList[0].documentPassword,
+              //     'documentRemark':element.documentInformationList[0].documentRemark,
+              //     'status' : element.documentInformationList[0].status,
+              //     'approverName' : element.documentInformationList[0].lastModifiedBy,
+              //     'Time' : element.documentInformationList[0].lastModifiedTime,
 
-                  // 'documentStatus' : this.premiumFileStatus,
+              //     // 'documentStatus' : this.premiumFileStatus,
 
-                });
+              //   });
 
-                if(element.documentInformationList[1]) {
-                  this.documentArray.push({
+              //   if(element.documentInformationList[1]) {
+              //     this.documentArray.push({
 
-                    'dateofsubmission':new Date(),
-                    'documentType':element.documentInformationList[1].documentType,
-                    'documentName': element.documentInformationList[1].fileName,
-                    'documentPassword':element.documentInformationList[1].documentPassword,
-                    'documentRemark':element.documentInformationList[1].documentRemark,
-                    'status' : element.documentInformationList[1].status,
-                    'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                    'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+              //       'dateofsubmission':new Date(),
+              //       'documentType':element.documentInformationList[1].documentType,
+              //       'documentName': element.documentInformationList[1].fileName,
+              //       'documentPassword':element.documentInformationList[1].documentPassword,
+              //       'documentRemark':element.documentInformationList[1].documentRemark,
+              //       'status' : element.documentInformationList[1].status,
+              //       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+              //       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
-                    // 'documentStatus' : this.premiumFileStatus,
+              //       // 'documentStatus' : this.premiumFileStatus,
 
-                  });
-                }
-              });
+              //     });
+              //   }
+              // });
               // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
             });
           });
@@ -2200,6 +2279,20 @@ if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].le
           );
         });
       }
+      res.documentDetailList.forEach(element => {
+        // if(element!=null)
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+      });
     });
   }
   onResetRemarkDetails() {

@@ -197,6 +197,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   disableRemarkList = false
+  showRow = false
   disableRemark: any;
   // Remark: any;
   editDocumentRemark: any;
@@ -401,6 +402,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
+    debugger
 
     for (let i = 0; i < this.remarkList.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
@@ -1026,42 +1028,42 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  // addRowInList(
-  //   summarynew: {
-  //     donations80GGTransactionId: number;
-  //     // investmentGroup2MasterPaymentDetailId: number;
-  //     previousEmployerId: number;
-  //     declaredAmount: any;
-  //     purpose: string;
-  //     actualAmount: any;
-  //     donee: string;
-  //   },
-  //   j: number
-  // ) {
-  //   // console.log('summary::',  summarynew);
-  //   // if (this.initialArrayIndex[j] > i) {
-  //   //   this.hideRemoveRow = false;
-  //   // } else {
-  //   //   this.hideRemoveRow  = true;
-  //   // }
-  //   this.declarationService = new DeclarationService(summarynew);
-  //   // console.log('declarationService::', this.declarationService);
-  //   this.globalAddRowIndex -= 1;
-  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
-  //   this.shownewRow = true;
-  //   this.isDisabled = false;
-  //   this.declarationService.donations80GGTransactionId = this.globalAddRowIndex;
-  //   this.declarationService.declaredAmount = null;
-  //   this.declarationService.purpose = null;
-  //   this.declarationService.actualAmount = null;
-  //   this.declarationService.donee =null;
-  //   this.declarationService.transactionStatus = 'Pending';
-  //   this.declarationService.amountRejected = 0.0;
-  //   this.declarationService.amountApproved = 0.0;
-  //   // this.declarationService.donations80GGTransactionId = this.transactionDetail[j].donations80GGTransactionList[0].donations80GGTransactionId;
-  //   // this.transactionDetail[j].donations80GGTransactionList.push(this.declarationService);
-  //   // console.log('addRow::', this.transactionDetail[j].donations80GGTransactionList);
-  // }
+  addRowInList1(
+    summarynew: {
+      donations80GGTransactionId: number;
+      // investmentGroup2MasterPaymentDetailId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      purpose: string;
+      actualAmount: any;
+      donee: string;
+    },
+    j: number
+  ) {
+    // console.log('summary::',  summarynew);
+    // if (this.initialArrayIndex[j] > i) {
+    //   this.hideRemoveRow = false;
+    // } else {
+    //   this.hideRemoveRow  = true;
+    // }
+    this.declarationService = new DeclarationService(summarynew);
+    // console.log('declarationService::', this.declarationService);
+    this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.isDisabled = false;
+    this.declarationService.donations80GGTransactionId = this.globalAddRowIndex;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.purpose = null;
+    this.declarationService.actualAmount = null;
+    this.declarationService.donee =null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.0;
+    this.declarationService.amountApproved = 0.0;
+    this.declarationService.donations80GGTransactionId = this.transactionDetail[j].donations80GGTransactionList[0].donations80GGTransactionId;
+    this.transactionDetail[j].donations80GGTransactionList.push(this.declarationService);
+    console.log('addRow::', this.transactionDetail[j].donations80GGTransactionList);
+  }
 
 
   addRowInList(
@@ -1322,10 +1324,12 @@ debugger
   onResetRemarkDetails() {
     this.enteredRemark = '';
   }
-
+test56(){
+  this.showRow = true;
+}
 
   upload() {
-
+debugger
 
     for (let i = 0; i < this.filesArray.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
@@ -1407,6 +1411,7 @@ debugger
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.showRow = false;
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
