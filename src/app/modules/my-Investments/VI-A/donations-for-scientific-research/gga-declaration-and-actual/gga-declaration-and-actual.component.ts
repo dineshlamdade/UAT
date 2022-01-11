@@ -197,6 +197,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   disableRemarkList = false
+  showRow = false
   disableRemark: any;
   // Remark: any;
   editDocumentRemark: any;
@@ -401,6 +402,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
+    debugger
 
     for (let i = 0; i < this.remarkList.length; i++) {
       if(this.remarkList[i] != undefined || this.remarkList[i] == undefined){
@@ -1322,7 +1324,9 @@ debugger
   onResetRemarkDetails() {
     this.enteredRemark = '';
   }
-
+test56(){
+  this.showRow = true;
+}
 
   upload() {
 debugger
@@ -1407,6 +1411,7 @@ debugger
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.showRow = false;
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
