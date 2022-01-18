@@ -1,102 +1,62 @@
 <app-loan-master></app-loan-master>
 <app-leftmenu></app-leftmenu>
 <div class="page">
-<div class="section-body">
-  <div>
-    <div class="row">
-      <div class="col-12">
-        <div
-          class="card">
-          <div class="card-body" >
-            <div class="tabs about-page">
-              <form [formGroup]="recoveryLoanForm">
-                <!-- <fieldset> -->
+  <div class="section-body">
+    <div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="tabs about-page">
+                <form [formGroup]="recoveryLoanForm">
+                  <!-- <fieldset> -->
                   <fieldset>
                     <legend>Interest Charge</legend>
                     <div class="tabview-contents">
                       <div class="row">
                         <div class="col-sm-3 col-md-3 mt-10">
                           <label class="form-label">Rate (%) Per Annum</label>
-                          <!-- <select class="form-control" formControlName="intRate">
-                                        <option value="">Select</option>
-                                        <option>6</option>
-                                        <option>12</option>
-                                        <option>24</option>
-                                    </select> -->
-                          <select
-                            class="form-control"
-                            formControlName="intRate"
-                          >
-                            <option value="">Select</option>
-                            <option value="1">SDM1</option>
-                            <option value="2">SDM2</option>
+                          <select class="form-control" formControlName="intRate"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('intRate').status == 'INVALID'}"(change)="getAllDerivedSDMRatePerAnnum($event.target.value)">
+                          <option value="">Select</option>
+                          <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
+                            {{ sdmList.sdmName }}
+                          </option>
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
                           <label class="form-label">Derived Name</label>
-                          <select
-                            class="form-control"
-                            formControlName="ratePerAnnumDerivedName"
-                          >
+                          <select class="form-control" formControlName="ratePerAnnumDerivedName"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('ratePerAnnumDerivedName').status == 'INVALID'}">
                             <option value="">Select</option>
-                            <option>1</option>
+                            <option *ngFor=" let derivedList of getAllDerivedSDMRatePerAnnumData" value="{{derivedList.sdmDerivedMasterId}}">
+                              {{ derivedList.derivedName }}
+                            </option>
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label
-                            class="form-label ml-15"
-                            tooltip=""
-                            placement="left"
-                            >Change ROI As per Loan Balance</label
-                          >
+                          <label class="form-label ml-15" tooltip="" placement="left">Change ROI As per Loan
+                            Balance</label>
                           <div class="custom-controls-stacked ml-15 mt-10">
-                            <label
-                              class="
-                                custom-control
-                                custom-radio
-                                custom-control-inline
-                              "
-                            >
-                              <input
-                                type="radio"
-                                class="custom-control-input"
-                                name="principalradio"
-                                value="Yes"
-                                [checked]="
-                                  changeROIAsPerLoanBalanceFlag == 'Yes'
-                                "
-                              />
+                            <label class=" custom-control custom-radio custom-control-inline ">
+                              <input type="radio" class="custom-control-input" name="principalradio" value="Yes"
+                              (click)="changeROIAsPerLoanBalanceChk($event.target.value)"
+                              [checked]="changeROIAsPerLoanBalanceChkFlag =='Yes'"/>
+                              <!-- formControlName="changeROIAsPerLoanBalance" -->
                               <span class="custom-control-label">Yes</span>
                             </label>
-                            <label
-                              class="
-                                custom-control
-                                custom-radio
-                                custom-control-inline
-                              "
-                            >
-                              <input
-                                type="radio"
-                                class="custom-control-input"
-                                name="principalradio"
-                                value="No"
-                                [checked]="
-                                  changeROIAsPerLoanBalanceFlag == 'No'
-                                "
-                                checked
-                              />
+                            <label class="custom-control custom-radio custom-control-inline ">
+                              <input type="radio" class="custom-control-input" name="principalradio" value="No"
+                                checked  (click)="changeROIAsPerLoanBalanceChk($event.target.value)"
+                                [checked]="changeROIAsPerLoanBalanceChkFlag =='No'"/>
                               <span class="custom-control-label">No</span>
                             </label>
                           </div>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Method of Computation</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="methodOfComputation"
-                          >
+                          <label class="form-label">Method of Computation</label>
+                          <select class="form-control" formControlName="methodOfComputation"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('methodOfComputation').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Day Basis</option>
                             <option>Month Basis</option>
@@ -104,10 +64,8 @@
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
                           <label class="form-label">Date of Transactions</label>
-                          <select
-                            class="form-control"
-                            formControlName="intDateOfTransactions"
-                          >
+                          <select class="form-control" formControlName="intDateOfTransactions"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('intDateOfTransactions').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Chargeable</option>
                             <option>Non-Chargeable</option>
@@ -116,52 +74,59 @@
                         <!-- </div> -->
                         <!-- <div class="row mt-10"> -->
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Cycle of Disbursement</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="intCycleOfDisbursement"
-                          >
+                          <label class="form-label">Cycle of Disbursement</label>
+                          <select class="form-control" formControlName="intCycleOfDisbursement"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('intCycleOfDisbursement').status == 'INVALID'}">
+                            <option value="">Select</option>
+                            <option>Full Period</option>
+                            <option>Outstanding Days</option>
+                          </select>
+                        </div>
+
+
+                        <!-- <div class="col-sm-3 col-md-3 mt-10">
+                          <label class="form-label">Cycle of last Installment</label>
+                          <select class="form-control" formControlName="cycleOfLastInstallment"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('cycleOfLastInstallment').status == 'INVALID'}">
+                            <option value="">Select</option>
+                            <option>Full Period</option>
+                            <option>Outstanding Days</option>
+                          </select>
+                          <pre>{{loandata.cycleOfLastInstallment}}</pre>
+                        </div> -->
+
+
+                        <div class="col-sm-3 col-md-3 mt-10">
+                          <label class="form-label">Cycle of last Installment </label>
+                          <select class="form-control" formControlName="cycleOfLastInstallment" *ngIf="loandataforcyle"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('cycleOfLastInstallment').status == 'INVALID'}">
+                            <option  [selected]="loandataforcyle.cycleOfLastInstallment == ''">Select</option>
+                            <option [selected]="loandataforcyle.cycleOfLastInstallment == 'Full Period'">Full Period</option>
+                            <option [selected]="loandataforcyle.cycleOfLastInstallment != 'Full Period'">Outstanding Days</option>
+                          </select>
+
+                          <select class="form-control" formControlName="cycleOfLastInstallment" *ngIf="loandataforcyle == ''"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('cycleOfLastInstallment').status == 'INVALID'}">
+                            <option value="">Select</option>
+                            <option>Full Period</option>
+                            <option>Outstanding Days</option>
+                          </select>
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3 mt-10">
+                          <label class="form-label">Cycle of Adhoc Payments</label>
+                          <select class="form-control" formControlName="intAdhocPayments"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('intAdhocPayments').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Full Period</option>
                             <option>Outstanding Days</option>
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Cycle of last Installment</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="cycleOfLastInstallment"
-                          >
-                            <option value="">Select</option>
-                            <option>Full Period</option>
-                            <option>Outstanding Days</option>
-                          </select>
-                        </div>
-                        <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Cycle of Adhoc Payments</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="intAdhocPayments"
-                          >
-                            <option value="">Select</option>
-                            <option>Full Period</option>
-                            <option>Outstanding Days</option>
-                          </select>
-                        </div>
-                        <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Before Principal Repayment Starts</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="intBeforePriRepaymentStarts"
-                          >
+                          <label class="form-label">Before Principal Repayment Starts</label>
+                          <select class="form-control" formControlName="intBeforePriRepaymentStarts"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('intBeforePriRepaymentStarts').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Add in the Loan Amount</option>
                             <option>Recover in each of the Cycle</option>
@@ -170,26 +135,18 @@
                         <!-- </div> -->
                         <!-- <div class="row mt-10"> -->
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Group Company Transfer</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="groupCompanyTransfer"
-                          >
+                          <label class="form-label">Group Company Transfer</label>
+                          <select class="form-control" formControlName="groupCompanyTransfer"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('groupCompanyTransfer').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Transfer Balance</option>
                             <option>Recover Balance</option>
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label"
-                            >Compounding Of Interest</label
-                          >
-                          <select
-                            class="form-control"
-                            formControlName="compoundingOfInterest"
-                          >
+                          <label class="form-label">Compounding Of Interest</label>
+                          <select class="form-control" formControlName="compoundingOfInterest"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('compoundingOfInterest').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>Cycle</option>
                             <option>Month</option>
@@ -207,37 +164,29 @@
                       <div class="row">
                         <div class="col-sm-3 col-md-3">
                           <label class="form-label">No of Installments</label>
-                          <!-- <select class="form-control" formControlName="recoveryNoOfInstallments">
-                                        <option value="">Select</option>
-                                        <option>12</option>
-                                        <option>24</option>
-                                        <option>36</option>
-                                    </select> -->
-                          <select
-                            class="form-control"
-                            formControlName="recoveryNoOfInstallments"
-                          >
-                            <option value="">Select</option>
-                            <option value="1">SDM1</option>
-                            <option value="2">SDM2</option>
+                          <select class="form-control" formControlName="recoveryNoOfInstallments"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('recoveryNoOfInstallments').status == 'INVALID'}"(change)="getAllDerivedSDMNoofInstallments($event.target.value)">
+                          <option value="">Select</option>
+                          <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
+                            {{ sdmList.sdmName }}
+                          </option>
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
                           <label class="form-label">Derived Name</label>
-                          <select
-                            class="form-control"
-                            formControlName="noOfInstallementDerivedName"
-                          >
+                          <select class="form-control" formControlName="noOfInstallementDerivedName"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('noOfInstallementDerivedName').status == 'INVALID'}">
                             <option value="">Select</option>
-                            <option>1</option>
+                            <option *ngFor=" let derivedList of getAllDerivedSDMNoofInstallmentsData" value="{{derivedList.sdmDerivedMasterId}}">
+                              {{ derivedList.derivedName }}
+                            </option>
+
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
                           <label class="form-label">Method</label>
-                          <select
-                            class="form-control"
-                            formControlName="recoveryMethod"
-                          >
+                          <select class="form-control" formControlName="recoveryMethod"
+                          [ngClass]="{'is-invalid' : recoveryLoanForm.get('recoveryMethod').status == 'INVALID'}">
                             <option value="">Select</option>
                             <option>EMI</option>
                             <option>Reducing Balance</option>
@@ -246,214 +195,151 @@
                             <option>Principal First & then Interest</option>
                           </select>
                         </div>
-
-                        <div
-                          class="col-sm-3 col-md-3"
-                          *ngIf="
+                        <div class="col-sm-3 col-md-3" *ngIf="
                             recoveryLoanForm.controls.recoveryMethod.value ==
-                            'Principal First & then Interest' " >
-                          <label class="form-label"
-                            >No.of installments for Interest Recovery</label >
-                          <select
-                            class="form-control"
-                            formControlName="firstPriThanIntNoOfInstallmentForIntRecovery"
-                          >
+                            'Principal First & then Interest'
+                          ">
+                          <label class="form-label">No.of installments for Interest Recovery</label>
+                          <select class="form-control" formControlName="firstPriThanIntNoOfInstallmentForIntRecovery" (change)="getAllDerivedSDMinstallmentsforInterestRecovery($event.target.value)">
                             <option value="">Select</option>
-                            <option>SDM1</option>
-                            <option>SDM2</option>
+                            <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
+                              {{ sdmList.sdmName }}
+                            </option>
                           </select>
                         </div>
-                        <div class="col-sm-3 col-md-3">
-                          <label class="form-label">Recovery Starts</label>
+                      </div>
+                    <br>
                           <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3 col-md-3" *ngIf="
+                            recoveryLoanForm.controls.recoveryMethod.value ==
+                            'Principal First & then Interest'">
+                              <label class="form-label">Derived Name</label>
+                              <select class="form-control" formControlName="firstPriThanIntNoOfInstallmentForInRecoveryDerivedName">
+                                <option value=0>Select</option>
+                                <option *ngFor=" let derivedList of getAllDerivedSDMinstallmentsforInterestRecoveryData" value="{{derivedList.sdmDerivedMasterId}}">
+                                  {{ derivedList.derivedName }}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                          <label class="form-label">Recovery Starts</label>
                               <div class="input-container">
-                                <input
-                                  class="form-control"
-                                  formControlName="recoveryToStartSalaryCycles"
-                                />
+                                <input class="form-control" formControlName="recoveryToStartSalaryCycles" placeholder="Recovery"
+                                [ngClass]="{'is-invalid' : recoveryLoanForm.get('recoveryToStartSalaryCycles').status == 'INVALID'}"/>
                                 &nbsp;&nbsp;&nbsp;
-                                <span style="margin-top: 8px; font-size: 12px"
-                                  >Cycle</span
-                                >
+                                <!-- <span style="margin-top: 8px; font-size: 12px"></span> -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
-                              <select
-                                class="form-control"
-                                formControlName="recoveryToStartDisbursements"
-                              >
+
+                            <div class="col-sm-3">
+                          <label class="form-label">Cycle</label>
+                              <select class="form-control" formControlName="recoveryToStartDisbursements"
+                              [ngClass]="{'is-invalid' : recoveryLoanForm.get('recoveryToStartDisbursements').status == 'INVALID'}">
                                 <option value="">Select</option>
                                 <option>First Disbursement</option>
                                 <option>Full Disbursement</option>
                               </select>
                             </div>
-                          </div>
-                        </div>
 
-                        <div class="col-sm-3 col-md-3">
-                          <label class="form-label"
-                            >Adhoc Payments Treatment</label
-                          >
-                          <!-- <div class="col-sm-6 col-md-6 "> -->
-                          <!-- <label class="form-label">Treatment</label> -->
-                          <select
-                            class="form-control"
-                            formControlName="adhocPaymentsTreatment"
-                          >
-                            <option value="">Select</option>
-                            <option>Reduce Installment</option>
-                            <option>Reduce Tenure</option>
-                          </select>
-                          <!-- </div> -->
-                        </div>
-                        <div class="col-sm-3 col-md-3">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <label class="form-label">Principal</label>
-                              <!-- <select class="form-control"
-                                                        (click)="paymentRecoveryInNextCyclePri($event.target.value)">
-                                                        <option value="">Select</option>
-                                                        <option [selected]="paymentRecoveryInNextCyclePriVal == 'Yes'">Yes
-                                                        </option>
-                                                        <option [selected]="paymentRecoveryInNextCyclePriVal == 'No'">No
-                                                        </option>
-                                                    </select> -->
-                              <div class="custom-controls-stacked">
-                                <label
-                                  class="
-                                    custom-control
-                                    custom-radio
-                                    custom-control-inline
-                                  "
-                                >
-                                  <input
-                                    type="radio"
-                                    class="custom-control-input"
-                                    name="paymentRecoveryInNextCyclePriVal"
-                                    value="Yes"
-                                  />
-                                  <span class="custom-control-label">Yes</span>
-                                </label>
-                                <label
-                                  class="
-                                    custom-control
-                                    custom-radio
-                                    custom-control-inline
-                                  "
-                                >
-                                  <input
-                                    type="radio"
-                                    class="custom-control-input"
-                                    name="paymentRecoveryInNextCyclePriVal"
-                                    value="No"
-                                    checked
-                                  />
-                                  <span class="custom-control-label">No</span>
-                                </label>
-                              </div>
-                            </div>
-                            <div class="col-sm-6">
-                              <!-- <div class="col-sm-3 col-md-3 "> -->
-                              <label class="form-label">Interest</label>
-                              <!-- <select class="form-control "
-                                                                        (click)="paymentRecoveryInNextCycleInt($event.target.value)">
-                                                                        <option value="">Select</option>
-                                                                        <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">Yes
-                                                                        </option>
-                                                                        <option [selected]="paymentRecoveryInNextCycleIntVal=='No'">No</option>
-                                                                    </select> -->
-                              <div class="custom-controls-stacked">
-                                <label
-                                  class="
-                                    custom-control
-                                    custom-radio
-                                    custom-control-inline
-                                  "
-                                >
-                                  <input
-                                    type="radio"
-                                    class="custom-control-input"
-                                    name="principalradio"
-                                    value="Yes"
-                                  />
-                                  <span class="custom-control-label">Yes</span>
-                                </label>
-                                <label
-                                  class="
-                                    custom-control
-                                    custom-radio
-                                    custom-control-inline
-                                  "
-                                >
-                                  <input
-                                    type="radio"
-                                    class="custom-control-input"
-                                    name="principalradio"
-                                    value="No"
-                                    checked
-                                  />
-                                  <span class="custom-control-label">No</span>
-                                </label>
-                              </div>
-                              <!-- </div> -->
+                            <div class="col-sm-3 col-md-3">
+                              <label class="form-label">Adhoc Payments Treatment</label>
+                              <select class="form-control" formControlName="adhocPaymentsTreatment"
+                              [ngClass]="{'is-invalid' : recoveryLoanForm.get('adhocPaymentsTreatment').status == 'INVALID'}">
+                                <option value="">Select</option>
+                                <option>Reduce Installment</option>
+                                <option>Reduce Tenure</option>
+                              </select>
                             </div>
                           </div>
-                        </div>
-                      </div>
+
+                          <div class="row">
+                            <div class="col-sm-3 col-md-3">
+                              <label class="form-label">Short Recovery Treatment</label>
+                              <select class="form-control" formControlName="shortRecoveryTreatment"
+                              [ngClass]="{'is-invalid' : recoveryLoanForm.get('shortRecoveryTreatment').status == 'INVALID'}">
+                                <option value="">Select</option>
+                                <option>Increase Installment</option>
+                                <option>Increase Tenure</option>
+                              </select>
+                            </div>
+                            <div class="col-sm-3">
+                              <label class="form-label">Principal</label>
+                              <div class="custom-controls-stacked">
+                                <label class=" custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input"
+                                    name="paymentRecoveryInNextCyclePriVal"
+                                    (click)="paymentRecoveryInNextCyclePrincipal($event.target.value)" value="Yes"
+                                    [checked]="paymentRecoveryInNextCyclePriValFlag == 'Yes'" />
+                                    <!-- formControlName="paymentRecoveryInNextCyclePri" -->
+                                  <span class="custom-control-label">Yes</span>
+                                </label>
+                                <label class=" custom-control custom-radio custom-control-inline ">
+                                  <input type="radio" class="custom-control-input"
+                                    name="paymentRecoveryInNextCyclePriVal" value="No"
+                                    (click)="paymentRecoveryInNextCyclePrincipal($event.target.value)"
+                                    [checked]="paymentRecoveryInNextCyclePriValFlag == 'No'" />
+                                  <span class="custom-control-label">No</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label class="form-label">Interest</label>
+                              <div class="custom-controls-stacked">
+                                <label class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input"  value="Yes"
+                                  (click)="paymentRecoveryInNextCycleInterest($event.target.value)"
+                                  name="paymentRecoveryInNextCycleIntVal"
+                                     [checked]="paymentRecoveryInNextCycleIntValFlag == 'Yes'"/>
+                                   <!-- formControlName="paymentRecoveryInNextCycleInt" -->
+                                  <span class="custom-control-label">Yes</span>
+                                </label>
+                                <label class="custom-control custom-radio custom-control-inline">
+                                  <input type="radio" class="custom-control-input" value="No"
+                                  name="paymentRecoveryInNextCycleIntVal"
+                                  (click)="paymentRecoveryInNextCycleInterest($event.target.value)"
+                                  [checked]="paymentRecoveryInNextCycleIntValFlag == 'No'"/>
+                                     <!-- formControlName="paymentRecoveryInNextCycleInt" -->
+                                  <span class="custom-control-label">No</span>
+                                </label>
+                              </div>
+                              </div>
+                            </div>
                     </div>
                   </fieldset>
 
-                  <div
-                    class="row text-right"
-                    style="margin: 10px; float: right"
-                  >
-                    <button
-                      type="button"
-                      tooltip="Reset"
-                      class="
+
+                  <div class="row text-right" style="margin: 10px; float: right">
+                    <button type="button" tooltip="Previous" class="
                         custom_button custom_btn
                         bg-teal-400
                         btn-labeled btn-labeled-left
-                        mr-10
-                      "
-                    >
-                      <b><i class="fa fa-angle-double-left"></i></b>
-                      Previous</button
-                    >&nbsp;
-                    <!-- <button type="button" class="btn btn-success" (click)="submitRecoveryForm()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Next</button>&nbsp; -->
-                    <button
-                      type="button"
-                      tooltip="Reset"
-                      class="
+                        mr-10 " (click)="previousTab()" *ngIf="isPrevious"><b><i class="fa fa-angle-double-left"></i></b>
+                      Previous</button>&nbsp;
+                    <button type="button"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                     (click)="submitRecoveryForm()" *ngIf="isSave" tooltip="Save"
+                     [disabled]="!recoveryLoanForm.valid" [ngClass]="{'disabled-btn-bg-green' :
+                    recoveryLoanForm.invalid,'btn-bg-green': !recoveryLoanForm.invalid}">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Save</button>&nbsp;
+                    <button type="submit" tooltip="Update" class="
                         custom_button custom_btn
-                        bg-teal-400
                         btn-labeled btn-labeled-left
-                        mr-10
-                      "
-                      (click)="submitRecoveryForm()"
-                    >
-                      <b><i class="fa fa-angle-double-right"></i></b> Next
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-dark"
-                      (click)="resetRecoveryForm()"
-                      [disabled]="loandata != '' || editloandata != ''"
-                    >
-                      <i class="fa fa-refresh" aria-hidden="true"></i
-                      >&nbsp;&nbsp;Reset</button
-                    >&nbsp;
+                      " [disabled]="!recoveryLoanForm.valid" (click)="submitRecoveryForm()" [ngClass]="{
+                        'disabled-btn-bg-green': recoveryLoanForm.invalid,
+                        'btn-bg-green': !recoveryLoanForm.invalid }" *ngIf="isUpdate" tooltip="Update">
+                      <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button>&nbsp;
+
+                    <button type="button" class="btn btn-dark" (click)="resetRecoveryForm()" tooltip="Reset" >
+                      <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
                   </div>
-                <!-- </fieldset> -->
-              </form>
+
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <app-footer></app-footer>
     </div>
-<app-footer></app-footer>
-</div>
-</div>
+  </div>
 </div>

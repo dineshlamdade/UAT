@@ -341,6 +341,25 @@ export class NpsMasterComponent implements OnInit {
     });
   }
 
+
+
+//PRAN Information API Call
+// getNPSPranNumber() {
+//   this.npsService.getPranInformation().subscribe((res) => {
+//     console.log('get PRAN Information', res);
+//     this.form.patchValue({
+//       pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
+//     });
+//   });
+// }
+
+
+
+
+
+
+
+
   // Get All Institutes From Global Table
   getInstitutesFromGlobal() {
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
@@ -1061,7 +1080,6 @@ this.paymentDetailGridData = obj.paymentDetails;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
     this.documentArray = [];
-
     this.urlArray = [];
     this.isCancel = false;
     // this.form.get('accountHolderName').setValue('Aishwarya Malviya');
@@ -1082,11 +1100,14 @@ this.paymentDetailGridData = obj.paymentDetails;
     this.form.get("relationship").disable();
     this.form.get("accountType").disable();
     this.form.get("pran").disable();
-
+debugger
     this.documentArray = [];
     this.isVisibleTable = false
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue('0');
+    this.form.get('policyEndDate').setValue('');
+    this.form.get('policyEndDate').patchValue('');
+    
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];

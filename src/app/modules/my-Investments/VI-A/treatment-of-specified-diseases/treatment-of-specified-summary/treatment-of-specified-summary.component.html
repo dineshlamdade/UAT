@@ -12,8 +12,8 @@
               <th rowspan="2" class="wd-15 font700">Action</th>
             </tr>
             <tr>
-              <th>Declared</th>
-              <th>Actual</th>
+              <th>Declared Amount</th>
+              <th>Actual Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -23,19 +23,19 @@
                   summary.patientName
                 }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-20 align-left">
                 <span tooltip="{{ summary.disease }}">{{
                   summary.disease
                 }}</span>
               </td>
-              <td class="wd-20">
+              <td class="wd-20 align-left">
                 <span tooltip="{{ summary.relationship }}">
                   {{ summary.relationship }}
                 </span>
               </td>
               <td class="wd-15 align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ summary.declaredAmount | number: '1.2-2' }}"
                 >
                   {{ summary.declaredAmount | number: "1.2-2" }}
@@ -43,7 +43,7 @@
               </td>
               <td class="wd-15 align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ summary.actualAmount | number: '1.2-2' }}"
                 >
                   {{ summary.actualAmount | number: "1.2-2" }}
@@ -74,32 +74,68 @@
               </td>
               <td class="align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}"
                 >
-                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
                 <span
-                  class="padding-right-12"
+                  class="padding-right-9"
                   tooltip="{{ totalActualAmount | number: '1.2-2' }}"
                 >
-                  {{ totalActualAmount | number: "1.2-2" }}
+                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td></td>
             </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">
+                Future Expenses &nbsp;
+                <span class="Letterbadge">B</span>
+              </td>
+              <td>
+                <!-- <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber> -->
+                <p-inputNumber class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                  (focusout)="onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()"
+                  mode="decimal" locale="en-IN" maxlength="33" [minFractionDigits]="2"></p-inputNumber>
+              </td>
+
+
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">
+                Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge">
+                  B</span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-9" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalDeclaredAmount | number: "1.2-2" }}</b>
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-9" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalActualAmount | number: "1.2-2" }}</b>
+                </span>
+              </td>
+
+              <td class="align-right">
+              </td>
+            </tr>
 
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">B</span></td>
+              <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">D</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limit | number:'1.2-2'}}">
                   {{limit | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{limit | number:'1.2-2'}}">
                   {{limit | number:'1.2-2'}}
                 </span>
               </td>
@@ -108,16 +144,16 @@
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 &nbsp;
-                <span class="Letterbadge"> C </span> = Lower Of ( &nbsp;<span class="Letterbadge">A</span>& &nbsp;<span
-                  class="Letterbadge"> B </span> )
+                <span class="Letterbadge"> E </span> = Lower Of ( &nbsp;<span class="Letterbadge">C</span>& &nbsp;<span
+                  class="Letterbadge"> D </span> )
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{minofTotalAndLimitDeclaredAmountC | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{minofTotalAndLimitDeclaredAmountC | number:'1.2-2'}}">
                   {{minofTotalAndLimitDeclaredAmountC | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{minofTotalAndLimitActualAmountC | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{minofTotalAndLimitActualAmountC | number:'1.2-2'}}">
                   {{minofTotalAndLimitActualAmountC | number:'1.2-2'}}
                 </span>
               </td>
@@ -125,29 +161,29 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Amount Received From Insurance Company &nbsp; <span
-                  class="Letterbadge">D</span></td>
+                  class="Letterbadge">F</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{declaredAmountReceivedFromInsuranceCompany | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{declaredAmountReceivedFromInsuranceCompany | number:'1.2-2'}}">
                   {{declaredAmountReceivedFromInsuranceCompany | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{actualAmountReceivedFromInsuranceCompany | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{actualAmountReceivedFromInsuranceCompany | number:'1.2-2'}}">
                   {{actualAmountReceivedFromInsuranceCompany | number:'1.2-2'}}
                 </span>
               </td>
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Amount Reimbursment By The Employer &nbsp; <span
-                  class="Letterbadge">E</span></td>
+              <td colspan="3" class="align-right font700">Amount Reimbursed By The Employer &nbsp; <span
+                  class="Letterbadge">G</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{declaredAmountReimbursedByEmployer | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{declaredAmountReimbursedByEmployer | number:'1.2-2'}}">
                   {{declaredAmountReimbursedByEmployer | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{actualAmountReimbursedByEmployer | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{actualAmountReimbursedByEmployer | number:'1.2-2'}}">
                   {{actualAmountReimbursedByEmployer | number:'1.2-2'}}
                 </span>
               </td>
@@ -155,16 +191,16 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
-                Total Of The Amount Received &nbsp;<span class="Letterbadge">F</span> = &nbsp;
-                <span class="Letterbadge">D</span> + &nbsp;<span class="Letterbadge">E</span>
+                Total Of Amount Received &nbsp;<span class="Letterbadge">H</span> = &nbsp;
+                <span class="Letterbadge">F</span> + &nbsp;<span class="Letterbadge">G</span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalDeclaredAmountReceived | number: '1.2-2' }}">
+                <span class="padding-right-9" tooltip="{{ totalDeclaredAmountReceived | number: '1.2-2' }}">
                   {{ totalDeclaredAmountReceived | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ totalActualAmountReceived | number: '1.2-2' }}">
+                <span class="padding-right-9" tooltip="{{ totalActualAmountReceived | number: '1.2-2' }}">
                   {{ totalActualAmountReceived | number: "1.2-2" }}
                 </span>
               </td>
@@ -174,16 +210,16 @@
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 &nbsp;
-                <span class="Letterbadge"> G </span> = Lower Of ( &nbsp;<span class="Letterbadge">C</span>& &nbsp;<span
-                  class="Letterbadge"> F </span> )
+                <span class="Letterbadge"> I </span> = Lower Of ( &nbsp;<span class="Letterbadge">C</span>& &nbsp;<span
+                  class="Letterbadge"> H </span> )
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{minofCAndTotalDeclaredAmountReceived | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{minofCAndTotalDeclaredAmountReceived | number:'1.2-2'}}">
                   {{minofCAndTotalDeclaredAmountReceived | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{minofCAndTotalActualAmountReceived | number:'1.2-2'}}">
+                <span class="padding-right-9" tooltip="{{minofCAndTotalActualAmountReceived | number:'1.2-2'}}">
                   {{minofCAndTotalActualAmountReceived | number:'1.2-2'}}
                 </span>
               </td>
@@ -191,17 +227,17 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
-                Benefit Available (Sec. 80-DDB) &nbsp;<span class="Letterbadge">H</span> =  (&nbsp;
-                <span class="Letterbadge">C</span> - &nbsp;<span class="Letterbadge">G</span>)
+                Benefit Available (Sec. 80-DDB) &nbsp;<span class="Letterbadge">J</span> =  (&nbsp;
+                <span class="Letterbadge">C</span> & &nbsp;<span class="Letterbadge">I</span>)
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ benefitAvailableOnDeclaredAmount | number: '1.2-2' }}">
-                  {{ benefitAvailableOnDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ benefitAvailableOnDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ benefitAvailableOnDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{ benefitAvailableOnDeclaredAmount | number: '1.2-2' }}">
-                  {{ benefitAvailableOnDeclaredAmount | number: "1.2-2" }}
+                <span class="padding-right-9" tooltip="{{ benefitAvailableOnDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ benefitAvailableOnDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td class="align-right">

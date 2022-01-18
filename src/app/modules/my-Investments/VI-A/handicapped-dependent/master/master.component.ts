@@ -156,19 +156,20 @@ export class MasterComponent implements OnInit {
   ) {
 
     this.disabilityTypeList = [
-      { label: 'Hearing impairment', value: 'Hearing impairment' },
-      { label: 'Mental retardation', value: 'Mental retardation' },
-      { label: 'Mental illness', value: 'Mentalillness' },
+      { label: 'Hearing Impairment', value: 'Hearing Impairment' },
+      { label: 'Mental Retardation', value: 'Mental Retardation' },
+      { label: 'Mental Illness', value: 'Mental Illness' },
       { label: 'Autism', value: 'Autism' },
-      { label: 'Cerebral palsy', value: 'Cerebral palsy' },
+      { label: 'Cerebral Palsy', value: 'Cerebral Palsy' },
       { label: 'Blindness', value: 'Blindness' },
-      { label: 'Low vision', value: 'Lowvision' },
-      { label: 'Laprosy cured', value: 'Laprosy cured' },
-      { label: 'Laco motor disability', value: 'Laco motor disability' },
+      { label: 'Low Vision', value: 'Low Vision' },
+      { label: 'Laprosy Cured', value: 'Laprosy Cured' },
+      { label: 'Loco Motor Disability', value: 'Loco Motor Disability' },
     ];
     this.severityLevelList = [
-      { label: '40.01% to 80%', value: '40.01% to 80%' },
-      { label: '80.01% to 100%', value: '80.01% to 100%' },
+      { label: '0.01% to 40.00%', value: '0.01% to 40.00%' },
+      { label: '40.01% to 80.00%', value: '40.01% to 80.00%' },
+      { label: '80.01% to 100.00%', value: '80.01% to 100.00%' },
 
     ];
     this.masterPage();
@@ -598,7 +599,7 @@ export class MasterComponent implements OnInit {
   editMaster(disabilityType) {
     debugger
     this.isCancelShow = false;
-    this.isSaveShow = true;
+    this.isSaveShow = false;
     this.isUpdateShow = true;
     this.isEdit = true;
     this.scrollToTop();

@@ -6,6 +6,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { RegisterComponent } from './register/register.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ErrorPage2Component } from './error-page2/error-page2.component';
+import { PsadminComponentSelectionComponent } from './psadmin-component-selection/psadmin-component-selection.component';
+import { GroupOrCompanySelectionComponent } from './group-or-company-selection/group-or-company-selection.component';
 
 const routes: Routes = [
   {
@@ -33,6 +35,21 @@ const routes: Routes = [
     component: ErrorPage2Component,
     data: { title: ':: Epic :: Error-500' }
   },
+  {
+    path: 'userRolePage',
+    component: PsadminComponentSelectionComponent,
+    data: { title: ':: Epic :: UserRole' }
+  },
+  {
+    path: 'userGroupSelectPage',
+    component: GroupOrCompanySelectionComponent,
+    data: { title: ':: Epic :: userGroupSelectPage' }
+  },
+  // {
+  //   path: 'psAdminSelection',
+  //   component: PsadminComponentSelectionComponent,
+  //   data: { title: ':: Epic :: Error-500' }
+  // },
 ];
 
 @NgModule({

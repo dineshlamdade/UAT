@@ -33,6 +33,10 @@ import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
 import { HousingloanService } from '../../housingloan/housingloan.service';
 import { HouseRentService } from '../house-rent.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Console } from 'console';
+import { invalid } from '@angular/compiler/src/render3/view/util';
+import { tr } from 'date-fns/locale';
 
 @Component({
   selector: 'app-houserentmaster',
@@ -46,15 +50,15 @@ export class HouserentmasterComponent implements OnInit {
 
 
 
-  rentAgreementdocumentPassword= [];
+  rentAgreementdocumentPassword = [];
   rentAgreementremarkList = [];
-  LandlordPANdocumentPassword= [];
+  LandlordPANdocumentPassword = [];
   LandlordPANremarkList = [];
-  
+
 
   rentAgreementdocumentDataArray = [];
   LandlordPANdocumentDataArray = [];
- 
+
 
   public countriesList: Array<any> = [];
   public showOwner = false;
@@ -147,6 +151,9 @@ export class HouserentmasterComponent implements OnInit {
   public isClear: boolean;
   public isCancel: boolean;
   public today = new Date();
+  public toShowPanDeclr: boolean;
+  public toShowTemp1: boolean;
+  public toShowTemp2: boolean;
 
   public policyMinDate: any;
   public total = 0;
@@ -170,6 +177,30 @@ export class HouserentmasterComponent implements OnInit {
   public abc: any[];
   public rentAgreementDocumentDetail: Array<any> = [];
   public declarationOfLandlordDocumentDetail: Array<any> = [];
+  btn: boolean;
+  toShowAddBtn: boolean;
+  public rentToDate: Date;
+  public rentFromDate: Date;
+  public agreeFromDate: Date;
+  public agreeToDate: Date;
+  public monthlyRent: any;
+  summaryDetails: any;
+  indexCount: any;
+  selectedremarkIndex: any;
+  documentRemarkList: any;
+  remarkCount: any;
+  editRemarkData: any;
+  enteredRemark: string;
+  iconCount: number;
+  address1: any;
+  address2: any;
+  address3: any;
+  state: any;
+  city: any;
+  isMetro: boolean;
+  isNonMetro: boolean;
+  familyList: any;
+  declrName: Date;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -192,7 +223,7 @@ export class HouserentmasterComponent implements OnInit {
       houseRentMaster: this.formBuilder.group({
         houseRentalMasterId: new FormControl(0),
         propertyName: new FormControl(null, Validators.required),
-        copyFrom: new FormControl(null, Validators.required),
+        copyFrom: new FormControl(null, Validators.nullValidator),
         address1: new FormControl(null, Validators.required),
         address2: new FormControl(null, Validators.required),
         address3: new FormControl(null, Validators.required),
@@ -201,10 +232,12 @@ export class HouserentmasterComponent implements OnInit {
         state: new FormControl(null, Validators.required),
         city: new FormControl(null, Validators.required),
         village: new FormControl(null),
-        metroCity: new FormControl(null, Validators.required),
+        metroCity: new FormControl(null, Validators.nullValidator),
         proofSubmissionId: new FormControl(''),
         transactionStatus: new FormControl(''),
         remark: new FormControl(''),
+        bubbleRemarkCount: new FormControl(0),
+
       }),
 
       landLordDetailList: this.formBuilder.group({
@@ -212,7 +245,7 @@ export class HouserentmasterComponent implements OnInit {
         houseRentalMasterId: new FormControl(''),
         name: new FormControl(null, Validators.required),
         address: new FormControl(null, Validators.required),
-        landLordPan: new FormControl(null, Validators.required),
+        landLordPan: new FormControl('', Validators.nullValidator),
         /*    percentageShareOfRent: new FormControl(null, Validators.required), */
         percentageShareOfRent: new FormControl(null, [
           Validators.required,
@@ -225,17 +258,17 @@ export class HouserentmasterComponent implements OnInit {
 
       /* agreementDetailList:  new FormArray([]), */
 
-      agreementDetail: this.formBuilder.group({
+      agreementDetailList: this.formBuilder.group({
         houseRentalAgreementDetailId: new FormControl(0),
         houseRentalMasterId: new FormControl(0),
         fromDate: new FormControl(null, Validators.required),
         toDate: new FormControl(null, Validators.required),
-        remark: new FormControl(null, Validators.required),
+        remark: new FormControl(null, Validators.nullValidator),
       }),
 
       /*   rentDetailList: new FormArray([]) */
 
-      rentDetail: this.formBuilder.group({
+      rentDetailList: this.formBuilder.group({
         houseRentalRentDetailId: new FormControl(0),
         houseRentalMasterId: new FormControl(0),
         fromDate: new FormControl(null, Validators.required),
@@ -244,6 +277,8 @@ export class HouserentmasterComponent implements OnInit {
           Validators.required,
           Validators.pattern('^[0-9]*$'),
         ]),
+        financialYear: new FormControl(null),
+        remark: new FormControl(null)
         /*       rentAmount: new FormControl(null, Validators.required), */
       }),
     });
@@ -266,7 +301,12 @@ export class HouserentmasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-
+    this.btn = false;
+    this.toShowPanDeclr = false;
+    this.showUpdateButton = false;
+    this.toShowAddBtn = true;
+    this.isMetro = false;
+    this.isNonMetro = false;
     console.log('houseAgreementMasterForm::', this.houseAgreementMasterForm);
     this.Service.getCountryList().subscribe((res) => {
       this.countriesList = res.data.results;
@@ -315,21 +355,21 @@ export class HouserentmasterComponent implements OnInit {
     return this.houseRentform.get('houseRentMaster')['controls'];
   }
 
- 
+
 
   get houseAgreementMasterForm() {
-    return this.houseRentform.get('agreementDetail')['controls'];
+    return this.houseRentform.get('agreementDetailList')['controls'];
   }
 
   /*  get houseAgreementMasterForm() { return this.houseRentform.get('agreementDetailList') as FormArray; } */
 
   get landRentDetailForm() {
-    return this.houseRentform.get('rentDetail')['controls'];
+    return this.houseRentform.get('rentDetailList')['controls'];
   }
 
   /*  get rentDetailList() { return this.houseRentform.get('rentDetailList') as FormArray; } */
 
-  public addOwner() {
+  public addOwner(type) {
     console.log('event::', this.landLordDetailForm);
     this.landlordDetailsSubmitted = true;
     if (this.houseRentform.get('landLordDetailList').invalid) {
@@ -346,22 +386,47 @@ export class HouserentmasterComponent implements OnInit {
         .houseRentalLandLordDetailId
     );
 
+    // this.landLordDetailTableList.forEach((element) => {
+    //     if (
+    //       element.landLordPan ===
+    //         this.houseRentform.get('landLordDetailList').value.landLordPan &&
+    //       (this.houseRentform.get('landLordDetailList').value
+    //         .houseRentalLandLordDetailId === 0 ||
+    //         this.houseRentform.get('landLordDetailList').value
+    //           .houseRentalLandLordDetailId != null )
+    //     ) {
+    //       this.isDuplicatpan = true;
+    //       this.alertService.sweetalertWarning(
+    //         'This Pan Number Currently Present Please Check The Pan Number.'
+    //       );
+    //       console.log(this.isDuplicatpan);
+    //     }
+    // });
+
+    //test
     this.landLordDetailTableList.forEach((element) => {
-      if (
-        element.landLordPan ===
-          this.houseRentform.get('landLordDetailList').value.landLordPan &&
-        (this.houseRentform.get('landLordDetailList').value
-          .houseRentalLandLordDetailId === 0 ||
-          this.houseRentform.get('landLordDetailList').value
-            .houseRentalLandLordDetailId === null)
-      ) {
-        this.isDuplicatpan = true;
-        this.alertService.sweetalertWarning(
-          'This Pan Number Currently Present Please Check The Pan Number.'
-        );
-        console.log(this.isDuplicatpan);
+      console.log(element.landLordPan, this.houseRentform.get('landLordDetailList').value.landLordPan)
+      console.log(element.houseRentalLandLordDetailId, this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId)
+      if (this.houseRentform.get('landLordDetailList').value.landLordPan != null) {
+        if (element.houseRentalLandLordDetailId != this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId) {
+          if (element.landLordPan === this.houseRentform.get('landLordDetailList').value.landLordPan) {
+            this.isDuplicatpan = true;
+            this.alertService.sweetalertWarning(
+              'This Pan Number Currently Present Please Check The Pan Number.'
+            );
+            //console.log(this.isDuplicatpan);
+          }
+        }
       }
+      // alert(element.landLordPan)
+      // if(element.landLordPan != '' || element.landLordPan != undefined ||element.landLordPan != null){
+
+      // }
+
     });
+
+
+
     console.log('isDuplicatpan::', this.isDuplicatpan);
     if (this.isDuplicatpan) {
       this.isDuplicatpan = false;
@@ -369,9 +434,33 @@ export class HouserentmasterComponent implements OnInit {
     }
 
     /* ======Share Of Total Rent========= */
-    this.total = 0;
-   this.total +=  this.houseRentform.get('landLordDetailList').value.percentageShareOfRent;
+    if (type == 'add') {
+      this.total = 0;
+      this.total += this.houseRentform.get('landLordDetailList').value.percentageShareOfRent;
+    } else {
+      console.log("update")
+      this.total = 0
+      // console.log(JSON.stringify(this.houseRentform.value))
+      let percentageShareOfRent
+      this.landLordDetailTableList.forEach((element, index) => {
+        // console.log("element update is: "+ JSON.stringify(element))
+        if (element.houseRentalLandLordDetailId == this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId) {
+          percentageShareOfRent = element.percentageShareOfRent
+          element.percentageShareOfRent = 0
+        }
+        this.total = this.total + element.percentageShareOfRent
+        // console.log("toallllllllllll: " + JSON.stringify(this.total) , percentageShareOfRent)
+      })
+      this.total = this.total + this.houseRentform.get('landLordDetailList').value.percentageShareOfRent
+
+      //  this.houseRentform.get('landLordDetailList').value.percentageShareOfRent.set(percentageShareOfRent)
+      // console.log("total isssssssssss: " + JSON.stringify(this.total))
+    }
+
+
     this.landLordDetailTableList.forEach((element) => {
+
+
       /*  if(element.percentageShareOfRent === this.houseRentform.get('landLordDetailList').value.percentageShareOfRent) */
       if (
         this.houseRentform.get('landLordDetailList').value
@@ -383,21 +472,20 @@ export class HouserentmasterComponent implements OnInit {
         console.log('two::', this.total);
       }
     });
-    console.log(this.total);
+    // console.log(this.total + ' qwertyui ' + edittotal);
     if (this.total > 100) {
       this.alertService.sweetalertWarning(
         'This % Share Of Total Rent : Please Check Total Rent 100%.'
       );
       return;
     }
-
     if (
       (this.houseRentform.get('landLordDetailList').value
         .houseRentalLandLordDetailId === 0 ||
         this.houseRentform.get('landLordDetailList').value
           .houseRentalLandLordDetailId === null) &&
       !this.isDuplicatpan &&
-      this.total <= 100
+      this.total <= 100 && (this.landLordDetailTableList.length < 2)
     ) {
       this.houseRentform.get(
         'landLordDetailList'
@@ -406,8 +494,7 @@ export class HouserentmasterComponent implements OnInit {
       this.landLordDetailTableList.push(
         this.houseRentform.get('landLordDetailList').value
       );
-    } else 
-    {
+    } else {
       console.log(this.houseRentform.get('landLordDetailList').value);
       console.log(this.landLordDetailTableList);
       const index = this.landLordDetailTableList.findIndex(
@@ -428,16 +515,34 @@ export class HouserentmasterComponent implements OnInit {
           'landLordDetailList'
         ).value.percentageShareOfRent;
     }
-     
+
+
+    console.log("this.total: " + this.total)
     if (this.total !== 100) {
       this.alertService.sweetalertWarning(
         ' Please Fill Rent 100%.'
-      );     
-    } 
+      );
+    }
     /* this.landLordDetailTableList.houseRentalLandLordDetailId  = this.globalAddRowIndex;    */
     console.log('landLordDetailTableList', this.landLordDetailTableList);
     this.houseRentform.get('landLordDetailList').reset();
     this.landlordDetailsSubmitted = false;
+    this.monthRentAmount();
+    this.btn = false;
+    this.showUpdateButton = false;
+    this.toShowAddBtn = true;
+
+    this.houseRentService.getFamilyInfo().subscribe((res) => {
+      console.log(res);
+      this.familyList = res.data.results;
+      this.familyList.forEach((element) => {
+        if (element.relation === "Self") {
+          this.declrName = element.familyMemberName;
+          console.log("familyMemberName ", this.declrName);
+        }
+      });
+    })
+
   }
 
 
@@ -477,7 +582,7 @@ export class HouserentmasterComponent implements OnInit {
     }
     if (
       this.houseRentform.get('houseRentMaster').get('pinCode').value.length ===
-        6 &&
+      6 &&
       this.houseRentform.get('houseRentMaster').get('country').value === 'India'
     ) {
       this.Service.getAddressFromPIN(
@@ -534,7 +639,7 @@ export class HouserentmasterComponent implements OnInit {
 
 
     for (let i = 0; i <= this.rentAgreementdocumentPassword.length; i++) {
-      if(this.rentAgreementdocumentPassword[i] != undefined){
+      if (this.rentAgreementdocumentPassword[i] != undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -546,7 +651,7 @@ export class HouserentmasterComponent implements OnInit {
       }
     }
     for (let i = 0; i <= this.LandlordPANdocumentPassword.length; i++) {
-      if(this.LandlordPANdocumentPassword[i] != undefined){
+      if (this.LandlordPANdocumentPassword[i] != undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
@@ -558,174 +663,207 @@ export class HouserentmasterComponent implements OnInit {
       }
     }
 
-    console.log("rentDetail:::::",this.houseRentform.get('rentDetail').value);
-   // let invalidSubmission = false;
+    console.log("rentDetailList:::::", this.houseRentform.get('rentDetailList').value);
+    // let invalidSubmission = false;
     console.log('Houserentform', this.houseRentform);
-    if(!this.houseRentform.get('rentDetail').invalid)
-    {
-    //  invalidSubmission = true;
-      console.log("rentDetail:::::----------",this.houseRentform.get('rentDetail').value.rentAmount * 12);
-      if(this.houseRentform.get('rentDetail').value.rentAmount * 12 > 100000 && (this.declarationOfLandlordDocument.length === 0 ||
-      this.declarationOfLandlordDocumentDetail.length === 0))
-      {
+    // if(!this.houseRentform.get('rentDetailList').invalid)
+    // {
+    // //  invalidSubmission = true;
+    //   console.log("rentDetailList:::::----------",this.houseRentform.get('rentDetailList').value.rentAmount * 12);
+    //   if(this.houseRentform.get('rentDetailList').value.rentAmount > 8333 && (this.declarationOfLandlordDocument.length === 0 ||
+    //   this.declarationOfLandlordDocumentDetail.length === 0))
+    //   {
+    //     this.alertService.sweetalertWarning(
+    //       'PAN NOT AVAILABLE. Upload Landloard PAN Deatils.'
+    //     ); 
+    //     return;
+    //   }
+
+    // }
+
+    /*   if (this.total !== 100) {
+        invalidSubmission = true;
         this.alertService.sweetalertWarning(
-          'PAN NOT AVAILABLE. Upload Landloard PAN Deatils.'
+          ' Landlord Details % Share Of Total Rent Please Fill  100%.'
         ); 
-        return;
+        return;    
       }
-     
-    }
-
-  /*   if (this.total !== 100) {
-      invalidSubmission = true;
+       */
+    if (this.houseRentform.get('houseRentMaster').invalid) {
       this.alertService.sweetalertWarning(
-        ' Landlord Details % Share Of Total Rent Please Fill  100%.'
-      ); 
-      return;    
-    }
-     */
-
-    if (this.landLordDetailTableList.length === 0) {
-    //  invalidSubmission = true;
-      if (this.houseRentform.invalid) {
-        this.alertService.sweetalertWarning('Please enter House  taken details.');
-      }
+        'Please Enter House Details.'
+      );
       return;
     }
+    // if (this.landLordDetailTableList.length === 0) {
+    //   if (this.houseRentform.invalid) {
+    //     this.alertService.sweetalertWarning('Please enter House details.');
+    //   }
+    //   return;
+    // }
     /*   if (this.houseRentform.get('houseRentMaster').invalid) {
       this.alertService.sweetalertWarning('Please Enter Rent taken details');
       return;
     } */
 
     if (this.landLordDetailTableList.length === 0) {
-    //  console.log('landLordDetailTableList',this.landLordDetailTableList.length );
+      //  console.log('landLordDetailTableList',this.landLordDetailTableList.length );
       this.alertService.sweetalertWarning(
-        'Please Enter LandLord Detail Table Field.'
+        'Please Enter LandLord Details.'
       );
       return;
     }
 
     if (
-      this.houseRentform.get('agreementDetail').invalid &&
+      this.houseRentform.get('agreementDetailList').invalid &&
       this.agreementDetailsTableList.length === 0
     ) {
       this.agreementDetailssubmitted = true;
       this.alertService.sweetalertWarning(
-        'Please Enter  Agreement DetailList Table Field.'
+        'Please Enter Agreement Details.'
       );
 
-      console.log(this.houseRentform.get('agreementDetail').invalid);
+      console.log(this.houseRentform.get('agreementDetailList').invalid);
       return;
     }
-  
-    
-    
-    
-     // console.log("rentDetail:::::----------",this.houseRentform.get('rentDetail').value.rentAmount);
+    if (
+      this.houseRentform.get('rentDetailList').invalid &&
+      this.RentDetailTableList.length >= 1
+    ) {
+      this.alertService.sweetalertWarning(
+        'Please Enter Rent Details'
+      );
+
+      console.log(this.houseRentform.get('rentDetailList').invalid);
+      return;
+    }
+    console.log("rentAgreementDocumentDetail", this.rentAgreementDocumentDetail)
+    if (this.rentAgreementDocumentDetail.length === 0) {
+      this.alertService.sweetalertWarning(
+        'Please Attach Rent Agreement'
+      );
+      return;
+    }
+
+
+
+    // console.log("rentDetailList:::::----------",this.houseRentform.get('rentDetailList').value.rentAmount);
+
+    // if (
+    //   ( this.rentAgreementDocument.length === 0) &&
+    //   (this.rentAgreementDocumentDetail.length === 0 ) )
+    //  {
+    //   this.alertService.sweetalertWarning(
+    //     'Please Upload All Mandatitory Documents.'
+    //   );
+
+    //   return;
+    // } else {
+
+    const data = this.houseRentform.getRawValue();
+
+    /*   data.housePropertyLoanDetailList = this.loanDetailGridData; */
+    data.landLordDetailList = this.landLordDetailTableList;
+    data.rentAgreementRemarkPasswordList = this.rentAgreementdocumentDataArray,
+      data.declarationOfLandlordRemarkPasswordList = this.LandlordPANdocumentDataArray,
+      console.log(this.houseRentform.get('agreementDetailList').value);
 
     if (
-      ( this.rentAgreementDocument.length === 0) &&
-      (this.rentAgreementDocumentDetail.length === 0 ) )
-     {
-      this.alertService.sweetalertWarning(
-        'Please Upload All Mandatitory Documents.'
+      this.houseRentform.get('agreementDetailList').invalid &&
+      this.agreementDetailsTableList.length !== 0
+    ) {
+      data.agreementDetailList = this.houseRentform.get('agreementDetailList').value;
+    } else if (!this.houseRentform.get('agreementDetailList').invalid) {
+      this.agreementDetailsTableList = [];
+      this.agreementDetailsTableList.push(
+        this.houseRentform.get('agreementDetailList').value
       );
-    
-      return;
-    } else {
-      const data = this.houseRentform.getRawValue();
+      console.log(
+        'agreementDetailsTableList::',
+        this.agreementDetailsTableList
+      );
+      data.agreementDetailList = this.agreementDetailsTableList;
+    }
+    console.log(
+      ':agreementDetailList:',
+      this.houseRentform.get('agreementDetailList').value
+        .houseRentalAgreementDetailId
+    );
 
-      /*   data.housePropertyLoanDetailList = this.loanDetailGridData; */
-      data.landLordDetailList = this.landLordDetailTableList;
-      data.rentAgreementRemarkPasswordList = this.rentAgreementdocumentDataArray,
-      data.declarationOfLandlordRemarkPasswordList = this.LandlordPANdocumentDataArray,
-      console.log(this.houseRentform.get('agreementDetail').value);
+    console.log(
+      'agreementDetailList value ::',
+      this.houseRentform.get('agreementDetailList').value
+        .houseRentalAgreementDetailId
+    );
+    console.log('agreementDetailsTableList', this.agreementDetailsTableList);
+    this.houseRentform.get('agreementDetailList').reset();
 
-      if (
-        this.houseRentform.get('agreementDetail').invalid &&
-        this.agreementDetailsTableList.length !== 0
-      ) {
-        data.agreementDetail =   this.houseRentform.get('agreementDetail').value;
-      } else if (!this.houseRentform.get('agreementDetail').invalid) {
-        this.agreementDetailsTableList = [];
-        this.agreementDetailsTableList.push(
-          this.houseRentform.get('agreementDetail').value
-        );
-        console.log(
-          'agreementDetailsTableList::',
-          this.agreementDetailsTableList
-        );
-        data.agreementDetail = this.houseRentform.get('agreementDetail').value;
+    //data.rentDetailList = this.RentDetailTableList[0];
+    /*  data.declarationOfLandlordDocument= this.declarationOfLandlordDocument; */
+    /*    data.rentAgreementDocument= this.rentAgreementDocument; */
+
+    data.landLordDetailList.forEach((element) => {
+      if (element.houseRentalLandLordDetailId < 0) {
+        element.houseRentalLandLordDetailId = 0;
       }
-      console.log(
-        ':agreementDetailList:',
-        this.houseRentform.get('agreementDetail').value
-          .houseRentalAgreementDetailId
-      );
-
-      console.log(
-        'agreementDetailList value ::',
-        this.houseRentform.get('agreementDetail').value
-          .houseRentalAgreementDetailId
-      );
-      console.log('agreementDetailsTableList', this.agreementDetailsTableList);
-      this.houseRentform.get('agreementDetail').reset();
-
-      //data.rentDetail = this.RentDetailTableList[0];
-      /*  data.declarationOfLandlordDocument= this.declarationOfLandlordDocument; */
-      /*    data.rentAgreementDocument= this.rentAgreementDocument; */
-
-      data.landLordDetailList.forEach((element) => {
-        if (element.houseRentalLandLordDetailId < 0) {
-          element.houseRentalLandLordDetailId = 0;
+    });
+    //
+    this.RentDetailTableList = [];
+    this.RentDetailTableList.push(
+      this.houseRentform.get('rentDetailList').value
+    );
+    console.log(
+      'RentDetailTableList::',
+      this.RentDetailTableList
+    );
+    data.rentDetailList = this.RentDetailTableList;
+    //
+    console.log('Housing Rent Data::', data);
+    this.houseRentService
+      .submitHousingRentMasterData(
+        this.declarationOfLandlordDocument,
+        this.rentAgreementDocument,
+        data
+      )
+      .subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {
+          this.masterGridData = res.data.results;
+          this.masterGridData.forEach((element) => {
+            element.policyStartDate = new Date(element.policyStartDate);
+            element.policyEndDate = new Date(element.policyEndDate);
+            element.fromDate = new Date(element.fromDate);
+            element.toDate = new Date(element.toDate);
+            this.alertService.sweetalertMasterSuccess(
+              'Record saved Successfully.',
+              'Go to "Declaration & Actual" Page to see Schedule.'
+            );
+          });
         }
       });
-      console.log('Housing Rent Data::', data);
-      this.houseRentService
-        .submitHousingRentMasterData(
-          this.declarationOfLandlordDocument,
-          this.rentAgreementDocument,
-          data
-        )
-        .subscribe((res) => {
-          console.log(res);
-          if (res.data.results.length > 0) {
-            this.masterGridData = res.data.results;
-            this.masterGridData.forEach((element) => {
-              element.policyStartDate = new Date(element.policyStartDate);
-              element.policyEndDate = new Date(element.policyEndDate);
-              element.fromDate = new Date(element.fromDate);
-              element.toDate = new Date(element.toDate);
-              this.alertService.sweetalertMasterSuccess(
-                'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
-              );
-            });
-          }
-        });
-      this.Index = -1;
-      formDirective.resetForm();
-      this.houseRentform.reset();
+    this.Index = -1;
+    formDirective.resetForm();
+    this.houseRentform.reset();
 
-      this.showUpdateButton = false;
-      this.loanDetailGridData = [];
-      this.declarationOfLandlordDocument = [];
-      this.houseDetailsRentsubmitted = false;
-      this.rentAgreementDocument = [];
-      this.houseDetailsRentsubmitted = false;
-      this.agreementDetailsTableList = [];
-      this.landLordDetailTableList = [];
-      this.RentDetailTableList = [];
-      this.declarationOfLandlordDocumentDetail = [];
-      this.rentAgreementDocumentDetail = [];
-      this.rentAgreementdocumentDataArray = [];
-      this.LandlordPANdocumentDataArray = [];
-      this.LandlordPANremarkList = [];
-      this.LandlordPANdocumentPassword = [];
-      this.rentAgreementremarkList = [];
-     this.rentAgreementdocumentPassword = [];
-      
-    }
+    this.showUpdateButton = false;
+    this.loanDetailGridData = [];
+    this.declarationOfLandlordDocument = [];
+    this.houseDetailsRentsubmitted = false;
+    this.rentAgreementDocument = [];
+    this.houseDetailsRentsubmitted = false;
+    this.agreementDetailsTableList = [];
+    this.landLordDetailTableList = [];
+    this.RentDetailTableList = [];
+    this.declarationOfLandlordDocumentDetail = [];
+    this.rentAgreementDocumentDetail = [];
+    this.rentAgreementdocumentDataArray = [];
+    this.LandlordPANdocumentDataArray = [];
+    this.LandlordPANremarkList = [];
+    this.LandlordPANdocumentPassword = [];
+    this.rentAgreementremarkList = [];
+    this.rentAgreementdocumentPassword = [];
+
+    // }
   }
 
   public onMasterUpload(
@@ -877,6 +1015,9 @@ export class HouserentmasterComponent implements OnInit {
     /* this.landLordDetailForm.patchValue(this.landLordDetailTableList[i]); */
     console.log('landLordDetailTableList', this.landLordDetailTableList);
     console.log(i);
+    this.showUpdateButton = true;
+    this.toShowAddBtn = false;
+    this.btn = true;
     this.houseRentform.get('landLordDetailList').patchValue({
       houseRentalLandLordDetailId:
         this.landLordDetailTableList[i].houseRentalLandLordDetailId,
@@ -888,12 +1029,12 @@ export class HouserentmasterComponent implements OnInit {
         this.landLordDetailTableList[i].percentageShareOfRent,
     });
   }
- 
+
   /* ---------------------------editAgreementDetails----------------------- */
   public editAgreementDetails(i: number) {
     // this.agreementDetailsTableList=[];
     console.log('agreementDetailsTableList', this.agreementDetailsTableList);
-    this.houseRentform.get('agreementDetail').patchValue({
+    this.houseRentform.get('agreementDetailList').patchValue({
       houseRentalAgreementDetailId:
         this.agreementDetailsTableList[i].houseRentalAgreementDetailId,
       houseRentalMasterId:
@@ -953,12 +1094,12 @@ export class HouserentmasterComponent implements OnInit {
       console.log('RentDetailTableList............', obj.rentDetailList);
       console.log('rentDetailList............', obj.rentDetailList);
 
-    this.landLordDetailTableList = obj.landLordDetailList;
+      this.landLordDetailTableList = obj.landLordDetailList;
 
-  /* ......Agreement Record........... */
-      this.agreementDetailsTableList = obj.agreementDetailList;      
-      console.log("agreementDetailsTableList:------------:",this.agreementDetailsTableList)
-      this.houseRentform.get('agreementDetail').patchValue({
+      /* ......Agreement Record........... */
+      this.agreementDetailsTableList = obj.agreementDetailList;
+      console.log("agreementDetailsTableList:------------:", this.agreementDetailsTableList)
+      this.houseRentform.get('agreementDetailList').patchValue({
         houseRentalAgreementDetailId:
           this.agreementDetailsTableList[0]
             .houseRentalAgreementDetailId,
@@ -976,11 +1117,11 @@ export class HouserentmasterComponent implements OnInit {
             .remark,
       });
 
-  /*   ......Rent Record........... */
+      /*   ......Rent Record........... */
       this.RentDetailTableList = obj.rentDetailList;
-      console.log("RentDetailTableList:----------*******--:",this.RentDetailTableList)
-        
-      this.houseRentform.get('rentDetail').patchValue({
+      console.log("RentDetailTableList:----------*******--:", this.RentDetailTableList)
+
+      this.houseRentform.get('rentDetailList').patchValue({
         houseRentalRentDetailId:
           this.RentDetailTableList[0]
             .houseRentalRentDetailId,
@@ -997,7 +1138,7 @@ export class HouserentmasterComponent implements OnInit {
           this.RentDetailTableList[0]
             .rentAmount,
       });
-      
+
       console.log('documentInformationList', obj.documentInformationList);
 
       obj.documentInformationList.forEach((documentInformation) => {
@@ -1059,13 +1200,36 @@ export class HouserentmasterComponent implements OnInit {
       }
     })();
   }
-  /*   Declaration of Landlord PAN */
+  /*   Declaration of Landlord PAN 1*/
   openForm12BModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
       Object.assign({}, { class: 'gray modal-xl' })
     );
+    this.rentFromDate = this.landRentDetailForm.fromDate.value;
+    this.rentToDate = this.landRentDetailForm.toDate.value;
+    this.agreeFromDate = this.houseAgreementMasterForm.fromDate.value;
+    this.agreeToDate = this.houseAgreementMasterForm.toDate.value;
+    this.monthlyRent = this.houseRentform.get('rentDetailList').value.rentAmount;
+    console.log("rentFromDate", this.rentFromDate);
+    console.log("rentToDate", this.rentToDate);
+    console.log("agreeFromDate", this.agreeFromDate);
+    console.log("agreeToDate", this.agreeToDate);
+
   }
+  /*   Declaration of Landlord PAN 2 */
+  openForm12BModal2(template2: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template2,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+    this.rentFromDate = this.houseRentform.get('rentDetailList').value.fromDate;
+    this.rentToDate = this.houseRentform.get('rentDetailList').value.toDate;
+    this.agreeFromDate = this.houseRentform.get('agreementDetailList').value.fromDate;
+    this.agreeToDate = this.houseRentform.get('agreementDetailList').value.fromDate;
+    this.monthlyRent = this.houseRentform.get('rentDetailList').value.rentAmount;
+  }
+
 
   /* =================pdf======================== */
   download() {
@@ -1075,18 +1239,21 @@ export class HouserentmasterComponent implements OnInit {
     html2canvas(data).then((canvas) => {
       console.log(canvas);
       // Few necessary setting options
-      const imgWidth = 193;
+      const imgWidth = 208;
       const pageHeight = 0;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       // const heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png');
       // A4 size page of PDF
-      const pdf = new jspdf('p', 'mm', 'a4');
-      const position = -120;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      const pdf = new jspdf('landscape', 'pt', 'a4');
+      var width = pdf.internal.pageSize.getWidth();
+      var height = pdf.internal.pageSize.getHeight();
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
       // Generated PDF
-      pdf.save('FORM.12B.pdf');
+      //pdf.save('FORM12B.pdf');
+      pdf.html(data).then(() => pdf.save('FORM12B.pdf'));
     });
   }
 
@@ -1116,4 +1283,178 @@ export class HouserentmasterComponent implements OnInit {
     this.declarationOfLandlordDocumentDetail = [];
     this.rentAgreementDocumentDetail = [];
   }
+  monthRentAmount() {
+
+    console.log("before: " + JSON.stringify(this.RentDetailTableList))
+
+    let amt = this.houseRentform.get('rentDetailList').value.rentAmount;
+
+    this.RentDetailTableList.push(this.houseRentform.get('rentDetailList').value)
+
+    console.log("after: " + JSON.stringify(this.RentDetailTableList))
+
+    // this.houseRentform.controls['rentDetailList'].reset()
+
+    // this.houseRentform.controls['rentDetailList'].setValue(this.RentDetailTableList)
+
+
+
+
+    // console.log("landLordDetailTableList",this.landLordDetailTableList)
+    // console.log("amt is: "+ amt)
+    // console.log("agreementDetailsTableList",this.agreementDetailsTableList)
+    // console.log("RentDetailTableList",this.RentDetailTableList)
+    this.address1 = this.houseRentform.get('houseRentMaster').value.address1;
+    this.address2 = this.houseRentform.get('houseRentMaster').value.address2;
+    this.address3 = this.houseRentform.get('houseRentMaster').value.address3;
+    this.state = this.houseRentform.get('houseRentMaster').value.state;
+    this.city = this.houseRentform.get('houseRentMaster').value.city;
+    //console.log(this.address1,this.address2,this.address3,this.state,this.city)
+
+
+    this.iconCount = 0;
+    if (amt > 8333) {
+      this.landLordDetailTableList.forEach((element, index) => {
+        if (element.landLordPan == null || element.landLordPan == '') {
+          console.log("here")
+          this.iconCount = this.iconCount + 1;
+        } else {
+          console.log("here1")
+          // if(this.iconCount == 0){
+          //   this.iconCount = 0
+          // }else{
+          //   this.iconCount = this.iconCount - 1;
+          // }
+        }
+      });
+    }
+
+    console.log("count: " + this.iconCount)
+
+    if (this.iconCount == 1) {
+      if (this.landLordDetailTableList[0].landLordPan == null || this.landLordDetailTableList[0].landLordPan == "") {
+        this.toShowTemp1 = true;
+        this.toShowTemp2 = false;
+        this.toShowPanDeclr = true;
+      }
+      else if (this.landLordDetailTableList[1].landLordPan == null || this.landLordDetailTableList[1].landLordPan == "") {
+        this.toShowTemp1 = false;
+        this.toShowTemp2 = true;
+        this.toShowPanDeclr = true;
+      }
+    } else if (this.iconCount == 2) {
+      this.toShowTemp1 = true;
+      this.toShowTemp2 = true;
+      this.toShowPanDeclr = true;
+    } else {
+      this.toShowTemp1 = false;
+      this.toShowTemp2 = false;
+      this.toShowPanDeclr = false;
+      this.iconCount = this.iconCount - 1;
+    }
+
+  }
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId,
+    summary, count
+  ) {
+
+
+    this.summaryDetails = summary;
+    console.log("summary", this.summaryDetails)
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.houseRentService.gethouseRentMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+
+
+      this.documentRemarkList = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    console.log('documentDetail::', this.documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  onSaveRemarkDetails(summary, index) {
+    this.enteredRemark = '';
+    const data = {
+      "transactionId": 0,
+      "masterId": this.summaryDetails.agreementDetailList[0].houseRentalMasterId,
+      "employeeMasterId": this.summaryDetails.agreementDetailList[0].houseRentalMasterId,
+      "section": "House",
+      "subSection": "Rental",
+      "remark": this.editRemarkData,
+      "proofSubmissionId": '',
+      "role": "Employee",
+      "remarkType": "Master"
+
+    };
+    this.houseRentService.postHouseRentMasterRemark(data)
+      .subscribe((res) => {
+        if (res.status.code == "200") {
+          console.log(this.masterGridData);
+          this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+          this.alertService.sweetalertMasterSuccess(
+            'Remark Saved Successfully.',
+            '',
+
+          );
+          this.masterPage();
+          this.enteredRemark = '';
+          this.modalRef.hide();
+
+        } else {
+          this.alertService.sweetalertWarning("Something Went Wrong");
+        }
+      });
+
+  }
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData = event.target.value;
+
+    console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+
+    this.transactionDetail[0].agreementDetailList[transIndex].remark = event?.target?.value;
+
+
+  }
+  checkMetroCity(data) {
+    console.log(data);
+    console.log(typeof (data));
+    if (data != '') {
+      this.houseRentService.toCheckMetroCity(data).subscribe((res) => {
+        console.log(res);
+        const radiobutton = res.data.results[0][0].isMetro;
+        if (radiobutton === 'Non-Metro') {
+          this.isMetro = false;
+          this.isNonMetro = true;
+        }
+        else {
+          this.isMetro = true;
+          this.isNonMetro = false;
+        }
+      });
+    }
+  }
+
 }

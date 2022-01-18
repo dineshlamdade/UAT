@@ -251,7 +251,7 @@ export class InvestmentApprovalComponent implements OnInit {
     {
       this.router.navigate(['/investment-approval/donationsforscientificresearchggatransaction']);
     }
-    else if (this.psidList[0].itSection == '80-U') 
+    else if (this.psidList[0].itSection == '80U') 
     {
       this.router.navigate(['/investment-approval/physicallyhandicappedtransaction']);
     }

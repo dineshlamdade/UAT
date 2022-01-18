@@ -119,11 +119,20 @@ export class NpsService {
   }
 
   getIdentityInformation () {
-    return this._HTTP.get(this.apiUrlEmployee + '/employeeIdentity-information/1')
+    return this._HTTP.get(this.apiUrlEmployee + '/employeeIdentity-information/36')
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+
+
+  // getPranInformation () {
+  //   return this._HTTP.get(this.apiUrlEmployee + '/npsMaster-detail/employeePersonalInfo/')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
 
   uploadMultipleNpsDepositMasterFiles(files: File[], data:any): Observable<any> {

@@ -70,6 +70,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public Index: number;
   public showUpdateButton: boolean;
   public isShowNurological: boolean;
+  userAgeBracket: any;
   
   public tabIndex = 0;
   public radioSelected: string;
@@ -159,6 +160,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       familyMemberInfoId: new FormControl(null, Validators.required),
       patientName: new FormControl(null, Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+      ageBracket: new FormControl({ value: null, disabled: true }, Validators.required),
       neurologicalDiseaseName: new FormControl(null, Validators.required),
       specifiedDiseaseName: new FormControl(null, Validators.required),
       proofSubmissionId: new FormControl(''),
@@ -318,6 +320,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isShowCancel = false;
     this.isShowUpdate = false;
     this.isShowSave = true;
+  
 
     if (this.masterForm.invalid) {
       return;
@@ -341,7 +344,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     //     return;
     //   }
     // }
-
+debugger
     for (let i = 0; i < this.masterfilesArray.length; i++) {
       if (this.remarkList[i] != undefined || this.remarkList[i] == undefined) {
         let remarksPasswordsDto = {};
@@ -360,6 +363,14 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
     // neurologicalDiseaseName: new FormControl(null),
     // specifiedDiseaseName:
+    for(let i of  this.masterGridData) {
+      if(i.patientName == this.masterForm.patientName.value ){
+              this.alertService.sweetalertWarning(
+           'Record for patient is already exist'
+         );
+         return;
+      }
+    }
     let data: any = {};
     if (this.form.controls.specifiedDiseaseName.value !== 'Neurological diseases with disability level >=40% per cent and above') {
       data = {
@@ -367,6 +378,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
         patientName: this.masterForm.patientName.value,
         relationship: this.masterForm.relationship.value,
+        // ageBracket: this.masterForm.ageBracket.value,
         neurologicalDiseaseName: '',
         specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
       },
@@ -379,6 +391,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
         patientName: this.masterForm.patientName.value,
         relationship: this.masterForm.relationship.value,
+        // ageBracket: this.masterForm.ageBracket.value,
         neurologicalDiseaseName: this.masterForm.neurologicalDiseaseName.value,
         specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
       }
@@ -386,6 +399,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       data.remark = this.masterForm.remark.value;
       data.remarkPasswordList = this.documentDataArray;
     }
+    delete data['ageBracket'];
 
     console.log('Treatment Of Specified Disease::', data);
 
@@ -581,9 +595,12 @@ public docRemarkModal(
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('patientName').value
     );
+    debugger
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
-  }
+    this.form.get('ageBracket').setValue(toSelect.ageBracket);
+    // this.userAgeBracket = toSelect.ageBracket;
+    }
 
   //--------------- Deactivate the Remark -------------------
   deactivateRemark() {
@@ -619,18 +636,20 @@ public docRemarkModal(
   public editMaster(specifiedDiseaseMasterId) {
     this.isVisibleTable = true
     this.isEdit = true;
+    debugger
     this.isShowUpdate = true;
     this.isShowSave = false;
     this.isShowCancel = false;
     this.form.enable();
     this.form.get('relationship').disable();
+    this.form.get('ageBracket').disable();
     this.scrollToTop();
     this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       console.log(specifiedDiseaseMasterId);
       const obj = this.findByPolicyNo(specifiedDiseaseMasterId, this.masterGridData);
-
+debugger
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
       if (obj != 'undefined' && obj.neurologicalDiseaseName == "") {
@@ -702,6 +721,7 @@ public docRemarkModal(
     this.isShowCancel = false;
     this.form.enable();
     this.form.get('relationship').disable();
+    this.form.get('ageBracket').disable();
     this.scrollToTop();
     this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -892,6 +912,7 @@ public docRemarkModal(
     this.isShowUpdate = false;
     this.isShowSave = true;
     this.form.get("relationship").disable();
+    // this.form.get("ageBracket").disable();
     this.masterfilesArray = [];
     this.isCancel = false;
     this.urlArray = [];

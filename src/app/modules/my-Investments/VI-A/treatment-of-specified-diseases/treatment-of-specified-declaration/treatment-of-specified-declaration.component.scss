@@ -1,0 +1,17 @@
+.btn-bg-blue{
+    color: white;
+    background: blue;
+}
+.btn-bg-grey{
+    color: white;
+    background:grey;
+}
+
+.disabled{
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+.changeColor span:hover {
+    cursor: pointer;
+background-color: blue !important;
+  }

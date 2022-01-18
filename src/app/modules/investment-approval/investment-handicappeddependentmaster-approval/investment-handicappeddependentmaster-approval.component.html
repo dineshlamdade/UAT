@@ -466,7 +466,7 @@
                             <div class="row">
                               <div class="col-md-0">
                                 <div class="d-flex">
-                                  <Label class="form-label mr-2 mt-1"> Remark</Label>
+                                  <Label class="form-label mr-2 mt-1"> Remark :</Label>
 
                                   <!-- <input
                                     type="text"
@@ -1306,7 +1306,7 @@
             </div>
 
             <!-- Remark Modal started -->
-            <ng-template #template3 style="max-height: 200px; overflow-y: scroll;">
+            <!-- <ng-template #template3 style="max-height: 200px; overflow-y: scroll;">
               <div class="modal-header">
                 <h5 class="modal-title" id="jasdjgh">View Remark</h5>
                 <button
@@ -1359,6 +1359,93 @@
                   (click)="modalRef.hide()"
                 >
                   Ok
+                </button>
+              </div>
+            </ng-template> -->
+            <ng-template #template3>
+              <div class="modal-header">
+                <h5 class="modal-title" id="jasdjgh">Remark</h5>
+                <button
+                  type="button"
+                  (click)="modalRef.hide()"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+            
+              <div class="card-body">
+                <div *ngFor="let documentRemark of documentRemarkList" >
+                  <div class="row" >
+                   
+                    <div class="col-md-6">
+                      <span class="form-label"
+                        >{{ documentRemark.role }}:
+                        <b class="text-gray">{{
+                          documentRemark.remarkBy
+                        }}</b></span
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <div class="float-right">
+                        <span class="form-label">
+                          Date:
+                          <b class="text-gray">{{
+                            documentRemark.remarkDate
+                              | date: "dd-MMM-yyyy HH:mm"
+                          }}</b>
+                        </span>
+                      </div>
+                    
+                    </div>
+                  </div>
+                  <div class="row">
+                    <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+                    {{ documentRemark.remark }}
+                    </textarea>
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                    <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+                    
+                    <textarea type="text" [(ngModel)]="enteredRemark"
+                    (change)= "
+                    onChangeDocumentRemark(
+                      this.summaryDetails, this.indexCount,
+                        $event
+                      )
+                    "  class="form-control" placeholder="Remark">
+                  </textarea>
+                  </div>
+                </div>
+              </div>
+            
+              <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+                <!-- <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="modalRef.hide()"
+                >
+                  Ok
+                </button> -->
+              </div>
+              <div  class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onResetRemarkDetails()"
+                >
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onSaveRemarkDetails()"
+                >
+                  Save
                 </button>
               </div>
             </ng-template>

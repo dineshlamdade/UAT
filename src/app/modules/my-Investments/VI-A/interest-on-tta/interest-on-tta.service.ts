@@ -24,6 +24,14 @@ export class InterestOnTtaService {
     ));
   }
 
+  getinterestonsavingdeposit80TTASummaryFuturePlan(data) {
+
+    return this._HTTP.post(this.apiUrl + 'interestonsavingdeposit80TTA-master/summaryFuturePolicy', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   // postElectricVehicleFuturePlan(data) {
 
   //   return this._HTTP.post(this.apiUrl + 'electricVehicleLoanMaster/interestOnFutureLoan', data)

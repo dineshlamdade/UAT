@@ -45,6 +45,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
 
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -71,6 +72,9 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public editDocumentByPSID: Array<any> = [];
 
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   public AccountlenderNameList: Array<any> = [];
 
@@ -79,6 +83,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   documentArray: any[] =[];
   viewDocumentName: any;
   viewDocumentType: any;
+  selectedFilter: any;
+
 
 
   documentPassword =[];
@@ -193,6 +199,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  selectedMasterId: any;
 
 
   constructor(
@@ -239,6 +246,12 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       this.getTransactionFilterData(input.lenderName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      if(this.data.canView == true){
+        this.isDisabled = true;
+        
+            } else {
+              this.isDisabled = false;
+            }
     }
 
 
@@ -358,6 +371,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionLenderName(lenderName: any) {
     this.filesArray = [];
+    this.selectedFilter = lenderName;
   this.AccountlenderNameList = [];
     this.transactionDetail = [];
     this.globalInstitution = lenderName;
@@ -568,6 +582,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    debugger
     const checked = event.target.checked;
     this.onHideSaveButton = checked;
     const formatedGlobalSelectedValue = Number(
@@ -641,6 +656,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    debugger
     const checked = event.target.checked;
     this.onHideSaveButton = checked;
     const formatedGlobalSelectedValue = Number(
@@ -1005,6 +1021,47 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     console.log('addRow::', this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList);
   }
 
+
+
+
+
+  addRowInList1(
+    summarynew: {
+      educationLoanTransactionId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      // interestReceivedDate: Date;
+      actualAmount: any;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.educationLoanTransactionId = 0;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    // this.declarationService.interestReceivedDate = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.00;
+    this.declarationService.amountApproved = 0.00;
+    if (
+      this.transactionDetail[j].educationalLoanTransactionList ==
+      null
+    ) {
+      this.declarationService.educationalLoanMasterId = this.selectedMasterId;
+      this.transactionDetail[j].educationalLoanTransactionList = [];
+    }
+    this.transactionDetail[j].educationalLoanTransactionList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].educationalLoanTransactionList
+    );
+  }
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
   }
@@ -1024,6 +1081,28 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       return true;
     }
   }
+
+
+
+   // -------- Delete Row--------------
+deleteRow1(j: number) {
+  const rowCount =
+    this.transactionDetail[j].educationalLoanTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].educationalLoanTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].educationalLoanTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
 
   editDeclrationRow(
     summary: {
@@ -1414,19 +1493,29 @@ onSaveRemarkDetails(summary, index){
           this.initialArrayIndex = [];
 
           this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.educationalLoanTransactionPreviousEmployerList.length);
+
+            this.initialArrayIndex.push(
+              element.educationalLoanTransactionList.length);
+
+            element.educationalLoanTransactionList.forEach((item) => {
+                item.declaredAmount = this.numberFormat.transform(
+                  item.declaredAmount
+                );
+                item.actualAmount = this.numberFormat.transform(
+                  item.actualAmount
+                );
+              }
+            );
+
+
+
+ this.initialArrayIndex.push(element.educationalLoanTransactionPreviousEmployerList.length);
 
             element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement) => {
 
-              // if (innerElement.dateOfPayment !== null) {
-              //   innerElement.dateOfPayment = new Date(
-              //     innerElement.dateOfPayment
-              //   );
-              // }
-
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
+              // innerElement.declaredAmount = this.numberFormat.transform(
+              //   innerElement.declaredAmount
+              // );
               innerElement.actualAmount = this.numberFormat.transform(
                 innerElement.actualAmount
               );
@@ -1436,18 +1525,21 @@ onSaveRemarkDetails(summary, index){
             'Transaction Saved Successfully.',
             ''
           );
+          this.selectedTransactionLenderName(this.selectedFilter);
         } else {
           // this.alertService.sweetalertWarning(res.status.messsage);
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
+          // this.alertService.sweetalertMasterSuccess(
+          //   'Transaction Saved Successfully.',
+          //   ''
+          // );
+          this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.documentDataArray = [];
      this.globalSelectedAmount = '0.00';
+     this.selectedTransactionLenderName(this.selectedFilter);
   }
 
   changeReceiptAmountFormat() {
@@ -1722,21 +1814,19 @@ onSaveRemarkDetails(summary, index){
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
-    this.educationalLoanServiceService
-      .getTransactionByProofSubmissionId(proofSubmissionId)
-      .subscribe((res) => {
+    this?.educationalLoanServiceService?.getTransactionByProofSubmissionId(proofSubmissionId)?.subscribe((res) => {
         console.log('edit Data:: ', res);
-        console.log('test', res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount);
-        this.updateReceiptAmount = res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount;
-        this.editDocumentByPSID = res.data.results[0].educationalLoanTransactionDocumentDetailList;
-        this.editDocumentByPSID.forEach(element => {
-          element.documentDetailList.forEach(element => {
+        console.log('test', res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.receiptAmount);
+        this.updateReceiptAmount = res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.receiptAmount;
+        this.editDocumentByPSID = res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList;
+        this?.editDocumentByPSID?.forEach(element => {
+          element?.documentDetailList?.forEach(element => {
             // if(element!=null)
-            this.documentArray.push({
+            this?.documentArray?.push({
               'dateofsubmission': element.dateOfSubmission,
               'documentType':element.documentType,
               'documentName': element.fileName,
@@ -1749,18 +1839,38 @@ onSaveRemarkDetails(summary, index){
             });
           });
         this.urlArray =
-          res.data.results[0].educationalLoanTransactionDocumentDetailList[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].educationalLoanTransactionDetailList;
-          this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
-          this.editProofSubmissionId = proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+          res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.documentDetailList;
+        this.editTransactionUpload = res?.data?.results[0]?.educationalLoanTransactionDetailList;
+          this.editProofSubmissionId = res?.data?.results[0]?.educationalLoanTransactionDocumentDetailList[0]?.proofSubmissionId;
+    //       if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionList[0].length) {
+    //         this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.createDateTime;
+    //         this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.lastModifiedDateTime;
+    //         this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.transactionStatus;
+    //         }    
+    // if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionPreviousEmployerList[0].length) {
+    //         this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.createdDateTime;
+    //         this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+    //         this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.transactionStatus;
+    // }
+    if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionList.length) {
+      this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.createdDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionList[0]?.transactionStatus;
+      }    
+if(res?.data?.results[0]?.educationalLoanTransactionDetailList[0].educationalLoanTransactionPreviousEmployerList.length) {
+      this.createDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.createdDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.educationalLoanTransactionDetailList[0]?.educationalLoanTransactionPreviousEmployerList[0]?.transactionStatus;
+}
+          // this.editProofSubmissionId = proofSubmissionId;
+          this.editReceiptAmount = res?.data?.results[0]?.documentInformation[0]?.receiptAmount;
         this.grandDeclarationTotalEditModal =
-          res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+          res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
         this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
+          res?.data?.results[0]?.grandRejectedTotal;
         this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
+          res?.data?.results[0]?.grandApprovedTotal;
 
 
 
@@ -1847,10 +1957,13 @@ onSaveRemarkDetails(summary, index){
     );
   }
 
-  public docViewer1(template3: TemplateRef<any>, index: any) {
+  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    this.viewDocumentName = data?.documentName;
+    this.viewDocumentType = data?.documentType
+
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
@@ -1911,7 +2024,7 @@ onSaveRemarkDetails(summary, index){
             );
           });
         });
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -2193,8 +2306,10 @@ onSaveRemarkDetails(summary, index){
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
+    this.viewDocumentName = this.urlArray[this.urlIndex].fileName;
+    this.viewDocumentType = this.urlArray[this.urlIndex].documentType;
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
@@ -2213,8 +2328,11 @@ class DeclarationService {
   public actualAmount: number;
   public remark: boolean;
   public transactionStatus: 'Pending';
-  public rejectedAmount: number;
-  public approvedAmount: number;
+  public rejectedAmount: number = 0.00;;
+  public approvedAmount: number = 0.00;;
+  amountRejected: number;
+  amountApproved: number;
+  educationalLoanMasterId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

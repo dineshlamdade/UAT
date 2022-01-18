@@ -45,6 +45,15 @@ getSpecifiedDiseaseNameList() {
 }
 
 
+getspecifiedDiseaseSummaryFuturePlan(data) {
+
+  return this._HTTP.post(this.apiUrl + 'specifiedDiseaseMaster/summaryFuturePolicy', data)
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
+
+
 // getElectricVehicleDeclarationLenderName() {
 //   return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/BOI')
 //   .pipe(map((res: any) => {

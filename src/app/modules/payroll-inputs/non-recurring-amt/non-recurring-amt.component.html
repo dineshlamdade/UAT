@@ -995,7 +995,7 @@
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control"
+                                                                                                    class="form-control wd-100"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -1478,7 +1478,7 @@
                                                                                             <td
                                                                                                 class="bg-color-light_gray">
                                                                                                 <select
-                                                                                                    class="form-control"
+                                                                                                    class="form-control wd-100"
                                                                                                     (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">
                                                                                                         Select
@@ -4733,9 +4733,9 @@
 
                                         <div class="float-right ">
                                             <button type="button" [disabled]="devationRemarkText == ''"
-                                                (click)="updateDeviationRepeatData(selectedDevData)"
+                                                (click)="updateDeviationRepeatData(selectedDevData)" (click)="modalRef.hide()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                [ngClass]="{'disabled-btn' : devationRemarkText == ''}"
+                                                [ngClass]="{'disabled-btn-bg-green' : devationRemarkText == ''}"
                                                 tooltip="Save"><b>
                                                     <i class="fa fa-times"></i></b> Save</button>&nbsp;
                                         </div>
@@ -5012,7 +5012,8 @@
                                                                 <button type="submit"
                                                                     [disabled]="repeatRemarkText == ''"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                                    [ngClass]="{'disabled-btn' : repeatRemarkText == ''}"
+                                                                    [ngClass]="{'disabled-btn-bg-green' : repeatRemarkText == ''}"
+                                                                    (click)="modalRef.hide()"
                                                                     tooltip="Save"
                                                                     (click)="updateDeviationRepeatData(selectedDevData)"><b>
                                                                         <i class="fa fa-files-o"></i></b> Save

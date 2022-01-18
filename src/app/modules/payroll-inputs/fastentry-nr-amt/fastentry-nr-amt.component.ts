@@ -85,17 +85,17 @@ export class FastentryNRAmtComponent implements OnInit {
     // ]
 
     
-    this.headData = []
-    const formdata = new FormData();
-    formdata.append('categoryName', 'Non-Recurring-Amount');
-    this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
-      res.data.results.forEach(element => {
-        this.headData.push({
-          'headMasterId':element.headMasterId,
-          'displayName': element.displayName
-        })
-      });
-    })
+   // this.headData = []
+   // const formdata = new FormData();
+  //  formdata.append('categoryName', 'Non-Recurring-Amount');
+  //  this.garnishmentService.payrollheadmaster(formdata).subscribe(res =>{
+  //    res.data.results.forEach(element => {
+   //     this.headData.push({
+    //      'headMasterId':element.headMasterId,
+    //      'displayName': element.displayName
+    //    })
+    //  });
+   // })
 
     if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))

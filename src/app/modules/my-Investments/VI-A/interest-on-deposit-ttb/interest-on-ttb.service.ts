@@ -41,6 +41,13 @@ export class InterestOnTtbService {
     }
     ));
   }
+  getinterestonsavingdeposit80TTBSummaryFuturePlan(data) {
+
+    return this._HTTP.post(this.apiUrl + 'interestonsavingdeposit80TTB-master/summaryFuturePolicy', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
   //get ifsc detail
     getDataFromIFSC(bankIFSC) : Observable<any>  {

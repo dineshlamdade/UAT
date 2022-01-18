@@ -1177,11 +1177,11 @@
                                             )
                                           "
                                           [disabled]="
-                                            documentDetail.documentStatus ==
+                                            documentDetail?.documentStatus ==
                                               'Approved' ||
-                                            documentDetail.documentStatus ==
+                                            documentDetail?.documentStatus ==
                                               'Discarded' ||
-                                            documentDetail.documentStatus ==
+                                            documentDetail?.documentStatus ==
                                               'Discard'
                                           "
                                         />
@@ -1195,7 +1195,7 @@
                                                 docRemarkModal(
                                                   template3,
                                                   documentDetailIndex,
-                                                  documentDetail.documentRemarkDetailList
+                                                  documentDetail?.documentRemarkDetailList
                                                 )
                                               "
                                               class="
@@ -1210,22 +1210,21 @@
                                             _ngcontent-ykc-c443=""
                                             class="Label_badge"
                                             >{{
-                                              documentDetail
-                                                .documentRemarkDetailList.length
+                                              documentDetail?.documentRemarkDetailList?.length
                                             }}</span
                                           >
                                         </div>
                                       </div>
                                     </td>
                                     <td>
-                                      {{ documentDetail.documentStatus }}
+                                      {{ documentDetail?.documentStatus }}
                                     </td>
                                     <td>
-                                      {{ documentDetail.lastModifiedBy }}
+                                      {{ documentDetail?.lastModifiedBy }}
                                     </td>
                                     <td>
                                       {{
-                                        documentDetail.lastModifiedDateTime
+                                        documentDetail?.lastModifiedDateTime
                                           | date: "dd-MMM-yyyy HH:mm"
                                       }}
                                     </td>
