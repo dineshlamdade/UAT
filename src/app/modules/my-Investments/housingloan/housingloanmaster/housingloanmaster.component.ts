@@ -1268,6 +1268,7 @@ export class HousingloanmasterComponent implements OnInit {
       this.submitted = false;
       this.houseLoanUsageTypeList = [];
       this.loanDetailGridData = [];
+      this.isVisibleTable = false;
     }
   }
 
@@ -1514,7 +1515,8 @@ export class HousingloanmasterComponent implements OnInit {
           this.documentArray.push(element);
         });
 /*       }
- */      this.isVisibleTable = true;
+ */     
+       this.isVisibleTable = true;
       if(this.loanDetailGridData.length != 0){
         this.isLoanAddNew = false;
         if(this.houseLoanF.housePropertyMasterId.value != 0)

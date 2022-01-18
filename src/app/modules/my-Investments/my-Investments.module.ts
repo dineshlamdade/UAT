@@ -62,9 +62,15 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSelectModule } from '@angular/material/select';
 import { PreviousemployerdeclarationComponent } from './previousemployer/previousemployerdeclaration/previousemployerdeclaration.component';
+import { InvestmentLandingPageComponent } from './landing-page/investment-landing-page/investment-landing-page.component';
+import { HraExemptionComponent } from './landing-page/investment-landing-page/hra-exemption/hra-exemption.component';
+import { ChartModule } from 'primeng/chart';
+
 
 @NgModule({
   declarations: [
+    HraExemptionComponent,
+    InvestmentLandingPageComponent,
     MyInvestmentsComponent,
     HousingloanComponent,
     SignaturePadComponent,
@@ -138,6 +144,7 @@ import { PreviousemployerdeclarationComponent } from './previousemployer/previou
     FormsModule,
     SignaturePadModule,
     ScrollPanelModule,
+    ChartModule,
 
   ],
 
