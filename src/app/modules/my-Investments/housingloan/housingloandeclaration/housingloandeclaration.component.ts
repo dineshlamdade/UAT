@@ -194,6 +194,7 @@ export class HousingloandeclarationComponent implements OnInit {
   rentRemarkList =[];
   municipleDocumentPassword =[];
   municipleRemarkList =[];
+  showUsageType =[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1526,10 +1527,13 @@ export class HousingloandeclarationComponent implements OnInit {
 
   public ComputationforIncome(
     template5: TemplateRef<any>,
-    lossIncomeAmountCalculation1: any
+    lossIncomeAmountCalculation1: any,
+    showUsageType
   ) {
     console.log('In Template 5', lossIncomeAmountCalculation1);
     this.lossIncomeAmountCalculation = lossIncomeAmountCalculation1;
+    
+    this.showUsageType = showUsageType;
 
     this.modalRef = this.modalService.show(
       template5,
