@@ -42,7 +42,7 @@ export class WorkflowMasterComponent implements OnInit {
   workflowMasterHeaderResponseDTO: any = [];
   selectedLevelManager: any;
   selectedLevelManagerRM: any;
-  numberOfApprovalLevel: number = 1;
+  numberOfApprovalLevel: number = 0;
   header: any[];
   
 
@@ -70,7 +70,7 @@ export class WorkflowMasterComponent implements OnInit {
       approverMethod: new FormControl(null),
       levelOfRM: new FormControl(null),
       sdm: new FormControl(null),
-      derivedID:new FormControl("201"),  
+      derivedID:new FormControl(null),  
       sequence: new FormControl(null),
       workflowMasterHeaderId: new FormControl(null),
       workflowResequenceId: new FormControl(null),
@@ -82,7 +82,7 @@ export class WorkflowMasterComponent implements OnInit {
       levelOfRM: null,
       numberOfDays: null,
       sdm: null,
-      derivedID:'201',  
+      derivedID:null,  
       sequence: 1,
       treatmentUnActionedPlan: null,
       workflowMasterApproverId: 0,
@@ -212,49 +212,54 @@ export class WorkflowMasterComponent implements OnInit {
     }
 
     let returnFlag: boolean;
-    this.arrayApproverMaster.forEach((val, index) => {
-      let rank = index + 1;
-      if (!val.approverMethod) {
-        this.alertService.sweetalertWarning('Please fill data in Method Of Approval');
-        returnFlag = true;
-        return;
-      } 
-      else {
-        if (val.approverMethod === 'Reporting Manager') {
-          if (!val.levelOfRM) {
-            this.alertService.sweetalertWarning('Please fill data in Level Of Reporting Manager');
-            returnFlag = true;
-            return;
+    if(this.form.controls['defined'].value == 'false' || this.form.controls['defined'].value == false ){
+      this.arrayApproverMaster.forEach((val, index) => {
+        let rank = index + 1;
+        if (!val.approverMethod) {
+          this.alertService.sweetalertWarning('Please fill data in Method Of Approval');
+          returnFlag = true;
+          return;
+        } 
+        else {
+          if (val.approverMethod === 'Reporting Manager') {
+            if (!val.levelOfRM) {
+              this.alertService.sweetalertWarning('Please fill data in Level Of Reporting Manager');
+              returnFlag = true;
+              return;
+            }
+          } else {
+            if (!val.sdm) {
+              this.alertService.sweetalertWarning('Please fill data in Level Of Reporting Manager');
+              returnFlag = true;
+              return;
+            }
           }
+        }
+        if (!val.treatmentUnActionedPlan) {
+          this.alertService.sweetalertWarning('Please fill data in Treatment- Unactioned Application');
+          returnFlag = true;
+          return;
         } else {
-          if (!val.sdm) {
-            this.alertService.sweetalertWarning('Please fill data in Level Of Reporting Manager');
-            returnFlag = true;
-            return;
+          if (val.treatmentUnActionedPlan === 'Reassign') {
+            if ((!this.reassignedSequenceArray.find((x) => x.sequence === parseInt(val.sequence)))) {
+              this.alertService.sweetalertWarning('Treatment (Unactioned Application) and Post Days should be same for same sequence No.');
+              // + val.sequence
+              returnFlag = true;
+              return;
+            }
           }
         }
-      }
-      if (!val.treatmentUnActionedPlan) {
-        this.alertService.sweetalertWarning('Please fill data in Treatment- Unactioned Application');
-        returnFlag = true;
-        return;
-      } else {
-        if (val.treatmentUnActionedPlan === 'Reassign') {
-          if ((!this.reassignedSequenceArray.find((x) => x.sequence === parseInt(val.sequence)))) {
-            this.alertService.sweetalertWarning('Treatment (Unactioned Application) and Post Days should be same for same sequence No.');
-            // + val.sequence
-            returnFlag = true;
-            return;
-          }
+  
+        if (!val.numberOfDays) {
+          this.alertService.sweetalertWarning('Please fill data in Post- No. Of Days');
+          returnFlag = true;
+          return;
         }
-      }
-
-      if (!val.numberOfDays) {
-        this.alertService.sweetalertWarning('Please fill data in Post- No. Of Days');
-        returnFlag = true;
-        return;
-      }
-    });
+      });
+    }else{
+      this.arrayApproverMaster = []
+    }
+    
 
     this.arrayApproverMaster.sort((a, b) => a.sequence - b.sequence);
     if (this.form.get('autoApproval').value === true) {

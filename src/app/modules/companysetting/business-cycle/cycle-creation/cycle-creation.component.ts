@@ -336,8 +336,12 @@ export class CycleCreationComponent implements OnInit {
         // this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
         // this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
 
-        this.fromDate = response.data.results[0].fromDate;
-        this.toDate = response.data.results[0].toDate;
+        // Changed on 02 Dec 2021
+        // this.fromDate = response.data.results[0].fromDate;
+        // this.toDate = response.data.results[0].toDate;
+
+        this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fullFromDate;
+        this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fullToDate;
 
         this.businessCycleDefinitionId = businessCycleDefinitionId;
         // this.businessYearUpdate = BusinessYear;
@@ -345,11 +349,42 @@ export class CycleCreationComponent implements OnInit {
         this.adjustedToNextCycle = false;
 
         this.CycleDefinitionByid.forEach(element => {
-          let fromdate = new Date(element.fromDate).getMonth()
-          // console.log(fromdate)
-          element.maxDate = new Date()
-          element.maxDate = element.maxDate.setMonth(fromdate + 1);
-          element.maxDate = new Date(element.maxDate)
+         let fromdate = new Date(element.fromDate).getMonth()
+         // let todate = new Date(element.toDate).getMonth()
+
+          let getFromDateDay =  new Date(element.toDate).getDay()
+          let getFromDateMonth
+          if(new Date(element.toDate).getMonth() == 12){
+            getFromDateMonth =  '01'
+          }else{
+            getFromDateMonth =  new Date(element.toDate).getMonth()
+          }
+          let getFromDateYear =  new Date(element.toDate).getFullYear()
+
+          // let maxDate = getFromDateYear + '/' + getFromDateMonth + '/' + getFromDateDay
+
+        
+          // console.log(maxDate)
+
+          //element.maxDate = new Date()
+    
+        // element.maxDate = element.maxDate.setMonth(fromdate + 1);
+       //  element.maxDate = element.maxDate.setFullYear(element.fromDate.getFullYear());
+        //  element.maxDate = new Date(element.maxDate)
+
+          // element.minDate = element.minDate.setMonth(fromdate)
+          element.minDate = new Date(element.fromDate) 
+
+          // if(getFromDateMonth == 1 || getFromDateMonth == 3 || getFromDateMonth == 5 || getFromDateMonth == 7 || getFromDateMonth == 8 ||
+          //   getFromDateMonth == 10 || getFromDateMonth == 12)
+          // {
+          //   getFromDateMonth = getFromDateMonth
+          // }else{
+          //   getFromDateMonth = getFromDateMonth + 1
+          // }
+
+          const d = new Date(getFromDateYear, getFromDateMonth+1, 31, 0, 0, 0, 0);
+          element.maxDate = d
           
           // console.log("element is: "+ JSON.stringify(element))
           this.previewCycleData.push({
@@ -816,7 +851,7 @@ export class CycleCreationComponent implements OnInit {
       })
     }
 
-    console.log("remark data: " + JSON.stringify(this.previewCycleData))
+    // console.log("remark data: " + JSON.stringify(this.previewCycleData))
   }
 
   addCycleDisplayName(value, data) {
@@ -976,7 +1011,7 @@ export class CycleCreationComponent implements OnInit {
       })
     }
 
-    console.log("cycleDisplayName data: " + JSON.stringify(this.previewCycleData))
+    // console.log("cycleDisplayName data: " + JSON.stringify(this.previewCycleData))
   }
 
   forceEnd() {
@@ -994,7 +1029,7 @@ export class CycleCreationComponent implements OnInit {
 
   addCycleCreation() {
     // alert()
-    console.log("save preview cycle data: " + JSON.stringify(this.previewCycleData));
+    // console.log("save preview cycle data: " + JSON.stringify(this.previewCycleData));
     this.companySetttingService.addBusinessCycle(this.previewCycleData).subscribe(res => {
       this.alertService.sweetalertMasterSuccess(res.status.message, '');
       this.getAllCycleCreationList()

@@ -95,6 +95,22 @@ export class InterestOnTtbService {
   }
 
 
+  public getinterestonsavingdeposit80TTBMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'interestonsavingdeposit80TTB-master/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getinterestonsavingdeposit80TTBTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
   // getElectricVehicleDeclarationLenderName() {
   //   return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/BOI')
   //   .pipe(map((res: any) => {

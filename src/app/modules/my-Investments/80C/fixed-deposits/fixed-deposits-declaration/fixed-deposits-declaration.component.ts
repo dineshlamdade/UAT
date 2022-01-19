@@ -34,6 +34,7 @@ import { FixedDepositsService } from '../fixed-deposits.service';
   styleUrls: ['./fixed-deposits-declaration.component.scss'],
 })
 export class FixedDepositsDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -73,6 +74,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -170,6 +174,10 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
   // row = [];
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
@@ -194,6 +202,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+  public ispreviousEmploy = true;
 
   
   
@@ -340,6 +351,21 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     }
   }
 
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+   
+
+  }
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
@@ -467,12 +493,12 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       .subscribe((res) => {
 
         console.log('edit Data:: ', res);
-        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
+        this.documentRemark =res?.data?.results[0]?.documentInformation[0]?.documentRemark;
 
         this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
+          res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
          
-          this.disableRemark = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
+          this.disableRemark = res?.data?.results[0]?.investmentGroup3TransactionDetailList[0]?.transactionStatus;
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
         //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -498,6 +524,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.createDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].createDateTime;
+        this.lastModifiedDateTime = res.data.results[0].investmentGroup3TransactionDetailList[0].lastModifiedDateTime;
+        this.transactionStatus = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.masterGridData = res.data.results;
 
@@ -740,6 +769,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     });
   }
 
+
+  
+
   // Get All Previous Employer
   getAllPreviousEmployer() {
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -750,6 +782,29 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       }
     });
   }
+
+
+//     // Get API call for All Current previous employee Names
+//     this.unitLinkedInsurancePlanService.getcurrentpreviousEmployeName().subscribe((res) => {
+//       console.log('previousEmployeeList::', res);
+//       if (!res.data.results[0]) {
+//         return;
+//       }
+//       console.log(res.data.results[0].joiningDate);
+// debugger
+//       this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+//       console.log(this.dateOfJoining)
+//       res.data.results.forEach((element) => {
+
+//         const obj = {
+//           label: element.name,
+//           value: element.employeeMasterId,
+//         };
+//         this.previousEmployeeList.push(obj);
+//       });
+//     });
+
+
 
   updatePreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
@@ -1397,7 +1452,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     this.declarationService.investmentGroup3TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = 0;
     this.declarationService.accountNumber = null;
-    this.declarationService.actualAmount = 0;
+    this.declarationService.actualAmount = 0.00;
     this.declarationService.institution = null;
     this.declarationService.dateOfPayment = null;
     this.declarationService.transactionStatus = 'Pending';
@@ -1559,28 +1614,28 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   }
 
   //----------- On change Transactional Line Item Remark --------------------------
-  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+  // public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  //   console.log('event.target.value::', event.target.value);
     
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  //  console.log('this.transactionDetail', this.transactionDetail);
+  //   // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  //   // console.log('index::', index);
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+  //   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
    
 
-  }
+  // }
 
   upload() {
 
-    for (let i = 0; i <= this.documentPassword.length; i++) {
+    for (let i = 0; i <= this.masterfilesArray.length; i++) {
       if(this.documentPassword[i] != undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1776,6 +1831,72 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     this.globalAddRowIndex = 0;
   }
 
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup3TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"FDMORETHAN5YEARS",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        
+        console.log(this.transactionDetail);
+        this.transactionDetail[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+  public docRemarkModal(
+
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    investmentGroup3TransactionId,
+    summary, count
+  ) {
+    debugger
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.fixedDepositsService.getFdRemarkList(
+      investmentGroup3TransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
   changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_ : number;
@@ -1846,15 +1967,18 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+
+    debugger
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
         summary.declaredAmount
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
 
-    this.editTransactionUpload[j].group2TransactionList[
+    this.editTransactionUpload[j].group3TransactionList[
       i
-    ].declaredAmount = this.declarationService.declaredAmount;
+    ].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
     );
@@ -1877,9 +2001,12 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].actualTotal = this.declarationTotal;
     console.log(
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
     );
+    this.editTransactionUpload[0].actualAmount = this.editTransactionUpload[0].declaredAmount;
   }
   // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(
@@ -1898,6 +2025,10 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     console.log(
       this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment
     );
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   // ------------Actual Amount change Edit Modal-----------
@@ -2062,20 +2193,24 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
   // Common Function for filter to call API
   getTransactionFilterData() {
+    debugger
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.fixedDepositsService.getTransactionFilterData().subscribe((res) => {
       console.log('getTransactionFilterData', res);
+      debugger
       if (res.data.results.length > 0) {
         this.transactionDetail =
           res.data.results[0].investmentGroup3TransactionDetailList;
         console.log('transactionDetail', this.transactionDetail);
 
         this.documentDetailList = res.data.results[0].documentInformation;
+        this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        res.documentDetailList.forEach(element => {
+        res?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -2106,7 +2241,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
         this.initialArrayIndex = [];
 
-        this.transactionDetail.forEach((element) => {
+        this?.transactionDetail?.forEach((element) => {
           element.declaredAmount = this.numberFormat.transform(
             element.declaredAmount
           );
@@ -2115,7 +2250,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
           );
         });
         // console.log('this.transactionDetail', this.transactionDetail);
-        if(!this.transactionDetail.length){
+        if(!this.transactionDetail?.length){
           this.addRowInList();
         }
       // } else {
@@ -2124,27 +2259,27 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   });
 }
 
-public docRemarkModal(
-  documentViewerTemplate: TemplateRef<any>,
-  index: any,
-  psId, policyNo
-) {
+// public docRemarkModal(
+//   documentViewerTemplate: TemplateRef<any>,
+//   index: any,
+//   psId, policyNo
+// ) {
   
-  this.Service.getRemarkList(
-    policyNo,
-    psId
-  ).subscribe((res) => {
-    console.log('docremark', res);
-  this.documentRemarkList  = res.data.results[0].remarkList
-  });
-  // console.log('documentDetail::', documentRemarkList);
-  // this.documentRemarkList = this.selectedRemarkList;
-  console.log('this.documentRemarkList', this.documentRemarkList);
-  this.modalRef = this.modalService.show(
-    documentViewerTemplate,
-    Object.assign({}, { class: 'gray modal-s' })
-  );
-}
+//   this.Service.getRemarkList(
+//     policyNo,
+//     psId
+//   ).subscribe((res) => {
+//     console.log('docremark', res);
+//   this.documentRemarkList  = res.data.results[0].remarkList
+//   });
+//   // console.log('documentDetail::', documentRemarkList);
+//   // this.documentRemarkList = this.selectedRemarkList;
+//   console.log('this.documentRemarkList', this.documentRemarkList);
+//   this.modalRef = this.modalService.show(
+//     documentViewerTemplate,
+//     Object.assign({}, { class: 'gray modal-s' })
+//   );
+// }
 
 
   downloadTransaction(proofSubmissionId) {

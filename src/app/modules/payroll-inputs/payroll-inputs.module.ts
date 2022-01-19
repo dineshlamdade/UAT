@@ -36,7 +36,6 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { AttendanceComponent } from './attendance/attendance.component';
-import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
@@ -57,6 +56,7 @@ import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.com
 import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry-garnishment.component';
+import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -65,7 +65,6 @@ import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry
      NonRecurringAmtComponent,
      NonRecurringQtyComponent,
      AttendanceComponent,
-     GarnishmentComponent,
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
      SdmStepperComponent,
@@ -121,9 +120,9 @@ import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry
     PayrollInputsRoutingModule,
     ChartsModule,
     CheckboxModule,
-
+    NgxPaginationModule
   ],
-  providers: [ DatePipe],
+  providers: [ DatePipe, PaginatePipe],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],

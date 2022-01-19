@@ -53,7 +53,7 @@
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0"
-                          >Date of Joining</label
+                          >Date Of Joining</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0"
-                          >Date of Leaving</label
+                          >Date Of Leaving</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
@@ -210,28 +210,34 @@
                           <!-- Master Popup Button End-->
                           <!-- Master Details Line -->
                           <div class="row">
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Institution:</strong
-                                >{{ transactionDetail. institutionName }}
+                                <strong>Institution : </strong
+                                >{{ transactionDetail.institutionName }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Policy No. : </strong
                                 >{{ transactionDetail.policyNo }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Policy Holder Name : </strong
+                                <strong>Name : </strong
                                 >{{ transactionDetail.policyholdername }}
                               </h6>
                             </div>
-                            <div class="col-md-3 col-xs-12">
+                            <div class="col-md-2 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Frequency : </strong
                                 >{{ transactionDetail.frequency }}
+                              </h6>
+                            </div>
+                            <div class="col-md-2 col-xs-12">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>ECS : </strong
+                                >{{ transactionDetail.ecs=='1'?'Yes':'No' }}
                               </h6>
                             </div>
                           </div>
@@ -250,14 +256,15 @@
                                  <!-- P-Table ng-template header is started -->
                                   <ng-template pTemplate="header">
                                     <tr>
-                                      <th>
+                                      <th class="wd-6">
                                         <p-tableHeaderCheckbox>
                                         </p-tableHeaderCheckbox>
                                       </th>
 
-                                      <th class="wd-10">Previous Employer</th>
+                                      <!-- <th class="wd-6">Previous Employer</th> -->
                                       <th class="wd-10">Due Date</th>
                                       <th class="wd-10">Date of Payment</th>
+                                      <th class="wd-6">Previous Employer</th>
                                       <th class="wd-10">Actual</th>
                                       <th class="primeng-table-header-center wd-10">
                                         Rejected
@@ -273,8 +280,8 @@
                                       >
                                         Remark
                                       </th>
-                                      <th >Status</th>
-                                      <th >Action</th>
+                                      <th class="wd-6">Status</th>
+                                      <th class="wd-6">Action</th>
                                     </tr>
                                   </ng-template>
                                  <!-- P-Table ng-template header is End -->
@@ -294,7 +301,7 @@
                                         (click)="
                                         selectTransactionForProcess(
                                           e.checked,
-                                          transaction
+                                          transaction, e
                                         )
                                       "
                                       #e
@@ -304,9 +311,9 @@
                                         >
                                         </p-tableCheckbox>
                                       </td>
-                                      <td aria-disabled="true" class="disabled">
+                                      <!-- <td aria-disabled="true" class="disabled">
                                         {{ transaction.previousEmployer }}
-                                      </td>
+                                      </td> -->
                                       <td class="disabled">
                                         {{
                                           transaction.dueDate
@@ -319,11 +326,14 @@
                                             | date: "dd-MMM-yyyy"
                                         }}
                                       </td>
+                                      <td aria-disabled="true" class="disabled">
+                                        {{ transaction.previousEmployer }}
+                                      </td>
                                       <td class="disabled align-right">
                                         {{ transaction.actualAmount | number: "1.2-2"}}
                                       </td>
 
-                                      <td>
+                                      <td class="align-right">
                                         <input
                                           type="text"
                                           [(ngModel)]="
@@ -345,7 +355,7 @@
                                           class="form-control align-right"
                                         />
                                       </td>
-                                      <td>
+                                      <td  class="align-right">
                                         <input
                                           type="text"
                                           [(ngModel)]="
@@ -369,8 +379,9 @@
                                       <td>
 
                                           <div class="d-flex">
-                                          <input
+                                          <!-- <input
                                             type="text"
+                                            [(ngModel)]="checkRemark"
                                             class="form-control"
                                             (change)="
                                               onChangeTransactionalRemark(
@@ -383,7 +394,7 @@
                                               transaction.transactionStatus ==
                                                 'Approved'
                                             "
-                                          />
+                                          /> -->
                                           <div
                                             _ngcontent-ykc-c443=""
                                             class="custom_Label_badge mr-2 ml-2"
@@ -395,7 +406,8 @@
                                                     template3,
                                                     transactionIndex,
                                                     transaction.documentRemarkDetailList,
-                                                    transaction?.transactionId
+                                                    transaction?.transactionId,
+                                                    transaction, i, transactionDetail
                                                   )
                                                 "
                                                 class="
@@ -410,9 +422,7 @@
                                             <span
                                               _ngcontent-ykc-c443=""
                                               class="Label_badge "
-                                              >{{
-                                                transaction.remarkList.length
-                                              }}</span
+                                              >{{transaction?.bubbleRemarkCount}}</span
                                             >
                                           </div>
                                         </div>
@@ -462,6 +472,114 @@
                                 "
                               >
                                 <tbody>
+                                  <tr>
+                                    <td class="bg-gray font-18 font700 wd-12">
+                                      Total
+                                    </td>
+
+                                    <!-- <td
+                                      class="
+                                        bg-gray
+                                        font-18
+                                        font700
+                                        align-right
+                                        wd-10
+                                      "
+                                    ></td> -->
+                                    <td class="bg-gray font-18 font700 align-right wd-9">
+                                      <span class="padding-right-12" placement="left" tooltip=""></span>
+                                    </td>
+                                    <td
+                                      class="
+                                        bg-gray
+                                        font-18
+                                        font700
+                                        align-right
+                                        wd-8
+                                      "
+                                    ></td>
+                                    <td
+                                      class="
+                                        bg-gray
+                                        font-18
+                                        font700
+                                        align-right
+                                        wd-9
+                                      "
+                                    >
+                                      <span
+                                        class="padding-right-12"
+                                        placement="left"
+                                        tooltip=""
+                                      >
+                                        {{
+                                          transactionInfo.transactionDetail[0].actualTotal
+                                            | number: "1.2-2"
+                                        }}
+                                      </span>
+                                    </td>
+                                    <td
+                                      class="
+                                        bg-gray
+                                        font-18
+                                        font700
+                                        align-right
+                                        wd-9
+                                      "
+                                    >
+                                      <span
+                                        class="padding-right-12"
+                                        placement="left"
+                                        tooltip=""
+                                      >
+                                        {{
+                                          transactionInfo.transactionDetail[0].totalRejectedAmount
+                                            | number: "1.2-2"
+                                        }}
+                                      </span>
+                                    </td>
+                                    <td
+                                      class="
+                                        bg-gray
+                                        font-18
+                                        font700
+                                        align-right
+                                        wd-8
+                                      "
+                                    >
+                                      <span
+                                        class="padding-right-12"
+                                        placement="left"
+                                        tooltip=""
+                                      >
+                                        {{  transactionInfo.transactionDetail[0].totalApprovedAmount| number: "1.2-2" }}
+                                      </span>
+                                    </td>
+                                    <td
+                                      class="bg-gray font-18 font700 wd-10"
+                                    ></td>
+                                    <td
+                                      class="bg-gray font-18 font700 wd-10"
+                                    ></td>
+                                    <td
+                                      class="bg-gray font-18 font700 wd-10"
+                                    ></td>
+                                  </tr>
+                                  </tbody>
+                                  </table>
+                                  </div>
+                                  </div>
+                                  </div>
+                                  <div class="row mt-15">
+                                    <div class="col-md-12">
+                                      <div class="table-responsive Custom_Table">
+                                  <table
+                                class="
+                                  table table-striped table-hover table-bordered
+                                  m-b-0
+                                "
+                              >
+                                  <tbody>
                                   <tr>
                                     <td class="bg-gray font-18 font700 wd-12">
                                       Grand Total
@@ -664,9 +782,11 @@
                               ripple
                               mr-2
                             "
-                            [class.disablegreenbutton]=" approved1Disabled 
+                            [class.disablegreenbutton]=" approved1Disabled || transactionList.length == 0 ||
+                            transactionInfo.psidDetail.proofSubmissionStatus == '' 
                             "
-                            [disabled]=" approved1Disabled
+                            [disabled]=" approved1Disabled || transactionList.length == 0 ||
+                            transactionInfo.psidDetail.proofSubmissionStatus == '' 
                             "
                             (click)="changePSIDStatusOfTransaction('Approved')"
                             tooltip="Approve"
@@ -1173,7 +1293,7 @@
                                                 docRemarkModal(
                                                   template3,
                                                   documentDetailIndex,
-                                                  documentDetail.documentRemarkDetailList,
+                                                  documentDetail?.documentRemarkDetailList,
                                                   documentDetail?.proofSubmissionId
                                                 )
                                               "
@@ -1190,33 +1310,32 @@
                                             _ngcontent-ykc-c443=""
                                             class="Label_badge"
                                             >{{
-                                              documentDetail
-                                                .documentRemarkDetailList.length
+                                              documentDetail?.documentRemarkDetailList?.length
                                             }}</span
                                           >
                                         </div>
                                       </div>
                                     </td>
                                     <td>
-                                      {{ documentDetail.documentStatus }}
+                                      {{ documentDetail?.documentStatus }}
                                     </td>
                                     <td>
-                                      {{ documentDetail.lastModifiedBy }}
+                                      {{ documentDetail?.lastModifiedBy }}
                                     </td>
                                     <td>
                                       {{
-                                        documentDetail.lastModifiedDateTime
+                                        documentDetail?.lastModifiedDateTime
                                           | date: "dd-MMM-yyyy HH:mm"
                                       }}
                                     </td>
                                     <td>
                                       <i
                                         *ngIf="
-                                          documentDetail.documentStatus ==
+                                          documentDetail?.documentStatus ==
                                             'Approved' ||
-                                          documentDetail.documentStatus ==
+                                          documentDetail?.documentStatus ==
                                             'Discarded' ||
-                                          documentDetail.documentStatus ==
+                                          documentDetail?.documentStatus ==
                                             'Discard'
                                         "
                                         class="
@@ -1614,7 +1733,90 @@
               <!-- Remark Modal started -->
               <ng-template #template3>
                 <div class="modal-header">
-                  <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+                  <h5 class="modal-title" id="jasdjgh">Remark</h5>
+                  <button
+                    type="button"
+                    (click)="modalRef.hide()"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+              
+                <div class="card-body">
+                  <div *ngFor="let documentRemark of documentRemarkList">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <span class="form-label"
+                          >{{ documentRemark?.role }}:
+                          <b class="text-gray">{{
+                            documentRemark?.remarkBy
+                          }}</b></span >
+                      </div>
+                      <div class="col-md-6">
+                        <div class="float-right">
+                          <span class="form-label">
+                            Date:
+                            <b class="text-gray">{{
+                              documentRemark?.remarkDate
+                                | date: "dd-MMM-yyyy HH:mm"
+                            }}</b>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+                      {{ documentRemark?.remark }}
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="row mt-25">
+                    <div class="col-md-12">
+                      <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+                      <textarea type="text" [(ngModel)]="enteredRemark"
+                      (change)= "
+                      onChangeDocumentRemark(
+                        this.summaryDetails, this.indexCount,
+                          $event
+                        )
+                      " class="form-control" placeholder="Remark"></textarea>
+                    </div>
+                  </div>
+                </div>
+              
+                <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modalRef.hide()"
+                  >
+                    Ok
+                  </button>
+                </div>
+                <div  class="modal-footer">
+                  <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onResetRemarkDetails()"
+                >
+                  Reset
+                </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+                  >
+                    Save
+                  </button>
+                </div>
+              </ng-template>
+              
+              <!-- <ng-template #template3>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="jasdjgh">Remark Summary</h5>
                   <button
                     type="button"
                     (click)="modalRef.hide()"
@@ -1664,10 +1866,10 @@
                     class="btn btn-secondary"
                     (click)="modalRef.hide()"
                   >
-                    Ok
+                    Close
                   </button>
                 </div>
-              </ng-template>
+              </ng-template> -->
               <!-- Remark Modal End -->
 
               <div

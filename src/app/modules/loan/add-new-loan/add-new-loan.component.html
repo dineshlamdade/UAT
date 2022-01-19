@@ -7,12 +7,59 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
-              <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
+              <form [formGroup]="AddLoanForm">
                 <!-- <div class="float-right">
                   <button type="button" class="btn btn-success" [routerLink]="['/loan/application']">Back</button>
                 </div> -->
-                <br><br>
+                <!-- <br><br> -->
+                <fieldset>
+                  <legend>Employee Details</legend>
+                  <div class="row" *ngIf="perticularEmpDetails">
+                    <div class="col-md-12 pl-0 pr-0">
+                      <div class="border-dark-card radius-10 p-2">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Employee No. & Name </label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode
+                              +' - '+ perticularEmpDetails.fullName}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Date of Joining</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate|date:
+                              'dd-MMM-yyyy'}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Establishment</label>
+                            <label
+                              class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
 
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Department</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Grade</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
+
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Designation</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
+                            <!-- <input type="text" class="form-control"  value="UI Developer" disabled /> -->
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Status</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.status}}</label>
+                            <!-- <input type="text" class="form-control"  value="Probation" disabled /> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
                 <fieldset>
                   <legend>Apply Loan</legend>
                   <div class="row" *ngIf="viewAppNo">
@@ -25,16 +72,34 @@
                       <input type="text" class="form-control" value="{{editLoanData.createDateTime | date: 'dd-MMM-yyyy'}}"disabled />
                     </div>
                   </div>
+
+                  <div class="row" *ngIf="selectedLoanForApprovalFlag">
+                    <div class="col-md-3" *ngIf="selectedLoanDataForApproval[index].loanApplicationNumber">
+                      <label class="form-label">Loan Application No.</label>
+                      <input type="text" class="form-control" value="{{selectedLoanDataForApproval[index].loanApplicationNumber}}" disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Application Date</label>
+                      <input type="text" class="form-control" value="{{selectedLoanDataForApproval[index].createDateTime | date: 'dd-MMM-yyyy'}}" disabled />
+                    </div>
+                  </div>
+
                   <br>
                   <div class="row">
                     <div class="col-md-3">
                       <label class="form-label">Loan Type</label>
-                      <select class="form-control" formControlName="loanType"
+                      <select class="form-control" formControlName="loanType" *ngIf="loanTypevisible"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('loanType').status == 'INVALID'}"
                         placeholder="Select" (change)="assetValueShowHide($event.target.value)">
                         <option [ngValue]="null" selected>Select</option>
-                        <option *ngFor="let loan of loanTypeData " [selected]="loanType == loan.loanCode">
+                        <option *ngFor="let loan of loanTypeData " value="{{loan.loanCode}}">
                           {{loan.loanCode}}</option>
+                      </select>
+                      <select class="form-control" formControlName="loanType" *ngIf="editTimeLoanType">
+                        <!-- <option [ngValue]="null" selected>Select</option>
+                        <option *ngFor="let loan of loanTypeData " [selected]="loanType == loan.loanCode">
+                          {{loan.loanCode}}</option> -->
+                          <option>{{loanType}}</option>
                       </select>
                     </div>
                     <div class="col-md-3">
@@ -45,6 +110,7 @@
                     <div class="col-md-3" *ngIf="isAssetValue">
                       <label class="form-label">Underline Asset Value</label>
                       <input type="text" class="form-control" formControlName="underlineAssestValue"
+                      (focusout)="getUnderlineAssets($event.target.value)"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
                         placeholder="Underline Asset Value"
                          />
@@ -82,7 +148,7 @@
                         value="{{loanAmount }}"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('loanAmount').status == 'INVALID'}"
                         (focusout)="calculateInstallmentAmount($event.target.value)" />
-                      <label style="font-size: 10px;">As per Policy :- 5,00,000</label>
+                      <label style="font-size: 10px;">As per Policy :- {{allowUnderlineAsset}}</label>
 
                       <!-- <p-inputNumber class="form-control" formControlName="loanAmount"
                     mode="decimal"
@@ -97,22 +163,24 @@
                       <input type="text" class="form-control" placeholder="Flat Interest" />
                     </div>
 
-                    <div class="col-md-3 placeholderStyle" *ngIf="!flatIntrestVisible">
-                      <label class="form-label">Interest rate (%)</label>
-                      <input type="text" class="form-control-sm" formControlName="interestRate"
+                    <div class="col-md-3 " *ngIf="!flatIntrestVisible">
+                      <label class="form-label">Interest rate (%) Per Annum</label>
+                      <div class="d-flex">
+                      <input type="text" class="form-control" formControlName="interestRate"
                         placeholder="Interest Rate (%)"
                         (focusout)="calculateRateOfInterest($event.target.value)" />&nbsp;
-                      <span style="font-size: 11px; font-weight:500;">Per Annum</span>
-                      <label style="font-size: 10px;">As per Policy :12%</label>
+                      <!-- <span style="font-size: 11px; font-weight:500;">Per Annum</span> -->
+                       </div>
+                      <label style="font-size: 10px;" *ngIf="SDMLoanData">As per Policy :{{SDMLoanData.intRate}}%</label>
 
                     </div>
 
                     <div class="col-md-3" *ngIf="!flatIntrestVisible">
-                      <label class="form-label">No. of Installment</label>
+                      <label class="form-label">No. of Installments</label>
                       <input type="text" class="form-control" formControlName="noOfInstallment"
                         placeholder="No. of Installment" (focusout)="calculateNoOfInstallment($event.target.value)"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('noOfInstallment').status == 'INVALID'}" />
-                      <label style="font-size: 10px;">As per Policy :- 48</label>
+                      <label style="font-size: 10px;" *ngIf="SDMLoanData">As per Policy :- {{SDMLoanData.recoveryNoOfInstallments}}</label>
 
                     </div>
                     <div class="col-md-3" *ngIf="!flatIntrestVisible">
@@ -120,7 +188,7 @@
                       <input type="text" class="form-control" formControlName="installmentAmount"
                         placeholder="Installment Amount" (focusout)="calculateInstallments($event.target.value)"
                         value="{{installmentAmount}}" />
-                      <label style="font-size: 10px;">As per Policy :- 45234</label>
+                      <!-- <label style="font-size: 10px;">As per Policy :- 45234</label> -->
 
                       <!--
                     <p-inputNumber class="form-control " formControlName="installmentAmount" mode="decimal"
@@ -136,8 +204,16 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark" />
+                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark"
+                      />
                     </div>
+
+                    <!-- <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark"
+                       />
+                    </div> -->
+
                     <div class="col-md-3">
                       <label class="form-label">External Referance No.</label>
                       <input type="text" class="form-control" formControlName="externalReferenceNumber"
@@ -146,11 +222,30 @@
                   </div>
                   <br />
                   <div class="float-right">
-                    <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal"
-                      [disabled]="!AddLoanForm.valid"
+                    <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="schedule(template)" data-target="#UploadModal"
+                      [disabled]="!AddLoanForm.valid" *ngIf="loanApprNormalFlag"
                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
                       <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
+                    </button> -->
+
+                    <button type="button" tooltip="Schedule "
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  "
+                    aria-hidden="true" [disabled]="!AddLoanForm.valid" *ngIf="loanApprNormalFlag" (click)="schedule(template)" data-target="#UploadModal"
+                    [disabled]="!AddLoanForm.valid"
+                    [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}"><b><i class="fa fa-clock-o"
+                      ></i></b>Schedule
                     </button>
+
+                    <button type="button" tooltip="Schedule" (click)="schedule(template)"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  "
+                    aria-hidden="true" *ngIf="loanApprEditFlag"><b><i class="fa fa-clock-o"
+                      ></i></b>Schedule
+                    </button>
+
+                    <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="schedule(template)" data-target="#UploadModal"
+                    *ngIf="loanApprEditFlag"> <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
+                  </button> -->
+
                   </div>
                   <br />
                   <br />
@@ -234,8 +329,8 @@
                         <table class="table table-striped table-bordered table-hover m-b-0">
                           <thead class="thead-dark">
                             <tr>
-                              <th scope="col">Sr .No.</th>
-                              <th scope="col">Emp Code of Guarantor</th>
+                              <th scope="col">Sr. No.</th>
+                              <th scope="col">Emp. Code of Guarantor</th>
                               <th scope="col">Name of Guarantor</th>
                             </tr>
                           </thead>
@@ -300,7 +395,7 @@
                             <th scope="col" class="wd-9">Sr .No.</th>
                             <th scope="col" class="wd-14">Document Name</th>
                             <th scope="col" class="wd-14">Attachment</th>
-                            <th scope="col" class="wd-14">Remark</th>
+                            <!-- <th scope="col" class="wd-14">Remark</th> -->
                             <th scope="col" class="wd-14">Action</th>
                           </tr>
                         </thead>
@@ -313,12 +408,13 @@
                               <i class="fa fa-paperclip text-orange"></i> &nbsp;
                               {{ document.fileName }}
                             </td>
-                            <td class="wd-14">
-                              <input type="text" class="form-control" (focusout)="getDocumentReason($event.target.value)"></td>
+                            <!-- <td class="wd-14">
+                              <input type="text" class="form-control" (focusout)="getDocumentReason($event.target.value)"></td> -->
 
                             <td>
+                              <!-- UploadModalDocument(template1, i,document) -->
                               <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
-                                (click)="UploadModalDocument(template1, i,document)" data-toggle="modal"
+                                (click)="UploadModal(template2,i,document)" data-toggle="modal"
                                 data-target="#UploadModal1"></i>&nbsp;&nbsp;
                             </td>
 
@@ -390,43 +486,39 @@
                             <th scope="col" class="wd-14">Approver Name</th>
                             <th scope="col" class="wd-14">Action Date</th>
                             <th scope="col" class="wd-14">Action Time</th>
-                            <th scope="col" class="wd-14">Remark</th>
+                            <th scope="col" class="wd-14" >Remark</th>
+
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="wd-9">First</td>
-                            <td class="wd-14">approve001</td>
-                            <td class="wd-14">approver1</td>
-                            <td class="wd-14">Null</td>
-                            <td class="wd-14">Null</td>
-                            <td class="wd-14">approved</td>
-                          </tr>
-                        </tbody>
-                        <!-- <tbody>
-                        <tr *ngFor="let approver of approvalDetailsData">
+                        <tr *ngFor="let approver of postApproverDetailsData">
                           <td class="wd-9">{{approver.sequence}}</td>
                           <td class="wd-14">{{approver.approverEmpCode}}</td>
                           <td class="wd-14">{{approver.approverName}}</td>
-                          <td class="wd-14"></td>
-                          <td class="wd-14"></td>
-                          <td class="wd-14"></td>
+                          <td class="wd-14">Null</td>
+                          <td class="wd-14">Null</td>
+                          <td class="wd-14" *ngIf="inputnormalFlag">approved</td>
+                          <td class="wd-14" *ngIf="inputRemarkFlag">
+                            <input type="text" class="form-control" [(ngModel)]="approvalRemark" [ngModelOptions]="{standalone:true}"
+                            [ngClass]="{'is-invalid':approvalRemark == ''}" [required]="approvalRemark == ''">
+                          </td>
                         </tr>
-                      </tbody> -->
+                      </tbody>
                       </table>
                     </div>
 
                   </div>
                   <br><br>
-                  <ng-container class="float-right">
+                  <ng-container class="float-right" *ngIf="loanAppBtns">
                     <!-- || (documentList.length != documentReason.length)
 
                     || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length)-->
                     <!-- || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) -->
                     <div class="row float-right" style="margin: 10px">
-                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)=" addloanFormSubmit()"
                         [disabled]="AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length)"
-                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}" *ngIf="!isVisiblee">
+                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  ||
+                        (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}" *ngIf="!isVisiblee">
                         <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
                       <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -449,9 +541,80 @@
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                         [routerLink]="['/loan/application']" >
                         <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
-
                     </div>
                   </ng-container>
+                  <!-- .............................................manager flow edit time btns ...............................................  -->
+                  <ng-container class="float-right"  *ngIf="loanApprEditTimeBtns">
+                    <div class="row float-right" style="margin: 10px">
+
+                    <button type="submit"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                    tooltip="Approved" (click)="postLoanApproval('Approved')"
+                   ><b> <i class="fa fa-check-square-o "></i>
+                    </b> Approved </button>&nbsp;
+
+                    <button type="submit"
+                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                    tooltip=" Send Back" (click)="postLoanApproval('Send Back')"
+                    [disabled]="approvalRemark == ''"[ngClass]="{'disabled-btn-bg-green': approvalRemark == '' }"><b> <i class="fa fa-reply"></i>
+                    </b> Send Back </button>&nbsp;
+
+                    <button type="button" tooltip="Forward"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true" >
+                    <b><i class="fa fa-share"></i></b>Forward
+                    </button>
+
+<!-- ...............................selected multiple employee buttons ..........................................   -->
+                      <button type="button" *ngIf="multiplEmpFlag" tooltip="Previous" class="custom_button custom_btn
+                       bg-teal-400 btn-labeled btn-labeled-left mr-10"
+                       (click)="priviousRecord()" [disabled]=" selectedLoanDataForApproval.length == 1 || index == 0"
+                      [ngClass]="{'disabled-btn-bg-green' : selectedLoanDataForApproval.length == 1
+                       || index == 0,'btn-bg-gray': !AddLoanForm.invalid }" >
+                        <b><i class="fa fa-angle-double-left" aria-hidden="true" >
+                      </i></b>Previous </button>
+
+                      <button type="button" *ngIf="multiplEmpFlag" tooltip="Next" class="custom_button custom_btn
+                      bg-teal-400 btn-labeled btn-labeled-left mr-10"
+                      (click)="nextRecord()" [disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index"
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index,'btn-bg-gray': !AddLoanForm.invalid }"> <b>
+                      <i class="fa fa-angle-double-right"></i></b> Next </button>
+
+                      <button type="submit" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                      tooltip=" Send Back & Next" (click)="postLoanApproval('Send Back');nextRecord()"
+                      [disabled]="selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index ||approvalRemark == ''"
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index || approvalRemark == '','btn-bg-red': !AddLoanForm.invalid }"><b> <i class="fa fa-reply"></i>
+                      </b> Send Back & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                      <button type="submit" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                      tooltip="Approved & Next" (click)="postLoanApproval('Approved');nextRecord()"
+                      [disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index "
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index ,'btn-bg-green': !AddLoanForm.invalid }"><b>
+                         <i class="fa fa-check-square-o "></i>
+                      </b> Approved & <i class="fa fa-angle-double-right"></i></button>&nbsp;
+
+                      <button type="button" tooltip="Forward & Next" *ngIf="multiplEmpFlag"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true"[disabled]=" selectedLoanDataForApproval.length == 1 || (selectedLoanDataForApproval.length-1) == index "
+                      [ngClass]="{'disabled-btn-bg-green' :selectedLoanDataForApproval.length == 1
+                      || (selectedLoanDataForApproval.length-1) == index ,'btn-bg-green': !AddLoanForm.invalid }"><b>
+                        <i class="fa fa-share"></i></b>Forward & <i class="fa fa-angle-double-right"></i>
+                      </button>
+
+                      <button type="button" tooltip="Close" (click)="close()"
+                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                      <b><i  class="fa fa-times-circle"></i></b> Close
+                    </button>
+
+
+                  </div>
+                </ng-container>
+
                 </fieldset>
               </form>
             </div>
@@ -462,3 +625,82 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Upload Document-->
+<ng-template #template2>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+      aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+      <div class="card">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <!-- <div class="col-md-12">
+                 <label class="form-label">Upload File here :</label>
+              </div> -->
+                  <div class="col-md-12">
+                      <div class="fileuploadbox bg-color-lightgray">
+                          <label class="filelabel">
+              <i class="fa fa-upload">
+              </i>
+              <span class="title">
+                Choose file
+              </span>
+              <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'listDoc');"
+                accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+            </label>
+                      </div>
+                      <div *ngIf="listDoc.length > 0 " class="fileuploadbox">
+                          <span class="text-purple font-14 font700">Selected Files</span>
+                          <label *ngFor="let item of listDoc;  let index = index;" class="filelabeldisplay">
+              <div class="text-ellipsis"><i class="fa fa-paperclip">
+                </i>
+                <span class="title" tooltip="{{item.name}}">
+                  {{ item.name }}
+                </span>
+
+                <div>
+                  <div style="float: left; width: 40%;">
+                    <div class="col-md-8 mt-10">
+                      <label class="form-label">Password</label>
+                    </div>
+                    <div class="col-md-12">
+                      <input class="form-control" [(ngModel)]="documentPassword" [ngModelOptions]="{standalone: true}" rows="1">
+                    </div>
+
+                  </div>
+                  <div style="float: right; width: 40%; margin-right: 59px">
+                    <div class="col-md-8 mt-10">
+                      <label class="form-label">Remark</label>
+                    </div>
+                    <div class="col-md-12">
+                      <input class="form-control" [(ngModel)]="remarkList" [ngModelOptions]="{standalone: true}" rows="1">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div>
+                <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index ,'listDoc')"></i>
+              </div>
+            </label>
+                      </div>
+                  </div>
+                  <!-- <div class="col-md-12 mt-10">
+                      <label class="form-label">Remark</label>
+                  </div>
+                  <div class="col-md-12">
+                      <textarea class="form-control"  rows="2"></textarea>
+                  </div> -->
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide();setDocumentValue()">Ok</button>
+  </div>
+</ng-template>

@@ -309,8 +309,8 @@ export class CompanyGroupMasterComponent implements OnInit {
 
           // StartDate: element.startDate,
           StartDate: new Date(element.startDate),
-          // EndDate: element.endDate,
-          EndDate:new Date(element.endDate),
+           endDate: element.endDate,
+          // endDate:new Date(element.endDate),
           ReasonforExit: element.reasonForExit,
           Scale: element.scale,
           companyGroupId: element.companyGroupId,
@@ -619,5 +619,76 @@ export class CompanyGroupMasterComponent implements OnInit {
     });
   
 }
+
+// onChangeStartDate( evt: any ) {
+//   console.log( this.form.get( 'StartDate' ).value );
+
+//   if ( this.form.get( 'startDate' ).value == '' || this.form.get( 'startDate' ).value == null ) {
+//     this.form.controls["remark"].clearValidators();
+//     this.form.controls["remark"].updateValueAndValidity();
+
+//     this.form.controls["reasonForExit"].clearValidators();
+//     this.form.controls["reasonForExit"].updateValueAndValidity();
+
+//     this.form.patchValue( {
+//       remark: '',
+//       reasonForExit: '',
+//     } );
+//     this.form.get( 'remark' ).disable();
+//     this.form.get( 'reasonForExit' ).disable();
+
+//   } else {
+//     console.log( evt );
+//     console.log( this.form.get( 'startDate' ).value );
+//     const from = this.datePipe.transform( this.form.get( 'startDate' ).value, 'yyyy-MM-dd' );
+//     const to = this.datePipe.transform( this.form.get( 'endDate' ).value, 'yyyy-MM-dd' );
+//     if ( from > to ) {
+//       this.form.controls['startDate'].reset()
+
+//     }
+//     this.form.controls["remark"].setValidators( Validators.required );
+//     this.form.controls["remark"].updateValueAndValidity();
+
+//     this.form.controls["reasonForExit"].setValidators( Validators.required );
+//     this.form.controls["reasonForExit"].updateValueAndValidity();
+
+//     this.form.get( 'companyGroupActive' ).setValue( true );
+//     this.deactivateRemark();
+//   }
+
+
+// }
+// onChangeEngagementStartDate( evt: any ) {
+//   let startDate12 = this.datePipe.transform( this.form.get( 'startDate' ).value, 'dd-MMM-y' );
+
+//   if ( startDate12 == '' || startDate12 == null ) {
+//     this.form.controls["remark"].clearValidators();
+//     this.form.controls["remark"].updateValueAndValidity();
+
+//     this.form.controls["reasonForExit"].clearValidators();
+//     this.form.controls["reasonForExit"].updateValueAndValidity();
+
+//     this.form.patchValue( {
+//       remark: '',
+//       reasonForExit: '',
+//     } );
+//     this.form.get( 'remark' ).disable();
+//     this.form.get( 'reasonForExit' ).disable();
+
+//   } else {
+//     this.form.get( 'remark' ).enable();
+//     this.form.get( 'reasonForExit' ).enable();
+//     this.form.controls["remark"].setValidators( [Validators.required] );
+//     this.form.controls["remark"].updateValueAndValidity();
+
+//     this.form.controls["reasonForExit"].setValidators( [Validators.required] );
+//     this.form.controls["reasonForExit"].updateValueAndValidity();
+
+//     this.deactivateRemark();
+
+
+
+//   }
+// }
   
 }

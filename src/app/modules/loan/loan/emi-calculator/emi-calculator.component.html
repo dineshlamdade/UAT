@@ -9,26 +9,32 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-6">
-
-                                            Loan Type
-
-                                        <br><br>
-                                          <select
-                                            class="form-control"
+                                          <label class="form-label">Loan Type</label>
+                                          <select class="form-control"
                                             placeholder="Select" (change)="getLoanType($event.target.value)">
                                             <option value="" selected >Select</option>
-                                            <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
+                                            <option value="{{loan.loanMasterId}},{{loan.loanCode}}" *ngFor="let loan of loanTypeData">
+                                              {{loan.loanCode}}</option>
                                           </select>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Payroll Area</label>
+                                        <select class="form-control"
+                                          placeholder="Select" (change)="getSelectedPayroll($event.target.value)">
+                                          <option value="" selected >Select</option>
+                                          <option value="1">PA-Staff</option>
+                                          <option *ngFor="let payroll of payrollListData" value="{{payroll.payrollAreaId}}">
+                                              {{payroll.payrollAreaCode}}</option>
+                                        </select>
+                                  </div>
                                 </div>
-
+                             
                             </div>
-                            <div class="well" *ngIf="loanType != ''">
+                            <div class="well" *ngIf="loanType != '' && payrollMasterId != '' ">
+                              <!--  *ngIf="loanType != ''" -->
                               <!-- <form #emiCalculatorForm="ngForm" (ngSubmit)="submitEmiCalculator()"></form> -->
                                 <div class="form-group">
                                     <div class="col-md-12">
-
-
                                       <br>
                                         <span class="left-title">
                                             Loan Amount
@@ -74,12 +80,12 @@
                                             style="width:30%;float:right;"> -->
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="input-group-append">
+                                        <!-- <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" [ngClass]="{'active':yrToggel}"
                                                 (click)="yrToggel=true;update()" type="button">Yr</button>
                                             <button class="btn btn-outline-secondary" [ngClass]="{'active':!yrToggel}"
                                                 (click)="yrToggel=false;update()" type="button">Mo</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <br>
                                     <ngx-slider *ngIf="yrToggel" [(value)]="temi.value" [options]="toptions"
@@ -94,7 +100,8 @@
                             </div>
 
                         </div>
-                        <div class="col-sm-6 " *ngIf="loanType != ''">
+                        <!-- -->
+                        <div class="col-sm-6 " *ngIf="loanType != '' && payrollMasterId != ''">
                             <div class="well">
 
                                 <div class="row box-border">
@@ -117,42 +124,52 @@
 
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <p><span class="pie-icon pie-principal"></span>Principal :
                                                 <span style="font-weight: 600;">{{query.amount}}</span> </p>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <p><span class="pie-icon pie-interest"></span>Interest :
                                                     <!-- <h5 id="loan_interest"></h5> -->
-                                                <span style="font-weight: 600;">{{result.interest || "--"}}</span></p>
+                                                <!-- <span style="font-weight: 600;">{{result.interest || "--"}}</span></p> -->
+                                                <span style="font-weight: 600;">{{totalInterestAmount | number:'1.2-2'}}</span></p>
                                             </div>
 
-                                            <div class="col-sm-12">
-                                                <p><span class="pie-icon"></span>Total Payment :
+                                            <div class="col-sm-4">
+                                                <p>Total Payment :
                                                     <!-- <h5 id="loan_interest"></h5> -->
                                                 <span style="font-weight: 600;">{{result.total || "--"}}</span></p>
                                             </div>
                                         </div>
                                         <br>
                                     </div>
-
-                                    <!-- <div class="col-sm-12">
+                                    <br>
+                                    <div class="col-sm-12" *ngIf="getscheduleData">
                                         <div class="pie-content row" id="pieContent">
-                                            <div class="pie-total col-sm-8">
-                                                <span>
-                                                    <p>Total Payment</p>
-                                                </span>
-
+                                            <div class="col-sm-4">
+                                                <p>First Principal :
+                                                <span style="font-weight: 600;">{{getscheduleData[1].proposedScheduledRecoveryPrincipal}}</span> </p>
                                             </div>
-                                            <div class="pie-total col-sm-4">
-                                                <h5 id="loan_total_payment">{{result.total || "--"}}</h5>
+
+                                            <div class="col-sm-4">
+                                                <p>First Interest :
+                                                    <!-- <h5 id="loan_interest"></h5> -->
+                                                <span style="font-weight: 600;">{{getscheduleData[1].proposedScheduledRecoveryInterest}}</span></p>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <p>First Payment :
+                                                    <!-- <h5 id="loan_interest"></h5> -->
+                                                <span style="font-weight: 600;">{{getscheduleData[1].recoveryPrinInterestTotalActual}}</span></p>
                                             </div>
                                         </div>
-                                    </div> -->
+                                        <br>
+                                    </div>
+                                   
                                 </div>
                                 <br>
-                                <div class="row" *ngIf="loanRecoveyMethod != 'Perpetual'">
+                                <!-- <div class="row" *ngIf="loanRecoveyMethod != 'Perpetual'">
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
                                             <div class="pie-total col-sm-1"></div>
@@ -165,12 +182,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                            </div>
                         </div>
 
                         <div class="float-right" style="margin-left:86%;">
-                            <button class="btn btn-success" (click)="applyLoan()"  [disabled] ="loanType == ''">
+                            <button class="btn btn-success" (click)="applyLoan()"  [disabled] ="loanType == '' && payrollMasterId == ''">
                                 <i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;
                                 Apply Loan
                             </button>

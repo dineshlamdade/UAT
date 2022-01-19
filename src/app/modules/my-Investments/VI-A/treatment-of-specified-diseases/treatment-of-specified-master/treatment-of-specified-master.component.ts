@@ -33,6 +33,7 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-master.component.scss'],
 })
 export class TreatmentOfSpecifiedMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public specifiedDiseaseMasterId: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -132,6 +133,13 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
+  documentRemarkList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -334,14 +342,14 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     //   }
     // }
 
-    for (let i = 0; i < this.remarkList.length; i++) {
+    for (let i = 0; i < this.masterfilesArray.length; i++) {
       if (this.remarkList[i] != undefined || this.remarkList[i] == undefined) {
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -463,6 +471,93 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isEdit = false;
     // }
   }
+
+
+  //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  debugger
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[transIndex].remark =  event.target.value;
+ 
+
+}
+
+
+onSaveRemarkDetails(summary, index){
+    
+  const data ={
+    "transactionId": 0,
+    "masterId":this.summaryDetails.specifiedDiseaseMasterId,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"SPECIFIEDDISEASE",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Master"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+      console.log(this.masterGridData);
+      this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+   
+      );
+      this.enteredRemark = '';
+      this.modalRef.hide();
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+
+
+onResetRemarkDetails() {
+  this.enteredRemark = '';
+}
+
+
+public docRemarkModal(
+  documentViewerTemplate: TemplateRef<any>,
+  index: any,
+  specifiedDiseaseMasterId,
+  summary, count
+) {
+
+  this.summaryDetails = summary;
+  this.indexCount = count;
+  this.selectedremarkIndex = count;
+  this.treatmentOfSpecifiedService.getspecifiedDiseaseMasterRemarkList(
+    specifiedDiseaseMasterId,
+  ).subscribe((res) => {
+    console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+  });
+  // console.log('documentDetail::', documentRemarkList);
+  // this.documentRemarkList = this.selectedRemarkList;
+  console.log('this.documentRemarkList', this.documentRemarkList);
+  this.modalRef = this.modalService.show(
+    documentViewerTemplate,
+    Object.assign({}, { class: 'gray modal-s' })
+  );
+}
+
+
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);

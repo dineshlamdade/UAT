@@ -46,6 +46,13 @@ export class GgcService {
   //   }));
   // }
 
+  public getdonations80GGCTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
     .pipe(map((res: any) => {

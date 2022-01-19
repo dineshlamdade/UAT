@@ -316,6 +316,7 @@
                             (dblclick)="doubleClickOnLeftTable(user1)"
                             [ngClass]="{'outofstock':user1.isHighlight == true}"
                                >
+                               
                                   <td> {{user1.description}}
                                  </td>
                                  
@@ -698,6 +699,7 @@
   
   
                             <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                              {{user1 | json}}
                                 <tr class="p-selectable-row">
                                     <td class="bg-color-light_gray">{{rowIndex+1}}</td>
                                     <td class="bg-color-light_gray"><label

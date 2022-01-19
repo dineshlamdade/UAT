@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0"
-                            >Date of Joining</label
+                            >Date Of Joining</label
                           >
                           <label class="font-12 text-ellipsis mt-1 mb-0">
                             {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0"
-                            >Date of Leaving</label
+                            >Date Of Leaving</label
                           >
                           <label class="font-12 text-ellipsis mt-1 mb-0">
                             {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
@@ -355,7 +355,7 @@
                             <div class="table-responsive Custom_Table">
                               <p-table
                                 [value]="
-                                  masterInfo.masterDetail.paymentDetailList
+                                  masterInfo?.masterDetail?.paymentDetailList
                                 "
                               >
                                 <ng-template pTemplate="header">
@@ -429,21 +429,21 @@
                         <div class="row mt-10">
                           <div class="col-md-12 mt-10 mb-15">
                             <div class="row">
-                              <div class="col-md-6">
+                              <div class="col-md-0">
                                 <div class="d-flex">
-                                  <Label class="form-label mr-2"> Remark</Label>
+                                  <Label class="form-label mr-2 mt-1"> Remark :</Label>
 
-                                  <input
+                                  <!-- <input
                                     type="text"
                                     class="form-control"
                                     [(ngModel)]="masterRemark"
                                     [disabled]="
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         '' ||
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         'Approved'
                                     "
-                                  />
+                                  /> -->
                                 </div>
                               </div>
 
@@ -457,9 +457,9 @@
                                       (click)="
                                         masterRemarkModal(
                                           template3,
-                                          masterInfo.masterDetail
-                                            .masterRemarkDetailList,
-                                            masterInfo.masterDetail.masterId
+                                          masterInfo?.masterDetail?.masterRemarkDetailList,
+                                            masterInfo?.masterDetail?.masterId,
+                                            masterInfo
                                         )
                                       "
                                       class="
@@ -475,8 +475,7 @@
                                     _ngcontent-ykc-c443=""
                                     class="Label_badge"
                                     >{{
-                                      masterInfo.masterDetail
-                                        .masterRemarkDetailList.length
+                                      masterInfo?.masterDetail?.bubbleRemarkCount
                                     }}</span
                                   >
                                 </div>
@@ -628,15 +627,15 @@
                                 "
                                 [class.disablegraybutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
@@ -655,22 +654,22 @@
                                 "
                                 [class.disableredbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus == '' ||
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'Approved' ||
-                                  masterInfo.masterDetail.masterStatus ==
+                                  masterInfo?.masterDetail?.masterStatus ==
                                     'SendBack'
                                 "
                                 (click)="
@@ -697,7 +696,7 @@
                                 "
                                 [class.disablegreenbutton]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
                                   masterInfo.masterDetail.masterStatus == '' ||
                                   masterInfo.masterDetail.masterStatus ==
@@ -1042,19 +1041,19 @@
                                                 "
                                                 #e
                                                 [class.disableCheckbox]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                                 [disabled]="
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Approved' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discarded' ||
-                                                  documentDetail.documentStatus ==
+                                                  documentDetail?.documentStatus ==
                                                     'Discard'
                                                 "
                                               >
@@ -1070,7 +1069,7 @@
                                               <a
                                                 (click)="
                                                   navigateAssociates(
-                                                    documentDetail.documentInformationId
+                                                    documentDetail?.documentInformationId
                                                   )
                                                 "
                                               >
@@ -1102,11 +1101,11 @@
                                                     )
                                                   "
                                                   [disabled]="
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Approved' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discarded' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discard'
                                                   "
                                                 />
@@ -1124,7 +1123,7 @@
                                                         docRemarkModal(
                                                           template3,
                                                           documentDetailIndex,
-                                                          documentDetail.documentRemarkDetailList,
+                                                          documentDetail?.documentRemarkDetailList,
                                                           documentDetail?.proofSubmissionId
 
                                                         )
@@ -1142,9 +1141,7 @@
                                                     _ngcontent-ykc-c443=""
                                                     class="Label_badge"
                                                     >{{
-                                                      documentDetail
-                                                        .documentRemarkDetailList
-                                                        .length
+                                                      documentDetail?.documentRemarkDetailList?.length
                                                     }}</span
                                                   >
                                                 </div>
@@ -1276,9 +1273,9 @@
             </div>
 
             <!-- Remark Modal started -->
-            <ng-template #template3 style="max-height: 200px; overflow-y: scroll;">
+            <!-- <ng-template #template3 style="max-height: 200px; overflow-y: scroll;">
               <div class="modal-header">
-                <h5 class="modal-title" id="jasdjgh">View Remark</h5>
+                <h5 class="modal-title" id="jasdjgh">Remark Summary</h5>
                 <button
                   type="button"
                   (click)="modalRef.hide()"
@@ -1324,15 +1321,109 @@
 
               <div class="modal-footer">
                 <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onResetRemarkDetails()"
+              >
+                Reset
+              </button>
+                <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onSaveRemarkDetails(this.summaryDetails,this.indexCount)"
+              >
+                Save
+              </button>
+              </div>
+            </ng-template> -->
+            <!-- Remark Modal End -->
+            <ng-template #template3>
+              <div class="modal-header">
+                <h5 class="modal-title" id="jasdjgh">Remark</h5>
+                <button
+                  type="button"
+                  (click)="modalRef.hide()"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+            
+              <div class="card-body">
+                <div *ngFor="let documentRemark of documentRemarkList" >
+                  <div class="row" >
+                   
+                    <div class="col-md-6">
+                      <span class="form-label"
+                        >{{ documentRemark.role }}:
+                        <b class="text-gray">{{
+                          documentRemark.remarkBy
+                        }}</b></span
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <div class="float-right">
+                        <span class="form-label">
+                          Date:
+                          <b class="text-gray">{{
+                            documentRemark.remarkDate
+                              | date: "dd-MMM-yyyy HH:mm"
+                          }}</b>
+                        </span>
+                      </div>
+                    
+                    </div>
+                  </div>
+                  <div class="row">
+                    <textarea class="form-control remarktext" disabled [ngClass]="{'admin-class':documentRemark.role=='Approval Admin'}">
+                    {{ documentRemark.remark }}
+                    </textarea>
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                    <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+                    
+                    <textarea type="text" [(ngModel)]="enteredRemark"
+                    (change)= "
+                    onChangeDocumentRemark(
+                      this.summaryDetails, this.indexCount,
+                        $event
+                      )
+                    "  class="form-control" placeholder="Remark">
+                  </textarea>
+                  </div>
+                </div>
+              </div>
+            
+              <div *ngIf="!this.summaryDetails?.proofSubmissionId" class="modal-footer">
+                <!-- <button
                   type="button"
                   class="btn btn-secondary"
                   (click)="modalRef.hide()"
                 >
                   Ok
+                </button> -->
+              </div>
+              <div  class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onResetRemarkDetails()"
+                >
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onSaveRemarkDetails()"
+                >
+                  Save
                 </button>
               </div>
             </ng-template>
-            <!-- Remark Modal End -->
           </div>
         </div>
       </div>

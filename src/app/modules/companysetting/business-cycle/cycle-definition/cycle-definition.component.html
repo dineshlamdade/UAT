@@ -16,7 +16,7 @@
 
 
         <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
-          <label class="form-label">Business Year Defination</label>
+          <label class="form-label">Business Year Definition</label>
           <select placeholder="select" name="businessYearDefinitionId" id="businessYearDefinitionId"
             class="form-control  " formControlName="businessYearDefinitionId"
             (change)="onChangeBusinessYear($event.target.value)"
@@ -56,7 +56,7 @@
         <br>
         <div class="col-sm-6 col-md-3" *ngIf="frequencyId == 2 || frequencyId == 3 || frequencyId == 5">
           <label class="form-label">Last Cycle Crossing Business Year</label>
-          <select formControlName="lastCycleCrossByYear" class="form-control">
+          <select (change)="getLastCycleBusinessYear($event.target.value)" formControlName="lastCycleCrossByYear" class="form-control">
             <option selected value=''>Select</option>
             <option value="No Change">No Change</option>
             <option value="Force Stop Till Business Year End">Force Stop Till Business Year End</option>
@@ -70,7 +70,7 @@
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
           <label class="form-label">Days In a Cycle</label>
-          <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
+          <input type="number" formControlName="reoccuranceDays" class="form-control" placeholder="Enter Days">
         </div>
 
         <div class="col-sm-6 col-md-3"
@@ -80,12 +80,12 @@
           <!-- || activeFrequencyList.name != Half-Yearly || activeFrequencyList.name != Adhoc" -->
           <!-- <label class="form-label">Incomplete Days Falls</label> -->
 
-          <label class="form-label">Cycle spanning two months-
-            <br>Treat as part of which month {{CycleupdateFlag1}}</label>
+          <label class="form-label">Cycle Spanning Two Months-
+            <br>Treat as Part of which Month</label>
           <select formControlName="incompleteDaysFalls" name="incompleteDaysFalls" id="" class="form-control">
             <option selected value=''>Select </option>
             <option value="Start">Start</option>
-            <option value="End">End</option>
+            <option [hidden]="isLstCycFlag" value="End">End</option>
           </select>
         </div>
 
@@ -102,6 +102,16 @@
     </div>
 
   </div>
+
+  <!-- <pre>
+    {{cycleDefinitionForm.controls.cycleName.valid}}
+    {{cycleDefinitionForm.controls.businessYearDefinitionId.valid}}
+    {{cycleDefinitionForm.controls.frequencyMasterId.valid}}
+    {{cycleDefinitionForm.controls.addDays.valid}}
+    {{cycleDefinitionForm.controls.incompleteDaysFalls.valid}}
+    {{cycleDefinitionForm.controls.lastCycleCrossByYear.valid}}
+    {{cycleDefinitionForm.controls.yearDefinition.valid}}
+  </pre> -->
 
   <div class="row mt-15">
     <div class="col-12">
@@ -208,7 +218,7 @@
 
                 <th colspan="1">
                   <div class="p-d-flex p-jc-between p-ai-center">
-                    Cycle spanning two months-Treat as part of which month
+                    Cycle Spanning Two Months-Treat as Part of which Month
 
                     <div class="Sort_Filter_Position">
                       <p-sortIcon field="incompleteDaysFalls"></p-sortIcon>

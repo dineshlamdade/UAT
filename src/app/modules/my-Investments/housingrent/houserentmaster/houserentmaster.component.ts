@@ -212,7 +212,7 @@ export class HouserentmasterComponent implements OnInit {
         houseRentalMasterId: new FormControl(''),
         name: new FormControl(null, Validators.required),
         address: new FormControl(null, Validators.required),
-        landLordPan: new FormControl(null, Validators.required),
+        landLordPan: new FormControl(null),
         /*    percentageShareOfRent: new FormControl(null, Validators.required), */
         percentageShareOfRent: new FormControl(null, [
           Validators.required,
@@ -329,7 +329,7 @@ export class HouserentmasterComponent implements OnInit {
 
   /*  get rentDetailList() { return this.houseRentform.get('rentDetailList') as FormArray; } */
 
-  public addOwner() {
+  public addOwner(type) {
     console.log('event::', this.landLordDetailForm);
     this.landlordDetailsSubmitted = true;
     if (this.houseRentform.get('landLordDetailList').invalid) {
@@ -346,21 +346,31 @@ export class HouserentmasterComponent implements OnInit {
         .houseRentalLandLordDetailId
     );
 
+          // || this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId != null
+          // &&
+          // (this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId === 0 
+          //  )
+
+          // console.log(this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId)
     this.landLordDetailTableList.forEach((element) => {
-      if (
-        element.landLordPan ===
-          this.houseRentform.get('landLordDetailList').value.landLordPan &&
-        (this.houseRentform.get('landLordDetailList').value
-          .houseRentalLandLordDetailId === 0 ||
-          this.houseRentform.get('landLordDetailList').value
-            .houseRentalLandLordDetailId === null)
-      ) {
-        this.isDuplicatpan = true;
-        this.alertService.sweetalertWarning(
-          'This Pan Number Currently Present Please Check The Pan Number.'
-        );
-        console.log(this.isDuplicatpan);
+      console.log( element.landLordPan , this.houseRentform.get('landLordDetailList').value.landLordPan)
+      console.log( element.houseRentalLandLordDetailId , this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId)
+      if(this.houseRentform.get('landLordDetailList').value.landLordPan != null){
+        if ( element.houseRentalLandLordDetailId != this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId ) {
+          if ( element.landLordPan === this.houseRentform.get('landLordDetailList').value.landLordPan ) {
+            this.isDuplicatpan = true;
+            this.alertService.sweetalertWarning(
+              'This Pan Number Currently Present Please Check The Pan Number.'
+            );
+            //console.log(this.isDuplicatpan);
+          }
+        }
       }
+     // alert(element.landLordPan)
+      // if(element.landLordPan != '' || element.landLordPan != undefined ||element.landLordPan != null){
+        
+      // }
+      
     });
     console.log('isDuplicatpan::', this.isDuplicatpan);
     if (this.isDuplicatpan) {
@@ -369,9 +379,32 @@ export class HouserentmasterComponent implements OnInit {
     }
 
     /* ======Share Of Total Rent========= */
-    this.total = 0;
-   this.total +=  this.houseRentform.get('landLordDetailList').value.percentageShareOfRent;
-    this.landLordDetailTableList.forEach((element) => {
+    if(type == 'add'){
+      this.total = 0;
+      this.total +=  this.houseRentform.get('landLordDetailList').value.percentageShareOfRent;
+    }else{
+      console.log("update")
+      this.total = 0
+      // console.log(JSON.stringify(this.houseRentform.value))
+      let temppercentageShareOfRent
+      this.landLordDetailTableList.forEach((element,index) => {
+        // console.log("element update is: "+ JSON.stringify(element))
+        if(element.houseRentalLandLordDetailId == this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId){
+          temppercentageShareOfRent = element.percentageShareOfRent
+            element.percentageShareOfRent = 0
+          }
+          this.total = this.total + element.percentageShareOfRent
+          console.log("toallllllllllll: " + JSON.stringify(this.total) , temppercentageShareOfRent)
+      })  
+     this.total = this.total + this.houseRentform.get('landLordDetailList').value.percentageShareOfRent
+
+    //  this.houseRentform.get('landLordDetailList').value.percentageShareOfRent.set(temppercentageShareOfRent)
+      // console.log("total isssssssssss: " + JSON.stringify(this.total))
+    }
+    
+       this.landLordDetailTableList.forEach((element) => {
+    
+     
       /*  if(element.percentageShareOfRent === this.houseRentform.get('landLordDetailList').value.percentageShareOfRent) */
       if (
         this.houseRentform.get('landLordDetailList').value
@@ -383,21 +416,20 @@ export class HouserentmasterComponent implements OnInit {
         console.log('two::', this.total);
       }
     });
-    console.log(this.total);
+   // console.log(this.total + ' qwertyui ' + edittotal);
     if (this.total > 100) {
       this.alertService.sweetalertWarning(
         'This % Share Of Total Rent : Please Check Total Rent 100%.'
       );
       return;
     }
-
     if (
       (this.houseRentform.get('landLordDetailList').value
         .houseRentalLandLordDetailId === 0 ||
         this.houseRentform.get('landLordDetailList').value
           .houseRentalLandLordDetailId === null) &&
       !this.isDuplicatpan &&
-      this.total <= 100
+      this.total <= 100 && (this.landLordDetailTableList.length < 2)
     ) {
       this.houseRentform.get(
         'landLordDetailList'
@@ -428,7 +460,9 @@ export class HouserentmasterComponent implements OnInit {
           'landLordDetailList'
         ).value.percentageShareOfRent;
     }
-     
+    
+  
+     console.log("this.total: "+ this.total)
     if (this.total !== 100) {
       this.alertService.sweetalertWarning(
         ' Please Fill Rent 100%.'
@@ -438,7 +472,12 @@ export class HouserentmasterComponent implements OnInit {
     console.log('landLordDetailTableList', this.landLordDetailTableList);
     this.houseRentform.get('landLordDetailList').reset();
     this.landlordDetailsSubmitted = false;
+    // this.monthRentAmount();
+    // this.btn=false;
+    this.showUpdateButton=false;
+    // this.toShowAddBtn=true;
   }
+
 
 
   public addLoanDetails(formDirective: FormGroupDirective) {

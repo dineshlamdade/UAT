@@ -8,8 +8,8 @@
               <th class="wd-25 font700"> Payment type </th>
               <th class="wd-20 font700">Institution & Policy No.</th>
               <th class="wd-25 font700"> Benefeciary/ ies</th>
-              <th class="wd-10 font700">Declared</th>
-              <th class="wd-10 font700">Actual </th>
+              <th class="wd-10 font700">Declared Amount</th>
+              <th class="wd-10 font700">Actual Amount</th>
               <th class="wd-10 font700">Action</th>
             </tr>
 
@@ -22,7 +22,7 @@
             <tr *ngIf="mediclaimPremiumMasterTransactionList?.length">
               <td rowspan="1" >Mediclaim Insurance Premium</td>
 
-              <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
+              <td class="padding-0 align-left" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
                   tooltip="{{ mediclaim.institution }}">
                   <div colspan="1">
@@ -30,7 +30,7 @@
                   </div>
                 </div>
               </td>
-              <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
+              <td class="padding-0 align-left" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
                   tooltip="{{ mediclaim.mediclaimBenefeciaryDetailList }}">
                   <div colspan="1">
@@ -40,7 +40,7 @@
                   </div>
                 </div>
               </td>
-              <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
+              <td class="padding-0 align-right" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
                   tooltip="{{ mediclaim.declaredAmount | number: '1.2-2' }}">
                   <div colspan="1">
@@ -48,7 +48,7 @@
                   </div>
                 </div>
               </td>
-              <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
+              <td class="padding-0 align-right" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
                   tooltip="{{ mediclaim.actualAmount | number: '1.2-2' }}">
                   <div colspan="1">
@@ -132,13 +132,13 @@
                   tooltip="{{ totalActualAmount | number: '1.2-2' }}">
                   {{ totalActualAmount | number: "1.2-2" }}
                 </span></td> -->
-                <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-12"
+                <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-9"
                   tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
-                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
                 </span></td>
-                 <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-12"
+                 <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-9"
                   tooltip="{{ totalActualAmount | number: '1.2-2' }}">
-                  {{ totalActualAmount | number: "1.2-2" }}
+                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
                 </span></td>
 
 

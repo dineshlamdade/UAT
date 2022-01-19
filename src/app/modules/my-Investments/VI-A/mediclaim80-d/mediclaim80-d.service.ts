@@ -61,6 +61,25 @@ export class Mediclaim80DService {
     }));
   }
 
+
+
+
+  public getmediclaimMasterRemarkList(masterId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'mediclaimMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+  public getmediclaimTransactionRemarkList(psId: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/GetRemarkTransaction/' + psId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
   // getTransactionFilterData(){
   //   return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/All')
   //   .pipe(map((res: any) => {

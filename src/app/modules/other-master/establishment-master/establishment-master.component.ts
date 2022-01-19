@@ -29,10 +29,12 @@ export class EstablishmentMasterComponent implements OnInit {
   companyRegistrationId: number = 0;
   companyMasterId: number = 0;
   isSaveAndReset: boolean = true;
+  invalidGST: boolean = false;
   countries = [];
   establishmentMasterId: number = 0;
   regionMasterDetails = [];
-  selectedRegionMasterCode: number;
+  //selectedRegionMasterCode: number;
+  selectedRegionMasterCode:any;
   public typeOfEstablishmentList = [];
   public today = new Date();
 
@@ -50,7 +52,9 @@ export class EstablishmentMasterComponent implements OnInit {
       dateOfSetup: new FormControl( '' ),
       officePremisesOwnership: new FormControl( '' ),
       regionMasterId: new FormControl( '', Validators.required ),
-      gstNumber: new FormControl( '' ),
+     gstNumber: new FormControl( '', ),
+      //gstNumber: new FormControl( '',Validators.required ),
+      //  [Validators.pattern('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$'),
       gstIssueDate: new FormControl( '' ),
       linNumber: new FormControl( '' ),
       linIssueDate: new FormControl( '' ),
@@ -197,6 +201,7 @@ export class EstablishmentMasterComponent implements OnInit {
 
 
       delete data.officialCountryCode;
+    //  this.form.controls['regionMasterId'].setValue(parseInt( this.form.controls['regionMasterId'].value))
       this.establishmentMasterService.postEstablishmentMaster( data ).subscribe( res => {
         console.log( res );
         if ( res.data.results.length > 0 ) {
@@ -237,7 +242,7 @@ export class EstablishmentMasterComponent implements OnInit {
   viewMaster( i: number ) {
     window.scrollTo( 0, 0 );
     this.isSaveAndReset = false;
-    this.showButtonSaveAndReset = true;
+    this.showButtonSaveAndReset = false;
     this.form.enable();
     this.form.reset();
     this.form.patchValue( this.masterGridDataList[i] );
@@ -369,5 +374,26 @@ customSort(event: SortEvent) {
   });
 
 }
+
+// onChangeGST( evt: any ) {
+//   console.log( evt );
+//   if ( evt.length == 15 ) {
+//     console.log( this.form.get( 'gstNumber' ).value );
+    
+//     //let index1 = this.gstNumber.findIndex( o => o.code == this.form.get( 'gstNumber' ).value );
+//    // console.log(evt[2]).);
+//     console.log( evt[4].toUpperCase() );
+//     console.log( this.form.get('gstNumber').fourthCharacterOfPan );
+
+
+//     if ( evt[3] == this.tempObjForCompanyRegistration[index1].fourthCharacterOfPan ) {
+//       this.invalidGST = false;
+//     } else {
+//       this.invalidGST = true;
+//     }
+//     // invalidPAN
+//   }
+
+// }
 
 }

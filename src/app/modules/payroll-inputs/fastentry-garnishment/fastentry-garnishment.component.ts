@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { GarnishmentService } from '../garnishment-master/garnishment.service';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
@@ -82,20 +82,30 @@ export class FastentryGarnishmentComponent implements OnInit {
   garnishmentMasterInputTypeList: any;
   garnishmentMasterDocumentList: any;
   garnishmentMasterFrequencyList: any;
-  editFlag: any;
+  editFlag: boolean = false;
   editApplicationData: any;
   selectedInputType: any;
   selectedInputTypeName: any;
   selectedTransactionTypeId: any;
   selectedFrequencyType: any;
   goalFlag: any;
+  today: string;
+  familyInformation: any;
+  empAccNoApplicable: any;
+  displayName: any;
+  institutionName: any;
+  tempScheduleData: string;
+  employeeFinDetailsData: string;
+  payrollId: string;
+  selectedEmployeeMasterId: number;
+  refralPayrollListData: any;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
     private payrollservice: PayrollInputsService,
     private modalService: BsModalService,
     private garnishmentservice : GarnishmentService,
-    private toaster: ToastrService) {
+    private toaster: AlertServiceService) {
     this.headData = [
       { displayName: 'Incentive', headMasterId: 27 },
       { displayName: 'Performance_Incentive', headMasterId: 29 },
@@ -131,7 +141,9 @@ export class FastentryGarnishmentComponent implements OnInit {
         "numberOfTransactions": new FormControl(""),
         "remark": new FormControl(""),
         "isActive": new FormControl(1),
-        "familyMemberInfoId": new FormControl(1)
+        "familyMemberInfoId": new FormControl(1),
+        "employeeName": new FormControl(),
+        "employeeCode": new FormControl(),
       })
 
 
@@ -139,6 +151,7 @@ export class FastentryGarnishmentComponent implements OnInit {
         this.payrollEmployeeData = JSON.parse(localStorage.getItem('payrollListEmpData'))
         this.selectedEmployeeData = this.payrollEmployeeData
         this.selectedPayrollArea = 'PA-Staff'
+        this.getSelectedEmployeeCode(this.payrollEmployeeData[0].employeeMasterId)
       }  
   }
 
@@ -146,7 +159,39 @@ export class FastentryGarnishmentComponent implements OnInit {
     this.getEmployeeList()
     this.getAllGarnishmentMaster()
     this.payrollheadmaster()
+    this.today = this.datepipe.transform(new Date(), 'dd-MMM-yyyy')
+
   }
+
+
+   /** Get Selected Employee master Id */
+   getSelectedEmployeeCode(value) {
+    this.employeeFinDetailsData = ''
+    this.payrollId = ''
+    this.selectedEmployeeMasterId = parseInt(value)
+
+    this.garnishmentservice.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
+      res => {
+        this.employeeFinDetailsData = res.data.results[0][0];
+      }
+    )
+
+    this.getEmployeePayrollArea()
+  }
+
+  /** Get Payroll Area Data by Employee */
+  getEmployeePayrollArea() {
+    this.nonRecService.getEmployeeWisePayrollList(this.selectedEmployeeMasterId).subscribe(
+      res => {
+        this.refralPayrollListData = res.data.results[0];
+        if (this.refralPayrollListData.length == 1) {
+          this.payrollId = this.refralPayrollListData[0].payrollAreaId
+          this.applicationForm['payrollAreaId'].setValue(this.refralPayrollListData[0].payrollAreaId)
+        }
+      })
+  }
+
+
 
   /** e&d head */
   payrollheadmaster(){
@@ -210,6 +255,27 @@ export class FastentryGarnishmentComponent implements OnInit {
     )
   }
 
+  getFromDateForSave(event) {
+    this.tempScheduleData = ''
+    let fromdate = ''
+    this.selectedFromDate = this.datepipe.transform(new Date(event), 'dd-MMM-yyyy')
+
+    fromdate = this.datepipe.transform(new Date(event), 'yyyy-MM-dd')
+    this.applicationForm.controls['fromDate'].setValue(fromdate)
+
+  }
+
+  getToDateForSave(event) {
+    this.tempScheduleData = ''
+    let todate = ''
+    this.selectedToDate = this.datepipe.transform(new Date(event), 'dd-MMM-yyyy')
+
+    todate = this.datepipe.transform(new Date(event), 'yyyy-MM-dd')
+    this.applicationForm.controls['toDate'].setValue(todate)
+
+  }
+
+  
   /** Table data push */
   getAllSelectedData() {
     this.saveDisabledBtn = false
@@ -218,18 +284,17 @@ export class FastentryGarnishmentComponent implements OnInit {
     this.saveRemark = this.selectedRemark
     this.tableData = []
     this.selectedEmployeeData.forEach(element => {
-      this.tableData.push({
-        'employeeMasterId': element.employeeMasterId,
-        "employeeCode": element.employeeCode,
-        "employeeName": element.fullName,
-        'payrollArea': element.payrollAreaId,
-        'fromDate': this.selectedFromDate,
-        'transactionsType': this.selectedTransactionType,
-        'numberOfTransactions': this.selectedNoOfTransaction,
-        'toDate': this.selectedToDate,
-        'quantity': this.selectedAmount,
-        'remark': this.selectedRemark
-      })
+      this.applicationForm.controls['employeeMasterId'].setValue(element.employeeMasterId)
+      this.applicationForm.controls['payrollAreaId'].setValue(parseInt(element.payrollAreaId))
+      this.applicationForm.controls['employeeName'].setValue(element.fullName)
+      this.applicationForm.controls['employeeCode'].setValue(element.employeeCode)
+      this.tableData.push(
+        // 'employeeMasterId': element.employeeMasterId,
+        // "employeeCode": element.employeeCode,
+        // "employeeName": element.fullName,
+        // 'payrollArea': element.payrollAreaId,
+        this.applicationForm.value
+      )
     });
     this.selectedEmployeeData.forEach(element => {
       this.applicationForm.controls['employeeMasterId'].setValue(element.employeeMasterId)
@@ -282,6 +347,10 @@ export class FastentryGarnishmentComponent implements OnInit {
       this.familyMembers = 'false'
     } else {
       this.familyMembers = 'true'
+      this.garnishmentservice.getFamilyInformation(1).subscribe(res => {
+        this.familyInformation = res.data.results[0].familyDetailsSummaryBeans
+      })
+
     } 
 
 
@@ -290,7 +359,10 @@ export class FastentryGarnishmentComponent implements OnInit {
     this.garnishmentMasterDocumentList = this.selectedGarnishmentData.garnishmentMasterDocumentList
     this.garnishmentMasterFrequencyList = this.selectedGarnishmentData.garnishmentMasterFrequencyList
 
-    
+    this.empAccNoApplicable = this.selectedGarnishmentData.empAccNoApplicable
+    this.displayName = this.selectedGarnishmentData.displayName
+    this.institutionName = this.selectedGarnishmentData.nameOfInstitution
+
 
     if(this.editFlag){
         this.applicationForm.controls['garnishmentMasterFrequencyId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterFrequencyId)
@@ -325,12 +397,67 @@ export class FastentryGarnishmentComponent implements OnInit {
 
   }
 
+
+  getTransactionTypeForSave(transactionId){
+    this.garnishmentMasterTransactionTypeList.forEach(element => {
+      if (element.garnishmentMasterTransactionTypeId == transactionId) {
+        this.selectedTransactionType = element.transactionTypeName
+      }
+    });
+
+    if (this.selectedTransactionType != 'NoOfTransaction') {
+      this.applicationForm.controls['numberOfTransactions'].setValue('')
+      this.applicationForm.controls['numberOfTransactions'].disable()
+    }
+
+    let todate = ''
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      this.applicationForm.controls['numberOfTransactions'].setValue(1)
+      this.applicationForm.controls['numberOfTransactions'].enable()
+      todate = ''
+      this.selectedToDate = ''
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31'
+      this.selectedToDate = this.datepipe.transform(new Date(todate), 'dd-MMM-yyyy')
+    } else {
+      todate = this.selectedToDate
+    }
+
+    this.applicationForm.controls['toDate'].setValue(todate)
+  }
+
   getSelectedGarnishmentData(garnishment){
     this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
       if(element.garnishmentMasterInputTypeId == garnishment){
         this.selectedInputTypeName = element.inputTypeName
       }
     }); 
+  }
+
+  saveFastEntries(){
+    let today = new Date()
+    let applicationDate = ''
+    applicationDate = this.datepipe.transform(new Date(today), 'yyyy-MM-dd')
+    
+    this.applicationForm.removeControl('isActive')
+    this.applicationForm.removeControl('garnishmentApplicationMasterId')
+    this.applicationForm.removeControl('employeeName')
+    this.applicationForm.removeControl('employeeCode')
+    console.log("save application : " + JSON.stringify(this.applicationForm.value))
+
+   
+
+    this.garnishmentservice.saveApplication(this.tableData).subscribe(res => {
+      this.toaster.sweetalertMasterSuccess("","Application data Saved successfully")
+      this.editFlag = false;
+      
+      this.applicationForm.addControl('garnishmentApplicationMasterId', new FormControl[''])
+      this.applicationForm.reset()
+
+      this.applicationForm.controls['goalBalanceAmount'].setValue(0)
+      this.applicationForm.controls['goalBalanceAmount'].disable()
+ 
+    })
   }
 
 }

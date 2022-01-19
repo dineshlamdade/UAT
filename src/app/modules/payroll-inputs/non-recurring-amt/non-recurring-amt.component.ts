@@ -119,6 +119,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	selectedOption: string = 'single';
 	payrollAreaId: any;
 	isvisible: boolean = false;
+	showOnlyGroup: boolean = false;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: AlertServiceService, private datepipe: DatePipe,
@@ -137,12 +138,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.parollListIndex = 0
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
 			this.getAllEmployeeDetails();
-			
+			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
+			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
 			this.PayrollAreaByPayrollAreaCode(this.payrollListEmpData[0].payrollAreaCode)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
 			
-			this.selectedPayrollArea = this.payrollListEmpData[0].payrollAreaCode
-			this.payrollAreaId = this.payrollListEmpData[0].payrollAreaId
+			
 		}
 	}
 
@@ -324,6 +325,22 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.viewHeadHistory = Summarydata
 		this.employeeMasterId = Summarydata.employeeMasterId
+		this.headMasterId = Summarydata.payrollHeadMaster.headMasterId
+		this.nonRecurringTransactionGroupId = Summarydata.nonRecurringTransactionGroupId
+		this.NonRecurringTransactionGroupHeadwiseHistory()
+	}
+
+	/** Save / Edit Transaction View Head transaction history popup */
+	ViewEditTransactionHistory(template1i: TemplateRef<any>, Summarydata) {
+		this.modalRef = this.modalService.show(
+			template1i,
+			Object.assign({}, {
+				class: 'gray modal-xl'
+			})
+		);
+
+		this.viewHeadHistory = Summarydata
+		//this.employeeMasterId = Summarydata.employeeMasterId
 		this.headMasterId = Summarydata.payrollHeadMaster.headMasterId
 		this.nonRecurringTransactionGroupId = Summarydata.nonRecurringTransactionGroupId
 		this.NonRecurringTransactionGroupHeadwiseHistory()
@@ -666,7 +683,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
-				this.toaster.sweetalertMasterSuccess('', 'Transaction data updated sucessfully')
+				this.toaster.sweetalertMasterSuccess('Transaction data updated sucessfully','')
 				if (this.selectedEmpData.length == 1) {
 					this.indexId = 1;
 					this.navigateSummary()
@@ -808,12 +825,12 @@ export class NonRecurringAmtComponent implements OnInit {
 		// }
 		// console.log(this.selectedPayrollArea)
 		if (this.selectedPayrollArea != '') {
-			this.NonRecurringTransactionGroupAPIEmpwise()
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
 			)
+				this.NonRecurringTransactionGroupAPIEmpwise()
 		}
 		this.payrollAssigned()
 	}
@@ -838,8 +855,11 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionGroupAPIEmpwise(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
+				this.NonRecurringTransactionGroupAPIEmpwiseData.sort((a,b) => a.headSequence - b.headSequence);
+
 				this.isRefererBonus = false
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
+					element.showRef = false;
 					if (element.onceEvery == 0) {
 						element.onceEvery = 1
 						element.frequency = 'Monthly'
@@ -848,8 +868,9 @@ export class NonRecurringAmtComponent implements OnInit {
 						element.numberOfTransactions = 1
 					}
 
-					if(element.headDescription == 'RefererBonus'){
+					if(element.headDescription == 'Referral Bonus'){
 						this.isRefererBonus = true
+						element.showRef = true
 					}
 				});
 				// this.NonRecurringTransactionGroupUI()
@@ -898,9 +919,10 @@ export class NonRecurringAmtComponent implements OnInit {
 
 
 	/** On change Once Every */
-	getOnceEveryChangeForSave(value, data) {
+	getOnceEveryChangeForSave(value, data,index) {
 		this.svaeDisabledFlag = false
-		console.log("json: "+ JSON.stringify(data))
+	//	console.log("json: "+ JSON.stringify(data))
+	this.NonRecurringTransactionGroupAPIEmpwiseData[index].onceEvery = value
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1210,7 +1232,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			})
 		}
 		console.log("fromDate: " + JSON.stringify(this.saveTransactionData))
-
+		this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].fromDate = event
 		this.saveTransactionData.forEach(element => {
 			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
 			|| element.amount == ''){
@@ -1407,7 +1429,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** On change To Date */
-	getToDateForSave(event, data) {
+	getToDateForSave(event, data,rowIndex) {
 		this.svaeDisabledFlag = false
 		this.selectedToDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
 		let todate = "";
@@ -1516,6 +1538,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			})
 		}
 		console.log("todate: " + JSON.stringify(this.saveTransactionData))
+		this.NonRecurringTransactionGroupAPIEmpwiseData[rowIndex].toDate = event
 
 		this.saveTransactionData.forEach(element => {
 			if(element.onceEvery == '' || element.frequency == '' || element.fromDate == '' || element.fromDate == null || element.transactionsType == '' 
@@ -1668,6 +1691,12 @@ this.saveTransactionData.forEach(element => {
 		});
 	}
 
+	/**on change opening balance add comma*/
+
+	addCommaOpeningAmount(value, data,rowindex){
+		this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].closingAmount = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+
 	/**on change opening balance */
 	transactionOpeningAmount(value, data,rowindex) {
 		this.svaeDisabledFlag = false
@@ -1682,6 +1711,9 @@ this.saveTransactionData.forEach(element => {
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
+
+
+		
 
 		if(data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes')
 		{
@@ -2115,7 +2147,17 @@ this.saveTransactionData.forEach(element => {
 				class: 'gray modal-lg'
 			})
 		);
+		this.showOnlyGroup = false
 		this.selectedTransactionClawback = data;
+		if(this.selectedTransactionClawback.onceEvery == 1 && this.selectedTransactionClawback.transactionsType == 'NoOfTransaction'){
+			this.showOnlyGroup = true;
+		}
+		if(this.selectedTransactionClawback.fromDate != null){
+			if(this.selectedTransactionClawback.transactionsType == 'Defined Date' && (this.datepipe.transform(this.selectedTransactionClawback.fromDate, 'yyyy-MM-dd') === this.datepipe.transform(this.selectedTransactionClawback.toDate, 'yyyy-MM-dd'))){
+				this.showOnlyGroup = true;
+			}
+		}
+		
 		this.selectedClawbackRowIndex = rowindex;
 	}
 
@@ -2795,7 +2837,7 @@ this.saveTransactionData.forEach(element => {
 		console.log(JSON.stringify(this.saveTransactionData))
 		this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
 			res => {
-				this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
+				this.toaster.sweetalertMasterSuccess("Transaction Saved Successfully","")
 				this.saveTransactionData = [];
                 this.svaeDisabledFlag = true;
 				if(this.showDropdownDisabled){
@@ -2905,10 +2947,10 @@ this.saveTransactionData.forEach(element => {
 		this.selectedHoldIndex = index;
 		if (event.checked) {
 			this.hold = 1
-			this.NonRecurringTransactionScheduleEMPdData[index].hold = true
+			//this.NonRecurringTransactionScheduleEMPdData[index].hold = true
 		} else {
 			this.hold = 0
-			this.NonRecurringTransactionScheduleEMPdData[index].hold = false
+			//this.NonRecurringTransactionScheduleEMPdData[index].hold = false
 			if (this.editScheduleFlag == false) {
 				this.AllNonRecurringTransactionScheduledData.forEach((element, index) => {
 					if (index == this.selectedHoldIndex) {
@@ -3113,7 +3155,7 @@ this.saveTransactionData.forEach(element => {
 		console.log(JSON.stringify(this.updateScheduleData))
 		this.nonRecService.NonRecurringTransactionScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
-				this.toaster.sweetalertMasterSuccess("", "Transaction Schedule updated successfully")
+				this.toaster.sweetalertMasterSuccess("Transaction Schedule updated successfully",'')
 				if (this.editScheduleFlag) {
 					this.NonRecurringTransactionScheduleEMP()
 				} else {
@@ -3247,6 +3289,8 @@ this.saveTransactionData.forEach(element => {
 		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
+
+	/** Selected Employee basic information expand and colapse */
 	visibleempdetails(){
 		this.isvisible = true;
 	}

@@ -17,6 +17,7 @@ import { InvestmentMasterApprovalService } from './investment-master-approval.se
 import { stat } from 'node:fs';
 import { Table } from 'primeng/table';
 import { InvestmentApprovalDocumentRemarkInfo } from '../interfaces/investment-approval-document-remark-info';
+import { MyInvestmentsService } from '../../my-Investments/my-Investments.service';
 
 @Component({
   selector: 'app-investment-master-approval',
@@ -43,6 +44,8 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public previousDisabled: boolean = true;
   public nextDisabled: boolean = false;
   public test = [];
+  public enteredRemark = '';
+  public selectedMasterInfo: any;
 
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
     employeeMasterId: 0,
@@ -54,42 +57,49 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     grade: '',
     establishment: '',
   };
+  public masterInfo: any;
 
-  public masterInfo: InvestmentApprovalMasterInfo = {
-    // psidDetailList: [],
-    psidDetail: {
-      groupName: '',
-      section: '',
-      type: '',
-      psid: '',
-      dateOfSubmission: null,
-      proofSubmissionStatus: '',
-      lastModifiedDateTime: null,
-    },
-    masterDetail: {
-      masterId: 0,
-      employeeMasterId: 0,
-      institutionName: '',
-      policyNo: '',
-      policyholdername: '',
-      relationship: '',
-      policyStartDate: null,
-      policyEndDate: null,
-      proofSubmissionId: '',
-      masterStatus: '',
-      paymentDetailList: [],
-      documentDetailList: this.documentDetailList,
-      masterRemarkDetailList: [],
-    },
-  };
+  // public masterInfo: InvestmentApprovalMasterInfo = {
+  
+  //   psidDetail: {
+  //     groupName: '',
+  //     section: '',
+  //     type: '',
+  //     psid: '',
+  //     dateOfSubmission: null,
+  //     proofSubmissionStatus: '',
+  //     lastModifiedDateTime: null,
+  //   },
+  //   masterDetail: {
+  //     masterId: 0,
+  //     employeeMasterId: 0,
+  //     institutionName: '',
+  //     policyNo: '',
+  //     policyholdername: '',
+  //     relationship: '',
+  //     policyStartDate: null,
+  //     policyEndDate: null,
+  //     proofSubmissionId: '',
+  //     masterStatus: '',
+  //     paymentDetailList: [],
+  //     documentDetailList: this.documentDetailList,
+  //     masterRemarkDetailList: [],
+  //   },
+  // };
   public remarkValidation: boolean = false;
   public approvedDisabled: boolean = true;
   public approvedDiscardDisabled = false;
   public documentRemarkValidation: boolean = false;
   selectedRemark = '';
+  public remarkCount : any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  selectedremarkIndex : any;
 
   constructor(
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
+    private Service: MyInvestmentsService,
     private modalService: BsModalService,
     private sanitizer: DomSanitizer,
     private router: Router,
@@ -130,6 +140,9 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       }
     }
   }
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
 
   // --------- Get Employee Info by employee mAster ID --------------------------------
   getEmployeeInfo(employeeMasterId: any): void {
@@ -145,7 +158,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   getMasterInfo(psid: any): void {
     this.investmentMasterApprovalService
       .getMasterInfo(psid)
-      .subscribe((res: InvestmentApprovalMasterInfo) => {
+      .subscribe((res) => {
         console.log('res masterinfo::', res);
         if (res != null || res != undefined) {
          
@@ -192,7 +205,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     documentRemarkList,
     psid
   ) {
-    debugger
+    
     this.investmentMasterApprovalService.getMasterDocumentApprovalRemarkList(
       psid,
     ).subscribe((res) => {
@@ -209,13 +222,80 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     );
   }
 
+  
+
+  onSaveRemarkDetails(summary, index){
+    debugger
+    console.log(this.selectedMasterInfo);
+    const data ={
+      "transactionId": 0,
+      "masterId":this.selectedMasterInfo.masterDetail.masterId,
+      "employeeMasterId":this.selectedMasterInfo.masterDetail.employeeMasterId,
+      "section":this.selectedMasterInfo.psidDetail.groupName,
+      "subSection":this.selectedMasterInfo.psidDetail.section,
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.selectedMasterInfo.masterDetail.proofSubmissionId,
+      "role":"Approval Admin",
+      "remarkType":"Master"
+      
+
+    };
+    
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      debugger
+      if(res.status.code == "200") {
+        // console.log(this.transactionDetail);
+        // this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        // this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.masterInfo.masterDetail.bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+    
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+
+ 
+
+
+   //----------- On change Transactional Line Item Remark --------------------------
+   public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+    
+  //  console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+
+    // this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+
+  // document.getElementById('template8').scrollIntoView()
+
+
+  }
   // -------------- Master Remark Modal ---------------------------
   public masterRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     documentRemarkList,
-    masterId
+    masterId, masterInfo
   ) {
+
     debugger
+    this.selectedMasterInfo = masterInfo;
+    
     this.investmentMasterApprovalService.getMasterApprovalRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -332,7 +412,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   }
 
   // ------------ Change PSID Status of Master --------------------------------------
-  changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
+  changeStatus(masterDetails, status: any) {
     
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
@@ -405,7 +485,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   // ----------------- Change PSID Status of MASTER with NEXT and PREVIOUS -------------------------------
   changeStatusWithNextPrevious(
-    masterDetails: InvestmentApprovalMasterInfo,
+    masterDetails,
     status: any,
     psid: any,
     operationType: string
@@ -560,7 +640,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
     console.log("status::", status);
     console.log("status::", status == 'Discarded');
-    debugger
+    
     if (status == 'Discarded') {
       this.documentList.forEach((doc) => {
         console.log("doc.statusRemark::", doc.statusRemark);
@@ -625,7 +705,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   selectDocumentForApprovalOrDiscard(
     checkValue,
     documentDetail,
-    masterDetail: InvestmentApprovalMasterInfo
+    masterDetail
   ) {
     console.log('checkValue::', checkValue);
     console.log('documentDetail::', documentDetail);
@@ -659,8 +739,8 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   }
 
   //----------- On change Document Remark --------------------------
-  public onChangeDocumentRemark(docDetail, event) {
-    debugger
+  public onChangeDocumentRemark1(docDetail, event) {
+    
     console.log('event.target.value::', event.target.value);
     if(this.documentList.length>0){
       const index =

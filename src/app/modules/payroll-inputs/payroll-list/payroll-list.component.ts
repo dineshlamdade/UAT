@@ -133,9 +133,12 @@ export class PayrollListComponent implements OnInit {
 
 
   navigateToFinancialMaster(){
-    
+    if(this.selectedEmployeeData.length > 0){
       localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
       this.router.navigate(['/PayrollInputs/Financial-Master'])
+    }else{
+      this.router.navigate(['/PayrollInputs/Financial-Master'])  
+    }
     
   }
 

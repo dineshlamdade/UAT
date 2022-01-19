@@ -119,8 +119,8 @@ export class BusinessYearComponent implements OnInit {
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, "dd-MMM" );
       addBusinessYear.description = this.BusinessYearform.get( 'description' ).value;
       addBusinessYear.businessYearDefinitionId = this.editedRecordIndexId;
-      console.log( 'desc', this.BusinessYearform.get( 'description' ).value );
-      console.log( JSON.stringify( addBusinessYear ) );
+      // console.log( 'desc', this.BusinessYearform.get( 'description' ).value );
+      // console.log( JSON.stringify( addBusinessYear ) );
       this.companySetttingService.UpdateBusinessYear( addBusinessYear ).subscribe( ( res: any ) => {
 
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
@@ -147,7 +147,7 @@ export class BusinessYearComponent implements OnInit {
   }
 
   DeleteBussinessyearById( id ): void {
-    console.log( 'delete', id );
+    // console.log( 'delete', id );
     this.updateFlag = false;
     this.companySetttingService.DeleteBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]
@@ -172,7 +172,7 @@ export class BusinessYearComponent implements OnInit {
   //Edit and view
   // http://localhost:8086/hrms/v1/business-year/27
   GetBussinessyearById( id: number, isView:boolean ): void {
-    console.log(isView);
+    // console.log(isView);
     if(isView == true){
     this.updateFlag = true;
     this.hideUpdate = false;
@@ -184,9 +184,9 @@ export class BusinessYearComponent implements OnInit {
       this.hideUpdate = true;
     }
     window.scrollTo( 0, 0 );
-    console.log( 'gettt' );
+    // console.log( 'gettt' );
     this.editedRecordIndexId = id;
-    console.log( id, this.BusinessyearList );
+    // console.log( id, this.BusinessyearList );
 
     this.companySetttingService.GetBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]

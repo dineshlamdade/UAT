@@ -33,6 +33,7 @@ import { NscService } from '../nsc.service';
   styleUrls: ['./national-seving-certificate-master.component.scss'],
 })
 export class NationalSevingCertificateMasterComponent implements OnInit {
+  public enteredRemark = '';
   @Input() public accountNo: any;
   public showdocument = true;
   public modalRef: BsModalRef;
@@ -110,6 +111,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  selectedremarkIndex : any;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -125,6 +127,12 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   ConvertedFinancialYearEndDate: Date;
 
   public proofSubmissionId;
+  documentRemarkList: any;
+  public remarkCount : any;
+
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -323,6 +331,48 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
     this.setPaymentDetailToDate();
   }
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    
+    console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+ 
+    this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+   
+ 
+  }
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    masterId,
+    summary, count
+  ) {
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.nscService.getNscMasterRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
 
   //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
@@ -364,6 +414,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     if (from > to) {
       this.form.controls.toDate.reset();
     }
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
   }
 
   //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
@@ -451,14 +505,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
-      for (let i = 0; i <= this.documentPassword.length; i++) {
+      for (let i = 0; i <= this.masterfilesArray.length; i++) {
         if(this.documentPassword[i] != undefined){
           let remarksPasswordsDto = {};
           remarksPasswordsDto = {
             "documentType": "Back Statement/ Premium Reciept",
             "documentSubType": "",
-            "remark": this.remarkList[i],
-            "password": this.documentPassword[i]
+            "remark": this.remarkList[i] ? this.remarkList[i] : '',
+            "password": this.documentPassword[i] ? this.documentPassword[i] : ''
           };
           this.documentDataArray.push(remarksPasswordsDto);
         }
@@ -560,6 +614,41 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.getDetails();
     // }
   }
+
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": 0,
+      "masterId":this.summaryDetails.investmentGroup2MasterId,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"NSC",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Master"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.masterGridData);
+        this.masterGridData[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+     
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);

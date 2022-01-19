@@ -162,7 +162,7 @@
                               <select class="form-control selectpicker" placeholder="Select ISD" autocomplete="off"
                                 formControlName="isdCode"
                                 [ngClass]="{'is-invalid' : companyMasterform.get('isdCode').status == 'INVALID'}">
-                                <option value='' data-hidden="true">Select</option>
+                                <option value='' data-hidden="true">Select &nbsp;&nbsp;</option> 
                                 <option *ngFor="let code of countryCode" [value]="code">
                                   {{code}}
                                 </option>
@@ -311,6 +311,19 @@
                               [ngClass]="{'is-invalid' : companyMasterform.get('startDate').status == 'INVALID'}">
                           </div>
                         </div>
+                        <!-- <div class="col-sm-3">
+                          <label class="form-label">Engagement Start Date</label>
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' , customTodayClass: 'today' }"
+                              formControlName="startDate" autocomplete="off"
+                              [(ngModel)]="employeeMasterRequestDTO.startDate" placement="center"
+                              [maxDate]="today" data-provide="datepicker" data-date-autoclose="true"
+                              class="form-control" placeholder="Enter Start Date" (bsValueChange)="onChangeStartDate()"
+                              bsDatepicker (focusout)="onChangeStartDate()"
+                              [ngClass]="{'is-invalid' : companyMasterform.get('startDate').status == 'INVALID'}">
+                          </div>
+                        </div> -->
 
                       </div>
 
@@ -331,9 +344,9 @@
 
 
                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY',  customTodayClass: 'today'  }"
-                              formControlName="endDate" placement="center"
+                              formControlName="endDate" placement="center" [minDate]="today"
                               [ngClass]="{'is-invalid' : companyMasterform.get('endDate').status == 'INVALID'}"
-                              data-provide="datepicker" (bsValueChange)="onChangeEndDate($event)"
+                              data-provide="datepicker" (bsValueChange)="onChangeEndDate($event)" 
                               data-date-autoclose="true" (focusout)="onChangeEndDate($event)" class="form-control"
                               placeholder="Enter End Date" bsDatepicker>
                           </div>
@@ -360,25 +373,117 @@
                       <div class="row mt-20 mb-10">
 
                         <div class="col-md-3">
-                          <label class="form-label">Company Logo 1</label>
-                          <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
-                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo1" style="font-size: x-small;" />
+                          <label class="form-label">Company Logo 1
+                            <!-- <i class="fa fa-upload font-16 text-dark-green cursor-pointer"
+                                                        
+                                                        tooltip="upload"></i> -->
+                          </label>
+                           <!-- <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
+                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)" 
+                            />  -->
+                            <div class="row">
+                              <div class="col-md-2">
+                            <input type='file' class="form-control-file" id="logo1" name='logo1' accept=".jpg,.jpeg,.png"
+                            #fileInput1 formControlName="logo1" (change)="logo1($event, fileInput1)" 
+                            [(ngModel)]="employeeMasterRequestDTO.logo1" style="display: none"/>
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput1.click()" [disabled]="viewlogoflag"></button>
+                          </div>
+                          <div class="col-md-8">
+                            <span>{{employeeMasterRequestDTO.logo1}}</span>
+                          </div>
+                          <div class="col-md-2">
+                            <i (click)="deletelogo1()" class="fa fa-times text-color-red" *ngIf="!viewlogoflag"></i>
+                          </div>
+                          </div>
+                           <!-- <span *ngIf="editlogo1"><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
+                            <!-- <span><a href="{{logo1Path}}" target="_blank">{{editlogo1}}</a></span> -->
+                            
+                            <!-- <span *ngIf="true">{{editlogo1}}</span> -->
+                            <!-- <span [innerHTML]="employeeMasterRequestDTO.logo1"></span> -->
+                            <!-- <span>{{employeeMasterRequestDTO.logo1}}</span> 
+                            style="display: none"
+                            -->
+                            
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" name="logo1" 
+                            class="form-control-file" (change)="logo1($event, fileInput1)" value="logo1">
+                          value="{{employeeMasterRequestDTO.logo1}}"
+                             onchange="{{logo1}}"
+                            
+                             <input type="file" #UploadFileInput id="fileUpload" (change)="fileChangeEvent($event)" name="fileUpload"
+        multiple="multiple" accept="image/*" />
+                            [value]="employeeMasterRequestDTO.logo1ImageName"
+                          [(ngModel)]="employeeMasterRequestDTO.logo1" style="font-size: x-small;"-->
+                          
+                           
+
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" name="logo1" 
+                            class="form-control-file" id=" " aria-describedby="fileHelp" (change)="logo1($event, fileInput1)"> -->
+                            <!-- <input type="file" [(ngModel)]="employeeMasterRequestDTO.logo1" (change)="logo1($event)"/> -->
+
+                            <!-- <input #theFile type="file" (change)="onFileChange($event)" accept=".png" class="form-control" 
+                            formControlName="logo1" /> -->
+                            <!-- <i (click)="deletelogo1()" class="fa fa-times"></i> -->
                         </div>
                         
 
                         <div class="col-md-3">
                           <label class="form-label">Company Logo 2</label>
-                          <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                          <!-- <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
                             #fileInput2 formControlName="logo2" (change)="logo2($event, fileInput2)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" />
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" /> -->
+                            <div class="row">
+                              <div class="col-md-2">
+                            <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                            #fileInput2 formControlName="logo2" (change)="logo2($event, fileInput2)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" style="display: none"/>
+
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput2.click()" [disabled]="viewlogoflag"></button>
+                          </div>
+                            <div class="col-md-8">
+                            <span>{{employeeMasterRequestDTO.logo2}}</span>
+                          </div>
+                            <div class="col-md-2">
+                            <i (click)="deletelogo2()" class="fa fa-times text-dark-red" *ngIf="!viewlogoflag"></i>
+                          </div>
+                          </div>
+                            <!-- <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg,.jpeg,.png"
+                            #attachment formControlName="logo2" (change)="logo2($event, fileInput2)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" style="display: none"/>
+
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput2.click()" [disabled]="viewlogoflag"></button>
+                            
+                            <div *ngFor="let selected of selectedImageFileLogo2;let index = index">
+                              <h3>{{selected}}</h3>
+                              
+                              <i (click)="deletelogo2(index)" class="fa fa-times"></i>
+                            </div> -->
+                            
+                            
                         </div>
 
                         <div class="col-md-3">
                           <label class="form-label">Company Logo 3</label>
-                          <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
+
+                          <!-- <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
                             #fileInput3 formControlName="logo3" (change)="logo3($event, fileInput3)"
-                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" />
+                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" /> -->
+                            <div class="row">
+                              <div class="col-md-2">
+                            <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg,.jpeg,.png"
+                            #fileInput3 formControlName="logo3" (change)="logo3($event, fileInput3)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" style="display: none" />
+                            <button class="fa fa-upload" tooltip="upload" (click)="fileInput3.click()" [disabled]="viewlogoflag"></button>
+                          </div>
+                          <div class="col-md-8">
+                           
+                            <span>{{employeeMasterRequestDTO.logo3}}</span>
+
+                          </div>
+                          <div class="col-md-2">
+                            <i (click)="deletelogo3()" class="fa fa-times text-dark-red" *ngIf="!viewlogoflag"></i>
+                            </div>
+                            </div>
+
                         </div>
 
                       </div>
@@ -819,7 +924,7 @@
                                               
                                                     <span>
                                                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                        (click)="editMaster(rowIndex,summary.globalCompanyMasterId)"
+                                                        (click)="editMaster(rowIndex,summary.globalCompanyMasterId,summary)"
                                                         tooltip="Edit"></i> </span>
                     
                                                     <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"

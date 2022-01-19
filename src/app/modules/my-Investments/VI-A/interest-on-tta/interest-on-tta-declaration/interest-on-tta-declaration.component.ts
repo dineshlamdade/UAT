@@ -35,6 +35,7 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
   styleUrls: ['./interest-on-tta-declaration.component.scss'],
 })
 export class InterestOnTtaDeclarationComponent implements OnInit {
+  public enteredRemark = '';
   @Input() bankName: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -189,6 +190,12 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public canEdit: boolean;
   EditDocumentRemark: any;
   editInterestOnSavingDeposit80TTMasterId: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -401,8 +408,8 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     const selectedBank = this.transactionBankNameList.find(
       (item) => item.interestOnSavingsDeposit80TTMasterId == bankMasterId
     );
-    this.globalBank = selectedBank.bankName;
-    this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
+    this.globalBank = selectedBank?.bankName;
+    this.selectedMasterId = selectedBank?.interestOnSavingsDeposit80TTMasterId;
     this.getTransactionFilterData(this.globalBank);
     this.globalSelectedAmount = this.numberFormat.transform(0);
 
@@ -450,16 +457,27 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     //   this.globalInstitution
     // );
     this.interestOnTtaService.getTTAAccontNoList(this.globalBank,policy).subscribe((res) => {
-      console.log('getTransactionFilterData', res);
-      console.log('getTransactionFilterData', res);
+      //console.log('this.transactionDetail', this.transactionDetail);
+      //console.log('this.documentDetailList', this.documentDetailList);
       this.transactionDetail =
         res.data.results[0].interestOnSavingDeposit80TTTransactionList;
       this.documentDetailList = res.data.results[0].documentInformation;
+      this.transactionDetail.forEach(ele =>{
+        this.documentDetailList.forEach(element =>{
+       //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+          if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+          //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+            element.bankName = ele.bankName;
+            element.accountNumber = ele.accountNumber
+          }
+        })
+      })
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      res.documentDetailList.forEach(element => {
+      console.log("this.documentDetailList: "+ this.documentDetailList)
+      this.documentDetailList.forEach(element => {
         // if(element!=null)
         this.documentArray.push({
           'dateofsubmission':element.creatonTime,
@@ -946,28 +964,29 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   }
 
   //----------- On change Transactional Line Item Remark --------------------------
-  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
-    console.log('event.target.value::', event.target.value);
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
+  
+ console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
 
-   console.log('this.transactionDetail', this.transactionDetail);
-    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
-    // console.log('index::', index);
+  this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+ 
 
-    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
-
-
-  }
+}
 
   upload() {
 
-    for (let i = 0; i < this.documentPassword.length; i++) {
+    for (let i = 0; i < this.filesArray.length; i++) {
       if(this.documentPassword[i] != undefined || this.documentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           "documentType": "Back Statement/ Premium Reciept",
           "documentSubType": "",
-          "remark": this.remarkList[i],
-          "password": this.documentPassword[i]
+          "remark": this.remarkList[i] ? this.remarkList[i] : '',
+          "password": this.documentPassword[i] ? this.documentPassword[i] : ''
         };
         this.documentDataArray.push(remarksPasswordsDto);
       }
@@ -1094,6 +1113,16 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           this.transactionDetail =
             res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
+          this.transactionDetail.forEach(ele =>{
+            this.documentDetailList.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber;
+              }
+            })
+          })
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1417,26 +1446,32 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
               );
             });
           });
-          this.masterGridData.forEach((element) => {
-            element.documentInformation.forEach(element => {
-          element.documentDetailList.forEach(element => {
+          this.documentArray = []
+          res.data.results.forEach(element => {
+           // console.log("this.element: ", JSON.stringify(element))
+            element.documentInformation.forEach(ele => {  
+          ele.documentDetailList.forEach(obj => {
             // if(element!=null)
+            console.log("this.obj: ", JSON.stringify(obj))
+
             this.documentArray.push({
-              'dateofsubmission': element.dateOfSubmission,
-              'documentType':element.documentType,
-              'documentName': element.fileName,
-              'documentPassword':element.documentPassword,
-              'documentRemark':element.documentRemark,
-              'status' : element.status,
-              'lastModifiedBy' : element.lastModifiedBy,
-              'lastModifiedTime' : element.lastModifiedTime,
+              'dateofsubmission': obj.creatonTime,
+              'documentType':obj.documentType,
+              'documentName': obj.fileName,
+              'documentPassword':obj.documentPassword,
+              'documentRemark':obj.documentRemark,
+              'status' : obj.status,
+              'lastModifiedBy' : obj.lastModifiedBy,
+              'lastModifiedTime' : obj.lastModifiedTime,
             })
             })
       });
     });
   }
 );
-this.documentArray = [];
+
+console.log("this.documentArray: ", JSON.stringify(this.documentArray))
+// this.documentArray = [];
   }
   public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
@@ -1466,6 +1501,45 @@ this.documentArray = [];
     }
 
 
+    onSaveRemarkDetails(summary, index){
+    
+      const data ={
+        "transactionId": this.summaryDetails.interestOnSavingDeposit80TTTransactionId,
+        "masterId":0,
+        "employeeMasterId":this.summaryDetails.employeeMasterId,
+        "section":"VIA",
+        "subSection":"80TTA",
+        "remark":this.editRemarkData,
+        "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+        "role":"Employee",
+        "remarkType":"Transaction"
+  
+      };
+      this.Service
+      .postLicMasterRemark(data)
+      .subscribe((res) => {
+        if(res.status.code == "200") {
+          
+          console.log(this.transactionDetail);
+          // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+          this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+          this.alertService.sweetalertMasterSuccess(
+            'Remark Saved Successfully.',
+            '',
+          );
+           this.enteredRemark = '';
+          this.modalRef.hide();
+  
+  
+        } else{
+          this.alertService.sweetalertWarning("Something Went Wrong");
+        }
+      });
+    }
+
+    onResetRemarkDetails() {
+      this.enteredRemark = '';
+    }
 
   // Common Function for filter to call API
   getTransactionFilterData(bankName: String) {
@@ -1474,10 +1548,23 @@ this.documentArray = [];
     this.interestOnTtaService
       .getTransactionFilterData(bankName)
       .subscribe((res) => {
-        console.log('getTransactionFilterData', res);
-        this.transactionDetail =
-          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+       // console.log('getTransactionFilterData', res);
+        this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.documentDetailList = res.data.results[0].documentInformation;
+      //  console.log('getTransactionFilterData: ',JSON.stringify(this.transactionDetail))
+       //   console.log(JSON.stringify(this.documentDetailList))
+
+          this?.transactionDetail?.forEach(ele =>{
+            this?.documentDetailList?.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber
+              }
+            })
+          })
+
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1486,7 +1573,7 @@ this.documentArray = [];
         console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
         this.initialArrayIndex = [];
-        this.transactionDetail.forEach((element) => {
+        this?.transactionDetail?.forEach((element) => {
           if (element.interestOnSavingDeposit80TTTransactionList !== null) {
             this.initialArrayIndex.push(
               element.interestOnSavingDeposit80TTTransactionList.length
@@ -1508,7 +1595,7 @@ this.documentArray = [];
             );
           }
         });
-        res.documentDetailList.forEach(element => {
+        this?.documentDetailList?.forEach(element => {
           // if(element!=null)
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -1527,15 +1614,19 @@ this.documentArray = [];
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, policyNo
+    interestOnSavingDeposit80TTTransactionId,
+    summary, count
   ) {
-
-    this.Service.getRemarkList(
-      policyNo,
-      psId
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.interestOnTtaService.getinterestonsavingdeposit80TTATransactionRemarkList(
+      interestOnSavingDeposit80TTTransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1545,6 +1636,7 @@ this.documentArray = [];
       Object.assign({}, { class: 'gray modal-s' })
     );
   }
+
 
   public uploadUpdateTransaction() {
     for (let i = 0; i < this.editremarkList.length; i++) {
@@ -1681,6 +1773,16 @@ this.documentArray = [];
           });
           this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
+          this.transactionDetail.forEach(ele =>{
+            this.documentDetailList.forEach(element =>{
+           //   console.log(ele.interestOnSavingDeposit80TTTransactionList[0])
+              if(parseInt(ele.interestOnSavingDeposit80TTTransactionList[0].proofSubmissionId) == parseInt(element.proofSubmissionId)){
+              //  console.log("element.proofSubmissionId: "+element.proofSubmissionId)
+                element.bankName = ele.bankName;
+                element.accountNumber = ele.accountNumber
+              }
+            })
+          })
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;

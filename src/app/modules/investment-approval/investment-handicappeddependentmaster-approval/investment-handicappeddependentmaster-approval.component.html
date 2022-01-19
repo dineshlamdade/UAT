@@ -196,7 +196,7 @@
                               class="form-control"
                               disabled
                               value="{{
-                                masterInfo.masterDetail.policyholdername
+                                masterInfo.masterDetail.familyMemberName
                               }}"
                             />
                           </div>
@@ -464,21 +464,21 @@
                         <div class="row mt-10">
                           <div class="col-md-12 mt-10 mb-15">
                             <div class="row">
-                              <div class="col-md-6">
+                              <div class="col-md-0">
                                 <div class="d-flex">
-                                  <Label class="form-label mr-2"> Remark</Label>
+                                  <Label class="form-label mr-2 mt-1"> Remark</Label>
 
-                                  <input
+                                  <!-- <input
                                     type="text"
                                     class="form-control"
                                     [(ngModel)]="masterRemark"
                                     [disabled]="
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         '' ||
-                                      masterInfo.masterDetail.masterStatus ==
+                                      masterInfo?.masterDetail?.masterStatus ==
                                         'Approved'
                                     "
-                                  />
+                                  /> -->
                                 </div>
                               </div>
 
@@ -492,8 +492,9 @@
                                       (click)="
                                         masterRemarkModal(
                                           template3,
-                                          masterInfo.masterDetail
-                                            .masterRemarkDetailList
+                                          masterInfo?.masterDetail?.masterRemarkDetailList,
+                                            masterInfo?.masterDetail?.masterId,
+                                            masterInfo
                                         )
                                       "
                                       class="
@@ -509,8 +510,7 @@
                                     _ngcontent-ykc-c443=""
                                     class="Label_badge"
                                     >{{
-                                      masterInfo.masterDetail
-                                        .masterRemarkDetailList.length
+                                      masterInfo?.masterDetail?.bubbleRemarkCount
                                     }}</span
                                   >
                                 </div>
@@ -668,9 +668,9 @@
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
-                                    localStorageProofSubmissionIdList.length -
+                                    localStorageProofSubmissionIdList?.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == ''
+                                  masterInfo?.masterDetail?.masterStatus == ''
                                 "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
@@ -1064,36 +1064,36 @@
                                             class="p-selectable-row"
                                             [pSelectableRow]="documentDetail"
                                           >
-                                            <td>
-                                              <p-tableCheckbox
-                                                [value]="documentDetail"
-                                                (click)="
-                                                  selectDocumentForApprovalOrDiscard(
-                                                    e.checked,
-                                                    documentDetail,
-                                                    masterInfo
-                                                  )
-                                                "
-                                                #e
-                                                [class.disableCheckbox]="
-                                                  documentDetail.documentStatus ==
-                                                    'Approved' ||
-                                                  documentDetail.documentStatus ==
-                                                    'Discarded' ||
-                                                  documentDetail.documentStatus ==
-                                                    'Discard'
-                                                "
-                                                [disabled]="
-                                                  documentDetail.documentStatus ==
-                                                    'Approved' ||
-                                                  documentDetail.documentStatus ==
-                                                    'Discarded' ||
-                                                  documentDetail.documentStatus ==
-                                                    'Discard'
-                                                "
-                                              >
-                                              </p-tableCheckbox>
-                                            </td>
+                                          <td>
+                                            <p-tableCheckbox
+                                              [value]="documentDetail"
+                                              (click)="
+                                                selectDocumentForApprovalOrDiscard(
+                                                  e.checked,
+                                                  documentDetail,
+                                                  masterInfo
+                                                )
+                                              "
+                                              #e
+                                              [class.disableCheckbox]="
+                                                documentDetail?.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail?.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail?.documentStatus ==
+                                                  'Discard'
+                                              "
+                                              [disabled]="
+                                                documentDetail?.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail?.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail?.documentStatus ==
+                                                  'Discard'
+                                              "
+                                            >
+                                            </p-tableCheckbox>
+                                          </td>
                                             <td>
                                               {{
                                                 documentDetail.dateOfSubmission
@@ -1104,7 +1104,7 @@
                                               <a
                                                 (click)="
                                                   navigateAssociates(
-                                                    documentDetail.documentInformationId
+                                                    documentDetail?.documentInformationId
                                                   )
                                                 "
                                               >
@@ -1115,14 +1115,14 @@
                                                   "
                                                 ></i>
                                                 &nbsp;
-                                                {{ documentDetail.fileName }}
+                                                {{ documentDetail?.fileName }}
                                               </a>
                                             </td>
                                             <td>
-                                              {{ documentDetail.documentType }}
+                                              {{ documentDetail?.documentType }}
                                             </td>
                                             <td>
-                                              {{ documentDetail.password }}
+                                              {{ documentDetail?.password }}
                                             </td>
                                             <td>
                                               <div class="d-flex">
@@ -1136,11 +1136,11 @@
                                                     )
                                                   "
                                                   [disabled]="
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Approved' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discarded' ||
-                                                    documentDetail.documentStatus ==
+                                                    documentDetail?.documentStatus ==
                                                       'Discard'
                                                   "
                                                 />
@@ -1158,7 +1158,7 @@
                                                         docRemarkModal(
                                                           template3,
                                                           documentDetailIndex,
-                                                          documentDetail.documentRemarkDetailList
+                                                          documentDetail?.documentRemarkDetailList
                                                         )
                                                       "
                                                       class="
@@ -1174,9 +1174,7 @@
                                                     _ngcontent-ykc-c443=""
                                                     class="Label_badge"
                                                     >{{
-                                                      documentDetail
-                                                        .documentRemarkDetailList
-                                                        .length
+                                                      documentDetail?.documentRemarkDetailList?.length
                                                     }}</span
                                                   >
                                                 </div>
@@ -1184,17 +1182,17 @@
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.documentStatus
+                                                documentDetail?.documentStatus
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedBy
+                                                documentDetail?.lastModifiedBy
                                               }}
                                             </td>
                                             <td>
                                               {{
-                                                documentDetail.lastModifiedDateTime
+                                                documentDetail?.lastModifiedDateTime
                                                   | date: "dd-MMM-yyyy HH:mm"
                                               }}
                                             </td>

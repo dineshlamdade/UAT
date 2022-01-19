@@ -21,6 +21,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfdeclaration.component.scss']
 })
 export class PPFDeclarationComponent implements OnInit {
+  public enteredRemark = '';
 
   @Input() public institution: string;
   @Input() public policyNo: string;
@@ -52,8 +53,12 @@ export class PPFDeclarationComponent implements OnInit {
   documentDataArray = [];
   editdDocumentDataArray = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   selectedRemarkList: any;
+  public groupTransactionList: Array<any> = [];
 
 
   viewDocumentName: any;
@@ -94,6 +99,10 @@ export class PPFDeclarationComponent implements OnInit {
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+
+
+
+  public ispreviousEmploy = true;
 
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -177,6 +186,12 @@ export class PPFDeclarationComponent implements OnInit {
   disableRemarkList = false
   disableRemark: any;
   Remark: any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  public remarkCount : any;
+  selectedremarkIndex : any;
+  currentJoiningDate: Date;
 
 
   constructor(
@@ -256,6 +271,36 @@ export class PPFDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
+
+
+
+    
+     // Get API call for All Current previous employee Names
+     this.Service.getcurrentpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+debugger
+      this.currentJoiningDate = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
+        const obj = {
+          label: element.name,
+          value: element.employeeMasterId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
+
+
+
+
+
 
     // this.Service.getpreviousEmployeName().subscribe((res) => {
     //   console.log('previousEmployeeList::', res);
@@ -989,6 +1034,7 @@ export class PPFDeclarationComponent implements OnInit {
       investmentGroup1TransactionId: number;
       investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
+      employeeMasterId: number;
       dueDate: Date;
       declaredAmount: any;
       dateOfPayment: Date;
@@ -997,6 +1043,8 @@ export class PPFDeclarationComponent implements OnInit {
     },
     j: number
   ) {
+
+   
     // console.log('summary::',  summarynew);
     // if (this.initialArrayIndex[j] > i) {
     //   this.hideRemoveRow = false;
@@ -1009,6 +1057,9 @@ export class PPFDeclarationComponent implements OnInit {
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
+    this.declarationService.employeeMasterId = this.transactionDetail[
+      j
+    ].groupTransactionList[0].employeeMasterId;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1033,8 +1084,11 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   // -------- Delete Row--------------
-  deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+  deleteRow(j: number, i) {
+
+    debugger
+    // const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = i;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].groupTransactionList.length == 1) {
@@ -1171,6 +1225,7 @@ export class PPFDeclarationComponent implements OnInit {
    //----------- On change Transactional Line Item Remark --------------------------
    public onChangeDocumentRemark(transactionDetail, transIndex, event) {
     console.log('event.target.value::', event.target.value);
+    this.editRemarkData =  event.target.value;
     
    console.log('this.transactionDetail', this.transactionDetail);
     // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
@@ -1389,6 +1444,44 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.globalSelectedAmount = '0.00';
   }
 
+  onSaveRemarkDetails(summary, index){
+    
+    const data ={
+      "transactionId": this.summaryDetails.investmentGroup1TransactionId,
+      "masterId":0,
+      "employeeMasterId":this.summaryDetails.employeeMasterId,
+      "section":"80C",
+      "subSection":"PPF",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+      "role":"Employee",
+      "remarkType":"Transaction"
+
+    };
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      if(res.status.code == "200") {
+        console.log(this.transactionDetail);
+        this.transactionDetail[0].groupTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+         this.enteredRemark = '';
+        this.modalRef.hide();
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
+  }
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
   changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_ : number;
@@ -1472,25 +1565,28 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
-        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
-        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
-         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
-        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
+        this.documentRemark =res?.data?.results[0]?.documentInformation[0]?.documentRemark;
+        this.urlArray = res?.data?.results[0]?.documentInformation[0]?.documentDetailList;
+        this.disableRemark = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
+         this.editTransactionUpload = res?.data?.results[0]?.investmentGroupTransactionDetail;
+        this.editProofSubmissionId = res?.data?.results[0]?.proofSubmissionId;
+        this.createDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.createDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.investmentGroupTransactionDetail[0]?.groupTransactionList[0]?.transactionStatus;
+        this.editReceiptAmount = res?.data?.results[0]?.receiptAmount;
+        this.grandDeclarationTotalEditModal = res?.data?.results[0]?.grandDeclarationTotal;
+        this.grandActualTotalEditModal = res?.data?.results[0]?.grandActualTotal;
+        this.grandRejectedTotalEditModal = res?.data?.results[0]?.grandRejectedTotal;
+        this.grandApprovedTotalEditModal = res?.data?.results[0]?.grandApprovedTotal;
       
         //console.log('converted:: ', this.urlArray);
-        this.editTransactionUpload.forEach((element) => {
-          element.groupTransactionList.forEach((innerElement) => {
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount,
+        this.editTransactionUpload?.forEach((element) => {
+          element.groupTransactionList?.forEach((innerElement) => {
+            innerElement.declaredAmount = this.numberFormat?.transform(
+              innerElement?.declaredAmount,
             );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount,
+            innerElement.actualAmount = this.numberFormat?.transform(
+              innerElement?.actualAmount,
             );
           });
         });
@@ -1619,6 +1715,8 @@ console.log('this.transactionDetail', this.transactionDetail);
       console.log('getTransactionFilterData',res);
       this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
+      this.documentDetailList.sort((x, y) => +new Date(x.dateOfSubmission) - +new Date(y.dateOfSubmission));
+        this.documentDetailList.reverse();
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1685,15 +1783,18 @@ console.log('this.transactionDetail', this.transactionDetail);
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
-    psId, transactionID
+    investmentGroup1TransactionId,
+    summary, count
   ) {
-    
-    this.Service.getRemarkList(
-      transactionID,
-      psId
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.Service.getPpfRemarkList(
+      investmentGroup1TransactionId,
     ).subscribe((res) => {
       console.log('docremark', res);
-    this.documentRemarkList  = res.data.results[0].remarkList
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
     });
     // console.log('documentDetail::', documentRemarkList);
     // this.documentRemarkList = this.selectedRemarkList;
@@ -1772,13 +1873,17 @@ console.log('this.transactionDetail', this.transactionDetail);
         innerElement.dateOfPayment = dateOfPaymnet;
       });
     });
-
+    delete this.editTransactionUpload[0].grandDeclarationTotal;
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      grandDeclarationTotal: this.editTransactionUpload[0].declarationTotal,
+      grandActualTotal:  this.editTransactionUpload[0].actualTotal,
+      grandApprovedTotal:  this.editTransactionUpload[0].totalApprovedAmount,
+      grandRejectedTotal: this.editTransactionUpload[0].totalRejectedAmount,
       // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
@@ -2020,6 +2125,12 @@ console.log('this.transactionDetail', this.transactionDetail);
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+
+    if (new Date(summary.dateOfPayment) > this.currentJoiningDate) {
+      this.ispreviousEmploy = false;
+    } else {
+      this.ispreviousEmploy = true;
+    }
   }
  
 
@@ -2055,6 +2166,7 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;
+  employeeMasterId: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

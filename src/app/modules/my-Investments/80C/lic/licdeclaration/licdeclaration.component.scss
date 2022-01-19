@@ -11,18 +11,44 @@
     background:grey;
 }
 
-.badge-reOpen{
-    color:blue !important;
+// .badge-reOpen{
+//     color:blue !important;
+//     }
+//     .badge-approved{
+//     color:orange !important;
+//     }
+//     .badge-sendBack{
+//     color: chocolate !important;
+//     }
+//     .badge-submitted{
+//         color: green !important;
+//     }
+//     .badge-pending{
+//         color: red !important;
+//     }
+    .changeColor span:hover {
+        cursor: pointer;
+    background-color: blue !important;
+      }
+      
+    //   .badge-reOpen{
+    //     color:purple !important;
+    //     }
+    //     .badge-approved{
+    //     color:rgb(18, 192, 18) !important;
+    //     }
+    //     .badge-sendBack{
+    //     color: brown!important;
+    //     }
+    //     .badge-submitted{
+    //         color: blue !important;
+    //     }
+
+    .admin-class{
+        background-color: blue !important;
+        
     }
-    .badge-approved{
-    color:orange !important;
-    }
-    .badge-sendBack{
-    color: chocolate !important;
-    }
-    .badge-submitted{
-        color: green !important;
-    }
-    .badge-pending{
-        color: red !important;
+
+    .employee-class{
+        background-color: gray !important;
     }

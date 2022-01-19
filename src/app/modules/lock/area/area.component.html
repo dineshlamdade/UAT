@@ -1,7 +1,7 @@
 <div class="tabset">
   <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked="">
   <label for="tab1">Area</label>
-  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" (click)="navigateEmpTab()">
   <label for="tab2">Employee</label>
   <div class="tab-panels">
     <section id="marzen" class="tab-panel">
@@ -10,10 +10,11 @@
         <div class="row">
           <div class="col-md-12">
             <div class="float-right">
-              <buttton class="btn btn-bg-green mt-20" tooltip="Pending For Lock"
-                (click)="Areapendingforlockpopup(Areapendingforlock)"><b><i class="fa fa-registered"></i></b> Pending for Lock</buttton>
+              <buttton class="btn btn-bg-green mt-20" tooltip="Lock Status"
+                (click)="Areapendingforlockpopup(Areapendingforlock)"><b><i class="fa fa-registered"></i></b>Lock Status
+              </buttton>
 
-                <!-- <button  class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+              <!-- <button  class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
                                     tooltip="Pending For Lock" (click)="Areapendingforlockpopup(Areapendingforlock)">
                                     <b><i class="fa fa-registered"></i></b>
                    Pending for Lock</button> -->
@@ -23,12 +24,15 @@
         </div>
         <div class="row">
           <div class="col-md-3">
-            <label class="form-label">Cycle Definition</label>
+            <label class="form-label">Cycle Definition
+
+            </label>
             <select (change)="onChangeDefination($event.target.value)" id="name"
-              [ngClass]="{'is-invalid' : areaForm.get('name').status == 'INVALID'}" class="form-control  "
+              [ngClass]="{'is-invalid' : areaForm.get('name').status == 'INVALID'}" class="form-control"
               formControlName="name">
-              <option selected value=''>Select </option>
-              <option *ngFor="let cycleNameDefination of NameofCycleDefination" [value]="cycleNameDefination.value">
+              <option value=''>Select </option>
+              <option selected *ngFor="let cycleNameDefination of NameofCycleDefination"
+                [value]="cycleNameDefination.value">
                 {{cycleNameDefination.label}}
               </option>
             </select>
@@ -39,8 +43,8 @@
               [ngClass]="{'is-invalid' : areaForm.get('periodName').status == 'INVALID'}"
               (change)="onSelectCycleName($event.target.value)">
               <option selected value=''>Select </option>
-              <option *ngFor="let cycleList of periodNameList" [value]="cycleList.label">
-                {{cycleList.label}}
+              <option *ngFor="let cycleList of periodNameList" [value]="cycleList.periodName">
+                {{cycleList.periodName}}
               </option>
             </select>
 
@@ -81,8 +85,10 @@
                 <legend>Organizational Selection </legend>
                 <div class="row">
                   <div class="col-md-6">
+
                     <label class="form-label">Company</label>
-                    <select id="companyName" class="form-control" formControlName="companyName"  [ngClass]="{'is-invalid' : areaForm.get('companyName').status == 'INVALID'}">
+                    <select (change)="onSelectServiceName($event.target.value)" id="companyName" class="form-control"
+                      formControlName="companyName">
                       <option selected value=''>Select </option>
                       <option *ngFor="let company of companyNames" [value]="company.value">
                         {{company.label}}
@@ -90,7 +96,7 @@
                     </select>
                     <!-- [ngClass]="{'is-invalid' : areaForm.get('companyName').status == 'INVALID'}" -->
                   </div>
-                  <div class="col-md-6">
+                  <!-- <div class="col-md-6">
                     <label class="form-label">Service</label>
                     <select id="serviceName" (change)="onSelectServiceName($event.target.value)"
                       [ngClass]="{'is-invalid' : areaForm.get('serviceName').status == 'INVALID'}"
@@ -100,36 +106,50 @@
                         {{service.label}}
                       </option>
                     </select>
-                  </div>
+                  </div> -->
                 </div>
               </fieldset>
             </div>
             <div class="col-8">
               <fieldset>
-                <legend>Area Selection </legend>
+                <legend>Payroll Area Selection </legend>
 
                 <div class="row">
                   <div class="col-md-4">
-                    <lable class="form-label"> Area</lable>
-                    <p-multiSelect formControlName="areaMasterCode" resetFilterOnHide = "true"
-                     defaultLabel="Select a Area" [required]="true" (onChange)="onSelectArea($event)"
+
+                    <label class="form-label">Payroll Area</label>
+                    <p-multiSelect formControlName="areaMasterCode" resetFilterOnHide="true" defaultLabel="Select"
+                      [required]="true" (onChange)="onSelectArea($event)"
                       [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}"
                       [options]="ServiceAreaList" optionLabel="name"
                       [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}">
                     </p-multiSelect>
                   </div>
-                  <div class="col-md-4"  >
-                    <lable class="form-label"> Area Set</lable>
-                    <p-multiSelect [required]="true" resetFilterOnHide = "true"
-                    (onChange)="onSelectAreaSet($event)" [ngClass]="{'is-invalid' : areaForm.get('areaSet').status == 'INVALID'}"
-                     [options]="areaSetList" formControlName="areaSet"  optionLabel="name">
-                    </p-multiSelect>
+                  <div class="col-md-4">
+                    <label class="form-label">Payroll Area Set</label>
+                    <!-- {{areaSetList | json}} -->
+                    <select (change)="onSelectAreaSet($event.target.value)" class="form-control"
+                      formControlName="areaSet"
+                      [ngClass]="{'is-invalid' : areaForm.get('areaSet').status == 'INVALID'}">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let area of areaSetList" [value]="area.code">
+                        {{area.name}}
+                      </option>
+                    </select>
+                    <!-- <p-multiSelect formControlName="areaSet" resetFilterOnHide="true" defaultLabel="Select"
+                      [required]="true" (onChange)="onSelectAreaSet($event)"
+                      [ngClass]="{'is-invalid' : areaForm.get('areaSet').status == 'INVALID'}" [options]="areaSetList"
+                      optionLabel="name" [ngClass]="{'is-invalid' : areaForm.get('areaSet').status == 'INVALID'}">
+                    </p-multiSelect> -->
+
+
                   </div>
                   <div class="col-md-4 ">
-                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                      <input type="checkbox" (change)="onSelectAreaList($event.target.value)" (click)="Arealistpop(arealistpop)" formControlName="areaList" name="example-inline-radios"
-                        value="option3" class="custom-control-input" name="select" />
-                      <span class="custom-control-label">Area List</span>
+                    <label class="custom-control custom-checkbox checkbox-center">
+                      <input type="checkbox" (click)="onSelectAreaList($event.target);Arealistpop(arealistpop)"
+                        formControlName="areaList" name="example-inline-radios" value="option3"
+                        class="custom-control-input" name="select" />
+                      <span class="custom-control-label">Payroll Area List</span>
                     </label>
                   </div>
                 </div>
@@ -172,7 +192,8 @@
               <div class="row">
                 <div class="col-md-6 mt-10 d-flex mt-10">
                   <label class="form-label mr-5">Total records ({{areTableList.length}})</label>
-                  <label class="form-label">Selected records ({{selectedUser.length}})</label>
+                  <label class="form-label">Selected records ({{checkedSummaryList.length}})</label>
+
                 </div>
                 <div class="col-md-6">
                   <div class="float-right">
@@ -183,25 +204,23 @@
                         <i class="fa fa-lock" aria-hidden="true"></i>
                       </b> Lock
                     </button>
-                    <i class="fa fa-file-excel-o text-dark-green fa-2x"
-                      (click)="exportApprovalSummaryAsExcel()"></i>
+                    <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="excelAreaToLock()"></i>
                   </div>
                 </div>
               </div>
             </ng-template>
             <ng-template pTemplate="header">
               <tr>
-                <th style="width: 3rem">
-                  <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
-                  <p-tableHeaderCheckbox (click)="allCheckInCycleLockTable(e.checked)" #e></p-tableHeaderCheckbox>
-                  </th>
-                <th>
-                  <div class="p-d-flex p-jc-between p-ai-center"> Area
-                    <div class="Sort_Filter_Position">
-                      <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"> </p-sortIcon>
-                      <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
-                    </div>
-                  </div>
+                <!-- <th style="width: 3rem"> -->
+                <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                <!-- <input type="checkbox" (click)="allCheckInCycleLockTable(e.checked)" >
+                  </th> -->
+                <th class="wd-10 text-center">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                    <input (click)="selectAll($event.target)" type="checkbox" class="custom-control-input" name="select"
+                      [checked]="checkedAll && areTableList.length == checkedSummaryList.length" /> <span
+                      class="custom-control-label"></span>
+                  </label>
                 </th>
                 <th>
                   <div class="p-d-flex p-jc-between p-ai-center"> Company Name
@@ -213,25 +232,43 @@
                   </div>
                 </th>
                 <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">Payroll Area
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"> </p-sortIcon>
+                      <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                    </div>
+                  </div>
+                </th>
+
+                <!-- <th>
                   <div class="p-d-flex p-jc-between p-ai-center">Service
                     <div class="Sort_Filter_Position">
                       <p-sortIcon field="serviceName" pSortableColumn="serviceName"> </p-sortIcon>
                       <p-columnFilter field="serviceName" display="menu" class="p-ml-auto"> </p-columnFilter>
                     </div>
                   </div>
-                </th>
+                </th> -->
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
               <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
                 [ngClass]="{'outofstock':user1.isHighlight == true}">
-                <td>
-                  <p-tableCheckbox [value]="user1" (click)="onCheckArea(e.checked,user1,rowIndex)" #e>
-                  </p-tableCheckbox>
+                <!-- <td>
+                  <input type="checkbox" [value]="user1" (click)="onCheckArea(user1,rowIndex)" [checked]="checkedAll || user1.checkedAll" >
+                </td> -->
+                <td class="wd-10 text-center">
+                  <!-- all: {{checkedAll}} <br>
+                  one: {{user1.checked}} -->
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select">
+                    <input (click)="onCheckArea($event.target,user1,rowIndex)" type="checkbox" [value]="user1"
+                      class="custom-control-input" [checked]="checkedAll || user1.checked" name="select" /> <span
+                      class="custom-control-label"></span>
+                  </label>
                 </td>
-                <td>{{ user1.payrollAreaCode }} </td>
                 <td>{{ user1.companyName }} </td>
-                <td>{{ user1.serviceName }} </td>
+                <td>{{ user1.payrollAreaCode }} </td>
+
+                <!-- <td>{{ user1.serviceName }} </td> -->
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
@@ -307,14 +344,15 @@
                 <div class="row ">
                   <div class="col-4">
                     <label class="form-label">Company</label>
-                    <select id="companyName" class="form-control  " formControlName="companyName">
+                    <select id="companyName" class="form-control" formControlName="companyName"
+                      (change)="onSelectServiceName($event.target.value)">
                       <option selected value=''>Select </option>
                       <option *ngFor="let company of companyNamesEmp" [value]="company.value">
                         {{company.label}}
                       </option>
                     </select>
                   </div>
-                  <div class="col-4">
+                  <!-- <div class="col-4">
                     <label class="form-label">Service</label>
                     <select id="serviceNameEmp" (change)="onSelectServiceNameEmp($event.target.value)"
                       [ngClass]="{'is-invalid' : empForm.get('serviceName').status == 'INVALID'}" class="form-control  "
@@ -324,15 +362,15 @@
                         {{service.label}}
                       </option>
                     </select>
-                  </div>
+                  </div> -->
                   <div class="col-4">
-                    <label class="form-label">Area </label>
+                    <label class="form-label">Payroll Area </label>
                     <select id="areaMasterCode" (change)="onSelectAreaInEmp($event.target.value)"
                       [ngClass]="{'is-invalid' : empForm.get('areaMasterCode').status == 'INVALID'}"
                       class="form-control  " formControlName="areaMasterCode">
                       <option selected value=''>Select </option>
-                      <option *ngFor="let area of ServiceAreaListEmp" [value]="area.value">
-                        {{area.label}}
+                      <option *ngFor="let area of ServiceAreaListEmp" value="{{area.code}},{{area.name}}">
+                        {{area.name}}
                       </option>
                     </select>
                   </div>
@@ -344,24 +382,28 @@
                 <legend>Employee Selection </legend>
                 <div class="row">
                   <div class="col-md-4">
-                    <lable class="form-label"> Employee Code</lable>
+                    <label class="form-label"> Employee Code</label>
                     <p-multiSelect formControlName="employeeCode"
                       [ngClass]="{'is-invalid' : empForm.get('employeeCode').status == 'INVALID'}"
-                      [options]="employeeCodes" optionLabel="name"
+                      [options]="employeeCodes" optionLabel="name" (onChange)="getSelectedEmpCode($event)"
                       [ngClass]="{'is-invalid' : empForm.get('employeeCode').status == 'INVALID'}">
                     </p-multiSelect>
                   </div>
                   <div class="col-md-4">
-                    <lable class="form-label"> Employee Set</lable>
-                    <p-multiSelect formControlName="employeeSet"
-                    [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}"
-                    [options]="empSetList" optionLabel="name"
-                    [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}">
-                  </p-multiSelect>
+                    <label class="form-label"> Employee Set</label>
+                    <!-- <p-multiSelect formControlName="employeeSet"
+                      [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}" [options]="empSetList"
+                      optionLabel="name" [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}">
+                    </p-multiSelect> -->
+                    <select class="form-control" formControlName="employeeSet" (change)="getSelectedEmpSet($event.target.value)">
+                      <option value=''>Select</option>
+                      <option *ngFor="let emp of empSetList" value='{{emp.name}}'>{{emp.name}}</option>
+                    </select>
                   </div>
                   <div class="col-md-4 ">
                     <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                      <input type="checkbox" (click)="Emplist(emplist)" class="custom-control-input" name="select" />
+                      <input type="checkbox" (click)="onSelectEmpList($event.target);Emplistpop(emplist)" class="custom-control-input" 
+                      name="select" [disabled]="!empListFlag" />
                       <span class="custom-control-label">Employee List</span>
                     </label>
                   </div>
@@ -399,40 +441,43 @@
                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                   [rowsPerPageOptions]="[10,25,50]"
                   [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']"> -->
-                  <!-- employeeMasterId,businessCycleId,cycle,serviceName,payrollAreaCode,createDateTime,employeeMasterIdList,areaMasterId,employeeCode,fullName,companyName -->
+                <!-- employeeMasterId,businessCycleId,cycle,serviceName,payrollAreaCode,createDateTime,employeeMasterIdList,areaMasterId,employeeCode,fullName,companyName -->
 
-                  <p-table #dt1 [value]="getEmpTableList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                    (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                    totalRecords={{getEmpTableList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+                <p-table #dt1 [value]="getEmpTableList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                  (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  totalRecords={{getEmpTableList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                  [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode',
+                  'createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
 
-                    <ng-template pTemplate="caption">
+                  <ng-template pTemplate="caption">
                     <div class="row">
                       <div class="col-md-6 mt-10 d-flex ">
                         <label class="form-label mr-5">Total records ({{getEmpTableList.length}})</label>
-                        <label class="form-label">Selected records ({{selectedUserEmp.length}})</label>
+                        <label class="form-label">Selected records ({{checkedSummaryListEmp.length}})</label>
                       </div>
                       <div class="col-md-6">
                         <div class="float-right">
                           <button type="submit"
-                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                          (click)="smallpopup(templateEmp)" tooltip="Lock Employee"
-                          [ngClass]="{'disabled-btn-bg-green' : checkedSummaryListEmp.length == 0, 'btn-bg-green': !checkedSummaryListEmp.length == 0}"><b>
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                          </b> Lock
-                        </button>
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
+                            (click)="smallpopup(templateEmp)" tooltip="Lock Employee"
+                            [ngClass]="{'disabled-btn-bg-green' : checkedSummaryListEmp.length == 0, 'btn-bg-green': !checkedSummaryListEmp.length == 0}"><b>
+                              <i class="fa fa-lock" aria-hidden="true"></i>
+                            </b> Lock
+                          </button>
 
-                          <i class="fa fa-file-excel-o text-dark-green fa-2x"
-                          (click)="exportExcelEmpTable()"></i>
+                          <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportExcelEmpTable()"></i>
                         </div>
                       </div>
                     </div>
                   </ng-template>
+
                   <ng-template pTemplate="header">
                     <tr>
                       <th style="width: 3rem">
                         <!-- <p-tableHeaderCheckbox> </p-tableHeaderCheckbox> -->
-                        <p-tableHeaderCheckbox  [value]="user1" (click)="allCheckInCycleLockTableEmp(e.checked,user1)" #e></p-tableHeaderCheckbox>
+                        <input type="checkbox" [value]="user1" (click)="allCheckInCycleLockTableEmp($event.target,user1)" 
+                        [checked]="empallChecked && getEmpTableList.length == checkedSummaryListEmp.length">
                       </th>
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
@@ -459,7 +504,7 @@
                           </div>
                         </div>
                       </th>
-                      <th>
+                      <!-- <th>
                         <div class="p-d-flex p-jc-between p-ai-center"> Service
                           <div class="Sort_Filter_Position">
                             <p-sortIcon field="serviceName" pSortableColumn="serviceName"> </p-sortIcon>
@@ -467,12 +512,13 @@
                             </p-columnFilter>
                           </div>
                         </div>
-                      </th>
+                      </th> -->
                       <th>
-                        <div class="p-d-flex p-jc-between p-ai-center"> Area
+                        <div class="p-d-flex p-jc-between p-ai-center">Payroll Area
                           <div class="Sort_Filter_Position">
                             <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                            <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                            <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
                           </div>
                         </div>
                       </th>
@@ -512,24 +558,25 @@
                       </th>
                     </tr>
                   </ng-template>
+
                   <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                     <tr [class.active]="user1.isHighlightEmp" (dblclick)="doubleClickOnLeftTable(user1)"
                       [ngClass]="{'outofstock':user1.isHighlightEmp == true}">
                       <td>
-                        <p-tableCheckbox [value]="user1" (click)="onCheckAreaEmp(e.checked,user1,rowIndex)" #e>
-                        </p-tableCheckbox>
+                        <input type="checkbox"  (click)="onCheckAreaEmp($event.target,user1,rowIndex)" [checked]="user1.isChecked || empallChecked">
                       </td>
                       <td>{{ user1.employeeCode}} </td>
                       <td>{{ user1.fullName}} </td>
                       <td> {{user1.companyName}} </td>
-                      <td> {{user1.serviceName}} </td>
                       <td> {{ user1.payrollAreaCode}} </td>
                       <td> {{user1.establishment}} </td>
                       <td> {{ user1.department}} </td>
                       <td> {{user1.grade}} </td>
-                      <td> {{user1.grade}} </td>
+                      <td></td>
+
                     </tr>
                   </ng-template>
+
                   <ng-template pTemplate="emptymessage">
                     <tr>
                       <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
@@ -551,7 +598,7 @@
 <!--AreaPendingForlockPopup-->
 <ng-template #Areapendingforlock>
   <div class="modal-header">
-    <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
+    <h5 class="modal-title" id="UploadModalLabel">Lock Status</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
   </div>
@@ -559,10 +606,11 @@
     <div class="card">
       <div class="card-body">
         <form class="card" role="form" [formGroup]="pendingForm" #formDirective="ngForm" novalidate>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <label class="form-label">Cycle</label>
-                 <input type="text" class="form-control" formControlName="pendingCycleName" disabled placeholder="Cycle Name">
+              <input type="text" class="form-control" formControlName="pendingCycleName" disabled
+                placeholder="Cycle Name">
             </div>
             <div class="col-md-4">
               <label class="form-label">From Date</label>
@@ -591,25 +639,34 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </form>
         <div class="row clearfix">
           <div class="col-md-12">
-            <p-table [value]="pendingAreTableList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            <p-table [value]="pendingCycleList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              totalRecords={{pendingAreTableList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+              [rowsPerPageOptions]="[10,25,50,100,200]" #dt
+              [globalFilterFields]="['cycleName','frequencyName','payrollAreaCode','periodName','fromDate','toDate']">
+              <!-- totalRecords={{pendingCycleList.length}} -->
 
               <ng-template pTemplate="caption">
                 <div class="row">
                   <div class="col-md-6 mt-10 d-flex mt-10">
-                    <label class="form-label mr-5">Total records ({{pendingAreTableList.length}})</label>
-                    <label class="form-label">Selected records ({{selectedUserPending.length}})</label>
+                    <label class="form-label mr-5" *ngIf="pendingCycleList">Total Records
+                      ({{pendingCycleList.length}})</label>
+                    <!-- <label class="form-label" *ngIf="selectedUserPending">Selected records ({{selectedUserPending.length}})</label> -->
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <div class="float-right">
-                      <i class="fa fa-file-excel-o text-dark-green fa-2x"
-                        (click)="exportApprovalSummaryAsExcel()"></i>
+                      <input (input)="dt.filterGlobal($event.target.value, 'contains')" type="text" pInputText
+                        class="form-control" placeholder="Search...">
+                      <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="float-right">
+                      <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportApprovalSummaryAsExcel()"></i>
                     </div>
                   </div>
                 </div>
@@ -617,18 +674,18 @@
 
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 3rem">
-                    <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e></p-tableHeaderCheckbox>
-                  </th>
-                  <th>
-                    <div class="p-d-flex p-jc-between p-ai-center"> Area
-                      <div class="Sort_Filter_Position">
-                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"> </p-sortIcon>
-                        <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
-                      </div>
-                    </div>
-                  </th>
-                  <th>
+                  <!-- <th style="width: 3rem">
+                    <input type="checkbox" (click)="allCheckUncheck($event.target)" [checked]="checkedallflag">
+                  </th> -->
+
+
+                  <!-- <th class="wd-10 text-center">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                    <input (click)="allCheckUncheck($event.target)" type="checkbox" class="custom-control-input" name="select"
+                      [checked]="checkedallflag" /> <span class="custom-control-label"></span>
+                  </label>
+                </th> -->
+                  <!-- <th>
                     <div class="p-d-flex p-jc-between p-ai-center"> Company Name
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="companyName" pSortableColumn="companyName"> </p-sortIcon>
@@ -636,28 +693,93 @@
                         </p-columnFilter>
                       </div>
                     </div>
-                  </th>
+                  </th> -->
+
+
                   <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">Business Cycle Definition
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="cycleName" pSortableColumn="cycleName"> </p-sortIcon>
+                        <p-columnFilter field="cycleName" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">Frequency
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="frequencyName" pSortableColumn="frequencyName"> </p-sortIcon>
+                        <p-columnFilter field="frequencyName" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">Payroll Area
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"> </p-sortIcon>
+                        <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <!-- <th>
                     <div class="p-d-flex p-jc-between p-ai-center">Service
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="serviceName" pSortableColumn="serviceName"> </p-sortIcon>
                         <p-columnFilter field="serviceName" display="menu" class="p-ml-auto"> </p-columnFilter>
                       </div>
                     </div>
+                  </th> -->
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">Cycle Name
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="periodName" pSortableColumn="periodName"> </p-sortIcon>
+                        <p-columnFilter field="periodName" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">From Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="fromDate" pSortableColumn="fromDate"> </p-sortIcon>
+                        <p-columnFilter field="fromDate" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">To Date
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="toDate" pSortableColumn="toDate"> </p-sortIcon>
+                        <p-columnFilter field="toDate" display="menu" class="p-ml-auto"> </p-columnFilter>
+                      </div>
+                    </div>
                   </th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                <tr [class.active]="user1.isHighlight"
-                  (dblclick)="doubleClickOnLeftTable(user1)" [ngClass]="{'outofstock':user1.isHighlight == true}">
+                <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+                  [ngClass]="{'outofstock':user1.isHighlight == true}">
                   <!-- (click)="RowSelectedPending(user1, rowIndex);"  -->
-                  <td>
-                    <p-tableCheckbox [value]="user1" (click)="onCheckedPendigLock(e.checked,user1)" #e>
-                    </p-tableCheckbox>
-                  </td>
-                  <td>{{ user1.payrollArea }} </td>
-                  <td>{{ user1.companyName }} </td>
-                  <td>{{ user1.serviceName }} </td>
+                  <!-- <td>
+                    <input type="checkbox" [checked]="checkedallflag || user1.checked" (click)="onCheckedPendigLock($event.target,user1,rowIndex)" />
+                  </td> -->
+
+                  <!-- <td class="wd-10 text-center">
+                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                      <input (click)="onCheckedPendigLock($event.target,user1,rowIndex)" type="checkbox" class="custom-control-input" name="select"
+                      [checked]="checkedallflag || user1.checked" /> <span class="custom-control-label"></span>
+                    </label>
+                  </td> -->
+
+                  <td>{{user1.cycleName }} </td>
+                  <td>{{user1.frequencyName}}</td>
+                  <td>{{user1.payrollAreaCode}} </td>
+                  <td>{{user1.periodName}}</td>
+                  <td>{{user1.fromDate | date: 'dd-MMM-yyyy'}}</td>
+                  <td>{{user1.toDate | date: 'dd-MMM-yyyy'}}</td>
                 </tr>
               </ng-template>
               <ng-template pTemplate="emptymessage">
@@ -675,6 +797,10 @@
     </div>
   </div>
   <div class="modal-footer">
+    <button (click)="modalRef.hide()" type="button" tooltip="Cancel"
+      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i class="fa fa-times"></i></b>
+      Cancel</button>
+    <!-- <button type="button" (click)="modalRef.hide()" class="custom_button custom_btn btn-bg-red btn-labeled btn-labeled-left ripple">Close</button> -->
     <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
       tooltip="Save"><b>
         <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
@@ -682,16 +808,19 @@
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b>
       Reset</button> -->
 
-    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+    <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
       tooltip="Save" (click)="pendingLockProceed()"
       [ngClass]="{'disabled-btn-bg-green' : checkedFinalPendingList.length == 0, 'btn-bg-green': !checkedFinalPendingList.length == 0}"><b>
-        <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <i class="fa fa-arrow-circle-o-right "></i></b>Update</button>
     <button type="button" tooltip="Cancel" (click)="resetPendingLock()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b>
-      Reset</button>
+      Reset</button> -->
+
+
 
   </div>
 </ng-template>
+
 <!-- Arealistpopup -->
 <ng-template #arealistpop>
   <div class="modal-header">
@@ -704,10 +833,10 @@
       <div class="card-body">
         <div class="row  ">
           <div class="col-md-12">
-            <textarea rows="3" cols="60">    </textarea>
+            <textarea (paste)="areaListPasteData($event)" rows="3" cols="60"></textarea>
           </div>
         </div>
-        <div class="row mt-15 clearfix">
+        <!-- <div class="row mt-15 clearfix">
           <div class="col-md-10">
             <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort($event)" [customSort]="true"
@@ -753,16 +882,19 @@
               </ng-template>
             </p-table>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
-    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+    <!-- <button (click)="payrollAreaListAlert();modalRef.hide()" type="submit"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b><i
+          class="fa fa-arrow-circle-o-right"></i></b> Proceed</button> -->
   </div>
 </ng-template>
+
+
 <ng-template #templateEmp>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Employee Lock </h5>
@@ -773,63 +905,72 @@
     <div class="card">
       <div class="card-body">
         <form class="card" role="form" [formGroup]="lockEmpForm" #formDirective="ngForm" novalidate>
-        <div class="row">
-          <div class="col-md-4">
-            <label class="form-label">Cycle</label>
-            <input type="text" class="form-control" formControlName="empCycleName" placeholder="Cycle Name" disabled>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">From Date</label>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label">Cycle</label>
+              <input type="text" class="form-control" formControlName="empCycleName" placeholder="Cycle Name" disabled>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">From Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
                 </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
-                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
-                bsDatepicker disabled>
+              </div>
+            </div>
+            <div class="col-md-4"> <label class="form-label">To Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4"> <label class="form-label">To Date</label>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
-                bsDatepicker disabled>
-              </div>
-            </div>
-          </div>
-        </div>
         </form>
         <div class="row clearfix">
           <div class="col-md-12">
-            <p-table #dt1 [value]="checkedSummaryListEmp" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-            (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            totalRecords={{checkedSummaryListEmp.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+            <p-table [value]="checkedSummaryListEmp" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+              (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              totalRecords={{checkedSummaryListEmp.length}} [rowsPerPageOptions]="[10,25,50,100,200]" #dt
+              [globalFilterFields]="['employeeCode','fullName','companyName','payrollAreaCode']">
 
               <ng-template pTemplate="caption">
                 <div class="row">
                   <div class="col-md-6 mt-10 d-flex ">
                     <label class="form-label mr-5">Total records ({{checkedSummaryListEmp.length}})</label>
-                    <label class="form-label">Selected records ({{selectedUserInLockEmp.length}})</label>
+                    <label class="form-label">Selected records ({{checkedFinalLockListEmp.length}})</label>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <div class="float-right">
-                      <i class="fa fa-file-excel-o text-dark-green fa-2x"
-                      (click)="exportExcelEmpLock()"></i>
+                      <input (input)="dt.filterGlobal($event.target.value, 'contains')" type="text" pInputText
+                        class="form-control" placeholder="Search...">
+                      <span class="input-icon-addon"><i class="fe fe-search"></i></span>
                     </div>
                   </div>
+                  <div class="col-md-1">
+                    <div class="float-right">
+                      <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportExcelEmpLock()"></i>
+                    </div>
+                  </div>
+
                 </div>
               </ng-template>
+
               <ng-template pTemplate="header">
                 <tr>
                   <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    <input type="checkbox" (click)="checkedAllEmpLock($event.target)" [checked]="checkedEmpLockAll && checkedSummaryListEmp.length == checkedFinalLockListEmp.length">
                   </th>
                   <th>
                     <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
@@ -840,7 +981,7 @@
                     </div>
                   </th>
                   <th>
-                    <div class="p-d-flex p-jc-between p-ai-center">Emp Name
+                    <div class="p-d-flex p-jc-between p-ai-center">Emp. Name
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="fullName" pSortableColumn="fullName"></p-sortIcon>
                         <p-columnFilter type="text" field="fullName" display="menu" class="p-ml-auto"> </p-columnFilter>
@@ -856,7 +997,7 @@
                       </div>
                     </div>
                   </th>
-                  <th>
+                  <!-- <th>
                     <div class="p-d-flex p-jc-between p-ai-center"> Service
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="serviceName" pSortableColumn="serviceName"> </p-sortIcon>
@@ -864,12 +1005,13 @@
                         </p-columnFilter>
                       </div>
                     </div>
-                  </th>
+                  </th> -->
                   <th>
-                    <div class="p-d-flex p-jc-between p-ai-center">Area
+                    <div class="p-d-flex p-jc-between p-ai-center">Payroll Area
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
-                        <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                        <p-columnFilter type="text" field="payrollAreaCode" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
                       </div>
                     </div>
                   </th>
@@ -912,24 +1054,24 @@
               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                 <!-- <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
                   [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
-                  <tr class="p-selectable-row"
-                  [pSelectableRow]="user1">
-
+                <tr class="p-selectable-row" [pSelectableRow]="user1">
+                  <!-- [(ngModel)]="selectedAreaIdsEmp" -->
                   <td>
-                    <p-checkbox [value]="user1.employeeMasterId" (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIdsEmp">
-                      </p-checkbox>
+                    <input type="checkbox" (click)="onCheckEmpInLock($event.target,user1,rowIndex)"
+                       [checked]="checkedEmpLockAll || user1.isChecked">
                   </td>
                   <td>{{ user1.employeeCode}} </td>
                   <td>{{ user1.fullName}} </td>
                   <td> {{user1.companyName}} </td>
-                  <td> {{user1.serviceName}} </td>
+                  <!-- <td> {{user1.serviceName}} </td> -->
                   <td> {{ user1.payrollAreaCode}} </td>
                   <td> {{user1.establishment}} </td>
                   <td> {{ user1.department}} </td>
                   <td> {{user1.grade}} </td>
-                  <td> {{user1.grade}} </td>
+                  <td></td>
                 </tr>
               </ng-template>
+
               <ng-template pTemplate="emptymessage">
                 <tr>
                   <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
@@ -945,15 +1087,16 @@
   </div>
   <div class="modal-footer">
     <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-    tooltip="Save" (click)="saveCheckedEmp()"
-    [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockListEmp.length == 0, 'btn-bg-green': !checkedFinalLockListEmp.length == 0}"><b>
-      <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+      tooltip="Save" (click)="saveCheckedEmp()"
+      [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockListEmp.length == 0, 'btn-bg-green': !checkedFinalLockListEmp.length == 0}"><b>
+        <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
 
     <button type="button" tooltip="Reset" (click)="resetEmpLock()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
           class="fa fa-refresh"></i></b> Reset</button>
   </div>
 </ng-template>
+
 <!-- //emplist Popup -->
 <ng-template #emplist>
   <div class="modal-header">
@@ -966,7 +1109,7 @@
       <div class="card-body">
         <div class="row  ">
           <div class="col-md-12">
-            <textarea>    </textarea>
+            <textarea (paste)="empListPasteData($event)" row="6" cols="30">    </textarea>
           </div>
         </div>
         <div class="row mt-15">
@@ -976,10 +1119,11 @@
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               [rowsPerPageOptions]="[10,25,50]"
               [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']"> -->
-              <p-table #dt1 [value]="getEmpList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            <!-- <p-table #dt1 [value]="getEmpList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              totalRecords={{getEmpList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
+              totalRecords={{getEmpList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+              [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
               <ng-template pTemplate="caption">
                 <div class="row">
                   <div class="col-md-6 mt-10 d-flex ">
@@ -1085,7 +1229,7 @@
                   <td> {{ customer.designation}}</td>
                 </tr>
               </ng-template>
-            </p-table>
+            </p-table> -->
           </div>
         </div>
       </div>
@@ -1094,9 +1238,10 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
     <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+      tooltip="Save"><b><i class="fa fa-arrow-circle-o-right " (click)="modalRef.hide()"></i></b> Proceed</button>
   </div>
 </ng-template>
+
 <!-- //AreaLockPOPUP -->
 <ng-template #template2>
   <div class="modal-header">
@@ -1108,75 +1253,100 @@
     <div class="card">
       <div class="card-body">
         <form class="card" role="form" [formGroup]="lockForm" #formDirective="ngForm" novalidate>
-        <div class="row">
-          <div class="col-md-4">
-            <label class="form-label">Cycle</label>
-            <!-- <input type="text" class="form-control" value="2020" disabled> -->
-            <input type="text" class="form-control" formControlName="lockCycleName"  placeholder="Cycle Name" disabled>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">From Date</label>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="form-label">Cycle</label>
+              <!-- <input type="text" class="form-control" value="2020" disabled> -->
+              <input type="text" class="form-control" formControlName="lockCycleName" placeholder="Cycle Name" disabled>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">From Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
                 </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
-                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
-                bsDatepicker disabled>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">To Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                    bsDatepicker disabled>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <label class="form-label">To Date</label>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i></span>
-                </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
-                bsDatepicker disabled>
-              </div>
+        </form>
+        <div class="row">
+          <div class="col-md-6 mt-10 d-flex mt-10">
+            <label class="form-label mr-5">Total Records
+            </label>
+
+          </div>
+          <div class="col-md-5">
+            <!-- <div class="float-right">
+              <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
+              type="text" pInputText class="form-control" placeholder="Search...">
+              <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+            </div> -->
+          </div>
+          <div class="col-md-1">
+            <div class="float-right">
+              <i (click)="excelAreaLock()" class="fa fa-file-excel-o text-dark-green fa-2x"></i>
             </div>
           </div>
         </div>
-        </form>
+
         <div class="row clearfix">
           <div class="col-md-12">
 
             <p-table #dt1 [value]="checkedSummaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
-                            'payrollAreaCode',
-                            'companyName',
-                            'serviceName'
-                          ]">
+              totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
 
 
-              <ng-template pTemplate="caption">
+
+
+              <!-- <ng-template pTemplate="caption">
                 <div class="row">
                   <div class="col-md-6  mt-10 d-flex ">
                     <label class="form-label mr-5">Total records ({{checkedSummaryList.length}})</label>
                     <label class="form-label">Selected records ({{selectedUserInLock.length}})</label>
                   </div>
+                  <pre>{{checkedSummaryList.payrollAreaCode}}</pre>
                   <div class="col-md-6">
                     <div class="float-right">
                       <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportToExcelAreaLock()"></i>
                     </div>
                   </div>
                 </div>
-              </ng-template>
+              </ng-template> -->
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 3rem">
-                    <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
-                   <p-tableCheckbox></p-tableCheckbox>
+
+
+                  <th class="wd-10 text-center">
+                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                      <input (click)="selectAllAreaLock($event.target)" type="checkbox" class="custom-control-input"
+                        name="select"
+                        [checked]="checkedLockAll && checkedSummaryList.length == checkedFinalLockList.length" /> <span
+                        class="custom-control-label"></span>
+                    </label>
                   </th>
                   <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
-                      Area
+                      Payroll Area
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"></p-sortIcon>
                         <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto">
@@ -1194,7 +1364,7 @@
                       </div>
                     </div>
                   </th>
-                  <th>
+                  <!-- <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
                       Service
                       <div class="Sort_Filter_Position">
@@ -1203,24 +1373,31 @@
                         </p-columnFilter>
                       </div>
                     </div>
-                  </th>
+                  </th> -->
                 </tr>
               </ng-template>
 
               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                 <!-- <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
                   [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
-                  <tr class="p-selectable-row"
-                  [pSelectableRow]="user1">
+                <tr class="p-selectable-row" [pSelectableRow]="user1">
 
-                  <td>
-                    <p-checkbox [value]="user1.payrollAreaCode" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
-                      </p-checkbox>
-                      <!-- <p-tableCheckbox [value]="customer"> </p-tableCheckbox> -->
+                  <!-- <td>
+                    <input type="checkbox" [value]="user1.payrollAreaCode" (click)="onCheckAreaInLock($event.target,user1,rowIndex)"
+                      [checked]="checkedLockAll"> -->
+                  <!-- <p-tableCheckbox [value]="customer"> </p-tableCheckbox> -->
+                  <!-- </td> -->
+
+                  <td class="wd-10 text-center">
+                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                      <input (click)="onCheckAreaInLock($event.target,user1,rowIndex)" type="checkbox"
+                        [value]="user1.payrollAreaCode" class="custom-control-input" name="select"
+                        [checked]="checkedLockAll || user1.checked" /> <span class="custom-control-label"></span>
+                    </label>
                   </td>
                   <td>{{ user1.payrollAreaCode }} </td>
                   <td>{{ user1.companyName }} </td>
-                  <td>{{ user1.serviceName }} </td>
+                  <!-- <td>{{ user1.serviceName }} </td> -->
                 </tr>
               </ng-template>
               <ng-template pTemplate="emptymessage">
@@ -1237,11 +1414,11 @@
     </div>
   </div>
   <div class="modal-footer">
-        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-        tooltip="Save" (click)="saveLockProceed()"
-        [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
-          <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-        <button type="button" tooltip="Cancel" (click)="resetLock()"
+    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      tooltip="Save" (click)="saveLockProceed()"
+      [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
+        <i class="fa fa-arrow-circle-o-right "></i></b>Save</button>
+    <button type="button" tooltip="Cancel" (click)="resetLock()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i class="fa fa-refresh"></i></b>
       Reset</button>
   </div>

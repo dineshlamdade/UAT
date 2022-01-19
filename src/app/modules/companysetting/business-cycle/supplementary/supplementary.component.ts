@@ -317,7 +317,7 @@ editData(data){
 }
 
 
-
+setPolicyEndDate(){}
 
 viewData(data){
   this.getCycleNameById(data.businessCycleDefinition.id);

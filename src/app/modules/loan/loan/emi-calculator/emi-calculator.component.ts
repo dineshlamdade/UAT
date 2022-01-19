@@ -4,6 +4,8 @@ import { ChartType } from "chart.js";
 import { Color, Label } from "ng2-charts";
 import { LoanService } from '../../loan.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import { NonRecurringAmtService } from 'src/app/modules/payroll-inputs/non-recurring-amt.service';
 
 @Component({
   selector: 'app-emi-calculator',
@@ -59,11 +61,10 @@ export class EmiCalculatorComponent {
     interest: "",
     total: ""
   }
-  yrToggel: boolean;
+  yrToggel: boolean = false;
   minValue: number = 5;
   maxValue: number = 5.5;
-  poptions: Options = {  //loan amount
-    floor: 1,
+  poptions: Options = {
     ceil: 6,
     //showTicks: true,
     tickStep: 0.1,
@@ -74,13 +75,13 @@ export class EmiCalculatorComponent {
         case LabelType.Low:
           return '<b style="color: #eb8471;">' + value * 100000 + '</b>';
         case LabelType.High:
-          return value + '<b>L</b>';
+          return '<b>' + value * 100000 + ' </b>';
         default:
-          return value + '<b>L</b>';
+          return '<b>' + value * 100000 + ' </b>';
       }
     }
   };
-  roptions: Options = { // interest rate
+  roptions: Options = {
     floor: 2,
     ceil: 12,
     // showTicks: true,
@@ -96,7 +97,7 @@ export class EmiCalculatorComponent {
       }
     }
   };
-  toptions: Options = {  // year
+  toptions: Options = {
     floor: 2,
     ceil: 15,
     // showTicks: true,
@@ -104,7 +105,7 @@ export class EmiCalculatorComponent {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return '<b style="color: #eb8471;">'+ value + 'Yr</b>';
+          return '<b style="color: #eb8471;">' + value + 'Yr</b>';
         case LabelType.High:
           return value + '<b>Yr</b>';
         default:
@@ -112,7 +113,7 @@ export class EmiCalculatorComponent {
       }
     }
   };
-  moptions: Options = { // month
+  moptions: Options = {
     floor: 5,
     ceil: 40,
     // showTicks: true,
@@ -120,11 +121,11 @@ export class EmiCalculatorComponent {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return '<b style="color: #eb8471;">'+ value + 'Mo</b>';
+          return '<b style="color: #eb8471;">' + value + ' Months</b>';
         case LabelType.High:
-          return value + '<b>Mo</b>';
+          return value + ' <b>Months</b>';
         default:
-          return value + '<b>Mo</b>';
+          return value + ' <b>Months</b>';
       }
     }
   };
@@ -145,13 +146,273 @@ export class EmiCalculatorComponent {
   nodeStepLoanAmount: any;
   nodeStepInterest: number;
   loanRecoveyMethod: any;
+  getByLoanMasterIdData: any;
+  loanMasterId: any;
+  loanTypeDropdownData: any;
+  userData: any;
+  employeeMasterId: any;
+  payrollListData: any;
+  payrollMasterId: any = '';
+  SDMLoanData: any;
+  maxAmountLoan: any;
+  tempLoanMasterScheduleId: any;
+  scheduleData: any;
+  loanTypeName: any;
+  installmentAmount: any;
+  getscheduleData: any;
+  totalInterestAmount: any = 0;
 
-  constructor(public loanservice: LoanService,private router: Router) {
-    this.yrToggel = true;
+  constructor(public loanservice: LoanService, private router: Router, private authService: AuthService,
+    private nonRecService: NonRecurringAmtService) {
+    this.yrToggel = false;
+
+    this.userData = this.authService.getprivileges()
+    this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
   }
 
   ngOnInit() {
     this.getAllLoanType();
+
+    this.nonRecService.getEmployeeWisePayrollList(this.employeeMasterId).subscribe(
+      res => {
+        this.payrollListData = res.data.results[0];
+      }
+    )
+  }
+
+  getSelectedPayroll(payroll) {
+    this.payrollMasterId = payroll
+    let y;
+    if (this.loanType == '') {
+      this.poptions = {  //loan amount
+        floor: 1,
+        ceil: 0,
+        tickStep: 0.1,
+        translate: (value: any, label: LabelType): string => {
+          switch (label) {
+            case LabelType.Low:
+              return '<b style="color: #eb8471;font-size:15px;">' + value * 100000 + '</b>';
+            case LabelType.High:
+              return '<b style="font-size:15px;">' + value * 100000 + ' </b>';
+            default:
+              return '<b style="font-size:15px;">' + value * 100000 + ' </b>';
+          }
+        }
+      };
+
+      this.roptions = { // interest rate
+        floor: 0,
+        ceil: 0,
+        tickStep: 0.1,
+        translate: (value: number, label: LabelType): string => {
+          switch (label) {
+            case LabelType.Low:
+              return '<b style="color: #eb8471;font-size:15px;">' + value + '%</b>';
+            case LabelType.High:
+              return value + '<b style="font-size:15px;">%</b>';
+            default:
+              return value + '<b style="font-size:15px;">%</b>';
+          }
+        }
+      };
+
+      this.toptions = {  // year
+        floor: 1,
+        ceil: 0,
+        translate: (value: number, label: LabelType): string => {
+          switch (label) {
+            case LabelType.Low:
+              return '<b style="color: #eb8471;font-size:15px;">' + value + 'Yr</b>';
+            case LabelType.High:
+              return value + '<b style="font-size:15px;">Yr</b>';
+            default:
+              return value + '<b style="font-size:15px;">Yr</b>';
+          }
+        }
+      };
+      this.moptions = { // month
+        floor: 5,
+        ceil: 0,
+        // showTicks: true,
+        tickStep: 1,
+        translate: (value: number, label: LabelType): string => {
+          switch (label) {
+            case LabelType.Low:
+              return '<b style="color: #eb8471;font-size:15px;">' + value + ' Months</b>';
+            case LabelType.High:
+              return value + ' <b style="font-size:15px;">Months</b>';
+            default:
+              return value + ' <b style="font-size:15px;">Months</b>';
+          }
+        }
+      };
+
+    } else {
+
+      let response: any;
+      this.loanservice.getByLoanMasterId(this.loanType).subscribe(res => {
+        response = res.data.results;
+        this.loanTypeDropdownData = response[0];
+        // console.log("response", JSON.stringify(this.loanTypeDropdownData))
+
+        this.loanservice.getLoanDataByEmployee(this.employeeMasterId, this.payrollMasterId, this.loanType).subscribe(res => {
+          this.SDMLoanData = res.data.results[0]
+
+          // console.log(this.SDMLoanData)
+
+          this.noOfInstallment = this.SDMLoanData.recoveryNoOfInstallments;
+          this.flatIntrest = this.SDMLoanData.intRate;
+          this.maxAmountLoan = this.SDMLoanData.maxAmountLoan;
+
+          this.noOfInstallment = 36;
+          this.flatIntrest = 10;
+          this.maxAmountLoan = 300000;
+
+          console.log(this.noOfInstallment)
+
+          this.remi.value = parseInt(this.flatIntrest)
+
+          this.loanRecoveyMethod = this.loanTypeDropdownData.recoveryMethod
+
+          /*** Deviation Amount % calculation */
+          this.deviationAmount = this.loanTypeDropdownData.deviationAmount
+          this.calculatedDeviationAmt = this.maxAmountLoan * parseInt(this.deviationAmount) / 100
+          this.allowedLoanAmount = this.maxAmountLoan + this.calculatedDeviationAmt
+
+          this.minimumLoanAmount = parseInt(this.loanTypeDropdownData.minLoanAmount)
+
+          if (this.loanTypeDropdownData.principalAmountWithNode == true) {
+            this.nodeStepLoanAmount = (this.loanTypeDropdownData.amountNodeValue / 100000)
+          } else {
+            this.nodeStepLoanAmount = 0.1
+          }
+
+          console.log("this.nodeStepLoanAmount: " + this.nodeStepLoanAmount)
+
+          this.poptions = {  //loan amount
+            floor: this.minimumLoanAmount / 100000,
+            ceil: this.allowedLoanAmount / 100000,
+            tickStep: this.nodeStepLoanAmount,
+            showTicks: true,
+            translate: (value: any, label: LabelType): string => {
+              switch (label) {
+                case LabelType.Low:
+                  return '<b style="color: #eb8471;font-size:15px;">' + value * 100000 + '</b>';
+                case LabelType.High:
+                  // + '<b>Lac</b>'
+                  return '<b style="font-size:15px;">' + value * 100000 + ' </b>';
+                default:
+                  return '<b style="font-size:15px;">' + value * 100000 + ' </b>';
+              }
+            }
+          };
+
+
+          console.log("this.poptions: " + JSON.stringify(this.poptions))
+
+
+          /*** Deviation Interest % calculation */
+          this.deviationIntrest = this.loanTypeDropdownData.deviationInterest
+          this.calculatedDeviationInt = this.flatIntrest * parseInt(this.deviationIntrest) / 100
+          // this.allowedRateInterest = this.flatIntrest + this.calculatedDeviationInt
+          this.allowedRateInterest = this.flatIntrest - this.calculatedDeviationInt
+          // console.log(this.allowedRateInterest)
+
+          let showTicks: boolean = false;
+          // alert(element.intrestNode)
+          if (this.loanTypeDropdownData.intrestNode > 0) {
+            this.nodeStepInterest = this.loanTypeDropdownData.intrestNode
+            showTicks = true
+          } else {
+            this.nodeStepInterest = 0.1
+            showTicks = false
+          }
+
+          //
+          this.roptions = { // interest rate
+            floor: this.allowedRateInterest,
+            ceil: this.flatIntrest,
+            tickStep: this.nodeStepInterest,
+            showTicks: true,
+            translate: (value: number, label: LabelType): string => {
+              switch (label) {
+                case LabelType.Low:
+                  return '<b style="color: #eb8471;font-size:15px;">' + value + '%</b>';
+                case LabelType.High:
+                  return value + '<b style="font-size:15px;">%</b>';
+                default:
+                  return value + '<b style="font-size:15px;">%</b>';
+              }
+            }
+          };
+
+          console.log("this.roptions: " + JSON.stringify(this.roptions))
+
+          /*** Deviation Installment calculation */
+          this.deviationNoOfInstallment = this.loanTypeDropdownData.deviationNoOfInstallment
+          this.calculatedDeviationIntallment = this.noOfInstallment * parseInt(this.deviationNoOfInstallment) / 100
+          this.allowedRateInstallment = Math.floor(this.noOfInstallment + this.calculatedDeviationIntallment)
+          let year = Math.round(this.allowedRateInstallment) / 12;
+
+          this.toptions = {  // year
+            floor: 1,
+            ceil: Math.round(year),
+            translate: (value: number, label: LabelType): string => {
+              switch (label) {
+                case LabelType.Low:
+                  return '<b style="color: #eb8471; font-size:15px;">' + value + 'Yr</b>';
+                case LabelType.High:
+                  return value + '<b style="font-size:15px;">Yr</b>';
+                default:
+                  return value + '<b style="font-size:15px;">Yr</b>';
+              }
+            }
+          };
+
+          // console.log("this.toptions: " + JSON.stringify(this.toptions))
+
+          this.moptions = { // month
+            floor: 1,
+            ceil: this.allowedRateInstallment,
+            // showTicks: true,
+            tickStep: 1,
+            translate: (value: number, label: LabelType): string => {
+              switch (label) {
+                case LabelType.Low:
+                  return '<b style="color: #eb8471; font-size:15px;">' + value + ' Months</b>';
+                case LabelType.High:
+                  return value + ' <b style="font-size:15px;">Months</b>';
+                default:
+                  return value + ' <b style="font-size:15px;">Months</b>';
+              }
+            }
+          };
+
+          console.log("this.moptions: " + JSON.stringify(this.moptions))
+
+          this.yrToggel = false
+
+          this.query.interest = this.flatIntrest;
+          this.query.tenureMo = parseInt(this.noOfInstallment);
+          this.memi.value = parseInt(this.noOfInstallment)
+          y = Math.floor(parseInt(this.noOfInstallment) / 12)
+          this.query.tenureYr = y;
+          this.temi.value = y
+
+          console.log("query data: " + JSON.stringify(this.query))
+          this.update();
+          // }
+
+
+
+
+        })
+      })
+
+
+    }
+
+
   }
 
 
@@ -176,6 +437,10 @@ export class EmiCalculatorComponent {
   }
 
   update() {
+    // console.log("amount: " + this.pemi.value)
+    // console.log("yearly installment: " + this.temi.value)
+    // console.log("months installment: " + this.memi.value)
+    // console.log("rate of int: " + this.remi.value)
 
     var loanAmount = Number(this.pemi.value) * 100000;
     var numberOfMonths = (this.yrToggel) ? (Number(this.temi.value) * 12) : Number(this.memi.value);
@@ -185,6 +450,11 @@ export class EmiCalculatorComponent {
     this.query.amount = loanAmount.toString();
     this.query.interest = rateOfInterest.toString();
 
+
+    // console.log(loanAmount)
+    // console.log(numberOfMonths)
+    // console.log(rateOfInterest)
+    // console.log(monthlyInterestRatio)
 
     if (this.yrToggel) {
       this.query.tenureYr = this.temi.value.toString();
@@ -201,230 +471,115 @@ export class EmiCalculatorComponent {
     var interest = full - loanAmount;
     var int_pge = (interest / full) * 100;
 
+
+    // console.log(top + "top")
+    // console.log("sp" + sp)
+    // console.log("emi" + emi)
+    // console.log("full" + full)
+    // console.log("inter: "+ interest)
+
+
+
+
     this.result.emi = emi.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     var loanAmount_str = loanAmount.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     this.result.total = full.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     this.result.interest = interest.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+    let x = this.query.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // console.log("X value is: "+ x)
+
     this.doughnutChartData = [
       this.query.amount, interest.toFixed(0)
     ];
 
+    console.log("this.result is: " + JSON.stringify(this.result))
+
+    if (this.loanRecoveyMethod == 'Reducing Balance' || this.loanRecoveyMethod == 'Principal First & then Interest') {
+      this.installmentAmount = this.query.amount / this.noOfInstallment;
+      // this.installmentAmount = Math.round(this.installmentAmount);
+
+      this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+    }
+    if (this.loanRecoveyMethod == 'EMI') {
+      this.installmentAmount = this.query.amount / this.noOfInstallment;
+      this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+    }
+
+    let rateOfInt = this.query.interest;
+    let noofinsll = parseInt(this.noOfInstallment);
+    let intallamt = this.installmentAmount;
+    let loanamt = this.query.amount;
+    let loancd = this.loanTypeName;
+
+    let data =
+    {
+
+      "flatIntrest": this.flatIntrest,
+      "loanAmount": loanamt,
+      "loanCode": loancd,
+      "rateOfIntrest": rateOfInt,
+      "noOfInstallment": noofinsll,
+      "installmentAmount": intallamt
+    }
+
+
+    if(this.noOfInstallment != null){
+      this.tempLoanMasterScheduleId = null;
+      console.log("loanScheduleData", data)
+      this.loanservice.allScheduleData(data).subscribe(res => {
+        this.scheduleData = res.data.results[0];
+        this.tempLoanMasterScheduleId = res.data.results[0].tempLoanMasterScheduleId;
+        this.loanservice.getallScheduleData(this.tempLoanMasterScheduleId).subscribe(res => {
+          this.getscheduleData = res.data.results[0];
+          this.getscheduleData.forEach(element => {
+            this.totalInterestAmount = this.totalInterestAmount + element.interestCharged
+          });
+        })
+      })
+  
+      // this.totalInterestAmount = this.totalInterestAmount.toFixed()
+    }
+
+    
     // alert( this.query.interest)
-    console.log(this.doughnutChartData)
+    // console.log(this.doughnutChartData)
   }
   // .......................loan type ................................................................
   getAllLoanType() {
     this.loanservice.getAllLoanType().subscribe(res => {
       this.loanTypeData = res.data.results[0];
 
+
+    })
+  }
+
+  getByLoanMasterId(loanMasterId) {
+    this.loanservice.getByLoanMasterId(this.loanMasterId).subscribe(res => {
+      this.getByLoanMasterIdData = res.data.results;
+      console.log("this.getByLoanMasterIdData ", JSON.stringify(this.getByLoanMasterIdData))
     })
   }
 
   getLoanType(value) {
-    let y;
-    this.loanType = value;
-    //this.tbupdate()
-    if(this.loanType == ''){
-      this.poptions = {  //loan amount
-        floor: 1,
-        ceil: 0,
-        tickStep: 0.1,
-        translate: (value: any, label: LabelType): string => {
-          switch (label) {
-            case LabelType.Low:
-              return '<b style="color: #eb8471;">' + value * 100000 + '</b>';
-            case LabelType.High:
-              return value + '<b>L</b>';
-            default:
-              return value + '<b>L</b>';
-          }
-        }
-      };
 
-      this.roptions = { // interest rate
-        floor: 0,
-        ceil: 0,
-        tickStep: 0.1,
-        translate: (value: number, label: LabelType): string => {
-          switch (label) {
-            case LabelType.Low:
-              return '<b style="color: #eb8471;">' + value + '%</b>';
-            case LabelType.High:
-              return value + '<b>%</b>';
-            default:
-              return value + '<b>%</b>';
-          }
-        }
-      };
-
-      this.toptions = {  // year
-            floor: 1,
-            ceil: 0,
-            translate: (value: number, label: LabelType): string => {
-              switch (label) {
-                case LabelType.Low:
-                  return '<b style="color: #eb8471;">'+ value + 'Yr</b>';
-                case LabelType.High:
-                  return value + '<b>Yr</b>';
-                default:
-                  return value + '<b>Yr</b>';
-              }
-            }
-          };
-          this.moptions = { // month
-            floor: 5,
-            ceil: 0,
-            // showTicks: true,
-            tickStep: 1,
-            translate: (value: number, label: LabelType): string => {
-              switch (label) {
-                case LabelType.Low:
-                  return '<b style="color: #eb8471;">'+ value + 'Mo</b>';
-                case LabelType.High:
-                  return value + '<b>Mo</b>';
-                default:
-                  return value + '<b>Mo</b>';
-              }
-            }
-          };
-
-    }else{
-      this.loanTypeData.forEach(element => {
-        if (element.loanCode == this.loanType) {
-          this.noOfInstallment = element.recoveryNoOfInstallments;
-          this.flatIntrest = element.intRate;
-          this.remi.value = parseInt(this.flatIntrest)
-
-          this.loanRecoveyMethod = element.recoveryMethod
-
-
-          /*** Deviation Amount % calculation */
-          this.deviationAmount = element.deviationAmount
-          this.calculatedDeviationAmt = 500000 * parseInt(this.deviationAmount) / 100
-          this.allowedLoanAmount = 500000 + this.calculatedDeviationAmt
-
-          this.minimumLoanAmount =  parseInt(element.minLoanAmount)
-
-          
-          if(element.principalAmountWithNode ==  true){
-            this.nodeStepLoanAmount = element.principalAmountNode
-          }else{
-            this.nodeStepLoanAmount = 0.1
-          }
-
-            this.poptions = {  //loan amount
-              floor: this.minimumLoanAmount / 100000,
-              ceil: this.allowedLoanAmount / 100000,
-              tickStep: this.nodeStepLoanAmount,
-              showTicks: true,
-              translate: (value: any, label: LabelType): string => {
-                switch (label) {
-                  case LabelType.Low:
-                    return '<b style="color: #eb8471;">' + value * 100000 + '</b>';
-                  case LabelType.High:
-                    return value + '<b>L</b>';
-                  default:
-                    return value + '<b>L</b>';
-                }
-              }
-            };
-
-
-            /*** Deviation Interest % calculation */
-          this.deviationIntrest = element.deviationIntrest
-          this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
-          this.allowedRateInterest = 12 + this.calculatedDeviationInt
-
-          let showTicks: boolean = false;
-         // alert(element.intrestNode)
-          if(element.intrestNode > 0){
-            this.nodeStepInterest = element.intrestNode
-            showTicks = true
-          }else{
-            this.nodeStepInterest = 0.1
-            showTicks = false
-          }
-
-          // 
-          this.roptions = { // interest rate
-            floor: 1,
-            ceil: this.allowedRateInterest,
-            tickStep: this.nodeStepInterest,
-            showTicks: showTicks,
-            translate: (value: number, label: LabelType): string => {
-              switch (label) {
-                case LabelType.Low:
-                  return '<b style="color: #eb8471;">' + value + '%</b>';
-                case LabelType.High:
-                  return value + '<b>%</b>';
-                default:
-                  return value + '<b>%</b>';
-              }
-            }
-          };
-
-           /*** Deviation Installment calculation */
-          this.deviationNoOfInstallment = element.deviationNoOfInstallment
-          this.calculatedDeviationIntallment = 48 * parseInt(this.deviationNoOfInstallment) / 100
-          this.allowedRateInstallment = Math.floor(48 + this.calculatedDeviationIntallment)
-          let year = Math.round(this.allowedRateInstallment) / 12;
-
-          this.toptions = {  // year
-            floor: 1,
-            ceil: Math.round(year),
-            translate: (value: number, label: LabelType): string => {
-              switch (label) {
-                case LabelType.Low:
-                  return '<b style="color: #eb8471;">'+ value + 'Yr</b>';
-                case LabelType.High:
-                  return value + '<b>Yr</b>';
-                default:
-                  return value + '<b>Yr</b>';
-              }
-            }
-          };
-          this.moptions = { // month
-            floor: 1,
-            ceil: this.allowedRateInstallment,
-            // showTicks: true,
-            tickStep: 1,
-            translate: (value: number, label: LabelType): string => {
-              switch (label) {
-                case LabelType.Low:
-                  return '<b style="color: #eb8471;">'+ value + 'Mo</b>';
-                case LabelType.High:
-                  return value + '<b>Mo</b>';
-                default:
-                  return value + '<b>Mo</b>';
-              }
-            }
-          };
-
-          // this.yrToggel = false;
-          this.query.interest = this.flatIntrest;
-          this.query.tenureMo = parseInt(this.noOfInstallment);
-          this.memi.value = parseInt(this.noOfInstallment)
-          y = Math.floor(parseInt(this.noOfInstallment) / 12)
-          this.query.tenureYr = y;
-          this.temi.value = y
-          this.update();
-        }
-      })
-    }
-
+    let val = value.split(',')
+    this.loanType = val[0];
+    this.loanTypeName = val[1];
+    //this.tbupdate()  
   }
 
-  applyLoan(){
+  applyLoan() {
     const data = {
       loanType: this.loanType,
       loanAmount: this.query.amount,
       interestRate: this.query.interest,
       noOfInstallment: this.query.tenureMo,
-      installmentAmount: this.result.emi
+      installmentAmount: this.result.emi,
     };
     this.applyLoanData = data;
-    localStorage.setItem('loanApplyData',JSON.stringify(data))
+    localStorage.setItem('SDMLoanData', JSON.stringify(this.SDMLoanData))
+    localStorage.setItem('loanApplyData', JSON.stringify(data))
     //console.log("evn: "+JSON.stringify(data))
     this.router.navigate(['/loan/add-new-loan'])
 

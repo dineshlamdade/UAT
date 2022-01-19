@@ -1,11 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
-import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PayrollInputsService } from '../payroll-inputs.service';
 import { ExcelserviceService } from '../../../core/services/excelservice.service';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 
 
@@ -126,10 +126,11 @@ export class NonRecurringQtyComponent implements OnInit {
 	svaeDisabledFlag: boolean = true;
 	selectedOption: string = 'single';
 	payrollAreaId: any;
+	isvisible: boolean = false;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private nonRecQtyService: NonRecurringQtyService,
-		private toaster: ToastrService, private datepipe: DatePipe,
+		private toaster: AlertServiceService, private datepipe: DatePipe,
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
 		if (localStorage.getItem('payrollListEmpData') != null) {
 			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
@@ -351,7 +352,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.selectedEmployeeMasterId = this.selectedEmpData[this.index].employeeMasterId
 			console.log("this.selectedEmpData[this.index]: " + JSON.stringify(this.selectedEmpData[this.index]))
 		} else {
-			this.toaster.warning("", "Please select atleast one employee")
+			this.toaster.sweetalertWarning("Please select atleast one employee")
 		}
 	}
 
@@ -627,7 +628,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 		this.nonRecQtyService.attendanceInputAPIRecordsUI(data).subscribe(
 			res => {
-				this.toaster.success('', 'Transaction data updated sucessfully')
+				this.toaster.sweetalertMasterSuccess('', 'Transaction data updated sucessfully')
 				if (this.selectedEmpData.length == 1) {
 					this.indexId = 1;
 					this.navigateSummary()
@@ -736,6 +737,12 @@ export class NonRecurringQtyComponent implements OnInit {
 	/** get Selected Payroll Area from Dropdown */
 	getSelectedPayrollArea(value) {
 		this.selectedPayrollArea = value;
+	
+		this.payrollListData.forEach(element => {
+			if(element.payrollAreaCode == value){
+				this.payrollAreaId = element.payrollAreaId 
+			}
+		});
 		this.PayrollAreaByPayrollAreaCode(value)
 		if (this.selectedEmployeeMasterId != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
@@ -784,6 +791,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		this.nonRecQtyService.NonRecurringTransactionGroupAPIEmpwise(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
+				this.NonRecurringTransactionGroupAPIEmpwiseData.sort((a,b) => a.headSequence - b.headSequence);
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 					if (element.onceEvery == 0) {
 						element.onceEvery = 1
@@ -959,6 +967,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	/** On change From Date */
 	getFromDateForSave(event, data, rowindex) {
+		//alert(this.payrollAreaId)
 		this.svaeDisabledFlag = false
 		this.setMinToDate = event;
 		this.selectedFromDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
@@ -1919,7 +1928,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		console.log(JSON.stringify(this.saveTransactionData))
 		this.nonRecQtyService.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
 			res => {
-				this.toaster.success("", "Transaction Saved Successfully")
+				this.toaster.sweetalertMasterSuccess("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
 
 				this.indexId = 1;
@@ -1963,7 +1972,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.NonRecurringTransactionScheduleEMP()
 
 		} else {
-			this.toaster.warning("", "Please select atleast one employee")
+			this.toaster.sweetalertWarning("Please select atleast one employee")
 		}
 	}
 
@@ -2220,7 +2229,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		console.log(JSON.stringify(this.updateScheduleData))
 		this.nonRecQtyService.NonRecurringSalaryScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
-				this.toaster.success("", "Transaction Schedule updated successfully")
+				this.toaster.sweetalertMasterSuccess("", "Transaction Schedule updated successfully")
 				if (this.editScheduleFlag) {
 					this.NonRecurringTransactionScheduleEMP()
 					this.updateScheduleData = []
@@ -2364,5 +2373,24 @@ export class NonRecurringQtyComponent implements OnInit {
 		//this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Quantity-Schedules');
 		this.excelservice.exportAsExcelFilewithHeaders(this.excelData, 'NonRecurring-Quantity-Schedules','NonRecurring-Quantity-Schedules',headers);
 
+	}
+
+
+	/** Selected Employee basic information expand and colapse */
+	visibleempdetails(){
+		this.isvisible = true;
+	}
+	hideempdetails(){
+		this.isvisible=false;
+	}
+
+	/** search popup */
+	graysearch(grays: TemplateRef<any>){
+		this.modalRef = this.modalService.show(
+			grays,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
 	}
 }

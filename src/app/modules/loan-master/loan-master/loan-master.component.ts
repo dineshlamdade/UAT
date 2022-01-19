@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { TemplateRef} from '@angular/core';
 
 @Component({
   selector: 'app-loan-master',
@@ -12,23 +14,24 @@ export class LoanMasterComponent implements OnInit {
   public windowScrolled: boolean;
   public data: any;
   url: string;
+  public modalRef: BsModalRef;
 
-  constructor(private router: Router) {
-    
+  constructor(private router: Router, private modalService: BsModalService) {
+
     this.url = window.location.pathname
       if(this.url == "/loan-master/summary"){
         this.tabIndex = 0
-      } 
+      }
       if(this.url == "/loan-master/general"){
         this.tabIndex = 1
         // this.tabIndex = 4
-      } 
+      }
       if(this.url == "/loan-master/recovery"){
         this.tabIndex = 2
-      } 
+      }
       if(this.url == "/loan-master/payment"){
         this.tabIndex = 3
-      }  
+      }
    }
 
   ngOnInit(): void {}
@@ -51,4 +54,7 @@ export class LoanMasterComponent implements OnInit {
       this.router.navigate(['/loan-master/payment'])
     }
   }
+
+
+
 }
