@@ -1050,6 +1050,13 @@ export class HousingloanmasterComponent implements OnInit {
         element.toDate = new Date(element.toDate);
         element.loanSanctionedDate = new Date(element.loanSanctionedDate);
         element.loanEndDate = new Date(element.loanEndDate);
+        element.housePropertyOwerDetailList.forEach(element => {
+          if(element.firstTimeHomeBuyer)
+          {
+            this.HPOwnerDetailForm.get('firstTimeHomeBuyer').disable();
+            this.HPOwnerDetailForm.get('firstTimeHomeBuyer').updateValueAndValidity();
+          }
+        });
       });
     });
   }
@@ -1541,6 +1548,8 @@ export class HousingloanmasterComponent implements OnInit {
         this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').enable();
         this.housePropertyLoanDetailList.get('percentageClaimedByEmployee').updateValueAndValidity();
       }
+      this.HPOwnerDetailForm.get('firstTimeHomeBuyer').enable();
+      this.HPOwnerDetailForm.get('firstTimeHomeBuyer').updateValueAndValidity();
     });
   }
 

@@ -9,7 +9,7 @@
               <th rowspan="2" class="wd-15 font700">Usage Type</th>
               <th rowspan="2" class="wd-10 font700">From Date</th>
               <th rowspan="2" class="wd-10 font700">To Date</th>
-              <th colspan="2" class="wd-30 font700">Income / Loss from House Property </th>
+              <th colspan="2" class="wd-30 font700">Income / (Loss) from House Property </th>
               <th rowspan="2" class="wd-10 font700">Action</th>
             </tr>
             <tr>
@@ -18,7 +18,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let summary of summaryGridData.housePropertySummaryDetails; let i = index">
+            <tr *ngFor="let summary of summaryGridData.housePropertyNegativeSummaryDetails; let i = index">
               <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.housePropertyMasterId)" >{{summary.houseDescription}}</td>
 
               <td class="padding-0">
@@ -59,7 +59,7 @@
                     tooltip="View"></i>
             </td>
             </tr>
-            <tr *ngIf="!summaryGridData.housePropertySummaryDetails?.length">
+            <tr *ngIf="!summaryGridData.housePropertyNegativeSummaryDetails?.length">
               <td colspan="7">
                 <span class="font-14 font500 align-center text-red">No Data
                   Available</span>
@@ -143,7 +143,7 @@
                   {{ deductionInSec24ActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color" *ngIf = "limitIn80EE !== 0" >
+            <!-- <tr class="table-light-color" *ngIf = "limitIn80EE !== 0" >
               <td colspan="7" class="align-left font700 text-cyan font-16 bg-color-white">&nbsp;<i
                   class="fa fa-info-circle text-link  font-18" aria-hidden="true"
                   (click)="InfoDialogforSectionEightyEE(infodialog1)"></i> &nbsp; &nbsp;Additional Benefit (Sec. 80-EE)
@@ -228,8 +228,37 @@
                   tooltip="{{ totalLossFromHousePropertyActualAmount | number: '1.2-2' }}">
                   {{ totalLossFromHousePropertyActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
+            </tr> -->
+            <tr class="table-light-color" *ngIf="summaryGridData.housePropertyPositiveSummaryDetails?.length">
+              <td colspan="7" class="align-left font700 text-cyan font-16 bg-color-white">Gain from House property</td>
+            </tr>
+            <tr class="table-light-color" *ngFor="let summary of summaryGridData.housePropertyPositiveSummaryDetails; let i = index">
+              <td colspan="4" class="align-right font700">
+                 &nbsp;<span class="text-link" (click)="jumpToMasterPage(summary.housePropertyMasterId)">
+                {{summary.houseDescription}}</span> 
+                &nbsp; <span class="Letterbadge">F</span></td>
+              <td class="align-right"><span class="padding-right-12"
+                  tooltip="{{ summary.declaredAmount | number: '1.2-2' }}">
+                  {{ summary.declaredAmount | number: "1.2-2" }}</span> </td>
+              <td class="align-right"><span class="padding-right-12"
+                  tooltip="{{ summary.actualAmount | number: '1.2-2' }}">
+                  {{ summary.actualAmount | number: "1.2-2" }}</span> </td>
+              <td class="align-right bg-color-lightgray"></td>
+            </tr>
+            <tr class="table-light-color" *ngIf="summaryGridData.housePropertyPositiveSummaryDetails?.length">
+              <td colspan="4" class="align-right font700">Grand Total &nbsp; <span class="Letterbadge">G</span></td>
+              <td class="align-right"><span class="padding-right-12"
+                  tooltip="{{ totalPositiveDeclaredAmount | number: '1.2-2' }}">
+                  {{ totalPositiveDeclaredAmount | number: "1.2-2" }}</span>
+              </td>
+              <td class="align-right"><span class="padding-right-12"
+                  tooltip="{{ totalPositiveActualAmount | number: '1.2-2' }}">
+                  {{ totalPositiveActualAmount | number: "1.2-2" }}</span>
+              </td>
+              <td class="align-right bg-color-lightgray"></td>
             </tr>
           </tbody>
+          <br>
         </table>
       </div>
     </div>
