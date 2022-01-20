@@ -536,6 +536,7 @@
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a href="javascript:void(0)" (click)="isInvestmentCollapsed = !isInvestmentCollapsed"
           [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
+          [routerLink]="['/investment-landing-page']"
           aria-expanded="true"><i class="icon-credit-card"></i><span>Investment</span></a>
         <ul class="collapse" id="investmentCollapsed" [collapse]="isInvestmentCollapsed" [isAnimated]="true">
 

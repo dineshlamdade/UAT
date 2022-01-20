@@ -31,6 +31,17 @@ export class InvestmentInterestOnEducationalLoantransactionApprovalService {
       );
   }
 
+  public geteducationalLoanTransactionApprovalRemarkList(transactionId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'educationalLoanTransaction/GetRemarkTransaction/' + transactionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
+
+
   // --------- POST API for changing Transaction List status ---------------------------------
   changeTransactionStatus(formData: any) {
     return this.httpClient.post<APIResponse>(

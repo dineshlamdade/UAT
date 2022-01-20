@@ -522,7 +522,8 @@
                     <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
                       ComputationforIncome(
                         template5,
-                        item.housePropertyTransactionLossOrIncomeDeclaredCalculation
+                        item.housePropertyTransactionLossOrIncomeDeclaredCalculation,
+                        item.housePropertyUsageTypeList
                       )
                     ">
                       {{
@@ -535,7 +536,8 @@
                     <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
                       ComputationforIncome(
                         template5,
-                        item.housePropertyTransactionLossOrIncomeActualAmountCalculation
+                        item.housePropertyTransactionLossOrIncomeActualAmountCalculation,
+                        item.housePropertyUsageTypeList
                       )
                     ">
                       {{
@@ -549,7 +551,8 @@
                     <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
                       ComputationforIncome(
                         template5,
-                        item.housePropertyTransactionLossOrIncomeApprovedCalculation
+                        item.housePropertyTransactionLossOrIncomeApprovedCalculation,
+                        item.housePropertyUsageTypeList
                       )
                     ">
                       {{
@@ -559,8 +562,11 @@
                     </span>
                   </td>
                   <td class="bg-color-light_gray font-10 font700 align-right wd-14">
-                    <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="ComputationforIncome(template5,
-                    item.housePropertyTransactionLossOrIncomeApprovedCalculation)">
+                    <span class="padding-right-12 text-link" tooltip="Click to View Computation" 
+                    (click)="ComputationforIncome(template5,
+                    item.housePropertyTransactionLossOrIncomeApprovedCalculation,
+                    item.housePropertyUsageTypeList
+                    )">
                       {{ grandApprovedTotal | number: "1.2-2" }}
                     </span>
                   </td>
@@ -1027,7 +1033,7 @@
         <div class="ml-2 pl-1 pr-0 col-md-0" *ngFor="let usage of item.housePropertyUsageTypeList">
           <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false" tooltip="{{
             (usage.fromDate | date: 'dd-MMM-yyyy') +
-              'to' +
+              ' to ' +
               (usage.toDate | date: 'dd-MMM-yyyy')
           }}">
             {{ usage.usageType }}
@@ -2498,27 +2504,34 @@
               <div class="ml-2 pl-1 pr-0">
                 <label class="form-label mt-1">Usage Type</label>
               </div>
-              <div class="ml-2 pl-1 pr-0 col-md-2">
-                <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-                  tooltip=" Self-Ocuppied">
-                  Self-Ocuppied
+              <div class="ml-2 pl-1 pr-0 col-md-0" *ngFor="let usage of showUsageType">
+                <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false" tooltip="{{
+                  (usage.fromDate | date: 'dd-MMM-yyyy') +
+                    ' to ' +
+                    (usage.toDate | date: 'dd-MMM-yyyy')
+                }}">
+                  {{ usage.usageType }}
                 </label>
               </div>
               <div class="ml-2 pl-1 pr-0">
                 <label class="form-label mt-1 pl-10">% Claimed</label>
               </div>
               <div class="ml-2 pl-1 pr-0 col-md-1">
-                <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false" tooltip="70%">
-                  70%
+                <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false" tooltip="{{lossIncomeAmountCalculation.percentageClaimedByEmployee}}%">
+                  {{
+                    lossIncomeAmountCalculation.percentageClaimedByEmployee
+                    }}%
                 </label>
               </div>
               <div class="ml-2 pl-1 pr-0">
-                <label class="form-label mt-1">Date of Loan</label>
+                <label class="form-label mt-1">Loan Sanctioned Date</label>
               </div>
               <div class="ml-2 pl-1 pr-0 col-md-2">
                 <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-                  tooltip="01-Mar-2020">
-                  01-Mar-2020
+                  tooltip="{{lossIncomeAmountCalculation.loanSanctionedDate | date: 'dd-MMM-yyyy'}}">
+                  {{
+                    lossIncomeAmountCalculation.loanSanctionedDate | date: 'dd-MMM-yyyy'
+                    }}
                 </label>
               </div>
               <div class="ml-2 pl-1 pr-0">

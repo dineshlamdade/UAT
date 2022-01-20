@@ -1374,6 +1374,7 @@ export class NpsDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    
     this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 

@@ -5,11 +5,13 @@
     </div>
     <div class="row mt-25">
       <div class="col-12">
+       
         <fieldset>
           <legend>Disabled Family Member Details</legend>
           <div class="row" >
-            <div class="col-sm-6 col-md-3" *ngIf="isSaveVisible">
+            <div class="col-sm-6 col-md-3" >
               <label class="form-label">Famliy Member Name</label>
+              <span *ngIf="!isEdit">
               <select name="family_Member_Name" id="familyMemberName" formControlName="familyMemberName"
                 (change)='OnSelectionfamilyMemberGroup()' class="form-control custom-select"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.familyMemberName.errors }">
@@ -18,12 +20,18 @@
                   {{familyMemberName.label}}
                 </option>
               </select>
+            </span>
+            <div *ngIf="isEdit">
+              <input type="text" formControlName="familyMemberName" class="form-control" disabled
+             >
+            </div>
+
               <div *ngIf="submitted && masterForm.familyMemberName.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.familyMemberName.errors.required">family Member Name Is Mandatory</div>
               </div>
             </div>
 
-            <div class="col-sm-6 col-md-3" *ngIf="isSaveVisible">
+            <div class="col-sm-6 col-md-3" >
               <label class="form-label">Relationship</label>
               <input type="text" formControlName="relationship" class="form-control"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
@@ -32,8 +40,8 @@
               </div>
             </div>
             <div class="col-sm-6 col-md-4" >
-              <label class="form-label ml-15" tooltip="Is Family Member Claiming Deduction [Sec.80-U]?"
-                placement="left">Is Family Member Claiming Deduction [Sec.80-U]?</label>
+              <label class="form-label ml-15" tooltip="Is Claiming Deduction [Sec.80-U]?"
+                placement="left">Is Claiming Deduction [Sec.80-U]?</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
                   <input type="radio" class="custom-control-input" name="isClaiming80U" value=1 [disabled]="isRadioButtonDisabled"
@@ -215,12 +223,12 @@
             <div class="row mt-30">
               <div class="col-12">
                 <div class="card">
-                  <div class="mb-0">
+                  <div class="col-md-12">
                     <h3 class="font-14 text-purple font-bold">
-                      Document
+                      Document Summary
                     </h3>
                   </div>
-                  <div class="col-12 col-md-12 col-sm-12">
+                  <div class="col-9 col-md-10 col-sm-12">
                     <div
                       class="table-responsive Custom_Table"
                     >
@@ -249,10 +257,8 @@
                       >
                         <ng-template pTemplate="header">
                           <tr>
-                            <!-- <th style="width: 3rem">
-                              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th> -->
-
+                           
+  
                             <th>
                               <div
                                 class="
@@ -261,7 +267,7 @@
                                   p-ai-center
                                 "
                               >
-                                Date Of Submission
+                              Document Submission Date & Time
                                 <div
                                   class="Sort_Filter_Position"
                                 >
@@ -271,6 +277,32 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="empcode"
+                                    display="menu"
+                                    class="p-ml-auto"
+                                  >
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                        
+                            <th>
+                              <div
+                                class="
+                                  p-d-flex
+                                  p-jc-between
+                                  p-ai-center
+                                "
+                              >
+                                Document Type
+                                <div
+                                  class="Sort_Filter_Position"
+                                >
+                                  <p-sortIcon
+                                    field="documentType"
+                                    pSortableColumn="documentType"
+                                  ></p-sortIcon>
+                                  <p-columnFilter
+                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -296,31 +328,6 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="documentName"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                "
-                              >
-                                Document Type
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="documentType"
-                                    pSortableColumn="documentType"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -403,7 +410,7 @@
                                 </div>
                               </div>
                             </th>
-                            <th>
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -427,8 +434,8 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
-                            <th>
+                            </th> -->
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -452,7 +459,7 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
+                            </th> -->
                           </tr>
                         </ng-template>
                         <ng-template
@@ -461,19 +468,16 @@
                           let-documentIndex = "rowIndex"
                         >
                           <tr class="p-selectable-row">
+                           
                             <!-- <td>
-                              <p-tableCheckbox
-                                [value]="customer"
-                              >
-                              </p-tableCheckbox>
-                            </td> -->
-                            <td>
                               {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
-                            </td>
+                            </td> -->
+                            <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                            <td>{{ document.documentType }}</td>
                             <td>
                               <a
                               (click)=" docViewer(template3,documentIndex, document)"
-
+  
                               >
                                 <i
                                   class="
@@ -485,7 +489,7 @@
                                 {{ document.documentName }}
                               </a>
                             </td>
-                            <td>{{ document.documentType }}</td>
+                           
                             <td>{{ document.documentPassword }}</td>
                             <td>
                               <!-- <div class="custom_Label_badge">
@@ -506,9 +510,14 @@
                               </div> -->
                               {{document.documentRemark}}
                             </td>
-                            <td>{{ document.status }}</td>
-                            <td>{{ document.lastModifiedBy }}</td>
-                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
+                            <!-- <td>{{ document.status }}</td> -->
+                            <td><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                              ' badge-success': document.status=='Approved',
+                              'badge-danger': document.status=='SendBack',
+                              'badge-info': document.status=='Submitted',
+                              'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                            <!-- <td>{{ document.lastModifiedBy }}</td>
+                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td> -->
                           </tr>
                         </ng-template>
                       </p-table>
@@ -601,8 +610,9 @@
                     <th scope="col" class="wd-15">Family Member Name</th>
                     <th scope="col" class="wd-15">Relationship</th>
                     <th scope="col" class="wd-15">Disablity Type</th>
-                    <th scope="col" class="wd-15">Remark</th>
                     <th scope="col" class="wd-15">Severity Level</th>
+                    <th scope="col" class="wd-15">Remark</th>
+                    <!-- <th scope="col" class="wd-15">Severity Level</th> -->
                     <th rowspan="2" scope="col" class="wd-10">Status</th>
                     <th scope="col" class="wd-15">Action</th>
                   </tr>
@@ -621,6 +631,8 @@
                     </td>
                     <!-- <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
                     </td> -->
+                    <td class="align-left wd-10"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
+                    </td>
                     <td>
                       <div class="d-flex"
                       class="align-center">
@@ -676,8 +688,8 @@
                         </div>
                       </div>
                     </td>
-                    <td class="align-left wd-10"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
-                    </td>
+                    <!-- <td class="align-left wd-10"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
+                    </td> -->
                     <td class="wd-6"><span class="badge" [ngClass]="{'badge-primary': summary.masterStatus=='Re-Open',
                       ' badge-success': summary.masterStatus=='Approved',
                       'badge-danger': summary.masterStatus=='SendBack',
@@ -955,14 +967,14 @@
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <h6 class="modal-title" id="jasdjgh">New Remark</h6>
         <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this?.summaryDetails, this?.indexCount,
             $event
           )
-        " class="form-control" placeholder="Remark"></textarea>
+        " class="form-control" placeholder="Enter New Remark"></textarea>
       </div>
     </div>
   </div>
@@ -977,13 +989,13 @@
     </button>
   </div> -->
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
-    <button
+    <!-- <button
       type="button"
       class="btn btn-secondary"
       (click)="onResetRemarkDetails()"
     >
     Reset
-    </button>
+    </button> -->
     <button
       type="button"
       class="btn btn-secondary"
@@ -991,5 +1003,12 @@
     >
       Save
     </button>
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+  Reset
+  </button>
   </div>
 </ng-template>

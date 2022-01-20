@@ -139,8 +139,17 @@ return this._HTTP.get(environment.baseUrl8080 + 'employeeRoleAssignment/user/'+s
               }));
           } 
 
-           //----------------Post---Assign/UnAssign company group list---------------
+          //-----------------Post  user-group/getUserGroups -------   
+          postUserroupGetAllDefaultCompanyGroups(data){
+            return this._HTTP.post(environment.baseUrl8080 + 'user-group/getUserGroups', data)
+            .pipe(map((res: any) => {
+              return res;
+            }));
+          }
 
+         
+         
+//----------------Post---Assign/UnAssign company group list---------------
            postUserGroupGetAllCompanyGroupsByUserGroup(data) {
             return this._HTTP.post(environment.baseUrl8080 + 'user-group/getAllCompanyGroupsByUserGroup', data)
               .pipe(map((res: any) => {

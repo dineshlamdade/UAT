@@ -66,10 +66,12 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import { TokenInterceptorService } from '../../auth/token-interceptor/token-interceptor.service';
 import { AuthGuard } from '../../auth/auth.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { accountNumbeMaskPipePipe } from './interest-on-tta/account-masked-pipe.pipe';
 // import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
 @NgModule({
   declarations: [
+    accountNumbeMaskPipePipe,
       NPSComponent,
       NpsSummaryComponent,
       NpsMasterComponent,

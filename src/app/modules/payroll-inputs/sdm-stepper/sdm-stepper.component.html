@@ -860,7 +860,7 @@
                                                     (click)="getStepper(2);next();derivedType();KeywordMasterDetails();"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Next"><b>
-                                                        <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
+                                                        <i class="fa fa-angle-double-right" ></i></b>Next</button>&nbsp;
                                                 <!-- derivedTablesFields(); -->
 
                                                 <!-- <button type="button"
@@ -1069,7 +1069,7 @@
                                                                         type="checkbox" />&nbsp;
                                                                     <label
                                                                         class="form-label margin-right:30px;">Active</label> -->
-                                                                    <label class="main" *ngIf="sdmFormStep3.get('sdmDerivedTypeId').value!=0  || sdmFormStep3.get('sdmDerivedTypeId').value!=''"><span
+                                                                    <label class="main" *ngIf="sdmFormStep3.get('sdmDerivedTypeId').value!=0  && sdmFormStep3.get('sdmDerivedTypeId').value!='' && sdmFormStep3.get('sdmDerivedTypeId').value!=null"><span
                                                                             class="form-label">Active</span>
                                                                         <input (click)="getDerivedActive($event.target)"
                                                                             type="checkbox" [checked]="derivedactive">
@@ -1124,13 +1124,19 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="card">
-                                                                    <legend>Derived Summery</legend>
+                                                                    <legend>Derived Summary</legend>
                                                                     <div class="table-responsive Custom_Table">
                                                                         <p-table [value]="tempDerivedTable"
-                                                                            [paginator]="true" [rows]="30"
-                                                                            [showCurrentPageReport]="true"
+                                                                            [paginator]="true" [rows]="10"
+                                                                            [showCurrentPageReport]="true" 
                                                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                            [rowsPerPageOptions]="[10,25,50,100,200]">
+                                                                            [rowsPerPageOptions]="[10,25,50,100,200]" 
+                                                                            [globalFilterFields]="['derivedName','modulename','sdmDerivedTypeName','percentageOf','sdmDerivedTableId','sourceObjectName']">
+
+                                                            
+
+
+
                                                                             <ng-template pTemplate="header">
                                                                                 <tr>
                                                                                     <th rowspan="2"
@@ -1554,11 +1560,19 @@
                                                                             
                                                                         </div>
                                                                     </th>
+                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Input Cycle
+                                                                           
+                                                                        </div>
+                                                                       
+                                                                    </th>
                                                                     <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="isRangeApplicableFlag == true || !noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Action
                                                                         </div>
                                                                     </th>
+                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <th rowspan="2" class=" text-center thClassDataTable"
@@ -1610,6 +1624,7 @@
                                                                            
                                                                         </div>
                                                                     </th>
+                                                                    
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -1679,8 +1694,7 @@
                                                                             value="{{data.sourceRangeTo}}">
                                                                         <!-- [disabled]="data.disableFlag == true" -->
                                                                     </td>
-                                                                    <td
-                                                                        *ngIf="data.showElement == true">
+                                                                    <td *ngIf="data.showElement == true">
                                                                         <!-- && !noDerivedFlag -->
                                                                         <!-- {{showSearchLeans}}
                                                                         {{selectedIndex}}
@@ -1698,7 +1712,7 @@
                                                                                 (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                                 value="{{data.applicableValue}}">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
-
+                                                                            <!-- <button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button> -->
                                                                             <input type="text" class="form-control"
                                                                             *ngIf="noDerivedFlag && showEditTextBox"
                                                                             (focusout)="getEditedApplicableValue($event.target.value,data)"
@@ -1767,6 +1781,9 @@
                                                                         <!-- <input type="text" class="form-control"
                                                                             
                                                                             value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"> -->
+                                                                    </td>
+                                                                    <td>
+                                                                        {{data.periodName}}
                                                                     </td>
                                                                     <td
                                                                     
@@ -1876,7 +1893,15 @@
                                                                                 [value]="srcCombData.applicableValue"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
-                                                                            <input type="text" class="form-control"
+
+                                                                                <!-- <p-inputNumber class="p-inputright" name="Claim Amount"
+                                                                                autocomplete="off" placeholder="Bill Amount" mode="decimal"
+                                                                                [value]="srcCombData.applicableValue1" [minFractionDigits]="1"
+                                                                                [maxFractionDigits]="2" min="0"
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
+                                                                            </p-inputNumber> -->
+                        
+                                                                            <input type="number" class="form-control"
                                                                                 *ngIf="showSearchLeans"
                                                                                 [value]="srcCombData.applicableValue1"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
@@ -1884,7 +1909,7 @@
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="showSearchLeans && selectedIndex != rowIndex"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
-
+                                                                                <button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button>
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
                                                                                 <button class="btn btn-primary"
@@ -1979,6 +2004,9 @@
                                                                             *ngIf="isRangeApplicableFlag == true">
                                                                         </i>
                                                                     </td> -->
+                                                                    <td>
+                                                                        {{srcCombData.periodName}}
+                                                                    </td>
 
                                                                     <td class="text-center"
                                                                         *ngIf='isRangeApplicableFlag == true'>
@@ -2043,10 +2071,14 @@
                                                                     </td>
                                                                     <td>{{data.sourceRangeFrom}}</td>
                                                                     <td>{{data.sourceRangeTo}}</td>
-                                                                    <td *ngIf="!noDerivedFlag">{{data.applicableValue}}</td>
+                                                                    <td *ngIf="!noDerivedFlag">{{data.applicableValue}}<button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button></td>
                                                                     <td *ngIf="!noDerivedFlag">{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}</td>
                                                                     <td *ngIf="!noDerivedFlag">{{data.derivedToDate | date: 'dd-MMM-yyyy'}}</td>
+                                                                    <td>
+                                                                        {{data.periodName}}
+                                                                    </td>
                                                                     <td></td>
+                                                                   
                                                                 </tr>
 
                                                             </tbody>
@@ -2191,6 +2223,9 @@
                 <th rowspan="2" style="border: 1px solid black; background-color: yellow;">
                     To Date
                 </th>
+                <th>
+                    Input Cycle
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -2260,6 +2295,9 @@
                 </td>
                 <td *ngIf="data.showElement == true" style="border: 1px solid black;">
                     {{data.derivedToDate | date: 'dd-MMM-yyyy'}}
+                </td>
+                <td>
+                   {{data.periodName}}
                 </td>
             </tr>
 
@@ -2395,6 +2433,9 @@
                         </div>
                     </div>
                 </td>
+                <td>
+                    Input Cycle
+                </td>
             </tr>
 
             <tr class="p-selectable-row text-center" *ngFor="let data of tempMatrixData;let i = index;">
@@ -2432,6 +2473,9 @@
                 <td style="border: 1px solid black;">{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}
                 </td>
                 <td style="border: 1px solid black;">{{data.derivedToDate | date: 'dd-MMM-yyyy'}}
+                </td>
+                <td>
+                    Input Cycle
                 </td>
             </tr>
         </tbody>
@@ -2706,6 +2750,13 @@
                                             </div> -->
                                             </div>
                                         </th>
+                                        <th rowspan="2" class="wd-4 text-center">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Input Cycle
+                                               
+                                            </div>
+                                           
+                                        </th>
                                     </tr>
                                 </ng-template>
                                 <!-- let-srcCombData let-rowIndex = rowIndex -->
@@ -2774,14 +2825,15 @@
                                         <td>
                                             {{history.derivedToDate | date: 'dd-MMM-yyyy'}}
                                         </td>
-
+                                       <td>
+                                          {{history.periodName}}
+                                          </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
                                         <td colspan="15" class="font-14 font500 text-center text-red">
-                                            <span>No Data
-                                                Available</span>
+                                            <span>No Data Available</span>
                                         </td>
                                     </tr>
                                 </ng-template>

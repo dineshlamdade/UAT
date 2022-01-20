@@ -262,7 +262,7 @@ public showdocument = true;
       }
       // search IFSC code
       onSelectIFSCCode(evt: any) {
-        if (evt.length == 11) {
+        if (evt?.length == 11) {
 
         console.log('evt::==', evt);
         this.interestOnTtbService.getDataFromIFSC(evt).subscribe((res) => {
@@ -485,12 +485,12 @@ public showdocument = true;
                 'Record saved Successfully.',
                 'Go to "Declaration & Actual" Page to see Schedule.'
               );
-              if (res.data.results.length > 0) {
+              if (res?.data?.results?.length > 0) {
                 this.masterGridData = res.data.results;
 
 
-                this.masterGridData.forEach((element, index) => {
-                  this.documentArray.push({
+                this?.masterGridData?.forEach((element, index) => {
+                  this?.documentArray?.push({
 
                     'dateofsubmission':new Date(),
                       'documentType':element.documentInformationList[0].documentType,
@@ -838,8 +838,8 @@ public showdocument = true;
 
 
     this.urlArray = [];
-    this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this?.form?.get('active')?.setValue(true);
+    this?.form?.get('ecs')?.setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];

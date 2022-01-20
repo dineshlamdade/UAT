@@ -41,11 +41,18 @@ export class GgaService {
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'donations80GGA-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'donations80GGA-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+  // getTransactionByProofSubmissionId(proofSubmissionId: String) {
+  //   return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
   post80GGATransaction(data) {
     return this._HTTP.post(this.apiUrl + 'donations80GGA-transaction', data)

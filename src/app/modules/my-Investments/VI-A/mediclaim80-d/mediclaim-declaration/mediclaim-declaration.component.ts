@@ -43,6 +43,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   documentRemarkList: any;
 
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -72,6 +73,9 @@ export class MediclaimDeclarationComponent implements OnInit {
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
 
   documentDataArray = [];
@@ -264,7 +268,7 @@ export class MediclaimDeclarationComponent implements OnInit {
         value: 'Preventive Health Check Up',
       },
       {
-        label: 'Medical Expenses for Sr.Citzen/s',
+        label: 'Medical Expenses for Sr.Citizen/s',
         value: 'Medical Expenses for Parents',
       },
     ];
@@ -2431,7 +2435,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -2484,9 +2488,15 @@ export class MediclaimDeclarationComponent implements OnInit {
             res.data.results[0].mediclaimTransactionDocumentDetailList;
         }
         this.initialArrayIndex = [];
-
+debugger
         this.editProofSubmissionId =
           res.data.results[0].mediclaimTransactionDocumentDetailList[0].proofSubmissionId;
+          this.createDateTime = res?.data?.results[0]?.mediclaimTransactionDetail?.mediclaimPremiumTransactionDetail?.mediclaimPremiumTransactionList[0]?.mediclaimTransactionList[0].createDateTime;
+          this.lastModifiedDateTime = res?.data?.results[0]?.mediclaimTransactionDetail?.mediclaimPremiumTransactionDetail?.mediclaimPremiumTransactionList[0]?.mediclaimTransactionList[0].lastModifiedDateTime;
+          this.transactionStatus = res?.data?.results[0]?.mediclaimTransactionDetail?.mediclaimPremiumTransactionDetail?.mediclaimPremiumTransactionList[0]?.mediclaimTransactionList[0].transactionStatus;
+
+          // mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[0].mediclaimTransactionList
+
         this.editReceiptAmount =
           res.data.results[0].mediclaimTransactionDocumentDetailList[0].receiptAmount;
 
@@ -2566,8 +2576,8 @@ export class MediclaimDeclarationComponent implements OnInit {
               });
             }
             this.masterGridData.forEach((element) => {
-              element.documentInformation.forEach(element => {
-            element.documentDetailList.forEach(element => {
+            //   element.documentInformation.forEach(element => {
+            // element.documentDetailList.forEach(element => {
               // if(element!=null)
               this.documentArray.push({
                 'dateofsubmission': element.dateOfSubmission,
@@ -2579,8 +2589,8 @@ export class MediclaimDeclarationComponent implements OnInit {
                 'lastModifiedBy' : element.lastModifiedBy,
                 'lastModifiedTime' : element.lastModifiedTime,
               })
-              })
-        });
+              // })
+        // });
       });
     }
       });
