@@ -37,6 +37,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Console } from 'console';
 import { invalid } from '@angular/compiler/src/render3/view/util';
 import { tr } from 'date-fns/locale';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-houserentmaster',
@@ -80,6 +81,8 @@ export class HouserentmasterComponent implements OnInit {
 
   public rentMinDate: Date;
   public rentMaxDate: Date;
+  public minDate:Date;
+  public maxDate:Date;
 
   public rentFromMinDate: Date;
 
@@ -201,6 +204,11 @@ export class HouserentmasterComponent implements OnInit {
   isNonMetro: boolean;
   familyList: any;
   declrName: Date;
+  dateList: Array<any> = [];
+  agreementDateList: Array<any> = [];
+  setMaxDate: any;
+  toRentDate: Date;
+  fromRentDate: Date;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -310,6 +318,7 @@ export class HouserentmasterComponent implements OnInit {
     console.log('houseAgreementMasterForm::', this.houseAgreementMasterForm);
     this.Service.getCountryList().subscribe((res) => {
       this.countriesList = res.data.results;
+      this.houseRentform.get('houseRentMaster').get('country').setValue('India');
       console.log('Countries', this.countriesList);
     });
     /*  console.log('financialYear', this.financialYear); */
@@ -713,22 +722,24 @@ export class HouserentmasterComponent implements OnInit {
       );
       return;
     }
+    //Agreement details are not compulsary as per discussion with Rakesh Sir on 07/01/2022
 
-    if (
-      this.houseRentform.get('agreementDetailList').invalid &&
-      this.agreementDetailsTableList.length === 0
-    ) {
-      this.agreementDetailssubmitted = true;
-      this.alertService.sweetalertWarning(
-        'Please Enter Agreement Details.'
-      );
+    // if (
+    //   this.houseRentform.get('agreementDetailList').invalid &&
+    //   this.agreementDetailsTableList.length === 0
+    // ) {
+    //   this.agreementDetailssubmitted = true;
+    //   this.alertService.sweetalertWarning(
+    //     'Please Enter Agreement Details.'
+    //   );
 
-      console.log(this.houseRentform.get('agreementDetailList').invalid);
-      return;
-    }
+    //   console.log(this.houseRentform.get('agreementDetailList').invalid);
+    //   return;
+    // }
+    
     if (
       this.houseRentform.get('rentDetailList').invalid &&
-      this.RentDetailTableList.length >= 1
+      this.RentDetailTableList.length === 0
     ) {
       this.alertService.sweetalertWarning(
         'Please Enter Rent Details'
@@ -737,13 +748,61 @@ export class HouserentmasterComponent implements OnInit {
       console.log(this.houseRentform.get('rentDetailList').invalid);
       return;
     }
-    console.log("rentAgreementDocumentDetail", this.rentAgreementDocumentDetail)
-    if (this.rentAgreementDocumentDetail.length === 0) {
+    //Agreement Date Validation
+    // this.agreementDateList=[]
+    // console.log("mastergridDate",this.masterGridData)
+    // if(this.masterGridData.length!=0){
+    //   this.masterGridData.forEach((element)=>{
+    //     this.agreementDateList.push(element.agreementDetailList[0].toDate)
+    //     this.agreementDateList.push(element.agreementDetailList[0].fromDate)
+    //   })
+
+    // }
+    //Rent Date Validation
+      this.dateList=[];
+      console.log("masterGridData",this.masterGridData.length)
+      if(this.masterGridData.length!=0){
+      this.masterGridData.forEach((element)=>{
+        this.dateList.push(element.rentDetailList[0].toDate)
+        this.dateList.push(element.rentDetailList[0].fromDate)
+      })
+      console.log('dateList::', this.dateList);
+      this.maxDate = Math.max.apply(null, this.dateList)
+      this.minDate = Math.min.apply(null, this.dateList)
+      console.log("maxDate",this.datePipe.transform(this.maxDate, "dd-MMM-yyyy"))
+      console.log("minDate",this.datePipe.transform(this.minDate, "dd-MMM-yyyy"))
+      this.fromRentDate = this.houseRentform.get('rentDetailList').value.fromDate;
+    this.toRentDate=this.houseRentform.get('rentDetailList').value.toDate;
+    console.log("FromRentDate",this.fromRentDate.getTime())
+    console.log("toRentDate",this.toRentDate.getTime())
+    console.log("minDate",new Date(this.minDate).getTime())
+    console.log("maxDate",new Date(this.maxDate).getTime())
+  
+  
+    if(this.fromRentDate.getTime() <= new Date(this.maxDate).getTime()){
+      this.alertService.sweetalertWarning(
+        'Date Already Exist Enter New Date'
+      );
+      return;
+    }
+  }
+    //console.log("rentAgreementDocumentDetail", this.rentAgreementDocumentDetail)
+    //console.log("this.houseAgreementMasterForm.fromDate.value",this.houseAgreementMasterForm.fromDate.value)
+    if ((this.houseAgreementMasterForm.fromDate.value != null ||this.houseAgreementMasterForm.fromDate.value != undefined) && this.rentAgreementDocumentDetail.length >= 1  ) {
       this.alertService.sweetalertWarning(
         'Please Attach Rent Agreement'
       );
       return;
     }
+    console.log(this.declarationOfLandlordDocument.length);
+    console.log("iconCount",this.iconCount)
+    if(this.iconCount >= 1 && this.declarationOfLandlordDocument.length == 0 && this.declarationOfLandlordDocumentDetail.length == 0 ){
+      this.alertService.sweetalertWarning(
+        'Please Attach Landlord Declaration Form'
+      );
+      return;
+    }
+
 
 
 
@@ -769,12 +828,30 @@ export class HouserentmasterComponent implements OnInit {
       console.log(this.houseRentform.get('agreementDetailList').value);
 
     if (
-      this.houseRentform.get('agreementDetailList').invalid &&
+      this.houseRentform.get('agreementDetailList').invalid ||
       this.agreementDetailsTableList.length !== 0
     ) {
-      data.agreementDetailList = this.houseRentform.get('agreementDetailList').value;
-    } else if (!this.houseRentform.get('agreementDetailList').invalid) {
       this.agreementDetailsTableList = [];
+      let obj={
+          fromDate: null,
+          houseRentalAgreementDetailId: 0,
+          houseRentalMasterId: 0,
+          remark: null,
+          toDate: null
+        }
+        this.agreementDetailsTableList.push(obj);
+        data.agreementDetailList = this.agreementDetailsTableList;
+      //data.agreementDetailList = this.houseRentform.get('agreementDetailList').value;
+    } 
+    else if (!this.houseRentform.get('agreementDetailList').invalid) {
+      this.agreementDetailsTableList = [];
+      // let obj={
+      //   fromDate: null,
+      //   houseRentalAgreementDetailId: 0,
+      //   houseRentalMasterId: 0,
+      //   remark: null,
+      //   toDate: null
+      // }
       this.agreementDetailsTableList.push(
         this.houseRentform.get('agreementDetailList').value
       );
@@ -952,6 +1029,7 @@ export class HouserentmasterComponent implements OnInit {
       .get('houseRentMaster')
       .get('state')
       .setValue(toSelectAddress.state);
+    //this.checkMetroCity(toSelectAddress.postalCode);
     this.houseRentform
       .get('houseRentMaster')
       .get('city')
@@ -1008,8 +1086,50 @@ export class HouserentmasterComponent implements OnInit {
   /* ....................rentTodate  validation.............................. */
   rentTodate() {
     this.rentFromMinDate = this.landRentDetailForm.fromDate.value;
-    console.log('fromDate.value::', this.rentFromMinDate);
+    // console.log(this.masterGridData);
+    // this.masterGridData.forEach((element)=>{
+    //   this.dateList.push(element.rentDetailList[0].toDate)
+    // })
+    // console.log('dateList::', this.dateList);
+    // this.maxDate = Math.max.apply(null, this.dateList)
+    // console.log("maxDate",this.datePipe.transform(this.maxDate, "dd-MMM-yyyy"))
+    // if(this.rentFromMinDate>this.maxDate){
+    //   this.setMaxDate=this.rentFromMinDate;
+    // }else{
+    //   this.setMaxDate=this.maxDate;
+    // }
+    // console.log("setMaxDate",this.datePipe.transform(this.setMaxDate, "dd-MMM-yyyy"))
   }
+
+  // Date Validation
+//   setDateValidation(){
+//     this.dateList=[];
+//     console.log("masterGridData",this.masterGridData.length)
+//     if(this.masterGridData.length!=0){
+//     this.masterGridData.forEach((element)=>{
+//       this.dateList.push(element.rentDetailList[0].toDate)
+//       this.dateList.push(element.rentDetailList[0].fromDate)
+//     })
+//     console.log('dateList::', this.dateList);
+//     this.maxDate = Math.max.apply(null, this.dateList)
+//     this.minDate = Math.min.apply(null, this.dateList)
+//     console.log("maxDate",this.datePipe.transform(this.maxDate, "dd-MMM-yyyy"))
+//     console.log("minDate",this.datePipe.transform(this.minDate, "dd-MMM-yyyy"))
+//     this.fromRentDate = this.houseRentform.get('rentDetailList').value.fromDate;
+//   this.toRentDate=this.houseRentform.get('rentDetailList').value.toDate;
+//   console.log("FromRentDate",this.fromRentDate.getTime())
+//   console.log("toRentDate",this.toRentDate.getTime())
+//   console.log("minDate",new Date(this.minDate).getTime())
+//   console.log("maxDate",new Date(this.maxDate).getTime())
+
+
+//   if(this.fromRentDate.getTime() <= new Date(this.maxDate).getTime()){
+//     this.alertService.sweetalertWarning(
+//       'Date Already Exist Enter New Date'
+//     );
+//   }
+// }
+// }
   /* ---------------------------editLandlordDetails---------RentDetailTableList-------------- */
   public editLandlordDetails(i: number) {
     /* this.landLordDetailForm.patchValue(this.landLordDetailTableList[i]); */
@@ -1028,6 +1148,24 @@ export class HouserentmasterComponent implements OnInit {
       percentageShareOfRent:
         this.landLordDetailTableList[i].percentageShareOfRent,
     });
+  }
+
+  public editRentDetails(i:number,data){
+    console.log(data)
+    let fromdate = new Date(data.fromDate)
+    let toDate = new Date(data.toDate)
+    this.rentMaxDate = new Date('31/12/9999');
+
+    console.log('toDate',toDate)
+    console.log(fromdate)
+    this.houseRentform.get('rentDetailList').patchValue({
+      houseRentalRentDetailId:this.RentDetailTableList[i].houseRentalRentDetailId,
+      fromDate:fromdate,
+      toDate: toDate,
+      rentAmount:this.RentDetailTableList[i].rentAmount,
+    })
+
+    this.monthRentAmount()
   }
 
   /* ---------------------------editAgreementDetails----------------------- */
@@ -1098,6 +1236,22 @@ export class HouserentmasterComponent implements OnInit {
 
       /* ......Agreement Record........... */
       this.agreementDetailsTableList = obj.agreementDetailList;
+      let fromDate
+      let toDate
+      if(this.agreementDetailsTableList[0].fromDate == ''|| this.agreementDetailsTableList[0].fromDate == null){
+        fromDate =''
+      }else{
+        fromDate =new Date(
+          this.agreementDetailsTableList[0].fromDate
+        )
+      }
+      if(this.agreementDetailsTableList[0].toDate == ''|| this.agreementDetailsTableList[0].toDate == null){
+        toDate =''
+      }else{
+        toDate =new Date(
+          this.agreementDetailsTableList[0].toDate
+        )
+      }
       console.log("agreementDetailsTableList:------------:", this.agreementDetailsTableList)
       this.houseRentform.get('agreementDetailList').patchValue({
         houseRentalAgreementDetailId:
@@ -1106,17 +1260,13 @@ export class HouserentmasterComponent implements OnInit {
         houseRentalMasterId:
           this.agreementDetailsTableList[0]
             .houseRentalMasterId,
-        fromDate: new Date(
-          this.agreementDetailsTableList[0].fromDate
-        ),
-        toDate: new Date(
-          this.agreementDetailsTableList[0].toDate
-        ),
+        fromDate:fromDate,
+        toDate:toDate,
         remark:
           this.agreementDetailsTableList[0]
             .remark,
       });
-
+      this.houseRentform.get('rentDetailList').reset();
       /*   ......Rent Record........... */
       this.RentDetailTableList = obj.rentDetailList;
       console.log("RentDetailTableList:----------*******--:", this.RentDetailTableList)
@@ -1128,15 +1278,15 @@ export class HouserentmasterComponent implements OnInit {
         houseRentalMasterId:
           this.RentDetailTableList[0]
             .houseRentalMasterId,
-        fromDate: new Date(
-          this.RentDetailTableList[0].fromDate
-        ),
-        toDate: new Date(
-          this.RentDetailTableList[0].toDate
-        ),
-        rentAmount:
-          this.RentDetailTableList[0]
-            .rentAmount,
+        // fromDate: new Date(
+        //   this.RentDetailTableList[0].fromDate
+        // ),
+        // toDate: new Date(
+        //   this.RentDetailTableList[0].toDate
+        // ),
+        // rentAmount:
+        //   this.RentDetailTableList[0]
+        //     .rentAmount,
       });
 
       console.log('documentInformationList', obj.documentInformationList);
@@ -1239,18 +1389,20 @@ export class HouserentmasterComponent implements OnInit {
     html2canvas(data).then((canvas) => {
       console.log(canvas);
       // Few necessary setting options
-      const imgWidth = 208;
-      const pageHeight = 0;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      // const heightLeft = imgHeight;
+      var imgWidth = 208;
+      var pageHeight = 295;
+      var imgHeight = (canvas.height * imgWidth) / canvas.width;
+      var heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png');
+      var contentDataURL = canvas.toDataURL('image/png');
       // A4 size page of PDF
-      const pdf = new jspdf('landscape', 'pt', 'a4');
-      var width = pdf.internal.pageSize.getWidth();
+      var pdf = new jspdf('landscape', 'pt', 'a4');
+      var width = pdf.internal.pageSize.getWidth()*2;
       var height = pdf.internal.pageSize.getHeight();
-      const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
+      var position = 0;
+      console.log("width",width)
+      console.log("height",height)
+      pdf.addImage(contentDataURL, 'JPEG', 20, 20, width, height);
       // Generated PDF
       //pdf.save('FORM12B.pdf');
       pdf.html(data).then(() => pdf.save('FORM12B.pdf'));
@@ -1282,6 +1434,8 @@ export class HouserentmasterComponent implements OnInit {
     this.RentDetailTableList = [];
     this.declarationOfLandlordDocumentDetail = [];
     this.rentAgreementDocumentDetail = [];
+    this.houseRentform.get('houseRentMaster').get('country').setValue('India');
+
   }
   monthRentAmount() {
 
@@ -1289,7 +1443,7 @@ export class HouserentmasterComponent implements OnInit {
 
     let amt = this.houseRentform.get('rentDetailList').value.rentAmount;
 
-    this.RentDetailTableList.push(this.houseRentform.get('rentDetailList').value)
+    //this.RentDetailTableList.push(this.houseRentform.get('rentDetailList').value)
 
     console.log("after: " + JSON.stringify(this.RentDetailTableList))
 

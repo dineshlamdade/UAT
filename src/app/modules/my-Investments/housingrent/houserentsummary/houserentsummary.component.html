@@ -32,11 +32,11 @@
                                 <span tooltip="{{ summary.toDate | date :'dd-MMM-yyyy' }}">{{summary.toDate
                                     | date :"dd-MMM-yyyy"}}</span>
                             </td>
-                            <td>
-                                <span tooltip="{{summary.declaredAmount}}">{{summary.declaredAmount}}</span>
+                            <td class="align-right">
+                                <span tooltip="{{summary.declaredAmount | number: '1.2-2'}}">{{summary.declaredAmount | number: '1.2-2'}}</span>
                             </td>
-                            <td>
-                                <span tooltip="{{summary.actualAmount}}">{{summary.actualAmount}}</span>
+                            <td class="align-right">
+                                <span tooltip="{{summary.actualAmount | number: '1.2-2'}}">{{summary.actualAmount | number: '1.2-2'}}</span>
                             </td>
                             <!-- <td><i class="fa fa-edit font-16 text-dark-green cursor-pointer"tooltip="Edit"></i>&nbsp;&nbsp;
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
