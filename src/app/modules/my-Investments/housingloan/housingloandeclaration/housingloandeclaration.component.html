@@ -275,10 +275,299 @@
               </tr>
 
             </tbody>
+            <br>
+            <tbody *ngIf="previousEmployeeList?.length">
+              <tr>
+                <td colspan="10">
+              <h3 class="align-left font-14 text-purple font-bold">Previous Employer</h3>
+            </td>
+            </tr>
+          </tbody>
+            <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
+              <tr>
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom"  tooltip="Select All">
+                    <input type="checkbox" class="custom-control-input"   [ngModel]="isCheckAll"
+                      [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
+                      (change)="checkUncheckAll(item, j)" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </th>
+                <th rowspan="2" class="wd-20 font700">
+                  Previous Employer Name
+                </th>
+                <th rowspan="2" class="wd-15 font700">Particulars</th>
+                <th rowspan="2" class="wd-15 font700">Actual Amount</th>
+                <th colspan="2" class="wd-16 font700">Approval Amount</th>
+                <th rowspan="2" class="wd-6 font700">Remark</th>
+                <th rowspan="2" class="wd-8">PS. ID.</th>
+                <th colspan="2" rowspan="2" class="wd-10 font700">Status</th>
+              </tr>
+              <tr>
+                <th>Rejected</th>
+                <th>Approved</th>
+              </tr>
+            </thead>
+            <!-- <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+              <tr>
+                <th rowspan="2" class="wd-15 font700">Particulars</th>
+                <th rowspan="2" class="wd-15 font700">Actual Amount</th>
+                <th colspan="2" class="wd-16 font700">Approval Amount</th>
+                <th rowspan="2" class="wd-6 font700">Remark</th>
+                <th rowspan="2" class="wd-8">PS. ID.</th>
+                <th rowspan="2" class="wd-10 font700">Status</th>
+              </tr>
+              <tr>
+                <th>Rejected</th>
+                <th>Approved</th>
+              </tr>
+            </thead> -->
+            <tbody>
+
+
+              <tr *ngFor="
+                let summary of item.housePropertyTransactionPreviousEmployerList;
+                let i = index;
+                count as c
+              ">
+
+
+                <td scope="row">
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                    tooltip="Select institution for proof submission">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                      onSelectCheckBoxPrevious(summary, $event, i, j);
+                 enableCheckboxFlag = j
+               " class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                  <label *ngIf="!isDisabled && !summary.proofSubmissionId" class="custom-control custom-checkbox checkbox-center">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                      onSelectCheckBoxPrevious(summary, $event, i, j);
+                enableCheckboxFlag = j
+               " class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </td>
+                <td *ngIf="previousEmployeeList?.length">
+                  <select name="Previous Employer Name" class="form-control custom-select"
+                    (change)="updatePreviousEmpId($event, i, j)" [disabled]="
+               isDisabled || summary.transactionStatus === 'Submitted'
+             ">
+                  <option [ngValue]="null">Select</option>
+                    <option *ngFor="let previousEmployee of previousEmployeeList"
+                      [value]="previousEmployee.value" [selected]="
+                previousEmployee.value == summary.previousEmployerId
+              ">
+                      {{ previousEmployee.label }}
+                    </option>
+                  </select>
+                </td>
+                <!-- <td>
+                  <select name="particulars" class="form-control custom-select" [disabled]="
+                  isDisabled || summary.transactionStatus === 'Submitted'">
+                    [ngModel]="summary.particulars"
+                    <option *ngFor="let particulars of previousEmpParticularList" [value]="particulars.value">
+                      {{particulars.label}}
+                    </option>
+                  </select>  [disabled]="summary.particulars"
+                </td> -->
+                  <td>
+                    <select name="particulars" class="form-control custom-select"  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                    [ngModel]="summary.particulars" (change)="OnParticularsChange($event, i, j)">
+                    <option [ngValue]="null">Select</option>
+                      <option *ngFor="let particulars of previousEmpParticularList"
+                      [value]="particulars.value">
+                      {{particulars.label}}
+                    </option>
+                    </select>
+                  </td>
+
+
+                <td>
+                  <div class="custom_icon_badge">
+                    <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
+                      name="actualAmount{{ summary.housePropertyTransactionId }}"
+                      [(ngModel)]="summary.actualAmount" class="form-control align-right"
+                      (change)="onActualAmountChangePre(summary, i, j)" [disabled]="initialArrayIndex[j] > i"
+                      [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    " />
+                  </div>
+                </td>
+                <td>
+                  <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
+                    class="form-control align-right" disabled />
+                </td>
+                <td>
+                  <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
+                    class="form-control align-right" disabled />
+                </td>
+                <td class="wd-6">
+                  <div class="d-flex">
+                    <!-- <input
+                    style="width:100px;"
+                      type="text"
+                      class="form-control"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      
+                      (change)="
+                      onChangeDocumentRemark(
+                          summary, i,
+                          $event
+                        )
+                      "
+                    
+                    /> -->
+                    <div
+                      _ngcontent-ykc-c443=""
+                      class="
+                        custom_Label_badge
+                        mr-2
+                        ml-2
+                      "
+                    >
+                      <b>
+                        <i
+                          (click)="
+                            remarkModal(
+                              'PreviousEmployer',
+                              template8,
+                              summary.housePropertyTransactionId,
+                            summary, i
+                            )
+                          "
+                          class="
+                            fa fa-commenting
+                            text-dark-green
+                            fa-2x
+                            cursor-pointer
+                          "
+                        >
+                        </i
+                      ></b>
+                      <span
+                        _ngcontent-ykc-c443=""
+                        class="Label_badge"
+                        >{{
+                        
+                          summary?.bubbleRemarkCount
+                        }}</span
+                      >
+                    </div>
+                  </div>
+                  <!-- <span tooltip="{{ summary.remark }}">
+                    {{ summary.remark }}
+                  </span> -->
+                </td>
+                <td>
+                  <span tooltip="{{ summary.proofSubmissionId }}">
+                    <i class="fa fa-clipboard"></i>
+                  </span>
+                </td>
+                <td class="text-orange font700">
+                  <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+        ' badge-success': summary.transactionStatus=='Approved',
+        'badge-danger': summary.transactionStatus=='SendBack',
+        'badge-info': summary.transactionStatus=='Submitted',
+        'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary.transactionStatus }}">
+          {{ summary.transactionStatus }}
+        </span>
+                  <!-- <span tooltip="{{ summary.transactionStatus }}">
+                    {{ summary.transactionStatus }}
+                  </span> -->
+                </td>
+              </tr>
+              <tr *ngIf="!isDisabled ">
+                <td *ngIf="previousEmployeeList?.length" colspan="10"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add"
+                    (click)="addRowInList(PreviousEmployeeService, j)"></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow(j)"></i>
+                </td>
+                <td *ngIf="!previousEmployeeList?.length" colspan="10"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add"
+                    (click)="addRowInList(PreviousEmployeeService, j)"></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow(j)"></i>
+                </td>
+              </tr>
+            </tbody>
+            <br>
+            <tbody>
+              <tr>
+                <td colspan="2" rowspan="2" class="bg-color-light_gray align-left font-20 font700 wd-12">
+                  <h6> <b> Income</b></h6>
+                </td>
+                <td rowspan="2" class="bg-color-light_gray font-10 font700 align-right wd-6">
+                  <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
+                    ComputationforIncome(
+                      template5,
+                      item.housePropertyTransactionLossOrIncomeDeclaredCalculation,
+                      item.housePropertyUsageTypeList
+                    )
+                  ">
+                   <b> {{
+                    item.housePropertyTransactionLossOrIncomeDeclaredAmount
+                    | number: "1.2-2"
+                    }}</b>
+                  </span>
+                </td>
+                <td rowspan="2" class="bg-color-light_gray font-10 font700 align-right wd-6">
+                  <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
+                    ComputationforIncome(
+                      template5,
+                      item.housePropertyTransactionLossOrIncomeActualAmountCalculation,
+                      item.housePropertyUsageTypeList
+                    )
+                  "><b>
+                    {{
+                    item.housePropertyTransactionLossOrIncomeActualAmount
+                    | number: "1.2-2"
+                    }}</b>
+                  </span>
+                </td>
+
+                <td colspan="2" rowspan="2" class="bg-color-light_gray font-10 font700 align-right wd-6">
+                  <span class="padding-right-12 text-link" tooltip="Click to View Computation" (click)="
+                    ComputationforIncome(
+                      template5,
+                      item.housePropertyTransactionLossOrIncomeApprovedCalculation,
+                      item.housePropertyUsageTypeList
+                    )
+                  "><b>
+                    {{
+                    item.housePropertyTransactionLossOrIncomeApprovedAmount
+                    | number: "1.2-2"
+                    }}
+                  </b>
+                  </span>
+                </td>
+                <td rowspan="2" class="bg-color-light_gray font-10 font700 align-right wd-14">
+                  <span class="padding-right-12 text-link" tooltip="Click to View Computation" 
+                  (click)="ComputationforIncome(template5,
+                  item.housePropertyTransactionLossOrIncomeApprovedCalculation,
+                  item.housePropertyUsageTypeList
+                  )"><b>
+                    {{ grandApprovedTotal | number: "1.2-2" }}
+                  </b>
+                  </span>
+                </td>
+                <td colspan="3" rowspan="2" class="bg-color-light_gray font-10 font700 align-right wd-14">
+
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
-        <div class="row mt-15" *ngIf="previousEmployeeList?.length">
+        <!-- <div class="row mt-15" *ngIf="previousEmployeeList?.length">
           <div class="col-12">
             <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
             <div class="row mt-15">
@@ -369,15 +658,7 @@
                             </option>
                           </select>
                         </td>
-                        <!-- <td>
-                          <select name="particulars" class="form-control custom-select" [disabled]="
-                          isDisabled || summary.transactionStatus === 'Submitted'">
-                            [ngModel]="summary.particulars"
-                            <option *ngFor="let particulars of previousEmpParticularList" [value]="particulars.value">
-                              {{particulars.label}}
-                            </option>
-                          </select>  [disabled]="summary.particulars"
-                        </td> -->
+                       
                           <td>
                             <select name="particulars" class="form-control custom-select"  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
                             [ngModel]="summary.particulars" (change)="OnParticularsChange($event, i, j)">
@@ -411,20 +692,7 @@
                         </td>
                         <td class="wd-6">
                           <div class="d-flex">
-                            <!-- <input
-                            style="width:100px;"
-                              type="text"
-                              class="form-control"
-                              [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
-                              
-                              (change)="
-                              onChangeDocumentRemark(
-                                  summary, i,
-                                  $event
-                                )
-                              "
-                            
-                            /> -->
+                           
                             <div
                               _ngcontent-ykc-c443=""
                               class="
@@ -462,9 +730,7 @@
                               >
                             </div>
                           </div>
-                          <!-- <span tooltip="{{ summary.remark }}">
-                            {{ summary.remark }}
-                          </span> -->
+                          
                         </td>
                         <td>
                           <span tooltip="{{ summary.proofSubmissionId }}">
@@ -479,9 +745,7 @@
                 'badge-warning': summary.transactionStatus=='Pending'}" tooltip="{{ summary.transactionStatus }}">
                   {{ summary.transactionStatus }}
                 </span>
-                          <!-- <span tooltip="{{ summary.transactionStatus }}">
-                            {{ summary.transactionStatus }}
-                          </span> -->
+                          
                         </td>
                       </tr>
                       <tr *ngIf="!isDisabled ">
@@ -509,9 +773,9 @@
             </div>
           </div>
         </div>
-        <div class="row mt-15">
+         <div class="row mt-15">
           <div class="col-12">
-            <!-- *ngIf="previousEmployeeList?.length" -->
+            
             <table class="table table-striped table-hover table-bordered m-b-0">
               <tbody>
                 <tr>
@@ -573,7 +837,7 @@
                 </tr>
               </tbody>
             </table>
-            <!-- <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+             <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
               <tbody>
                 <tr>
                   <td class="bg-color-light_gray font-25 font700 wd-14">
@@ -624,14 +888,14 @@
                   </td>
                 </tr>
               </tbody>
-            </table> -->
+            </table> 
           </div>
-        </div>
+        </div>  -->
         <div class="card">
           <div class="card-body box-solid-border">
             <div class="msg font-13 font400">
               <p>
-                I <b>Rahul J</b> hereby declare that the said housing loan has
+                I <b>{{userData.UserDetails.userName}}</b> hereby declare that the said housing loan has
                 been sanctioned to me along with other co-borrower/s against
                 the property located at <b>{{ item.houseAddress }}</b>.I hereby declare that I am claiming benefit u/s
                 24 (b) for
@@ -2486,7 +2750,7 @@
 <ng-template #template5>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabelas">
-      Computation on Income/ Loss on Housing Property
+      Computation on Income / (Loss) on Housing Property
     </h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
@@ -2547,7 +2811,7 @@
             <div class="row mt-20">
               <div class="col-md-12">
                 <h3 class="font-14 text-purple font-bold">
-                  Computation on Income/ Loss on Housing Property
+                  Computation on Income / (Loss) on Housing Property
                 </h3>
               </div>
               <div class="col-md-12">
@@ -2669,9 +2933,29 @@
                         }}
                       </td>
                     </tr>
+                    <tr class="table-light-color" *ngIf="lossIncomeAmountCalculation.limitIn80EEA != 0 || lossIncomeAmountCalculation.limitIn80EE != 0">
+                      <td class="align-right font700">
+                        Section {{lossIncomeAmountCalculation.limitIn80EEA != 0  ? '80-EEA': '80-EE'}} Limit &nbsp; <span class="Letterbadge">J</span>
+                      </td>
+                      <td class="align-right bg-color-lightgray">
+                        {{
+                        lossIncomeAmountCalculation.limitIn80EE != 0 ? (lossIncomeAmountCalculation.limitIn80EE | number: "1.2-2") :lossIncomeAmountCalculation.limitIn80EEA | number: "1.2-2"
+                        }}
+                      </td>
+                    </tr>
+                    <tr class="table-light-color" *ngIf="lossIncomeAmountCalculation.benefitSectionIn80EEA != 0 || lossIncomeAmountCalculation.benefitSectionIn80EE != 0">
+                      <td class="align-right font700">
+                        Benefit Under Section {{lossIncomeAmountCalculation.benefitSectionIn80EEA != 0  ? '80-EEA': '80-EE'}} &nbsp; <span class="Letterbadge">K</span>
+                      </td>
+                      <td class="align-right bg-color-lightgray">
+                        {{
+                        lossIncomeAmountCalculation.benefitSectionIn80EE != 0 ? (lossIncomeAmountCalculation.benefitSectionIn80EE | number: "1.2-2") :lossIncomeAmountCalculation.benefitSectionIn80EEA  | number: "1.2-2"
+                        }}
+                      </td>
+                    </tr>
                     <tr class="table-light-color">
                       <td class="align-right font700">
-                        Limit &nbsp; <span class="Letterbadge">J</span>
+                        Limit Under Section 24(i) &nbsp; <span class="Letterbadge">L <!-- J --></span>
                       </td>
                       <td class="align-right bg-color-lightgray">
                         {{
@@ -2682,10 +2966,10 @@
                     <tr class="table-light-color">
                       <td class="align-right font700">
                         Income/ ( Loss ) from House Property &nbsp;
-                        <span class="Letterbadge">K</span> &nbsp; = &nbsp;
+                        <span class="Letterbadge"> M<!-- K --></span> &nbsp; = &nbsp;
                         Minimum of &nbsp;
                         <span class="Letterbadge">I</span> &nbsp; and &nbsp;
-                        <span class="Letterbadge">J</span> &nbsp;
+                        <span class="Letterbadge">L<!-- J --></span> 
                       </td>
                       <td class="align-right bg-color-lightgray">
                         {{
@@ -2702,7 +2986,7 @@
                     <tr class="table-light-color">
                       <td class="align-right font700">
                         Principal Repayment &nbsp;
-                        <span class="Letterbadge">L</span>
+                        <span class="Letterbadge">N<!-- L --></span>
                       </td>
                       <td class="align-right bg-color-lightgray">
                         {{
@@ -2714,7 +2998,7 @@
                     <tr class="table-light-color">
                       <td class="align-right font700">
                         % Claimed by Employee &nbsp;
-                        <span class="Letterbadge">M</span>
+                        <span class="Letterbadge">O<!-- M --></span>
                       </td>
                       <td class="align-right bg-color-lightgray">
                         {{
@@ -2726,9 +3010,9 @@
                     <tr class="table-light-color">
                       <td class="align-right font700">
                         Proportionate Balance &nbsp;
-                        <span class="Letterbadge">N</span> &nbsp; = &nbsp;
-                        <span class="Letterbadge">L</span> * &nbsp;
-                        <span class="Letterbadge">M</span> &nbsp; / &nbsp; 100
+                        <span class="Letterbadge">P<!-- N --></span> &nbsp; = &nbsp;
+                        <span class="Letterbadge">N<!-- L --></span> * &nbsp;
+                        <span class="Letterbadge">O<!-- M --></span> &nbsp; / &nbsp; 100
                       </td>
                       <td class="align-right bg-color-lightgray font700">
                         {{
