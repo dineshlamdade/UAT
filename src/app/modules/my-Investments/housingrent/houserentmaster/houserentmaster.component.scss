@@ -1,0 +1,11 @@
+#table1.Custom_Table .table td {
+    white-space: nowrap!important;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    border: none;
+}
+
+
+#table1.Custom_Table .table tbody {
+    border: 2px solid #fff!important;
+}
