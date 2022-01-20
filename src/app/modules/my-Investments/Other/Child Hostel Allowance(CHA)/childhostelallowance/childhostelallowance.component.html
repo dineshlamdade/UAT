@@ -22,16 +22,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let element of masterGridData; let i = index">
-                                                    <td class="wd-20"><span tooltip="{{element.policyNo}}">{{element.familyMemberInfoId}}</span>
+                                                <tr *ngFor="let data of masterGridData; let i = index">
+                                                    <td class="wd-20">
+                                                        <span tooltip="{{data.nameOfChild}}">{{data.nameOfChild}}</span>
                                                     </td>
                                                     <td class="wd-20">
-                                                        <span tooltip="{{element.policyholdername}}">
-                              {{element.age}}
-                            </span>
+                                                        <span tooltip="{{data.age}}">{{data.age}} </span>
                                                     </td>
-                                                    <td><i class="fa fa-edit font-16 text-dark-blue cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i>&nbsp;&nbsp;
-                                                        <i class="fa fa-eye font-16 text-dark-blue cursor-pointer" (click)="viewMaster(i)" tooltip="view"></i>
+                                                    <td><i class="fa fa-edit font-16 text-dark-blue cursor-pointer" (click)="redirectToDeclarationActual(data.childHostelAllowanceMasterId , 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                                                        <i class="fa fa-eye font-16 text-dark-blue cursor-pointer"  (click)="redirectToDeclarationActual(data.childHostelAllowanceMasterId , 'view')" tooltip="View"></i>
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="!masterGridData?.length">

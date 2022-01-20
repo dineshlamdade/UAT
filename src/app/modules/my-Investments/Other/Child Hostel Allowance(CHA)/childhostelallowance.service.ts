@@ -38,7 +38,7 @@ export class ChildhostelallowanceService {
   // Get Computation
   getComputation(): Observable<any> {
     return this._HTTP
-      .get(this.apiUrl + '/childHostelAllowanceMaster/computation')
+      .get(this.apiUrl + 'childHostelAllowanceMaster/computation')
       .pipe(
         map((res: any) => {
           return res;
@@ -49,7 +49,7 @@ export class ChildhostelallowanceService {
   //Master Services
 
   getCHAMaster(): Observable<any> {
-    return this._HTTP.get(this.apiUrl + '/childHostelAllowanceMaster').pipe(
+    return this._HTTP.get(this.apiUrl + 'childHostelAllowanceMaster').pipe(
       map((res: any) => {
         return res;
       })
