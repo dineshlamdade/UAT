@@ -110,7 +110,7 @@ export class HouserentdeclarationComponent implements OnInit {
   public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
-  public documentRemark: any;
+  public documentRemark:[]=[];
   public isECS = true;
   public hideCopytoActualDate = false;
   public shownewRow = false;
@@ -192,6 +192,11 @@ export class HouserentdeclarationComponent implements OnInit {
   status: any;
   viewDocumentName: any;
   viewDocumentType: any;
+  remarkList: any=[];
+  documentPassword: any=[];
+  documentPasswordRentRecieptList: any=[];
+  remarkRentRecieptList: any=[];
+  selectedProofSubmissionId: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -235,10 +240,15 @@ export class HouserentdeclarationComponent implements OnInit {
       this.globalInstitution = input.propertyHouseName;
       this.getInstitutionListWithPolicyNo();
       console.log('this.propertyHouseName::', 'propertyHouseName');
-
       this.getTransactionFilterData(input.propertyHouseName);
-      this.isDisabled = false;
-      this.canEdit = input.canEdit;
+      //this.isDisabled = false;
+      //this.canEdit = input.canEdit;
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
+        this.isDisabled = false;
+        this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -983,16 +993,33 @@ export class HouserentdeclarationComponent implements OnInit {
   UploadFilePopUp() {
     this.displayUploadFile = true;
   }
-
-  onUpload(event) {
+// Old Remark Code
+  // onUpload(event) {
+  //   console.log('event::', event);
+  //   if (event.target.files.length > 0) {
+  //     for (const file of event.target.files) {
+  //       this.rentReciept.push(file);
+  //     }
+  //   }
+  //   console.log(this.rentReciept);
+  // }
+  //
+  onUpload(event: { target: { files: string | any[] } }) {
     console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.rentReciept.push(file);
+        console.log('rentReciept::', this.rentReciept);
       }
     }
-    console.log(this.rentReciept);
+
+    // for(let i =0 ; i<this.rentReciept.length; i++ ){
+    //   this.remarkList[i] = ''
+    //   this.documentPassword[i] = ''
+    // }
+    console.log('this.rentReciept::', this.rentReciept);
   }
+  //
 
   onUploadInEditCase(event) {
     console.log('event::', event);
@@ -1091,6 +1118,8 @@ export class HouserentdeclarationComponent implements OnInit {
       receiptAmount: this.receiptAmount,
       receiptDate: Date,
       receiptNumber: 123,
+      documentPasswordRentRecieptList:this.documentPassword,
+      remarkRentRecieptList:this.documentRemark
     };
     console.log('data::', data);
     this.houseRentService
@@ -1225,7 +1254,7 @@ export class HouserentdeclarationComponent implements OnInit {
     proofSubmissionId: string
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
-
+    this.selectedProofSubmissionId=proofSubmissionId
     this.modalRef = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
@@ -1645,6 +1674,7 @@ export class HouserentdeclarationComponent implements OnInit {
      console.log("summary",this.summaryDetails)
     this.indexCount = count;
     this.selectedremarkIndex = count;
+    console.log("selectedremarkIndex",this.selectedremarkIndex)
     this.houseRentService.gethouseRentActualRemarkList(
       masterId,
     ).subscribe((res) => {
@@ -1682,9 +1712,45 @@ export class HouserentdeclarationComponent implements OnInit {
     this.houseRentService.postHouseRentMasterRemark(data)
     .subscribe((res) => {
       if(res.status.code == "200") {
-        console.log(this.masterGridData);
-        this.transactionDetail[0].houseRentalTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        console.log(this.transactionDetail[0]);
+        //this.transactionDetail[0].houseRentalTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.getTransactionFilterData('All');
+        this.houseRentService
+      .getTransactionByProofSubmissionId(this.selectedProofSubmissionId)
+      .subscribe((res) => {
+        console.log('edit Data:: ', res);
 
+        this.documentArray = res.data.results[0].documentInformationList[0].documentDetailList;
+        this.creationDate = res.data.results[0].documentInformationList[0].documentDetailList[0].creationDate;
+        this.lastModifiedTime = res.data.results[0].documentInformationList[0].documentDetailList[0].lastModifiedTime;
+        this.status = res.data.results[0].documentInformationList[0].documentDetailList[0].status;
+        this.urlArray =
+          res.data.results[0].documentInformationList[0].documentDetailList;
+        this.editTransactionUpload =
+          res.data.results[0].houseRentalTransactionDetailList;
+        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].y;
+        this.grandDeclarationTotalEditModal =
+          res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotalEditModal =
+          res.data.results[0].grandRejectedTotal;
+        // this.createDateTime= res.data.results[0].
+        // this.grandApprovedTotalEditModal =
+        //   res.data.results[0].grandApprovedTotal;
+        console.log(this.editTransactionUpload);      
+        this.editTransactionUpload.forEach((element) => {
+          element.houseRentalTransactionList.forEach((innerElement) => {
+            innerElement.declaredAmountPerMonth = this.numberFormat.transform(
+              innerElement.declaredAmountPerMonth
+            );
+            innerElement.actualAmountPerMonth = this.numberFormat.transform(
+              innerElement.actualAmountPerMonth
+            );
+          });
+        });
+        // console.log('converted:: ', this.urlArray);
+      });
         this.alertService.sweetalertMasterSuccess(
           'Remark Saved Successfully.',
           '',
