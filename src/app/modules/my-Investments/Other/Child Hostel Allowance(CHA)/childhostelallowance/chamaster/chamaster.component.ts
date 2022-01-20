@@ -33,6 +33,8 @@ import { ChildhostelallowanceService } from '../../childhostelallowance.service'
   styleUrls: ['./chamaster.component.scss'],
 })
 export class ChamasterComponent implements OnInit {
+ 
+  @Input() public data: any;
   public modalRef: BsModalRef;
 
   public submitted = false;
@@ -150,6 +152,7 @@ export class ChamasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    console.log("data from masterpage",this.data)
     console.log(this.disableSave);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
@@ -172,7 +175,7 @@ export class ChamasterComponent implements OnInit {
       });
     });
 
-    this.deactivateRemark();
+    //this.deactivateRemark();
 
     //-------------------- Get All Institutes From Global Table -------------------------
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
@@ -299,19 +302,20 @@ export class ChamasterComponent implements OnInit {
   }
 
   //--------------- Deactivate the Remark -------------------
-  deactivateRemark() {
-    if (this.form.value.active === false) {
-      this.hideRemarkDiv = true;
-      this.form.get('remark').setValidators([Validators.required]);
-    } else {
-      this.form.get('remark').clearValidators();
-      this.hideRemarkDiv = false;
-      this.form.get('remark').reset();
-    }
-  }
+  // deactivateRemark() {
+  //   if (this.form.value.active === false) {
+  //     this.hideRemarkDiv = true;
+  //     this.form.get('remark').setValidators([Validators.required]);
+  //   } else {
+  //     this.form.get('remark').clearValidators();
+  //     this.hideRemarkDiv = false;
+  //     this.form.get('remark').reset();
+  //   }
+  // }
 
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
+    this.scrollToTop()
     this.disableSave = false;
     this.form.patchValue(this.masterGridData[i]);
     this.Index = i;
@@ -328,6 +332,7 @@ export class ChamasterComponent implements OnInit {
 
   //------------------- On Master View functionality -----------------------
   viewMaster(i: number) {
+    this.scrollToTop()
     this.disableSave = true;
     this.form.patchValue(this.masterGridData[i]);
     this.Index = i;
@@ -353,4 +358,15 @@ export class ChamasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
+
 }
