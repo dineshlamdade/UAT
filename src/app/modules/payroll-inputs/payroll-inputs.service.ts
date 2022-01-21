@@ -67,16 +67,4 @@ getEmployeeListArray() {
 setEmployeeListArray(emp) {
   this.employeeList = emp;
 }
-
-getEmployeeList():Observable<any>{
-  // https://dev.deliziahr.com:8082/hrms/v1/employee-master/employee-info
-  return this.http.get<any>(this.apiUrlEmployeeDetails + 'employee-master/employee-info');
-}
-
-getPayrollList():Observable<any>{
-  // return this.http.get<any>(this.apiUrl + 'payrollArea-details');
-  return this.http.get<any>('https://dev.deliziahr.com:8084/hrms/v1/payrollArea-details');
-}
-
-
 }
