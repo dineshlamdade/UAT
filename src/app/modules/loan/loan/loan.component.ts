@@ -54,6 +54,7 @@ export class LoanComponent implements OnInit {
     this.userData = this.authService.getprivileges()
     this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
 
+    localStorage.clear()
    }
   ngOnInit(): void {
     // this.getAllData();

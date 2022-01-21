@@ -161,6 +161,7 @@ export class EmiCalculatorComponent {
   installmentAmount: any;
   getscheduleData: any;
   totalInterestAmount: any = 0;
+  payrollArea: any;
 
   constructor(public loanservice: LoanService, private router: Router, private authService: AuthService,
     private nonRecService: NonRecurringAmtService) {
@@ -181,7 +182,11 @@ export class EmiCalculatorComponent {
   }
 
   getSelectedPayroll(payroll) {
-    this.payrollMasterId = payroll
+
+    let val = payroll.split(',');
+    this.payrollMasterId = val[0]
+    this.payrollArea = val[1]
+    
     let y;
     if (this.loanType == '') {
       this.poptions = {  //loan amount
@@ -501,8 +506,18 @@ export class EmiCalculatorComponent {
 
       this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
     }
-    if (this.loanRecoveyMethod == 'EMI') {
-      this.installmentAmount = this.query.amount / this.noOfInstallment;
+    if (this.loanRecoveyMethod == 'EMI' || this.loanRecoveyMethod == 'Emi' ) {
+
+      let t = this.noOfInstallment / 12;
+			let time = t * 12;
+
+			let rateOfIntrest1 = 0.0;
+			rateOfIntrest1 = this.query.interest / (12 * 100);
+			let emi = (this.query.amount * rateOfIntrest1 * Math.pow(1 + rateOfIntrest1, time))
+					/ (Math.pow(1 + rateOfIntrest1, time) - 1);
+
+          this.installmentAmount = emi
+      //this.installmentAmount = this.query.amount / this.noOfInstallment;
       this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
     }
 
@@ -576,6 +591,7 @@ export class EmiCalculatorComponent {
       interestRate: this.query.interest,
       noOfInstallment: this.query.tenureMo,
       installmentAmount: this.result.emi,
+      payrollArea: this.payrollArea
     };
     this.applyLoanData = data;
     localStorage.setItem('SDMLoanData', JSON.stringify(this.SDMLoanData))

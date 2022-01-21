@@ -188,7 +188,7 @@ export class AddNewLoanComponent implements OnInit {
       this.AddLoanForm.controls['loanAmount'].setValue(parseInt(loandata.loanAmount));
       this.AddLoanForm.controls['noOfInstallment'].setValue(parseInt(this.noOfInstallment));
       this.AddLoanForm.controls['interestRate'].setValue(this.flatIntrest);
-
+      this.AddLoanForm.controls['payrollArea'].setValue(loandata.payrollArea)
       this.installmentAmount = this.loanAmount / this.noOfInstallment;
       this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)
       this.installmentAmount = parseFloat(this.installmentAmount);
@@ -748,7 +748,7 @@ export class AddNewLoanComponent implements OnInit {
         // this.AddLoanForm.controls['underlineAssestValue'].setValidators([Validators.required]);
         this.loanCodeName = element.loanCode;
         // debugger
-        if (element.loanCode == 'Car Loan') {
+        if (element.loanCode == 'Car Loan' || element.loanCode == 'car loan' || element.loanCode == 'Car Loan1') {
           this.carType = true;
           this.instituteType = false;
           this.isAssetValue = true;
@@ -786,45 +786,54 @@ export class AddNewLoanComponent implements OnInit {
       this.flatIntrestVisible = false;
     }
 
-    this.calculatedDeviationAmt = this.maxLoanAmount * parseInt(this.deviationAmount) / 100;
-    this.allowedLoanAmount = this.maxLoanAmount + this.calculatedDeviationAmt;
+    // + parseInt(this.SDMLoanData.amount)
+
+    // this.calculatedDeviationAmt = parseInt(this.maxLoanAmount) * parseInt(this.deviationAmount) / 100;
+    // this.allowedLoanAmount = parseInt(this.maxLoanAmount) + this.calculatedDeviationAmt;
+    this.allowedLoanAmount = parseInt(this.SDMLoanData.amount)
     this.allowUnderlineAsset = this.allowedLoanAmount
 
-
+    let value = this.AddLoanForm.controls['loanAmount'].value
+    if(parseInt(value) <= this.allowUnderlineAsset){
+      this.AddLoanForm.controls['loanAmount'].setValue(value)
+     }else{
+       this.alertService.sweetalertWarning("Please enter value less than "+ this.allowUnderlineAsset)
+       this.AddLoanForm.controls['loanAmount'].setValue(this.allowUnderlineAsset)
+     }
   }
 
   getUnderlineAssets(value){
     let assestvalue;
     assestvalue = value * (parseInt(this.SDMLoanData.underliningAsset) / 100)
-    //  this.allowUnderlineAsset = assestvalue + this.SDMLoanData.maxAmountLoan
+     this.allowUnderlineAsset = parseInt(this.SDMLoanData.amount) - assestvalue
      this.allowUnderlineAsset =Math.floor(assestvalue)
   //  console.log(assestvalue)
 
-    //  if(parseInt(value) <= this.allowUnderlineAsset){
-    //   this.AddLoanForm.controls['underlineAssestValue'].setValue(value)
-    //  }else{
-    //    this.alertService.sweetalertWarning("Please enter value less than "+ this.allowUnderlineAsset)
-    //    this.AddLoanForm.controls['underlineAssestValue'].setValue("")
-    //  }
+     if(parseInt(value) <= this.allowUnderlineAsset){
+      this.AddLoanForm.controls['loanAmount'].setValue(value)
+     }else{
+       this.alertService.sweetalertWarning("Please enter value less than "+ this.allowUnderlineAsset)
+       this.AddLoanForm.controls['loanAmount'].setValue(this.allowUnderlineAsset)
+     }
   }
 
   // ................................calculate installment amount................................................................
   calculateInstallmentAmount(value) {
     this.EndDate = null;
 
-    this.allowedLoanAmount = 0
-    this.allowUnderlineAsset = 0
+    // this.allowedLoanAmount = 0
+    // this.allowUnderlineAsset = 0
 
-    this.calculatedDeviationAmt = this.maxLoanAmount * parseInt(this.deviationAmount) / 100;
-    this.allowedLoanAmount = this.allowUnderlineAsset + this.calculatedDeviationAmt;
+    // this.calculatedDeviationAmt = this.maxLoanAmount * parseInt(this.deviationAmount) / 100;
+    // this.allowedLoanAmount = this.allowUnderlineAsset + this.calculatedDeviationAmt;
 
     // console.log(this.allowedLoanAmount)
 
-    if(this.isAssetValue){
-      this.allowUnderlineAsset = this.allowedLoanAmount - this.allowUnderlineAsset
-    }else{
-      this.allowUnderlineAsset = this.allowedLoanAmount
-    }
+    // if(this.isAssetValue){
+    //   this.allowUnderlineAsset = this.allowedLoanAmount - this.allowUnderlineAsset
+    // }else{
+    //   this.allowUnderlineAsset = this.allowedLoanAmount
+    // }
 
     if (parseInt(value) <= this.allowedLoanAmount) {
       this.loanAmount = value;
@@ -849,20 +858,19 @@ export class AddNewLoanComponent implements OnInit {
         this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
       }
       if (this.recoveryAllMethod == 'EMI') {
-        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+
+        let t = this.noOfInstallment / 12;
+			let time = t * 12;
+
+			let rateOfIntrest1 = 0.0;
+			rateOfIntrest1 = this.flatIntrest / (12 * 100);
+			let emi = (this.loanAmount * rateOfIntrest1 * Math.pow(1 + rateOfIntrest1, time))
+					/ (Math.pow(1 + rateOfIntrest1, time) - 1);
+
+          this.installmentAmount = emi
+     
+          // this.installmentAmount = this.loanAmount / this.noOfInstallment;
         this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-
-
-        //  let diff = currentdate.getTime() - lastDay.getTime()
-        //  let NoOfday_startday = (diff / (1000 * 60 * 60 * 24));
-        //  let intrestcharge = (6 / 31) * NoOfday_startday;
-
-        // let emi = (this.loanAmount * this.flatIntrest * Math.pow(1 + this.flatIntrest, currentdate.getTime()))
-        //            / (Math.pow(1 + this.flatIntrest, currentdate.getTime()) - 1);
-        // let cal = emi - intrestcharge;
-
-        //       alert(cal)
-
       }
       if (this.recoveryAllMethod == 'Flat Interest') {
 

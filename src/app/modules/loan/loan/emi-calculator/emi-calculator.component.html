@@ -22,8 +22,8 @@
                                         <select class="form-control"
                                           placeholder="Select" (change)="getSelectedPayroll($event.target.value)">
                                           <option value="" selected >Select</option>
-                                          <option value="1">PA-Staff</option>
-                                          <option *ngFor="let payroll of payrollListData" value="{{payroll.payrollAreaId}}">
+                                          <option value="1,PA-Staff">PA-Staff</option>
+                                          <option *ngFor="let payroll of payrollListData" value="{{payroll.payrollAreaId}},{{payroll.payrollAreaCode}}">
                                               {{payroll.payrollAreaCode}}</option>
                                         </select>
                                   </div>
