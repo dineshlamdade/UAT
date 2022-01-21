@@ -55,7 +55,9 @@ export class ElectricVehicleSummaryComponent implements OnInit {
       lenderName : lenderName,
       // vehicleNumber : vehicleNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      canEdit: (mode == 'edit' ? true : false),
+      canView: mode == 'view' ? true : false,
+    };
     this.lenderName = lenderName;
     // this.vehicleNumber = vehicleNumber;
     this.myEvent.emit(data);

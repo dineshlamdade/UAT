@@ -14,7 +14,7 @@
                     <div class="tabview-contents">
                       <div class="row">
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">Service Period - SDM Name</label>
+                          <label class="form-label">Service Period</label>
                           <select class="form-control" formControlName="servicePeriod" (change)="getAllDerivedSDMServicePeriod($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -23,7 +23,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">Service Period - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="servicePeriodDerivedName">
                             <option value = 0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMServicePerioddata" value="{{derivedList.sdmDerivedMasterId}}">
@@ -32,7 +32,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">% Of Underlining Asset - SDM Name</label>
+                          <label class="form-label">% Of Underlining Asset</label>
                           <select class="form-control" formControlName="underliningAsset" (change)="getAllDerivedSDMUnderliningAsset($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -41,7 +41,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">% Of Underlining Asset - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="underlyingAssetDerivedName">
                             <option value= 0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMUnderliningAssetData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -53,7 +53,7 @@
 
                       <div class="row mt-15">
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">Number of times of salary - SDM Name</label>
+                          <label class="form-label">Number of times of salary</label>
                           <select class="form-control" formControlName="noOfTimesOfSalary" (change)="getAllDerivedSDMNumberoftimesofsalary($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -62,7 +62,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                          <label class="form-label">Number of times of salary - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="noOfTimeOfSalaryDerivedName">
                             <option value= 0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMNumberoftimesofsalaryData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -83,7 +83,7 @@
 
                       <div class="row mt-15">
                         <div class="col-sm-3 col-md-3  mt-15">
-                          <label class="form-label">Max Amount Allowed - SDM Name</label>
+                          <label class="form-label">Max Amount Allowed</label>
                           <select class="form-control" formControlName="maxAmountLoan" (change)="getAllDerivedSDMMaxAmountAllowed($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -92,7 +92,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-15">
-                          <label class="form-label">Max Amount Allowed - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="maxAmountAllowedDerivedName">
                             <option value=0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMMaxAmountAllowedData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-sm-3 col-md-3 ">
                           <label class="form-label">Gap - Earlier loan application & New loan Application
-                            (Months) - SDM Name</label>
+                            (Months)</label>
                           <select class="form-control" formControlName="gapBetTwoLoanApp" (change)="getAllDerivedSDMEarlierloanapplication($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -111,8 +111,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-15 ">
-                          <label class="form-label">Gap - Earlier loan application & New loan Application
-                            (Months) - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="gapEarilerLoanDerivedName">
                             <option value=0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMEarlierloanapplicationData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -125,7 +124,7 @@
                       <div class="row">
                         <div class="col-sm-3 col-md-3  mt-30">
                           <label class="form-label">Gap - End of Earlier Loan & Loan Application
-                            (Months) - SDM Name</label>
+                            (Months)</label>
                           <select class="form-control" formControlName="gapEndOfEarlierLoanAndNewLoanApp" (change)="getAllDerivedSDMEndofEarlierLoan($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -134,8 +133,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3  mt-30">
-                          <label class="form-label">Gap - End of Earlier Loan & Loan Application
-                            (Months) - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="gapEndLoanDerivedName">
                             <option value=0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMEndofEarlierLoanData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -149,7 +147,7 @@
                       <label class="form-label mt-15">Minimum Remaining Service</label>
                       <div class="row">
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label">Loan Application - SDM Name</label>
+                          <label class="form-label">Loan Application</label>
                           <select class="form-control" formControlName="minRemainingServiceLoanApplication" (change)="getAllDerivedSDMMinimumRemainingService($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -158,7 +156,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label">Loan Application - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="loanAppplicationDerivedName">
                             <option value=0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMMinimumRemainingServiceData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -167,7 +165,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label">Loan Completion - SDM Name</label>
+                          <label class="form-label">Loan Completion</label>
                           <select class="form-control" formControlName="minRemainingServiceLoanCompletion" (change)="getAllDerivedSDMLoanCompletion($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -176,7 +174,7 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
-                          <label class="form-label">Loan Completion - Derived Name</label>
+                          <label class="form-label">Derived Name</label>
                           <select class="form-control" formControlName="loanCompletionDerivedName">
                             <option value=0>Select</option>
                             <option *ngFor=" let derivedList of getAllDerivedSDMLoanCompletionData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -293,7 +291,7 @@
                               <div class="custom-control-label">Without Node</div>
                             </label>
                             <div class="mt-10" *ngIf="InterestNode == 'withNode'">
-                              <label class="form-label">Node Value {{InterestNode}}</label>
+                              <label class="form-label">Node Value</label>
                               <input type="text" class="form-control" placeholder="Gap Between Two Nodes"
                                 formControlName="interestNodeValue"
                                 [ngClass]="{'is-invalid' : paymentLoanForm.get('interestNodeValue').status == 'INVALID'}" />
@@ -382,7 +380,7 @@
           </div>
         </div>
       </div>
-      <!-- <app-footer></app-footer> -->
+      <app-footer></app-footer>
     </div>
   </div>
 </div>

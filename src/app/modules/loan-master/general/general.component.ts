@@ -78,8 +78,8 @@ export class GeneralComponent implements OnInit {
       approvalWorkFlowSDM: new FormControl(""),
       approvalDerivedName: new FormControl(""),
       minLoanAmount: new FormControl("",[Validators.required,Validators.pattern(/^[1-9]\d*$/)]),
-      assignmentsIntHeadId: new FormControl(""),
-      assignmentsPriHeadId: new FormControl(""),
+      assignmentsIntHead: new FormControl(""),
+      assignmentsPriHead: new FormControl(""),
       assignmentsLoanPayment: new FormControl(""),
       taxSettingPerquisiteHead: new FormControl(""),
       taxSettingPerquisiteLoanCategory: new FormControl(""),
@@ -138,8 +138,8 @@ export class GeneralComponent implements OnInit {
       this.getAllDerivedSDM(this.loandata.approvalWorkFlowSDM) // get sdm derived  name
       this.generalLoanForm.controls['approvalDerivedName'].setValue(this.loandata.approvalDerivedName)
       this.getDeductionHead()
-      this.generalLoanForm.controls['assignmentsIntHeadId'].setValue(this.loandata.assignmentsIntHeadId)
-      this.generalLoanForm.controls['assignmentsPriHeadId'].setValue(this.loandata.assignmentsPriHeadId)
+      this.generalLoanForm.controls['assignmentsIntHead'].setValue(this.loandata.assignmentsIntHead)
+      this.generalLoanForm.controls['assignmentsPriHead'].setValue(this.loandata.assignmentsPriHead)
       this.generalLoanForm.controls['assignmentsLoanPayment'].setValue(this.loandata.assignmentsLoanPayment)
       this.generalLoanForm.controls['taxSettingPerquisiteHead'].setValue(this.loandata.taxSettingPerquisiteHead)
       this.generalLoanForm.disable()
@@ -191,8 +191,8 @@ export class GeneralComponent implements OnInit {
       this.getAllDerivedSDM(this.editloandata.approvalWorkFlowSDM) // get sdm derived  name
       this.generalLoanForm.controls['approvalDerivedName'].setValue(this.editloandata.approvalDerivedName)
       this.getDeductionHead()
-      this.generalLoanForm.controls['assignmentsIntHeadId'].setValue(this.editloandata.assignmentsIntHeadId)
-      this.generalLoanForm.controls['assignmentsPriHeadId'].setValue(this.editloandata.assignmentsPriHeadId)
+      this.generalLoanForm.controls['assignmentsIntHead'].setValue(this.editloandata.assignmentsIntHead)
+      this.generalLoanForm.controls['assignmentsPriHead'].setValue(this.editloandata.assignmentsPriHead)
       this.generalLoanForm.controls['assignmentsLoanPayment'].setValue(this.editloandata.assignmentsLoanPayment)
       this.generalLoanForm.controls['taxSettingPerquisiteHead'].setValue(this.editloandata.taxSettingPerquisiteHead)
 
@@ -268,8 +268,8 @@ export class GeneralComponent implements OnInit {
       this.getAllDerivedSDM(generalFormValue.approvalWorkFlowSDM) // get sdm derived  name
       this.generalLoanForm.controls['approvalDerivedName'].setValue(generalFormValue.approvalDerivedName)
       this.getDeductionHead()
-      this.generalLoanForm.controls['assignmentsIntHeadId'].setValue(generalFormValue.assignmentsIntHeadId)
-      this.generalLoanForm.controls['assignmentsPriHeadId'].setValue(generalFormValue.assignmentsPriHeadId)
+      this.generalLoanForm.controls['assignmentsIntHead'].setValue(generalFormValue.assignmentsIntHead)
+      this.generalLoanForm.controls['assignmentsPriHead'].setValue(generalFormValue.assignmentsPriHead)
       this.generalLoanForm.controls['assignmentsLoanPayment'].setValue(generalFormValue.assignmentsLoanPayment)
       this.generalLoanForm.controls['taxSettingPerquisiteHead'].setValue(generalFormValue.taxSettingPerquisiteHead)
 
@@ -345,8 +345,6 @@ export class GeneralComponent implements OnInit {
       this.generalLoanForm.controls['approvalDerivedName'].setValue(parseInt(this.generalLoanForm.controls['approvalDerivedName'].value))
       this.generalLoanForm.controls['noOfGuarantor'].setValue(parseInt(this.generalLoanForm.controls['noOfGuarantor'].value))
       this.generalLoanForm.controls['document'].setValue(this.filesArray)
-      this.generalLoanForm.controls['assignmentsIntHeadId'].setValue(parseInt(this.generalLoanForm.controls['assignmentsIntHeadId'].value))
-      this.generalLoanForm.controls['assignmentsPriHeadId'].setValue(parseInt(this.generalLoanForm.controls['assignmentsPriHeadId'].value))
 
       let loanApplicationValue = [this.generalLoanForm.controls['loanApplicationTemplate'].value]
       this.generalLoanForm.controls['loanApplicationTemplate'].setValue(loanApplicationValue)

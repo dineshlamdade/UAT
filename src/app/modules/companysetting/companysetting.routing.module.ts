@@ -26,6 +26,9 @@ import { PaymentTrackingMasterComponent } from './payment-tracking-master/paymen
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 import { AreasetComponent } from './areaset/areaset.component';
 import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
+import {LMSLeaveHeadCreationComponentComponent} from './lms/lmsleave-head-creation-component/lmsleave-head-creation-component.component';
+import { LmsLeaveAttributeCreationComponent } from './lms/lms-leave-attribute-creation/lms-leave-attribute-creation.component';
+import { LeaveAttributeGroupComponent } from './lms/leave-attribute-group/leave-attribute-group.component';
 
 const routes: Routes = [
 
@@ -134,9 +137,22 @@ const routes: Routes = [
     path: 'employeeset',
     component: EmployeesetComponent,
     data: { title: ':: Epic :: Employee Set' }
+  },
+  {
+    path: 'leave-head-creation',
+    component: LMSLeaveHeadCreationComponentComponent,
+    data: { title: ':: Epic :: LMS Company Setting' }
+  },
+  {
+    path: 'leave-attribute-creation',
+    component: LmsLeaveAttributeCreationComponent,
+    data: { title: ':: Epic :: LMS Company Setting' }
+  },
+  {
+    path: 'leave-attribute-group',
+    component: LeaveAttributeGroupComponent,
+    data: { title: ':: Epic :: LMS Company Setting' }
   }
-  
-
   
 ];
 

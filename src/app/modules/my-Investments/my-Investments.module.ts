@@ -45,7 +45,9 @@ import { ChaComponent } from './Other/Child Hostel Allowance(CHA)/childhostelall
 import { CeaComponent } from './Other/Child Education Allowance/cea/cea.component';
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
+
 import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
+
 // import { OtherincomeSummaryComponent } from './Other/Other Income/otherincome-summary/otherincome-summary.component';
 import { OtherincomesummaryComponent } from './Other/Other Income/otherincome_summary/otherincomesummary/otherincomesummary.component';
 import { OtherincomedeclarationComponent } from './Other/Other Income/otherincome_declaration&actual/otherincomedeclaration/otherincomedeclaration.component';
@@ -62,9 +64,15 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSelectModule } from '@angular/material/select';
 import { PreviousemployerdeclarationComponent } from './previousemployer/previousemployerdeclaration/previousemployerdeclaration.component';
+import { InvestmentLandingPageComponent } from './landing-page/investment-landing-page/investment-landing-page.component';
+import { HraExemptionComponent } from './landing-page/investment-landing-page/hra-exemption/hra-exemption.component';
+import { ChartModule } from 'primeng/chart';
+
 
 @NgModule({
   declarations: [
+    HraExemptionComponent,
+    InvestmentLandingPageComponent,
     MyInvestmentsComponent,
     HousingloanComponent,
     SignaturePadComponent,
@@ -138,6 +146,7 @@ import { PreviousemployerdeclarationComponent } from './previousemployer/previou
     FormsModule,
     SignaturePadModule,
     ScrollPanelModule,
+    ChartModule,
 
   ],
 

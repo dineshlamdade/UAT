@@ -15,15 +15,26 @@
               </div> -->
               <br />
               <div class="tabview tabview_upload_excel">
-                <input name="nav" type="radio" class="about-radio" id="Tab1" checked />
+                <input
+                  name="nav"
+                  type="radio"
+                  class="about-radio"
+                  id="Tab1"
+                  checked
+                />
                 <div class="tabs about-page">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="card">
                         <div class="card-body">
-                          <p-table #dt1 [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                          <p-table
+                            #dt1
+                            [paginator]="true"
+                            [rows]="10"
+                            [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [rowsPerPageOptions]="[10, 25, 50, 100, 200]" [value]="getLoanApplicationSummaryData"
+                            [rowsPerPageOptions]="[10, 25, 50, 100, 200]"
+                            [value]="getLoanApplicationSummaryData"
                             [globalFilterFields]="[
                               'loanApplicationNumber',
                               'createDateTime',
@@ -31,71 +42,103 @@
                               'repaymentType',
                               'approvedAmount',
                               'Status'
-                            ]">
+                            ]"
+                          >
                             <ng-template pTemplate="caption">
                               <div class="row">
                                 <div class="col-md-12">
-                                  <button type="button" tooltip=" Disbursement Request" class="
+                                  <button
+                                    type="button"
+                                    tooltip=" Disbursement Request"
+                                    class="
                                       custom_button custom_btn
                                       btn-bg-green btn-labeled btn-labeled-left
                                       ml-2
                                       mr-2
-                                    " aria-hidden="true" [routerLink]="['/loan/disbursement']" [ngClass]="{
+                                    "
+                                    aria-hidden="true"
+                                    [routerLink]="['/loan/disbursement']"
+                                    [ngClass]="{
                                       'disabled-btn-bg-green':
                                         selectedLoanData == '' ||
                                         settlementRequestFlag
-                                    }" [disabled]="selectedLoanData == ''">
+                                    }"
+                                    [disabled]="selectedLoanData == ''"
+                                  >
                                     <b><i class="fa fa-money"></i></b>
                                     Disbursement Request
                                   </button>
 
-                                  <button type="button" tooltip=" Adhoc Repayment" class="
+                                  <button
+                                    type="button"
+                                    tooltip=" Adhoc Repayment"
+                                    class="
                                       custom_button custom_btn
                                       btn-bg-green btn-labeled btn-labeled-left
                                       mr-2
-                                    " [routerLink]="['/loan/adhoc']" [ngClass]="{
+                                    "
+                                    [routerLink]="['/loan/adhoc']"
+                                    [ngClass]="{
                                       'disabled-btn-bg-green':
                                         selectedLoanData == '' ||
                                         this.recoveryMethod == 'Perpetual' ||
                                         settlementRequestFlag
-                                    }" [disabled]="
+                                    }"
+                                    [disabled]="
                                       selectedLoanData == '' ||
                                       this.recoveryMethod == 'Perpetual'
-                                    ">
+                                    "
+                                  >
                                     <b><i class="fa fa-credit-card"></i></b>
                                     Adhoc Repayment
                                   </button>
 
-                                  <button type="button" tooltip=" Reschedule Request" class="
+                                  <button
+                                    type="button"
+                                    tooltip=" Reschedule Request"
+                                    class="
                                       custom_button custom_btn
                                       btn-bg-green btn-labeled btn-labeled-left
                                       ml-2
                                       mr-2
-                                    " [routerLink]="['/loan/rescheduleRequest']" [ngClass]="{
+                                    "
+                                    [routerLink]="['/loan/rescheduleRequest']"
+                                    [ngClass]="{
                                       'disabled-btn-bg-green':
                                         selectedLoanData == '' ||
                                         this.recoveryMethod == 'Perpetual' ||
                                         settlementRequestFlag
-                                    }" [disabled]="
+                                    }"
+                                    [disabled]="
                                       selectedLoanData == '' ||
                                       this.recoveryMethod == 'Perpetual'
-                                    ">
-                                    <b><i class="fa fa-calendar-check-o"></i></b>
+                                    "
+                                  >
+                                    <b
+                                      ><i class="fa fa-calendar-check-o"></i
+                                    ></b>
                                     Reschedule Request
                                   </button>
 
-                                  <button type="button" tooltip="Settlement Request" class="
+                                  <button
+                                    type="button"
+                                    tooltip="Settlement Request"
+                                    class="
                                       custom_button custom_btn
                                       btn-bg-green btn-labeled btn-labeled-left
                                       mr-2
-                                    " [routerLink]="['/loan/settlementRequest']" [ngClass]="{
+                                    "
+                                    [routerLink]="['/loan/settlementRequest']"
+                                    [ngClass]="{
                                       'disabled-btn-bg-green':
                                         selectedLoanData == '' ||
                                         settlementRequestFlag
-                                    }" [disabled]="
+                                    }"
+                                    [disabled]="
                                       selectedLoanData == '' ||
                                       settlementRequestFlag
-                                    ">
+                                    "
+                                  >
                                     <b><i class="fa fa-handshake-o"></i></b>
                                     Settlement Request
                                   </button>
@@ -106,21 +149,34 @@
 
                                       <span class="p-input-icon-left">
                                         <i class="pi pi-search"></i>
-                                        <input pInputText type="text" (input)="
+                                        <input
+                                          pInputText
+                                          type="text"
+                                          (input)="
                                             dt1.filterGlobal(
                                               $event.target.value,
                                               'contains'
                                             )
-                                          " placeholder="Search" /> </span>&nbsp;
+                                          "
+                                          placeholder="Search"
+                                        /> </span
+                                      >&nbsp;
 
-                                      <span style="margin-right: -18px"><a tooltip="Export to Excel"
-                                          (click)="exportAsXLSX()"><i class="
+                                      <span style="margin-right: -18px"
+                                        ><a
+                                          tooltip="Export to Excel"
+                                          (click)="exportAsXLSX()"
+                                          ><i
+                                            class="
                                               fa fa-file-excel-o
                                               font-18
                                               text-dark-green
                                               mr-10
                                               mt-10
-                                            " aria-hidden="true"></i></a></span>
+                                            "
+                                            aria-hidden="true"
+                                          ></i></a
+                                      ></span>
                                     </div>
                                   </div>
                                 </div>
@@ -130,74 +186,123 @@
                             <ng-template pTemplate="header">
                               <tr>
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center" >
                                     Select
                                   </div>
                                 </th>
 
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Application No.
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="loanApplicationNumber" pSortableColumn="loanApplicationNumber">
+                                      <p-sortIcon
+                                        field="loanApplicationNumber"
+                                        pSortableColumn="loanApplicationNumber"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter field="loanApplicationNumber" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        field="loanApplicationNumber"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Application Date
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="createDateTime" pSortableColumn="createDateTime">
+                                      <p-sortIcon
+                                        field="createDateTime"
+                                        pSortableColumn="createDateTime"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="date" field="createDateTime" display="menu"
-                                        class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="date"
+                                        field="createDateTime"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Loan Type
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="loanType" pSortableColumn="loanType">
+                                      <p-sortIcon
+                                        field="loanType"
+                                        pSortableColumn="loanType"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="loanType" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="loanType"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
 
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Repayment Type
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="repaymentType" pSortableColumn="repaymentType">
+                                      <p-sortIcon
+                                        field="repaymentType"
+                                        pSortableColumn="repaymentType"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="repaymentType" display="menu"
-                                        class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="repaymentType"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th colspan="4">
-                                  <div class="
+                                  <div
+                                    class="
                                       p-d-flex p-ai-center
                                       justify-content-center
-                                    ">
+                                    "
+                                  >
                                     Loan Details
                                   </div>
                                 </th>
 
                                 <th rowspan="2">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Status
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="status" pSortableColumn="status">
+                                      <p-sortIcon
+                                        field="status"
+                                        pSortableColumn="status"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="status"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
@@ -207,46 +312,85 @@
                               </tr>
                               <tr>
                                 <th class="text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Loan Amount
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="approvedAmount" pSortableColumn="approvedAmount">
+                                      <p-sortIcon
+                                        field="approvedAmount"
+                                        pSortableColumn="approvedAmount"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="approvedAmount" display="menu"
-                                        class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="approvedAmount"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th class="text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Disbursed
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="loanType" pSortableColumn="loanType">
+                                      <p-sortIcon
+                                        field="loanType"
+                                        pSortableColumn="loanType"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="loanType" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="loanType"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th class="text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Yet to Disburse
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="loanType" pSortableColumn="loanType">
+                                      <p-sortIcon
+                                        field="loanType"
+                                        pSortableColumn="loanType"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="loanType" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="loanType"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
                                 </th>
                                 <th class="text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                  <div
+                                    class="p-d-flex p-jc-between p-ai-center"
+                                  >
                                     Balance
                                     <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="loanType" pSortableColumn="loanType">
+                                      <p-sortIcon
+                                        field="loanType"
+                                        pSortableColumn="loanType"
+                                      >
                                       </p-sortIcon>
-                                      <p-columnFilter type="text" field="loanType" display="menu" class="p-ml-auto">
+                                      <p-columnFilter
+                                        type="text"
+                                        field="loanType"
+                                        display="menu"
+                                        class="p-ml-auto"
+                                      >
                                       </p-columnFilter>
                                     </div>
                                   </div>
@@ -254,88 +398,65 @@
                               </tr>
                             </ng-template>
 
-                            <ng-template pTemplate="body" let-summary let let-rowIndex="rowIndex">
+                            <ng-template
+                              pTemplate="body"
+                              let-summary
+                              let
+                              let-rowIndex="rowIndex"
+                            >
                               <tr class="p-selectable-row">
                                 <td class="text-center bg-color-light_gray">
                                   <!-- <label class="custom-control custom-checkbox checkbox-center">
                                             <input type="checkbox" class="custom-control-input" name="select" (click)="selectedLoan(summary)">
                                             <span class="custom-control-label"></span>
                                           </label> -->
-                                  <label class="
+                                  <label
+                                    class="
                                       custom-control
                                       custom-radio
                                       custom-control-inline
-                                    ">
-                                    <input type="radio" class="custom-control-input" name="select"
-                                      (click)="selectedLoan(summary)" [checked]="summary.checked == true" />
+                                    "
+                                  >
+                                    <input
+                                      type="radio"
+                                      class="custom-control-input"
+                                      name="select"
+                                      (click)="selectedLoan(summary)"
+                                      [checked]="summary.checked == true"
+                                    />
                                     <span class="custom-control-label"></span>
                                   </label>
                                 </td>
                                 <td>{{ summary.loanApplicationNumber }}</td>
                                 <td>
                                   {{
-                                  summary.createDateTime | date: "dd-MMM-yyyy"
+                                    summary.createDateTime | date: "dd-MMM-yyyy"
                                   }}
                                 </td>
                                 <td>{{ summary.loanType }}</td>
                                 <!-- <td></td> -->
                                 <td>{{ summary.repaymentType }}</td>
 
-                                <td style="text-align: right;">
-                                  {{ summary.loanAmount | number: "1.2-2" }}
-                                </td>
-                                <td style="text-align: right;"></td>
-                                <td style="text-align: right;"></td>
-                                <td style="text-align: right;">{{ summary.loanAmount | number: "1.2-2"}}</td>
                                 <td>
-                                  <label class="badge badge-warning"
-                                    *ngIf="summary.status == 'Pending' || summary.status == 'pending'">Pending
-                                  </label>
-                                  <label class="badge badge-success"
-                                    *ngIf="summary.status == 'Approved' || summary.status == 'approved'">Approved
-                                  </label>
-                                  <label class="badge badge-info"
-                                    *ngIf="summary.status == 'Submitted' || summary.status == 'submitted'">Submitted
-                                  </label>
-                                  <label class="badge badge-info"
-                                    *ngIf="summary.status == 'InProcess' || summary.status == 'inprocess'">{{summary.status}}
-                                  </label>
-                                  <label class="badge badge-danger"
-                                    *ngIf="summary.status == 'Send Back' || summary.status == 'SendBack'">{{summary.status}}
-                                  </label>
-                                  <label class="badge badge-success"
-                                    *ngIf="summary.status == 'Closed' || summary.status == 'closed'">{{summary.status}}
-                                  </label>
-                                  <label class="badge badge-success"
-                                    *ngIf="summary.status == 'Paid' || summary.status == 'paid'">{{summary.status}}
-                                  </label>
+                                  {{ summary.approvedAmount | number: "1.2-3" }}
                                 </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ summary.status }}</td>
 
-                                <td>
-                                  <div class="d-flex">
-                                      <i class="fa fa-edit font-16 text-dark-green  cursor-pointer mr-10 "
-                                        tooltip="Edit" (click)="editLoanAppForm(summary)">
-                                      </i>
-                                      <i class=" fa fa-eye  font-16 text-blue cursor-pointer mr-10 " tooltip="View"
-                                      (click)="viewLoanAppForm(summary)">
+                                <td class="primeng-table-header-left">
+                                  <span><i class="  fa fa-edit font-16 text-dark-green  cursor-pointer mr-10 "
+                                      tooltip="Edit" [routerLink]="['/loan/add-new-loan']"  ></i>
 
-                                      </i>
-                                      <span>
-                                      <span *ngIf="summary.count"></span>
-                                      <div class="custom_Label_badge mr-2 ml-2">
-                                        <b>
-                                          <i class="fa fa-file  text-blue cursor-pointer mr-10 "
-                                            tooltip="View Transaction"
-                                            (click)="smallpopup1(viewTransaction,summary.loanApplicationId ); selectedLoan(summary) ">
-                                          </i>
-                                        </b>
-                                        <span class="Label_badge"
-                                          (click)="smallpopup1(viewTransaction,summary.loanApplicationId ); selectedLoan(summary) ">{{
-                                          summary.count.length }}
-                                        </span>
-                                      </div>
-                                      </span>
-                                  </div>
+                                 <i class=" fa fa-eye  font-16 text-blue cursor-pointer mr-10 "  tooltip="View"></i>
+                                <span  *ngIf="summary.count" ></span  >
+                                    <div class="custom_Label_badge mr-2 ml-2"  >
+                                      <b><i  class="  fa fa-file  text-blue cursor-pointer mr-10 "
+                                        tooltip="View Transaction"  (click)="smallpopup1(viewTransaction,summary.loanApplicationId ); selectedLoan(summary) " >
+                                      </i></b><span class="Label_badge" (click)="smallpopup1(viewTransaction,summary.loanApplicationId ); selectedLoan(summary) "  >{{ summary.count.length }}</span >
+                                    </div>
+                                  </span>
                                 </td>
                               </tr>
                             </ng-template>
@@ -346,7 +467,12 @@
                   </div>
                 </div>
                 <label class="nav" for="Tab1"><span> Summary </span></label>
-                <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                <input
+                  name="nav"
+                  type="radio"
+                  class="nav home-radio"
+                  id="Tab2"
+                />
                 <div class="tabs about-page">
                   <div class="row">
                     <div class="col-md-12">
@@ -365,14 +491,19 @@
         </div>
       </div>
     </div>
-    <!-- <app-footer></app-footer> -->
   </div>
 </div>
 
 <ng-template #viewTransaction>
   <div class="modal-header">
     <h6 class="modal-title" id="UploadModalLabel">Transaction Details</h6>
-    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -386,29 +517,48 @@
                 <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
                 <span class="p-input-icon-left">
                   <i class="pi pi-search"></i>
-                  <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                    placeholder="Search" /> </span>&nbsp;
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search"
+                  /> </span
+                >&nbsp;
 
-                <span style="margin-right: -18px"><a tooltip="Export to Excel" (click)="transactionExportAsXLSX()"><i
+                <span style="margin-right: -18px"
+                  ><a
+                    tooltip="Export to Excel"
+                    (click)="transactionExportAsXLSX()"
+                    ><i
                       class="
                         fa fa-file-excel-o
                         font-18
                         text-dark-green
                         mr-10
                         mt-10
-                      " aria-hidden="true"></i></a></span>
+                      "
+                      aria-hidden="true"
+                    ></i></a
+                ></span>
               </div>
             </div>
             <br /><br />
-            <p-table #dt1 [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            <p-table
+              #dt1
+              [paginator]="true"
+              [rows]="10"
+              [showCurrentPageReport]="true"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              [rowsPerPageOptions]="[10, 25, 50, 100, 200]" [value]="trasactionData" [globalFilterFields]="[
+              [rowsPerPageOptions]="[10, 25, 50, 100, 200]"
+              [value]="trasactionData"
+              [globalFilterFields]="[
                 'transactionNo',
                 'transactionNo',
                 'type',
                 'amount',
                 'status'
-              ]">
+              ]"
+            >
               <ng-template pTemplate="header">
                 <tr>
                   <th>
@@ -417,7 +567,11 @@
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="applNo" pSortableColumn="applNo">
                         </p-sortIcon>
-                        <p-columnFilter field="applNo" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          field="applNo"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -426,9 +580,17 @@
                     <div class="p-d-flex p-jc-between p-ai-center">
                       Transaction No.
                       <div class="Sort_Filter_Position">
-                        <p-sortIcon field="transactionNo" pSortableColumn="transactionNo">
+                        <p-sortIcon
+                          field="transactionNo"
+                          pSortableColumn="transactionNo"
+                        >
                         </p-sortIcon>
-                        <p-columnFilter type="text" field="transactionNo" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="text"
+                          field="transactionNo"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -438,9 +600,17 @@
                     <div class="p-d-flex p-jc-between p-ai-center">
                       Date
                       <div class="Sort_Filter_Position">
-                        <p-sortIcon field="expectedPaymentDate" pSortableColumn="expectedPaymentDate">
+                        <p-sortIcon
+                          field="expectedPaymentDate"
+                          pSortableColumn="expectedPaymentDate"
+                        >
                         </p-sortIcon>
-                        <p-columnFilter type="date" field="expectedPaymentDate" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="date"
+                          field="expectedPaymentDate"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -451,7 +621,12 @@
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="type" pSortableColumn="type">
                         </p-sortIcon>
-                        <p-columnFilter type="text" field="type" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="text"
+                          field="type"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -462,7 +637,12 @@
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="amount" pSortableColumn="amount">
                         </p-sortIcon>
-                        <p-columnFilter type="text" field="amount" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="text"
+                          field="amount"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -473,7 +653,12 @@
                       <div class="Sort_Filter_Position">
                         <p-sortIcon field="status" pSortableColumn="status">
                         </p-sortIcon>
-                        <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="text"
+                          field="status"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
@@ -482,23 +667,34 @@
                     <div class="p-d-flex p-ai-center justify-content-center">
                       Action
                       <div class="Sort_Filter_Position">
-                        <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission">
+                        <p-sortIcon
+                          field="proofsubmission"
+                          pSortableColumn="proofsubmission"
+                        >
                         </p-sortIcon>
-                        <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                        <p-columnFilter
+                          type="text"
+                          field="name"
+                          display="menu"
+                          class="p-ml-auto"
+                        >
                         </p-columnFilter>
                       </div>
                     </div>
-                  </th>
-                </tr>
-              </ng-template>
+                  </th></tr
+              ></ng-template>
 
-              <ng-template pTemplate="body" let-transactionData let-rowIndex="rowIndex">
+              <ng-template
+                pTemplate="body"
+                let-transactionData
+                let-rowIndex="rowIndex"
+              >
                 <tr class="p-selectable-row">
                   <td>{{ rowIndex + 1 }}</td>
                   <td>{{ transactionData.transactionNo }}</td>
                   <td>
                     {{
-                    transactionData.expectedPaymentDate | date: "dd-MMM-yyyy"
+                      transactionData.expectedPaymentDate | date: "dd-MMM-yyyy"
                     }}
                   </td>
                   <td>{{ transactionData.type }}</td>
@@ -507,21 +703,29 @@
 
                   <td class="primeng-table-header-left">
                     <span>
-                      <i class="
+                      <i
+                        class="
                           fa fa-edit
                           font-16
                           text-dark-green
                           cursor-pointer
                           mr-10
-                        " tooltip="Edit" (click)="
+                        "
+                        tooltip="Edit"
+                        (click)="
                           editTransactionDetails(transactionData);
                           modalRef.hide()
-                        "></i>
+                        "
+                      ></i>
 
-                      <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View" (click)="
+                      <i
+                        class="fa fa-eye font-16 text-blue cursor-pointer"
+                        tooltip="View"
+                        (click)="
                           viewTransactionDetails(transactionData);
                           modalRef.hide()
-                        "></i>
+                        "
+                      ></i>
                     </span>
                   </td>
                 </tr>

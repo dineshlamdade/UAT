@@ -1,0 +1,197 @@
+.card1{
+    box-shadow: 1px 4px 6px grey;
+      border-radius: 4px;
+      padding: 11px 0px;
+  }
+  .card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 2px solid rgb(0 0 0 / 11%);
+    padding: 0px 11px !important;
+    background: none;
+      display: grid;
+      align-items: center;
+  }
+  fieldset{
+      background: #add8ff6b;
+      border: 3px solid #001515 !important;
+      padding: 18px;
+      border-radius: 11px;
+  }
+  .dropbtn {
+       padding: 5px;
+      border: none;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: -5px;    
+      background-color: #f9f9f9;
+      min-width: 396px;
+      color: #6c0505;
+      font-weight: bold;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px 16px;
+      z-index: 1;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    // .dropdown {
+    //   position: relative;
+    //   display: inline-block;
+    // }
+    
+    // .dropdown-content {
+    //   display: none;
+    //   position: absolute;
+    //   background-color: #f1f1f1;
+    //   min-width: 360px;
+    //   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    //   z-index: 1;
+    // }
+    
+    // .dropdown-content a {
+    //   color: black;
+    //   padding: 12px 16px;
+    //   text-decoration: none;
+    //   display: block;
+    // }
+    
+    .dropdown-content a:hover {background-color: #ddd;}
+    
+    .dropdown:hover .dropdown-content {display: block;}
+    
+   .thead-dark {color: #fff;
+      /* background: linear-gradient(
+  -186deg
+  , #8c8c8c, #606060); */
+      background-color: #8d8b8d;
+      font-weight: 500;}
+      .finyearlabel{
+        padding:5px;
+        background-color: rgb(219, 209, 209);
+      }
+  .disabled1{ background: lightgray;
+    font-size: 10px;
+    padding: 4px;
+    font-size: 10px !important;}
+    .text-gray{
+      color: #5b5454 !important;
+      font-size: 12px;
+    }
+    .ml-m{
+      margin-left:-5rem;
+    } 
+    // .a {
+    //   width: 300px;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: "";
+    // font-size: 16px;
+   
+    // }
+    // .wrapper {
+    //   height: 200px;
+    //   background-color: red;
+    //   padding-top: 100px;
+    //   padding-left: 150px;
+    // }
+    // #before-select {
+    //   font-size: 30px;
+    //   color: #ffffff;
+    // }
+    // select {
+    //   border: none;
+    //   background: transparent;
+    //   /*background-color: blue;*/
+    //   -webkit-appearance: none;
+    //   -moz-appearance: none;
+    //   appearance: none;
+    //   width: 180px;
+    //   padding-top: 0px;
+    //   background-size: 20px;
+    //   color: #ffffff;
+    //   font-size: 30px;
+    // }
+    // select option {
+    //   color: #424146;
+    //   background: #ffffff;
+    // }
+    .my-registertable{
+      height: 230px;
+    }
+    .table-responsive.Custom_Table.my-registertable::-webkit-scrollbar {
+      width: 5px;
+      height: auto;
+      transition: .3s background;
+    }
+    .Label_badge
+    {
+      position: absolute;
+      top: -12px;
+      right: -19px;
+      font-size: 10px;
+      width: 22px;
+      height: 22px;
+      line-height: 15px;
+      font-weight: bold;
+      color: #c41810;
+      padding: 3px;
+      border: 1px solid #958787;
+      background: #fafafa;
+      border-radius: 50px;
+    }
+    .p-input-icon-left>i:first-of-type {
+      top: 25px;
+      z-index: 1;
+      right: 60px;
+      color: #6c757d;
+      position: absolute;}
+      .card2{
+        box-shadow: 1px 4px 6px #dfdfdf6b;
+      border-radius: 6px;
+      padding: 7px;
+      border: 2px solid #b0b6b6;
+      background-color: #f6fbff91;
+      }
+      .card3{
+        box-shadow: 1px 4px 6px grey;
+        border-radius: 4px;
+        padding: 18px;
+        background-color: #f6fbff91;
+      }
+      .fa1{
+        color: black;
+        font-weight: bolder !important;
+        font-size: 20px;
+      }
+      
+  .tabset>input:checked+label {
+    border: 2px solid #33ad36 !important;
+    border-top: 7px solid #33ad36 !important;
+    border-bottom: 2px solid #ffffff !important;
+    margin-bottom: -1px;
+    color: #713f93 !important;}
+    .text-right{
+      text-align: end;
+    }
+  
+    .isactivelabel{
+      background: #38b449;
+      padding: 2px;
+      color: white;
+    }
+  
+    .bg-dark-green{
+      background-color: #38b449;
+  }
+  

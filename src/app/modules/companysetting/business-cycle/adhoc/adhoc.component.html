@@ -610,39 +610,163 @@
                           </div>
                         </th>
 
+              <div class="row mt-30">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="mb-10 text-purple font-bold">
+                     
+        <h3 class="font-14 text-purple font-bold">Summary</h3>
+        
 
-                        <th colspan="2" class="wd-8">
-                          <div class="p-d-flex p-jc-between p-ai-center ml-50">
-                            Primary Cycle
-                            <!-- <div class="Sort_Filter_Position">
+        <div class="cycle-table">
+        <div class="cycle-value pt-10 pb-40 bg-color-light_gray">
+           <div class="col-md-12 pt-10 pb-10 bg-color-light_gray">
+          <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
+              <div class="float-right d-flex  justify-content">
+                
+                 <div class="rup mt-2">
+                    <div class="input-icon mb-3">
+                       <input (input)="dt.filterGlobal($event.target.value, 'contains')" 
+                       type="text" pInputText class="form-control" placeholder="Search...">
+                       <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                    </div>
+                 </div>
+                 &nbsp;&nbsp;
+                 <i (click)="exportAsXLSX()" class="fa fa-file-excel-o font-25 text-dark-green pt-10 mb-3" aria-hidden="true"></i>
+              </div>
+           </div>
+        </div>
+        </div>
+                    </div>
+                    <div class="">
+                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" 
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+                        [rowsPerPageOptions]="[10,25,50,100,200]" 
+                        #dt [globalFilterFields]="['periodName','fromDate','toDate','businessCycleDefinition.cycleName','oldPeriodName'
+                       ,'headCount','remark']"
+                        >
+                            <ng-template pTemplate="header">
+
+                             
+              
+              
+                                <tr>
+                                    <th rowspan="2" >
+                                        Sr. No.
+                                    </th>
+                                    <th rowspan="2" >
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Adhoc Cycle
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="periodName"></p-sortIcon>
+                                              <p-columnFilter type="text" field="periodName" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                       From Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="fromDate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="fromDate" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                      To Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="toDate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="toDate" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                               
+                                 
+                                    <th colspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center ml-50">
+                                        Primary Cycle
+                                          <!-- <div class="Sort_Filter_Position">
                                               <p-sortIcon field="date"></p-sortIcon>
                                               <p-columnFilter type="date" field="date" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
                                           </div> -->
-                          </div>
-                        </th>
-                        <th rowspan="2">
-                          <div class="p-d-flex p-jc-between p-ai-center">
-                            Arrears
-                            <div class="Sort_Filter_Position">
-                              <p-sortIcon field="arrear"></p-sortIcon>
-                              <p-columnFilter field="arrear" type="text" matchMode="in" display="menu"
-                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                class="p-ml-auto">
-                                <ng-template pTemplate="header">
-                                  <div class="p-px-3 p-pt-3 p-pb-0">
-                                    <!-- <span class="p-text-bold">Agent Picker</span> -->
-                                  </div>
-                                </ng-template>
-                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                  <p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any"
-                                    (onChange)="filter($event.value)" optionLabel="name">
-                                    <ng-template let-option pTemplate="item">
-                                      <div class="p-multiselect-representative-option">
-                                        <img [alt]="option.label"
-                                          src="assets/showcase/images/demo/avatar/{{option.image}}" width="32"
-                                          style="vertical-align: middle" />
-                                        <span class="p-ml-1">{{option.name}}</span>
+                                      </div>
+                                  </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Arrears
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="arrear"></p-sortIcon>
+                                                <p-columnFilter field="arrear" type = "text" matchMode="in" display="menu"
+                                                    [showMatchModes]="false" [showOperator]="false"
+                                                    [showAddButton]="false" class="p-ml-auto">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="p-px-3 p-pt-3 p-pb-0">
+                                                            <!-- <span class="p-text-bold">Agent Picker</span> -->
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-value
+                                                        let-filter="filterCallback">
+                                                        <p-multiSelect [ngModel]="value" [options]="representatives"
+                                                            placeholder="Any" (onChange)="filter($event.value)"
+                                                            optionLabel="name">
+                                                            <ng-template let-option pTemplate="item">
+                                                                <div class="p-multiselect-representative-option">
+                                                                    <img [alt]="option.label"
+                                                                        src="assets/showcase/images/demo/avatar/{{option.image}}"
+                                                                        width="32" style="vertical-align: middle" />
+                                                                    <span class="p-ml-1">{{option.name}}</span>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    
+                                    <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Count of Heads
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="headCount"></p-sortIcon>
+                                              <p-columnFilter type="text" field="headCount" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Remark
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="remark"></p-sortIcon>
+                                              <p-columnFilter type="text" field="remark" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Lock Status
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="locked"></p-sortIcon>
+                                              <p-columnFilter type="text" field="locked" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Action
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
                                       </div>
                                     </ng-template>
                                   </p-multiSelect>

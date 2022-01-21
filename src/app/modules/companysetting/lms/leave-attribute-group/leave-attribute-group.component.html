@@ -1,0 +1,517 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+            
+              <form [formGroup]="LeaveAttributeGroupFrom" (ngSubmit)="addLeaveAttributeSelection()">
+                <div class="row">
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Attribute Group Name</label>
+                    <input type="text" [readonly]="!disabled" formControlName="name" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25" 
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('name').status == 'INVALID'}" class="form-control" placeholder="Enter Attribute Group Name">
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Description</label>
+                    <input type="text" [readonly]="!disabled" formControlName="description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" 
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('description').status == 'INVALID'}" class="form-control" placeholder="Enter Description">
+                  </div>
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Type</label>
+                    <select (change)="onTypeStatusChange($event);" name="type" id="type"
+                    [ngClass]="{ 'is-invalid' : LeaveAttributeGroupFrom.get('type').status == 'INVALID'}"
+                    class="form-control" formControlName="type">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let ty of typeList" [value]="ty.value">
+                        {{ty.label}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Copy From</label>
+                    <select (change)="onStatusChange($event);" name="lmsAttributeNature" id="lmsAttributeNature"
+                    class="form-control" formControlName="lmsAttributeNature">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let by of copyFromList" [value]="by.name">
+                        {{by.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <!-- <ng-template pTemplate="caption" *ngIf="isExcelVisible"> -->
+                  <!-- <div class="row"  *ngIf="isExcelVisible">
+                    <div class="col-md-12">
+                        <div class="float-right">
+                            <div class="d-flex">                                 
+                                <span class="p-input-icon-left p-ml-auto">
+                                    <i class="pi pi-search"
+                                        style="top: 9px !important;right:43px;"></i>
+                                    <input pInputText type="text"
+                                        (input)="dt2.filterGlobal($event.target.value, 'contains') || dt3.filterGlobal($event.target.value, 'contains') "
+                                        placeholder="Search " />
+
+                                </span>
+                                &nbsp;
+                                 <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                 tooltip="Export To Excel" (click)="selectexportAsXLSX()"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> -->
+            <!-- </ng-template> -->
+
+
+                <div class="row mt-25">
+                  <div class="col-5">
+
+                    <div class="cycle-table mt-4">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <span class="form-label font-14 text-purple font-bold">Total :
+                            <span class="font-14 text-dark-green">({{SourceProducts.length}})</span>
+                          </span>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="float-right">
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected :
+                               &nbsp;
+                              <span class="font-14 text-dark-green">({{selectedUser.length}})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <div class="float-right">
+                              <div class="d-flex">
+
+                                  <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"
+                                          style="top: 9px !important;right:43px"></i>
+                                      <input pInputText type="text"
+                                          (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Search " />
+
+                                  </span>
+                                  <i
+                                      class="fa fa-file-excel-o font-18 mt-1 ml-2 text-dark-green cursor-pointer"
+                                      tooltip="Export To Excel" (click)="sourcexportAsXLSX()"></i>
+                              </div>
+                          </div>
+
+                      </div>
+
+                      </div>
+                   
+
+                      <p-table #dt2 [value]="SourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="3" (onPage)="paginate($event)"
+                        (sortFunction)="selectcustomSort($event)" [customSort]="true"
+                        
+                        totalRecords={{SourceProducts.length}}
+                       [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['code','description','lmsAttributeNature']">
+
+
+                        <ng-template pTemplate="header">
+                          <tr>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Code
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                  <p-columnFilter field="code" display="menu" class="p-ml-auto"></p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Description
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                  <p-columnFilter field="description" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="1" class="wd-8">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Nature
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="lmsAttributeNature" pSortableColumn="lmsAttributeNature"></p-sortIcon>
+                                  <p-columnFilter field="lmsAttributeNature" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                          <tr (click)="RowSelected(user1, rowIndex);" [class.active]="user1.isHighlight"
+                            (dblclick)="doubleClickOnLeftTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlight == true}">
+
+                            <td>{{user1.code}}</td>
+                            <td>{{user1.description}}
+                            </td>
+                            <td>{{user1.lmsAttributeNature}}
+                            </td>
+
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+
+
+                  <div class="col-1" *ngIf="viewLeftRightButton" >
+                    <div class="row mt-150">
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
+                            class="fa fa-chevron-right"></i></button>
+                      </div>
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusg()"><i
+                            class="fa fa-chevron-left "></i></button>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-5">
+                    <div class="cycle-table mt-4">
+
+                      
+                      <div class="row">
+                        <div class="col-md-4">
+                          <span class="form-label font-14 text-purple font-bold">Total :
+                            <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
+                          </span>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="float-right">
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected : &nbsp;
+                              <span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <div class="float-right">
+                              <div class="d-flex">
+
+                                  <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"
+                                          style="top: 9px !important;right:43px"></i>
+                                      <input pInputText type="text"
+                                          (input)="dt3.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Search " />
+
+                                  </span>
+                                  <i
+                                      class="fa fa-file-excel-o font-18 mt-1 ml-2 text-dark-green cursor-pointer"
+                                      tooltip="Export To Excel" (click)="targetxportAsXLSX()"></i>
+                              </div>
+                          </div>
+
+                      </div>
+
+                      </div>
+
+                     
+                      <p-table #dt3 [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="3" (onPage)="paginate($event)"
+                        (sortFunction)="selectcustomSort($event)" [customSort]="true"
+                        
+                        totalRecords={{targetProducts.length}}
+                        [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="['code','description','lmsAttributeNature']">
+
+                 
+                        <ng-template pTemplate="header">
+                          <tr>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Code
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                  <p-columnFilter field="code" display="menu" class="p-ml-auto"></p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Description
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                  <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="1" class="wd-8">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Nature
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="lmsAttributeNature" pSortableColumn="lmsAttributeNature"></p-sortIcon>
+                                  <p-columnFilter field="lmsAttributeNature" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                          <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
+                            (dblclick)="doubleClickOnRightTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlightright == true}"
+                            [ngClass]="{'disable1':user1.disabled == true}">
+
+                            <td>{{user1.code}}</td>
+                            <td>{{user1.description}}
+                            </td>
+                            <td>{{user1.lmsAttributeNature}}
+                            </td>
+
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <ng-template #template12>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="UploadModalLabel">Delete
+                      Attribute Group</h5>
+                    <button type="button" (click)="deleteModalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <label class="form-label">Are
+                              you sure want to
+                              delete? </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                      (click)="DeleteAttributeGroupSelection();deleteModalRef.hide()">Yes</button>
+                    <button type="button" class="btn btn-secondary bg-btn-red"
+                      (click)="deleteModalRef.hide()">No</button>
+                  </div>
+                </ng-template>
+
+
+                <div class="row mt-25">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+
+
+                      <button type="submit" *ngIf="!viewCancelButton"  [disabled]="LeaveAttributeGroupFrom.invalid || saveDisable"
+                      [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid || saveDisable, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid || saveDisable} "
+                        class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left mr-2" tooltip="Save">
+                        <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+
+
+                      <button type="button" *ngIf="viewUpdateButton" (click)="UpdateAttributeSelection()"  [disabled]="LeaveAttributeGroupFrom.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : LeaveAttributeGroupFrom.invalid, 'btn-bg-green': !LeaveAttributeGroupFrom.invalid} "
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        [ngClass]="{ 'disabled-btn-bg-green':updateDisable}" [disabled]="updateDisable"
+                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>
+                        Update</button>
+
+
+
+                      <button type="button" *ngIf="viewCancelButton" (click)="CancelAttributeCreation()"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        Cancel</button>
+
+                      <button type="button" *ngIf="!viewCancelButton" (click)="resetAttributeSelection()"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                        Reset</button>
+                    </div>
+                  </div>
+                </div>             
+              </form>
+
+
+
+              <div class="row mt-25">
+                <div class="col-md-10">
+                  <div class="cycle-table ">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                    <!-- <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+                    <p-table #dt1 [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      [pageLinks]="5" 
+                      (sortFunction)="customSort($event)" [customSort]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summaryList.length}}
+                      [rowsPerPageOptions]="[10,25,50,100,200]"[globalFilterFields]="['name','description','options','type']">
+
+                      <ng-template pTemplate="caption">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="float-right">
+                                    <div class="d-flex">                                 
+                                        <span class="p-input-icon-left p-ml-auto">
+                                            <i class="pi pi-search"
+                                                style="top: 9px !important;right:43px;"></i>
+                                            <input pInputText type="text"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search " />
+
+                                        </span>
+                                        &nbsp;
+                                         <i class="fa fa-file-excel-o text-dark-green font-24 ml-2 mt-1" 
+                                         tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-template>
+
+
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="1" class="wd-8 text-center">
+                            Sr. No.
+                          </th>
+                          <th rowspan="1" class="wd-15">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Group Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="name" pSortableColumn="name"></p-sortIcon>
+                                <p-columnFilter field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th rowspan="1" class="wd-15">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Description
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                              </div>
+                            </div>
+                          </th>
+                          <th rowspan="1" class="wd-8">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Count
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="options" pSortableColumn="options"></p-sortIcon>
+                                <p-columnFilter field="options" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                              </div>
+                            </div>
+                          </th>
+
+                          <th rowspan="1" class="wd-8">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Type
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="type" pSortableColumn="type"></p-sortIcon>
+                                <p-columnFilter field="type" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                              </div>
+                            </div>
+                          </th>
+
+                          <th rowspan="1" class="wd-10 text-center">
+                            <div class="p-d-flex p-jc-center p-ai-center">
+                              Action
+                            </div>
+                          </th>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr class="p-selectable-row">
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0">{{rowIndex+1}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.name}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label> </td>
+                          <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{user1.options}}</label></td>
+                          <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{user1.type}}</label></td>
+
+
+                          <td class="wd-10 align-left">
+
+                            <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
+                              (click)="GetAttributeSelectionById(user1.lmsAttributeGroupDefinitionId,user1.isUsed)">
+                              <i class="fa fa-edit"></i></button>
+
+                            <button type="button" class="btn btn-icon text-blue" tooltip="View"
+                              (click)="GetAttributeSelectionByIdDisable(user1.lmsAttributeGroupDefinitionId)">
+                              <i class="fa fa-eye"></i></button>
+
+                            <button type="button" *ngIf="user1.isUsed==false" (click)="UploadModal1(template12,user1.lmsAttributeGroupDefinitionId);"
+                              class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
+                                class="fa fa-trash-o"></i></button>
+                          </td>
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+

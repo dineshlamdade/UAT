@@ -12,6 +12,7 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
 import { NumberFormatPipe } from '../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
+import { AuthService } from 'src/app/modules/auth/auth.service';
 
 @Component({
   selector: 'app-housingloandeclaration',
@@ -194,6 +195,8 @@ export class HousingloandeclarationComponent implements OnInit {
   rentRemarkList =[];
   municipleDocumentPassword =[];
   municipleRemarkList =[];
+  showUsageType =[];
+  userData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -207,7 +210,8 @@ export class HousingloandeclarationComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public authService: AuthService
   ) {
     // ---------------- Transaction status List -----------------
     this.refreshTransactionStatustList();
@@ -256,6 +260,7 @@ export class HousingloandeclarationComponent implements OnInit {
       this.isDisabled = false;
       this.canEdit = input.canEdit;
     }
+    this.userData = this.authService.getprivileges();
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.enableAddRow = 0;
@@ -1185,6 +1190,13 @@ export class HousingloandeclarationComponent implements OnInit {
       console.log('urlArray.length', this.urlArray.length);
       return;
     }
+    if(!this.iAgree)
+    {
+      this.alertService.sweetalertWarning(
+        'Please acccept the terms and conditions by selecting i agree.'
+      );
+      return;
+    }
 
     // if (this.filesArray.length === 0) {
     //   this.alertService.sweetalertError(
@@ -1294,6 +1306,7 @@ export class HousingloandeclarationComponent implements OnInit {
           'Transaction Saved Successfully.',
           ''
         );
+        this.iAgree = false;
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
       }
@@ -1526,10 +1539,13 @@ export class HousingloandeclarationComponent implements OnInit {
 
   public ComputationforIncome(
     template5: TemplateRef<any>,
-    lossIncomeAmountCalculation1: any
+    lossIncomeAmountCalculation1: any,
+    showUsageType
   ) {
     console.log('In Template 5', lossIncomeAmountCalculation1);
     this.lossIncomeAmountCalculation = lossIncomeAmountCalculation1;
+    
+    this.showUsageType = showUsageType;
 
     this.modalRef = this.modalService.show(
       template5,

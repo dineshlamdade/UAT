@@ -47,10 +47,10 @@ export class RecoveryComponent implements OnInit {
         adhocPaymentsTreatment: new FormControl(""),
         approvalWorkFlowId: new FormControl(""),
         approvalWorkFlowSDM: new FormControl(""),
-        assignmentsIntHeadId: new FormControl(""),
+        assignmentsIntHead: new FormControl(""),
         assignmentsLoanPayment: new FormControl(""),
         // assignmentsPerquisite: new FormControl("head master"),
-        assignmentsPriHeadId: new FormControl(""),
+        assignmentsPriHead: new FormControl(""),
         createDateTime: new FormControl(new Date()),
         createdBy: new FormControl("Ajay"),
         cycleOfLastInstallment: new FormControl(""),
@@ -121,7 +121,6 @@ export class RecoveryComponent implements OnInit {
         underlyingAssetDerivedName: new FormControl(""),
         noOfTimeOfSalaryDerivedName: new FormControl(""),
         groupCompanyTransfer: new FormControl(""),
-        shortRecoveryTreatment:new FormControl(""),
       })
 
 

@@ -47,7 +47,6 @@ isshowAP:boolean= true;
 
   header: any[];
   excelData: any[];
-<<<<<<< HEAD
   statutoryFrq:Array<any>=[];
   officeTypeList:Array<any>=['Area Office', 'Regional Office','Zonal Office'];
   RelatedTo:Array<any>=['Employee Related','Organization Related' ];
@@ -63,8 +62,6 @@ isshowAP:boolean= true;
   //stateName1:any='Haryana';
   stateName1:any;
  
-=======
->>>>>>> 901aa714da86419b95844b63f4889487c377de9d
   constructor( private modalService: BsModalService, private complianceHeadService: ComplianceHeadService, private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private excelservice: ExcelserviceService ) {
     this.form = this.formBuilder.group( {
@@ -86,19 +83,12 @@ isshowAP:boolean= true;
   }
 
   ngOnInit(): void {
-<<<<<<< HEAD
  // this.getData(); //api call for Statotary Frequency
 
   this.getState(); //Api call for State 
     
   this.getCity(); //API call for stae with city
   
-=======
-  this.getData(); //api call for Statotary Frequency
-
-  this.getState(); //Api call for State
-    
->>>>>>> 901aa714da86419b95844b63f4889487c377de9d
     this.complianceHeadService.getLocationInformationOrCountryList().subscribe( res => {
       this.countries = res.data.results;
     } );
@@ -115,7 +105,6 @@ this.complianceHeadService.getState().subscribe(res =>{
 });
 }
  
-<<<<<<< HEAD
   // getData(): void {
     
   //   this.complianceHeadService.getStatutoryFreq().subscribe(res => {
@@ -188,50 +177,6 @@ this.complianceHeadService.getState().subscribe(res =>{
 //     });
 //   }
  
-=======
-  getData(): void {
-    
-    this.complianceHeadService.getStatutoryFreq().subscribe(res => {
-      this.frequencyData = res.data.results
-
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'name',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
-    });
-  }
-
-  /** Select multiselect frequency */
-  onItemSelect(event){
-    //push(event.id)
-  }
-
-    /** Select all multiselect frequency */
-  onSelectAll(event){
-    this.frequencyData.forEach(element => {
-      //push(event.id)
-    });
-  }
-
-  /** Select multiselect frequency */
-  onDeItemSelect(event){
-    this.frequencyData.forEach((element,index) => {
-      if(element.id == event.id){
-        let ind = index;
-        //splice(ind,1)
-      }
-    });
-  }
-
-  monetaryOption(evt:any){
-
-  }
->>>>>>> 901aa714da86419b95844b63f4889487c377de9d
 
   save() {
     if ( this.editedComplianceHeadId > 0 ) {
@@ -305,32 +250,19 @@ this.complianceHeadService.getState().subscribe(res =>{
   }
   onSelectShortName( evt: any ) { }
   //for Select State in Applicability Level
-<<<<<<< HEAD
   onSelectApplicabilityLevel( evt: any,template : TemplateRef<any>,template3:TemplateRef<any>) {
-=======
-  onSelectApplicabilityLevel( evt: any,template : TemplateRef<any>) {
->>>>>>> 901aa714da86419b95844b63f4889487c377de9d
     if(evt == 'State'){
       this.modalRef = this.modalService.show(
         template,
         Object.assign({}, { class: 'gray modal-lg' })
       );
     }
-<<<<<<< HEAD
      else if(evt == 'City'){
       this.modalRef = this.modalService.show(
         template3,
         Object.assign({}, { class: 'gray modal-md'})
       );
      }
-=======
-    //  else if(evt == 'City'){
-    //   this.modalRef = this.modalService.show(
-    //     template,
-    //     Object.assign({}, { class: 'gray modal-lg' })
-    //   );
-    //  }
->>>>>>> 901aa714da86419b95844b63f4889487c377de9d
    }
 
   refreshHtmlTableData() {

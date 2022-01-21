@@ -860,7 +860,7 @@
                                                     (click)="getStepper(2);next();derivedType();KeywordMasterDetails();"
                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                     tooltip="Next"><b>
-                                                        <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
+                                                        <i class="fa fa-angle-double-right" ></i></b>Next</button>&nbsp;
                                                 <!-- derivedTablesFields(); -->
 
                                                 <!-- <button type="button"
@@ -877,7 +877,7 @@
                                                 <div class="col-12">
                                                     <fieldset>
                                                         <legend>Derived</legend>
-                                                        <div class="row">
+                                                        <!-- <div class="row">
                                                             <div class="ml-2 pl-1 pr-0">
                                                                 <label class="form-label mt-2">
                                                                     Derived Applicable
@@ -893,7 +893,7 @@
                                                                             type="radio" class="custom-control-input"
                                                                             name="example-inline-radios" value="Yes" 
                                                                             [checked]="derivedApplicableFlag == 1 || derivedApplicableFlag == '1'">
-                                                                            <!--  -->
+                                                                           
                                                                         <span class="custom-control-label">Yes</span>
                                                                     </label>
                                                                     <label
@@ -903,13 +903,13 @@
                                                                             type="radio" class="custom-control-input"
                                                                             name="example-inline-radios" value="No"
                                                                            >
-                                                                           <!-- [checked]="derivedApplicableFlag == 0" -->
+                                                                         [checked]="derivedApplicableFlag == 0" 
                                                                         <span class="custom-control-label">No</span>
                                                                     </label>
 
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <br>
                                                         <div class="row mt-10" [hidden]="derivedApplicableFlag == 0">
 
@@ -1044,7 +1044,7 @@
                                                                     <option value="Select">Select</option>
                                                                     <option *ngFor="let head of headList"
                                                                         value="{{head.headMasterId}}">
-                                                                        {{head.displayName}}</option>
+                                                                        {{head.standardName}} ({{head.headNature}})</option>
                                                                 </select>
                                                             </div>
 
@@ -1069,7 +1069,7 @@
                                                                         type="checkbox" />&nbsp;
                                                                     <label
                                                                         class="form-label margin-right:30px;">Active</label> -->
-                                                                    <label class="main"><span
+                                                                    <label class="main" *ngIf="sdmFormStep3.get('sdmDerivedTypeId').value!=0  && sdmFormStep3.get('sdmDerivedTypeId').value!='' && sdmFormStep3.get('sdmDerivedTypeId').value!=null"><span
                                                                             class="form-label">Active</span>
                                                                         <input (click)="getDerivedActive($event.target)"
                                                                             type="checkbox" [checked]="derivedactive">
@@ -1124,13 +1124,19 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="card">
-                                                                    <legend>Derived Summery</legend>
+                                                                    <legend>Derived Summary</legend>
                                                                     <div class="table-responsive Custom_Table">
                                                                         <p-table [value]="tempDerivedTable"
-                                                                            [paginator]="true" [rows]="30"
-                                                                            [showCurrentPageReport]="true"
+                                                                            [paginator]="true" [rows]="10"
+                                                                            [showCurrentPageReport]="true" 
                                                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                            [rowsPerPageOptions]="[10,25,50,100,200]">
+                                                                            [rowsPerPageOptions]="[10,25,50,100,200]" 
+                                                                            [globalFilterFields]="['derivedName','modulename','sdmDerivedTypeName','percentageOf','sdmDerivedTableId','sourceObjectName']">
+
+                                                            
+
+
+
                                                                             <ng-template pTemplate="header">
                                                                                 <tr>
                                                                                     <th rowspan="2"
@@ -1281,6 +1287,16 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </th>
+
+
+                                                                                    <!-- <th rowspan="2"
+                                                                                    class="wd-12 text-center">
+                                                                                    <div
+                                                                                        class="p-d-flex p-jc-between p-ai-center ml-75">
+                                                                                        Input cycle
+                                                                                    </div>
+                                                                                </th> -->
+
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
@@ -1457,7 +1473,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="float-right d-flex justify-content-end">
-                                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                  <!--   <div class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                         <div class="input-group">
                                                             <label class="form-label mt-2">From &nbsp;</label>
 
@@ -1481,12 +1497,16 @@
                                                             <input data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="Date" bsDatepicker>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
+                                                    <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"
+                                                    (click)="clearCopiedDate()"><b>
+                                                        <i class="fa fa-refresh"></i></b> Clear Copied Date</button>&nbsp;
+
                                                     <button type="button" tooltip=""
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
                                                                 class="fa fa-download"></i></b> Format For
                                                         Upload</button> &nbsp;
-                                                    <button type="button" tooltip=""
+                                                    <button type="button" tooltip="Download"
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
                                                                 class="fa fa-upload"></i></b> Upload</button> &nbsp;
                                                     <a (click)="excelMatrixDownload('tblData1', 'Matrix Data')"> <i
@@ -1500,7 +1520,16 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="table-responsive Custom_Table" >
-                                                        <table class="table table-bordered" style="border: 1px solid #dee2e6;">
+                                                        <table class="table table-bordered" 
+                                                        
+                                                        
+                                                        style="border: 1px solid #dee2e6;">
+
+
+
+                                                            
+
+
                                                             <thead>
                                                                 <tr>
                                                                     <th [attr.colspan]="sourceFieldListData.length"
@@ -1531,11 +1560,19 @@
                                                                             
                                                                         </div>
                                                                     </th>
+                                                                    <th rowspan="3" class="wd-4 text-center thClassDataTable">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Input Cycle
+                                                                           
+                                                                        </div>
+                                                                       
+                                                                    </th>
                                                                     <th rowspan="3" class="wd-4 text-center thClassDataTable" *ngIf="isRangeApplicableFlag == true || !noDerivedFlag">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Action
                                                                         </div>
                                                                     </th>
+                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <th rowspan="2" class=" text-center thClassDataTable"
@@ -1587,6 +1624,7 @@
                                                                            
                                                                         </div>
                                                                     </th>
+                                                                    
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -1656,8 +1694,7 @@
                                                                             value="{{data.sourceRangeTo}}">
                                                                         <!-- [disabled]="data.disableFlag == true" -->
                                                                     </td>
-                                                                    <td
-                                                                        *ngIf="data.showElement == true">
+                                                                    <td *ngIf="data.showElement == true">
                                                                         <!-- && !noDerivedFlag -->
                                                                         <!-- {{showSearchLeans}}
                                                                         {{selectedIndex}}
@@ -1675,6 +1712,11 @@
                                                                                 (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                                 value="{{data.applicableValue}}">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
+                                                                            <!-- <button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button> -->
+                                                                            <input type="text" class="form-control"
+                                                                            *ngIf="noDerivedFlag && showEditTextBox"
+                                                                            (focusout)="getEditedApplicableValue($event.target.value,data)"
+                                                                            value="{{data.applicableValue }}">
 
                                                                             <input type="text" class="form-control"
                                                                             *ngIf="noDerivedFlag && showEditTextBox"
@@ -1686,7 +1728,7 @@
                                                                                 (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                                 value="{{data.applicableValue}}">
                                                                             <!-- [disabled]="data.disableFlag == true" -->
-
+                                                                            <button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button>
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
                                                                                 <button class="btn btn-primary"
@@ -1695,7 +1737,9 @@
                                                                                         (click)="largepopup (template1,rowIndex,data,'tempEditMatrixData')"><i></i>
                                                                                     </span>
                                                                                 </button>
+                                                                               
                                                                             </span>
+
                                                                         </div>
                                                                         <select type="text" class="form-control"
                                                                             *ngIf="showDropdown"
@@ -1710,12 +1754,14 @@
                                                                         <!-- <input type="text" class="form-control"
                                                                              (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                             value="{{data.applicableValue}}" [disabled]="data.disableFlag == true"> -->
+                                                                           
                                                                     </td>
+                                                                    
                                                                     <td *ngIf="data.showElement == true && !noDerivedFlag" >
 
                                                                         <input data-provide="datepicker"
-                                                                            data-date-autoclose="true"
-                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                            data-date-autoclose="true" 
+                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                             class="form-control"
                                                                             value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"
                                                                             (bsValueChange)="getEditFromDateForSave($event,data)"
@@ -1729,7 +1775,7 @@
                                                                         <!-- {{data.derivedFromDate}} -->
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
-                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                            [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                             class="form-control"
                                                                             [minDate]="data.derivedFromDate"
                                                                             value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"
@@ -1741,12 +1787,29 @@
                                                                             
                                                                             value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
+                                                                    <td>
+                                                                        {{data.periodName}}
+                                                                    </td>
                                                                     <td
+                                                                    
                                                                         *ngIf="data.showElement == true || data.disableFlag == true && !noDerivedFlag">
+                                                                        <span >
                                                                         <i class="fa fa-eye font-18 text-dark-blue"
                                                                             tooltip="View History"
                                                                             (click)="viewMatrixDataHistory(data);extralargepopup(template4)">
-                                                                        </i> &nbsp;&nbsp;
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="ml-2">
+                                                                        <i [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '"
+                                                                        
+                                                                        class="fa fa-plus-circle font-18 text-dark-green  "
+                                                                        tooltip="Add"
+                                                                        *ngIf="data.disableFlag == false"
+                                                                        (click)="addMatrixData(data,rowIndex)">
+                                                                   
+                                                                    </i>
+                                                                </span>
+                                                                    &nbsp;&nbsp;
 
                                                                         <!-- New Functionality 17th Dec2021 -->
                                                                         <!-- <i class="fa fa-plus-circle font-18 text-dark-green"
@@ -1803,7 +1866,8 @@
                                                                             *ngIf="header == 'genderType' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.genderId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'employeeTaxCategoryId' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.employeeTaxCategoryId}}</span>
-
+                                                                            <span
+                                                                            *ngIf="header == 'employeeTaxCategoryId' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.workFlowMasterId}}</span>
                                                                         <span
                                                                             *ngIf="header == 'employeeTypeId' && srcCombData.showElement == true && srcCombData.active == true">{{srcCombData.employeeTypeId}}</span>
                                                                     </td>
@@ -1834,7 +1898,15 @@
                                                                                 [value]="srcCombData.applicableValue"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
 
-                                                                            <input type="text" class="form-control"
+
+                                                                                <!-- <p-inputNumber class="p-inputright" name="Claim Amount"
+                                                                                autocomplete="off" placeholder="Bill Amount" mode="decimal"
+                                                                                [value]="srcCombData.applicableValue1" [minFractionDigits]="1"
+                                                                                [maxFractionDigits]="2" min="0"
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
+                                                                            </p-inputNumber> -->
+                        
+                                                                            <input type="number" class="form-control"
                                                                                 *ngIf="showSearchLeans"
                                                                                 [value]="srcCombData.applicableValue1"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
@@ -1842,7 +1914,7 @@
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="showSearchLeans && selectedIndex != rowIndex"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
-
+                                                                                <button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button>
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
                                                                                 <button class="btn btn-primary"
@@ -1867,7 +1939,7 @@
                                                                     <td *ngIf='noDerivedFlag && isRangeApplicableFlag == false'>
                                                                         <div class="input-group">
                                                                                <input type="text" class="form-control"
-                                                                                [value]="srcCombData.applicableValue1"
+                                                                                [value]="srcCombData.applicableValue1 | number: '1.2-2'"
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
                                                                         </div>
                                                                     </td>
@@ -1876,7 +1948,7 @@
                                                                         
                                                                         <div class="p-d-inline-flex">
                                                                             <span
-                                                                                *ngIf='isRangeApplicableFlag != true'><i
+                                                                                ><i
                                                                                     (click)="copyFromDateToAll(srcCombData,rowIndex);"
                                                                                     style="cursor: pointer;"
                                                                                     class="fa fa-clone text-blue font-16 mr-2 mt-2"></i>
@@ -1897,8 +1969,9 @@
                                                                                     <input data-provide="datepicker"
                                                                                         data-date-autoclose="true"
                                                                                         class="form-control"
-                                                                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                         value="{{srcCombData.derivedFromDate | date:'dd-MMM-yyyy'}}"
+                                                                                        [disabled]="srcCombData.disableFlag == true"
                                                                                         (bsValueChange)="getFromDateForSave($event,srcCombData,rowIndex)"
                                                                                         placeholder="Date" bsDatepicker>
                                                                                 </div>
@@ -1916,8 +1989,9 @@
                                                                                 </div>
                                                                                 <input data-provide="datepicker"
                                                                                     data-date-autoclose="true"
-                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                     class="form-control"
+                                                                                    [disabled]="srcCombData.disableFlag == true"
                                                                                     [value]="srcCombData.derivedToDate | date:'dd-MMM-yyyy'"
                                                                                     [minDate]="srcCombData.derivedFromDate || selectedFromDateForSave"
                                                                                     (bsValueChange)="getToDateForSave($event,srcCombData,rowIndex)"
@@ -1935,6 +2009,9 @@
                                                                             *ngIf="isRangeApplicableFlag == true">
                                                                         </i>
                                                                     </td> -->
+                                                                    <td>
+                                                                        {{srcCombData.periodName}}
+                                                                    </td>
 
                                                                     <td class="text-center"
                                                                         *ngIf='isRangeApplicableFlag == true'>
@@ -1999,10 +2076,14 @@
                                                                     </td>
                                                                     <td>{{data.sourceRangeFrom}}</td>
                                                                     <td>{{data.sourceRangeTo}}</td>
-                                                                    <td *ngIf="!noDerivedFlag">{{data.applicableValue}}</td>
+                                                                    <td *ngIf="!noDerivedFlag">{{data.applicableValue}}<button *ngIf="deriType=='Percentage'" class="btn btn-primary">%</button></td>
                                                                     <td *ngIf="!noDerivedFlag">{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}</td>
                                                                     <td *ngIf="!noDerivedFlag">{{data.derivedToDate | date: 'dd-MMM-yyyy'}}</td>
+                                                                    <td>
+                                                                        {{data.periodName}}
+                                                                    </td>
                                                                     <td></td>
+                                                                   
                                                                 </tr>
 
                                                             </tbody>
@@ -2147,6 +2228,9 @@
                 <th rowspan="2" style="border: 1px solid black; background-color: yellow;">
                     To Date
                 </th>
+                <th>
+                    Input Cycle
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -2217,6 +2301,9 @@
                 <td *ngIf="data.showElement == true" style="border: 1px solid black;">
                     {{data.derivedToDate | date: 'dd-MMM-yyyy'}}
                 </td>
+                <td>
+                   {{data.periodName}}
+                </td>
             </tr>
 
             <tr class="p-selectable-row" [class.trhidden]="srcCombData.showElement == false"
@@ -2266,6 +2353,7 @@
 
                     <span
                         *ngIf="header == 'employeeTypeId' && srcCombData.showElement == true">{{srcCombData.employeeTypeId}}</span>
+                      
                 </td>
                 <td *ngIf="isRangeApplicableFlag == true && srcCombData.showElement == true"
                     style="border: 1px solid black;">
@@ -2281,19 +2369,20 @@
                         [ngClass]="{'is-invalid': srcCombData.invalidTorange}"
                         (focusout)="sourceRangeToData($event.target.value,rowIndex,srcCombData)">
                 </td>
+                
                 <td *ngIf='srcCombData.showElement == true' style="border: 1px solid black;">
                     <div class="input-group">
                         <input type="text" class="form-control" *ngIf="!showDropdown && !showSearchLeans"
                             [value]="selectedIndex == rowIndex ? applicableValue : '' "
                             (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
-
+                            
                         <input type="text" class="form-control" *ngIf="showSearchLeans"
                             [value]="srcCombData.applicableValue1"
                             (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
-
+                           
                         <input type="text" class="form-control" *ngIf="showSearchLeans && selectedIndex != rowIndex"
                             (focusout)="applicableValueData($event.target.value,srcCombData,rowIndex)">
-
+                           
                         <span class="input-group-append" *ngIf="showSearchLeans">
                             <button class="btn btn-primary" type="button">
                                 <span class="fe fe-search" (click)="largepopup (template1,rowIndex,srcCombData,'matrixsdmSourceCombinationList')"><i></i>
@@ -2324,7 +2413,7 @@
                                 </div>
 
                                 <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                     value="{{srcCombData.derivedFromDate | date: 'dd-MMM-yyyy'}}"
                                     (bsValueChange)="getFromDateForSave($event,srcCombData,rowIndex)" placeholder="Date"
                                     bsDatepicker>
@@ -2348,6 +2437,9 @@
                                 bsDatepicker>
                         </div>
                     </div>
+                </td>
+                <td>
+                    Input Cycle
                 </td>
             </tr>
 
@@ -2378,6 +2470,7 @@
                         *ngIf="header == 'employeeTaxCategoryId'">{{data.selectedCombData.employeeTaxCategoryId}}</span>
 
                     <span *ngIf="header == 'employeeTypeId'">{{data.selectedCombData.employeeTypeId}}</span>
+                  
                 </td>
                 <td style="border: 1px solid black;">{{data.sourceRangeFrom}}</td>
                 <td style="border: 1px solid black;">{{data.sourceRangeTo}}</td>
@@ -2385,6 +2478,9 @@
                 <td style="border: 1px solid black;">{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}
                 </td>
                 <td style="border: 1px solid black;">{{data.derivedToDate | date: 'dd-MMM-yyyy'}}
+                </td>
+                <td>
+                    Input Cycle
                 </td>
             </tr>
         </tbody>
@@ -2659,6 +2755,13 @@
                                             </div> -->
                                             </div>
                                         </th>
+                                        <th rowspan="2" class="wd-4 text-center">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Input Cycle
+                                               
+                                            </div>
+                                           
+                                        </th>
                                     </tr>
                                 </ng-template>
                                 <!-- let-srcCombData let-rowIndex = rowIndex -->
@@ -2712,6 +2815,7 @@
 
                                             <span
                                                 *ngIf="header == 'employeeTypeId'">{{history.selectedCombData.employeeTypeId}}</span>
+                                               
                                         </td>
                                         <td *ngIf="isRangeApplicableFlag == true">
                                             {{history.sourceRangeFrom}}
@@ -2726,14 +2830,15 @@
                                         <td>
                                             {{history.derivedToDate | date: 'dd-MMM-yyyy'}}
                                         </td>
-
+                                       <td>
+                                          {{history.periodName}}
+                                          </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
                                         <td colspan="15" class="font-14 font500 text-center text-red">
-                                            <span>No Data
-                                                Available</span>
+                                            <span>No Data Available</span>
                                         </td>
                                     </tr>
                                 </ng-template>

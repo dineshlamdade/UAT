@@ -96,6 +96,9 @@ export class DeclarationAndActualComponent implements OnInit {
   editremarkList =[];
   document3Password: any;
   remark3List: any;
+  public editDocumentByPSID: Array<any> = [];
+  public updateReceiptAmount: any;
+  public editTransactionData = [];
 
 
   summaryDetails: any;
@@ -105,6 +108,8 @@ export class DeclarationAndActualComponent implements OnInit {
   selectedremarkIndex : any;
   currentJoiningDate: Date;
 
+
+  
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
   // public familyMemberName: Array<any> = [];
@@ -211,6 +216,12 @@ export class DeclarationAndActualComponent implements OnInit {
   public proofSubmissionId: '';
   currentlyChecked= false;
   element: any;
+  isChecked: boolean;
+  isCheckedName: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
+  public modalRef1: BsModalRef;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -696,6 +707,8 @@ export class DeclarationAndActualComponent implements OnInit {
       //   this.editReceiptAmount = res.data.results[0].receiptAmount;
       // });
       .subscribe((res) => {
+        debugger
+        this.editTransactionData = res.data.results[0].currentEmployerHandicappedDependentResponseList;
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformationList[0].documentInformationResponseList;
@@ -741,7 +754,8 @@ export class DeclarationAndActualComponent implements OnInit {
         element.actualAmount = 0.0;
       }
     });
-
+    // delete this.editTransactionUpload[0].proofSubmissionDetailId;
+    
     // const data = this.currentEmployerHandicappedDependentResponseList.getRawValue();
     const data = {
       currentEmployerHandicappedDependentResponseList: this.editTransactionUpload[0],
@@ -757,6 +771,46 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
+
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
@@ -1482,6 +1536,7 @@ export class DeclarationAndActualComponent implements OnInit {
     // this.currentlyChecked = CheckBoxType.NONE;
     // }
     const checked = event.target.checked;
+   
     this.declarationService.handicappedDependentTransactionId = 0;
         this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
         this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
@@ -1535,6 +1590,138 @@ export class DeclarationAndActualComponent implements OnInit {
   this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
 
 
+}
+ // When Edit of Document Details
+ editViewTransaction(
+  template2: TemplateRef<any>,
+      proofSubmissionId: string
+) {
+  debugger
+  this.documentRemark = '';
+  this.editDocumentByPSID = [];
+  this.documentArray = [];
+  console.log('proofSubmissionId::', proofSubmissionId);
+
+  this.modalRef1 = this.modalService.show(
+    template2,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
+
+  this.handicappedDependentService
+    .getTransactionByProofSubmissionId(proofSubmissionId)
+    .subscribe((res) => {
+      console.log('edit Data:: ', res);
+      this.editTransactionData = res.data.results[0].currentEmployerHandicappedDependentResponseList;
+      // console.log('test', res.data.results[0].documentInformationList[0].receiptAmount);
+
+      // this.updateReceiptAmount = res.data.results[0].documentInformationList[0].receiptAmount;
+      // this.editDocumentByPSID = res.data.results[0].documentInformationList;
+      this.editDocumentByPSID.forEach(element => {
+        element.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission': element.dateOfSubmission,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.password,
+            'documentRemark':element.remark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+          });
+          });
+        });
+        debugger
+      
+        
+      this.urlArray =
+        res.data.results[0].documentInformationList[0].documentDetailList;
+      this.editTransactionUpload =
+        res.data.results[0].documentInformationList;
+      // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
+      this.editProofSubmissionId = proofSubmissionId;
+
+      if(res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList.length) {
+      this.createDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.createDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.currentEmployerHandicappedDependentResponseList[0]?.transactionStatus;
+      }    
+if(res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0].length) {
+      this.createDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.createDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.previousEmployerHandicappedDependentResponseList[0]?.transactionStatus;
+}
+
+      this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+      this.grandDeclarationTotalEditModal =
+        res.data.results[0].grandDeclarationTotal;
+      this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+      this.grandRejectedTotalEditModal =
+        res.data.results[0].grandRejectedTotal;
+      this.grandApprovedTotalEditModal =
+        res.data.results[0].grandApprovedTotal;
+
+        this.masterGridData = res.data.results;
+
+        // this.masterGridData.forEach((element) => {
+        //   // element.policyStartDate = new Date(element.policyStartDate);
+        //   // element.policyEndDate = new Date(element.policyEndDate);
+        //   // element.fromDate = new Date(element.fromDate);
+        //   // element.toDate = new Date(element.toDate);
+        //   element.documentInformation.forEach(element => {
+        //     // this.dateofsubmission = element.dateOfSubmission;
+        //     // this.documentArray.push({
+        //     //   'dateofsubmission': ,
+        //     // })
+
+        //     element.documentDetailList.forEach(element => {
+        //     // if(element!=null)
+        //     this.documentArray.push({
+        //       'dateofsubmission': element.dateOfSubmission,
+        //       'documentType':element.documentType,
+        //       'documentName': element.fileName,
+        //       'documentPassword':element.documentPassword,
+        //       'documentRemark':element.documentRemark,
+        //       'status' : element.status,
+        //       'lastModifiedBy' : element.lastModifiedBy,
+        //       'lastModifiedTime' : element.lastModifiedTime,
+        //     })
+        //     })
+        //   });
+        //   // this.documentArray.push({
+        //   //   'dateofsubmission':element.creatonTime,
+        //   //   'documentType':element.documentType,
+        //   //   'documentName': element.fileName,
+        //   //   'documentPassword':element.documentPassword,
+        //   //   'documentRemark':element.documentRemark,
+        //   //   'status' : element.status,
+        //   //   'lastModifiedBy' : element.lastModifiedBy,
+        //   //   'lastModifiedTime' : element.lastModifiedTime,
+        //   //
+        //   // })
+        // });
+      }
+    );
+
+      // //console.log(this.urlArray);
+      // this.urlArray.forEach((element) => {
+      //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+      //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+      //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+      // });
+      //console.log('converted:: ', this.urlArray);
+      // this.editTransactionUpload.forEach((element) => {
+      //   element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+      //     innerElement.declaredAmount = this.numberFormat.transform(
+      //       innerElement.declaredAmount,
+      //     );
+      //     innerElement.actualAmount = this.numberFormat.transform(
+      //       innerElement.actualAmount,
+      //     );
+      //   });
+      // });
+    // });
+    this.documentArray = [];
 }
 
  //----------- On change Transactional Line Item Remark --------------------------
@@ -1657,18 +1844,23 @@ export class DeclarationAndActualComponent implements OnInit {
 
     // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
 
-
+debugger
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
-    delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
-    delete this.currentEmployerHandicappedDependentResponseList[0].totalApprovedAmount;
-    delete this.currentEmployerHandicappedDependentResponseList[0].actualTotal;
-    delete this.currentEmployerHandicappedDependentResponseList[0].declaredTotal;
-    delete this.currentEmployerHandicappedDependentResponseList[0].handicappeddependentTransactionList;
-    delete this.currentEmployerHandicappedDependentResponseList[0].handicappedDependentDetailMasterId;
-    delete this.currentEmployerHandicappedDependentResponseList[0].dateOfSubmission;
-    delete this.currentEmployerHandicappedDependentResponseList[0].severity;
-    delete this.currentEmployerHandicappedDependentResponseList[0].familyMemberName;
-    delete this.currentEmployerHandicappedDependentResponseList[0].proofSubmissionDetailId;
+    // delete this.currentEmployerHandicappedDependentResponseList[0].totalRejectedAmount;
+  for(let i = 0; i< this.currentEmployerHandicappedDependentResponseList.length; i++){
+    delete this.currentEmployerHandicappedDependentResponseList[i].proofSubmissionDetailId;
+    delete this.currentEmployerHandicappedDependentResponseList[i].familyMemberName;
+    delete this.currentEmployerHandicappedDependentResponseList[i].severity;
+    delete this.currentEmployerHandicappedDependentResponseList[i].dateOfSubmission;
+    delete this.currentEmployerHandicappedDependentResponseList[i].handicappedDependentDetailMasterId;
+    delete this.currentEmployerHandicappedDependentResponseList[i].handicappeddependentTransactionList;
+    delete this.currentEmployerHandicappedDependentResponseList[i].declaredTotal;
+    
+    delete this.currentEmployerHandicappedDependentResponseList[i].actualTotal;
+    delete this.currentEmployerHandicappedDependentResponseList[i].totalApprovedAmount;
+    delete this.currentEmployerHandicappedDependentResponseList[i].totalRejectedAmount;
+    
+  }
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
@@ -1691,6 +1883,39 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.currentEmployerHandicappedDependentResponseList =
           res.data.results[0].currentEmployerHandicappedDependentResponseList;
           this.previousEmployerHandicappedDependentResponseList =
@@ -1709,39 +1934,39 @@ export class DeclarationAndActualComponent implements OnInit {
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );
-              this.masterGridData.forEach((element, index) => {
-                this.documentArray.push({
+              // this.masterGridData.forEach((element, index) => {
+              //   this.documentArray.push({
 
-                  'dateofsubmission':new Date(),
-                  'documentType':element.documentInformationList[0].documentType,
-                  'documentName': element.documentInformationList[0].fileName,
-                  'documentPassword':element.documentInformationList[0].documentPassword,
-                  'documentRemark':element.documentInformationList[0].documentRemark,
-                  'status' : element.documentInformationList[0].status,
-                  'approverName' : element.documentInformationList[0].lastModifiedBy,
-                  'Time' : element.documentInformationList[0].lastModifiedTime,
+              //     'dateofsubmission':new Date(),
+              //     'documentType':element.documentInformationList[0].documentType,
+              //     'documentName': element.documentInformationList[0].fileName,
+              //     'documentPassword':element.documentInformationList[0].documentPassword,
+              //     'documentRemark':element.documentInformationList[0].documentRemark,
+              //     'status' : element.documentInformationList[0].status,
+              //     'approverName' : element.documentInformationList[0].lastModifiedBy,
+              //     'Time' : element.documentInformationList[0].lastModifiedTime,
 
-                  // 'documentStatus' : this.premiumFileStatus,
+              //     // 'documentStatus' : this.premiumFileStatus,
 
-                });
+              //   });
 
-                if(element.documentInformationList[1]) {
-                  this.documentArray.push({
+              //   if(element.documentInformationList[1]) {
+              //     this.documentArray.push({
 
-                    'dateofsubmission':new Date(),
-                    'documentType':element.documentInformationList[1].documentType,
-                    'documentName': element.documentInformationList[1].fileName,
-                    'documentPassword':element.documentInformationList[1].documentPassword,
-                    'documentRemark':element.documentInformationList[1].documentRemark,
-                    'status' : element.documentInformationList[1].status,
-                    'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
-                    'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+              //       'dateofsubmission':new Date(),
+              //       'documentType':element.documentInformationList[1].documentType,
+              //       'documentName': element.documentInformationList[1].fileName,
+              //       'documentPassword':element.documentInformationList[1].documentPassword,
+              //       'documentRemark':element.documentInformationList[1].documentRemark,
+              //       'status' : element.documentInformationList[1].status,
+              //       'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+              //       'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
 
-                    // 'documentStatus' : this.premiumFileStatus,
+              //       // 'documentStatus' : this.premiumFileStatus,
 
-                  });
-                }
-              });
+              //     });
+              //   }
+              // });
               // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
             });
           });
@@ -2056,6 +2281,20 @@ export class DeclarationAndActualComponent implements OnInit {
           );
         });
       }
+      res.documentDetailList.forEach(element => {
+        // if(element!=null)
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+      });
     });
   }
   onResetRemarkDetails() {
@@ -2200,6 +2439,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.handicappedDependentService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
+        debugger
         console.log('edit Data:: ', res);
         this.urlArray =
           // res.data.results[0].documentInformation[0].documentInformationResponseList;

@@ -62,17 +62,53 @@
                 Total &nbsp; <span class="Letterbadge">A</span>
               </td>
               <td class="align-right">
-                  <b>{{ totalDeclaredAmount | number: "1.2-2" }}</b>
+                  <b>{{ benefitDeclaredAmount | number: "1.2-2" }}</b>
               </td>
               <td class="align-right">
                 <span
                   class="padding-right-9"
-                  tooltip="{{ totalActualAmount | number: '1.2-2' }}"
+                  tooltip="{{ benefitDeclaredAmount | number: '1.2-2' }}"
                 >
-                  <b>{{ totalActualAmount | number: "1.2-2" }}</b>
+                  <b>{{ benefitDeclaredAmount | number: "1.2-2" }}</b>
                 </span>
               </td>
               <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="2" class="align-right font700">
+                Future Investments &nbsp;
+                <span class="Letterbadge">B</span>
+              </td>
+              <td>
+                <!-- <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber> -->
+                <p-inputNumber class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                  (focusout)="onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()"
+                  mode="decimal" locale="en-IN" maxlength="33" [minFractionDigits]="2"></p-inputNumber>
+              </td>
+
+
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="2" class="align-right font700">
+                Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge">
+                  B</span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-9" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalDeclaredAmount | number: "1.2-2" }}</b>
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-9" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
+                  <b>{{ grandTotalActualAmount | number: "1.2-2" }}</b>
+                </span>
+              </td>
+
+              <td class="align-right">
+              </td>
             </tr>
             <tr class="table-light-color">
               <td colspan="2" class="align-right font700">Limit&nbsp; <span class="Letterbadge">B</span></td>

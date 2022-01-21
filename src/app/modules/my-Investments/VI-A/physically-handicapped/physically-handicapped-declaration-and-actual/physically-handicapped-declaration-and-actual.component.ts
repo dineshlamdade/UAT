@@ -29,6 +29,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { PhysicallyHandicappedService } from '../physically-handicapped.service';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-physically-handicapped-declaration-and-actual',
@@ -89,6 +90,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
@@ -193,6 +195,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
   public severity: string;
   public limit: any;
   public proofSubmissionId: '';
+  public viewTransactionDetail = true;
+  public physicallyHandicappedTransactionPreviousEmployerList;
 
   EditDocumentRemark: any;
   editDocumentRemark: any;
@@ -202,6 +206,15 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+
+  public editDocumentByPSID: Array<any> = [];
+  public modalRef1: BsModalRef;
+  public updateReceiptAmount: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
+  public editTransactionData = [];
+  editPreviousTransactionUpload = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -543,11 +556,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
   }
   //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
-    for (let i = 0; i < this.editremarkList.length; i++) {
-      if (
-        this.editremarkList[i] != undefined ||
-        this.editremarkList[i] == undefined
-      ) {
+    for (let i = 0; i < this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined || this.editdocumentPassword[i] == undefined){
         let remarksPasswordsDto = {};
         remarksPasswordsDto = {
           documentType: 'Back Statement/ Premium Reciept',
@@ -563,33 +573,89 @@ export class PhysicallyHandicappedDeclarationAndActualComponent
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
     );
+debugger
+//     this.previousEmployerHandicappedDetailList.forEach((element) => {
+//       element.physicallyHandicappedTransactionList.forEach(
+//         (innerElement) => {
+//       if (element.declaredAmount !== null) {
+//         element.declaredAmount = element.declaredAmount
+//           .toString()
+//           .replace(/,/g, '');
+//       } else {
+//         element.declaredAmount = 0.0;
+//       }
+//       if (element.actualAmount !== null) {
+//         element.actualAmount = element.actualAmount
+//           .toString()
+//           .replace(/,/g, '');
+//       } else {
+//         element.actualAmount = 0.0;
+//       }
+//     })
+//   });
+//   // element.physicallyHandicappedTransactionPreviousEmployerList.forEach(
+//     (innerElement) => {
+//       if (innerElement.actualAmount !== null) {
+//         innerElement.actualAmount = innerElement.actualAmount
+//           .toString()
+//           .replace(/,/g, '');
+//       } else {
+//         innerElement.actualAmount = 0.0;
+//       }
+//       this.uploadGridData.push(innerElement.electricVehicleLoanTransactionId);
+//     }
+//   // );
+// ;
+if (this.previousEmployerHandicappedDetailList !== null) {
+  console.log(
+    'previousEmployerHandicappedDetailList::',
+    this.previousEmployerHandicappedDetailList
+  );
+  this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+    if (
+      innerElement.actualAmount !== undefined ||
+      innerElement.actualAmount !== null
+    ) {
+      innerElement.actualAmount = innerElement.actualAmount
+        .toString()
+        .replace(/,/g, '');
+    } else {
+      innerElement.actualAmount = 0.0;
+    }
+    // if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
+    //   innerElement.declaredAmount = innerElement.declaredAmount
+    //     .toString()
+    //     .replace(/,/g, '');
+    // } else {
+    //
+    // }
+    innerElement.declaredAmount = 0.0;
+  });
+}
 
-    this.editTransactionUpload.forEach((element) => {
-      if (element.declaredAmount !== null) {
-        element.declaredAmount = element.declaredAmount
-          .toString()
-          .replace(/,/g, '');
-      } else {
-        element.declaredAmount = 0.0;
-      }
-      if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount
-          .toString()
-          .replace(/,/g, '');
-      } else {
-        element.actualAmount = 0.0;
-      }
-    });
-
+    // const data = {
+    //   physicallyHandicappedDetail: this.editTransactionUpload[0],
+    //   transactionIds: this.uploadGridData,
+    //   //documentRemark: this.documentRemark,
+    //   proofSubmissionId: this.editProofSubmissionId,
+    //   receiptAmount: this.editReceiptAmount,
+    //   documentRemark: this.editDocumentRemark,
+    //   remarkPasswordList: this.editdDocumentDataArray,
+    // };
     const data = {
-      physicallyHandicappedDetail: this.editTransactionUpload[0],
+      physicallyHandicappedDetail: this.physicallyHandicappedDetail,
+      previousEmployerHandicappedDetailList:
+        this.previousEmployerHandicappedDetailList,
       transactionIds: this.uploadGridData,
-      //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
-      receiptAmount: this.editReceiptAmount,
+      disability: this.disability,
+      severity: this.severity,
+      limit: this.limit,
+      // receiptAmount: this.receiptAmount,
       documentRemark: this.editDocumentRemark,
       remarkPasswordList: this.editdDocumentDataArray,
     };
+    console.log('data::', data);
     console.log('uploadUpdateTransaction data::', data);
 
     this.physicallyHandicappedService
@@ -1835,6 +1901,167 @@ upload() {
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
+
+
+ // When Edit of Document Details
+ editViewTransaction(
+  template2: TemplateRef<any>,
+      proofSubmissionId: string
+) {
+  debugger
+  this.documentRemark = '';
+  this.editDocumentByPSID = [];
+  this.documentArray = [];
+  this.editPreviousTransactionUpload = [];
+  this.editTransactionData = [];
+  console.log('proofSubmissionId::', proofSubmissionId);
+
+  this.modalRef1 = this.modalService.show(
+    template2,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
+
+  this.physicallyHandicappedService
+    .getTransactionByProofSubmissionId(proofSubmissionId)
+    .subscribe((res) => {
+    debugger
+      console.log('edit Data:: ', res);
+      // console.log('test', res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount);
+
+      // this.updateReceiptAmount = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount;
+      // this.editDocumentByPSID = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList;
+      this.editTransactionData =
+      res.data.results[0].physicallyHandicappedTransactionList;
+      this.editDocumentByPSID.forEach(element => {
+        element.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission': element.dateOfSubmission,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.password,
+            'documentRemark':element.remark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+          });
+          });
+        });
+        debugger
+      //   this.urlArray =
+      //   res.data.results[0].documentInformationList[0].documentDetailList;
+      // this.editTransactionUpload =
+      //   res.data.results[0].documentInformationList;
+      this.editPreviousTransactionUpload =
+        res.data.results[0].physicallyHandicappedTransactionPreviousEmployerList;
+    
+      // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
+      this.editProofSubmissionId = proofSubmissionId;
+
+      if(res?.data?.results[0]?.physicallyHandicappedTransactionList?.length) {
+      this.createDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.createDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.physicallyHandicappedTransactionList[0]?.transactionStatus;
+      }    
+if(res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList?.length) {
+      this.createDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.createDateTime;
+      this.lastModifiedDateTime = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+      this.transactionStatus = res?.data?.results[0]?.physicallyHandicappedTransactionPreviousEmployerList[0]?.transactionStatus;
+}
+
+      this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+      this.grandDeclarationTotalEditModal =
+        res.data.results[0].grandDeclarationTotal;
+      this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+      this.grandRejectedTotalEditModal =
+        res.data.results[0].grandRejectedTotal;
+      this.grandApprovedTotalEditModal =
+        res.data.results[0].grandApprovedTotal;
+
+        this.masterGridData = res.data.results;
+
+        // this.masterGridData.forEach((element) => {
+        //   // element.policyStartDate = new Date(element.policyStartDate);
+        //   // element.policyEndDate = new Date(element.policyEndDate);
+        //   // element.fromDate = new Date(element.fromDate);
+        //   // element.toDate = new Date(element.toDate);
+        //   element.documentInformation.forEach(element => {
+        //     // this.dateofsubmission = element.dateOfSubmission;
+        //     // this.documentArray.push({
+        //     //   'dateofsubmission': ,
+        //     // })
+
+        //     element.documentDetailList.forEach(element => {
+        //     // if(element!=null)
+        //     this.documentArray.push({
+        //       'dateofsubmission': element.dateOfSubmission,
+        //       'documentType':element.documentType,
+        //       'documentName': element.fileName,
+        //       'documentPassword':element.documentPassword,
+        //       'documentRemark':element.documentRemark,
+        //       'status' : element.status,
+        //       'lastModifiedBy' : element.lastModifiedBy,
+        //       'lastModifiedTime' : element.lastModifiedTime,
+        //     })
+        //     })
+        //   });
+        //   // this.documentArray.push({
+        //   //   'dateofsubmission':element.creatonTime,
+        //   //   'documentType':element.documentType,
+        //   //   'documentName': element.fileName,
+        //   //   'documentPassword':element.documentPassword,
+        //   //   'documentRemark':element.documentRemark,
+        //   //   'status' : element.status,
+        //   //   'lastModifiedBy' : element.lastModifiedBy,
+        //   //   'lastModifiedTime' : element.lastModifiedTime,
+        //   //
+        //   // })
+        // });
+      }
+    );
+
+      // //console.log(this.urlArray);
+      // this.urlArray.forEach((element) => {
+      //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+      //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+      //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+      // });
+      //console.log('converted:: ', this.urlArray);
+      // this.editTransactionUpload.forEach((element) => {
+      //   element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+      //     innerElement.declaredAmount = this.numberFormat.transform(
+      //       innerElement.declaredAmount,
+      //     );
+      //     innerElement.actualAmount = this.numberFormat.transform(
+      //       innerElement.actualAmount,
+      //     );
+      //   });
+      // });
+    // });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Common Function for filter to call API
   getTransactionFilterData() // institution: String,

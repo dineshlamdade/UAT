@@ -104,25 +104,25 @@
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0">Group</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">
-                            {{ masterInfo.psidDetail.groupName }}</label
+                            {{ masterInfo?.psidDetail?.groupName }}</label
                           >
                         </div>
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0">Section</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">
-                            {{ masterInfo.psidDetail.section }}
+                            {{ masterInfo?.psidDetail?.section }}
                           </label>
                         </div>
                         <div class="col-md-1">
                           <label class="form-label mt-1 mb-0">Type</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">
-                            {{ masterInfo.psidDetail.type }}
+                            {{ masterInfo?.psidDetail?.type }}
                           </label>
                         </div>
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0">PS ID</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">
-                            {{ masterInfo.psidDetail.psid }}
+                            {{ masterInfo?.psidDetail?.psid }}
                           </label>
                         </div>
 
@@ -132,7 +132,7 @@
                           >
                           <label class="font-12 text-ellipsis mt-1 mb-0">
                             {{
-                              masterInfo.psidDetail.dateOfSubmission
+                              masterInfo?.psidDetail?.dateOfSubmission
                                 | date: "dd-MMM-yyyy"
                             }}
                           </label>
@@ -142,7 +142,7 @@
                             >PS ID Status</label
                           >
                           <label class="font-12 text-ellipsis mt-1 mb-0">
-                            {{ masterInfo.psidDetail.proofSubmissionStatus }}
+                            {{ masterInfo?.psidDetail?.proofSubmissionStatus }}
                           </label>
                         </div>
 
@@ -152,7 +152,7 @@
                           >
                           <label class="font-12 text-ellipsis mt-1 mb-0">
                             {{
-                              masterInfo.psidDetail.lastModifiedDateTime
+                              masterInfo?.psidDetail?.lastModifiedDateTime
                                 | date: "dd-MMM-yyyy HH:mm"
                             }}
                           </label>

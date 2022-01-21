@@ -23,6 +23,8 @@ export class HousingloansummaryComponent implements OnInit {
 
 public  totalDeclaredAmount : number;
 public  totalActualAmount : number;
+public  totalPositiveDeclaredAmount : number = 0;
+public  totalPositiveActualAmount : number = 0;
 public  futurePurchasePrincipalDeclaredAmount : number;
 public  futurePurchaseInterestDeclaredAmount : number;
 public  grandTotalDeclaredAmount : number;
@@ -50,6 +52,8 @@ public futureGlobalPolicyDeclaredAmountInvestment = 0;
 public tempFlag : boolean;
 public InterestFlag : boolean;
 public tabIndex = 0;
+public charSequence = 'A';
+public index: number = 0;
 
 
   constructor(  private modalService: BsModalService,
@@ -90,8 +94,14 @@ public tabIndex = 0;
       this.totalLossFromHousePropertyDeclaredAmount = res.data.results[0].totalLossFromHousePropertyDeclaredAmount;
       this.totalLossFromHousePropertyActualAmount = res.data.results[0].totalLossFromHousePropertyActualAmount;
       console.log(this.summaryGridData);
+      debugger
+      if(res.data.results[0].housePropertyPositiveSummaryDetails.length>0){
+        res.data.results[0].housePropertyPositiveSummaryDetails.forEach(element => {
+          this.totalPositiveDeclaredAmount = this.totalPositiveDeclaredAmount + element.declaredAmount;
+          this.totalPositiveActualAmount = this.totalPositiveActualAmount + element.actualAmount;
+        });
+      }
     }
-
     });
   }
 

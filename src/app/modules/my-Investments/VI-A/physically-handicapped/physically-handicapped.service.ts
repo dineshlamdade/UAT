@@ -47,11 +47,18 @@ export class PhysicallyHandicappedService {
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'physicallyhandicapped-detail/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'physicallyhandicapped-detail/physicallypsid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+  // getphysicallyhandicappedTransactionByProofSubmissionId(proofSubmissionId: String) {
+  //   return this._HTTP.get(this.apiUrl + 'physicallyhandicapped-detail/physicallypsid/' + proofSubmissionId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
   postPhysicallyHandicappedTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'physicallyhandicapped-detail', data)

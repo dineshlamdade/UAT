@@ -16,11 +16,16 @@ export class ComplianceHeadService {
   public apiUrl3 = environment.baseUrl8086;
   public apistate=environment.baseUrl8082;
 <<<<<<< HEAD
+<<<<<<< HEAD
 //-http://localhost:8083/hrms/v1/location-master/
 public apiUrlcity = environment.baseUrl8083;
 =======
 
 >>>>>>> 901aa714da86419b95844b63f4889487c377de9d
+=======
+//-http://localhost:8083/hrms/v1/location-master/
+public apiUrlcity = environment.baseUrl8083;
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
   constructor(private _HTTP: HttpClient) { 
     
   }
@@ -89,9 +94,13 @@ public apiUrlcity = environment.baseUrl8083;
 //   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //-http://localhost:8083/hrms/v1/location-master/
 =======
 >>>>>>> 901aa714da86419b95844b63f4889487c377de9d
+=======
+//-http://localhost:8083/hrms/v1/location-master/
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
   public getStatutoryFreq(): Observable<any>{
     return this._HTTP.get<any>(this.apiUrl3 + 'frequency-master/getAllActive');
   }
@@ -100,11 +109,17 @@ public apiUrlcity = environment.baseUrl8083;
     return this._HTTP.get<any>(this.apistate + '/location-information/state/');
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
 //State with City Api 
   public getCitywithState():Observable<any>{
     return this._HTTP.get<any>(environment.baseUrl8083 + 'location-master/105');
   }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 901aa714da86419b95844b63f4889487c377de9d
+=======
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
 }

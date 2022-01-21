@@ -55,12 +55,24 @@ import { OtherincomeComponent } from './Other/Other Income/otherincome/otherinco
 // import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
 import { EmployeesNPS80CCD1Component } from './80C/employees-nps80-ccd1/employees-nps80-ccd1.component';
 import { AffirmationComponent } from './affirmation/affirmation.component';
+import { InvestmentLandingPageComponent } from './landing-page/investment-landing-page/investment-landing-page.component';
+import { HraExemptionComponent } from './landing-page/investment-landing-page/hra-exemption/hra-exemption.component';
 
 const routes: Routes = [
 
   {
     path: '',
     children: [
+      {
+        path:   'investment-landing-page',
+        component:  InvestmentLandingPageComponent,
+        data: { title: ':: DelziaHR :: LandingPage' },
+      },
+      {
+        path:   'hra-exemption',
+        component:  HraExemptionComponent,
+        data: { title: ':: DelziaHR :: HRA Exemption' },
+      },
       {
         path:   '80C-LIC',
         component:  LicComponent,

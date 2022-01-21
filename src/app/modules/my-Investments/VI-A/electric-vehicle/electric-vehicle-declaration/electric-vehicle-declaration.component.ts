@@ -46,6 +46,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   documentRemarkList: any;
 
   public modalRef: BsModalRef;
+  public modalRef1: BsModalRef;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -70,6 +71,9 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public electricVehicleLoanTransactionList;
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   public editDocumentByPSID: Array<any> = [];
   documentDataArray = [];
@@ -138,7 +142,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public grandApprovedTotalEditModal: number;
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
-  public isDisabled: boolean;
+  // public isDisabled: boolean;
+  public isDisabled = false;
   public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
@@ -202,6 +207,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public declarationData: string;
   public updateReceiptAmount: any;
   Remark: any;
+  createdDateTime: any;
+  selectedMasterId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -249,6 +256,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       this.getTransactionFilterData(input.lenderName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      if(this.data.canView == true){
+        this.isDisabled = true;
+        
+            } else {
+              this.isDisabled = false;
+            }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -847,6 +860,45 @@ selectedTransactionLenderName(lenderName: any) {
     );
   }
 
+
+  addRowInList1(
+    summarynew: {
+      electricVehicleLoanTransactionId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      // interestReceivedDate: Date;
+      actualAmount: any;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.electricVehicleLoanTransactionId = 0;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    // this.declarationService.interestReceivedDate = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.00;
+    this.declarationService.amountApproved = 0.00;
+    if (
+      this.transactionDetail[j].electricVehicleLoanTransactionList ==
+      null
+    ) {
+      this.declarationService.electricVehicleLoanMasterId = this.selectedMasterId;
+      this.transactionDetail[j].electricVehicleLoanTransactionList = [];
+    }
+    this.transactionDetail[j].electricVehicleLoanTransactionList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].electricVehicleLoanTransactionList
+    );
+  }
+
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
   }
@@ -876,6 +928,27 @@ selectedTransactionLenderName(lenderName: any) {
       return true;
     }
   }
+
+
+  // -------- Delete Row--------------
+deleteRow1(j: number) {
+  const rowCount =
+    this.transactionDetail[j].electricVehicleLoanTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].electricVehicleLoanTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].electricVehicleLoanTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
 
   editDeclrationRow(
     summary: {
@@ -1698,7 +1771,7 @@ debugger
     this.documentArray = [];
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -1732,6 +1805,18 @@ debugger
           res.data.results[0].electricVehicleLoanTransactionDetailList;
         // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
         this.editProofSubmissionId = proofSubmissionId;
+
+        if(res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0].electricVehicleLoanTransactionList.length) {
+        this.createDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.createdDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionList[0]?.transactionStatus;
+        }    
+if(res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0].electricVehicleLoanTransactionPreviousEmployerList.length) {
+        this.createDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.createdDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.electricVehicleLoanTransactionDetailList[0]?.electricVehicleLoanTransactionPreviousEmployerList[0]?.transactionStatus;
+}
+
         this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1807,6 +1892,7 @@ debugger
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    debugger
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
@@ -2214,8 +2300,11 @@ class DeclarationService {
   // public isECS: 0;
   public remark: boolean;
   public transactionStatus: 'Pending';
-  public rejectedAmount: number;
-  public approvedAmount: number;
+  public rejectedAmount: number = 0.00;
+  public approvedAmount: number = 0.00;
+  electricVehicleLoanMasterId: any;
+  amountRejected: number;
+  amountApproved: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

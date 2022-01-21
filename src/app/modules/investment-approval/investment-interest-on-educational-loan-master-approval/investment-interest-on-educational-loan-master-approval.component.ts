@@ -17,6 +17,7 @@ import { stat } from 'node:fs';
 import { Table } from 'primeng/table';
 import { InvestmentApprovalDocumentRemarkInfo } from '../interfaces/investment-approval-document-remark-info';
 import { InvestmentInterestOnEducationalLoanMasterApprovalService } from './investment-interest-on-educational-loan-master-approval.service';
+import { MyInvestmentsService } from '../../my-Investments/my-Investments.service';
 
 @Component({
   selector: 'app-investment-interest-on-educational-loan-master-approval',
@@ -55,43 +56,51 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
     grade: '',
     establishment: '',
   };
-
-  public masterInfo: InvestmentApprovalMasterInfo = {
-    // psidDetailList: [],
-    psidDetail: {
-      groupName: '',
-      section: '',
-      type: '',
-      psid: '',
-      dateOfSubmission: null,
-      proofSubmissionStatus: '',
-      lastModifiedDateTime: null,
-    },
-    masterDetail: {
-      masterId: 0,
-      employeeMasterId: 0,
-      institutionName: '',
-      // loanAccountNumber: 0,
-      policyNo: '',
-      policyholdername: '',
-      relationship: '',
-      policyStartDate: null,
-      policyEndDate: null,
-      proofSubmissionId: '',
-      masterStatus: '',
-      paymentDetailList: [],
-      documentDetailList: this.documentDetailList,
-      masterRemarkDetailList: [],
-    },
-  };
+  public masterInfo: any;
+  // public masterInfo: InvestmentApprovalMasterInfo = {
+  //   // psidDetailList: [],
+  //   psidDetail: {
+  //     groupName: '',
+  //     section: '',
+  //     type: '',
+  //     psid: '',
+  //     dateOfSubmission: null,
+  //     proofSubmissionStatus: '',
+  //     lastModifiedDateTime: null,
+  //   },
+  //   masterDetail: {
+  //     masterId: 0,
+  //     employeeMasterId: 0,
+  //     institutionName: '',
+  //     // loanAccountNumber: 0,
+  //     policyNo: '',
+  //     policyholdername: '',
+  //     relationship: '',
+  //     policyStartDate: null,
+  //     policyEndDate: null,
+  //     proofSubmissionId: '',
+  //     masterStatus: '',
+  //     paymentDetailList: [],
+  //     documentDetailList: this.documentDetailList,
+  //     masterRemarkDetailList: [],
+  //   },
+  // };
   public remarkValidation: boolean = false;
   public approvedDisabled: boolean = true;
   public approvedDiscardDisabled = false;
   public documentRemarkValidation: boolean = false;
   selectedRemark = '';
+  public remarkCount : any;
+  summaryDetails: any;
+  indexCount: any;
+  editRemarkData: any;
+  selectedremarkIndex : any;
+  public enteredRemark = '';
+  public selectedMasterInfo: any;
 
   constructor(
     private investmentInterestOnEducationalLoanMasterApprovalService: InvestmentInterestOnEducationalLoanMasterApprovalService,
+    private Service: MyInvestmentsService,
     private modalService: BsModalService,
     private sanitizer: DomSanitizer,
     private router: Router,
@@ -204,14 +213,81 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
   // -------------- Master Remark Modal ---------------------------
   public masterRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
-    documentRemarkList
+    documentRemarkList,
+    masterId, masterInfo
   ) {
+
+    debugger
+    this.selectedMasterInfo = masterInfo;
+    
+    this.investmentInterestOnEducationalLoanMasterApprovalService.geteducationalLoanMasterApprovalRemarkList(
+      masterId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      
+    
+    this.documentRemarkList  = res.data.results[0];
+    });
     console.log('documentRemarkDetail::', documentRemarkList);
-    this.documentRemarkList = documentRemarkList;
+    // this.documentRemarkList = documentRemarkList;
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-s' })
     );
+  }
+  getLicMasterApprovalRemarkList
+
+
+
+
+
+
+  onResetRemarkDetails() {
+    this.enteredRemark = '';
+  }
+
+
+  onSaveRemarkDetails(summary, index){
+    debugger
+    console.log(this.selectedMasterInfo);
+    const data ={
+      "transactionId": 0,
+      "masterId":this.selectedMasterInfo.masterDetail.masterId,
+      "employeeMasterId":this.selectedMasterInfo.masterDetail.employeeMasterId,
+      // "section":this.selectedMasterInfo.psidDetail.groupName,
+      // "subSection":this.selectedMasterInfo.psidDetail.section,
+      "section":"VIA",
+      "subSection":"EDUCATIONALLOAN",
+      "remark":this.editRemarkData,
+      "proofSubmissionId":this.selectedMasterInfo.masterDetail.proofSubmissionId,
+      "role":"Approval Admin",
+      "remarkType":"Master"
+      
+
+    };
+    
+    this.Service
+    .postLicMasterRemark(data)
+    .subscribe((res) => {
+      debugger
+      if(res.status.code == "200") {
+        // console.log(this.transactionDetail);
+        // this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        // this.transactionDetail[0].lictransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.masterInfo.masterDetail.bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+        this.alertService.sweetalertMasterSuccess(
+          'Remark Saved Successfully.',
+          '',
+        );
+        this.enteredRemark = '';
+        this.modalRef.hide();
+    
+
+
+      } else{
+        this.alertService.sweetalertWarning("Something Went Wrong");
+      }
+    });
   }
 
   // ----------- Custom sort for Table -------------------------
@@ -642,8 +718,35 @@ export class InvestmentInterestOnEducationalLoanMasterApprovalComponent implemen
       'Edit-' + docDetail.documentStatus;
   }
 
+
+
+ //----------- On change Transactional Line Item Remark --------------------------
+ public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+     
+  console.log('event.target.value::', event.target.value);
+  this.editRemarkData =  event.target.value;
+  
+  
+//  console.log('this.transactionDetail', this.transactionDetail);
+  // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+  // console.log('index::', index);
+
+  // this.transactionDetail[0].lictransactionList[transIndex].remark =  event.target.value;
+
+// document.getElementById('template8').scrollIntoView()
+
+
+}
+
+
+
+
+
+
+
+
   //----------- On change Document Remark --------------------------
-  public onChangeDocumentRemark(docDetail, event) {
+  public onChangeDocumentRemark1(docDetail, event) {
     debugger
     console.log('event.target.value::', event.target.value);
     if(this.documentList.length>0){

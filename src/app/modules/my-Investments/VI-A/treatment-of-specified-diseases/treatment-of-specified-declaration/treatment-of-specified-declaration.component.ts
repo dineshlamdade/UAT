@@ -66,6 +66,9 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public specifiedDiseaseTransactionList;
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
+  public createDateTime: any;
+  public lastModifiedDateTime: any;
+  public transactionStatus: any;
   public editReceiptAmount: string;
   public : Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -80,6 +83,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   viewDocumentType: any;
 
   documentArray: any[] =[];
+  public modalRef1: BsModalRef;
 
   documentPassword =[];
   remarkList =[];
@@ -201,6 +205,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public remarkCount : any;
   selectedremarkIndex : any;
   currentJoiningDate: Date;
+  selectedMasterId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -234,17 +239,17 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     this.particularsList = [
       {
-        label: 'Expenditure incurred for Medical Treatment',
-        value: 'Expenditure incurred for Medical Treatment',
+        label: 'Expenditure Incurred For Medical Treatment',
+        value: 'Expenditure Incurred For Medical Treatment',
       },
       {
-        label: 'Recovery from Insurance Company',
-        value: 'Recovery from Insurance Company',
+        label: 'Recovery From Insurance Company',
+        value: 'Recovery From Insurance Company',
       },
-      {
-        label: 'Reimbursement from the Employer',
-        value: 'Reimbursement from the Employer',
-      },
+      // {
+      //   label: 'Reimbursement from the Employer',
+      //   value: 'Reimbursement from the Employer',
+      // },
     ];
   }
 
@@ -260,6 +265,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       this.getTransactionFilterData(input.patientName);
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      if(this.data.canView == true){
+        this.isDisabled = true;
+        
+            } else {
+              this.isDisabled = false;
+            }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -538,12 +549,21 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
   }
 
+  updatePrevious(   data: any,
+    event,
+    i: number,
+    j: number){
+
+this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars = event.target.value;
+  }
+
   public onCurrentSelectCheckBox(
     data: any,
     event: { target: { checked: any } },
     i: number,
     j: number
   ) {
+    debugger
     const checked = event.target.checked;
 
 
@@ -756,7 +776,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].specifiedDiseaseTransactionList[
       i
-    ].declaredAmount = this.declarationService.declaredAmount;
+    ].actualAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.transactionDetail[j].specifiedDiseaseTransactionList[i]
         .declaredAmount
@@ -781,6 +801,8 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     );
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    // this.transactionDetail[j].grandDeclarationTotal = this.declarationTotal;
+    // this.transactionDetail[j].actualTotal = this.declarationTotal;
     // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
   }
 
@@ -970,6 +992,47 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   }
 
 
+  addRowInList1(
+    summarynew: {
+      specifiedDiseaseTransactionId: number;
+      previousEmployerId: number;
+      declaredAmount: any;
+      dateOfPayment: Date;
+      actualAmount: any;
+      particulars: string;
+    },
+
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summarynew);
+    // this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.specifiedDiseaseTransactionId = 0;
+    this.declarationService.particulars = null;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.actualAmount = null;
+    this.declarationService.dateOfPayment = null;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.0;
+    this.declarationService.amountApproved = 0.0;
+    if (
+      this.transactionDetail[j].specifiedDiseaseTransactionList ==
+      null
+    ) {
+      this.declarationService.specifiedDiseaseMasterId = this.selectedMasterId;
+      this.transactionDetail[j].specifiedDiseaseTransactionList = [];
+    }
+    this.transactionDetail[j].specifiedDiseaseTransactionList.push(
+      this.declarationService
+    );
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].specifiedDiseaseTransactionList
+    );
+  }
+
+
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
   }
@@ -996,6 +1059,27 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       return true;
     }
   }
+
+
+  // -------- Delete Row--------------
+deleteRow1(j: number) {
+  const rowCount =
+    this.transactionDetail[j].specifiedDiseaseTransactionList
+      .length - 1;
+  // console.log('rowcount::', rowCount);
+  // console.log('initialArrayIndex::', this.initialArrayIndex);
+  if (
+    this.transactionDetail[j].specifiedDiseaseTransactionList
+      .length == 1
+  ) {
+    return false;
+  } else if (this.initialArrayIndex[j] <= rowCount) {
+    this.transactionDetail[
+      j
+    ].specifiedDiseaseTransactionList.splice(rowCount, 1);
+    return true;
+  }
+}
 
   editDeclrationRow(
     summary: {
@@ -1156,7 +1240,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   }
 
     //----------- On change Transactional Line Item Remark --------------------------
- public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+ public onChangeDocumentRemark1(transactionDetail, transIndex, event) {
   console.log('event.target.value::', event.target.value);
  
   this.editRemarkData =  event.target.value;
@@ -1170,8 +1254,23 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
 }
 
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    console.log('event.target.value::', event.target.value);
+   
+    this.editRemarkData =  event.target.value;
+    
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+  
+    this.transactionDetail[0].specifiedDiseaseTransactionPreviousEmployerList[transIndex].remark =  event.target.value;
+   
+  
+  }
 
-onSaveRemarkDetails(summary, index){
+
+onSaveRemarkDetails1(summary, index){
     
   const data ={
     "transactionId": this.summaryDetails.specifiedDiseaseTransactionId,
@@ -1208,9 +1307,58 @@ onSaveRemarkDetails(summary, index){
   });
 }
 
+onResetRemarkDetails1() {
+  this.enteredRemark = '';
+}
+
+
+
+
+
+
+onSaveRemarkDetails(summary, index){
+    
+  const data ={
+    "transactionId": this.summaryDetails.specifiedDiseaseTransactionId,
+    "masterId":0,
+    "employeeMasterId":this.summaryDetails.employeeMasterId,
+    "section":"VIA",
+    "subSection":"SPECIFIEDDISEASE",
+    "remark":this.editRemarkData,
+    "proofSubmissionId":this.summaryDetails.proofSubmissionId,
+    "role":"Employee",
+    "remarkType":"Transaction"
+
+  };
+  this.Service
+  .postLicMasterRemark(data)
+  .subscribe((res) => {
+    if(res.status.code == "200") {
+    
+      
+      console.log(this.transactionDetail);
+      // this.electricVehicleLoanTransactionList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.transactionDetail[0].specifiedDiseaseTransactionPreviousEmployerList[this.selectedremarkIndex].bubbleRemarkCount = res.data.results[0].bubbleRemarkCount;
+      this.alertService.sweetalertMasterSuccess(
+        'Remark Saved Successfully.',
+        '',
+      );
+       this.enteredRemark = '';
+      this.modalRef.hide();
+
+
+    } else{
+      this.alertService.sweetalertWarning("Something Went Wrong");
+    }
+  });
+}
+
+
 onResetRemarkDetails() {
   this.enteredRemark = '';
 }
+
+
 
 
 
@@ -1249,6 +1397,12 @@ onResetRemarkDetails() {
             .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
+        }
+        if(item.dateOfPayment){
+        item.dateOfPayment = this.datePipe.transform(
+          item.dateOfPayment,
+          'yyyy-MM-dd'
+        );
         }
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
@@ -1724,7 +1878,7 @@ onResetRemarkDetails() {
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
 
-    this.modalRef = this.modalService.show(
+    this.modalRef1 = this.modalService.show(
       template2,
       Object.assign({}, { class: 'gray modal-xl' })
     );
@@ -1738,6 +1892,18 @@ onResetRemarkDetails() {
         this.editTransactionUpload =
           res.data.results[0].specifiedDiseaseTransactionDetailList;
         this.editProofSubmissionId = res.data.results[0].specifiedDiseaseTransactionDocumentDetailList[0].proofSubmissionId;
+        debugger
+        this.masterGridData = res?.data?.results[0].specifiedDiseaseTransactionDocumentDetailList[0].documentDetailList; 
+        if(res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0].specifiedDiseaseTransactionList.length) {
+        this.createDateTime = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionList[0]?.createDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionList[0]?.transactionStatus;
+        }    
+if(res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0].specifiedDiseaseTransactionPreviousEmployerList.length) {
+        this.createDateTime = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionPreviousEmployerList[0]?.createdDateTime;
+        this.lastModifiedDateTime = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionPreviousEmployerList[0]?.lastModifiedDateTime;
+        this.transactionStatus = res?.data?.results[0]?.specifiedDiseaseTransactionDetailList[0]?.specifiedDiseaseTransactionPreviousEmployerList[0]?.transactionStatus;
+}
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1765,8 +1931,7 @@ onResetRemarkDetails() {
             });
           });
           this.masterGridData.forEach((element) => {
-            element.documentInformation.forEach(element => {
-          element.documentDetailList.forEach(element => {
+          
             // if(element!=null)
             this.documentArray.push({
               'dateofsubmission': element.dateOfSubmission,
@@ -1779,8 +1944,8 @@ onResetRemarkDetails() {
               'lastModifiedTime' : element.lastModifiedTime,
             })
             })
-      });
-    });
+    
+
   }
 );
 this.documentArray = [];
@@ -1876,6 +2041,32 @@ this.documentArray = [];
   }
 
   public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    specifiedDiseaseTransactionId,
+    summary, count
+  ) {
+  
+    this.summaryDetails = summary;
+    this.indexCount = count;
+    this.selectedremarkIndex = count;
+    this.treatmentOfSpecifiedService.getspecifiedDiseaseTransactionRemarkList(
+      specifiedDiseaseTransactionId,
+    ).subscribe((res) => {
+      console.log('docremark', res);
+      this.documentRemarkList  = res.data.results[0];
+      this.remarkCount = res.data.results[0].length;
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
+  }
+
+  public docRemarkModal1(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
     specifiedDiseaseTransactionId,
@@ -2111,11 +2302,11 @@ this.documentArray = [];
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
+    this.transactionDetail[j].specifiedDiseaseTransactionDetailList[
       i
     ].dateOfPayment = summary.dateOfPayment;
     console.log(
-      this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
+      this.transactionDetail[j].specifiedDiseaseTransactionDetailList[
         i
       ].dateOfPayment
     );
@@ -2180,6 +2371,10 @@ class DeclarationService {
   public transactionStatus: 'Pending';
   public rejectedAmount: number;
   public approvedAmount: number;
+  specifiedDiseaseMasterId: any;
+  dateOfPayment: any;
+  amountRejected: number;
+  amountApproved: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

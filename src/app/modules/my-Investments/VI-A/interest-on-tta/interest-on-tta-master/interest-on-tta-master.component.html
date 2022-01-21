@@ -38,7 +38,7 @@
                   </div>
             
 
-            <div class="col-sm-3">
+            <!-- <div class="col-sm-3">
               <label class="form-label">Account Number</label>
               <input type="password" [type]="accountNo ? 'text' : 'password'"
                 onkeypress="return /[0-9]/i.test(event.key)" (change)="matchAccountNumber($event.target.value)"
@@ -49,7 +49,7 @@
               <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
-            </div>
+            </div> -->
 
            
             <div class="col-sm-6 col-md-3">
@@ -87,8 +87,8 @@
                 <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
             </div> -->
-            <div class="col-sm-6 col-md-3">
-              <label class="form-label">State Name</label>
+            <!-- <div class="col-sm-6 col-md-3">
+              <label class="form-label">State Name</label> -->
               <!-- <select name="family_Member_Name" id="state" formControlName="state"
              
                 [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
@@ -100,10 +100,23 @@
               <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
               </div> -->
-              <input type="text" formControlName="state" class="form-control" disabled
+              <!-- <input type="text" formControlName="state" class="form-control" disabled
                 [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
               <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.state.errors.required">State Name Is Mandatory</div>
+              </div>
+
+            </div> -->
+            <div class="col-sm-3">
+              <label class="form-label">Account Number</label>
+              <input type="password" [type]="accountNo ? 'text' : 'password'"
+                onkeypress="return /[0-9]/i.test(event.key)" (change)="matchAccountNumber($event.target.value)"
+                formControlName="accountNumber" class="form-control" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+              <i class="fa fa-eye  text-blue cursor-pointer mt-2" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
 
             </div>
@@ -248,12 +261,12 @@
             <div class="row mt-30">
               <div class="col-12">
                 <div class="card">
-                  <div class="mb-0">
+                  <div class="col-md-12">
                     <h3 class="font-14 text-purple font-bold">
-                      Document
+                      Document Summary
                     </h3>
                   </div>
-                  <div class="col-12 col-md-12 col-sm-12">
+                  <div class="col-9 col-md-10 col-sm-12">
                     <div
                       class="table-responsive Custom_Table"
                     >
@@ -282,10 +295,8 @@
                       >
                         <ng-template pTemplate="header">
                           <tr>
-                            <!-- <th style="width: 3rem">
-                              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th> -->
-
+                           
+  
                             <th>
                               <div
                                 class="
@@ -294,7 +305,7 @@
                                   p-ai-center
                                 "
                               >
-                                Date Of Submission
+                              Document Submission Date & Time
                                 <div
                                   class="Sort_Filter_Position"
                                 >
@@ -304,6 +315,32 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="empcode"
+                                    display="menu"
+                                    class="p-ml-auto"
+                                  >
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                        
+                            <th>
+                              <div
+                                class="
+                                  p-d-flex
+                                  p-jc-between
+                                  p-ai-center
+                                "
+                              >
+                                Document Type
+                                <div
+                                  class="Sort_Filter_Position"
+                                >
+                                  <p-sortIcon
+                                    field="documentType"
+                                    pSortableColumn="documentType"
+                                  ></p-sortIcon>
+                                  <p-columnFilter
+                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -329,31 +366,6 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="documentName"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                "
-                              >
-                                Document Type
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="documentType"
-                                    pSortableColumn="documentType"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -436,7 +448,7 @@
                                 </div>
                               </div>
                             </th>
-                            <th>
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -460,8 +472,8 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
-                            <th>
+                            </th> -->
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -485,7 +497,7 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
+                            </th> -->
                           </tr>
                         </ng-template>
                         <ng-template
@@ -494,15 +506,12 @@
                           let-documentIndex = "rowIndex"
                         >
                           <tr class="p-selectable-row">
+                           
                             <!-- <td>
-                              <p-tableCheckbox
-                                [value]="customer"
-                              >
-                              </p-tableCheckbox>
-                            </td> -->
-                            <td>
                               {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
-                            </td>
+                            </td> -->
+                            <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                            <td>{{ document.documentType }}</td>
                             <td>
                               <a
                               (click)=" docViewer(template3,documentIndex, document)"
@@ -518,7 +527,7 @@
                                 {{ document.documentName }}
                               </a>
                             </td>
-                            <td>{{ document.documentType }}</td>
+                           
                             <td>{{ document.documentPassword }}</td>
                             <td>
                               <!-- <div class="custom_Label_badge">
@@ -539,9 +548,14 @@
                               </div> -->
                               {{document.documentRemark}}
                             </td>
-                            <td>{{ document.status }}</td>
-                            <td>{{ document.lastModifiedBy }}</td>
-                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
+                            <!-- <td>{{ document.status }}</td> -->
+                            <td><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                              ' badge-success': document.status=='Approved',
+                              'badge-danger': document.status=='SendBack',
+                              'badge-info': document.status=='Submitted',
+                              'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                            <!-- <td>{{ document.lastModifiedBy }}</td>
+                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td> -->
                           </tr>
                         </ng-template>
                       </p-table>
@@ -608,7 +622,7 @@
       <div class="col-12">
         <div class="float-right mb-15">
           <button type="submit"
-          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update"
          ><b> <i
             class="fa fa-floppy-o"></i></b>Update</button>
               &nbsp;
@@ -639,11 +653,14 @@
                 <thead class="thead-dark">
                   <tr>
                     <th rowspan="2" scope="col" class="wd-20">PS. ID.</th>
-                    <th scope="col" class="wd-15">State Name</th>
-                    <th scope="col" class="wd-19">Account Number</th>
                     <th scope="col" class="wd-15">IFSC Code</th>
                     <th scope="col" class="wd-15">Bank Name</th>
                     <th scope="col" class="wd-15">Branch Name</th>
+                    <!-- <th scope="col" class="wd-15">State Name</th> -->
+                    <th scope="col" class="wd-19">Account Number</th>
+                   
+                   
+                    
                     <!-- <th scope="col" class="wd-19">Account Number</th> -->
                     <th scope="col" class="wd-10">Remark</th>
                     <th rowspan="2" scope="col" class="wd-10">Status</th>
@@ -654,16 +671,18 @@
                   <tr *ngFor="let summary of masterGridData; let i = index">
                     <td class="align-left wd-15"><span tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
                     </td>
-                    <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
-                    </td>
                     <td class="align-left wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
-                    </td>
-                    <td class="align-left wd-15"><span tooltip="{{summary.ifscCode}}">{{summary.ifscCode}}</span>
                     </td>
                     <td class="align-left wd-10"><span tooltip="{{summary.bankName}}">{{summary.bankName}}</span>
                     </td>
                     <td class="align-left wd-10"><span tooltip="{{summary.branchName}}">{{summary.branchName}}</span>
                     </td>
+                    <!-- <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
+                    </td> -->
+                    <td class="align-left wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber | accountNumberMaskPipe:4}}</span>
+                    </td>
+                   
+                  
                     <!-- <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                     </td> -->
                     <!-- <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
@@ -1003,14 +1022,14 @@
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <h6 class="modal-title" id="jasdjgh">New Remark</h6>
         <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this?.summaryDetails, this?.indexCount,
             $event
           )
-        " class="form-control" placeholder="Remark"></textarea>
+        " class="form-control" placeholder="Enter New Remark"></textarea>
       </div>
     </div>
   </div>
@@ -1025,13 +1044,13 @@
     </button>
   </div> -->
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
-    <button
+    <!-- <button
       type="button"
       class="btn btn-secondary"
       (click)="onResetRemarkDetails()"
     >
     Reset
-    </button>
+    </button> -->
     <button
       type="button"
       class="btn btn-secondary"
@@ -1039,6 +1058,13 @@
     >
       Save
     </button>
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+  Reset
+  </button>
   </div>
 </ng-template>
 

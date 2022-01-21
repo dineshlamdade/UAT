@@ -15,7 +15,11 @@
                     <div class="tabview-contents">
                       <div class="row">
                         <div class="col-sm-3 col-md-3 mt-10">
+<<<<<<< HEAD
                           <label class="form-label">Rate (%) Per Annum - SDM Name</label>
+=======
+                          <label class="form-label">Rate (%) Per Annum</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                           <select class="form-control" formControlName="intRate"
                           [ngClass]="{'is-invalid' : recoveryLoanForm.get('intRate').status == 'INVALID'}"(change)="getAllDerivedSDMRatePerAnnum($event.target.value)">
                           <option value="">Select</option>
@@ -25,7 +29,11 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3 mt-10">
+<<<<<<< HEAD
                           <label class="form-label">Rate (%) Per Annum - Derived Name</label>
+=======
+                          <label class="form-label">Derived Name</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                           <select class="form-control" formControlName="ratePerAnnumDerivedName"
                           [ngClass]="{'is-invalid' : recoveryLoanForm.get('ratePerAnnumDerivedName').status == 'INVALID'}">
                             <option value="">Select</option>
@@ -163,7 +171,11 @@
                     <div class="tabview-contents">
                       <div class="row">
                         <div class="col-sm-3 col-md-3">
+<<<<<<< HEAD
                           <label class="form-label">No of Installments - SDM Name</label>
+=======
+                          <label class="form-label">No of Installments</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                           <select class="form-control" formControlName="recoveryNoOfInstallments"
                           [ngClass]="{'is-invalid' : recoveryLoanForm.get('recoveryNoOfInstallments').status == 'INVALID'}"(change)="getAllDerivedSDMNoofInstallments($event.target.value)">
                           <option value="">Select</option>
@@ -173,7 +185,11 @@
                           </select>
                         </div>
                         <div class="col-sm-3 col-md-3">
+<<<<<<< HEAD
                           <label class="form-label">No of Installments - Derived Name</label>
+=======
+                          <label class="form-label">Derived Name</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                           <select class="form-control" formControlName="noOfInstallementDerivedName"
                           [ngClass]="{'is-invalid' : recoveryLoanForm.get('noOfInstallementDerivedName').status == 'INVALID'}">
                             <option value="">Select</option>
@@ -199,7 +215,11 @@
                             recoveryLoanForm.controls.recoveryMethod.value ==
                             'Principal First & then Interest'
                           ">
+<<<<<<< HEAD
                           <label class="form-label">No.of installments for Interest Recovery - SDM Name</label>
+=======
+                          <label class="form-label">No.of installments for Interest Recovery</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                           <select class="form-control" formControlName="firstPriThanIntNoOfInstallmentForIntRecovery" (change)="getAllDerivedSDMinstallmentsforInterestRecovery($event.target.value)">
                             <option value="">Select</option>
                             <option *ngFor="let sdmList of getAllApprovalSDMData" value="{{ sdmList.sdmMasterId }}">
@@ -213,7 +233,11 @@
                             <div class="col-sm-3 col-md-3" *ngIf="
                             recoveryLoanForm.controls.recoveryMethod.value ==
                             'Principal First & then Interest'">
+<<<<<<< HEAD
                               <label class="form-label">No.of installments for Interest Recovery - Derived Name</label>
+=======
+                              <label class="form-label">Derived Name</label>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
                               <select class="form-control" formControlName="firstPriThanIntNoOfInstallmentForInRecoveryDerivedName">
                                 <option value=0>Select</option>
                                 <option *ngFor=" let derivedList of getAllDerivedSDMinstallmentsforInterestRecoveryData" value="{{derivedList.sdmDerivedMasterId}}">
@@ -339,7 +363,11 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <!-- <app-footer></app-footer> -->
+=======
+      <app-footer></app-footer>
+>>>>>>> 5336e80f3d61c321b45b4574bdf0e5c5f01528fa
     </div>
   </div>
 </div>

@@ -127,7 +127,7 @@ export class PaymentComponent implements OnInit {
       }
 
 
-      if (this.loandata.interestWithNode == true) {
+      if (this.loandata.intrestWithNode == true) {
         this.intrestWithNodeFlag = 'withNode'
         this.InterestNode = 'withNode'
       } else {
@@ -243,8 +243,7 @@ export class PaymentComponent implements OnInit {
 
 
 
-      if (this.editloandata.interestWithNode == true) {
-       
+      if (this.editloandata.intrestWithNode == true) {
         this.intrestWithNodeFlag = 'withNode'
         this.InterestNode = 'withNode'
         this.paymentLoanForm.controls['interestWithNode'].setValue(true);
@@ -329,7 +328,7 @@ export class PaymentComponent implements OnInit {
 
 
 
-      if (paymentLoanForm.interestWithNode == true) {
+      if (paymentLoanForm.intrestWithNode == true) {
         this.intrestWithNodeFlag = 'withNode'
         this.InterestNode = 'withNode'
         // this.paymentLoanForm.controls['intrestWithNode'].setValue(true)

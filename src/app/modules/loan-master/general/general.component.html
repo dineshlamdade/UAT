@@ -211,12 +211,11 @@
                             <div class="row">
                               <div class="col-sm-6 col-md-6 mt-10">
                                 <label class="form-label">Interest</label>
-                                <!-- <pre>{{generalLoanForm.controls.assignmentsIntHead.value}}</pre> -->
-                                <!-- <pre>{{deductionHeadData | json}}</pre> -->
-                                <select class="form-control" formControlName="assignmentsIntHeadId" *ngIf="editloandata || loandata">
+
+                                <select class="form-control" formControlName="assignmentsIntHead" *ngIf="editloandata || loandata">
                                   <option value="">Select</option>
-                                  <option *ngFor="let head of deductionHeadData" value="{{head.headMasterId}}" 
-                                  [selected]="editloandata.assignmentsIntHeadId == head.headMasterId">
+                                  <option *ngFor="let head of deductionHeadData" value="{{head.standardName}}" 
+                                  >
                                     {{head.standardName}}
                                   </option>
 
@@ -229,10 +228,10 @@
 
                                 </select>
 
-                                
-                                <select class="form-control" formControlName="assignmentsIntHeadId" *ngIf="editloandata == '' && loandata ==''">
+                                <!-- <pre>{{generalLoanForm.controls.assignmentsIntHead.value}}</pre> -->
+                                <select class="form-control" formControlName="assignmentsIntHead" *ngIf="editloandata == '' && loandata ==''">
                                   <option value="">Select</option>
-                                  <option *ngFor="let head of deductionHeadData" value="{{head.headMasterId}}" >
+                                  <option *ngFor="let head of deductionHeadData" value="{{head.standardName}}" >
                                     {{head.standardName}}
                                   </option>
                                   <!-- <option *ngFor="let jobMaster of allJobsList" [value]="jobMaster.value">
@@ -243,17 +242,17 @@
                               </div>
                               <div class="col-sm-6 col-md-6 mt-10">
                                 <label class="form-label">Principal</label>
-                                <select class="form-control" formControlName="assignmentsPriHeadId" *ngIf="editloandata || loandata">
+                                <select class="form-control" formControlName="assignmentsPriHead" *ngIf="editloandata || loandata">
                                   <option value="">Select</option>
-                                  <option *ngFor="let head of deductionHeadData" [selected]="editloandata.assignmentsPriHeadId == head.headMasterId
-                                  || loandata.assignmentsPriHeadId == head.headMasterId" value="{{head.headMasterId}}">
+                                  <option *ngFor="let head of deductionHeadData" [selected]="editloandata.assignmentsPriHead == head.standardName
+                                  || loandata.assignmentsPriHead == head.standardName" value="{{head.standardName}}">
                                     {{ head.standardName }}
                                   </option>
                                 </select>
 
-                                <select class="form-control" formControlName="assignmentsPriHeadId" *ngIf="editloandata == '' && loandata ==''">
+                                <select class="form-control" formControlName="assignmentsPriHead" *ngIf="editloandata == '' && loandata ==''">
                                   <option value="">Select</option>
-                                  <option *ngFor="let head of deductionHeadData" value="{{head.headMasterId}}">
+                                  <option *ngFor="let head of deductionHeadData" value="{{head.standardName}}">
                                     {{ head.standardName }}
                                   </option>
                                 </select>
@@ -494,7 +493,7 @@
           </div>
         </div>
       </div>
-      <!-- <app-footer></app-footer> -->
+      <app-footer></app-footer>
     </div>
   </div>
 </div>

@@ -250,6 +250,7 @@ export class StatutoryComplianceComponent implements OnInit {
     this.saveFormValidation();
    
     this.form.controls['institutionActive'].setValue(true);
+  
   }
 
   cancelView() {
@@ -267,9 +268,21 @@ export class StatutoryComplianceComponent implements OnInit {
     //this.form.get( 'remark' ).disable();
     //this.form.get( 'country1' ).disable();
     //this.form.get( 'applicabilityLevel' ).disable();
-    //this.form.get( 'state' ).disable();
-    //this.form.get( 'city' ).disable();
+    this.form.get( 'state' ).disable();
+    this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
+    this.form.get('applicabilityLevel').disable();
+    this.form.get( 'country1' ).disable();
+
+    this.form.patchValue({
+      country1:'',
+      country:'',
+      officialCountryCode:'',
+      applicabilityLevel:'',
+      typeOfOffice:'',
+      headName:'',
+    })
+    
     // this.form.get('institutionActive').enable();
     //  this.form.get('complianceActive').setValue(true);
     // this.form.get('complianceActive').disable();
@@ -311,6 +324,7 @@ export class StatutoryComplianceComponent implements OnInit {
     this.form.get( 'state' ).disable();
     this.form.get( 'city' ).disable();
     this.form.get( 'institutionCode' ).disable();
+   // this.form.get('institutionActive').disable();
   
   }
   viewMaster( i: number ) {

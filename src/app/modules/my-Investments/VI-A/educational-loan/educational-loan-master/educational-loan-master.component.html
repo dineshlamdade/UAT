@@ -22,7 +22,7 @@
                     </div>
                   </div> -->
             <div class="col-sm-6 col-md-3">
-              <label class="form-label ml-15" tooltip="Full Time ourse" placement="left">Full Time Course</label>
+              <label class="form-label ml-10" tooltip="Full Time ourse">Full Time Course</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="fullTimeCourse" type="radio" class="custom-control-input"
@@ -36,7 +36,7 @@
                 </label>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="isshowHideFlag">
+            <div class="col-sm-6 col-md-3" >
               <label class="form-label">Student Name</label>
               <select formControlName="studentName" onkeypress="return /[0-9a-zA-Z' ]/i.test(event.key)"
                 (change)='OnSelectionfamilyMemberGroup()' class="form-control custom-select"
@@ -50,7 +50,7 @@
                 <div *ngIf="masterForm.studentName.errors.required">Student Name Is Mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="isshowHideFlag">
+            <div class="col-sm-6 col-md-3" >
               <label class="form-label">Relationship</label>
               <input type="text" formControlName="relationship" class="form-control" disabled
                 [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
@@ -69,11 +69,23 @@
                 <div *ngIf="masterForm.lenderName.errors.required">Lender Name Is Mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="isshowHideFlag">
+            <!-- <div class="col-sm-6 col-md-3" *ngIf="isshowHideFlag">
               <label class="form-label">Loan Account No</label>
               <input type="text" formControlName="loanAccountNumber" class="form-control"
-                onkeypress="return /[0-9a-zA-Z' ]/i.test(event.key)" placeholder="Enter Loan Account No"
+                onkeypress="return /[0-9' ]/i.test(event.key)" placeholder="Enter Loan Account No"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
+              <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.loanAccountNumber.errors.required">Loan Account Number Is Mandatory</div>
+              </div>
+            </div> -->
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Loan Account No.</label>
+              <input type="password" [type]="loanaccountNo ? 'text' : 'password'" 
+              onkeypress="return /[0-9']/i.test(event.key)"
+              formControlName="loanAccountNumber" class="form-control"  placeholder="Enter Loan Account No"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
+                <i class="fa fa-eye  text-blue cursor-pointer mt-1" (click)="toggleFieldTextType();hideAccountNo(loanaccountNo)"
+                [ngClass]="{'visibility': !loanaccountNo,   'visibility_off': loanaccountNo }" id="s1"></i>
               <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.loanAccountNumber.errors.required">Loan Account Number Is Mandatory</div>
               </div>
@@ -247,12 +259,12 @@
             <div class="row mt-30">
               <div class="col-12">
                 <div class="card">
-                  <div class="mb-0">
+                  <div class="col-md-12">
                     <h3 class="font-14 text-purple font-bold">
-                      Document
+                      Document Summary
                     </h3>
                   </div>
-                  <div class="col-12 col-md-12 col-sm-12">
+                  <div class="col-9 col-md-10 col-sm-12">
                     <div
                       class="table-responsive Custom_Table"
                     >
@@ -281,10 +293,8 @@
                       >
                         <ng-template pTemplate="header">
                           <tr>
-                            <!-- <th style="width: 3rem">
-                              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th> -->
-
+                           
+  
                             <th>
                               <div
                                 class="
@@ -293,7 +303,7 @@
                                   p-ai-center
                                 "
                               >
-                                Date Of Submission
+                              Document Submission Date & Time
                                 <div
                                   class="Sort_Filter_Position"
                                 >
@@ -303,6 +313,32 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="empcode"
+                                    display="menu"
+                                    class="p-ml-auto"
+                                  >
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                        
+                            <th>
+                              <div
+                                class="
+                                  p-d-flex
+                                  p-jc-between
+                                  p-ai-center
+                                "
+                              >
+                                Document Type
+                                <div
+                                  class="Sort_Filter_Position"
+                                >
+                                  <p-sortIcon
+                                    field="documentType"
+                                    pSortableColumn="documentType"
+                                  ></p-sortIcon>
+                                  <p-columnFilter
+                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -328,31 +364,6 @@
                                   ></p-sortIcon>
                                   <p-columnFilter
                                     field="documentName"
-                                    display="menu"
-                                    class="p-ml-auto"
-                                  >
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th>
-                              <div
-                                class="
-                                  p-d-flex
-                                  p-jc-between
-                                  p-ai-center
-                                "
-                              >
-                                Document Type
-                                <div
-                                  class="Sort_Filter_Position"
-                                >
-                                  <p-sortIcon
-                                    field="documentType"
-                                    pSortableColumn="documentType"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    field="documentType"
                                     display="menu"
                                     class="p-ml-auto"
                                   >
@@ -435,7 +446,7 @@
                                 </div>
                               </div>
                             </th>
-                            <th>
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -459,8 +470,8 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
-                            <th>
+                            </th> -->
+                            <!-- <th>
                               <div
                                 class="
                                   p-d-flex
@@ -484,7 +495,7 @@
                                   </p-columnFilter>
                                 </div>
                               </div>
-                            </th>
+                            </th> -->
                           </tr>
                         </ng-template>
                         <ng-template
@@ -493,15 +504,12 @@
                           let-documentIndex = "rowIndex"
                         >
                           <tr class="p-selectable-row">
+                           
                             <!-- <td>
-                              <p-tableCheckbox
-                                [value]="customer"
-                              >
-                              </p-tableCheckbox>
-                            </td> -->
-                            <td>
                               {{ document.dateofsubmission | date:'dd-MMM-yyyy' }}
-                            </td>
+                            </td> -->
+                            <td>{{ document.lastModifiedTime| date: 'dd-MMM-yyyy HH:mm'}}</td>
+                            <td>{{ document.documentType }}</td>
                             <td>
                               <a
                               (click)=" docViewer(template3,documentIndex, document)"
@@ -517,7 +525,7 @@
                                 {{ document.documentName }}
                               </a>
                             </td>
-                            <td>{{ document.documentType }}</td>
+                           
                             <td>{{ document.documentPassword }}</td>
                             <td>
                               <!-- <div class="custom_Label_badge">
@@ -538,9 +546,14 @@
                               </div> -->
                               {{document.documentRemark}}
                             </td>
-                            <td>{{ document.status }}</td>
-                            <td>{{ document.lastModifiedBy }}</td>
-                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td>
+                            <!-- <td>{{ document.status }}</td> -->
+                            <td><span class="badge" [ngClass]="{'badge-primary': document.status=='Re-Open',
+                              ' badge-success': document.status=='Approved',
+                              'badge-danger': document.status=='SendBack',
+                              'badge-info': document.status=='Submitted',
+                              'badge-warning': document.status=='Pending'}">{{ document.status }}</span></td>
+                            <!-- <td>{{ document.lastModifiedBy }}</td>
+                            <td>{{ document.lastModifiedTime | date:'dd-MMM-yyyy HH:mm'  }}</td> -->
                           </tr>
                         </ng-template>
                       </p-table>
@@ -610,7 +623,7 @@
       <div class="col-12">
         <div class="float-right mb-15">
           <button type="submit"
-          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update"
          ><b> <i
             class="fa fa-floppy-o"></i></b>Update</button>
               &nbsp;
@@ -638,22 +651,23 @@
               <table class="table table-striped table-hover table-bordered m-b-0">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col" class="font700 wd-3">Sr No.</th>
+                    <!-- <th scope="col" class="font700 wd-3">Sr No.</th> -->
                     <th scope="col" class="wd-3">PS. ID.</th>
                     <th scope="col" class="wd-3">Student Name</th>
                     <!-- <th scope="col" class="wd-15">Relationship</th> -->
                     <th scope="col" class="wd-3">Lender Name</th>
-                    <th scope="col" class="wd-3">Lender Account No</th>
+                    <th scope="col" class="wd-3">Lender Account No.</th>
                     <th scope="col" class="wd-3">Loan End Date</th>
-                    <th scope="col" class="wd-3">Status</th>
+                    
                     <th scope="col" class="wd-3">Remark</th>
+                    <th scope="col" class="wd-3">Status</th>
                     <!-- <th scope="col" class="wd-15">Remark</th> -->
                     <th scope="col" class="wd-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let summary of masterGridData; let i = index">
-                    <td>{{i + 1}}</td>
+                    <!-- <td>{{i + 1}}</td> -->
                     <td class="wd-3 align-left"><span tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
                     </td>
                     <td class="wd-3 align-left"><span tooltip="{{summary.studentName}}">{{summary.studentName}}</span>
@@ -673,13 +687,7 @@
                     </td> -->
                     <!-- <td class="wd-6 align-center"><span tooltip="Submitted">Submitted</span>
                     </td> -->
-                    <td class="wd-3 text-light-green font700">
-                      <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
-                      ' badge-success': summary.transactionStatus=='Approved',
-                      'badge-danger': summary.transactionStatus=='SendBack',
-                      'badge-info': summary.transactionStatus=='Submitted',
-                      'badge-warning': summary.transactionStatus=='Pending'}" tooltip={{summary.transactionStatus}}>
-                      {{summary.transactionStatus}}</span></td>
+                   
                     <!-- <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
                     </td> -->
                     <td>
@@ -737,6 +745,13 @@
                         </div>
                       </div>
                     </td>
+                    <td class="wd-3 text-light-green font700">
+                      <span class="badge" [ngClass]="{'badge-primary': summary.transactionStatus=='Re-Open',
+                      ' badge-success': summary.transactionStatus=='Approved',
+                      'badge-danger': summary.transactionStatus=='SendBack',
+                      'badge-info': summary.transactionStatus=='Submitted',
+                      'badge-warning': summary.transactionStatus=='Pending'}" tooltip={{summary.transactionStatus}}>
+                      {{summary.transactionStatus}}</span></td>
                     <td class="wd-3">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.loanAccountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
@@ -992,14 +1007,14 @@
     </div>
     <div class="row mt-25">
       <div class="col-md-12">
-        <h6 class="modal-title" id="jasdjgh">Enter New Remark</h6>
+        <h6 class="modal-title" id="jasdjgh">New Remark</h6>
         <textarea type="text" [(ngModel)]="enteredRemark"
         (change)= "
         onChangeDocumentRemark(
           this?.summaryDetails, this?.indexCount,
             $event
           )
-        " class="form-control" placeholder="Remark"></textarea>
+        " class="form-control" placeholder="Enter New Remark"></textarea>
       </div>
     </div>
   </div>
@@ -1014,13 +1029,13 @@
     </button>
   </div> -->
   <div *ngIf="this.summaryDetails?.proofSubmissionId" class="modal-footer">
-    <button
+    <!-- <button
       type="button"
       class="btn btn-secondary"
       (click)="onResetRemarkDetails()"
     >
     Reset
-    </button>
+    </button> -->
     <button
       type="button"
       class="btn btn-secondary"
@@ -1028,6 +1043,13 @@
     >
       Save
     </button>
+    <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onResetRemarkDetails()"
+  >
+  Reset
+  </button>
   </div>
 </ng-template>
 

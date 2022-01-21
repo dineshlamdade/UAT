@@ -54,7 +54,12 @@ export class InvestmentInterestOnLoanForPurchaseOfElectricVehicleMasterApprovalS
       .get<APIResponse>(this.apiUrl + 'master-approval/psid/' + psid);
     
   }
-
+  public getelectricVehicleLoanMasterApprovalRemarkList(masterId: String,): Observable<any> {
+    return this.httpClient.get(this.apiUrl + 'electricVehicleLoanMaster/GetRemarkMaster/' + masterId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
   changeMasterStatus(formData: any) {
     return this.httpClient.post<APIResponse>(
       this.apiUrl + 'master-approval',

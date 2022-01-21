@@ -37,7 +37,7 @@ export class ChildeducationallowanceService {
   // Get Computation
   getComputation(): Observable<any> {
     return this._HTTP
-      .get(this.apiUrl + '/childrenEducationAllowanceMaster/computation')
+      .get(this.apiUrl + 'childrenEducationAllowanceMaster/computation')
       .pipe(
         map((res: any) => {
           return res;
@@ -49,7 +49,7 @@ export class ChildeducationallowanceService {
 
   getCEAMaster(): Observable<any> {
     return this._HTTP
-      .get(this.apiUrl + '/childrenEducationAllowanceMaster')
+      .get(this.apiUrl + 'childrenEducationAllowanceMaster')
       .pipe(
         map((res: any) => {
           return res;
