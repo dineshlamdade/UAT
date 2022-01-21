@@ -55,7 +55,6 @@ import { GarnishmentTransactionComponent } from './garnishment-transaction/garni
 import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
 import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
-import { FastentryGarnishmentComponent } from './fastentry-garnishment/fastentry-garnishment.component';
 import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
 
 @NgModule({
@@ -78,8 +77,7 @@ import { NgxPaginationModule, PaginatePipe } from 'ngx-pagination';
      GarnishmentTransactionComponent,
      FastentryNrQtyComponent,
      FastentryNRAmtComponent,
-     NonRecurringQtyMasterComponent,
-     FastentryGarnishmentComponent
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,

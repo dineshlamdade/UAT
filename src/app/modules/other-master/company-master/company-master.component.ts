@@ -871,6 +871,9 @@ export class CompanyMasterComponent implements OnInit {
 
 
       this.selectedImageFileLogo1 = event.target.files[0];
+
+      
+     // this.logo1ImageName=selectedImageFileLogo1.name;
       const [file] = event.target.files;
     
        reader.readAsDataURL( file );
@@ -904,6 +907,25 @@ export class CompanyMasterComponent implements OnInit {
     this.employeeMasterRequestDTO.logo2 = file.name;
     
   }
+
+  // onFileChange(event){
+  //   let reader = new FileReader();
+ 
+  // if(event.target.files && event.target.files.length) {
+  //   const [file] = event.target.files;
+  //   reader.readAsDataURL(file);
+  
+  //   reader.onload = () => {
+  //     this.companyMasterform.patchValue({
+  //      // file: reader.result
+  //      logo2: event.target.files[0],
+  //     });
+      
+  //     // need to run CD since file load runs outside of zone
+  //     this.cd.markForCheck();
+  //   };
+  // }
+  // }
 
 
   logo3( event, uploadFile ) {

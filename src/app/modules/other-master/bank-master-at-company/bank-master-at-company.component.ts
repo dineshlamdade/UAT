@@ -683,9 +683,22 @@ this.viewFlag = false;
   }
 
   addRow() {
+<<<<<<< HEAD
    
   //  if(this.validatedEmailFlag){
    // if(this.emailId!='' && this.contactPersonName!='' ){
+=======
+    this.tempdata.push({
+        "accountNumber": this.form.get('accountNumber').value,
+        "accountType": this.form.get('accountType').value,
+        "companyBankMasterId": this.companyBankMasterId,
+        "contactNumber": this.isdCode + ' ' +this.contactNumber,
+        "contactPersonName": this.contactPersonName,
+        "designation": this.designation,
+        "emailId": this.emailId,
+        "groupCompanyId": this.form.get('companyGroup').value
+    })
+>>>>>>> 901aa714da86419b95844b63f4889487c377de9d
     
       if(this.emailId!=''){
         if(this.contactPersonName!=''){
@@ -976,6 +989,7 @@ else
  
 }
 
+<<<<<<< HEAD
 // validateEmail(email) {
 //   const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //   return regularExpression.test(String(email).toLowerCase());
@@ -987,4 +1001,67 @@ validateEmail(email) {
   this.validatedEmailFlag  = re.test(email)
   return re.test(email);
 }
+=======
+  //sort
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
+
+edittable(data,index1){
+  
+  this.editIndex = index1;
+  this.contactPersonName = data.contactPersonName
+  this.designation = data.designation
+  this.emailId = data.emailId
+  this.contactNumber = data.contactNumber
+  this.isdCode = data.isdCode
+  this.companyBankMappingId = data.companyBankMappingId
+
+
+}
+
+updateRow(){
+  this.tempdata.splice(this.editIndex,1,{
+    "accountNumber": this.form.get('accountNumber').value,
+    "accountType": this.form.get('accountType').value,
+    "companyBankMasterId": this.companyBankMasterId,
+    "contactNumber": this.isdCode + ' ' +this.contactNumber,
+    // "contactNumber": this.contactNumber,
+    // "isdCode":this.isdCode,
+    "companyBankMappingId": this.companyBankMappingId,
+    "contactPersonName": this.contactPersonName,
+    "designation": this.designation,
+    "emailId": this.emailId,
+    "groupCompanyId": this.form.get('companyGroup').value
+  })
+
+  this.form.controls['pfFormArray'].setValue(this.tempdata)
+
+    this.contactPersonName = ''
+    this.designation = ''
+    this.emailId = ''
+    this.contactNumber = ''
+    this.isdCode = ''
+    this.editIndex = -1
+}
+
+>>>>>>> 901aa714da86419b95844b63f4889487c377de9d
 }

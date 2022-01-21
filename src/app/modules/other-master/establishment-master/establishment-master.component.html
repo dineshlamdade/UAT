@@ -19,7 +19,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Code</label>
                             <input type="text" formControlName="establishmentCode" class="form-control"
-                              autocomplete="off" onkeypress="return /[-a-zA-Z.0-9@_']/i.test(event.key)"
+                              autocomplete="off" onkeypress="return /[a-zA-Z0-9']/i.test(event.key)"
                               [ngClass]="{'is-invalid' : form.get('establishmentCode').status == 'INVALID'}"
                               name="establishmentCode" placeholder="Enter Code">
                           </div>
@@ -68,7 +68,7 @@
                             <label class="form-label">Date of Setup</label>
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar" ></i></span>
-                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfSetup"
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="date Of Setup"
                                 (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
                                 placement="center" [maxDate]="today" data-date-autoclose="true" class="form-control"
                                 placeholder="Select" bsDatepicker
@@ -358,6 +358,235 @@
 
 
 
+<!-- 
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">Summary</h3>
+                </div>
+                
+                <div class="table-responsive Custom_Table">
+                  <table class="table table-striped table-hover table-bordered m-b-0">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" class="wd-8">Sr. No.</th>
+                        <th scope="col" class="wd-20">Establishment Code</th>
+                        <th scope="col" class="wd-20">Description</th>
+                        <th scope="col" class="wd-12">Type Of Establishment</th>
+                        <th scope="col" class="wd-10">GST No.</th>
+                        <th scope="col" class="wd-10">City</th>
+                        <th scope="col" class="wd-10">Village</th>
+                        <th scope="col" class="wd-10">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
+                        <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                        </td>
+                        <td class="wd-10"><span
+                            tooltip="{{summary.establishmentCode}}">{{summary.establishmentCode}}</span>
+                        </td>
+                        <td class="wd-10"><span tooltip="{{summary.description}}">{{summary.description}}</span>
+                        </td>
+                        <td class="wd-10"><span
+                            tooltip="{{summary.typeOfEstablishment}}">{{summary.typeOfEstablishment}}</span>
+                        </td>
+
+  <br>
+                <div class="row mb-0">
+                  <div class="col-md-12">
+      
+                    <span class="font-14 text-purple font-bold">Summary</span>
+      
+                    <div class="justify-content-end p-d-inline-flex float-right">
+                      <div class="input-icon mb-3">
+                        <span class="p-input-icon-left p-ml-auto">
+                          <i class="pi pi-search" style="top: 9px !important"></i>
+                          <input pInputText type="text"
+                            (input)="
+                            dt.filterGlobal(
+                                $event.target.value,
+                                'contains'
+                              )
+                            "
+                            placeholder="Search keyword"
+                          />
+                        </span>
+                      </div>
+      
+                      &nbsp;
+                      <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
+                        tooltip="Export To Excel" (click)="exportAsXLSX()"></i>
+      
+                    </div>
+                  </div>
+                 </div>
+      
+                <div class="row">
+                  <div class="col-md-12 ">
+                    <div class="card">
+                      <p-table #dt [value]="summaryHtmlDataList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true"
+                      (sortFunction)="customSort($event)"
+                       [customSort]="true"
+                        [pageLinks]="5" 
+                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       totalRecords={{summaryHtmlDataList.length}} 
+                       [rowsPerPageOptions]="[10,25,50,100,200]"
+                       
+                       [globalFilterFields]="['establishmentCode', 'description',  'typeOfEstablishment','gstNumber','city',
+                       'village']">
+    
+                         <ng-template pTemplate="header">
+                           <tr>
+                             <th class=" text-center">
+                              Sr. No.
+                               
+                             </th>
+                            
+    
+                           <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">Establishment Code
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="establishmentCode" pSortableColumn="establishmentCode"></p-sortIcon>
+                                  <p-columnFilter field="establishmentCode" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+    
+                            <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">Description
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                  <p-columnFilter field="description" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                             <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">Type Of Establishment
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="typeOfEstablishment" pSortableColumn="typeOfEstablishment"></p-sortIcon>
+                                  <p-columnFilter field="typeOfEstablishment" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+    
+                            <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">GST No.
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="gstNumber" pSortableColumn="gstNumber"></p-sortIcon>
+                                  <p-columnFilter field="gstNumber" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+                            <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">City
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="city" pSortableColumn="city"></p-sortIcon>
+                                  <p-columnFilter field="city" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+    
+                            <th class="text-center">
+                              <div class="p-d-flex  justify-content-center p-ai-center">Village
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="village" pSortableColumn="village"></p-sortIcon>
+                                  <p-columnFilter field="village" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                            <th class="text-center">
+                              Action
+                            </th>        
+                           </tr>
+                         </ng-template>
+                         <ng-template pTemplate="body" let-summary  let-rowIndex="rowIndex" >
+                          <tr class="p-selectable-row">
+                              <td class="text-center">{{rowIndex + 1}}</td>
+                              <td>
+                                  <label
+                                      class="form-lable mb-0">
+                                      {{summary.establishmentCode}}</label>
+                              </td>
+                              <td>
+                                  <label
+                                      class="form-lable mb-0 ">{{summary.description}}</label>
+                              </td>
+    
+                              <td> <label
+                                      class="form-lable mb-0 ">{{summary.typeOfEstablishment}}</label>
+                                      </td>
+                                      <td> <label
+                                        class="form-lable mb-0 ">{{summary.gstNumber}}</label>
+                                        </td>
+                                        <td> <label
+                                          class="form-lable mb-0 ">{{summary.city}}</label>
+                                          </td>
+                                          <td> <label
+                                            class="form-lable mb-0 ">{{summary.village}}</label>
+                                            </td>
+                                           
+                                          <td class="text-center">
+                                            
+                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                            (click)="editMaster(rowIndex,summary.establishmentMasterId )" tooltip="Edit"></i>
+
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(rowIndex)"
+                            tooltip="View"></i>
+                        </td>
+                                         
+                          </tr>
+                      </ng-template>
+    
+                         <ng-template pTemplate="emptymessage">
+                           <tr>
+                             <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                 Available</span>
+                             </td>
+                           </tr>
+                         </ng-template>
+                       </p-table>
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+                        <td class="wd-10">
+                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                            (click)="editMaster(i,summary.establishmentMasterId )" tooltip="Edit"></i>
+
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
+                            tooltip="View"></i>
+                        </td>
+                      </tr>
+                      <tr *ngIf="!summaryHtmlDataList?.length">
+                        <td colspan="10">
+                          <span class="font-14 font500 align-center text-red">No Data Available</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> -->
 
 
   <br>

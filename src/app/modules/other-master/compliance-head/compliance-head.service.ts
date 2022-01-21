@@ -15,8 +15,12 @@ const headers = new Headers({
 export class ComplianceHeadService {
   public apiUrl3 = environment.baseUrl8086;
   public apistate=environment.baseUrl8082;
+<<<<<<< HEAD
 //-http://localhost:8083/hrms/v1/location-master/
 public apiUrlcity = environment.baseUrl8083;
+=======
+
+>>>>>>> 901aa714da86419b95844b63f4889487c377de9d
   constructor(private _HTTP: HttpClient) { 
     
   }
@@ -84,7 +88,10 @@ public apiUrlcity = environment.baseUrl8083;
 // }));
 //   }
 
+<<<<<<< HEAD
 //-http://localhost:8083/hrms/v1/location-master/
+=======
+>>>>>>> 901aa714da86419b95844b63f4889487c377de9d
   public getStatutoryFreq(): Observable<any>{
     return this._HTTP.get<any>(this.apiUrl3 + 'frequency-master/getAllActive');
   }
@@ -92,9 +99,12 @@ public apiUrlcity = environment.baseUrl8083;
   public getState():Observable<any>{
     return this._HTTP.get<any>(this.apistate + '/location-information/state/');
   }
+<<<<<<< HEAD
 //State with City Api 
   public getCitywithState():Observable<any>{
     return this._HTTP.get<any>(environment.baseUrl8083 + 'location-master/105');
   }
 
+=======
+>>>>>>> 901aa714da86419b95844b63f4889487c377de9d
 }
