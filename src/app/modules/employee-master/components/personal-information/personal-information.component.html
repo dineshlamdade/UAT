@@ -74,7 +74,7 @@
                                         <label class="form-label" [hidden]="PersonalInfoLabels.title">{{
                                             'PersonalInformationForm.title' | transloco
                                             }}</label>
-                                        <select class="form-control" placeholder="Select" formControlName="title"
+                                        <select class="form-control custom-select" placeholder="Select" formControlName="title"
                                             (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title">
                                             <option value="" selected disabled>Select</option>
