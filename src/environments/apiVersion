@@ -1,0 +1,7 @@
+kind: Service
+metadata:
+  name: autherization
+  namespace: deployment
+spec:
+  type: ExternalName
+  externalName: autherization.autherization.svc.cluster.local
